@@ -56,6 +56,10 @@ Open data consumers can use published data packages to:
 )
 - Adopting [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/#bp-summary)
 
+## Contributions
+
+We welcome all sorts of contributions - financial, ideas, issues, documentation and code. [Can you help?](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md)
+
 ## Download and Install Data Curator
 
 - Choose a platform from the [Releases page](https://github.com/ODIQueensland/data-curator/releases/latest).

@@ -2,15 +2,15 @@
 
 Firstly, thanks for being here. All types of contributions are valued and gratefully received. Please consider how you may be able to help contribute:
 
-- [financial support](Contribute-Financial-Support)
-- [ideas and feature requests](Contribute-Ideas-and-Feature-Requests)
-- [issues or bug reports](Contribute-Issues)
-- [documentation](Contributing-Documentation)
-- [code](Contributing-Code)
+- [financial support](#contribute-financial-support)
+- [ideas and feature requests](#contribute-ideas-and-feature-requests)
+- [issues or bug reports](#contribute-issues)
+- [documentation](#contribute-documentation)
+- [code](#contribute-code)
 
 ## Contribute Financial Support
 
-The best way to contribute financially to this project is to support the [ODI Australian Network](http://queensland.theodi.org) by becoming a [Member](http://queensland.theodi.org/home/network/members/), [Supporter](http://queensland.theodi.org/home/network/supporters/) or [Foundation Sponsor](http://queensland.theodi.org/home/network/foundationsponsors/).
+The best way to contribute financially to this project is to support the [ODI Australian Network](http://queensland.theodi.org) by becoming a [Member](http://queensland.theodi.org/home/network/members/), [Supporter](http://queensland.theodi.org/home/network/supporters/) or [Foundation Sponsor](http://queensland.theodi.org/home/network/foundationsponsors/). You may like to attend our training courses to [learn more about open data](http://queensland.theodi.org/home/learning/)
 
 If you'd like to discuss other options, please [contact us](http://queensland.theodi.org/home/contact-us/)
 
@@ -36,7 +36,7 @@ Help documentation is currently being drafted in a [separate repository](https:/
 
 ## Contribute Code
 Data Curator is open source, and contributions are gratefully accepted!
-Details on how to contribute are below. By participating in this project, you agree to abide by our [Code of Conduct](https://github.com/theodi/comma-chameleon/blob/master/.github/CODE_OF_CONDUCT.md).
+Details on how to contribute are below. By participating in this project, you agree to abide by our [Code of Conduct](https://github.com/ODIQueensland/data-curator/blob/master/.github/CODE_OF_CONDUCT.md).
 
 Before you start coding, please reach out to us either by email  [connect@odiqueensland.org.au](mailto:connect@odiqueensland.org.au) or by tagging a repository administrator on the issue ticket you are interested in contributing towards to indicate your interest in helping.
 
