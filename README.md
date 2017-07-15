@@ -40,25 +40,23 @@ The schema enables you to:
 
 Once the data is described and validated, you can share the data by exporting a [Data Package](http://frictionlessdata.io/data-packages/):
 
-- ready for [publishing](http://okfnlabs.org/blog/2016/07/25/publish-data-packages-to-datahub-ckan.html) on your [open data portal](https://ckan.org)
-- exporting a Data Package to be used as a template for others to make similar data
-
+- ready to [publish](http://okfnlabs.org/blog/2016/07/25/publish-data-packages-to-datahub-ckan.html) on your [open data portal](https://ckan.org)
+- to use as a template for others to make similar data
 
 Open data consumers can use published data packages to:
 
-- view the data structure and provenance information to help determine if the data is fit for their purpose
+- view the data structure and [provenance information](https://discuss.okfn.org/t/readme-md-practice-for-data-packages/5555) to help determine if the data is fit for their purpose
 - download the data together with its metadata in a single zip file
 - use [a suite of tools](http://frictionlessdata.io/tools/) to work with the data
-
 
 ## Acknowledgements
 
 - Inspired by the [ODI](https://theodi.org) [Comma Chameleon](https://comma-chameleon.io/) experiment.
-- Using the [Open Knowledge](https://okfn.org) [Frictionless Data specification](http://frictionlessdata.io) and [code libraries](http://frictionlessdata.io/tools/#javascript
+- Using the [Open Knowledge International](https://okfn.org) [Frictionless Data specification](http://frictionlessdata.io) and [code libraries](http://frictionlessdata.io/tools/#javascript
 )
 - Adopting [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/#bp-summary)
 
-## Download and Install App
+## Download and Install Data Curator
 
 - Choose a platform from the [Releases page](https://github.com/ODIQueensland/data-curator/releases/latest).
 - Drag the application to your applications folder.
@@ -69,6 +67,8 @@ If you encounter a warning message informing you the application cannot be opene
 - then option+click on Open.
 
 This occurs due to macOS quarantining applications where it cannot determine the certificate used to sign the application.  
+
+---
 
 ## Development
 
@@ -88,6 +88,8 @@ You can use [npm](https://www.npmjs.com) to install all relevant packages and de
 To open the app run:
 
 `npm start`
+
+`Insert other instructions as required.`
 
 ### Application Architecture
 
@@ -109,10 +111,10 @@ We have adopted [Standard JS](https://standardjs.com) as our JavaScript coding s
 
 A tool to automate testing has not yet been adopted.
 
-Instructions on how to run tests will go here.
+`Instructions on how to run tests will go here.`
 
 ## Deployment
 
 ### Building a new package
 
-Instructions on how to build a package will go here.
+`Instructions on how to build a package will go here.`
