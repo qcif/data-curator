@@ -28,7 +28,7 @@ Using data from any of these sources, you can:
 
 - automatically create a [schema](http://specs.frictionlessdata.io/table-schema/) that describes the data fields
 - refine the schema to include extra [data validation rules](http://specs.frictionlessdata.io/table-schema/#constraints)
-- describe the provenance of your data
+- describe the [provenance](https://discuss.okfn.org/t/readme-md-practice-for-data-packages/5555)  of your data
 - save data as a valid CSV file in various [CSV dialects](http://specs.frictionlessdata.io/csv-dialect/)
 
 The schema enables you to:
@@ -45,7 +45,7 @@ Once the data is described and validated, you can share the data by exporting a 
 
 Open data consumers can use published data packages to:
 
-- view the data structure and [provenance information](https://discuss.okfn.org/t/readme-md-practice-for-data-packages/5555) to help determine if the data is fit for their purpose
+- view the data structure and provenance information to help determine if the data is fit for their purpose
 - download the data together with its metadata in a single zip file
 - use [a suite of tools](http://frictionlessdata.io/tools/) to work with the data
 
