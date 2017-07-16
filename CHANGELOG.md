@@ -16,4 +16,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - LICENSE  
 - CHANGELOG
 
-[Unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.0.1...HEAD
+[Unreleased]: https://github.com/ODIQueensland/data-curator/compare/v0.0.1...HEAD
