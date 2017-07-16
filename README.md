@@ -128,3 +128,6 @@ A tool to automate testing has not yet been adopted.
 `Instructions on how to build a package will go here.`
 
 Changes are recorded in the [Change Log](https://github.com/ODIQueensland/data-curator/blob/master/CHANGELOG.md). We use [semantic versioning](http://semver.org) to label [our releases](https://github.com/ODIQueensland/data-curator/releases).
+
+[CHANGELOG]: ./CHANGELOG.md
+[version-badge]: https://img.shields.io/badge/version-0.0.1-blue.svg
