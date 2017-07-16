@@ -51,19 +51,6 @@ Open data consumers can use published Data Packages to:
 - download the data together with its metadata in a single zip file
 - use [a suite of tools](http://frictionlessdata.io/tools/) to work with the data
 
-
-
-## Contributions
-
-We welcome all sorts of contributions - financial, ideas, issues, documentation and code. [Can you help?](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md)
-
-We acknowledge the great work of others. We are:
-
-- inspired by the [ODI](https://theodi.org) [Comma Chameleon](https://comma-chameleon.io/) experiment.
-- using the [Open Knowledge International](https://okfn.org) [Frictionless Data specification](http://frictionlessdata.io) and [code libraries](http://frictionlessdata.io/tools/#javascript
-)
-- adopting [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/#bp-summary)
-
 ## Download and Install Data Curator
 
 - Choose a platform from the [Releases page](https://github.com/ODIQueensland/data-curator/releases/latest).
@@ -75,6 +62,17 @@ If you encounter a warning message informing you the application cannot be opene
 - then option+click on Open.
 
 This occurs due to macOS quarantining applications where it cannot determine the certificate used to sign the application.  
+
+## Contributions
+
+We welcome all sorts of contributions - financial, ideas, issues, documentation and code. [Can you help?](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md)
+
+We acknowledge the great work of others. We are:
+
+- inspired by the [ODI](https://theodi.org) [Comma Chameleon](https://comma-chameleon.io/) experiment.
+- using the [Open Knowledge International](https://okfn.org) [Frictionless Data specification](http://frictionlessdata.io) and [code libraries](http://frictionlessdata.io/tools/#javascript
+)
+- adopting [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/#bp-summary)
 
 ---
 
@@ -101,7 +99,7 @@ To open the app run:
 
 ### Application Architecture
 
-Data Curator is built using [Electron.js](electron.atom.io), a framework that allows developers to build desktop applications using web technology.
+Data Curator is built using [Electron](electron.atom.io), a framework that allows developers to build desktop applications using web technology.
 
 There are two parts of the application, the main process and the renderer process. The main process deals with things like carrying out file operations, validating CSVs, and rendering views. The renderer acts very much like client side javascript in a web browser, dealing with things like presentation, and user interactions.
 
@@ -127,7 +125,7 @@ A tool to automate testing has not yet been adopted.
 
 `Instructions on how to build a package will go here.`
 
-Changes are recorded in the [Change Log](https://github.com/ODIQueensland/data-curator/blob/master/CHANGELOG.md). We use [semantic versioning](http://semver.org) to label [our releases](https://github.com/ODIQueensland/data-curator/releases).
+Changes are recorded in the [Change Log][CHANGELOG]. We use [semantic versioning](http://semver.org) to label [our releases](https://github.com/ODIQueensland/data-curator/releases).
 
 [CHANGELOG]: ./CHANGELOG.md
 [version-badge]: https://img.shields.io/badge/version-0.0.1-blue.svg
