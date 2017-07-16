@@ -20,8 +20,8 @@ Using Data Curator open data producers can:
 
 - create new tabular data from scratch or from a template
 - open data from a CSV or Microsoft Excel file
-- open multiple related data tables from a Data Package
-- automatically correct common problems found in CSV and Excel files
+- open multiple related data tables from a [Data Package](http://frictionlessdata.io/data-packages/)
+- automatically correct [common problems](https://github.com/frictionlessdata/data-quality-spec/blob/master/README.md) found in CSV and Excel files
 - edit data
 
 Using data from any of these sources, you can:
@@ -122,3 +122,5 @@ A tool to automate testing has not yet been adopted.
 ### Building a new package
 
 `Instructions on how to build a package will go here.`
+
+We use [semantic versioning](http://semver.org) to label [our releases](https://github.com/ODIQueensland/data-curator/releases).
