@@ -1,3 +1,5 @@
+[![version][version-badge]][CHANGELOG] 
+
 # Data Curator
 Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data.
 
@@ -125,4 +127,4 @@ A tool to automate testing has not yet been adopted.
 
 `Instructions on how to build a package will go here.`
 
-We use [semantic versioning](http://semver.org) to label [our releases](https://github.com/ODIQueensland/data-curator/releases).
+Changes are recorded in the [Change Log](https://github.com/ODIQueensland/data-curator/CHANGELOG.md). We use [semantic versioning](http://semver.org) to label [our releases](https://github.com/ODIQueensland/data-curator/releases).
