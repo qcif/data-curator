@@ -38,12 +38,12 @@ The schema enables you to:
   - validate a column at a time
   - validate as you type
 
-Once the data is described and validated, you can share the data by exporting a [Data Package](http://frictionlessdata.io/data-packages/):
+Once the data is described and validated, you can share the data and its description by exporting a [Data Package](http://frictionlessdata.io/data-packages/) to:
 
-- ready to [publish](http://okfnlabs.org/blog/2016/07/25/publish-data-packages-to-datahub-ckan.html) on your [open data portal](https://ckan.org)
-- to use as a template for others to make similar data
+-  [publish](http://okfnlabs.org/blog/2016/07/25/publish-data-packages-to-datahub-ckan.html) on your [open data portal](https://ckan.org)
+- use as a template for others to make similar data
 
-Open data consumers can use published data packages to:
+Open data consumers can use published Data Packages to:
 
 - view the data structure and provenance information to help determine if the data is fit for their purpose
 - download the data together with its metadata in a single zip file
@@ -55,12 +55,12 @@ Open data consumers can use published data packages to:
 
 We welcome all sorts of contributions - financial, ideas, issues, documentation and code. [Can you help?](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md)
 
-We are inspired by and acknowledge the great work of others:
+We acknowledge the great work of others. We are:
 
-- Inspired by the [ODI](https://theodi.org) [Comma Chameleon](https://comma-chameleon.io/) experiment.
-- Using the [Open Knowledge International](https://okfn.org) [Frictionless Data specification](http://frictionlessdata.io) and [code libraries](http://frictionlessdata.io/tools/#javascript
+- inspired by the [ODI](https://theodi.org) [Comma Chameleon](https://comma-chameleon.io/) experiment.
+- using the [Open Knowledge International](https://okfn.org) [Frictionless Data specification](http://frictionlessdata.io) and [code libraries](http://frictionlessdata.io/tools/#javascript
 )
-- Adopting [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/#bp-summary)
+- adopting [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/#bp-summary)
 
 ## Download and Install Data Curator
 

@@ -28,15 +28,14 @@ If you encounter a problem, please [add an issue](https://github.com/ODIQueensla
 
 In order for us to best respond to the issue, we need as much information about the issue as you can provide. Please fill in as many sections as apply from our issue ticket template to provide us with as much detail as possible. Provide a descriptive name for your issue.
 
-If your [able](https://help.github.com/articles/applying-labels-to-issues-and-pull-requests/) to, [select a label](https://github.com/theodi/toolbox/wiki/Labels-In-Use-Across-the-ODI-Toolbox) for your issue. We've adopted the ODI's approach to labelling issues. We may add or change labels on your issue to help us manage the issue backlog.
+If you're [able](https://help.github.com/articles/applying-labels-to-issues-and-pull-requests/) to, [select a label](https://github.com/theodi/toolbox/wiki/Labels-In-Use-Across-the-ODI-Toolbox) for your issue. We've adopted the ODI's approach to labelling issues. We may add or change labels on your issue to help us manage the issue backlog.
 
 ## Contribute Documentation
 
 Help documentation is currently being drafted in a [separate repository](https://github.com/Stephen-Gates/csv-lingo). Feel free to contribute there.
 
 ## Contribute Code
-Data Curator is open source, and contributions are gratefully accepted!
-Details on how to contribute are below. By participating in this project, you agree to abide by our [Code of Conduct](https://github.com/ODIQueensland/data-curator/blob/master/.github/CODE_OF_CONDUCT.md).
+Data Curator is open source, and we a grateful for [all code contributions](https://github.com/ODIQueensland/data-curator/graphs/contributors). By participating in this project, you agree to abide by our [Code of Conduct](https://github.com/ODIQueensland/data-curator/blob/master/.github/CODE_OF_CONDUCT.md).
 
 Before you start coding, please reach out to us either by email  [connect@odiqueensland.org.au](mailto:connect@odiqueensland.org.au) or by tagging a repository administrator on the issue ticket you are interested in contributing towards to indicate your interest in helping.
 
