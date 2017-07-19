@@ -1,4 +1,5 @@
 [![version][version-badge]][CHANGELOG]
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
 # Data Curator
 Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data.
@@ -18,7 +19,7 @@ Open data is more likely to be used if data consumers can:
 
 ## Planned features
 
-Using Data Curator open data producers can:
+[Using Data Curator](https://github.com/Stephen-Gates/csv-lingo) open data producers can:
 
 - create new tabular data from scratch or from a template
 - open data from a CSV or Microsoft Excel file
