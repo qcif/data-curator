@@ -1,0 +1,13 @@
+Feature: Acknowledge Contributions
+
+Scenario: Teresa wants to see who has contributed to Data Curator
+Given Teresa has Data Curator open
+When she presses About
+Then Teresa should see the Contributors
+And be able to follow a link so she can make a contribution
+
+Scenario: Teresa has seen the Contributors
+Given Teresa has the Data Curator About panel open
+When she clicks outside the panel
+Or clicks the Close button
+Then the About panel closes
