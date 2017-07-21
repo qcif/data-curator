@@ -100,7 +100,7 @@ To open the app run:
 
 ### Application Architecture
 
-Data Curator is built using [Electron](electron.atom.io), a framework that allows developers to build desktop applications using web technology.
+Data Curator is built using [Electron](https://electron.atom.io), a framework that allows developers to build desktop applications using web technology.
 
 There are two parts of the application, the main process and the renderer process. The main process deals with things like carrying out file operations, validating CSVs, and rendering views. The renderer acts very much like client side javascript in a web browser, dealing with things like presentation, and user interactions.
 
