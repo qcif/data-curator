@@ -37,9 +37,8 @@ Using data from any of these sources, you can:
 The schema enables you to:
 
 - validate the whole table at once
-- in the future:
-  - validate a column at a time
-  - validate as you type
+- validate a column at a time
+- (and in a future release, validate as you type)
 
 Once the data is described and validated, you can share the data and its description by exporting a [Data Package](http://frictionlessdata.io/data-packages/) to:
 
@@ -100,7 +99,7 @@ To open the app run:
 
 ### Application Architecture
 
-Data Curator is built using [Electron](electron.atom.io), a framework that allows developers to build desktop applications using web technology.
+Data Curator is built using [Electron](https://electron.atom.io), a framework that allows developers to build desktop applications using web technology.
 
 There are two parts of the application, the main process and the renderer process. The main process deals with things like carrying out file operations, validating CSVs, and rendering views. The renderer acts very much like client side javascript in a web browser, dealing with things like presentation, and user interactions.
 
@@ -116,13 +115,31 @@ We have adopted [Standard JS](https://standardjs.com) as our JavaScript coding s
 
 ## Tests
 
-A tool to automate testing has not yet been adopted.
+Tools to automate testing have not been selected.
+
+### Acceptance tests
+We're considering:
+
+- defining Acceptance tests using the [Gherkin language](https://cucumber.io/docs/reference#gherkin)
+- sharing Acceptance tests using [Relish](https://relishapp.com). [Read them here](https://relishapp.com/odi-australia/data-curator/docs)
+
+### Unit tests
+We're still undecided and considering:
+- [Comma Chameleon](https://github.com/theodi/comma-chameleon#tests) currently uses [Electron-Mocha](https://github.com/jprichardson/electron-moc
+- [Spectron](https://electron.atom.io/spectron/)
+- [Travis](https://travis-ci.org)
+- and others
 
 `Instructions on how to run tests will go here.`
 
 ## Deployment
 
 ### Building a new package
+
+A tool to automate deployment has not been selected. We're considering:
+
+- [Appveyor](https://www.appveyor.com) for Windows deployment
+- [Travis](https://travis-ci.org) for macOS and Linux  
 
 `Instructions on how to build a package will go here.`
 
