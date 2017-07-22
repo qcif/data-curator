@@ -122,13 +122,21 @@ We're considering:
 
 - defining [Acceptance tests](https://github.com/ODIQueensland/data-curator/tree/master/features) using the [Gherkin language](https://cucumber.io/docs/reference#gherkin)
 - sharing [Acceptance tests in a pretty format](https://relishapp.com/odi-australia/data-curator/docs) using [Relish](https://relishapp.com)
+- we may link acceptance tests to integration tests if it makes sense.
 
-### Unit tests
-We're still undecided and considering:
-- [Comma Chameleon](https://github.com/theodi/comma-chameleon#tests) currently uses [Electron-Mocha](https://github.com/jprichardson/electron-mocha)
-- [Spectron](https://electron.atom.io/spectron/)
-- [Travis](https://travis-ci.org)
-- and others
+To push the acceptance tests .feature files to Relish:
+
+`relish push odi-australia/data-curator`
+
+
+### Integration and Unit tests
+We're still undecided about test tools. We are considering:
+
+- [Spectron](https://electron.atom.io/spectron/) is a  purpose built Electron test framework for integration tests
+- [Comma Chameleon](https://github.com/theodi/comma-chameleon#tests) currently uses [Electron-Mocha](https://github.com/jprichardson/electron-mocha), [Chai](http://chaijs.com) and [Sinon](http://sinonjs.org) for unit tests
+- Spectron can be used with any testing library, including [Mocha](https://mochajs.org), [Chai](http://chaijs.com), [Jasmine](http://jasmine.github.io), and [AVA](https://github.com/sindresorhus/ava)
+- [Travis](https://travis-ci.org) for continuous integration
+
 
 `Instructions on how to run tests will go here.`
 
