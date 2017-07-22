@@ -125,7 +125,7 @@ We're considering:
 
 ### Unit tests
 We're still undecided and considering:
-- [Comma Chameleon](https://github.com/theodi/comma-chameleon#tests) currently uses [Electron-Mocha](https://github.com/jprichardson/electron-moc
+- [Comma Chameleon](https://github.com/theodi/comma-chameleon#tests) currently uses [Electron-Mocha](https://github.com/jprichardson/electron-mocha)
 - [Spectron](https://electron.atom.io/spectron/)
 - [Travis](https://travis-ci.org)
 - and others
