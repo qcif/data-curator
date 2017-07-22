@@ -116,13 +116,23 @@ We have adopted [Standard JS](https://standardjs.com) as our JavaScript coding s
 
 ## Tests
 
-A tool to automate testing has not yet been adopted.
+A tool to automate testing has not yet been adopted. We're considering:
+
+- defining Acceptance tests using the [Gherkin language](https://cucumber.io/docs/reference#gherkin)
+- defining Unit tests using something. [Comma Chameleon](https://github.com/theodi/comma-chameleon#tests) currently uses [Electon-Mocha](https://github.com/jprichardson/electron-mocha).
+- automating tests using:
+  - [Spectron](https://electron.atom.io/spectron/) and [Travis](https://travis-ci.org)
 
 `Instructions on how to run tests will go here.`
 
 ## Deployment
 
 ### Building a new package
+
+A tool to automate deployment has not yet been adopted. We're considering:
+
+- [Appveyor](https://www.appveyor.com) for Windows deployment
+- [Travis](https://travis-ci.org) for macOS and Linux  
 
 `Instructions on how to build a package will go here.`
 
