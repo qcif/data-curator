@@ -37,9 +37,8 @@ Using data from any of these sources, you can:
 The schema enables you to:
 
 - validate the whole table at once
-- in the future:
-  - validate a column at a time
-  - validate as you type
+- validate a column at a time
+- (and in a future release, validate as you type)
 
 Once the data is described and validated, you can share the data and its description by exporting a [Data Package](http://frictionlessdata.io/data-packages/) to:
 
@@ -116,12 +115,20 @@ We have adopted [Standard JS](https://standardjs.com) as our JavaScript coding s
 
 ## Tests
 
-A tool to automate testing has not yet been adopted. We're considering:
+Tools to automate testing have not been selected.
+
+### Acceptance tests
+We're considering:
 
 - defining Acceptance tests using the [Gherkin language](https://cucumber.io/docs/reference#gherkin)
-- defining Unit tests using something. [Comma Chameleon](https://github.com/theodi/comma-chameleon#tests) currently uses [Electon-Mocha](https://github.com/jprichardson/electron-mocha).
-- automating tests using:
-  - [Spectron](https://electron.atom.io/spectron/) and [Travis](https://travis-ci.org)
+- sharing Acceptance tests using [Relish](https://relishapp.com). [Read them here](https://relishapp.com/odi-australia/data-curator/docs)
+
+### Unit tests
+We're still undecided and considering:
+- [Comma Chameleon](https://github.com/theodi/comma-chameleon#tests) currently uses [Electron-Mocha](https://github.com/jprichardson/electron-moc
+- [Spectron](https://electron.atom.io/spectron/)
+- [Travis](https://travis-ci.org)
+- and others
 
 `Instructions on how to run tests will go here.`
 
@@ -129,7 +136,7 @@ A tool to automate testing has not yet been adopted. We're considering:
 
 ### Building a new package
 
-A tool to automate deployment has not yet been adopted. We're considering:
+A tool to automate deployment has not been selected. We're considering:
 
 - [Appveyor](https://www.appveyor.com) for Windows deployment
 - [Travis](https://travis-ci.org) for macOS and Linux  
