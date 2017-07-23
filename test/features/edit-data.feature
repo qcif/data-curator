@@ -1,13 +1,26 @@
-Feature: Open data in a comma separated value file
-The first step in packaging data is to open it using Data Curator. Then it can be described, validated, and shared. The data is stored is a separated value file. The most common form of spearated value files is a comma separated value (CSV) file. There are variations that use Tab or Semicolon to seperate values. Custom formats are sometimes used. Each of these formats can be described using a CSV Dialect that describes the separator used and other options. Read more at http://specs.frictionlessdata.io/csv-dialect/#introduction
+Feature: Edit data
+In order to <meet some goal>
+As a <type of stakeholder>
+I want <a feature>
 
-Scenario: As a Data Packager, Amanda wants to open the separated value file she has to describe, validate and share. The file is saved as a .CSV assumed to be using the default CSV dialect.
+As a Data Packager, Amanda wants to edit the data when she finds an error. As a Data Creater, Jason wants to create new data by quickly typing values into a table
+
+Scenario: Enter value into Table
 
 Given Data Curator is open
+Add the cursor is in a table cell
 
-When Amanda selects Open, then Comma Separated from the menu, or presses Command/Control + O
+When Amanda types a value
 
-Then show a open file dialog
-And only allow files ending in .CSV (or .TXT? e.g. GFTS format) to be selected
-And open the selected file
-And display it in a table in Data Curator
+Then the value is updated in the cell
+But the data file is not saved
+
+Scenario: Use editor shortcuts
+  Should I create a scenario for all shortcuts?
+
+Given Data Curator is open
+Add the cursor is in a table cell
+
+When Amanda uses an editor shortcut https://stephen-gates.github.io/csv-lingo/topic/all-topics.html#shortcuts-editor
+
+Then the corresponding action is performed.
