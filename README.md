@@ -120,7 +120,7 @@ Tools to automate testing have not been selected.
 ### Acceptance tests
 We're considering:
 
-- defining [Acceptance tests](https://github.com/ODIQueensland/data-curator/tree/master/features) using the [Gherkin language](https://cucumber.io/docs/reference#gherkin)
+- defining [Acceptance tests](https://github.com/ODIQueensland/data-curator/tree/master/test/features) using the [Gherkin language](https://cucumber.io/docs/reference#gherkin)
 - sharing [Acceptance tests in a pretty format](https://relishapp.com/odi-australia/data-curator/docs) using [Relish](https://relishapp.com) ([or Cucumber Pro](https://cucumber.io/pro) when it's ready and if it's affordable)
 - we may link acceptance tests to integration tests if it makes sense.
 
