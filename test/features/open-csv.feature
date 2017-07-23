@@ -5,9 +5,9 @@ Scenario: As a Data Packager, Amanda wants to open the separated value file she 
 
 Given Data Curator is open
 
-When Amanda selects Open, then Comma Separated from the menu OR presses Command/Control O
+When Amanda selects Open, then Comma Separated from the menu, or presses Command/Control + O
 
 Then show a open file dialog
 And only allow files ending in .CSV (or .TXT? e.g. GFTS format) to be selected
 And open the selected file
-And display it in a table in Data Curator 
+And display it in a table in Data Curator
