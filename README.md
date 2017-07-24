@@ -51,6 +51,10 @@ Open data consumers can use published Data Packages to:
 - download the data together with its metadata in a single zip file
 - use [a suite of tools](http://frictionlessdata.io/tools/) to work with the data
 
+## We're just getting started
+
+Interested in this project but don't want to [watch this repository](https://github.com/ODIQueensland/data-curator/subscription)? Subscribe to https://github.com/ODIQueensland/data-curator/releases.atom to only be notified about [our releases](https://github.com/ODIQueensland/data-curator/releases).
+
 ## Download and Install Data Curator
 
 - Choose a platform from the [Releases page](https://github.com/ODIQueensland/data-curator/releases/latest).

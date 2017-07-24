@@ -1,7 +1,7 @@
 Feature: Close all tabs
   In order to quickly finish work
   As a Data Packager
-  I want to safely close all open data tabs at once
+  I want to safely close all open data tabs at once but not lose my changes
 
   Scenario: Close all tabs
 
