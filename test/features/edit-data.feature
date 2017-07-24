@@ -15,6 +15,28 @@ When Amanda types a value
 Then the value is updated in the cell
 But the data file is not saved
 
+Scenario: Use edit menu commands
+
+Given
+
+When
+- undo
+- redo
+- cut
+- copy
+- paste
+- select all
+- insert row above
+- insert row below
+- insert column before
+- insert column after
+- delete row(s)
+- delete column(s)
+
+
+Then
+
+
 Scenario: Use editor shortcuts
   Should I create a scenario for all shortcuts?
 
