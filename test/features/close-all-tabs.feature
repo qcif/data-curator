@@ -1,7 +1,7 @@
 Feature: Close all tabs
   In order to quickly finish work
   As a Data Packager
-  I want to safely close all open data tabs at once but not lose my changes
+  I want to safely close all open data tabs at once but not lose my changes using the CSV dialect set in the associated Table Properties or if that is null, the CSV dialect specified in Preferences. By default the CSV dialect will be a comma separated file with defaults settings as documented in http://specs.frictionlessdata.io/csv-dialect/#specification
 
   Scenario: Close all tabs
 

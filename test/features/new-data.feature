@@ -1,15 +1,13 @@
-Feature: Feature name # Placeholder
-In order to <meet some goal>
-As a <type of stakeholder>
-I want <a feature>
+Feature: New data
+  In order to create some new data
+  As a Data Creator
+  I want to open a blank data table so I can start to edit the data
 
-Scenario: Scenario name
-  the scenario name is returned in failing test - use Given and When (not Then) in the name.
+  Scenario: New data
 
-Given the system is in a particular state (the context)
-But...
+     Given Data Curator is open
 
-When you do a thing (a event happens)
+      When you do a thing (a event happens)
 
-Then Examine the new state (check the outcome)
-And ...
+      Then Examine the new state (check the outcome)
+       And ...
