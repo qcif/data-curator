@@ -3,6 +3,8 @@ Feature: Edit data
   As a Data Packager
   I want to quickly add, modify or delete data, rows and columns in the data table.
 
+# Do I add all the keyboard shortcuts as scenarios as well? https://stephen-gates.github.io/csv-lingo/topic/all-topics.html#shortcuts-editor  
+
   Scenario: Enter value into Table
 
      Given Data Curator is open
@@ -14,35 +16,168 @@ Feature: Edit data
        But the data is not saved to file.
 
 
-  Scenario: Use edit menu commands
+  Scenario: Undo Edit
     Should I create a scenario for all shortcuts?
 
      Given Data Curator is open
-       And the cursor is in a table cell
+       And an edit function has been performed (e.g. add row) or data typed in cell
 
-      When any of the following menu items are pressed
-            - undo
-            - redo
-            - cut
-            - copy
-            - paste
-            - select all
-            - insert row above
-            - insert row below
-            - insert column before
-            - insert column after
-            - delete row(s)
-            - delete column(s)
+      When Undo is selected from the menu, or
+      When using macOS, the Command + Z shortcut is pressed, or
+      When using Windows, the Control + Z shortcut is pressed, or
+      When using Linux, the Control + Z shortcut is pressed
 
-      Then the corresponding action is performed.
+      Then reverse the last edit function or data entry.
 
-
-  Scenario: Use editor shortcuts
+  Scenario: Redo Edit
     Should I create a scenario for all shortcuts?
 
      Given Data Curator is open
-       And the cursor is in a table cell
+       And an edit function has been performed (e.g. add row) or data typed in cell
 
-      When an editor shortcut is pressed (see them all at  https://stephen-gates.github.io/csv-lingo/topic/all-topics.html#shortcuts-editor)
+      When Undo is selected from the menu, or
+      When using macOS, the Command + Z shortcut is pressed, or
+      When using Windows, the Control + Z shortcut is pressed, or
+      When using Linux, the Control + Z shortcut is pressed
 
-      Then the corresponding action is performed.
+      Then reverse the last edit function or data entry.
+
+
+  Scenario: Cut
+    Should I create a scenario for all shortcuts?
+
+     Given Data Curator is open
+       And an edit function has been performed (e.g. add row) or data typed in cell
+
+      When Undo is selected from the menu, or
+      When using macOS, the Command + Z shortcut is pressed, or
+      When using Windows, the Control + Z shortcut is pressed, or
+      When using Linux, the Control + Z shortcut is pressed
+
+      Then reverse the last edit function or data entry.
+
+
+  Scenario: Copy
+    Should I create a scenario for all shortcuts?
+
+     Given Data Curator is open
+       And an edit function has been performed (e.g. add row) or data typed in cell
+
+      When Undo is selected from the menu, or
+      When using macOS, the Command + Z shortcut is pressed, or
+      When using Windows, the Control + Z shortcut is pressed, or
+      When using Linux, the Control + Z shortcut is pressed
+
+      Then reverse the last edit function or data entry.
+
+
+  Scenario: Paste
+    Should I create a scenario for all shortcuts?
+
+     Given Data Curator is open
+       And an edit function has been performed (e.g. add row) or data typed in cell
+
+      When Undo is selected from the menu, or
+      When using macOS, the Command + Z shortcut is pressed, or
+      When using Windows, the Control + Z shortcut is pressed, or
+      When using Linux, the Control + Z shortcut is pressed
+
+      Then reverse the last edit function or data entry.
+
+
+  Scenario: Select All
+    Should I create a scenario for all shortcuts?
+
+     Given Data Curator is open
+       And an edit function has been performed (e.g. add row) or data typed in cell
+
+      When Undo is selected from the menu, or
+      When using macOS, the Command + Z shortcut is pressed, or
+      When using Windows, the Control + Z shortcut is pressed, or
+      When using Linux, the Control + Z shortcut is pressed
+
+      Then reverse the last edit function or data entry.
+
+
+  Scenario: Insert Row Above
+    Should I create a scenario for all shortcuts?
+
+     Given Data Curator is open
+       And an edit function has been performed (e.g. add row) or data typed in cell
+
+      When Undo is selected from the menu, or
+      When using macOS, the Command + Z shortcut is pressed, or
+      When using Windows, the Control + Z shortcut is pressed, or
+      When using Linux, the Control + Z shortcut is pressed
+
+      Then reverse the last edit function or data entry.
+
+
+  Scenario: Insert Row Above
+    Should I create a scenario for all shortcuts?
+
+     Given Data Curator is open
+       And an edit function has been performed (e.g. add row) or data typed in cell
+
+      When Undo is selected from the menu, or
+      When using macOS, the Command + Z shortcut is pressed, or
+      When using Windows, the Control + Z shortcut is pressed, or
+      When using Linux, the Control + Z shortcut is pressed
+
+      Then reverse the last edit function or data entry.
+
+
+  Scenario: Insert Column Before
+    Should I create a scenario for all shortcuts?
+
+     Given Data Curator is open
+       And an edit function has been performed (e.g. add row) or data typed in cell
+
+      When Undo is selected from the menu, or
+      When using macOS, the Command + Z shortcut is pressed, or
+      When using Windows, the Control + Z shortcut is pressed, or
+      When using Linux, the Control + Z shortcut is pressed
+
+      Then reverse the last edit function or data entry.
+
+
+  Scenario: Insert Column After
+    Should I create a scenario for all shortcuts?
+
+     Given Data Curator is open
+       And an edit function has been performed (e.g. add row) or data typed in cell
+
+      When Undo is selected from the menu, or
+      When using macOS, the Command + Z shortcut is pressed, or
+      When using Windows, the Control + Z shortcut is pressed, or
+      When using Linux, the Control + Z shortcut is pressed
+
+      Then reverse the last edit function or data entry.
+
+
+  Scenario: Delete Row(s)
+    Should I create a scenario for all shortcuts?
+
+     Given Data Curator is open
+       And an edit function has been performed (e.g. add row) or data typed in cell
+
+      When Undo is selected from the menu, or
+      When using macOS, the Command + Z shortcut is pressed, or
+      When using Windows, the Control + Z shortcut is pressed, or
+      When using Linux, the Control + Z shortcut is pressed
+
+      Then reverse the last edit function or data entry.
+
+
+  Scenario: Delete Row Column(s)
+    Should I create a scenario for all shortcuts?
+
+     Given Data Curator is open
+       And an edit function has been performed (e.g. add row) or data typed in cell
+
+      When Undo is selected from the menu, or
+      When using macOS, the Command + Z shortcut is pressed, or
+      When using Windows, the Control + Z shortcut is pressed, or
+      When using Linux, the Control + Z shortcut is pressed
+
+      Then reverse the last edit function or data entry.
