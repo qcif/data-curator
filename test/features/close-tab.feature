@@ -10,7 +10,7 @@ Scenario: Close tab
 
     When Close Tab is selected from the menu, or
     When using macOS, the Command W shortcut is pressed, or
-    When using Windows, ... ,or
+    When using Windows, ... , or
     When using Linux, ... , or
     When the Close button in the data tab is pressed
 

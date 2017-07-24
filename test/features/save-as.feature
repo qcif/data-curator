@@ -13,4 +13,4 @@ Feature: Save as
 
       Then prompt for a file name and location to save the data
       Then save the data in the active data tab in the CSV dialect set in the Table Properties or if this is not set, the CSV dialect set in Preferences
-      And set the file extension to .tsv if the delimiter property is set to a tab character, otherwise set the file extension to .csv
+      And set the file extension to '.tsv' if the 'delimiter' property is set to a tab character, otherwise set the file extension to '.csv'
