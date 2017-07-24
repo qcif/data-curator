@@ -70,7 +70,7 @@ We welcome all sorts of contributions - financial, ideas, issues, documentation 
 We acknowledge the great work of others. We are:
 
 - inspired by the [ODI](https://theodi.org) [Comma Chameleon](https://comma-chameleon.io/) experiment.
-- using the [Open Knowledge International](https://okfn.org) [Frictionless Data specification](http://frictionlessdata.io) and [code libraries](http://frictionlessdata.io/tools/#javascript
+- using the [Open Knowledge International](https://okfn.org) Frictionless Data [specification](http://frictionlessdata.io) and [code libraries](http://frictionlessdata.io/tools/#javascript
 )
 - adopting [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/#bp-summary)
 
