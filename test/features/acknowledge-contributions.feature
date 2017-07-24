@@ -4,20 +4,18 @@ Feature: Acknowledge Contributors
   I want to show who has contributed to the application by displaying names, logos, attribution statements and/or links to websites.
 
   Scenario: Show Contributors
-
      Given Data Curator is open
+     When the About menu item is selected
+     Then the Contributors names, logos, attribution statements and links to external websites are shown
 
-      When the About menu item is selected
+  Scenario: I click the mouse to hide Contributors
+     Given I open the Data Curator
+     And I am at the About panel
+     When I click the mouse outside the About panel
+     Then the About panel closes
 
-      Then the Contributors names, logos, attribution statements and links to external websites are shown
-
-
-  Scenario: Hide Contributors
-
-     Given Data Curator is open
-       And displaying the About panel
-
-      When the mouse is clicked outside the About panel, or
-      When the Close button on the About panel is pressed
-
-      Then the About panel closes
+  Scenario: I click on the close button to hide Contributors
+     Given I open the Data Curator
+     And I am at the About panel
+     When I click the Close button on the About panel
+     Then the About panel closes
