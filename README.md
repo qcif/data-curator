@@ -51,9 +51,20 @@ Open data consumers can use published Data Packages to:
 - download the data together with its metadata in a single zip file
 - use [a suite of tools](http://frictionlessdata.io/tools/) to work with the data
 
-## We're just getting started
+## Follow our progress
 
-Interested in this project but don't want to [watch this repository](https://github.com/ODIQueensland/data-curator/subscription)? Subscribe to https://github.com/ODIQueensland/data-curator/releases.atom to only be notified about [our releases](https://github.com/ODIQueensland/data-curator/releases).
+Interested in this project? Subscribe to [Data Curator News](https://github.com/ODIQueensland/data-curator/issues/15) to get occasional updates on our progress and hear about [each release](https://github.com/ODIQueensland/data-curator/releases).
+
+## Contributions
+
+We welcome all sorts of contributions - financial, ideas, issues, documentation and code. [Can you help?](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md)
+
+We acknowledge the great work of others. We are:
+
+- inspired by the [ODI](https://theodi.org) [Comma Chameleon](https://comma-chameleon.io/) experiment.
+- using the [Open Knowledge International](https://okfn.org) Frictionless Data [specification](http://frictionlessdata.io) and [code libraries](http://frictionlessdata.io/tools/#javascript
+)
+- adopting [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/#bp-summary)
 
 ## Download and Install Data Curator
 
@@ -66,17 +77,6 @@ If you encounter a warning message informing you the application cannot be opene
 - then option+click on Open.
 
 This occurs due to macOS quarantining applications where it cannot determine the certificate used to sign the application.  
-
-## Contributions
-
-We welcome all sorts of contributions - financial, ideas, issues, documentation and code. [Can you help?](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md)
-
-We acknowledge the great work of others. We are:
-
-- inspired by the [ODI](https://theodi.org) [Comma Chameleon](https://comma-chameleon.io/) experiment.
-- using the [Open Knowledge International](https://okfn.org) Frictionless Data [specification](http://frictionlessdata.io) and [code libraries](http://frictionlessdata.io/tools/#javascript
-)
-- adopting [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/#bp-summary)
 
 ---
 
@@ -125,7 +125,7 @@ Tools to automate testing have not been selected.
 We're considering:
 
 - defining [Acceptance tests](https://github.com/ODIQueensland/data-curator/tree/master/test/features) using the [Gherkin language](https://cucumber.io/docs/reference#gherkin)
-- sharing [Acceptance tests in a pretty format](https://relishapp.com/odi-australia/data-curator/docs) using [Relish](https://relishapp.com) (or [Cucumber Pro](https://cucumber.io/pro) if it's [useful](https://app.cucumber.pro/projects/cucumber-pro), when it's ready and if it's affordable)
+- sharing [Acceptance tests in a pretty format](https://relishapp.com/odi-australia/data-curator/docs) [using](https://relishapp.com/relish/relish/docs) [Relish](https://relishapp.com) (or [Cucumber Pro](https://cucumber.io/pro) if it's [useful](https://app.cucumber.pro/projects/cucumber-pro), when it's ready and if it's affordable)
 - we may link acceptance tests to lower level tests
 - [cucumber-electron](https://github.com/cucumber/cucumber-electron) looks interesting
 
@@ -155,7 +155,7 @@ A tool to automate deployment has not been selected. We're considering:
 
 `Instructions on how to build a package will go here.`
 
-Changes are recorded in the [Change Log][CHANGELOG]. We use [semantic versioning](http://semver.org) to label [our releases](https://github.com/ODIQueensland/data-curator/releases).
+Changes are recorded in the [Change Log][CHANGELOG].  
 
 [CHANGELOG]: ./CHANGELOG.md
 [version-badge]: https://img.shields.io/badge/version-0.0.1-blue.svg
