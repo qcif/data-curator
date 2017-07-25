@@ -19,7 +19,7 @@ Open data is more likely to be used if data consumers can:
 
 ## Planned features
 
-[Using Data Curator](https://github.com/Stephen-Gates/csv-lingo) open data producers can:
+[Using Data Curator](https://odiqueensland.github.io/data-curator-help/) open data producers can:
 
 - create new tabular data from scratch or from a template
 - open data from a CSV or Microsoft Excel file
