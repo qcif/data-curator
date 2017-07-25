@@ -1,0 +1,166 @@
+var Handsontable = require('handsontable/dist/handsontable.full.js')
+var loader = require('../renderer/loader.js')
+
+var initialise = function(container) {
+  var hot = new Handsontable(container, {
+    colHeaders: true,
+    rowHeaders: true,
+    fixedRowsTop: 0,
+    columnSorting: true,
+    contextMenu: false,
+    autoRowSize: true,
+    enterBeginsEditing: false,
+    tabMoves: function(event) {
+      if (!event.shiftKey) {
+        var selection = hot.getSelected()
+        next = hot.getCell(selection[0], selection[1] + 1)
+        if (next === null) {
+          hot.alter('insert_col', selection[1] + 1)
+        }
+      }
+      return {row: 0, col: 1}
+    },
+    afterInit: function() {
+      loader.showLoader('Loading...')
+    },
+    afterLoadData: function() {
+      loader.hideLoader()
+    },
+    afterUpdateSettings: function() {
+      hot.render()
+      hot.deselectCell()
+    },
+    enterMoves: function(event) {
+      if (!event.shiftKey) {
+        var selection = hot.getSelected()
+        next = hot.getCell(selection[0] + 1, selection[1])
+        if (next === null) {
+          hot.alter('insert_row', selection[0] + 1)
+          return {
+            row: 1,
+            col: 0 - selection[1]
+          }
+        } else {
+          return {row: 1, col: 0}
+        }
+      } else {
+        return {row: 1, col: 0}
+      }
+    }
+  })
+  return hot
+}
+
+var insertRowAbove = function(deselect) {
+  // hot.loadData([
+  //   ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],
+  //   ['2014', 10, 11, 12, 13],
+  //   ['2015', 20, 11, 14],
+  //   ['2016', 30, 15, 12, 13]
+  // ])
+  hot.getActiveEditor().finishEditing(true)
+  var range = hot.getSelectedRange()
+  if (typeof range === 'undefined') {
+    return
+  }
+  var start = Math.min(range.from.row, range.to.row)
+  hot.alter('insert_row', start)
+  if (deselect) {
+    hot.deselectCell()
+  }
+}
+
+var insertRowBelow = function(deselect) {
+  hot.getActiveEditor().finishEditing(true)
+  var range = hot.getSelectedRange()
+  if (typeof range === 'undefined') {
+    return
+  }
+  var end = Math.max(range.from.row, range.to.row)
+  hot.alter('insert_row', (end + 1))
+  if (deselect) {
+    hot.deselectCell()
+  }
+}
+
+var insertColumnLeft = function(deselect) {
+  hot.getActiveEditor().finishEditing(true)
+  var range = hot.getSelectedRange()
+  if (typeof range === 'undefined') {
+    return
+  }
+  var start = Math.min(range.from.col, range.to.col)
+  hot.alter('insert_col', start)
+  if (deselect) {
+    hot.deselectCell()
+  }
+}
+
+var insertColumnRight = function(deselect) {
+  hot.getActiveEditor().finishEditing(true)
+  var range = hot.getSelectedRange()
+  if (typeof range === 'undefined') {
+    return
+  }
+  var end = Math.max(range.from.col, range.to.col)
+  hot.alter('insert_col', (end + 1))
+  if (deselect) {
+    hot.deselectCell()
+  }
+}
+
+var removeRows = function() {
+  var range = hot.getSelectedRange()
+  if (typeof range === 'undefined') {
+    return
+  }
+
+  var start = Math.min(range.from.row, range.to.row)
+  var end = Math.max(range.from.row, range.to.row)
+
+  for (var row = start; row <= end; row++) {
+    // rows are re-indexed after each remove
+    // so always remove 'start'
+    hot.alter('remove_row', start)
+  }
+
+  hot.deselectCell()
+}
+
+var removeColumns = function() {
+  var range = hot.getSelectedRange()
+  if (typeof range === 'undefined') {
+    return
+  }
+
+  var start = Math.min(range.from.col, range.to.col)
+  var end = Math.max(range.from.col, range.to.col)
+
+  for (var col = start; col <= end; col++) {
+    // cols are re-indexed after each remove
+    // so always remove 'start'
+    hot.alter('remove_col', start)
+  }
+
+  hot.deselectCell()
+}
+
+var unfreezeHeaderRow = function() {
+  hot.updateSettings({fixedRowsTop: 0, colHeaders: true})
+}
+
+var freezeHeaderRow = function() {
+  hot.updateSettings({fixedRowsTop: 1})
+}
+
+module.exports = {
+  insertRowAbove: insertRowAbove,
+  insertRowBelow: insertRowBelow,
+  insertColumnLeft: insertColumnLeft,
+  insertColumnRight: insertColumnRight,
+  removeRows: removeRows,
+  removeColumns: removeColumns,
+  freeze: freezeHeaderRow,
+  unfreeze: unfreezeHeaderRow,
+  create: initialise
+}
