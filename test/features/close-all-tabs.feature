@@ -11,7 +11,6 @@ Feature: Close all tabs
 
   By default the CSV dialect will be a comma separated file with defaults settings as documented in http://specs.frictionlessdata.io/csv-dialect/#specification
 
-
   Scenario: I use the menu to close all tabs, all with saved data
     Given I have opened Data Curator
     And I open 1 data tab
