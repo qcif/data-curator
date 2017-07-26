@@ -15,8 +15,8 @@ Feature: Guess column properties
 
 # Am I using quotes correctly here?
 
-  Scenario: Guess column properties
+  Scenario: I use the menu to Guess column properties
     Given I have opened Data Curator
-    And 1 data tab is active
+    And I have opened 1 data tab 
     When I select Guess Column Properties from the menu
     Then infer the column properties from the data
