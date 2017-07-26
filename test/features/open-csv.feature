@@ -7,7 +7,7 @@ Feature: Open a comma separated value file
 
   There are variations that use Tab or Semicolon to seperate values. Custom formats are sometimes used. Each of these formats can be described using a CSV Dialect that describes the 'delimiter' used and other options. See: http://specs.frictionlessdata.io/csv-dialect/#specification
 
-  Use the CSV dialect specified in Preferences to determine how to open the file and seperate values into the right column.
+  Use the CSV dialect specified in Preferences to determine how to open the file and seperate values into the right columns.
 
   Scenario: I use the menu to open an existing comma separated value file
     Given I have opened Data Curator
