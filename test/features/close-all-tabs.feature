@@ -1,33 +1,39 @@
 Feature: Close all tabs
-  In order to quickly finish work
+  In order to finish work quickly
   As a Data Packager
-  I want to safely close all open data tabs at once
-  But Not lose my changes. If I have unsaved work, prompt me to save it. Save the data using the CSV dialect set in the associated Table Properties
-  Or, if that is null, use the CSV dialect specified in Preferences.
+  I want to close all data tabs and prompt if there are unsaved changes.
+
+  If the changes are to be saved, they will use the appropriate CSV dialect settings.
+
+  If available, use the CSV dialect settings in associated Table Properties.
+
+  If these are unavailable, then use the CSV dialect specified in Preferences.
+
   By default the CSV dialect will be a comma separated file with defaults settings as documented in http://specs.frictionlessdata.io/csv-dialect/#specification
 
-  Scenario: Close all tabs
+
+  Scenario: I use the menu to close all tabs, all with saved data
     Given I have opened Data Curator
     And I open 1 data tab
     And I save the data in the tab
     When I select Close all Tabs from the menu
     Then all tabs close
 
-  Scenario: Close all tabs
+  Scenario: I use a keyboard shortcut to close all tabs, all with saved data
     Given I have opened Data Curator
     And I open more than 1 data tab
     And I save all the data in the tab
     When I select Close all Tabs from the menu
     Then all tabs close
 
-  Scenario: Close all tabs
+  Scenario: I use the menu to close all tabs, some with unsaved data
     Given I have opened Data Curator
     And I open 1 data tab
     And I do not save the data in the tab
     When I select Close all Tabs from the menu
     Then a prompt, save each unsaved data table in its current CSV Dialect, is displayed
 
-  Scenario: Close all tabs
+  Scenario: I use a keyboard shortcut to close all tabs, some with unsaved data
     Given I have opened Data Curator
     And I open more than 1 data tab
     And I do not save the data in the tab
