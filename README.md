@@ -81,21 +81,17 @@ We acknowledge the great work of others. We are:
 ### Requirements
 
 `node`  
-`npm`  
-`electron`  
-`standard`
+`yarn`  
+`electron`
 
-You can use [npm](https://www.npmjs.com) to install all relevant packages and development dependencies using the following set of commands:
-
-`insert commands here`
+You can use [yarn](https://yarnpkg.com/en/) to install all relevant packages and development dependencies.
+See the installation page at [Yarn installation](https://yarnpkg.com/en/docs/install)
 
 ### Development: Running the full application locally
 
-To open the app run:
+To open the app on your local machine, run in development mode:
 
-`npm start`
-
-`Insert other instructions as required.`
+`yarn run dev`
 
 ### Application Architecture
 

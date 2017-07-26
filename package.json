@@ -2,7 +2,7 @@
   "name": "data-curator",
   "version": "0.0.0",
   "author": " <matt@redboxresearchdata.com.au>",
-  "description": "An electron-vue project",
+  "description": "An electron-vue project for curating csv data",
   "license": null,
   "main": "./dist/electron/main.js",
   "scripts": {
@@ -12,14 +12,12 @@
     "dev": "node .electron-vue/dev-runner.js",
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src",
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src",
-    "pack": "npm run pack:main && npm run pack:renderer",
+    "pack": "yarn run pack:main && yarn run pack:renderer",
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
-    "postinstall": "npm run lint:fix && electron-builder install-app-deps",
+    "postinstall": "yarn run lint:fix && electron-builder install-app-deps",
     "test-main": "mocha-webpack --webpack-config .electron-vue/webpack.test.config.js --glob *_spec.js test/main/specs",
-    "test-renderer": "electron-mocha --renderer --no-timeouts test/renderer/",
-    "test": "npm run unit",
-    "unit": "karma start test/unit/karma.conf.js"
+    "test-renderer": "electron-mocha --renderer --no-timeouts test/renderer/"
   },
   "build": {
     "productName": "data-curator",
