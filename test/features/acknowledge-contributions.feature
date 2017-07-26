@@ -1,18 +1,21 @@
 Feature: Acknowledge Contributors
-It is important to acknowledge contributors. Sometimes this is a legal requirement of using licensed contributions. Contributor names, logos, licences and attribution statements will be displayed in one place to fulfil our legal obligations and give credit to the work of others.
+  In order to acknowledge contributors to Data Curator, which is both a legal requirement and a polite thing to do
+  As the Creator of Data Curator, a current or potential Sponsor or Contributor
+  I want to show who has contributed to the application by displaying names, logos, attribution statements and/or links to websites.
 
-Scenario: As a current or potential Sponsor or Contributor, Tom wants to see who has contributed to Data Curator.
-Given Data Curator is open
+  Scenario: Show Contributors
+    Given Data Curator is open
+    When the About menu item is selected
+    Then the Contributors names, logos, attribution statements and links to external websites are shown
 
-When the About menu item is pressed
+  Scenario: I click the mouse to hide Contributors
+    Given I open the Data Curator
+    And I am at the About panel
+    When I click the mouse outside the About panel
+    Then the About panel closes
 
-Then the Contributors are shown
-And Tom is able to follow a link so he can make a contribution
-
-Scenario: Tom has seen the Contributors
-
-Given Tom has the Data Curator About panel open
-
-When he clicks outside the panel or clicks the Close button
-
-Then the About panel closes
+  Scenario: I click on the close button to hide Contributors
+    Given I open the Data Curator
+    And I am at the About panel
+    When I click the Close button on the About panel
+    Then the About panel closes
