@@ -4,7 +4,7 @@ Feature: Save as
   I want to save the data into a common or custom CSV dialect. The CSV dialect to be used is set in the Table Properties or if this is null, the CSV dialect specified in Preferences. By default the CSV dialect will be a comma separated file with defaults settings as documented in http://specs.frictionlessdata.io/csv-dialect/#specification
 
   Scenario: Save as
-    Given Data Curator is open
+    Given I have opened Data Curator
     And a data tab is open
     And one value is in a cell
     When Save As is selected from the menu

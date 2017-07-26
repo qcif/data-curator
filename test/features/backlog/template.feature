@@ -1,13 +1,13 @@
-@tag-name-to-organise-features
+@template
 
-Feature: Some terse yet descriptive text of what is desired
+Feature: Template - Some terse yet descriptive text of what is desired
   In order to realise a named business value
   As an explicit system actor
   I want to gain some beneficial outcome which furthers the goal
 
   Scenario: Some determinable business situation
 #   the scenario name is important as it is returned when automated tests fail.
-    Given some precondition (i.e the system is in a particular state)
+    Given I have opened Data Curator
     And some other precondition
     When some action by the actor (i.e. a event happens)
     When using macOS, the Command W shortcut is pressed

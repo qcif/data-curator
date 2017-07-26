@@ -5,7 +5,7 @@ Feature: Edit data
 
 # Do I add all the keyboard shortcuts as scenarios as well? https://stephen-gates.github.io/csv-lingo/topic/all-topics.html#shortcuts-editor
   Scenario: Enter value into Table
-    Given Data Curator is open
+    Given I have opened Data Curator
     And the cursor is in a table cell
     When A value is typed
     Then the value is updated in the cell
@@ -13,7 +13,7 @@ Feature: Edit data
 
   Scenario: Undo Edit
 #   Should I create a scenario for all shortcuts?
-    Given Data Curator is open
+    Given I have opened Data Curator
     And an edit function has been performed (e.g. add row) or data typed in cell
     When Undo is selected from the menu, or
     When using macOS, the Command + Z shortcut is pressed, or
@@ -23,7 +23,7 @@ Feature: Edit data
 
   Scenario: Redo Edit
 #   Should I create a scenario for all shortcuts?
-    Given Data Curator is open
+    Given I have opened Data Curator
     And an edit function has been performed (e.g. add row) or data typed in cell
     When Undo is selected from the menu, or
     When using macOS, the Command + Z shortcut is pressed, or
@@ -33,7 +33,7 @@ Feature: Edit data
 
   Scenario: Cut
 #   Should I create a scenario for all shortcuts?
-    Given Data Curator is open
+    Given I have opened Data Curator
     And an edit function has been performed (e.g. add row) or data typed in cell
     When Undo is selected from the menu, or
     When using macOS, the Command + Z shortcut is pressed, or
@@ -43,7 +43,7 @@ Feature: Edit data
 
   Scenario: Copy
 #   Should I create a scenario for all shortcuts?
-    Given Data Curator is open
+    Given I have opened Data Curator
     And an edit function has been performed (e.g. add row) or data typed in cell
     When Undo is selected from the menu, or
     When using macOS, the Command + Z shortcut is pressed, or
@@ -53,7 +53,7 @@ Feature: Edit data
 
   Scenario: Paste
 #   Should I create a scenario for all shortcuts?
-    Given Data Curator is open
+    Given I have opened Data Curator
     And an edit function has been performed (e.g. add row) or data typed in cell
     When Undo is selected from the menu, or
     When using macOS, the Command + Z shortcut is pressed, or
@@ -63,7 +63,7 @@ Feature: Edit data
 
   Scenario: Select All
 #   Should I create a scenario for all shortcuts?
-    Given Data Curator is open
+    Given I have opened Data Curator
     And an edit function has been performed (e.g. add row) or data typed in cell
     When Undo is selected from the menu, or
     When using macOS, the Command + Z shortcut is pressed, or
@@ -73,7 +73,7 @@ Feature: Edit data
 
   Scenario: Insert Row Above
 #   Should I create a scenario for all shortcuts?
-    Given Data Curator is open
+    Given I have opened Data Curator
     And an edit function has been performed (e.g. add row) or data typed in cell
     When Undo is selected from the menu, or
     When using macOS, the Command + Z shortcut is pressed, or
@@ -83,7 +83,7 @@ Feature: Edit data
 
   Scenario: Insert Row Above
 #   Should I create a scenario for all shortcuts?
-    Given Data Curator is open
+    Given I have opened Data Curator
     And an edit function has been performed (e.g. add row) or data typed in cell
     When Undo is selected from the menu, or
     When using macOS, the Command + Z shortcut is pressed, or
@@ -93,7 +93,7 @@ Feature: Edit data
 
   Scenario: Insert Column Before
 #   Should I create a scenario for all shortcuts?
-    Given Data Curator is open
+    Given I have opened Data Curator
     And an edit function has been performed (e.g. add row) or data typed in cell
     When Undo is selected from the menu, or
     When using macOS, the Command + Z shortcut is pressed, or
@@ -104,7 +104,7 @@ Feature: Edit data
 
   Scenario: Insert Column After
 #   Should I create a scenario for all shortcuts?
-    Given Data Curator is open
+    Given I have opened Data Curator
     And an edit function has been performed (e.g. add row) or data typed in cell
     When Undo is selected from the menu, or
     When using macOS, the Command + Z shortcut is pressed, or
@@ -114,7 +114,7 @@ Feature: Edit data
 
   Scenario: Delete Row(s)
 #   Should I create a scenario for all shortcuts?
-    Given Data Curator is open
+    Given I have opened Data Curator
     And an edit function has been performed (e.g. add row) or data typed in cell
     When Undo is selected from the menu, or
     When using macOS, the Command + Z shortcut is pressed, or
@@ -124,7 +124,7 @@ Feature: Edit data
 
   Scenario: Delete Row Column(s)
 #   Should I create a scenario for all shortcuts?
-    Given Data Curator is open
+    Given I have opened Data Curator
     And an edit function has been performed (e.g. add row) or data typed in cell
     When Undo is selected from the menu, or
     When using macOS, the Command + Z shortcut is pressed, or

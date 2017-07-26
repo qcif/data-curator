@@ -4,7 +4,7 @@ Feature: Save all data
   I want to save the changes made in the every data tab using the CSV dialect set in the associated Table Properties or if that is null, the CSV dialect specified in Preferences. By default the CSV dialect will be a comma separated file with defaults settings as documented in http://specs.frictionlessdata.io/csv-dialect/#specification
 
   Scenario: Save all data
-    Given Data Curator is open
+    Given I have opened Data Curator
     And one or more data tabs are open
     When Save All is selected from the menu, or
     When on macOS, presses Option + Command + S

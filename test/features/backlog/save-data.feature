@@ -4,7 +4,7 @@ Feature: Save data
   I want to save the changes made in the active data tab using the CSV dialect set in Table Properties or if this is null, the CSV dialect specified in Preferences. By default the CSV dialect will be a comma separated file with defaults settings as documented in http://specs.frictionlessdata.io/csv-dialect/#specification
 
   Scenario: Save data
-    Given Data Curator is open
+    Given I have opened Data Curator
     And a data tab is open
     And one value is in a cell
     When Save is selected from the menu, or
