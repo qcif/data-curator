@@ -6,20 +6,30 @@
     Or, if that is null, use the CSV dialect specified in Preferences.
     By default the CSV dialect will be a comma separated file with defaults settings as documented in http://specs.frictionlessdata.io/csv-dialect/#specification
 
-# unresolved
-# - how to document keyboard shortcuts across operating systems
-# - should scenario names be unique? 
-
-    Scenario: Close tab
+    Scenario: Close tab saved tab with menu
       Given I have opened Data Curator
       And I open 1 data tab
       And I save the data in the active tab
       When I select Close Tab from the menu
       Then close the active tab
 
-    Scenario: Close tab
+    Scenario: Close tab unsaved tab with menu
       Given I have opened Data Curator
       And I open 1 data tab
       And I do not save the data in the active tab
       When I select Close Tab from the menu
+      Then a prompt, save the unsaved data table in its current CSV Dialect, is displayed
+
+    Scenario: Close tab saved tab with shortcut
+      Given I have opened Data Curator
+      And I open 1 data tab
+      And I save the data in the active tab
+      When I use the Close Tab shortcut
+      Then close the active tab
+
+    Scenario: Close tab unsaved tab with shortcut
+      Given I have opened Data Curator
+      And I open 1 data tab
+      And I do not save the data in the active tab
+      When I use the Close Tab shortcut
       Then a prompt, save the unsaved data table in its current CSV Dialect, is displayed
