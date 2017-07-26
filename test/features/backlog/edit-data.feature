@@ -4,6 +4,7 @@ Feature: Edit data
   I want to quickly add, modify or delete data, rows and columns in the data table.
 
 # Do I add all the keyboard shortcuts as scenarios as well? https://stephen-gates.github.io/csv-lingo/topic/all-topics.html#shortcuts-editor
+
   Scenario: Enter value into Table
     Given I have opened Data Curator
     And the cursor is in a table cell

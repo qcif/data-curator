@@ -1,13 +1,4 @@
 Feature: Save as
-  In order to save data in a format suited to the data consumers
-  As a Data Packager
-  I want to save the data into a common or custom CSV dialect.
-
-    Then save the data in the active data tab in the CSV dialect set in the Table Properties or if this is not set, the CSV dialect set in Preferences
-    And set the file extension to '.tsv' if the 'delimiter' property is set to a tab character, otherwise set the file extension to ''.csv'
-
-
-Feature: Save as
   In order to save any data changes under a different name, location or format
   As an Data Packager
   I want to save the data changes in the active data tab using the users preferences and the appropriate CSV dialect settings.
