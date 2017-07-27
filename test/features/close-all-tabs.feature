@@ -11,30 +11,32 @@ Feature: Close all tabs
 
   By default the CSV dialect will be a comma separated file with defaults settings as documented in http://specs.frictionlessdata.io/csv-dialect/#specification
 
-  Scenario: Use the menu to close all tabs, all with saved data
+  The CSV dialect selected may change the file extension e.g. tab separated values files use .tsv
+
+  Scenario: Use the menu to close all tabs, all work saved
     Given I have opened Data Curator
     And I open 1 data tab
     And I save the data in the tab
-    When I select Close all Tabs from the menu
+    When I select "Close all Tabs" from the menu
     Then all tabs close
 
-  Scenario: Use a keyboard shortcut to close all tabs, all with saved data
+  Scenario: Use a keyboard shortcut to close all tabs, all work saved
     Given I have opened Data Curator
     And I open more than 1 data tab
     And I save all the data in the tab
-    When I select Close all Tabs from the menu
+    When I use the "Close all Tabs" shortcut
     Then all tabs close
 
-  Scenario: Use the menu to close all tabs, some with unsaved data
+  Scenario: Use the menu to close all tabs, some work unsaved
     Given I have opened Data Curator
     And I open 1 data tab
     And I do not save the data in the tab
-    When I select Close all Tabs from the menu
+    When I select "Close all Tabs" from the menu
     Then a prompt, save each unsaved data table in its current CSV Dialect, is displayed
 
-  Scenario: Use a keyboard shortcut to close all tabs, some with unsaved data
+  Scenario: Use a keyboard shortcut to close all tabs, some work unsaved
     Given I have opened Data Curator
     And I open more than 1 data tab
     And I do not save the data in the tab
-    When I select Close all Tabs from the menu
+    When I use the "Close all Tabs" shortcut
     Then a prompt, save each unsaved data table in its current CSV Dialect, is displayed

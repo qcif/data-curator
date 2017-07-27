@@ -10,20 +10,12 @@ Feature: Template - Some terse yet descriptive text of what is desired
     Given I have opened Data Curator
     And some other precondition
     When some action by the actor (i.e. a event happens)
-    When using macOS, the Command W shortcut is pressed
-    When using Windows, ...
-    When using Linux, ...
-    When the Close icon in the data tab is selected
+    When I select "Previous Tab" from the menu  
+    When I use the Previous Tab keyboard shortcut
     And yet another action
     Then some testable outcome is achieved (i.e check the outcome)
     And something else we can check happens too
 
-    Scenario: I use the menu to open an existing semicolon separated value file
-      Given I have opened Data Curator
-      When I select Open, Semicolon Separated from the menu
-      Then a prompt, requesting the file name and location is shown
-      But only files ending with a '.csv' or '.txt' can be selected
-      Then the selected file is opened in a new data tab to the right of any other open data tabs
 
 
 # Write in perfect present tense - http://www.ef-australia.com.au/english-resources/english-grammar/present-perfect/

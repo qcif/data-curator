@@ -9,7 +9,7 @@ Feature:  Show previous tab
     Given I have opened Data Curator
     And I have opened more than one tab
     And I have not selected the left-most tab
-    When the Previous Tab menu item is selected
+    When I select "Previous Tab" from the menu
     Then deactive the current tab
     And activate the tab to the left
 
@@ -17,6 +17,6 @@ Feature:  Show previous tab
     Given I have opened Data Curator
     And I have opened more than one tab
     And I have not selected the left-most tab
-    When the Previous Tab keyboard shortcut is selected
+    When I use the Previous Tab keyboard shortcut 
     Then deactive the current tab
     And activate the tab to the left

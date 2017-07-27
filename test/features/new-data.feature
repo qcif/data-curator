@@ -5,7 +5,7 @@ Feature: New data
 
   Scenario: Use the menu to open a new data tab
     Given I have opened Data Curator
-    When the New menu item is selected
+    When I select "New" from the menu
     Then open a new data tab to the right of any other open data tabs
     And display a empty table with 3 columns and 2 rows
     And place the cursor in first column A, row 1

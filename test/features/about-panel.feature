@@ -7,9 +7,9 @@ Feature: About panel
   As a Maintainer of Data Curator
   I want to know the version of the application being used
 
-  Scenario: Use the menu to show Contributor and Application information
+  Scenario: Use the menu to show the About panel
     Given I have opened Data Curator
-    When I select the About menu item 
+    When I select "About" from the menu
     Then the Contributor names
     And Major Contributor logos
     And attribution statements
@@ -18,13 +18,13 @@ Feature: About panel
     And the Application name
     And the Application version, are shown
 
-  Scenario: Click outside the About panel to hide the panel
+  Scenario: Click outside the About panel to hide the About panel
     Given I have opened Data Curator
     And I have displayed the About panel
     When I click the mouse outside the About panel
     Then the About panel closes
 
-  Scenario: Click on the About panel close button to the panel
+  Scenario: Click the About panel close button to hide the About panel
     Given I have opened Data Curator
     And I have displayed the About panel
     When I click the Close button on the About panel

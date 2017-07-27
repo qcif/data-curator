@@ -17,5 +17,5 @@ Feature: Guess column properties
   Scenario: Use the menu to Guess column properties
     Given I have opened Data Curator
     And I have opened 1 data tab
-    When I select Guess Column Properties from the menu
+    When I select "Guess Column Properties" from the menu
     Then infer the column properties from the data

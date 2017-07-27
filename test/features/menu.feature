@@ -9,13 +9,13 @@ Feature: Initiate feature using menu
 
   Scenario: About menu item
     Given I have opened Data Curator
-    When I select Data Curator from the menu
-    And I select About from the sub-menu
+    When I select "Data Curator" from the menu
+    And I select "About" from the sub-menu
     Then the About panel is shown
 
   Scenario: File, Open, Comma Separated menu item
     Given I have opened Data Curator
-    When I select File from the menu
-    And I select Open from the sub-menu
-    And I select Comma Separated from the sub-sub-menu
+    When I select "File" from the menu
+    And I select "Open" from the sub-menu
+    And I select "Comma Separated" from the sub-sub-menu
     Then the Open, Comma Separated File prompt is shown

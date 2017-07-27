@@ -10,9 +10,9 @@ Feature: Open a tab separated value file
   Unresolved:
   Is the a standard TSV format or should I read the CSV Dialect settings in Preferences?
 
-  Scenario: I use the menu to open an existing tab separated value file
+  Scenario: Use the menu to open an existing tab separated value file
     Given I have opened Data Curator
-    When I select Open, Tab Separated from the menu
+    When I select "Open", "Tab Separated" from the menu
     Then a prompt, requesting the file name and location is shown
-    But only files ending with a '.tsv' or '.txt' can be selected
+    But only files ending with a ".tsv" or ".txt" can be selected
     Then the selected file is opened in a new data tab to the right of any other open data tabs

@@ -9,16 +9,18 @@ Feature: Save data
 
   By default the CSV dialect will be a comma separated file with defaults settings as documented in http://specs.frictionlessdata.io/csv-dialect/#specification
 
-  Scenario: I use the menu to save the data
+  The CSV dialect selected may change the file extension e.g. tab separated values files use .tsv
+
+  Scenario: Use the menu to save the data
     Given I have opened Data Curator
     And I have opened 1 data tab
     And I have changed the data in the active tab
-    When I select Save from the menu
+    When I select "Save" from the menu
     Then save the data in the active tab using the CSV dialect settings
 
-  Scenario: I use a keyboard shortcut to save the data
+  Scenario: Use a keyboard shortcut to save the data
     Given I have opened Data Curator
     And I have opened 1 data tab
     And I have changed the data in the active tab
-    When I select Save from the menu
+    When I use the Save keyboard shortcut
     Then save the data in the active tab using the CSV dialect settings

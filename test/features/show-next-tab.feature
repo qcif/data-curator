@@ -9,7 +9,7 @@ Feature:  Show next tab
     Given I have opened Data Curator
     And I have opened more than one tab
     And I have not selected the right-most tab
-    When the Next Tab menu item is selected
+    When I select "Next Tab" from the menu
     Then deactive the current tab
     And activate the tab to the right
 
@@ -17,6 +17,6 @@ Feature:  Show next tab
     Given I have opened Data Curator
     And I have opened more than one tab
     And I have not selected the right-most tab
-    When the Next Tab a keyboard shortcut is selected
+    When I use the Next Tab keyboard shortcut
     Then deactive the current tab
     And activate the tab to the right
