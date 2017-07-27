@@ -1,4 +1,4 @@
-@backlog
+@backlog @sprint-2
 
 Feature: Open a Data Package
   In order to start packaging existing data
