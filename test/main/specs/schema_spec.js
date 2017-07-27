@@ -4,7 +4,7 @@ var expect = require('chai').expect
 var should = require('chai').should()
 var sinon = require('sinon')
 var Fs = require('fs')
-var Dialog = require('electron').dialog
+const {Dialog} = require('electron')
 
 var schema = require('../../../src/main/schema')
 
@@ -20,6 +20,7 @@ describe('templateFromSchema', function() {
     let fileName = path.resolve('test/fixtures/schema.json')
     Fs.readFile(fileName, 'utf-8', function (err, data) {
       if (err) {
+        console.log('Error occurred when reading file')
         console.log(err.stack)
       }
       let template = schema._private.templateFromSchema(data).split('\r\n')
