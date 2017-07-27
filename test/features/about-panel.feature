@@ -9,7 +9,7 @@ Feature: About panel
 
   Scenario: Use the menu to show Contributor and Application information
     Given I have opened Data Curator
-    When the About menu item is selected
+    When I select the About menu item 
     Then the Contributor names
     And Major Contributor logos
     And attribution statements
