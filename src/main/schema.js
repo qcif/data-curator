@@ -1,4 +1,4 @@
-var Dialog = require('electron').dialog
+const {Dialog} = require('electron')
 
 function generateTemplate() {
   Dialog.showOpenDialog({

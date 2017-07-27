@@ -29,7 +29,7 @@ global.validate = require('./validate')
 global.help = require('./help')
 
 var template = require('./menu').menu
-var mainWindow = null
+// var mainWindow = null
 function createWindow() {
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
