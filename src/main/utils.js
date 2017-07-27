@@ -14,7 +14,7 @@ function createWindow(data, title, format) {
     ? format
     : file_formats.csv
 
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  let mainWindow = new BrowserWindow({width: 800, height: 600})
   mainWindow.format = format
 
   const winURL = process.env.NODE_ENV === 'development'
