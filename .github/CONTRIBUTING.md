@@ -32,7 +32,7 @@ If you're [able](https://help.github.com/articles/applying-labels-to-issues-and-
 
 ## Contribute Documentation
 
-Help documentation is currently being drafted in a [separate repository](https://github.com/Stephen-Gates/csv-lingo). Feel free to contribute there.
+Help documentation is currently being drafted in a [separate repository](https://github.com/ODIQueensland/data-curator-help). Feel free to contribute there.
 
 ## Contribute Code
 Data Curator is open source, and we a grateful for [all code contributions](https://github.com/ODIQueensland/data-curator/graphs/contributors). By participating in this project, you agree to abide by our [Code of Conduct](https://github.com/ODIQueensland/data-curator/blob/master/.github/CODE_OF_CONDUCT.md).
