@@ -11,16 +11,15 @@ Feature: Save data
 
   The CSV dialect selected may change the file extension e.g. tab separated values files use .tsv
 
-  Scenario: Use the menu to save the data
+  Background:
     Given I have opened Data Curator
     And I have opened 1 data tab
     And I have changed the data in the active tab
+
+  Scenario: Use the menu to save the data
     When I select "Save" from the menu
     Then save the data in the active tab using the CSV dialect settings
 
   Scenario: Use a keyboard shortcut to save the data
-    Given I have opened Data Curator
-    And I have opened 1 data tab
-    And I have changed the data in the active tab
     When I use the Save keyboard shortcut
     Then save the data in the active tab using the CSV dialect settings

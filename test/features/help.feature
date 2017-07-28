@@ -7,12 +7,13 @@ Feature: Show help
 
   Help will be launched in a separate browser window that will require access to the internet. (In the future help may be embedded within Data Curator so no Internet connect is required.)
 
-  Scenario: Use the menu to open help
+  Background:
     Given I have opened Data Curator
+
+  Scenario: Use the menu to open help
     When I select "Help" from the menu
     Then Open the Help web-site in a separate browser window
 
   Scenario: Use a keyboard shortcut open help
-    Given I have opened Data Curator
     When I use the Help keyboard shortcut
     Then Open the Help web-site in a separate browser window
