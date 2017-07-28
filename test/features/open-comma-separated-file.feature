@@ -1,7 +1,7 @@
 Feature: Open a comma separated value file
-  In order to start packaging existing data
   As a Data Packager
-  I want to open a comma separated value (CSV) file.
+  I want to open a comma separated value (CSV) file
+  So that I can describe, validate and package the data
 
   The most common form of separated value files is a comma separated value (CSV) file. Sometimes CSV data is stored in a text file (.txt).
 

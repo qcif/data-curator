@@ -1,11 +1,11 @@
 Feature: About panel
-  In order to acknowledge contributors to Data Curator, which is both a legal requirement and a polite thing to do
-  As the Creator of Data Curator, a current or potential Contributor
-  I want to show who has contributed to the application, attribution statements and/or links to websites.
+  As a Maintainer of the application
+  I want to know the version of the application
+  So that I can support users that experience issues using the application
 
-  In order to assist with debugging and support
-  As a Maintainer of Data Curator
-  I want to know the version of the application being used
+  As a Sponsor, Contributor or Maintainer of the application
+  I want to see acknowledgement of my contribution
+  So that I can confirm that licencing requirements or other obligations have been met
 
   Scenario: Use the menu to show the About panel
     Given I have opened Data Curator

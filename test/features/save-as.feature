@@ -1,7 +1,7 @@
 Feature: Save as
-  In order to save any data changes under a different name, location or format
   As an Data Packager
   I want to save the data changes in the active data tab using the users preferences and the appropriate CSV dialect settings.
+  In order to save any data changes to a different name, location or CSV dialect.
 
   If available, use the CSV dialect settings in associated Table Properties.
 

@@ -1,14 +1,14 @@
-Feature: Open a tab separated value file
-  In order to start packaging existing data
+Feature: Open a semi-colon separated value file
   As a Data Packager
-  I want to open a tab separated value (TSV) file.
+  I want to open a semi-colon separated value file
+  So that I can describe, validate and package the data
 
-  Tab separated value file formats can be described using a CSV Dialect that describes the 'delimiter' used and other options. See: http://specs.frictionlessdata.io/csv-dialect/#specification
+  Semi-colon separated value file formats can be described using a CSV Dialect that describes the 'delimiter' used and other options. See: http://specs.frictionlessdata.io/csv-dialect/#specification
 
   Use the CSV dialect specified in Preferences to determine how to open the file and seperate values into the right columns.
 
   Unresolved:
-  Is the a standard TSV format or should I read the CSV Dialect settings in Preferences?
+  Is the a standard semi-colon format e.g. 'delimiter' = ';' or should I read the CSV Dialect settings in Preferences for other settings?
 
   Scenario: Use the menu to open an existing tab separated value file
     Given I have opened Data Curator

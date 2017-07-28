@@ -1,7 +1,7 @@
 Feature: Initiate feature using menu
-  In order to initiate a command
-  As a Data Curator User
-  I want to select a command from a menu when I don't know the keyboard shortcut or it doesn't appear on the toolbar
+  As a Data Packager or Data Consumer
+  I want to select a command from a menu
+  So that I can initiate a command that I don't the keyboard shortcut for and does not appear in the toolbar 
 
   Some menu items are required by the operating system e.g. Services on macOS
 

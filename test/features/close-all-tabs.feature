@@ -1,7 +1,7 @@
 Feature: Close all tabs
-  In order to finish work quickly
   As a Data Packager
-  I want to close all data tabs and prompt if there are unsaved changes.
+  I want to close all data tabs and prompt if there are unsaved changes
+  So that I can finish my work quickly
 
   If the changes are to be saved, they will use the appropriate CSV dialect settings.
 

@@ -1,7 +1,7 @@
 Feature: Guess column properties
-  In order to complete the properties for each column quickly
   As a Data Packager
-  I want to quickly derive as many column properties as possible from the data and the CSV dialect.
+  I want to derive as many column properties as possible from the data and the CSV dialect
+  So that I can quickly set the column properties
 
   If the 'header' is 'true' in the CSV Dialect, then for each column, set the 'name' property to the value in the first row of the column.
   See:

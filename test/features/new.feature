@@ -1,7 +1,7 @@
 Feature: New data
-  In order to create new data
-  As a Data Creator
+  As a Data Packager
   I want to open a blank data tab so I can start to enter data values
+  So that I can create new data
 
   Scenario: Use the menu to open a new data tab
     Given I have opened Data Curator

@@ -1,7 +1,7 @@
 Feature: Save all data
-  In order to save all data changes quickly
   As a Data Packager
-  I want to unsaved changes across all open data tabs
+  I want to save all unsaved changes in every data tab
+  So that I can quickly save my progress
 
   If available, use the CSV dialect settings in associated Table Properties.
 

@@ -1,7 +1,7 @@
 Feature: Close tab
-  In order to finish working with the data
   As a Data Packager
-  I want to close the active data tab and prompt if there are unsaved changes.
+  I want to close the active data tab and prompt if there are unsaved changes
+  So that I can safely finish working with that data
 
   If the changes are to be saved, they will use the appropriate CSV dialect settings.
 
