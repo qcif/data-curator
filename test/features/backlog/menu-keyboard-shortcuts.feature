@@ -7,39 +7,53 @@ Feature: Initiate feature using menu keyboard shortcut
 
   Some menu items have different names on different operating systems e.g. Preferences on macOS is called Settings on Windows.
 
-  Scenario: Use Keyboard Shortcut
+  Scenario: Use Keyboard Shortcut on windows
     Given I have opened Data Curator
-    When I use a <menu shortcut>
-    Then the <command> is initiated
+      And I am using the windows operating system
+     When I use a "<windows shortcut>"
+     Then the "<command>" is initiated
+
+  Scenario: Use Keyboard Shortcut on linux
+    Given I have opened Data Curator
+      And I am using the windows operating system
+     When I use a "<linux shortcut>"
+     Then the "<command>" is initiated
+
+  Scenario: Use Keyboard Shortcut on macOS
+    Given I have opened Data Curator
+      And I am using the macOS operating system
+     When I use a "<macOS shortcut>"
+     Then the "<command>" is initiated
 
   Examples: menu shortcut
-    | command               | windows | linux | macOS                          |
-    | Preferences           |         |       | command + ,                    |
-    | Settings              |         |       | command + ,                    |
-    | Quit                  |         |       | command + Q                    |
-    | Hide application name |         |       | command + H                    |
-    | Hide Others           |         |       | option + command + H           |
-    | New                   |         |       | command + N                    |
-    | Open Comma Separated  |         |       | command + O                    |
-    | Open Data Package     |         |       | shift + command + P            |
-    | Save                  |         |       | command + S                    |
-    | Save All              |         |       | option + command + S           |
-    | Close Tab             |         |       | command + W                    |
-    | Close Window          |         |       | shift + command + ,            |
-    | Print                 |         |       | command + P                    |
-    | Undo                  |         |       | command + Z                    |
-    | Redo                  |         |       | command + Y                    |
-    | Cut                   |         |       | command + X                    |
-    | Copy                  |         |       | command + C                    |
-    | Paste                 |         |       | command + V                    |
-    | Select All            |         |       | command + A                    |
-    | Insert Row Above      |         |       | command + I                    |
-    | Insert Row Below      |         |       | command + J                    |
-    | Insert Column Before  |         |       | command + K                    |
-    | Insert Column After   |         |       | command + L                    |
-    | Start Dictation       |         |       | fn fn                          |
-    | Emoji and Symbols     |         |       | shift + command + space        |
-    | Minimise              |         |       | command + M                    |
-    | Show Next Tab         |         |       | command + K                    |
-    | Show Previous Tab     |         |       | command + L                    |
-    | Keyboard Shortcuts    |         |       | command + /                    |
+    | command               | windows shortcut      | linux shortcut        | macOS shortcut          |
+    | Preferences           |                       |                       | command + ,             |
+    | Settings              |                       |                       |                         |
+    | Quit                  | alt + F4              |                       | command + Q             |
+    | Hide application name |                       |                       | command + H             |
+    | Hide Others           |                       |                       | command + option + H    |
+    | New                   | control + N           |                       | command + N             |
+    | Open Comma Separated  | control + O           |                       | command + O             |
+    | Open Data Package     | control + shift + P   |                       | command + shift + P     |
+    | Save                  | control + S           |                       | command + S             |
+    | Save All              |                       |                       | command + option + S    |
+    | Close Tab             |                       |                       | command + W             |
+    | Close Window          |                       |                       | command + shift + ,     |
+    | Print                 | control + P           | control + P           | command + P             |
+    | Undo                  | control + Z           | control + Z           | command + Z             |
+    | Redo                  | control + Y           | control + Y           | command + Y             |
+    | Cut                   | control + X           | control + X           | command + X             |
+    | Copy                  | control + C           | control + C           | command + C             |
+    | Paste                 | control + V           | control + V           | command + V             |
+    | Select All            | control + A           | control + A           | command + A             |
+    | Insert Row Above      | control + I           | control + I           | command + I             |
+    | Insert Row Below      | control + J           | control + J           | command + J             |
+    | Insert Column Before  | control + K           | control + K           | command + K             |
+    | Insert Column After   | control + L           | control + L           | command + L             |
+    | Start Dictation       |                       |                       | fn fn                   |
+    | Emoji and Symbols     |                       |                       | command + shift + space |
+    | Minimise              |                       |                       | command + M             |
+    | Show Next Tab         | control + tab         | control + tab         | command + tab           |
+    | Show Previous Tab     | control + shift + tab | control + shift + tab | command + shift + tab   |
+    | Help                  | F1                    |                       |                         |
+    | Keyboard Shortcuts    | control + /           | control + /           | command + /             |
