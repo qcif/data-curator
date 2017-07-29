@@ -13,27 +13,33 @@ Feature: Initiate feature using menu keyboard shortcut
     Then the <command> is initiated
 
   Examples: menu shortcut
-  | command              | windows | linux | macOS                          |
-  | Preferences          |         |       | command + ,                    |
-  | Settings             |         |       | command + ,                    |
-  | Quit                 |         |       | command + Q                    |
-  | New                  |         |       | command + N                    |
-  | Open Comma Separated |         |       | command + O                    |
-  | Open Data Package    |         |       | shift + command + P            |
-  | Save                 |         |       | command + S                    |
-  | Save All             |         |       | control + option + command + S |
-  | Close Tab            |         |       | command + W                    |
-  | Close Window         |         |       | shift + command + ,            |
-  | Print                |         |       | command + P                    |
-  | Undo                 |         |       | command + Z                    |
-  | Redo                 |         |       | command + Y                    |
-  | Cut                  |         |       | command + X                    |
-  | Copy                 |         |       | command + C                    |
-  | Paste                |         |       | command + V                    |
-  | Select All           |         |       | command + A                    |
-  | Insert Row Above     |         |       | command + I                    |
-  | Insert Row Below     |         |       | command + J                    |
-  | Insert Column Before |         |       | command + K                    |
-  | Insert Column After  |         |       | command + L                    |
-  | Show Next Tab        |         |       | command + K                    |
-  | Show Previous Tab    |         |       | command + L                    |
+    | command               | windows | linux | macOS                          |
+    | Preferences           |         |       | command + ,                    |
+    | Settings              |         |       | command + ,                    |
+    | Quit                  |         |       | command + Q                    |
+    | Hide application name |         |       | command + H                    |
+    | Hide Others           |         |       | option + command + H           |
+    | New                   |         |       | command + N                    |
+    | Open Comma Separated  |         |       | command + O                    |
+    | Open Data Package     |         |       | shift + command + P            |
+    | Save                  |         |       | command + S                    |
+    | Save All              |         |       | option + command + S           |
+    | Close Tab             |         |       | command + W                    |
+    | Close Window          |         |       | shift + command + ,            |
+    | Print                 |         |       | command + P                    |
+    | Undo                  |         |       | command + Z                    |
+    | Redo                  |         |       | command + Y                    |
+    | Cut                   |         |       | command + X                    |
+    | Copy                  |         |       | command + C                    |
+    | Paste                 |         |       | command + V                    |
+    | Select All            |         |       | command + A                    |
+    | Insert Row Above      |         |       | command + I                    |
+    | Insert Row Below      |         |       | command + J                    |
+    | Insert Column Before  |         |       | command + K                    |
+    | Insert Column After   |         |       | command + L                    |
+    | Start Dictation       |         |       | fn fn                          |
+    | Emoji and Symbols     |         |       | shift + command + space        |
+    | Minimise              |         |       | command + M                    |
+    | Show Next Tab         |         |       | command + K                    |
+    | Show Previous Tab     |         |       | command + L                    |
+    | Keyboard Shortcuts    |         |       | command + /                    |
