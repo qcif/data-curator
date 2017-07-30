@@ -1,7 +1,7 @@
 Feature: Show help
-  In order to get help on how to use Data Curator
-  As a user of Data Curator
+  As a Data Packager or Data Consumer
   I want to display help information
+  So that I can learn how to use the application
 
   Not all operating systems have a keyboard shortcut for help. Windows has function key 1 (F1) but macOS does not have an equivelent convention.
 
@@ -15,5 +15,5 @@ Feature: Show help
     Then Open the Help web-site in a separate browser window
 
   Scenario: Use a keyboard shortcut open help
-    When I use the Help keyboard shortcut
+    When I use the "Help" keyboard shortcut
     Then Open the Help web-site in a separate browser window
