@@ -22,12 +22,11 @@ Feature: Set column properties
     - 'primaryKeys'
     - 'foreignKeys'
 
-# show / hide in menu    
+# show / hide in menu
 
   Background:
     Given I have opened Data Curator
     And I have opened a data tab
-    And the cursor is in a column
 
   Scenario: Use the menu to access Column Properties for the current column
     When I select "Column Properties" from the menu
