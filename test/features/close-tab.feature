@@ -17,21 +17,21 @@ Feature: Close tab
     Given I have opened Data Curator
     And I have opened 1 data tab
     And I have saved the data in the active tab
-    When I select Close Tab from the menu
+    When I select "Close Tab" from the menu
     Then close the active tab
 
   Scenario: Use a keyboard shortcut to close the active tab and work in the tab is saved
     Given I have opened Data Curator
     And I have opened 1 data tab
     And I have saved the data in the active tab
-    When I use the Close Tab shortcut
+    When I use the "Close Tab" shortcut
     Then close the active tab
 
   Scenario: Click the close button on a tab to close the tab and work in the tab is saved
     Given I have opened Data Curator
     And I have opened 1 data tab
     And I have saved the data in the active tab
-    When I click the close tab button
+    When I click the "Close Tab" button
     Then close the active tab
 
   Scenario: Use the menu to close the active tab but work in the tab is unsaved
@@ -45,12 +45,12 @@ Feature: Close tab
     Given I have opened Data Curator
     And I have opened 1 data tab
     And I haven't saved the data in the active tab
-    When I use the Close Tab shortcut
+    When I use the "Close Tab" shortcut
     Then a prompt, save the unsaved data table in its current CSV Dialect, is displayed
 
   Scenario: Click the close button on a tab to close the tab but work in the tab is unsaved
     Given I have opened Data Curator
     And I have opened 1 data tab
     And I haven't saved the data in the active tab
-    When I click the close tab button
+    When I click the "Close Tab" button
     Then a prompt, save the unsaved data table in its current CSV Dialect, is displayed

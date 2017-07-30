@@ -1,3 +1,5 @@
+@help-wanted @backlog @sprint-1
+
 Feature: Initiate feature using menu keyboard shortcut
   As a Data Packager or Data Consumer
   I want to select a command using a keyboard shortcut

@@ -27,7 +27,7 @@ Feature: Quit Application
     Given I have opened Data Curator
     And I open 1 or more data tabs
     And I save all the data in every tab
-    When I use the Close keyboard shortcut
+    When I use the "Close Application" keyboard shortcut
     Then all tabs close
     And the application closes
 
@@ -43,6 +43,6 @@ Feature: Quit Application
     Given I have opened Data Curator
     And I open 1 or more data tabs
     And I do not save the data in every tab
-    When I use the Close Application keyboard shortcut
+    When I use the "Close Application" keyboard shortcut
     Then a prompt for each unsaved data tab is displayed to save unsaved data in its current CSV Dialect
     And the application closed

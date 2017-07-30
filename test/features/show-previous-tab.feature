@@ -16,6 +16,6 @@ Feature:  Show previous tab
     And activate the tab to the left
 
   Scenario: Use a keyboard shortcut to show the previous tab
-    When I use the Previous Tab keyboard shortcut
+    When I use the "Previous Tab" keyboard shortcut
     Then deactive the current tab
     And activate the tab to the left

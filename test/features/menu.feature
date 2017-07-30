@@ -1,3 +1,5 @@
+@help-wanted
+
 Feature: Initiate feature using menu
   As a Data Packager or Data Consumer
   I want to select a command from a menu

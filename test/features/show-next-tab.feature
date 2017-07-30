@@ -16,6 +16,6 @@ Feature:  Show next tab
     And activate the tab to the right
 
   Scenario: Use a keyboard shortcut to show the next tab
-    When I use the Next Tab keyboard shortcut
+    When I use the "Next Tab" keyboard shortcut
     Then deactive the current tab
     And activate the tab to the right

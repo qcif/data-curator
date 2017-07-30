@@ -18,3 +18,11 @@ Feature: Save as
     Then a prompt, requesting the file name and location is displayed
     And using the response, the data is saved using CSV Dialect preferences
     And adjusting the file extension to match the CSV Dialect.
+
+  Scenario: Use a keyboard shortcut to save the data to a different name or location
+    Given I have opened Data Curator
+    And I have opened 1 data tab
+    When I use the "Save As" keyboard shortcut
+    Then a prompt, requesting the file name and location is displayed
+    And using the response, the data is saved using CSV Dialect preferences
+    And adjusting the file extension to match the CSV Dialect.

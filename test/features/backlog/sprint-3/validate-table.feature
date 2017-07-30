@@ -1,4 +1,4 @@
-@backlog @sprint3
+@backlog @sprint-3
 
 Feature: Validate Table
   In order to start packaging existing data
