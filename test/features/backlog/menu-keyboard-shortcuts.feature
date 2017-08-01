@@ -9,6 +9,9 @@ Feature: Initiate feature using menu keyboard shortcut
 
   Some menu items have different names on different operating systems e.g. Preferences on macOS is called Settings on Windows.
 
+  Unresolved
+  - should export data package be in File or Tools?
+
   Scenario: Use Keyboard Shortcut on windows
     Given I have opened Data Curator
       And I am using the windows operating system
@@ -69,5 +72,6 @@ Feature: Initiate feature using menu keyboard shortcut
       | Minimise              |                       |                       | command + M             |
       | Show Next Tab         | control + tab         | control + tab         | command + tab           |
       | Show Previous Tab     | control + shift + tab | control + shift + tab | command + shift + tab   |
+      | Export Data Package   | control + D           | control + D           | command + D             |
       | Help                  | F1                    |                       |                         |
       | Keyboard Shortcuts    | control + /           | control + /           | command + /             |
