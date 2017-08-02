@@ -91,7 +91,7 @@ This occurs due to macOS quarantining applications where it cannot determine the
 You can use [yarn](https://yarnpkg.com/en/) to install all relevant packages and development dependencies.
 See the installation page at [Yarn installation](https://yarnpkg.com/en/docs/install)
 
-We're considering keeping our dependencies up to date with [Dependabot](https://dependabot.com)
+We're considering keeping our dependencies up to date with [Dependabot](https://dependabot.com).
 
 ### Development: Running the full application locally
 

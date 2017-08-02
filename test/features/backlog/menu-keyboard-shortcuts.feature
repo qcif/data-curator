@@ -12,34 +12,9 @@ Feature: Initiate feature using menu keyboard shortcut
   Unresolved
   - should export data package be in File or Tools?
 
-  Scenario: Use Keyboard Shortcut on windows
-    Given I have opened Data Curator
-      And I am using the windows operating system
-     When I use a <windows shortcut>
-     Then the <command> is initiated
-
-     Examples:
-       | command               | windows shortcut      | linux shortcut        | macOS shortcut          |
-       | Preferences           |                       |                       | command + ,             |
-       | Settings              |                       |                       |                         |
-       | Quit                  | alt + F4              |                       | command + Q             |
-
-  Scenario: Use Keyboard Shortcut on linux
-    Given I have opened Data Curator
-      And I am using the windows operating system
-     When I use a <linux shortcut>
-     Then the <command> is initiated
-
-     Examples:
-       | command               | windows shortcut      | linux shortcut        | macOS shortcut          |
-       | Preferences           |                       |                       | command + ,             |
-       | Settings              |                       |                       |                         |
-       | Quit                  | alt + F4              |                       | command + Q             |
-
-  Scenario: Use Keyboard Shortcut on macOS
-    Given I have opened Data Curator
-      And I am using the macOS operating system
-     When I use a <macOS shortcut>
+  Scenario: Use Keyboard Shortcut
+    Given I have opened Data Curator in an <operating system>
+     When I use a <operating system> <shortcut>
      Then the <command> is initiated
 
     Examples:
