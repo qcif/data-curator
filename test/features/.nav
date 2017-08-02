@@ -1,0 +1,63 @@
+- data-curator:
+  - about.feature
+#  - check-for-update.feature
+#  - preferences.feature
+#  - read-only-mode.feature
+  - quit.feature
+- file:
+  - new.feature
+  - open:
+  - open-comma-separated-file.feature
+#  - open-tab-separated-file.feature
+#  - open-semi-colon-separated-file.feature
+#  - open-custom-csv-dialect.feature
+#  - open-excel-sheet.feature
+#  - open-datapackage.feature
+  - save.feature
+  - save-as.feature
+  - save-all.feature
+  - close-tab.feature
+  - close-all-tabs.feature
+#  - close-window.feature
+- edit:
+  - edit.feature
+#  - undo.feature
+#  - redo.feature
+  - cut.feature
+  - copy.feature
+  - paste.feature
+#  - select-all.feature
+  - insert-row-above.feature
+  - insert-row-below.feature
+  - insert-column-before.feature
+  - insert-column-after.feature
+  - delete-rows.feature
+  - delete-columns.feature
+# - search:
+#    - find-in-table.feature
+#    - replace-in-table.feature
+#    - find-in-column.feature
+#    - replace-in-column.feature
+- tools:
+#  - fix-ragged-rows.feature
+  - guess-column-properties.feature
+#  - guess-enum-values.feature
+#  - set-column-properties.feature
+#  - set-table-properties.feature
+#  - set-provenance-information.feature
+#  - set-datapackage-properties.feature
+#  - validate-table.feature
+#  - validate-column.feature
+#  - export-datapackage.feature
+- window:
+  - show-next-tab.feature
+  - show-previous-tab.feature
+- help:
+  - help.feature
+#  - quick-tour.feature
+#  - edit-keyboard-shortcuts.feature
+#  - support.feature
+- other:
+  - menu.feature
+#  - menu-keyboard-shortcuts.feature
+#  - sort-column.feature
