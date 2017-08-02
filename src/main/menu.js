@@ -83,7 +83,7 @@ exports.menu = [
         label: 'New',
         accelerator: 'CmdOrCtrl+N',
         click: function() {
-          utils.createWindow()
+          utils.createWindowTab()
         }
       }, {
         label: 'New from Schema...',

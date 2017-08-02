@@ -9,7 +9,6 @@
     name: 'data-curator'
   }
 </script>
-
 <style>
   /* CSS */
 </style>

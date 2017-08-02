@@ -1,7 +1,6 @@
 /**
  * Created by stephenfortune on 13/08/15.
  */
-'require strict'
 // do not know how to handle exports when creating an object
 
 var headerToVocab = function(headerArray) {
