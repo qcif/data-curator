@@ -66,6 +66,8 @@ We acknowledge the great work of others. We are:
 )
 - adopting [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/#bp-summary)
 
+Please note that we develop against the 'develop' branch, while master will reflect tagged releases.
+
 ## Download and Install Data Curator
 
 - Choose a platform from the [Releases page](https://github.com/ODIQueensland/data-curator/releases/latest).
