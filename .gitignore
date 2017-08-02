@@ -10,3 +10,5 @@ thumbs.db
 !.gitkeep
 yarn-error.log
 .tmp/
+.idea/
+*.iml

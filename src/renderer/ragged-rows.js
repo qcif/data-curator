@@ -28,7 +28,7 @@ var amendRows = function(hot, worksheet, autoConfirm) {
       }
     }
   }
-  updateTable(worksheet)
+  updateTable(hot, worksheet)
 }
 
 var reportFix = function(sheet, y, x) {
@@ -56,7 +56,7 @@ function fixCell(csv_array, y, x) {
   return logMsg
 }
 
-var updateTable = function(csv_array) {
+var updateTable = function(hot, csv_array) {
   hot.updateSettings({data: csv_array})
 }
 

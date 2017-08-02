@@ -27,6 +27,7 @@ global.fileActions = require('./file')
 global.tools = require('./tools')
 global.validate = require('./validate')
 global.help = require('./help')
+global.sharedObject = {}
 
 var template = require('./menu').menu
 // var mainWindow = null
@@ -38,7 +39,7 @@ function createWindow() {
   if (filename) {
     fileActions.readFile([filename])
   } else {
-    global.utils.createWindow()
+    global.utils.createWindowTab()
   }
 }
 
