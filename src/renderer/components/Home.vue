@@ -1,7 +1,6 @@
 <template>
 <div id="container" class="panel-group">
   <div id="header-panel" class="panel panel-heading">
-    Inside header panel
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -15,61 +14,70 @@
       </div>
     </nav>
   </div>
-  <div id="main-panel" class="panel panel-default">
-    <div id="sidenav" class="sidenav">
-      <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#">Table Properties</a>
-            <ul class="navbar-right">
-              <li><a href="#"><span class="closebtn btn-danger fa fa-times" aria-hidden="true" @click="closeNav()"></span></a></li>
-            </ul>
-          </div>
-          <ul class="nav navbar-nav">Panel Content
-            <li class="active"><a href="#">Name:</a></li>
-            <li><a href="#">Title:</a></li>
-            <li><a href="#">Description:</a></li>
-            <li><a href="#">License:</a></li>
-          </ul>
-        </div>
-      </nav>
-    </div>
-    <div id="main-top-panel" class="panel-heading">Top Main Panel</div>
-    <div id="middle-panel" class="panel-body">
-      Inside middle panel
-      <div id='csvEditor' v-model='tabCount'>
-        <ul class="nav nav-tabs">
+  <div id="body-panel">
+    <!-- <div  class="sidenav"> -->
+    <nav id="sidenav" class="sidenav navbar navbar-default">
+      <div class="container-fluid">
+        <ul class="nav navbar-right closebtn">
           <li>
-            <ul class="nav nav-tabs" id='csvTab'>
-              <li v-for="(count, index) in tabCount" :key="count" :class="{ active: tab === count}" v-on:click="tab = count">
-                <a>Tab {{count}}</a>
-              </li>
-            </ul>
-          </li>
-          <li class="tab-add" v-on:click="addTab">
-            <a>&nbsp;
-              <button type="button" class="btn btn-sm">+</button>
+            <a href="#">
+              <span class="btn-danger fa fa-times" @click="closeNav()" />
             </a>
           </li>
         </ul>
-        <div class="tab-content" id='csvContent'>
-          <div class="tab-pane" v-for="(count, index) in tabCount" :key="count " :class="{ active: tab === count}">
-            <div class="editor">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Panel Content</a>
+          <!-- Heading -->
+        </div>
+        <form class="navbar-form">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" />
+            <label for="title">Title:</label>
+            <input type="text" class="form-control" id="title" />
+            <label for="description">Description:</label>
+            <input type="text" class="form-control" id="description" />
+            <label for="licence">License:</label>
+            <input type="text" class="form-control" id="licence" />
+          </div>
+        </form>
+      </div>
+    </nav>
+    <!-- </div> -->
+    <div id="main-panel" class="panel panel-default">
+      <div id="main-top-panel" class="panel-heading"></div>
+      <div id="main-middle-panel" class="panel-body">
+        <div id='csvEditor' v-model='tabCount'>
+          <ul class="nav nav-tabs">
+            <li>
+              <ul class="nav nav-tabs" id='csvTab'>
+                <li v-for="(count, index) in tabCount" :key="count" :class="{ active: tab === count}" v-on:click="tab = count">
+                  <a>Tab {{count}}</a>
+                </li>
+              </ul>
+            </li>
+            <li class="tab-add" v-on:click="addTab">
+              <a>&nbsp;<button type="button" class="btn btn-sm">+</button></a>
+            </li>
+          </ul>
+          <div class="tab-content" id='csvContent'>
+            <div class="tab-pane" v-for="(count, index) in tabCount" :key="count " :class="{ active: tab === count}">
+              <div class="editor">
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div id="main-bottom-panel" class="panel-footer">
-      Inside main-bottom panel
-      <button type="button" class="close">
-          <!--<span aria-hidden="true">&times;</span>-->
+      <div id="main-bottom-panel" class="panel-footer">
+        <button type="button" class="close">
+          <span aria-hidden="true">&times;</span>
         </button>
-      <div id="message-panel" class="panel panel-default">
+        <div id="message-panel" class="panel panel-default">
+        </div>
       </div>
     </div>
   </div>
-  <div id="panel panel-footer">
+  <div id="footer-panel" class="panel panel-footer">
   </div>
 </div>
 </template>
@@ -79,6 +87,7 @@ import {
   getActiveTabId
 } from '../tabs.js'
 import * as Sortable from 'sortablejs/Sortable.js'
+
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
 const {
   shell
@@ -122,15 +131,16 @@ export default {
       console.log('tab count is: ' + this.tabCount)
     },
     /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
-    closeNav: function(jQElement) {
+    closeNav: function() {
       $('#sidenav').css('width', '0')
       $('#main-panel').css('margin-right', '0')
+      $('#main-panel').css('width', '100%')
       $('.closebtn').hide()
     },
     /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
     openNav: function() {
-      $('#sidenav').css('width', '250px')
-      $('#main-panel').css('margin-right', '250px')
+      $('#sidenav').css('width', '30%')
+      $('#main-panel').css('width', '70%')
       // enable flyout panel to begin display before showing close button
       $('.closebtn').delay(200).show(0)
     }
@@ -153,7 +163,7 @@ export default {
       Sortable.create(csvTab, {
         animation: 150
       })
-      $('.closebtn').hide()
+      this.closeNav.hide()
     })
   }
 }

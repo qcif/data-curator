@@ -1,7 +1,9 @@
 /* apply a natural box layout model to all elements, but allowing components to change */
+
 html {
   box-sizing: border-box;
 }
+
 *, *:before, *:after {
   box-sizing: inherit;
 }
@@ -21,53 +23,17 @@ body, html {
 
 #container {
   /*display: flex;
-  flex-direction: column;
-  align-items: stretch;*/
+    flex-direction: column;
+    align-items: stretch;*/
   height: 100%;
-}
-
-#header-panel {
-  /*height: 0;*/
-  overflow-x: auto;
-  z-index:5;
-}
-
-#main-panel {
-  /*display: flex !important;
-  flex-direction: column;*/
-  /*align-items: stretch;
-  flex-grow: 1;*/
-  margin-right: 0;
-  position: relative !important;
-}
-
-#main-top-panel {
-    /*width: 0;*/
-    /*height: 10px;*/
-    overflow: auto;
-}
-
-#middle-panel {
-  /*flex-grow: 1;*/
-  overflow: auto;
-  /*ensure other panels such as fly-out can be on top*/
-  z-index:10;
-}
-
-#main-bottom-panel {
-  /*flex-grow: 1;*/
-  width: 100%;
-  /*height: 200px;*/
-  overflow-y: scroll;
-  /*border-left: 1px solid #eee;
-  background: #f1f1f1;*/
   margin: 0;
+  padding: 0;
 }
 
 .message {
   font-size: 14px;
   padding: 5px 10px;
-  border-top: 1px solid rgba(0,0,0,.15);
+  border-top: 1px solid rgba(0, 0, 0, .15);
 }
 
 .message p {
@@ -93,18 +59,26 @@ body, html {
 }
 
 .glyphicon.spinning {
-    animation: spin 1s infinite linear;
-    -webkit-animation: spin2 1s infinite linear;
+  animation: spin 1s infinite linear;
+  -webkit-animation: spin2 1s infinite linear;
 }
 
 @keyframes spin {
-    from { transform: scale(1) rotate(0deg);}
-    to { transform: scale(1) rotate(360deg);}
+  from {
+    transform: scale(1) rotate(0deg);
+  }
+  to {
+    transform: scale(1) rotate(360deg);
+  }
 }
 
 @-webkit-keyframes spin2 {
-    from { -webkit-transform: rotate(0deg);}
-    to { -webkit-transform: rotate(360deg);}
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 .validation-load {
@@ -119,19 +93,24 @@ body, html {
   padding: 5px 0;
 }
 
+
 /*.hidden {*/
-  /*display: none;*/
+
+
+/*display: none;*/
+
+
 /*}*/
 
-.nav-tabs > li.tab-heading.active a{
+.nav-tabs>li.tab-heading.active a {
   position: relative;
 }
 
-.nav-tabs > li.tab-heading a {
+.nav-tabs>li.tab-heading a {
   margin: 0;
 }
 
-.tab-add a{
+.tab-add a {
   position: relative;
 }
 
@@ -143,57 +122,133 @@ body, html {
 
 .tab-add a button {
   position: absolute;
-  bottom:0;
+  bottom: 0;
 }
+
+#header-panel {
+  /*height: 0;*/
+  overflow-x: auto;
+}
+
+#body-panel {
+  width: 100% !important;
+  position: relative!important;
+    z-index: 5;
+}
+
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+
 #main-panel {
-    transition: margin-right .5s;
-    padding: 10px;
-    positio 
+  transition: width .3s;
+  padding: 5px;
+  /*position: relative;*/
+  /*margin: 0;*/
+  z-index: 10;
+  /*display: flex !important;
+    flex-direction: column;*/
+  /*align-items: stretch;
+    flex-grow: 1;*/
+  margin-right: 0;
+  width: 100%;
 }
+
+#main-top-panel {
+  /*width: 0;*/
+  /*height: 10px;*/
+  overflow: auto;
+  /*width: 100%;*/
+  z-index: 15;
+}
+
+#main-middle-panel {
+  /*flex-grow: 1;*/
+  overflow: auto;
+  /*ensure other panels such as fly-out can be on top*/
+  z-index: 15;
+}
+
+#main-bottom-panel {
+  /*flex-grow: 1;*/
+  /*width: 100%;*/
+  /*height: 200px;*/
+  overflow-y: scroll;
+  /*border-left: 1px solid #eee;
+    background: #f1f1f1;*/
+  /*margin: 0;*/
+  z-index: 15;
+}
+
 
 /* The side navigation menu */
+
 .sidenav {
-    height: 100%; /* 100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
-    position: absolute; /* Stay in place */
-    z-index: 50; /* Stay on top */
-    top: 0;
-    right: 0;
-    /*background-color: #111; /* Black*/*/
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 1px; /* Place content 60px from the top */
-    transition: 0.4s; /* 0.5 second transition effect to slide in the sidenav */
+  height: 100%;
+  width: 0;
+  position: absolute;
+  z-index: 50;
+  top: 0;
+  right: 0;
+  /*background-color: #111;*/
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 1px;
 }
+
 
 /* The navigation menu links */
-.sidenav li {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    /*font-size: 25px;*/
-    /*color: #818181;*/
-    display: block;
-    transition: 0.3s
-}
+
+/*.sidenav li {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  /*font-size: 25px;*/
+  /*color: #818181;
+  display: block;
+  transition: 0.3s;*/
+/*}*/
+
 
 /* When you mouse over the navigation links, change their color */
-.sidenav li:hover {
-    color: #f1f1f1;
-}
+
+/*.sidenav li:hover, .offcanvas li:focus {
+  color: #f1f1f1;
+}*/
+
 
 /* Position and style the close button (top right corner) */
+
+.sidenav .container-fluid {
+  /*position: relative;*/
+  /*border: 1px solid black;*/
+  /*width: 100%;
+  padding: 0;
+  margin: 0;*/
+}
+
 .sidenav .closebtn {
-    margin-top: 2px;
-    position: absolute;
-    top: 0;
-    right: 5px;
-    /*font-size: 36px;*/
-    margin-left: 50px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  /*font-size: 36px;*/
+  margin: 0;
+  padding: 0;
+  /*margin-top: 1px;*/
+  /*margin-left: 180px;*/
+  z-index: 75;
+}
+
+.sidenav .closebtn a:hover{
+  background-color: inherit!important;
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+
 @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 1px; max-width: 100px;}
-    .sidenav li {font-size: small;}
+  .sidenav {
+    padding-top: 1px;
+    /*max-width: 100px;*/
+  }
+  .sidenav li {
+    font-size: small;
+  }
 }
