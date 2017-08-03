@@ -16,11 +16,11 @@ If you'd like to discuss other options, please [contact us](http://queensland.th
 
 ## Contribute Ideas and Feature Requests
 
-Your idea for a feature addition may already exist on our [ issues backlog](https://github.com/ODIQueensland/data-curator/issues). If the gist of your idea isn't there:
-- [add an issue](https://github.com/ODIQueensland/data-curator/issues) - we'll label it with `f:feature-request`, or
+Your idea for a feature addition may already exist on our [issues backlog](https://github.com/ODIQueensland/data-curator/issues) or [feature backlog](https://github.com/ODIQueensland/data-curator/tree/master/test/features/backlog). If the gist of your idea isn't there:
+- [add an issue](https://github.com/ODIQueensland/data-curator/issues) - we'll label it with `f:feature-request`
 - to discuss your idea privately, [contact us](http://queensland.theodi.org/home/contact-us/)
 
-If a similar idea is in the issues backlog, please join the conversation in that issue.
+If a similar idea is in the backlog, please join the conversation.
 
 ## Contribute Issues
 
@@ -32,7 +32,7 @@ If you're [able](https://help.github.com/articles/applying-labels-to-issues-and-
 
 ## Contribute Documentation
 
-Help documentation is currently being drafted in a [separate repository](https://github.com/Stephen-Gates/csv-lingo). Feel free to contribute there.
+Help documentation is currently being drafted in a [separate repository](https://github.com/ODIQueensland/data-curator-help). Feel free to contribute there.
 
 ## Contribute Code
 Data Curator is open source, and we a grateful for [all code contributions](https://github.com/ODIQueensland/data-curator/graphs/contributors). By participating in this project, you agree to abide by our [Code of Conduct](https://github.com/ODIQueensland/data-curator/blob/master/.github/CODE_OF_CONDUCT.md).

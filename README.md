@@ -42,7 +42,7 @@ The schema enables you to:
 
 Once the data is described and validated, you can share the data and its description by exporting a [Data Package](http://frictionlessdata.io/data-packages/) to:
 
--  [publish](http://okfnlabs.org/blog/2016/07/25/publish-data-packages-to-datahub-ckan.html) on your [open data portal](https://ckan.org)
+- [publish](http://okfnlabs.org/blog/2016/07/25/publish-data-packages-to-datahub-ckan.html) on your [open data portal](https://ckan.org)
 - use as a template for others to make similar data
 
 Open data consumers can use published Data Packages to:
@@ -92,6 +92,8 @@ This occurs due to macOS quarantining applications where it cannot determine the
 
 You can use [yarn](https://yarnpkg.com/en/) to install all relevant packages and development dependencies.
 See the installation page at [Yarn installation](https://yarnpkg.com/en/docs/install)
+
+We're considering keeping our dependencies up to date with [Dependabot](https://dependabot.com).
 
 ### Development: Running the full application locally
 

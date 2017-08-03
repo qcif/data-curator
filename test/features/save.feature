@@ -1,7 +1,7 @@
 Feature: Save data
-  In order to save any changes made to the data
   As an Data Packager
-  I want to save the changes made to the data in the active data tab using the appropriate CSV dialect settings.
+  I want to save the changes made to the data in the active data tab using the appropriate CSV dialect settings
+  So that I can progressively save my work
 
   If available, use the CSV dialect settings in associated Table Properties.
 
@@ -9,16 +9,17 @@ Feature: Save data
 
   By default the CSV dialect will be a comma separated file with defaults settings as documented in http://specs.frictionlessdata.io/csv-dialect/#specification
 
-  Scenario: I use the menu to save the data
+  The CSV dialect selected may change the file extension e.g. tab separated values files use .tsv
+
+  Background:
     Given I have opened Data Curator
     And I have opened 1 data tab
     And I have changed the data in the active tab
-    When I select Save from the menu
+
+  Scenario: Use the menu to save the data
+    When I select "Save" from the menu
     Then save the data in the active tab using the CSV dialect settings
 
-  Scenario: I use a keyboard shortcut to save the data
-    Given I have opened Data Curator
-    And I have opened 1 data tab
-    And I have changed the data in the active tab
-    When I select Save from the menu
+  Scenario: Use a keyboard shortcut to save the data
+    When I use the "Save" keyboard shortcut
     Then save the data in the active tab using the CSV dialect settings
