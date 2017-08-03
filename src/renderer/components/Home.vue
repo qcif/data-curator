@@ -1,23 +1,42 @@
 <template>
-<div id="container" class="">
-  <div id="top-panel">
+<div id="container" class="panel-group">
+  <div id="header-panel" class="panel panel-heading">
+    Inside header panel
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Data-curator</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ active: menu === index}" v-on:click="menu = index">
+            <a href="#" v-on:click="openNav">{{menu}}</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
   </div>
-  <div id="main-panel">
-    <div id="left-panel">
-    </div>
-    <div id="middle-panel">
-      <nav class="navbar navbar-default">
+  <div id="main-panel" class="panel panel-default">
+    <div id="sidenav" class="sidenav">
+      <nav class="navbar navbar-inverse">
         <div class="container-fluid">
           <div class="navbar-header">
-            <a class="navbar-brand" href="#">Data-curator</a>
+            <a class="navbar-brand" href="#">Table Properties</a>
+            <ul class="navbar-right">
+              <li><a href="#"><span class="closebtn btn-danger fa fa-times" aria-hidden="true" @click="closeNav()"></span></a></li>
+            </ul>
           </div>
-          <ul class="nav navbar-nav">
-            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ active: menu === index}" v-on:click="menu = index">
-              <a href="#">{{menu}}</a>
-            </li>
+          <ul class="nav navbar-nav">Panel Content
+            <li class="active"><a href="#">Name:</a></li>
+            <li><a href="#">Title:</a></li>
+            <li><a href="#">Description:</a></li>
+            <li><a href="#">License:</a></li>
           </ul>
         </div>
       </nav>
+    </div>
+    <div id="main-top-panel" class="panel-heading">Top Main Panel</div>
+    <div id="middle-panel" class="panel-body">
+      Inside middle panel
       <div id='csvEditor' v-model='tabCount'>
         <ul class="nav nav-tabs">
           <li>
@@ -40,17 +59,17 @@
           </div>
         </div>
       </div>
-      <!-- <div class="fly">
-        A Basic Panel
-      </div> -->
     </div>
-    <div id="right-panel" class="hidden alert" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+    <div id="main-bottom-panel" class="panel-footer">
+      Inside main-bottom panel
+      <button type="button" class="close">
+          <!--<span aria-hidden="true">&times;</span>-->
         </button>
-      <div id="message-panel">
+      <div id="message-panel" class="panel panel-default">
       </div>
     </div>
+  </div>
+  <div id="panel panel-footer">
   </div>
 </div>
 </template>
@@ -101,6 +120,19 @@ export default {
       // setActiveTabId($('.tab-pane.active .editor').attr('id'))
       console.log('active id is now: ' + $('.tab-pane.active .editor').attr('id'))
       console.log('tab count is: ' + this.tabCount)
+    },
+    /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+    closeNav: function(jQElement) {
+      $('#sidenav').css('width', '0')
+      $('#main-panel').css('margin-right', '0')
+      $('.closebtn').hide()
+    },
+    /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+    openNav: function() {
+      $('#sidenav').css('width', '250px')
+      $('#main-panel').css('margin-right', '250px')
+      // enable flyout panel to begin display before showing close button
+      $('.closebtn').delay(200).show(0)
     }
   },
   watch: {
@@ -121,6 +153,7 @@ export default {
       Sortable.create(csvTab, {
         animation: 150
       })
+      $('.closebtn').hide()
     })
   }
 }

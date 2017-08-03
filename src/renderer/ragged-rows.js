@@ -32,7 +32,7 @@ var amendRows = function(hot, worksheet, autoConfirm) {
 }
 
 var reportFix = function(sheet, y, x) {
-  document.querySelector('#right-panel').classList.remove('hidden')
+  document.querySelector('#main-bottom-panel').classList.remove('hidden')
 
   var messagePanel = document.getElementById('message-panel')
   messagePanel.innerHTML += '<p>' + fixCell(sheet, y, x) + '<p>'
