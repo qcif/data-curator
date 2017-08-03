@@ -4,13 +4,20 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#toolbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
           <a class="navbar-brand" href="#">Data-curator</a>
         </div>
-        <ul class="nav navbar-nav">
-          <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ active: menu === index}" v-on:click="menu = index">
-            <a href="#" v-on:click="openNav">{{menu}}</a>
-          </li>
-        </ul>
+        <div class="collapse navbar-collapse" id="toolbar">
+          <ul class="nav navbar-nav">
+            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ active: menu === index}" v-on:click="menu = index">
+              <a href="#" v-on:click="openNav">{{menu}}</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   </div>
@@ -163,7 +170,7 @@ export default {
       Sortable.create(csvTab, {
         animation: 150
       })
-      this.closeNav.hide()
+      this.closeNav()
     })
   }
 }
