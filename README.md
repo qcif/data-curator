@@ -99,6 +99,8 @@ We're considering keeping our dependencies up to date with [Dependabot](https://
 
 To open the app on your local machine, run in development mode:
 
+`yarn`  *(pulls down all dependencies)*
+
 `yarn run dev`
 
 ### Application Architecture
