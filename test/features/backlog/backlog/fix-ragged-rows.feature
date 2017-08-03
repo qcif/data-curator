@@ -1,11 +1,11 @@
 @backlog
 
-Feature: Find in column
+Feature: Fix Ragged Rows
   As a Data Packager or Data Consumer
   I want to ...
   So that I ...
 
-  Scenario: Find in column
+  Scenario: Fix Ragged Rows
     Given I have opened Data Curator
-    When I select "Find in column" from the menu
+    When I select "Fix Ragged Rows" from the menu
     Then Do something

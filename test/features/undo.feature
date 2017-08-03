@@ -1,14 +1,14 @@
-@backlog @sprint-1
-
 Feature: Undo
   As a Data Packager
-  I want to...
-  So that I can...
+  I want to reverse the edit command(s) I just performed by mistake
+  So that I can revert the data to a prior good state
 
-  Not all commands can be undone.
-  Only Edit commands can be undone.
+  Rules:
+    - Only Edit commands can be undone
+    - Edit commands can be undone until the last non-edit command
 
-  Unresolved - can typing values in cells be undone?
+  Unresolved:
+    - Can typing values in cells be undone?
 
   Background:
     Given I have opened Data Curator

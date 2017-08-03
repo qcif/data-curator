@@ -1,6 +1,6 @@
-@help-wanted @backlog @sprint-1
+@backlog @sprint-1
 
-Feature: Initiate feature using menu keyboard shortcut
+Feature: Initiate an edit feature using a keyboard shortcut
   As a Data Packager or Data Consumer
   I want to select a command using a keyboard shortcut
   So that I can initiate a command quick using the keyboard rather than using the mouse
@@ -9,13 +9,13 @@ Feature: Initiate feature using menu keyboard shortcut
 
   Some menu items have different names on different operating systems e.g. Preferences on macOS is called Settings on Windows.
 
-  Scenario Outline: Use Keyboard Shortcut
+  Scenario Outline: Use Edit Keyboard Shortcut
     Given I have opened Data Curator in an <operating system>
      When I use a <operating system> <shortcut>
-     Then the <command> is initiated
+     Then the <edit command> is initiated
 
     Examples:
-      | command               | windows shortcut      | linux shortcut        | macOS shortcut          |
+      | edit command          | windows shortcut      | linux shortcut        | macOS shortcut          |
       | Preferences           |                       |                       | command + ,             |
       | Settings              |                       |                       |                         |
       | Quit                  | alt + F4              |                       | command + Q             |

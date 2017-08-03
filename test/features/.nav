@@ -33,13 +33,13 @@
   - insert-column-after.feature
   - delete-rows.feature
   - delete-columns.feature
- - search:
-    - find-in-table.feature
-    - replace-in-table.feature
-    - find-in-column.feature
-    - replace-in-column.feature
+- search:
+  - find-in-table.feature
+  - replace-in-table.feature
+  - find-in-column.feature
+  - replace-in-column.feature
 - tools:
-#  - fix-ragged-rows.feature
+  - fix-ragged-rows.feature
   - guess-column-properties.feature
   - guess-enum-values.feature
   - set-column-properties.feature
@@ -54,9 +54,9 @@
   - show-previous-tab.feature
 - help:
   - help.feature
-#  - quick-tour.feature
-#  - edit-keyboard-shortcuts.feature
-#  - support.feature
+  - quick-tour.feature
+  - edit-keyboard-shortcuts.feature
+  - support.feature
 - other:
   - menu.feature
   - menu-keyboard-shortcuts.feature
