@@ -107,7 +107,7 @@
     "del": "^2.2.1",
     "devtron": "^1.1.0",
     "electron": "^1.6.11",
-    "electron-builder": "^19.10.0",
+    "electron-builder": "^19.18.0",
     "electron-debug": "^1.1.0",
     "electron-devtools-installer": "^2.0.1",
     "electron-mocha": "^4.0.0",
