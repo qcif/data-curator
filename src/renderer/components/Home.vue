@@ -60,7 +60,7 @@
           <ul class="nav nav-tabs">
             <li>
               <ul class="nav nav-tabs" id='csvTab'>
-                <li v-for="(count, index) in tabCount" :key="count" :class="{ active: tab === count}" v-on:click="tab = count">
+                <li v-for="(count, index) in tabCount" :key="count" :class="{ active: activeTab === count}" v-on:click="activeTab = count">
                   <a>Tab {{count}}</a>
                 </li>
               </ul>
@@ -70,7 +70,7 @@
             </li>
           </ul>
           <div class="tab-content" id='csvContent'>
-            <div class="tab-pane" v-for="(count, index) in tabCount" :key="count " :class="{ active: tab === count}">
+            <div class="tab-pane" v-for="(count, index) in tabCount" :key="count" :class="{ active: activeTab === count}">
               <div class="editor">
               </div>
             </div>
@@ -96,7 +96,6 @@ import {
   getActiveTabId
 } from '../tabs.js'
 import * as Sortable from 'sortablejs/Sortable.js'
-
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
 const {
   shell
@@ -110,8 +109,8 @@ export default {
   name: 'home',
   data() {
     return {
-      tab: 1,
-      tabCount: 1,
+      activeTab: 0,
+      tabCount: 0,
       toolbarMenus: [
         'Find and Replace',
         'Validate',
@@ -125,19 +124,27 @@ export default {
       menu: 0
     }
   },
-  computed: {},
+  computed: {
+  },
   methods: {
     addTab: function() {
-      this.tabCount += 1
-      // console.log('tab is: ' + this.tab)
-      // console.log('tab count is: ' + this.tabCount)
-      this.activeTab = this.tabCount
-      console.log('recalculating...')
-      console.log('active id is first: ' + $('.tab-pane.active .editor').attr('id'))
-      require('../index.js').loadDefaultDataIntoContainer($('.tab-pane .editor:last')[0])
-      // setActiveTabId($('.tab-pane.active .editor').attr('id'))
-      console.log('active id is now: ' + $('.tab-pane.active .editor').attr('id'))
+      console.log('.........................')
+      console.log('inside addTab function....')
+      console.log('active tab is: ' + this.activeTab)
       console.log('tab count is: ' + this.tabCount)
+      console.log('recalculating...')
+      this.tabCount += 1
+      this.activeTab = this.tabCount
+      console.log('active tab is: ' + this.activeTab)
+      console.log('tab count is: ' + this.tabCount)
+      // console.log($('#editor').length)
+      // console.log('active id is first: ' + $('.active .editor').attr('id'))
+      // require('../index.js').loadDefaultDataIntoContainer($('.tab-pane .editor:last')[0])
+      // setActiveTabId($('.tab-pane.active .editor').attr('id'))
+      // console.log('active id is now: ' + $('.tab-pane.active .editor').attr('id'))
+      // console.log('tab count is: ' + this.tabCount)
+      console.log('leaving addTab function....')
+      console.log('.........................')
     },
     closeNav: function() {
       $('#sidenav').css('width', '0')
@@ -153,24 +160,40 @@ export default {
     }
   },
   watch: {
-    tab: {
+    activeTab: {
       handler: function(val, oldValue) {
-        $(document).ready(function() {
-          console.log('active from watch is: ')
-          console.log($('.active .editor'))
-          setActiveTabId($('.active .editor').attr('id'))
+        console.log('.........................')
+        console.log('...handling')
+        this.$nextTick(function() {
+          console.log('.........................')
+          console.log('...next tick')
+          console.log('.....active from watch is: ')
+          console.log($('.editor').length)
+          // setActiveTabId($('.active .editor').attr('id'))
+          require('../index.js').loadDefaultDataIntoContainer($('.editor:last')[0])
+          console.log('data loaded at end of next tick')
+          console.log('.........................')
         })
+
+        // })
+        console.log('leaving handler')
+        console.log('.........................')
       }
     }
   },
   components: {},
   mounted: function() {
     this.$nextTick(function() {
+      console.log('.........................')
+      console.log('inside Vue ready tick....')
       require('../index.js')
       Sortable.create(csvTab, {
         animation: 150
       })
       this.closeNav()
+      // this.addTab()
+      console.log('leaving Vue ready tick....')
+      console.log('.........................')
     })
   }
 }
