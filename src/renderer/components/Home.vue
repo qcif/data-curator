@@ -1,6 +1,6 @@
 <template>
-<div id="container" class="panel-group">
-  <div id="header-panel" class="panel panel-heading">
+<div id="container" class="panel panel-group">
+  <div id="header-panel" class="panel-heading">
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -21,8 +21,7 @@
       </div>
     </nav>
   </div>
-  <div id="body-panel">
-    <!-- <div  class="sidenav"> -->
+  <div id="body-panel" class="panel">
     <nav id="sidenav" class="sidenav navbar navbar-default">
       <div class="container-fluid">
         <ul class="nav navbar-right closebtn">
@@ -34,26 +33,29 @@
         </ul>
         <div class="navbar-header">
           <a class="navbar-brand" href="#">Panel Content</a>
-          <!-- Heading -->
+          <button id="tablePropertiesBtn" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#tableProperties">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
         </div>
-        <form class="navbar-form">
+        <form class="navbar-form form-horizontal collapse navbar-collapse" id="tableProperties">
           <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" />
-            <label for="title">Title:</label>
-            <input type="text" class="form-control" id="title" />
-            <label for="description">Description:</label>
-            <input type="text" class="form-control" id="description" />
-            <label for="licence">License:</label>
-            <input type="text" class="form-control" id="licence" />
+            <label class="control-label col-sm-4" for="name">Name:</label>
+            <div class="col-sm-8"><input type="text" class="form-control" id="name" /></div>
+            <label class="control-label col-sm-4" for="title">Title:</label>
+            <div class="col-sm-8"><input type="text" class="form-control" id="title" /></div>
+            <label class="control-label col-sm-4" for="description">Description:</label>
+            <div class="col-sm-8"><input type="text" class="form-control" id="description" /></div>
+            <label class="control-label col-sm-4" for="licence">License:</label>
+            <div class="col-sm-8"><input type="text" class="form-control" id="licence" /></div>
           </div>
         </form>
       </div>
     </nav>
-    <!-- </div> -->
     <div id="main-panel" class="panel panel-default">
-      <div id="main-top-panel" class="panel-heading"></div>
-      <div id="main-middle-panel" class="panel-body">
+      <div id="main-top-panel" class="panel panel-heading"></div>
+      <div id="main-middle-panel" class="panel panel-body">
         <div id='csvEditor' v-model='tabCount'>
           <ul class="nav nav-tabs">
             <li>
@@ -79,7 +81,7 @@
         <button type="button" class="close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <div id="message-panel" class="panel panel-default">
+        <div id="message-panel" class="panel-default">
         </div>
       </div>
     </div>
@@ -137,17 +139,15 @@ export default {
       console.log('active id is now: ' + $('.tab-pane.active .editor').attr('id'))
       console.log('tab count is: ' + this.tabCount)
     },
-    /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
     closeNav: function() {
       $('#sidenav').css('width', '0')
       $('#main-panel').css('margin-right', '0')
       $('#main-panel').css('width', '100%')
       $('.closebtn').hide()
     },
-    /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
     openNav: function() {
-      $('#sidenav').css('width', '30%')
-      $('#main-panel').css('width', '70%')
+      $('#sidenav').css('width', '40%')
+      $('#main-panel').css('width', '60%')
       // enable flyout panel to begin display before showing close button
       $('.closebtn').delay(200).show(0)
     }
@@ -181,12 +181,15 @@ export default {
 <style scoped>
 @import '~components-font-awesome/css/font-awesome.min.css'
 </style>
-<style scoped>
-@import '/static/assets/css/default.css'
+<style lang="styl" scoped>
+@import '~static/css/default'
 </style>
 <style scoped>
 @import '~handsontable/dist/handsontable.full.css'
 </style>
 <style scoped>
-@import '/static/assets/css/panels.css'
+@import '~static/css/panels'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/panel'
 </style>
