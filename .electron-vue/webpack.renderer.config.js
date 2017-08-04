@@ -61,7 +61,8 @@ let rendererConfig = {
             extractCSS: process.env.NODE_ENV === 'production',
             loaders: {
               sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
-              scss: 'vue-style-loader!css-loader!sass-loader'
+              scss: 'vue-style-loader!css-loader!sass-loader',
+              styl: 'vue-style-loader!css-loader!stylus-loader'
             }
           }
         }
@@ -116,7 +117,8 @@ let rendererConfig = {
   resolve: {
     alias: {
       '@': path.join(__dirname, '../src/renderer'),
-      'vue$': 'vue/dist/vue.esm.js'
+      'vue$': 'vue/dist/vue.esm.js',
+      'static': path.resolve(__dirname, '../static')
     },
     extensions: ['.js', '.vue', '.json', '.css', '.node']
   },
