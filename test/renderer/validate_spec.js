@@ -48,7 +48,7 @@ describe("displayValidationMessages", function() {
     it('should display validation results', function() {
       validate._private.displayValidationMessages(validation);
       expect($('#message-panel').html()).to.have.string('Validation result');
-      expect($('#message-panel img').attr('src')).to.equal('../assets/img/warnings.svg');
+      expect($('#message-panel img').attr('src')).to.equal('../static/img/warnings.svg');
       expect($('#message-panel p').html()).to.have.string('0 errors and 2 warnings');
       expect($('#message-panel div:eq(0)').html()).to.have.string('<h5>Inconsistent value</h5><p>The data in column M is inconsistent with others values in the same column.</p>');
       expect($('#message-panel div:eq(1)').html()).to.have.string('<h5>Inconsistent value</h5><p>The data in column W is inconsistent with others values in the same column.</p>');

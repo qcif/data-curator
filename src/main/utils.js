@@ -27,9 +27,9 @@ export function createWindowTab() {
   if (window == null) {
     window = createWindow()
   }
-  window.webContents.on('did-finish-load', function() {
-    window.webContents.send('initTab')
-  })
+  // window.webContents.on('did-finish-load', function() {
+  //   window.webContents.send('initTab')
+  // })
 }
 
 export function enableSave() {
