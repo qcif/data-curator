@@ -11,9 +11,9 @@ export function createWindow() {
   mainWindow.loadURL(winURL)
   mainWindow.title = 'Untitled.csv'
   mainWindow.format = file_formats.csv
-  // mainWindow.on('closed', function() {
-  //   mainWindow = null
-  // })
+  mainWindow.on('closed', function() {
+    mainWindow = null
+  })
 
   mainWindow.on('resize', function() {
     mainWindow.webContents.send('resized')
@@ -27,9 +27,9 @@ export function createWindowTab() {
   if (window == null) {
     window = createWindow()
   }
-  // window.webContents.on('did-finish-load', function() {
-  //   window.webContents.send('initTab')
-  // })
+  window.webContents.on('did-finish-load', function() {
+    window.webContents.send('initTab')
+  })
 }
 
 export function enableSave() {

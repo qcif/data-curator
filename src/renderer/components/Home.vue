@@ -109,8 +109,8 @@ export default {
   name: 'home',
   data() {
     return {
-      activeTab: 0,
-      tabCount: 0,
+      activeTab: 1,
+      tabCount: 1,
       toolbarMenus: [
         'Find and Replace',
         'Validate',
