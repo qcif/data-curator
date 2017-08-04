@@ -9,6 +9,7 @@ const webpack = require('webpack')
 const BabiliWebpackPlugin = require('babili-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+// const extractStylus = new ExtractTextPlugin('name]-one.css')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 var FixDefaultImportPlugin = require('webpack-fix-default-import-plugin')
 
@@ -39,11 +40,17 @@ let rendererConfig = {
             formatter: require('eslint-friendly-formatter')
           }
         }
-      }, {
+      },
+ {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})
-      },
-      {
+      }, {
+        test: /\.styl$/,
+        use: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'stylus-loader'})
+      // }, {
+      //   test: /\.scss$/,
+      //   use: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader!resolve-url-loader!sass-loader?sourceMap'})
+      }, {
         test: /\.html$/,
         use: 'vue-html-loader'
       }, {
@@ -58,10 +65,12 @@ let rendererConfig = {
         use: {
           loader: 'vue-loader',
           options: {
-            extractCSS: process.env.NODE_ENV === 'production',
+            extractCSS: true,
             loaders: {
+              // css: 'vue-style-loader!css-loader',
               sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
-              scss: 'vue-style-loader!css-loader!sass-loader'
+              scss: 'vue-style-loader!css-loader!sass-loader',
+              styl: 'vue-style-loader!css-loader!stylus-loader'
             }
           }
         }
@@ -92,6 +101,7 @@ let rendererConfig = {
   },
   plugins: [
     new ExtractTextPlugin('styles.css'),
+    // extractStylus,
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: path.resolve(__dirname, '../src/index.ejs'),
@@ -106,7 +116,24 @@ let rendererConfig = {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new FixDefaultImportPlugin()
+    new FixDefaultImportPlugin(),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //     warnings: false
+    //   },
+    //   mangle: {
+    //     keep_fnames: true
+    //   }
+    // }),
+    // new webpack.LoaderOptionsPlugin({
+    //   test: /\.styl$/,
+    //   stylus: {
+    //     use: [
+    //       require('nib')(),
+    //       require('jeet')()
+    //     ]
+    //   }
+    // })
   ],
   output: {
     filename: '[name].js',
@@ -116,9 +143,18 @@ let rendererConfig = {
   resolve: {
     alias: {
       '@': path.join(__dirname, '../src/renderer'),
-      'vue$': 'vue/dist/vue.esm.js'
+      'vue$': 'vue/dist/vue.esm.js',
+      'assets': path.resolve(__dirname, '../static/assets')
     },
-    extensions: ['.js', '.vue', '.json', '.css', '.node']
+    extensions: [
+      '.js',
+      '.vue',
+      '.json',
+      '.css',
+      '.node',
+      // '.styl',
+      // '.scss'
+    ]
   },
   target: 'electron-renderer'
 }
@@ -148,3 +184,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = rendererConfig
+// var applyStylepack = require('stylepack')({
+//     webpack: require('webpack'),
+//     // optional stylepack config goes here
+// })
+// module.exports = applyStylepack(rendererConfig)

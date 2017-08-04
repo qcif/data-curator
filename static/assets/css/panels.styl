@@ -1,0 +1,170 @@
+html
+    box-sizing border-box
+    cursor default
+
+*, *:before, *:after
+    box-sizing inherit
+
+body, html
+    margin 0
+    padding 0
+    font-family 'Helvetica Neue', Helvetica, Arial, sans-serif
+    width 100%
+    height 100%
+
+#container
+    height 100%
+    margin 0
+    padding 0
+
+.message
+    font-size 14px
+    padding 5px 10px
+    border-top 1px solid rgba(0, 0, 0, .15)
+    p
+        margin .6em 0
+    pre
+        background-color rgba(50, 50, 50, 0.15)
+        padding 5px
+        margin .7em 0
+
+.validation-error
+    background-color rgba(255, 76, 66, 0.6)
+
+.validation-warning
+    background-color rgba(255, 152, 66, 0.6)
+
+.validation-info
+    background-color rgba(99, 149, 215, 0.6)
+
+.glyphicon
+    &.spinning
+        animation spin 1s infinite linear
+        -webkit-animation spin2 1s infinite linear
+
+@keyframes
+    spin
+        from {
+    transform scale(1) rotate(0deg)
+
+to
+    transform scale(1) rotate(360deg)
+    -webkit-transform rotate(360deg)
+
+}
+    @-webkit-keyframes
+        spin2
+            from {
+    -webkit-transform rotate(0deg)
+    .validation-load
+        font-size 1.3em
+        width 100%
+        text-align center
+        margin 25px 0
+
+.validation-load
+    p
+        margin 0
+        padding 5px 0
+
+.nav-tabs
+    & > li
+        &.tab-heading
+            &.active
+                a
+                    position relative
+            a
+                margin 0
+
+.tab-add
+    a
+        position relative
+        &:hover
+            background-color initial !important
+            border-color transparent !important
+            margin 0
+        button
+            position absolute
+            bottom 0
+
+#header-panel
+    overflow-x auto
+
+#body-panel
+    width 100% !important
+    position relative!important
+    z-index 5
+
+#main-panel
+    transition width .3s
+    padding 5px
+    z-index 10
+    margin-right 0
+    width 100%
+
+#main-top-panel
+    overflow auto
+    z-index 15
+
+#main-middle-panel
+    overflow auto
+    z-index 15
+
+#main-bottom-panel
+    overflow-y scroll
+    z-index 15
+
+.sidenav
+    height 100%
+    width 0
+    position absolute
+    z-index 50
+    top 0
+    right 0
+    overflow-x hidden
+    transition 0.3s
+    padding-top 1px
+    .closebtn
+        position absolute
+        top 0
+        right 0
+        margin 0
+        padding 0
+        z-index 75
+        a
+            &:hover
+                background-color inherit!important
+
+@media screen and (max-height: 450px)
+    .sidenav
+        padding-top 1px
+        li
+            font-size small
+
+@media (max-width: 600px)
+    .navbar-header
+        float none
+    .navbar-toggle
+        display block
+    .navbar-collapse
+        border-top 1px solid transparent
+        box-shadow inset 0 1px 0 rgba(255,255,255,0.1)
+        &.collapse
+            display none!important
+    .navbar-fixed-top
+        top 0
+        border-width 0 0 1px
+    .navbar-nav
+        float none!important
+        margin-top 7.5px
+        & > li
+            float none
+            & > a
+                padding-top 10px
+                padding-bottom 10px
+    .collapse
+        &.in
+            display block !important
+
+@media (max-width: 600px)     .navbar-left,.navbar-right
+    float none !important
