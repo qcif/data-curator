@@ -137,12 +137,6 @@ export default {
       this.activeTab = this.tabCount
       console.log('active tab is: ' + this.activeTab)
       console.log('tab count is: ' + this.tabCount)
-      // console.log($('#editor').length)
-      // console.log('active id is first: ' + $('.active .editor').attr('id'))
-      // require('../index.js').loadDefaultDataIntoContainer($('.tab-pane .editor:last')[0])
-      // setActiveTabId($('.tab-pane.active .editor').attr('id'))
-      // console.log('active id is now: ' + $('.tab-pane.active .editor').attr('id'))
-      // console.log('tab count is: ' + this.tabCount)
       console.log('leaving addTab function....')
       console.log('.........................')
     },
@@ -160,7 +154,7 @@ export default {
     }
   },
   watch: {
-    activeTab: {
+    tabCount: {
       handler: function(val, oldValue) {
         console.log('.........................')
         console.log('...handling')
@@ -169,7 +163,6 @@ export default {
           console.log('...next tick')
           console.log('.....active from watch is: ')
           console.log($('.editor').length)
-          // setActiveTabId($('.active .editor').attr('id'))
           require('../index.js').loadDefaultDataIntoContainer($('.editor:last')[0])
           console.log('data loaded at end of next tick')
           console.log('.........................')
@@ -191,7 +184,6 @@ export default {
         animation: 150
       })
       this.closeNav()
-      // this.addTab()
       console.log('leaving Vue ready tick....')
       console.log('.........................')
     })

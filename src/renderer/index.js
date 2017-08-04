@@ -1,4 +1,4 @@
-import {getActiveTabId, getActiveHot} from '../renderer/tabs.js'
+import {getActiveTabId, getActiveHot, setActiveTabId} from '../renderer/tabs.js'
 var ipc = require('electron').ipcRenderer
 var fs = require('fs')
 
@@ -78,6 +78,8 @@ export function loadDefaultDataIntoContainer(container) {
   console.log(container)
   let hot = createHot(container)
   loadData(hot, defaultData, defaultFormat)
+  console.log('active tab id: ' + $('.active .editor').attr('id'))
+  setActiveTabId($('.active .editor').attr('id'))
   console.log('leaving loadDefaultDataIntoContainer')
   console.log('.........................')
 }
