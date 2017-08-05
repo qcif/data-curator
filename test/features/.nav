@@ -1,7 +1,7 @@
 - data-curator:
   - about.feature
   - check-for-update.feature
-  - preferences.feature
+  - set-preferences.feature
   - read-only-mode.feature
   - quit.feature
 - file:
@@ -54,9 +54,9 @@
   - show-previous-tab.feature
 - help:
   - help.feature
-  - quick-tour.feature
+  - show-quick-tour.feature
   - edit-keyboard-shortcuts.feature
-  - support.feature
+  - show-support.feature
 - other:
   - menu.feature
   - menu-keyboard-shortcuts.feature

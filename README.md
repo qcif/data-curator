@@ -57,7 +57,8 @@ Interested in this project? Subscribe to [Data Curator News](https://github.com/
 
 ## Contributions
 
-We welcome all sorts of contributions - financial, ideas, issues, documentation and code. [Can you help?](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md)
+We welcome all sorts of contributions - [financial](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-financial-support), [ideas](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-ideas-and-feature-requests), [issues](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-issues), [documentation](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-documentation) and [code](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-code). [Make a contribution](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md).
+
 
 We acknowledge the great work of others. We are:
 
@@ -66,7 +67,11 @@ We acknowledge the great work of others. We are:
 )
 - adopting [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/#bp-summary)
 
-Please note that we develop against the 'develop' branch, while master will reflect tagged releases.
+The software proudly includes the following open source software:
+
+- The Frictionless Data [datapackage.js](https://github.com/frictionlessdata/datapackage-js) and [tableschema-js](https://github.com/frictionlessdata/tableschema-js) libraries by [Open Knowledge International](https://okfn.org) - [donate](https://okfn.org/donate/)
+- [Electron](https://electron.atom.io) by [GitHub](https://github.com) which is built on [Node.js](https://nodejs.org/en/) and [Chromium](https://www.chromium.org/Home)
+- [Vue.js](https://vuejs.org) by Yuxi (Evan) You- [become a backer](https://vuejs.org/support-vuejs/)
 
 ## Download and Install Data Curator
 
@@ -84,6 +89,8 @@ This occurs due to macOS quarantining applications where it cannot determine the
 
 ## Development
 
+We develop against the 'develop' branch. The 'master' branch contains tagged releases. We are currently using this [branching model](http://nvie.com/posts/a-successful-git-branching-model/) by Vincent Driessen.
+
 ### Requirements
 
 `node`  
@@ -91,7 +98,7 @@ This occurs due to macOS quarantining applications where it cannot determine the
 `electron`
 
 You can use [yarn](https://yarnpkg.com/en/) to install all relevant packages and development dependencies.
-See the installation page at [Yarn installation](https://yarnpkg.com/en/docs/install)
+See the [yarn installation page](https://yarnpkg.com/en/docs/install).
 
 We're considering keeping our dependencies up to date with [Dependabot](https://dependabot.com).
 

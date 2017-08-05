@@ -1,5 +1,3 @@
-@backlog @sprint-2
-
 Feature: Set column properties
   As a Data Packager
   I want to described the meaning and structure of the data
@@ -21,8 +19,6 @@ Feature: Set column properties
     - 'missingValues'
     - 'primaryKeys'
     - 'foreignKeys'
-
-# show / hide in menu
 
   Background:
     Given I have opened Data Curator
