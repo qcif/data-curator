@@ -14,7 +14,7 @@ Feature: Set provenance information
   - bold, italics
   - links, images
 
-  [Sample text](/sample-provenance-information.md)
+  Sample text - https://github.com/ODIQueensland/data-curator/blob/master/test/features/sample-provenance-information.md
 
   Background:
     Given I have opened Data Curator
