@@ -1,3 +1,5 @@
+@backlog @sprint-1 
+
 Feature: Close Window
   As a Data Packager
   I want to close all data tabs and prompt if there are unsaved changes
