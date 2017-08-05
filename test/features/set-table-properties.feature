@@ -10,7 +10,7 @@ Feature: Set table properties
 
   The 'name' is required
   The 'profile' should be set to 'tabular-data-resource'
-  Other properties should be defaulted were possible or read from Settings (when implemented)
+  Other properties should be defaulted were possible or read from Preferences (when implemented)
   The Data Packager can enter: 'title', 'description', 'sources', 'licenses'
 
   Background:
