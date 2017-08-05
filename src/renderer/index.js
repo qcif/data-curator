@@ -25,6 +25,7 @@ var defaultTitle = 'Untitled.csv'
 var defaultFormat = file.formats.csv
 
 function createHot(container) {
+  console.log('Active tab: ' + this.activeTab)
   console.log('............................')
   console.log('inside method createHot. current hots...')
   console.log(hots.length)
