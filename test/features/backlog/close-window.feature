@@ -1,4 +1,4 @@
-@backlog @sprint-1 
+@backlog 
 
 Feature: Close Window
   As a Data Packager

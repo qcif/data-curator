@@ -27,5 +27,4 @@ Feature: Validate Column
   Scenario: Use the panel button to validate a column
     When I select "Validate" from the Column Properties panel
     Then assemble the Schema from the Column Properties
-    Then assemble the Schema from the Column Properties
     And validate the column data against the available schema

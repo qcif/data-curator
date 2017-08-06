@@ -1,11 +1,11 @@
 @backlog
 
-Feature: Set Perferences
+Feature: Set Preferences
   As a Data Packager or Data Consumer
   I want to ...
   So that I ...
 
-  Scenario: Set Perferences
+  Scenario: Set Preferences
     Given I have opened Data Curator
-    When I select "Set Perferences" from the menu
+    When I select "Set Preferences" from the menu
     Then Do something
