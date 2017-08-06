@@ -3,11 +3,11 @@ Feature: Open a comma separated value file
   I want to open a comma separated value (CSV) file
   So that I can describe, validate and package the data
 
-  The most common form of separated value files is a comma separated value (CSV) file. Sometimes CSV data is stored in a text file (.txt).
+  The most common form of separated value files is a comma separated value (CSV) file. Sometimes CSV data is stored in a text file (.txt)
 
   There are variations that use Tab or Semicolon to seperate values. Custom formats are sometimes used. Each of these formats can be described using a CSV Dialect that describes the 'delimiter' used and other options. See: http://specs.frictionlessdata.io/csv-dialect/#specification
 
-  Use the CSV dialect specified in Preferences to determine how to open the file and seperate values into the right columns.
+  Use the default CSV dialect values in the specification to open the file and separate the values into the correct columns.
 
   Background:
     Given I have opened Data Curator

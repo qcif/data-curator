@@ -1,9 +1,11 @@
-@backlog
+@backlog @not-needed
 
 Feature: Set custom CSV dialect
   As a Data Packager or Data Consumer
   I want to ...
   So that I ...
+
+  This will probably be part of Set Preferences or Set Table Properties
 
   Scenario: Set custom CSV dialect
     Given I have opened Data Curator

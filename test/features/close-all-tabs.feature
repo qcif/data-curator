@@ -15,28 +15,28 @@ Feature: Close all tabs
 
   Scenario: Use the menu to close all tabs, all work saved
     Given I have opened Data Curator
-    And I open 1 data tab
-    And I save the data in the tab
+    And I have opened 1 or more data tabs
+    And I have saved the data in all the tabs
     When I select "Close all Tabs" from the menu
     Then all tabs close
 
   Scenario: Use a keyboard shortcut to close all tabs, all work saved
     Given I have opened Data Curator
-    And I open more than 1 data tab
-    And I save all the data in the tab
+    And I have opened 1 or more data tabs
+    And I have saved the data in all the tabs
     When I use the "Close all Tabs" shortcut
     Then all tabs close
 
   Scenario: Use the menu to close all tabs, some work unsaved
     Given I have opened Data Curator
-    And I open 1 data tab
-    And I do not save the data in the tab
+    And I have opened 1 or more data tabs
+    And I have not saved the data in all the tabs
     When I select "Close all Tabs" from the menu
-    Then a prompt, save each unsaved data table in its current CSV Dialect, is displayed
+    Then prompts to save each unsaved data table in its current CSV Dialect, are displayed
 
   Scenario: Use a keyboard shortcut to close all tabs, some work unsaved
     Given I have opened Data Curator
-    And I open more than 1 data tab
-    And I do not save the data in the tab
+    And I have opened 1 or more data tabs
+    And I have not saved the data in all the tabs
     When I use the "Close all Tabs" shortcut
-    Then a prompt, save each unsaved data table in its current CSV Dialect, is displayed
+    Then prompts to save each unsaved data table in its current CSV Dialect, are displayed

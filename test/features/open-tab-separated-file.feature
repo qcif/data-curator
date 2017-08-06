@@ -3,16 +3,18 @@ Feature: Open a tab separated value file
   I want to open a tab separated value (TSV) file
   So that I can describe, validate and package the data
 
-  Tab separated value file formats can be described using a CSV Dialect that describes the 'delimiter' used and other options. See: http://specs.frictionlessdata.io/csv-dialect/#specification
+  The data may be stored in a ".tsv", ".csv" or ".txt" file
 
-  Use the CSV dialect specified in Preferences to determine how to open the file and seperate values into the right columns.
+  CSV dialect specification - http://specs.frictionlessdata.io/csv-dialect/#specification
+
+  Use the default CSV dialect values in the specification but with 'delimiter' = '\t' to open the file and separate the values into the correct columns.
 
   Unresolved:
-  Is the a standard semi-colon format e.g. 'delimiter' = '\t' or should I read the CSV Dialect settings in Preferences for other settings?
+  - is it valide to store tab separated value files in ".csv"?
 
-  Scenario: Use the menu to open an existing tab separated value file
+  Scenario: Use the menu to open an existing Tab Separated Value file
     Given I have opened Data Curator
     When I select "Open Tab Separated" from the menu
     Then a prompt, requesting the file name and location is shown
-    But only files ending with a ".tsv" or ".txt" can be selected
+    But only files ending with a ".csv", ".tsv" or ".txt" can be selected
     Then the selected file is opened in a new data tab to the right of any other open data tabs
