@@ -23,8 +23,12 @@ Feature: Validate Column
     When I select "Validate Column" from the menu
     Then assemble the Schema from the Column Properties
     And validate the column data against the available schema
+    And display error messages
+    And highlight errors in the relevant cells
 
   Scenario: Use the panel button to validate a column
     When I select "Validate" from the Column Properties panel
     Then assemble the Schema from the Column Properties
     And validate the column data against the available schema
+    And display error messages
+    And highlight errors in the relevant cells

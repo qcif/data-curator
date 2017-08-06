@@ -1,4 +1,4 @@
-@backlog
+@backlog @ready
 
 Feature: Publish Data Package
   As a Data Packager
@@ -16,7 +16,7 @@ Feature: Publish Data Package
 
   Scenario: Publish Data Package to CKAN
     Given I have opened Data Curator
-    And I have exported a data package 
+    And I have exported a data package
     When I select "Publish Data Package" from the menu
     Then show the filename and location used in the last export data package command
     And offer to change the filename and location

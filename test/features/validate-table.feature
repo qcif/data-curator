@@ -35,3 +35,5 @@ Feature: Validate Table
     Then assemble the Table Schema from the Column Properties
     And check for non-schema data errors
     And validate the data against the available schema
+    And display error messages
+    And highlight errors in the relevant cells, rows or columns
