@@ -5,7 +5,7 @@ Feature: Publish Data Package
   I want to publish a data package to an open data portal
   So that I don't have to upload it manually through the open data portal's user interface
 
-  The ability to publish to an open data portal is usually secured.
+  The ability to publish to an open data portal is usually secured
   Credentials (user id and password, api key, etc) will be needed to publish
   Credentials and the Open Data Portal URL will be stored in Preferences or hidden in a configuration file
 
@@ -20,4 +20,4 @@ Feature: Publish Data Package
     When I select "Publish Data Package" from the menu
     Then show the filename and location used in the last export data package command
     And offer to change the filename and location
-    And use the selected file to send the data package to the open data portal via the CKAN API 
+    And use the selected file to send the data package to the open data portal via the CKAN API
