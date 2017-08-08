@@ -61,7 +61,7 @@
             <li>
               <ul class="nav nav-tabs" id='csvTab'>
                 <li v-for="(count, index) in tabCount" :key="count" :class="{ active: activeTab === count}" v-on:click="activeTab = count">
-                  <a>Tab {{count}}</a>
+                  <a><span>Tab {{count}}</span><span class="tabclose btn-danger fa fa-times" @click="closeTab()"></span></a>
                 </li>
               </ul>
             </li>
