@@ -7,25 +7,37 @@ sideNavTransition = 0.3s
 sideNavMargin = 250px
 
 #main-panel
-  margin-right sideNavMargin
-  &.side-nav-closed
-    transition sideNavTransition
-    margin-right 0
-#sidenav
-  width sideNavMargin
+  padding 5px
+  z-index 10
+  width 100%
+  transition sideNavTransition
   &.closed
-    width 0
+    margin-right 0
+    margin-left 0
+  &.left
+    margin-left sideNavMargin
+    margin-right 0
+  &.right
+    margin-right sideNavMargin
+    margin-left 0
 
 #sidenav
-#sidenav.closed
   height 100%
   position absolute
+  margin-left 0px
   z-index 50
   top 0
-  right 0
   overflow-x hidden
   transition sideNavTransition
   padding-top 1px
+  &.closed
+    width 0 !important
+  &.left
+    width sideNavMargin
+    left 0
+  &.right
+    width sideNavMargin
+    right 0
   .navbar-header
     color #ffffff
     background-color #e4ecf6
@@ -47,10 +59,8 @@ sideNavMargin = 250px
       &:hover
         background-color inherit !important
   form
-    margin 0
+    margin 0 !important
     border-top 0
-    margin-left: 0 !important
-    padding-left: 0 !important
     padding-left 0 !important
     padding-right 0 !important
     label
@@ -80,7 +90,7 @@ span.tabclose
   i
   a
   div
-    padding-top: 0
+    padding-top 0
 
 #tableProperties .form-control
   width: auto !important

@@ -13,7 +13,7 @@
         </div>
         <div class="collapse navbar-collapse" id="toolbar">
           <ul class="nav navbar-nav">
-            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menu === index}" @click="updateMenu(index)">
+            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index, menu.navPosition)">
               <a href="#">
                 <i class="fa" :class="menu.icon" aria-hidden="true" />
                 <div>{{menu.name}}</div>
@@ -25,13 +25,13 @@
     </nav>
   </div>
   <div id="body-panel" class="panel">
-    <nav id="sidenav" class="sidenav navbar navbar-default row" :class="{ 'closed': isSideNavClosed}">
+    <nav id="sidenav" class="sidenav navbar navbar-default row" :class="updateSideNav">
       <div class="container-fluid">
         <div class="navbar-header">
           <ul class="nav navbar-right closebtn">
             <li>
               <a href="#">
-                <span class="btn-danger fa fa-times" @click="closeNav" />
+                <span class="btn-danger fa fa-times" @click="closeSideNav" />
               </a>
             </li>
           </ul>
@@ -66,7 +66,7 @@
         </form>
       </div>
     </nav>
-    <div id="main-panel" class="panel panel-default" :class="{'side-nav-closed': isSideNavClosed}">
+    <div id="main-panel" class="panel panel-default" :class="updateMainFromSideNav">
       <!-- <div id="main-top-panel" class="panel panel-heading"></div> -->
       <div id="main-middle-panel" class="panel panel-body">
         <div id='csvEditor' v-model='tabCount'>
@@ -124,43 +124,59 @@ export default {
     return {
       activeTab: 1,
       tabCount: 1,
+      menuIndex: 0,
+      navPosition: 'right',
+      navStatus: 'closed',
       toolbarMenus: [{
         name: 'Find and Replace',
-        icon: 'fa-table'
+        icon: 'fa-table',
+        navPosition: 'right'
       },
       {
         name: 'Validate',
-        icon: 'fa-check-circle'
+        icon: 'fa-check-circle',
+        navPosition: 'right'
       },
       {
         name: 'Column',
-        icon: 'fa-search'
+        icon: 'fa-search',
+        navPosition: 'right'
       },
       {
         name: 'Table',
-        icon: 'fa-table'
+        icon: 'fa-table',
+        navPosition: 'right'
       },
       {
         name: 'Provenance',
-        icon: 'fa-file-text-o'
+        icon: 'fa-file-text-o',
+        navPosition: 'right'
       },
       {
         name: 'Package',
-        icon: 'fa-gift'
+        icon: 'fa-gift',
+        navPosition: 'left'
       },
       {
         name: 'Export',
-        icon: 'fa-search'
+        icon: 'fa-search',
+        navPosition: 'right'
       },
       {
         name: 'Publish',
-        icon: 'fa-cloud-upload'
-      }],
-      menu: 0,
-      isSideNavClosed: true
+        icon: 'fa-cloud-upload',
+        navPosition: 'right'
+      }]
     }
   },
-  computed: {},
+  computed: {
+    updateMainFromSideNav() {
+      return this.navStatus === 'closed' ? this.navStatus : this.navPosition
+    },
+    updateSideNav() {
+      return `${this.navStatus} ${this.navPosition}`
+    }
+  },
   methods: {
     addTab: function() {
       console.log('.........................')
@@ -186,17 +202,18 @@ export default {
         this.tabCount = 0
       }
     },
-    closeNav: function() {
-      this.isSideNavClosed = true
+    closeSideNav: function() {
+      this.navStatus = 'closed'
       $('.closebtn').hide()
     },
-    openNav: function() {
-      this.isSideNavClosed = false
+    openSideNav: function() {
+      this.navStatus = 'open'
       $('.closebtn').delay(200).show(0)
     },
-    updateMenu: function(index) {
-      this.menu = index
-      this.openNav()
+    updateMenu: function(index, navPosition) {
+      this.menuIndex = index
+      this.navPosition = navPosition
+      this.openSideNav()
     }
   },
   components: {},
@@ -208,7 +225,8 @@ export default {
       Sortable.create(csvTab, {
         animation: 150
       })
-      this.closeNav()
+      this.closeSideNav()
+      console.log(`nav pos: ${this.navPosition}`)
       console.log('leaving Vue ready tick....')
       console.log('.........................')
     })

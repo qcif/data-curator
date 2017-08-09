@@ -93,15 +93,7 @@
 #body-panel {
   width: 100% !important;
   position: relative!important;
-    z-index: 5;
-}
-
-#main-panel {
-  transition: width .3s;
-  padding: 5px;
-  z-index: 10;
-  margin-right: 0;
-  width: 100%;
+  z-index: 5;
 }
 
 #main-top-panel {
@@ -141,11 +133,11 @@
 }
 
 @media screen and (max-width: 480px) {
-  #main-panel {
-    margin-right: 150px !important;
+  #main-panel.left {
+    margin-left: 160px !important;
   }
-  #main-panel.side-nav-closed {
-    margin-right: 0 !important;
+  #main-panel.right {
+    margin-right: 160px !important;
   }
   #sidenav {
     width: 160px !important;
