@@ -1,4 +1,4 @@
-import {getActiveTabId, getActiveHot} from '../renderer/tabs.js'
+import {getActiveTabId, getActiveHot, setActiveTabId} from '../renderer/tabs.js'
 var ipc = require('electron').ipcRenderer
 var fs = require('fs')
 
@@ -25,7 +25,8 @@ var defaultTitle = 'Untitled.csv'
 var defaultFormat = file.formats.csv
 
 function createHot(container) {
-  console.log('current hots...')
+  console.log('............................')
+  console.log('inside method createHot. current hots...')
   console.log(hots.length)
   console.log(hots)
   console.log('loading hot...')
@@ -57,6 +58,8 @@ function createHot(container) {
     rowAbove.enabled = true
     columnLeft.enabled = true
   }, false)
+  console.log('leaving method createHot')
+  console.log('............................')
   return hot
 }
 
@@ -69,30 +72,40 @@ export function initDefaultTab() {
 }
 
 export function loadDefaultDataIntoContainer(container) {
+  console.log('.........................')
+  console.log('inside method loadDefaultDataIntoContainer')
   console.log('loading...')
   console.log(container)
   let hot = createHot(container)
   loadData(hot, defaultData, defaultFormat)
+  console.log('active tab id: ' + $('.active .editor').attr('id'))
+  setActiveTabId($('.active .editor').attr('id'))
+  console.log('leaving loadDefaultDataIntoContainer')
+  console.log('.........................')
 }
 
-export function loadDefaultData() {
-  loadDataIntoActive(defaultData, defaultFormat)
-}
+// export function loadDefaultData() {
+//   loadDataIntoActive(defaultData, defaultFormat)
+// }
 
-function loadDataIntoActive(data, format) {
-  var hot = getActiveHot(hots)
-  loadData(hot, data, format)
-}
+// function loadDataIntoActive(data, format) {
+//   var hot = getActiveHot(hots)
+//   loadData(hot, data, format)
+// }
 
-function loadAllData(data, format) {
-  hots.forEach(function(hot, index) {
-    loadData(hot, data, format)
-  })
-}
+// function loadAllData(data, format) {
+//   hots.forEach(function(hot, index) {
+//     loadData(hot, data, format)
+//   })
+// }
 
 function loadData(hot, data, format) {
+  console.log('.........................')
+  console.log('inside loadData function')
   var arrays = file.open(hot, data, format)
   rows.fixRaggedRows(hot, arrays)
+  console.log('leaving loadData function')
+  console.log('.........................')
 }
 
 ipc.on('saveData', function(e, fileName, format) {

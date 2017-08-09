@@ -10,17 +10,17 @@ Firstly, thanks for being here. All types of contributions are valued and gratef
 
 ## Contribute Financial Support
 
-The best way to contribute financially to this project is to support the [ODI Australian Network](http://queensland.theodi.org) by becoming a [Member](http://queensland.theodi.org/home/network/members/), [Supporter](http://queensland.theodi.org/home/network/supporters/) or [Foundation Sponsor](http://queensland.theodi.org/home/network/foundationsponsors/). You may like to attend our training courses to [learn more about open data](http://queensland.theodi.org/home/learning/)
+The best way to contribute financially to this project is to support the [ODI Australian Network](http://queensland.theodi.org) by becoming a [Member](http://queensland.theodi.org/home/network/members/), [Supporter](http://queensland.theodi.org/home/network/supporters/) or [Foundation Sponsor](http://queensland.theodi.org/home/network/foundationsponsors/). You may like to attend our training courses to [learn more about open data](http://queensland.theodi.org/home/learning/).
 
-If you'd like to discuss other options, please [contact us](http://queensland.theodi.org/home/contact-us/)
+[Contact us](http://queensland.theodi.org/home/contact-us/) to discuss sponsoring a new feature and dedicated support options.
 
 ## Contribute Ideas and Feature Requests
 
-Your idea for a feature addition may already exist on our [ issues backlog](https://github.com/ODIQueensland/data-curator/issues). If the gist of your idea isn't there:
-- [add an issue](https://github.com/ODIQueensland/data-curator/issues) - we'll label it with `f:feature-request`, or
+Your idea for a feature addition may already exist on our [issues backlog](https://github.com/ODIQueensland/data-curator/issues) or [feature backlog](https://github.com/ODIQueensland/data-curator/tree/master/test/features/backlog). If the gist of your idea isn't there:
+- [add an issue](https://github.com/ODIQueensland/data-curator/issues) - we'll label it with `f:feature-request`
 - to discuss your idea privately, [contact us](http://queensland.theodi.org/home/contact-us/)
 
-If a similar idea is in the issues backlog, please join the conversation in that issue.
+If a similar idea is in the backlog, please join the conversation.
 
 ## Contribute Issues
 
@@ -32,7 +32,7 @@ If you're [able](https://help.github.com/articles/applying-labels-to-issues-and-
 
 ## Contribute Documentation
 
-Help documentation is currently being drafted in a [separate repository](https://github.com/Stephen-Gates/csv-lingo). Feel free to contribute there.
+[Help documentation](https://odiqueensland.github.io/data-curator-help/) is being drafted in a [separate repository](https://github.com/ODIQueensland/data-curator-help). Feel free to contribute.
 
 ## Contribute Code
 Data Curator is open source, and we a grateful for [all code contributions](https://github.com/ODIQueensland/data-curator/graphs/contributors). By participating in this project, you agree to abide by our [Code of Conduct](https://github.com/ODIQueensland/data-curator/blob/master/.github/CODE_OF_CONDUCT.md).
