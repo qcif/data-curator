@@ -3,21 +3,66 @@
   margin 0
   padding 0
 
-.sidenav
+sideNavTransition = 0.3s
+sideNavMargin = 250px
+
+#main-panel
+  margin-right sideNavMargin
+  &.side-nav-closed
+    transition sideNavTransition
+    margin-right 0
+#sidenav
+  width sideNavMargin
+  &.closed
+    width 0
+
+#sidenav
+#sidenav.closed
+  height 100%
+  position absolute
+  z-index 50
+  top 0
+  right 0
+  overflow-x hidden
+  transition sideNavTransition
+  padding-top 1px
+  .navbar-header
+    color #ffffff
+    background-color #e4ecf6
+    display block !important
+    float none
+    margin-left -15px
+    margin-right -15px
+    @media screen and (min-width: 768px)
+      padding-left 15px
+      margin-bottom 15px
   .closebtn
     position absolute
     top 0
     margin 0
     padding 0
     z-index 75
+    right 0
     a
       &:hover
-        background-color inherit!important
-  .closebtn
-    right 0
+        background-color inherit !important
+  form
+    margin 0
+    border-top 0
+    margin-left: 0 !important
+    padding-left: 0 !important
+    padding-left 0 !important
+    padding-right 0 !important
+    label
+      @extend #sidenav form
+      text-align: left
+    div
+    input
+      @extend #sidenav form
 
 #tablePropertiesBtn
   float left
+  margin-left: 15px
 
 #csvTab a
   position relative
@@ -27,9 +72,15 @@ span.tabclose
   top 0
   right 0
 
+.input-sm, input
+  display: inline-block !important
+
 #toolbar li
   text-align: center
   i
   a
   div
     padding-top: 0
+
+#tableProperties .form-control
+  width: auto !important

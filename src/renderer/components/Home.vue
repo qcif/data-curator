@@ -13,9 +13,9 @@
         </div>
         <div class="collapse navbar-collapse" id="toolbar">
           <ul class="nav navbar-nav">
-            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ active: menu === index}" @click="updateMenu(index)">
+            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menu === index}" @click="updateMenu(index)">
               <a href="#">
-                <i class="fa" :class="menu.icon" aria-hidden="true"/>
+                <i class="fa" :class="menu.icon" aria-hidden="true" />
                 <div>{{menu.name}}</div>
               </a>
             </li>
@@ -25,17 +25,19 @@
     </nav>
   </div>
   <div id="body-panel" class="panel">
-    <nav id="sidenav" class="sidenav navbar navbar-default">
+    <nav id="sidenav" class="sidenav navbar navbar-default row" :class="{ 'closed': isSideNavClosed}">
       <div class="container-fluid">
-        <ul class="nav navbar-right closebtn">
-          <li>
-            <a href="#">
-              <span class="btn-danger fa fa-times" @click="closeNav()" />
-            </a>
-          </li>
-        </ul>
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Panel Content</a>
+          <ul class="nav navbar-right closebtn">
+            <li>
+              <a href="#">
+                <span class="btn-danger fa fa-times" @click="closeNav" />
+              </a>
+            </li>
+          </ul>
+          <a class="navbar-brand" href="#">
+            Panel Heading
+          </a>
           <button id="tablePropertiesBtn" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#tableProperties">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -43,21 +45,29 @@
           </button>
         </div>
         <form class="navbar-form form-horizontal collapse navbar-collapse" id="tableProperties">
-          <div class="form-group">
-            <label class="control-label col-sm-4" for="name">Name:</label>
-            <div class="col-sm-8"><input type="text" class="form-control" id="name" /></div>
-            <label class="control-label col-sm-4" for="title">Title:</label>
-            <div class="col-sm-8"><input type="text" class="form-control" id="title" /></div>
-            <label class="control-label col-sm-4" for="description">Description:</label>
-            <div class="col-sm-8"><input type="text" class="form-control" id="description" /></div>
-            <label class="control-label col-sm-4" for="licence">License:</label>
-            <div class="col-sm-8"><input type="text" class="form-control" id="licence" /></div>
+          <div class="form-group-sm row container-fluid">
+            <div>
+              <label class="control-label col-sm-4" for="name">Name:</label>
+              <input type="text" class="form-control input-sm col-sm-8" id="name" />
+            </div>
+            <div>
+              <label class="control-label col-sm-4" for="title">Title:</label>
+              <input type="text" class="form-control input-sm col-sm-8" id="title" />
+            </div>
+            <div>
+              <label class="control-label col-sm-4" for="description">Description:</label>
+              <input type="text" class="form-control input-sm col-sm-8" id="description" />
+            </div>
+            <div>
+              <label class="control-label col-sm-4" for="licence">License:</label>
+              <input type="text" class="form-control input-sm col-sm-8" id="licence" />
+            </div>
           </div>
         </form>
       </div>
     </nav>
-    <div id="main-panel" class="panel panel-default">
-      <div id="main-top-panel" class="panel panel-heading"></div>
+    <div id="main-panel" class="panel panel-default" :class="{'side-nav-closed': isSideNavClosed}">
+      <!-- <div id="main-top-panel" class="panel panel-heading"></div> -->
       <div id="main-middle-panel" class="panel panel-body">
         <div id='csvEditor' v-model='tabCount'>
           <ul class="nav nav-tabs">
@@ -88,10 +98,10 @@
         </div>
       </div>
     </div>
+    </div>
+    <div id="footer-panel" class="panel panel-footer">
+    </div>
   </div>
-  <div id="footer-panel" class="panel panel-footer">
-  </div>
-</div>
 </template>
 <script>
 import {
@@ -114,21 +124,43 @@ export default {
     return {
       activeTab: 1,
       tabCount: 1,
-      toolbarMenus: [
-        {name: 'Find and Replace', icon: 'fa-table'},
-        {name: 'Validate', icon: 'fa-check-circle'},
-        {name: 'Column', icon: 'fa-search'},
-        {name: 'Table', icon: 'fa-table'},
-        {name: 'Provenance', icon: 'fa-file-text-o'},
-        {name: 'Package', icon: 'fa-gift'},
-        {name: 'Export', icon: 'fa-search'},
-        {name: 'Publish', icon: 'fa-cloud-upload'}
-      ],
-      menu: 0
+      toolbarMenus: [{
+        name: 'Find and Replace',
+        icon: 'fa-table'
+      },
+      {
+        name: 'Validate',
+        icon: 'fa-check-circle'
+      },
+      {
+        name: 'Column',
+        icon: 'fa-search'
+      },
+      {
+        name: 'Table',
+        icon: 'fa-table'
+      },
+      {
+        name: 'Provenance',
+        icon: 'fa-file-text-o'
+      },
+      {
+        name: 'Package',
+        icon: 'fa-gift'
+      },
+      {
+        name: 'Export',
+        icon: 'fa-search'
+      },
+      {
+        name: 'Publish',
+        icon: 'fa-cloud-upload'
+      }],
+      menu: 0,
+      isSideNavClosed: true
     }
   },
-  computed: {
-  },
+  computed: {},
   methods: {
     addTab: function() {
       console.log('.........................')
@@ -155,15 +187,11 @@ export default {
       }
     },
     closeNav: function() {
-      $('#sidenav').css('width', '0')
-      $('#main-panel').css('margin-right', '0')
-      $('#main-panel').css('width', '100%')
+      this.isSideNavClosed = true
       $('.closebtn').hide()
     },
     openNav: function() {
-      $('#sidenav').css('width', '40%')
-      $('#main-panel').css('width', '60%')
-      // enable flyout panel to begin display before showing close button
+      this.isSideNavClosed = false
       $('.closebtn').delay(200).show(0)
     },
     updateMenu: function(index) {

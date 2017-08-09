@@ -109,6 +109,10 @@
   z-index: 15;
 }
 
+.editor {
+  z-index: 15 !important;
+}
+
 #main-middle-panel {
   overflow: auto;
   z-index: 15;
@@ -119,57 +123,37 @@
   z-index: 15;
 }
 
-/* The side navigation menu */
-
-.sidenav {
-  height: 100%;
-  width: 0;
-  position: absolute;
-  z-index: 50;
-  top: 0;
-  right: 0;
-  overflow-x: hidden;
-  transition: 0.3s;
-  padding-top: 1px;
+@media screen {
+  #sidenav form {
+    padding-top: 6px !important;
+    font-size: 12px !important;
+  }
+}
+@media screen and (min-width: 480px) {
+  .col-sm-4 {
+    width: 33.33333333%;
+    float: left;
+  }
+  .col-sm-8 {
+    width: 66.66666667%;
+    float: left;
+  }
 }
 
-@media only screen and (min-width: 480px) {
-    .collapse {
-        display: block;
-    }
-
-    .navbar-header {
-        float: left;
-    }
-
-    .navbar-toggle {
-        display: none;
-    }
-
-    .navbar-nav.navbar-left {
-       float: left;
-       margin: 0;
-    }
-
-    .navbar-nav.navbar-right {
-       float: right;
-       margin: 0;
-    }
-    .navbar-nav>li {
-        float: left;
-    }
-    .navbar-nav>li>a {
-        padding-top: 15px;
-        padding-bottom: 15px;
-    }
-}
-
-@media only screen and (max-width: 480px) {
-     .collapse {
-        display: none;
-     }
-
-     .navbar-header {
-        display: block;
-     }
+@media screen and (max-width: 480px) {
+  #main-panel {
+    margin-right: 150px !important;
+  }
+  #main-panel.side-nav-closed {
+    margin-right: 0 !important;
+  }
+  #sidenav {
+    width: 160px !important;
+  }
+  #sidenav .navbar-brand {
+    padding-top: 25px;
+  }
+  #sidenav.closed {
+    width: 0 !important;
+  }
 }
