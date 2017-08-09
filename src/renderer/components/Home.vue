@@ -13,9 +13,11 @@
         </div>
         <div class="collapse navbar-collapse" id="toolbar">
           <ul class="nav navbar-nav">
-            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ active: menu === index}" @click="menu = index">
+            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ active: menu === index}" @click="updateMenu(index)">
+              <a href="#">
                 <i class="fa" :class="menu.icon" aria-hidden="true"/>
-                <a href="#" @click="openNav">{{menu.name}}</a>
+                <div>{{menu.name}}</div>
+              </a>
             </li>
           </ul>
         </div>
@@ -125,7 +127,8 @@ export default {
       menu: 0
     }
   },
-  computed: {},
+  computed: {
+  },
   methods: {
     addTab: function() {
       console.log('.........................')
@@ -162,6 +165,10 @@ export default {
       $('#main-panel').css('width', '60%')
       // enable flyout panel to begin display before showing close button
       $('.closebtn').delay(200).show(0)
+    },
+    updateMenu: function(index) {
+      this.menu = index
+      this.openNav()
     }
   },
   components: {},
