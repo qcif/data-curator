@@ -13,8 +13,11 @@
         </div>
         <div class="collapse navbar-collapse" id="toolbar">
           <ul class="nav navbar-nav">
-            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ active: menu === index}" v-on:click="menu = index">
-              <a href="#" v-on:click="openNav">{{menu}}</a>
+            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ active: menu === index}" @click="updateMenu(index)">
+              <a href="#">
+                <i class="fa" :class="menu.icon" aria-hidden="true"/>
+                <div>{{menu.name}}</div>
+              </a>
             </li>
           </ul>
         </div>
@@ -60,12 +63,12 @@
           <ul class="nav nav-tabs">
             <li>
               <ul class="nav nav-tabs" id='csvTab'>
-                <li v-for="(count, index) in tabCount" :key="count" :class="{ active: activeTab === count}" v-on:click="activeTab = count">
-                  <a><span>Tab {{count}}</span><span class="tabclose btn-danger fa fa-times" @click="closeTab()"></span></a>
+                <li v-for="(count, index) in tabCount" :key="count" :class="{ active: activeTab === count}" @click="activeTab = count">
+                  <a><span>Tab {{count}}</span><span class="tabclose btn-danger fa fa-times" @click="closeTab"></span></a>
                 </li>
               </ul>
             </li>
-            <li class="tab-add" v-on:click="addTab">
+            <li class="tab-add" @click="addTab">
               <a>&nbsp;<button type="button" class="btn btn-sm">+</button></a>
             </li>
           </ul>
@@ -112,14 +115,14 @@ export default {
       activeTab: 1,
       tabCount: 1,
       toolbarMenus: [
-        'Find and Replace',
-        'Validate',
-        'Column',
-        'Table',
-        'Provenance',
-        'Package',
-        'Export',
-        'Publish'
+        {name: 'Find and Replace', icon: 'fa-table'},
+        {name: 'Validate', icon: 'fa-check-circle'},
+        {name: 'Column', icon: 'fa-search'},
+        {name: 'Table', icon: 'fa-table'},
+        {name: 'Provenance', icon: 'fa-file-text-o'},
+        {name: 'Package', icon: 'fa-gift'},
+        {name: 'Export', icon: 'fa-search'},
+        {name: 'Publish', icon: 'fa-cloud-upload'}
       ],
       menu: 0
     }
@@ -130,15 +133,26 @@ export default {
     addTab: function() {
       console.log('.........................')
       console.log('inside addTab function....')
-      console.log('active tab is: ' + this.activeTab)
-      console.log('tab count is: ' + this.tabCount)
-      console.log('recalculating...')
       this.tabCount += 1
       this.activeTab = this.tabCount
-      console.log('active tab is: ' + this.activeTab)
-      console.log('tab count is: ' + this.tabCount)
+      this.$nextTick(function() {
+        console.log('.........................')
+        console.log('...next tick')
+        console.log('.....active from watch is: ')
+        console.log($('.editor').length)
+        require('../index.js').loadDefaultDataIntoContainer($('.editor:last')[0])
+        console.log('data loaded at end of next tick')
+        console.log('.........................')
+      })
       console.log('leaving addTab function....')
       console.log('.........................')
+    },
+    closeTab: function() {
+      if (this.tabCount > 0) {
+        this.tabCount -= 1
+      } else {
+        this.tabCount = 0
+      }
     },
     closeNav: function() {
       $('#sidenav').css('width', '0')
@@ -151,27 +165,10 @@ export default {
       $('#main-panel').css('width', '60%')
       // enable flyout panel to begin display before showing close button
       $('.closebtn').delay(200).show(0)
-    }
-  },
-  watch: {
-    tabCount: {
-      handler: function(val, oldValue) {
-        console.log('.........................')
-        console.log('...handling')
-        this.$nextTick(function() {
-          console.log('.........................')
-          console.log('...next tick')
-          console.log('.....active from watch is: ')
-          console.log($('.editor').length)
-          require('../index.js').loadDefaultDataIntoContainer($('.editor:last')[0])
-          console.log('data loaded at end of next tick')
-          console.log('.........................')
-        })
-
-        // })
-        console.log('leaving handler')
-        console.log('.........................')
-      }
+    },
+    updateMenu: function(index) {
+      this.menu = index
+      this.openNav()
     }
   },
   components: {},
