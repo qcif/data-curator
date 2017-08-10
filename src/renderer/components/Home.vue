@@ -228,10 +228,19 @@ export default {
       console.log('leaving addTab function....')
       console.log('.........................')
     },
-    closeTab: function(e) {
+    closeTab: function(event) {
       let tabsLength = this.tabsLength
-      console.log(e)
-      console.log(e.target)
+      // console.log(e)
+      let targetTabId = $(event.currentTarget).parents("[id^='tab']").attr('id')
+      console.log($(event.currentTarget).parents("[id^='tab']").attr('id'))
+      let targetTabPosition = $.inArray(targetTabId, this.tabs)
+      console.log(targetTabPosition)
+      this.tabs.splice(targetTabPosition, 1)
+      let nextActiveTabPos = targetTabPosition < 1 ? 0 : targetTabPosition - 1
+      this.activeTab = this.tabs[nextActiveTabPos]
+      console.log(this.activeTab)
+      // var element = e.target
+      // console.log($(element).parent("[id^='tab']"))
       // if (tabsLength > 1) {
       //   this.tabIndex -= 1
       //
@@ -270,19 +279,19 @@ export default {
   },
   components: {},
   mounted: function() {
-    DOM.fromMutationObserver(document.getElementById('csvTab'), {
-      childList: true
-    }).subscribe(function(mutations) {
-      mutations.forEach(function(mutation) {
-        console.log('Type of mutation: ' + mutation.type)
-        console.dir(mutation)
-        if (mutation.type == 'childList') {
-          mutation.target.childNodes.forEach(function(child) {
-            console.log(child.id)
-          })
-        }
-      })
-    })
+    // DOM.fromMutationObserver(document.getElementById('csvTab'), {
+    //   childList: true
+    // }).subscribe(function(mutations) {
+    //   mutations.forEach(function(mutation) {
+    //     console.log('Type of mutation: ' + mutation.type)
+    //     console.dir(mutation)
+    //     if (mutation.type == 'childList') {
+    //       mutation.target.childNodes.forEach(function(child) {
+    //         console.log(child.id)
+    //       })
+    //     }
+    //   })
+    // })
     this.$nextTick(function() {
       console.log('.........................')
       console.log('inside Vue ready tick....')
