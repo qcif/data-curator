@@ -62,11 +62,10 @@ function createHot(container) {
   console.log('............................')
   return hot
 }
-
-ipc.on('initTab', function(e) {
-  initDefaultTab()
-})
-
+//
+// ipc.on('initTab', function(e) {
+//   initDefaultTab()
+// })
 export function initDefaultTab() {
   loadDefaultDataIntoContainer($('.editor')[0])
 }

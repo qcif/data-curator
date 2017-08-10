@@ -6954,15 +6954,21 @@ run-async@^2.2.0:
   dependencies:
     is-promise "^2.1.0"
 
+rx-dom@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/rx-dom/-/rx-dom-7.0.3.tgz#f876f398453ffc346ac65187edd6e717ed11fe09"
+  dependencies:
+    rx "*"
+
 rx-lite@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-3.1.2.tgz#19ce502ca572665f3b647b10939f97fd1615f102"
 
-rx@^4.1.0:
+rx@*, rx@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/rx/-/rx-4.1.0.tgz#a5f13ff79ef3b740fe30aa803fb09f98805d4782"
 
-rxjs@^5.1.1:
+rxjs@^5.1.1, rxjs@^5.4.2:
   version "5.4.2"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.4.2.tgz#2a3236fcbf03df57bae06fd6972fd99e5c08fcf7"
   dependencies:
@@ -7874,7 +7880,7 @@ typescript@>=1.6:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.2.tgz#f8395f85d459276067c988aa41837a8f82870844"
 
-uglify-js@2.6.x, uglify-js@^2.6:
+uglify-js@2.6.x:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.6.4.tgz#65ea2fb3059c9394692f15fed87c2b36c16b9adf"
   dependencies:
@@ -7890,7 +7896,7 @@ uglify-js@3.0.x:
     commander "~2.11.0"
     source-map "~0.5.1"
 
-uglify-js@^2.8.29:
+uglify-js@^2.6, uglify-js@^2.8.29:
   version "2.8.29"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.8.29.tgz#29c5733148057bb4e1f75df35b7a9cb72e6a59dd"
   dependencies:
@@ -8158,6 +8164,10 @@ vue-loader@^12.2.1:
 vue-router@^2.5.3:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-2.7.0.tgz#16d424493aa51c3c8cce8b7c7210ea4c3a89aff1"
+
+vue-rx@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/vue-rx/-/vue-rx-3.3.0.tgz#aeb1689d28a94bd516849f82b5a3be2684e5f61f"
 
 vue-style-loader@^3.0.0, vue-style-loader@^3.0.1:
   version "3.0.1"

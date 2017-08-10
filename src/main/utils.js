@@ -28,11 +28,6 @@ export function createWindowTab() {
   if (window == null) {
     window = createWindow()
   }
-  window.webContents.on('did-finish-load', function() {
-    console.log('Initialising tab...')
-    window.webContents.send('initTab')
-    console.log('Tab initialisation completed.')
-  })
 }
 
 export function enableSave() {
