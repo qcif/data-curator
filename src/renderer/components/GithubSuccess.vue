@@ -33,11 +33,14 @@ export default {
 @import '~components-font-awesome/css/font-awesome.min.css'
 </style>
 <style scoped>
-@import '/static/assets/css/default.css'
+@import '/static/css/default.styl'
 </style>
 <style scoped>
 @import '~handsontable/dist/handsontable.full.css'
 </style>
 <style scoped>
-@import '/static/assets/css/panels.css'
+@import '~static/css/panels.css'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/panel'
 </style>
