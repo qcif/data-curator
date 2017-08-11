@@ -73,8 +73,11 @@
           <ul class="nav nav-tabs">
             <li>
               <ul class="nav nav-tabs" id='csvTab'>
-                <li v-for="tab in tabs" :id="tab" :key="tab" :class="{ active: activeTab == tab}" @click="activeTab = tab">
-                  <a><span>{{tab}}</span><span class="tabclose btn-danger fa fa-times" @click="closeTab"></span></a>
+                <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab === tab}" @click="activeTab = tab">
+                  <a>
+                    <span>{{tab}}</span>
+                    <span v-if="tabs.length > 1" class="tabclose btn-danger fa fa-times" @click.stop="closeTab"></span>
+                  </a>
                 </li>
               </ul>
             </li>
@@ -112,10 +115,6 @@ import * as Sortable from 'sortablejs/Sortable.js'
 import {
   loadDefaultDataIntoContainer
 } from '../index.js'
-import Rx from 'rxjs/Rx'
-import {
-  DOM
-} from 'rx-dom'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
 const {
   shell
@@ -190,70 +189,33 @@ export default {
     addTab: function() {
       console.log('.........................')
       console.log('inside addTab function....')
-      // add tab first to trigger element creation
       this.tabIndex += 1
-      // let nextTab = {id: this.createTabId(this.tabIndex), content: ''}
       let nextTabId = this.createTabId(this.tabIndex)
       this.activeTab = nextTabId
       this.tabs.push(nextTabId)
-      console.log('recalculated....')
       this.$nextTick(function() {
         console.log('.........................')
         console.log('...next tick')
-        console.log('.....active from watch is: ')
-        console.log($('.editor').length)
         // update latest tab object with content
         loadDefaultDataIntoContainer($('.editor:last')[0])
-        // console.log('data loaded at end of next tick')
-        console.log(`id is: ` + $('.editor:last').attr('id'))
-        // console.dir(this.tabs)
-        // console.log('latest tab is:')
-        // console.log(this.tabs[this.tabIndex].id)
-        // console.log(this.tabs[this.tabIndex].content)
-        // console.log('done')
-        // // let latestTab = this.tabs[this.tabs.length - 1]
-        // console.log(`next tab id is: ${nextTab.id}`)
-        // console.log(nextTab)
-        // nextTab.content = $('.editor:last').attr('id')
-        // // let latestTab = {id: `${this.tabIndex}`, content: `${$('.editor:last').attr('id')}`}
         console.log('updated latest tab is:')
         console.log(this.tabs[this.tabIndex])
-        // console.log(this.tabs[this.tabIndex].content)
-        // this.tabs.push(latestTab)
-        console.log(this.tabs)
-        // console.log('tab ids....')
-        // console.log(this.tabs[this.tabs.length-1])
         console.log('.........................')
       })
       console.log('leaving addTab function....')
       console.log('.........................')
     },
     closeTab: function(event) {
-      let tabsLength = this.tabsLength
-      // console.log(e)
-      let targetTabId = $(event.currentTarget).parents("[id^='tab']").attr('id')
-      console.log($(event.currentTarget).parents("[id^='tab']").attr('id'))
-      let targetTabPosition = $.inArray(targetTabId, this.tabs)
-      console.log(targetTabPosition)
-      this.tabs.splice(targetTabPosition, 1)
-      let nextActiveTabPos = targetTabPosition < 1 ? 0 : targetTabPosition - 1
-      this.activeTab = this.tabs[nextActiveTabPos]
-      console.log(this.activeTab)
-      // var element = e.target
-      // console.log($(element).parent("[id^='tab']"))
-      // if (tabsLength > 1) {
-      //   this.tabIndex -= 1
-      //
-      // } else if (tabsLength < 1) {
-      //   this.tabIndex = 0
-      //   this.tabs = []
-      // } else {
-      //   console.log('Keeping tab at 1.')
-      // }
-    // }
+      // do not allow single tab to be closed
+      if (this.tabs.length > 1) {
+        let targetTabId = $(event.currentTarget).parents("[id^='tab']").attr('id')
+        // remove the closed tab from the array
+        let targetTabPosition = $.inArray(targetTabId, this.tabs)
+        this.tabs.splice(targetTabPosition, 1)
+        this.removeFromActiveTab(targetTabId, targetTabPosition)
+      }
     },
     closeSideNav: function() {
-      console.log('closing side nav...')
       this.navStatus = 'closed'
       $('.closebtn').hide()
     },
@@ -270,28 +232,17 @@ export default {
       return `tab${tabId}`
     },
     updateTabs: function(tabIdOrder) {
-      console.log(tabIdOrder)
-      console.log('checking...')
-      console.log(this.tabs)
       this.tabs = tabIdOrder
-      console.log(this.tabs)
+    },
+    removeFromActiveTab: function(tab, position) {
+      if (tab === this.activeTab) {
+        let previousActiveTabPos = position < 1 ? 0 : position - 1
+        this.activeTab = `${this.tabs[previousActiveTabPos]}`
+      }
     }
   },
   components: {},
   mounted: function() {
-    // DOM.fromMutationObserver(document.getElementById('csvTab'), {
-    //   childList: true
-    // }).subscribe(function(mutations) {
-    //   mutations.forEach(function(mutation) {
-    //     console.log('Type of mutation: ' + mutation.type)
-    //     console.dir(mutation)
-    //     if (mutation.type == 'childList') {
-    //       mutation.target.childNodes.forEach(function(child) {
-    //         console.log(child.id)
-    //       })
-    //     }
-    //   })
-    // })
     this.$nextTick(function() {
       console.log('.........................')
       console.log('inside Vue ready tick....')
@@ -310,7 +261,6 @@ export default {
       })
       this.closeSideNav()
       this.addTab()
-      console.log(`nav pos: ${this.navPosition}`)
       console.log('leaving Vue ready tick....')
       console.log('.........................')
     })
