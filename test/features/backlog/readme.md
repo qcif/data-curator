@@ -1,1 +1,2 @@
-These tests are on the backlog and are not scheduled to be developed in 2017.
+These features are tagged as drafts, templates, or on the backlog.
+Backlog features that written, are tagged ready.  

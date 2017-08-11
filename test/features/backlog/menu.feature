@@ -1,4 +1,4 @@
-@help-wanted
+@draft
 
 Feature: Initiate feature using menu
   As a Data Packager or Data Consumer
