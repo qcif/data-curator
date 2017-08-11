@@ -36,7 +36,7 @@
   - set-column-properties.feature
   - set-table-properties.feature
   - set-provenance-information.feature
-  - sample-provenance-information.md (Sample Provenance Information)
+  - sample-provenance-information.md
   - set-datapackage-properties.feature
   - validate-table.feature
   - validate-column.feature
