@@ -46,9 +46,10 @@
   - show-previous-tab.feature
 - help:
   - help.feature
+  - show-support.feature
+- shortcuts (Keyboard Shortcuts):
   - menu-keyboard-shortcuts.feature (Menu keyboard shortcuts)
   - edit-keyboard-shortcuts.feature (Edit keyboard shortcuts)
-  - show-support.feature
 - backlog:
   - publish-data-package.feature
   - quality-report.md
