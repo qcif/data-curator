@@ -1,4 +1,4 @@
-@backlog @ready @enterprise-add-in
+@backlog @enterprise-add-in
 
 Feature: Publish Data Package
   As a Data Packager

@@ -41,6 +41,7 @@
   - validate-table.feature
   - validate-column.feature
   - export-datapackage.feature
+  - publish-data-package.feature
 - window:
   - show-next-tab.feature
   - show-previous-tab.feature
@@ -51,7 +52,6 @@
   - menu-keyboard-shortcuts.feature (Menu keyboard shortcuts)
   - edit-keyboard-shortcuts.feature (Edit keyboard shortcuts)
 - backlog:
-  - publish-data-package.feature
   - quality-report.md
   - menu.feature
   - sort-column.feature
