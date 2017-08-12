@@ -69,11 +69,11 @@
     <div id="main-panel" class="panel panel-default" :class="updateMainFromSideNav">
       <!-- <div id="main-top-panel" class="panel panel-heading"></div> -->
       <div id="main-middle-panel" class="panel panel-body">
-        <div id='csvEditor' v-model='tabs'>
+        <div id='csvEditor'>
           <ul class="nav nav-tabs">
             <li>
               <ul class="nav nav-tabs" id='csvTab'>
-                <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab === tab}" @click="activeTab = tab">
+                <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" @click="setActiveTab(tab)">
                   <a>
                     <span>{{tab}}</span>
                     <span v-if="tabs.length > 1" class="tabclose btn-danger fa fa-times" @click.stop="closeTab"></span>
@@ -108,6 +108,11 @@
 </template>
 <script>
 import {
+  mapMutations,
+  mapState,
+  mapGetters
+} from 'vuex'
+import {
   setActiveTabId,
   getActiveTabId
 } from '../tabs.js'
@@ -128,9 +133,6 @@ export default {
   name: 'home',
   data() {
     return {
-      activeTab: '',
-      tabIndex: -1,
-      tabs: [],
       menuIndex: 0,
       navPosition: 'right',
       navStatus: 'closed',
@@ -178,6 +180,8 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({tabs: 'getTabs', activeTab: 'getActiveTab', tabIndex: 'getTabIndex'}),
+    ...mapGetters(['getPreviousTabId']),
     updateMainFromSideNav() {
       return this.navStatus === 'closed' ? this.navStatus : this.navPosition
     },
@@ -186,20 +190,25 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'pushTab',
+      'removeTab',
+      'setTabs',
+      'setActiveTab',
+      'incrementTabIndex'
+    ]),
     addTab: function() {
       console.log('.........................')
       console.log('inside addTab function....')
-      this.tabIndex += 1
+      this.incrementTabIndex()
       let nextTabId = this.createTabId(this.tabIndex)
-      this.activeTab = nextTabId
-      this.tabs.push(nextTabId)
+      this.setActiveTab(nextTabId)
+      this.pushTab(nextTabId)
       this.$nextTick(function() {
         console.log('.........................')
         console.log('...next tick')
         // update latest tab object with content
         loadDefaultDataIntoContainer($('.editor:last')[0])
-        console.log('updated latest tab is:')
-        console.log(this.tabs[this.tabIndex])
         console.log('.........................')
       })
       console.log('leaving addTab function....')
@@ -211,8 +220,11 @@ export default {
         let targetTabId = $(event.currentTarget).parents("[id^='tab']").attr('id')
         // remove the closed tab from the array
         let targetTabPosition = $.inArray(targetTabId, this.tabs)
-        this.tabs.splice(targetTabPosition, 1)
-        this.removeFromActiveTab(targetTabId, targetTabPosition)
+        this.removeTab(targetTabId)
+        if (targetTabId === this.activeTab) {
+          let previousTabId = this.getPreviousTabId(targetTabPosition)
+          this.setActiveTab(previousTabId)
+        }
       }
     },
     closeSideNav: function() {
@@ -230,15 +242,6 @@ export default {
     },
     createTabId: function(tabId) {
       return `tab${tabId}`
-    },
-    updateTabs: function(tabIdOrder) {
-      this.tabs = tabIdOrder
-    },
-    removeFromActiveTab: function(tab, position) {
-      if (tab === this.activeTab) {
-        let previousActiveTabPos = position < 1 ? 0 : position - 1
-        this.activeTab = `${this.tabs[previousActiveTabPos]}`
-      }
     }
   },
   components: {},
@@ -248,15 +251,15 @@ export default {
       console.log('inside Vue ready tick....')
       require('../index.js')
       let tabIdOrder
-      const vueUpdateTabs = this.updateTabs
+      const vueSetTabs = this.setTabs
       Sortable.create(csvTab, {
         animation: 150,
-        onSort: function(/** Event */ evt) {
+        onSort: function(evt) {
           console.log('dragged!')
           tabIdOrder = $("#csvTab [id^='tab']").map(function() {
             return this.id
           }).get()
-          vueUpdateTabs(tabIdOrder)
+          vueSetTabs(tabIdOrder)
         }
       })
       this.closeSideNav()
