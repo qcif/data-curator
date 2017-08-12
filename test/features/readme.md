@@ -4,4 +4,8 @@ Acceptance tests for Data Curator are:
 
 - [shared in a pretty format](https://relishapp.com/odi-australia/data-curator/docs) using [Relish](https://relishapp.com)
 
-Draft features, the feature template, and features describing items on the backlog are in the backlog directory.
+- arranged like the application menu structure
+
+- use the `@backlog` tag to indicate that it's not in our [release plans](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open)
+
+Draft features are in the Backlog directory

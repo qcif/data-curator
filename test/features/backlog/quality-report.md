@@ -45,9 +45,9 @@ The graphic below shows an overview of missing values and data type mismatches.
 
 The table includes the following columns:
 
-- [{column-name-1}](#{column-name-1}) 
-- [{column-name-2}](#{column-name-2})
-- [{column-name-3}](#{column-name-3})
+  - [{column-name-1}](#{column-name-1}) 
+  - [{column-name-2}](#{column-name-2})
+  - [{column-name-3}](#{column-name-3})
 
 ### {column-name-1} column
 

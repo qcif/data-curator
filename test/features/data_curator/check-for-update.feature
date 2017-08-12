@@ -1,3 +1,5 @@
+@backlog
+
 Feature: Check for update
   As a Data Packager or Data Consumer
   I want to update to the lastest version of the application

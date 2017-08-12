@@ -1,4 +1,4 @@
-Feature: Open a semi-colon separated value file
+Feature: Open a Semi-colon separated value file
   As a Data Packager
   I want to open a semi-colon separated value file
   So that I can describe, validate and package the data
