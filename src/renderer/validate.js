@@ -10,9 +10,9 @@ var colors = {
   info: 'rgba(99, 149, 215, 0.6)'
 }
 
-var displayResults = function(results) {
+var displayResults = function(hot, results) {
   displayValidationMessages(JSON.parse(results).validation)
-  highlightCells()
+  highlightCells(hot)
 }
 
 var displayValidationMessages = function(validation) {
@@ -38,16 +38,16 @@ var displayValidationMessages = function(validation) {
   }
 }
 
-var highlightCells = function() {
+var highlightCells = function(hot) {
   clearHighlights()
 
   $('#message-panel').on('click', '.message', function() {
-    highlightCell($(this).data())
+    highlightCell($(this).data(), hot)
   })
 }
 
-var highlightCell = function(d) {
-  scrollToCell(d.row, d.col)
+var highlightCell = function(d, hot) {
+  scrollToCell(d.row, d.col, hot)
   hot.updateSettings({
     // set the new renderer for every cell
     cells: function(row, col, prop) {
@@ -69,7 +69,7 @@ var highlightCell = function(d) {
   })
 }
 
-var scrollToCell = function(row, col) {
+var scrollToCell = function(row, col, hot) {
   if (row === null && col === null) { return }
   row = row || 1
   col = col || 1

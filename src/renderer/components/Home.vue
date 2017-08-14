@@ -112,14 +112,15 @@ import {
   mapState,
   mapGetters
 } from 'vuex'
-import {
-  setActiveTabId,
-  getActiveTabId
-} from '../tabs.js'
 import * as Sortable from 'sortablejs/Sortable.js'
 import {
-  loadDefaultDataIntoContainer
+  addHotContainerListeners,
+  loadData
 } from '../index.js'
+import {
+  HotRegister
+} from '../hot.js'
+import {initStorage, insertHot} from '../../renderer/db.js'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
 const {
   shell
@@ -129,6 +130,9 @@ require('bootstrap/dist/js/bootstrap.min.js')
 require('jquery-csv/src/jquery.csv.js')
 require('lodash/lodash.min.js')
 require('../menu.js')
+var defaultData = '"","",""'
+var defaultTitle = 'Untitled.csv'
+var defaultFormat = require('../../renderer/file-actions.js').formats.csv
 export default {
   name: 'home',
   data() {
@@ -180,7 +184,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({tabs: 'getTabs', activeTab: 'getActiveTab', tabIndex: 'getTabIndex'}),
+    ...mapGetters({
+      tabs: 'getTabs',
+      activeTab: 'getActiveTab',
+      tabIndex: 'getTabIndex'
+    }),
     ...mapGetters(['getPreviousTabId']),
     updateMainFromSideNav() {
       return this.navStatus === 'closed' ? this.navStatus : this.navPosition
@@ -208,21 +216,45 @@ export default {
         console.log('.........................')
         console.log('...next tick')
         // update latest tab object with content
-        loadDefaultDataIntoContainer($('.editor:last')[0])
+        this.loadDefaultDataIntoContainer($('.editor:last')[0])
         console.log('.........................')
       })
       console.log('leaving addTab function....')
       console.log('.........................')
     },
+    loadDefaultDataIntoContainer: function(container) {
+      console.log('.........................')
+      console.log('inside method loadDefaultDataIntoContainer')
+      console.log(container)
+      // let hot = createHot(container)
+      HotRegister.register(container)
+      addHotContainerListeners(container)
+      // console.log(`hot is ${hot}`)
+      // console.log(hot)
+      let activeHotId = this.getActiveHotId()
+      console.log('active hot is: ' + activeHotId)
+      loadData(activeHotId, defaultData, defaultFormat)
+      // require('electron').remote.getGlobal('sharedObject').hots[activeHotId] = hot
+      // global.sharedObject.hots.push(hot)
+      // console.log(require('electron').remote.getGlobal('sharedObject').hots)
+      console.log('leaving loadDefaultDataIntoContainer')
+      console.log('.........................')
+    },
     closeTab: function(event) {
       // do not allow single tab to be closed
       if (this.tabs.length > 1) {
+        console.log('close triggered...')
         let targetTabId = $(event.currentTarget).parents("[id^='tab']").attr('id')
+        console.log(`target tab id: ${targetTabId}`)
         // remove the closed tab from the array
-        let targetTabPosition = $.inArray(targetTabId, this.tabs)
-        this.removeTab(targetTabId)
+        console.log(this.tabs)
+        // let targetTabIndex = _.findIndex(this.tabs, `${targetTabId}`)
+        let targetTabIndex = $.inArray(targetTabId, this.tabs)
+        console.log(`target tab index is: ${targetTabIndex}`)
+        // _.pull(this.tabs, targetTabId)
+        this.removeTab(targetTabIndex)
         if (targetTabId === this.activeTab) {
-          let previousTabId = this.getPreviousTabId(targetTabPosition)
+          let previousTabId = this.getPreviousTabId(targetTabIndex)
           this.setActiveTab(previousTabId)
         }
       }
@@ -242,10 +274,14 @@ export default {
     },
     createTabId: function(tabId) {
       return `tab${tabId}`
+    },
+    getActiveHotId: function() {
+      return $('#csvContent .active .editor').attr('id')
     }
   },
   components: {},
   mounted: function() {
+    initStorage()
     this.$nextTick(function() {
       console.log('.........................')
       console.log('inside Vue ready tick....')

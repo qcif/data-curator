@@ -26,9 +26,8 @@ const mutations = {
     state.tabs.push(tabId)
     console.log(state.tabs)
   },
-  removeTab (state, tabId) {
-    let targetTabPosition = $.inArray(tabId, state.tabs)
-    state.tabs.splice(targetTabPosition, 1)
+  removeTab (state, index) {
+    state.tabs.splice(index, 1)
   },
   setActiveTab (state, tabId) {
     console.log(tabId)

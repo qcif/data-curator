@@ -57,6 +57,7 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "babel-polyfill": "^6.23.0",
     "bootstrap": "^3.3.7",
     "bootstrap-tagsinput": "^0.7.1",
     "bootstrap-webpack": "^0.0.6",
@@ -73,6 +74,8 @@
     "moment": "^2.18.1",
     "node-zip": "^1.1.1",
     "pikaday": "^1.6.1",
+    "pouchdb": "^6.3.4",
+    "pouchdb-adapter-idb": "^6.3.4",
     "request": "^2.81.0",
     "rx-dom": "^7.0.3",
     "rxjs": "^5.4.2",

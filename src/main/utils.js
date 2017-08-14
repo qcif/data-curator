@@ -19,6 +19,11 @@ export function createWindow() {
   mainWindow.on('resize', function() {
     mainWindow.webContents.send('resized')
   })
+
+  mainWindow.on('close', function() {
+    console.log(mainWindow.webContents.send('destroyDb'))
+  })
+
   return mainWindow
 }
 

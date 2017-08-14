@@ -27,7 +27,9 @@ global.fileActions = require('./file')
 global.tools = require('./tools')
 global.validate = require('./validate')
 global.help = require('./help')
-global.sharedObject = {}
+global.sharedObject = {
+  hots: {}
+}
 
 var template = require('./menu').menu
 // var mainWindow = null
