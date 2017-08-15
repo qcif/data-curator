@@ -32,6 +32,8 @@ export function createWindowTab() {
   var window = BrowserWindow.getFocusedWindow()
   if (window == null) {
     window = createWindow()
+  } else {
+    window.webContents.send('addTab')
   }
 }
 

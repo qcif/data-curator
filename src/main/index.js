@@ -2,13 +2,14 @@
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
+import {dialog, app} from 'electron'
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
 global.electron = require('electron')
 
-global.app = electron.app
+// global.app = electron.app
 global.request = electron.request
 global.BrowserWindow = electron.BrowserWindow
 global.Menu = electron.Menu
@@ -27,9 +28,6 @@ global.fileActions = require('./file')
 global.tools = require('./tools')
 global.validate = require('./validate')
 global.help = require('./help')
-global.sharedObject = {
-  hots: {}
-}
 
 var template = require('./menu').menu
 // var mainWindow = null
@@ -46,6 +44,27 @@ function createWindow() {
 }
 
 app.on('ready', createWindow)
+
+app.on('before-quit', (event) => {
+  let browserWindow = BrowserWindow.getFocusedWindow()
+  dialog.showMessageBox(browserWindow, {
+    type: 'warning',
+    buttons: [
+      'Cancel', 'Quit', 'Save'
+    ],
+    defaultId: 1,
+    title: 'Save before closing?',
+    message: 'Save before closing?'
+  }, function(response) {
+    if (response === undefined) {
+      return
+    }
+    if (response === 0) {
+      event.preventDefault()
+    }
+    console.log(`response is ${response}`)
+  })
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

@@ -120,7 +120,6 @@ import {
 import {
   HotRegister
 } from '../hot.js'
-import {initStorage, insertHot} from '../../renderer/db.js'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
 const {
   shell
@@ -130,8 +129,6 @@ require('bootstrap/dist/js/bootstrap.min.js')
 require('jquery-csv/src/jquery.csv.js')
 require('lodash/lodash.min.js')
 require('../menu.js')
-var defaultData = '"","",""'
-var defaultFormat = require('../../renderer/file-actions.js').formats.csv
 export default {
   name: 'home',
   data() {
@@ -224,6 +221,8 @@ export default {
       console.log('.........................')
     },
     loadDefaultDataIntoContainer: function(container) {
+      let defaultData = '"","",""'
+      let defaultFormat = require('../../renderer/file-actions.js').formats.csv
       console.log('.........................')
       console.log('inside method loadDefaultDataIntoContainer')
       console.log(container)
@@ -243,6 +242,17 @@ export default {
       console.log('leaving loadDefaultDataIntoContainer')
       console.log('.........................')
     },
+    cleanUpTabDependencies: function(tabId) {
+      // update active tab
+      if (tabId === this.activeTab) {
+        let targetTabIndex = _.indexOf(this.tabs, tabId)
+        let previousTabId = this.getPreviousTabId(targetTabIndex)
+        this.setActiveTab(previousTabId)
+      }
+      // update hots
+
+      // update hottabs
+    },
     closeTab: function(event) {
       // do not allow single tab to be closed
       if (this.tabs.length > 1) {
@@ -252,11 +262,7 @@ export default {
         // remove the closed tab from the array
         console.log(this.tabs)
         this.removeTab(targetTabId)
-        if (targetTabId === this.activeTab) {
-          let targetTabIndex = _.indexOf(this.tabs, targetTabId)
-          let previousTabId = this.getPreviousTabId(targetTabIndex)
-          this.setActiveTab(previousTabId)
-        }
+        this.cleanUpTabDependencies(targetTabId)
       }
     },
     closeSideNav: function() {
@@ -281,7 +287,11 @@ export default {
   },
   components: {},
   mounted: function() {
-    initStorage()
+    const vueAddTab = this.addTab
+    ipc.on('addTab', function() {
+      console.log('tab add clicked...')
+      vueAddTab()
+    })
     this.$nextTick(function() {
       console.log('.........................')
       console.log('inside Vue ready tick....')
