@@ -1,4 +1,4 @@
-Feature: Guess column properties
+Feature: Guess Column Properties
   As a Data Packager
   I want to derive as many column properties as possible from the data and the CSV dialect
   So that I can quickly set the column properties

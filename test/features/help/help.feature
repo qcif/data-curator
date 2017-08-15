@@ -1,4 +1,4 @@
-Feature: Show help
+Feature: Show Help
   As a Data Packager or Data Consumer
   I want to display help information
   So that I can learn how to use the application

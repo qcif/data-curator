@@ -1,4 +1,4 @@
-Feature: Set provenance information
+Feature: Set Provenance Information
   As a Data Packager
   I want to describe the provenance information for the data
   So that Data Consumers can make an informed choice about using the data
