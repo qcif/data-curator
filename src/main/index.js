@@ -3,6 +3,7 @@
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 import {dialog, app} from 'electron'
+import {quitOrSaveDialog} from './utils'
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
@@ -45,25 +46,12 @@ function createWindow() {
 
 app.on('ready', createWindow)
 
+function closeAppNoPrompt() {
+  app.exit()
+}
+
 app.on('before-quit', (event) => {
-  let browserWindow = BrowserWindow.getFocusedWindow()
-  dialog.showMessageBox(browserWindow, {
-    type: 'warning',
-    buttons: [
-      'Cancel', 'Quit', 'Save'
-    ],
-    defaultId: 1,
-    title: 'Save before closing?',
-    message: 'Save before closing?'
-  }, function(response) {
-    if (response === undefined) {
-      return
-    }
-    if (response === 0) {
-      event.preventDefault()
-    }
-    console.log(`response is ${response}`)
-  })
+  quitOrSaveDialog(event, 'Quit', closeAppNoPrompt)
 })
 
 app.on('window-all-closed', () => {
