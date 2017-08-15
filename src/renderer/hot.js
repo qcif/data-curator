@@ -17,8 +17,8 @@ let HotRegister = {
       tabMoves: function(event) {
         if (!event.shiftKey) {
           var selection = hot.getSelected()
-          next = hot.getCell(selection[0], selection[1] + 1)
-          if (next === null) {
+          let next = hot.getCell(selection[0], selection[1] + 1)
+          if (next == null) {
             hot.alter('insert_col', selection[1] + 1)
           }
         }
@@ -37,8 +37,8 @@ let HotRegister = {
       enterMoves: function(event) {
         if (!event.shiftKey) {
           var selection = hot.getSelected()
-          next = hot.getCell(selection[0] + 1, selection[1])
-          if (next === null) {
+          let next = hot.getCell(selection[0] + 1, selection[1])
+          if (next == null) {
             hot.alter('insert_row', selection[0] + 1)
             return {
               row: 1,
@@ -52,16 +52,17 @@ let HotRegister = {
         }
       }
     })
-    this.hots[hot.guid] = hot
+    _.set(this.hots, hot.guid, hot)
   },
   getInstance: function(key) {
-    return this.hots[key]
+    console.log(`getting ${key}`)
+    return _.get(this.hots, key)
   },
   getActiveInstance: function() {
     console.log('inside get active instance.')
     let activeHotId = jQuery('#csvContent .active .editor').attr('id')
     console.log(`active hot id: ${activeHotId}`)
-    return this.hots[activeHotId]
+    return _.get(this.hots, activeHotId)
   }
 }
 
@@ -166,6 +167,7 @@ var insertColumnLeft = function(deselect) {
 }
 
 var insertColumnRight = function(deselect) {
+  let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
   var range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
@@ -179,6 +181,7 @@ var insertColumnRight = function(deselect) {
 }
 
 var removeRows = function() {
+  let hot = HotRegister.getActiveInstance()
   var range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
     return
@@ -197,6 +200,7 @@ var removeRows = function() {
 }
 
 var removeColumns = function() {
+  let hot = HotRegister.getActiveInstance()
   var range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
     return
@@ -215,10 +219,14 @@ var removeColumns = function() {
 }
 
 var unfreezeHeaderRow = function() {
+  console.log('unfreezing...')
+  let hot = HotRegister.getActiveInstance()
   hot.updateSettings({fixedRowsTop: 0, colHeaders: true})
 }
 
 var freezeHeaderRow = function() {
+  console.log('freezing...')
+  let hot = HotRegister.getActiveInstance()
   hot.updateSettings({fixedRowsTop: 1})
 }
 
@@ -229,7 +237,7 @@ export {
   insertColumnRight,
   removeRows,
   removeColumns,
-  freeze as freezeHeaderRow,
-  unfreeze as unfreezeHeaderRow,
+  freezeHeaderRow as freeze,
+  unfreezeHeaderRow as unfreeze,
   HotRegister
 }

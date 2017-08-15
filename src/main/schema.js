@@ -19,7 +19,7 @@ function generateTemplate() {
         }
         data = templateFromSchema(data)
         if (data) {
-          utils.createWindow(data, 'Untitled.csv')
+          utils.createWindow(data, 'Data-curator')
           utils.enableSave()
         }
       })

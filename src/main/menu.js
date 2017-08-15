@@ -45,10 +45,10 @@ save_submenu.push({
 
 exports.menu = [
   {
-    label: 'Comma Chameleon',
+    label: 'Data Curator',
     submenu: [
       {
-        label: 'About Comma Chameleon',
+        label: 'About Data Curator',
         selector: 'orderFrontStandardAboutPanel:'
       }, {
         type: 'separator'
@@ -58,7 +58,7 @@ exports.menu = [
       }, {
         type: 'separator'
       }, {
-        label: 'Hide Comma Chameleon',
+        label: 'Hide Data Curator',
         accelerator: 'CmdOrCtrl+H',
         selector: 'hide:'
       }, {

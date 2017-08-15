@@ -10,7 +10,7 @@ export function createWindow() {
     ? `http://localhost:9080`
     : `file://${__dirname}/index.html`
   mainWindow.loadURL(winURL)
-  mainWindow.title = 'Untitled.csv'
+  mainWindow.title = 'Data-curator'
   mainWindow.format = file_formats.csv
   mainWindow.on('closed', function() {
     mainWindow = null

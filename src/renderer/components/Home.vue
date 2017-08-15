@@ -75,7 +75,7 @@
               <ul class="nav nav-tabs" id='csvTab'>
                 <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" @click="setActiveTab(tab)">
                   <a>
-                    <span>{{tab}}</span>
+                    <span>{{tabTitle(tab)}}</span>
                     <span v-if="tabs.length > 1" class="tabclose btn-danger fa fa-times" @click.stop="closeTab"></span>
                   </a>
                 </li>
@@ -131,7 +131,6 @@ require('jquery-csv/src/jquery.csv.js')
 require('lodash/lodash.min.js')
 require('../menu.js')
 var defaultData = '"","",""'
-var defaultTitle = 'Untitled.csv'
 var defaultFormat = require('../../renderer/file-actions.js').formats.csv
 export default {
   name: 'home',
@@ -187,7 +186,8 @@ export default {
     ...mapGetters({
       tabs: 'getTabs',
       activeTab: 'getActiveTab',
-      tabIndex: 'getTabIndex'
+      tabIndex: 'getTabIndex',
+      tabTitle: 'getHotTitle'
     }),
     ...mapGetters(['getPreviousTabId']),
     updateMainFromSideNav() {
@@ -200,6 +200,7 @@ export default {
   methods: {
     ...mapMutations([
       'pushTab',
+      'pushHotTab',
       'removeTab',
       'setTabs',
       'setActiveTab',
@@ -232,7 +233,9 @@ export default {
       // console.log(`hot is ${hot}`)
       // console.log(hot)
       let activeHotId = this.getActiveHotId()
+      let activeTabId = this.activeTab
       console.log('active hot is: ' + activeHotId)
+      this.pushHotTab({'hotId': activeHotId, 'tabId': activeTabId})
       loadData(activeHotId, defaultData, defaultFormat)
       // require('electron').remote.getGlobal('sharedObject').hots[activeHotId] = hot
       // global.sharedObject.hots.push(hot)
@@ -248,12 +251,9 @@ export default {
         console.log(`target tab id: ${targetTabId}`)
         // remove the closed tab from the array
         console.log(this.tabs)
-        // let targetTabIndex = _.findIndex(this.tabs, `${targetTabId}`)
-        let targetTabIndex = $.inArray(targetTabId, this.tabs)
-        console.log(`target tab index is: ${targetTabIndex}`)
-        // _.pull(this.tabs, targetTabId)
-        this.removeTab(targetTabIndex)
+        this.removeTab(targetTabId)
         if (targetTabId === this.activeTab) {
+          let targetTabIndex = _.indexOf(this.tabs, targetTabId)
           let previousTabId = this.getPreviousTabId(targetTabIndex)
           this.setActiveTab(previousTabId)
         }

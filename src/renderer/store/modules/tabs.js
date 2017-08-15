@@ -1,3 +1,5 @@
+import {remote} from 'electron'
+
 const state = {
   tabs: [],
   activeTab: '',
@@ -26,8 +28,12 @@ const mutations = {
     state.tabs.push(tabId)
     console.log(state.tabs)
   },
-  removeTab (state, index) {
-    state.tabs.splice(index, 1)
+  removeTab (state, tabId) {
+    // keep check for index in this function to ensure tabid still exists
+    let index = _.indexOf(state.tabs, tabId)
+    if (index !== -1) {
+      state.tabs.splice(index, 1)
+    }
   },
   setActiveTab (state, tabId) {
     console.log(tabId)

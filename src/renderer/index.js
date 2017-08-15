@@ -63,9 +63,10 @@ export function loadData(key, data, format) {
   console.log('.........................')
 }
 
-ipc.on('saveData', function(e, fileName, format) {
+ipc.on('saveData', function(e, format, fileName) {
+  console.log('received message...')
   let hot = HotRegister.getActiveInstance()
-  file.save(hot, fileName, format)
+  file.save(hot, format, fileName)
 })
 
 ipc.on('resized', function() {

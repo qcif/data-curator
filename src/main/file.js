@@ -46,7 +46,7 @@ function saveFileAs(format, window) {
     if (fileName === undefined) {
       return
     }
-    window.webContents.send('saveData', fileName, format)
+    window.webContents.send('saveData', format, fileName)
     utils.enableSave()
     window.format = format
   })
@@ -69,8 +69,7 @@ function saveAsCustom() {
 
 function saveFile() {
   var window = BrowserWindow.getFocusedWindow()
-  var fileName = window.getTitle()
-  window.webContents.send('saveData', fileName, window.format)
+  window.webContents.send('saveData', window.format)
 }
 
 function readFile(fileNames, format) {
