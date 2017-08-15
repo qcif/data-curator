@@ -22,8 +22,9 @@ export function createWindow() {
   })
 
   mainWindow.on('close', (event) => {
-    quitOrSaveDialog(event, 'Close', closeWindowNoPrompt)
+    quitOrSaveDialog(event, 'Close All', closeWindowNoPrompt)
   })
+
   return mainWindow
 }
 
@@ -33,7 +34,6 @@ function closeWindowNoPrompt(result) {
 }
 
 export function createWindowTab() {
-  console.log('...at initial creating tabs')
   var window = BrowserWindow.getFocusedWindow()
   if (window == null) {
     window = createWindow()
@@ -42,9 +42,28 @@ export function createWindowTab() {
   }
 }
 
+function getSaveSubMenu() {
+  let fileMenu = Menu.getApplicationMenu().items.find(x => x.label === 'File')
+  let saveSubMenu = fileMenu.submenu.items.find(x => x.label === 'Save')
+  return saveSubMenu
+}
+
 export function enableSave() {
-  var item = Menu.getApplicationMenu().items[1].submenu.items[5]
-  item.enabled = true
+  let saveSubMenu = getSaveSubMenu()
+  if (saveSubMenu) {
+    saveSubMenu.enabled = true
+  } else {
+    console.log('Could not find save sub menu. Cannot enable it.')
+  }
+}
+
+export function disableSave() {
+  let saveSubMenu = getSaveSubMenu()
+  if (saveSubMenu) {
+    saveSubMenu.disabled = true
+  } else {
+    console.log('Could not find save sub menu. Cannot disable it.')
+  }
 }
 
 async function saveAndExit(callback, filename) {
