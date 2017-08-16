@@ -1,5 +1,5 @@
 {
-  "name": "data-curator",
+  "name": "datacurator",
   "version": "0.1.0",
   "author": " <matt@redboxresearchdata.com.au>",
   "description": "An electron-vue project for curating csv data",
