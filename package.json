@@ -1,9 +1,9 @@
 {
   "name": "data-curator",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": " <matt@redboxresearchdata.com.au>",
   "description": "An electron-vue project for curating csv data",
-  "license": null,
+  "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
