@@ -149,7 +149,8 @@ export default {
       {
         name: 'Column',
         icon: 'fa-search',
-        navPosition: 'right'
+        navPosition: 'right',
+        button: 'Validate'
       },
       {
         name: 'Table',
@@ -204,43 +205,25 @@ export default {
       'incrementTabIndex'
     ]),
     addTab: function() {
-      console.log('.........................')
-      console.log('inside addTab function....')
       this.incrementTabIndex()
       let nextTabId = this.createTabId(this.tabIndex)
       this.setActiveTab(nextTabId)
       this.pushTab(nextTabId)
       this.$nextTick(function() {
-        console.log('.........................')
-        console.log('...next tick')
         // update latest tab object with content
         this.loadDefaultDataIntoContainer($('.editor:last')[0])
-        console.log('.........................')
       })
-      console.log('leaving addTab function....')
-      console.log('.........................')
     },
     loadDefaultDataIntoContainer: function(container) {
       let defaultData = '"","",""'
       let defaultFormat = require('../../renderer/file-actions.js').formats.csv
-      console.log('.........................')
-      console.log('inside method loadDefaultDataIntoContainer')
-      console.log(container)
-      // let hot = createHot(container)
       HotRegister.register(container)
       addHotContainerListeners(container)
-      // console.log(`hot is ${hot}`)
-      // console.log(hot)
       let activeHotId = this.getActiveHotId()
       let activeTabId = this.activeTab
       console.log('active hot is: ' + activeHotId)
       this.pushHotTab({'hotId': activeHotId, 'tabId': activeTabId})
       loadData(activeHotId, defaultData, defaultFormat)
-      // require('electron').remote.getGlobal('sharedObject').hots[activeHotId] = hot
-      // global.sharedObject.hots.push(hot)
-      // console.log(require('electron').remote.getGlobal('sharedObject').hots)
-      console.log('leaving loadDefaultDataIntoContainer')
-      console.log('.........................')
     },
     cleanUpTabDependencies: function(tabId) {
       // update active tab
@@ -256,11 +239,8 @@ export default {
     closeTab: function(event) {
       // do not allow single tab to be closed
       if (this.tabs.length > 1) {
-        console.log('close triggered...')
         let targetTabId = $(event.currentTarget).parents("[id^='tab']").attr('id')
-        console.log(`target tab id: ${targetTabId}`)
         // remove the closed tab from the array
-        console.log(this.tabs)
         this.removeTab(targetTabId)
         this.cleanUpTabDependencies(targetTabId)
       }
@@ -293,15 +273,12 @@ export default {
       vueAddTab()
     })
     this.$nextTick(function() {
-      console.log('.........................')
-      console.log('inside Vue ready tick....')
       require('../index.js')
       let tabIdOrder
       const vueSetTabs = this.setTabs
       Sortable.create(csvTab, {
         animation: 150,
         onSort: function(evt) {
-          console.log('dragged!')
           tabIdOrder = $("#csvTab [id^='tab']").map(function() {
             return this.id
           }).get()
@@ -310,8 +287,6 @@ export default {
       })
       this.closeSideNav()
       this.addTab()
-      console.log('leaving Vue ready tick....')
-      console.log('.........................')
     })
   }
 }
