@@ -4,6 +4,8 @@
 
 Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data.
 
+![data curator icon](/static/img/data-curator.png)
+
 ## Why do we need Data Curator?
 
 Open data producers are increasingly focusing on improving open data publishing so that data can be used to create insight and drive positive change.
