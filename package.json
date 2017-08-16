@@ -1,5 +1,5 @@
 {
-  "name": "datacurator",
+  "name": "data-curator",
   "version": "0.1.0",
   "author": " <matt@redboxresearchdata.com.au>",
   "description": "An electron-vue project for curating csv data",
@@ -77,6 +77,7 @@
     "pikaday": "^1.6.1",
     "pouchdb": "^6.3.4",
     "pouchdb-adapter-idb": "^6.3.4",
+    "prebuild": "^6.2.1",
     "request": "^2.81.0",
     "rx-dom": "^7.0.3",
     "rxjs": "^5.4.2",
