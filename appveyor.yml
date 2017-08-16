@@ -23,8 +23,8 @@ install:
   - ps: Install-Product node 8 x64
   - choco install yarn --ignore-dependencies
   - git reset --hard HEAD
-  - yarn
   - yarn upgrade prebuild
+  - yarn
   - node --version
 
 build_script:
