@@ -16,7 +16,8 @@
           <ul class="nav navbar-nav">
             <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index, menu.navPosition)">
               <a href="#">
-                <i class="fa" :class="menu.icon" aria-hidden="true" />
+                <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
+                <object v-if="menu.image" id="column-properties-svg" :data="menu.image" type="image/svg+xml"/>
                 <div>{{menu.name}}</div>
               </a>
             </li>
@@ -140,7 +141,7 @@ export default {
       navStatus: 'closed',
       toolbarMenus: [{
         name: 'Find and Replace',
-        icon: 'fa-table',
+        icon: 'fa-search',
         navPosition: 'right'
       },
       {
@@ -150,7 +151,7 @@ export default {
       },
       {
         name: 'Column',
-        icon: 'fa-search',
+        image: '/static/img/column-properties.svg',
         navPosition: 'right'
       },
       {
