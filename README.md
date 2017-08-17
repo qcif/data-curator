@@ -1,8 +1,13 @@
 [![version][version-badge]][changelog] [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
+
 # Data Curator
 
+
+![data curator icon](static/img/data-curator-120.png)
+
 Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data.
+
 
 ## Why do we need Data Curator?
 
