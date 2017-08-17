@@ -4,14 +4,15 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#toolbar">
+          <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#toolbar">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </button>
+          </button> -->
           <a class="navbar-brand" href="#">Data-curator</a>
         </div>
-        <div class="collapse navbar-collapse" id="toolbar">
+        <!-- <div class="collapse navbar-collapse" id="toolbar"> -->
+        <div id="toolbar">
           <ul class="nav navbar-nav">
             <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index, menu.navPosition)">
               <a href="#">
@@ -38,13 +39,14 @@
           <a class="navbar-brand" href="#">
             Panel Heading
           </a>
-          <button id="tablePropertiesBtn" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#tableProperties">
+          <!-- <button id="tablePropertiesBtn" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#tableProperties">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </button>
+          </button> -->
         </div>
-        <form class="navbar-form form-horizontal collapse navbar-collapse" id="tableProperties">
+        <!-- <form class="navbar-form form-horizontal collapse navbar-collapse" id="tableProperties"> -->
+        <form class="navbar-form form-horizontal" id="tableProperties">
           <div class="form-group-sm row container-fluid">
             <div>
               <label class="control-label col-sm-4" for="name">Name:</label>
