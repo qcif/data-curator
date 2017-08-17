@@ -4,18 +4,20 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#toolbar">
+          <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#toolbar">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Data-curator</a>
+          </button> -->
+          <a class="navbar-brand" href="#">Data Curator</a>
         </div>
-        <div class="collapse navbar-collapse" id="toolbar">
+        <!-- <div class="collapse navbar-collapse" id="toolbar"> -->
+        <div id="toolbar">
           <ul class="nav navbar-nav">
             <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index, menu.navPosition)">
               <a href="#">
-                <i class="fa" :class="menu.icon" aria-hidden="true" />
+                <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
+                <object v-if="menu.image" :class="menu.class" id="column-properties-svg" :data="menu.image" type="image/svg+xml"/>
                 <div>{{menu.name}}</div>
               </a>
             </li>
@@ -38,13 +40,14 @@
           <a class="navbar-brand" href="#">
             Panel Heading
           </a>
-          <button id="tablePropertiesBtn" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#tableProperties">
+          <!-- <button id="tablePropertiesBtn" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#tableProperties">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </button>
+          </button> -->
         </div>
-        <form class="navbar-form form-horizontal collapse navbar-collapse" id="tableProperties">
+        <!-- <form class="navbar-form form-horizontal collapse navbar-collapse" id="tableProperties"> -->
+        <form class="navbar-form form-horizontal" id="tableProperties">
           <div class="form-group-sm row container-fluid">
             <div>
               <label class="control-label col-sm-4" for="name">Name:</label>
@@ -136,46 +139,38 @@ export default {
       menuIndex: 0,
       navPosition: 'right',
       navStatus: 'closed',
-      toolbarMenus: [{
-        name: 'Find and Replace',
-        icon: 'fa-table',
-        navPosition: 'right'
-      },
-      {
-        name: 'Validate',
-        icon: 'fa-check-circle',
-        navPosition: 'right'
-      },
-      {
-        name: 'Column',
-        icon: 'fa-search',
-        navPosition: 'right'
-      },
-      {
-        name: 'Table',
-        icon: 'fa-table',
-        navPosition: 'right'
-      },
-      {
-        name: 'Provenance',
-        icon: 'fa-file-text-o',
-        navPosition: 'right'
-      },
-      {
-        name: 'Package',
-        icon: 'fa-gift',
-        navPosition: 'left'
-      },
-      {
-        name: 'Export',
-        icon: 'fa-search',
-        navPosition: 'right'
-      },
-      {
-        name: 'Publish',
-        icon: 'fa-cloud-upload',
-        navPosition: 'right'
-      }
+      toolbarMenus: [
+        {
+          name: 'Validate',
+          icon: 'fa-check-circle',
+          navPosition: 'right'
+        },
+        {
+          name: 'Column',
+          image: '/static/img/column-properties.svg',
+          navPosition: 'right'
+        },
+        {
+          name: 'Table',
+          icon: 'fa-table',
+          navPosition: 'right'
+        },
+        {
+          name: 'Provenance',
+          icon: 'fa-file-text-o',
+          navPosition: 'right'
+        },
+        {
+          name: 'Package',
+          icon: 'fa-gift',
+          navPosition: 'left'
+        },
+        {
+          name: 'Export',
+          image: '/static/img/export.svg',
+          class: 'down',
+          navPosition: 'right'
+        }
       ]
     }
   },

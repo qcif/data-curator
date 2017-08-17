@@ -15,7 +15,7 @@
     "pack": "yarn run pack:main && yarn run pack:renderer",
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
-    "postinstall": "yarn run lint:fix && electron-builder install-app-deps",
+    "postinstall": "electron-builder install-app-deps",
     "test-main": "mocha-webpack --webpack-config .electron-vue/webpack.test.config.js --glob *_spec.js test/main/specs",
     "test-renderer": "electron-mocha --renderer --no-timeouts test/renderer/"
   },
@@ -28,7 +28,8 @@
     "files": [
       "dist/electron",
       "node_modules/",
-      "package.json"
+      "package.json",
+      "static/"
     ],
     "dmg": {
       "contents": [
@@ -49,8 +50,10 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon.ico",
+      "target": "nsis"
     },
+    "buildVersion": "0.1.0",
     "linux": {
       "icon": "build/icons"
     }
@@ -142,6 +145,7 @@
     "mocha": "^3.0.2",
     "mocha-webpack": "^0.7.0",
     "multispinner": "^0.2.1",
+    "node-gyp": "^3.6.2",
     "require-dir": "^0.3.0",
     "sinon": "^2.3.8",
     "sinon-chai": "^2.12.0",
@@ -154,7 +158,7 @@
     "vue-loader": "^12.2.1",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.3.3",
-    "webpack": "^3.4.1",
+    "webpack": "^3.5.5",
     "webpack-dev-server": "^2.3.0",
     "webpack-hot-middleware": "^2.18.0",
     "webpack-merge": "^4.1.0",

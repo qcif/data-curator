@@ -6,6 +6,11 @@
 sideNavTransition = 0.3s
 sideNavMargin = 250px
 
+#header-panel
+  background-color #f8f8f8
+  .navbar
+    border none
+
 #main-panel
   padding 5px
   z-index 10
@@ -88,9 +93,16 @@ span.tabclose
 #toolbar li
   text-align: center
   i
+  object
   a
   div
     padding-top 0
 
+#toolbar li object
+  max-width 13px
+  max-height 13px
+  &.down
+    margin-bottom -2px
+
 #tableProperties .form-control
-  width: auto !important
+  width auto !important
