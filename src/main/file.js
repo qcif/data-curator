@@ -1,3 +1,4 @@
+import {enableSave} from './utils'
 let path = require('path')
 function makeCustomFormat(separator, delimiter) {
   // assemble a format object describing a custom format
@@ -44,10 +45,13 @@ function saveFileAs(format, window) {
     filters: format.filters
   }, function(fileName) {
     if (fileName === undefined) {
+      console.log('returning...')
       return
     }
-    window.webContents.send('saveData', fileName, format)
-    utils.enableSave()
+    enableSave()
+    window.webContents.send('saveData', format, fileName)
+    console.log('made it here!')
+
     window.format = format
   })
 }
@@ -69,8 +73,7 @@ function saveAsCustom() {
 
 function saveFile() {
   var window = BrowserWindow.getFocusedWindow()
-  var fileName = window.getTitle()
-  window.webContents.send('saveData', fileName, window.format)
+  window.webContents.send('saveData', window.format)
 }
 
 function readFile(fileNames, format) {
@@ -88,7 +91,7 @@ function readFile(fileNames, format) {
   }
 }
 
-module.exports = {
+export {
   openFile,
   openCustom,
   readFile,

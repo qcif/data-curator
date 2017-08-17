@@ -1,9 +1,9 @@
 {
   "name": "data-curator",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": " <matt@redboxresearchdata.com.au>",
   "description": "An electron-vue project for curating csv data",
-  "license": null,
+  "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
@@ -15,7 +15,7 @@
     "pack": "yarn run pack:main && yarn run pack:renderer",
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
-    "postinstall": "yarn run lint:fix && electron-builder install-app-deps",
+    "postinstall": "electron-builder install-app-deps",
     "test-main": "mocha-webpack --webpack-config .electron-vue/webpack.test.config.js --glob *_spec.js test/main/specs",
     "test-renderer": "electron-mocha --renderer --no-timeouts test/renderer/"
   },
@@ -28,7 +28,8 @@
     "files": [
       "dist/electron",
       "node_modules/",
-      "package.json"
+      "package.json",
+      "static/"
     ],
     "dmg": {
       "contents": [
@@ -49,14 +50,17 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon.ico",
+      "target": "nsis"
     },
+    "buildVersion": "0.1.0",
     "linux": {
       "icon": "build/icons"
     }
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "babel-polyfill": "^6.23.0",
     "bootstrap": "^3.3.7",
     "bootstrap-tagsinput": "^0.7.1",
     "bootstrap-webpack": "^0.0.6",
@@ -70,12 +74,15 @@
     "jquery": "^3.2.1",
     "jquery-csv": "^0.8.3",
     "jshint": "^2.9.4",
-    "less": "^2.7.2",
-    "less-loader": "^4.0.4",
+    "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "node-zip": "^1.1.1",
     "pikaday": "^1.6.1",
+    "pouchdb": "^6.3.4",
+    "pouchdb-adapter-idb": "^6.3.4",
     "request": "^2.81.0",
+    "rx-dom": "^7.0.3",
+    "rxjs": "^5.4.2",
     "slug": "^0.9.1",
     "sortablejs": "^1.6.0",
     "svgo": "^0.7.2",
@@ -83,6 +90,7 @@
     "vue": "^2.3.3",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
+    "vue-rx": "^3.3.0",
     "vuex": "^2.3.1",
     "webpack-fix-default-import-plugin": "^1.0.3",
     "xlsx": "^0.10.5",
@@ -100,7 +108,7 @@
     "babili-webpack-plugin": "^0.1.1",
     "cfonts": "^1.1.3",
     "chai": "^4.0.0",
-    "chalk": "^1.1.3",
+    "chalk": "^2.1.0",
     "copy-webpack-plugin": "^4.0.1",
     "cross-env": "^5.0.0",
     "css-loader": "^0.28.4",
@@ -137,17 +145,20 @@
     "mocha": "^3.0.2",
     "mocha-webpack": "^0.7.0",
     "multispinner": "^0.2.1",
+    "node-gyp": "^3.6.2",
     "require-dir": "^0.3.0",
     "sinon": "^2.3.8",
     "sinon-chai": "^2.12.0",
     "spectron": "^3.7.1",
     "style-loader": "^0.18.1",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
     "url-loader": "^0.5.7",
     "vue-html-loader": "^1.2.2",
     "vue-loader": "^12.2.1",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.3.3",
-    "webpack": "^2.6.1",
+    "webpack": "^3.5.5",
     "webpack-dev-server": "^2.3.0",
     "webpack-hot-middleware": "^2.18.0",
     "webpack-merge": "^4.1.0",

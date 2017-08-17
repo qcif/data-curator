@@ -44,8 +44,8 @@ export default {
 @import '~components-font-awesome/css/font-awesome.min.css'
 </style>
 <style scoped>
-@import '/static/assets/css/default.css'
+@import '/static/css/default.styl'
 </style>
 <style scoped>
-@import '/static/assets/css/select-worksheet.css'
+@import '/static/css/select-worksheet.css'
 </style>

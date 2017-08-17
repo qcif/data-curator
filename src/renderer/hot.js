@@ -1,55 +1,122 @@
-var Handsontable = require('handsontable/dist/handsontable.full.js')
-var loader = require('../renderer/loader.js')
+import Handsontable from 'handsontable/dist/handsontable.full.js'
+import loader from '../renderer/loader.js'
+import jQuery from 'jquery/dist/jquery.js'
 
-var initialise = function(container) {
-  var hot = new Handsontable(container, {
-    colHeaders: true,
-    rowHeaders: true,
-    fixedRowsTop: 0,
-    columnSorting: true,
-    contextMenu: false,
-    autoRowSize: true,
-    enterBeginsEditing: false,
-    tabMoves: function(event) {
-      if (!event.shiftKey) {
-        var selection = hot.getSelected()
-        next = hot.getCell(selection[0], selection[1] + 1)
-        if (next === null) {
-          hot.alter('insert_col', selection[1] + 1)
+let HotRegister = {
+  hots: {},
+  register: function(container) {
+    let hot = new Handsontable(container, {
+      colHeaders: true,
+      rowHeaders: true,
+      fixedRowsTop: 0,
+      columnSorting: true,
+      contextMenu: false,
+      autoRowSize: true,
+      enterBeginsEditing: false,
+      persistentState: true,
+      tabMoves: function(event) {
+        if (!event.shiftKey) {
+          var selection = hot.getSelected()
+          let next = hot.getCell(selection[0], selection[1] + 1)
+          if (next == null) {
+            hot.alter('insert_col', selection[1] + 1)
+          }
         }
-      }
-      return {row: 0, col: 1}
-    },
-    afterInit: function() {
-      loader.showLoader('Loading...')
-    },
-    afterLoadData: function() {
-      loader.hideLoader()
-    },
-    afterUpdateSettings: function() {
-      hot.render()
-      hot.deselectCell()
-    },
-    enterMoves: function(event) {
-      if (!event.shiftKey) {
-        var selection = hot.getSelected()
-        next = hot.getCell(selection[0] + 1, selection[1])
-        if (next === null) {
-          hot.alter('insert_row', selection[0] + 1)
-          return {
-            row: 1,
-            col: 0 - selection[1]
+        return {row: 0, col: 1}
+      },
+      afterInit: function() {
+        loader.showLoader('Loading...')
+      },
+      afterLoadData: function() {
+        loader.hideLoader()
+      },
+      afterUpdateSettings: function() {
+        hot.render()
+        hot.deselectCell()
+      },
+      enterMoves: function(event) {
+        if (!event.shiftKey) {
+          var selection = hot.getSelected()
+          let next = hot.getCell(selection[0] + 1, selection[1])
+          if (next == null) {
+            hot.alter('insert_row', selection[0] + 1)
+            return {
+              row: 1,
+              col: 0 - selection[1]
+            }
+          } else {
+            return {row: 1, col: 0}
           }
         } else {
           return {row: 1, col: 0}
         }
-      } else {
-        return {row: 1, col: 0}
       }
-    }
-  })
-  return hot
+    })
+    _.set(this.hots, hot.guid, hot)
+  },
+  getInstance: function(key) {
+    console.log(`getting ${key}`)
+    return _.get(this.hots, key)
+  },
+  getActiveInstance: function() {
+    console.log('inside get active instance.')
+    let activeHotId = jQuery('#csvContent .active .editor').attr('id')
+    console.log(`active hot id: ${activeHotId}`)
+    return _.get(this.hots, activeHotId)
+  }
 }
+
+// var initialise = function(container) {
+//   var hot = new Handsontable(container, {
+//     colHeaders: true,
+//     rowHeaders: true,
+//     fixedRowsTop: 0,
+//     columnSorting: true,
+//     contextMenu: false,
+//     autoRowSize: true,
+//     enterBeginsEditing: false,
+//     persistentState: true,
+//     tabMoves: function(event) {
+//       if (!event.shiftKey) {
+//         var selection = hot.getSelected()
+//         next = hot.getCell(selection[0], selection[1] + 1)
+//         if (next === null) {
+//           hot.alter('insert_col', selection[1] + 1)
+//         }
+//       }
+//       return {row: 0, col: 1}
+//     },
+//     afterInit: function() {
+//       loader.showLoader('Loading...')
+//     },
+//     afterLoadData: function() {
+//       loader.hideLoader()
+//     },
+//     afterUpdateSettings: function() {
+//       hot.render()
+//       hot.deselectCell()
+//     },
+//     enterMoves: function(event) {
+//       if (!event.shiftKey) {
+//         var selection = hot.getSelected()
+//         next = hot.getCell(selection[0] + 1, selection[1])
+//         if (next === null) {
+//           hot.alter('insert_row', selection[0] + 1)
+//           return {
+//             row: 1,
+//             col: 0 - selection[1]
+//           }
+//         } else {
+//           return {row: 1, col: 0}
+//         }
+//       } else {
+//         return {row: 1, col: 0}
+//       }
+//     }
+//   })
+//   // var hotInstance = $(container).handsontable('getInstance')
+//   return hot
+// }
 
 var insertRowAbove = function(deselect) {
   // hot.loadData([
@@ -58,6 +125,7 @@ var insertRowAbove = function(deselect) {
   //   ['2015', 20, 11, 14],
   //   ['2016', 30, 15, 12, 13]
   // ])
+  let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
   var range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
@@ -71,6 +139,7 @@ var insertRowAbove = function(deselect) {
 }
 
 var insertRowBelow = function(deselect) {
+  let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
   var range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
@@ -84,6 +153,7 @@ var insertRowBelow = function(deselect) {
 }
 
 var insertColumnLeft = function(deselect) {
+  let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
   var range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
@@ -97,6 +167,7 @@ var insertColumnLeft = function(deselect) {
 }
 
 var insertColumnRight = function(deselect) {
+  let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
   var range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
@@ -110,6 +181,7 @@ var insertColumnRight = function(deselect) {
 }
 
 var removeRows = function() {
+  let hot = HotRegister.getActiveInstance()
   var range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
     return
@@ -128,6 +200,7 @@ var removeRows = function() {
 }
 
 var removeColumns = function() {
+  let hot = HotRegister.getActiveInstance()
   var range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
     return
@@ -146,21 +219,25 @@ var removeColumns = function() {
 }
 
 var unfreezeHeaderRow = function() {
+  console.log('unfreezing...')
+  let hot = HotRegister.getActiveInstance()
   hot.updateSettings({fixedRowsTop: 0, colHeaders: true})
 }
 
 var freezeHeaderRow = function() {
+  console.log('freezing...')
+  let hot = HotRegister.getActiveInstance()
   hot.updateSettings({fixedRowsTop: 1})
 }
 
-module.exports = {
-  insertRowAbove: insertRowAbove,
-  insertRowBelow: insertRowBelow,
-  insertColumnLeft: insertColumnLeft,
-  insertColumnRight: insertColumnRight,
-  removeRows: removeRows,
-  removeColumns: removeColumns,
-  freeze: freezeHeaderRow,
-  unfreeze: unfreezeHeaderRow,
-  create: initialise
+export {
+  insertRowAbove,
+  insertRowBelow,
+  insertColumnLeft,
+  insertColumnRight,
+  removeRows,
+  removeColumns,
+  freezeHeaderRow as freeze,
+  unfreezeHeaderRow as unfreeze,
+  HotRegister
 }

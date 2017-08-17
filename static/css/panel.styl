@@ -1,0 +1,108 @@
+#container
+  height 100%
+  margin 0
+  padding 0
+
+sideNavTransition = 0.3s
+sideNavMargin = 250px
+
+#header-panel
+  background-color #f8f8f8
+  .navbar
+    border none
+
+#main-panel
+  padding 5px
+  z-index 10
+  width 100%
+  transition sideNavTransition
+  &.closed
+    margin-right 0
+    margin-left 0
+  &.left
+    margin-left sideNavMargin
+    margin-right 0
+  &.right
+    margin-right sideNavMargin
+    margin-left 0
+
+#sidenav
+  height 100%
+  position absolute
+  margin-left 0px
+  z-index 50
+  top 0
+  overflow-x hidden
+  transition sideNavTransition
+  padding-top 1px
+  &.closed
+    width 0 !important
+  &.left
+    width sideNavMargin
+    left 0
+  &.right
+    width sideNavMargin
+    right 0
+  .navbar-header
+    color #ffffff
+    background-color #e4ecf6
+    display block !important
+    float none
+    margin-left -15px
+    margin-right -15px
+    @media screen and (min-width: 768px)
+      padding-left 15px
+      margin-bottom 15px
+  .closebtn
+    position absolute
+    top 0
+    margin 0
+    padding 0
+    z-index 75
+    right 0
+    a
+      &:hover
+        background-color inherit !important
+  form
+    margin 0 !important
+    border-top 0
+    padding-left 0 !important
+    padding-right 0 !important
+    label
+      @extend #sidenav form
+      text-align: left
+    div
+    input
+      @extend #sidenav form
+
+#tablePropertiesBtn
+  float left
+  margin-left: 15px
+
+#csvTab a
+  position relative
+
+span.tabclose
+  position absolute
+  top 0
+  right 0
+
+.input-sm, input
+  display: inline-block !important
+
+#toolbar li
+  text-align: center
+  i
+  object
+  a
+  div
+    padding-top 0
+
+#toolbar li object
+  max-width 13px
+  max-height 13px
+  &.down
+    margin-bottom -2px
+
+#tableProperties .form-control
+  width auto !important

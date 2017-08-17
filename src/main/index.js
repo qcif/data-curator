@@ -2,13 +2,15 @@
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
+import {dialog, app} from 'electron'
+import {quitOrSaveDialog} from './utils'
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
 global.electron = require('electron')
 
-global.app = electron.app
+// global.app = electron.app
 global.request = electron.request
 global.BrowserWindow = electron.BrowserWindow
 global.Menu = electron.Menu
@@ -27,7 +29,6 @@ global.fileActions = require('./file')
 global.tools = require('./tools')
 global.validate = require('./validate')
 global.help = require('./help')
-global.sharedObject = {}
 
 var template = require('./menu').menu
 // var mainWindow = null
@@ -44,6 +45,14 @@ function createWindow() {
 }
 
 app.on('ready', createWindow)
+
+function closeAppNoPrompt() {
+  app.exit()
+}
+
+app.on('before-quit', (event) => {
+  quitOrSaveDialog(event, 'Quit', closeAppNoPrompt)
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

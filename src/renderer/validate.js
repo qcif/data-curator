@@ -10,14 +10,14 @@ var colors = {
   info: 'rgba(99, 149, 215, 0.6)'
 }
 
-var displayResults = function(results) {
+var displayResults = function(hot, results) {
   displayValidationMessages(JSON.parse(results).validation)
-  highlightCells()
+  highlightCells(hot)
 }
 
 var displayValidationMessages = function(validation) {
   var $messagePanel = $('#message-panel')
-  $messagePanel.html("<h4>Validation results <img src='../assets/img/" + validation.state + ".svg' /></h4>")
+  $messagePanel.html("<h4>Validation results <img src='../static/img/" + validation.state + ".svg' /></h4>")
   var resultsTemplate = _.template('<p><%= validation.errors.length %> errors and <%= validation.warnings.length %> warnings. Click on an error message to see where the error occurred:</p>')
   var messages = _.flatten([
     _.map(validation.errors, function(d) {
@@ -38,16 +38,16 @@ var displayValidationMessages = function(validation) {
   }
 }
 
-var highlightCells = function() {
+var highlightCells = function(hot) {
   clearHighlights()
 
   $('#message-panel').on('click', '.message', function() {
-    highlightCell($(this).data())
+    highlightCell($(this).data(), hot)
   })
 }
 
-var highlightCell = function(d) {
-  scrollToCell(d.row, d.col)
+var highlightCell = function(d, hot) {
+  scrollToCell(d.row, d.col, hot)
   hot.updateSettings({
     // set the new renderer for every cell
     cells: function(row, col, prop) {
@@ -69,7 +69,7 @@ var highlightCell = function(d) {
   })
 }
 
-var scrollToCell = function(row, col) {
+var scrollToCell = function(row, col, hot) {
   if (row === null && col === null) { return }
   row = row || 1
   col = col || 1

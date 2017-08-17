@@ -1,3 +1,4 @@
+import store from '../renderer/store/modules/hots.js'
 const fs = require('fs')
 const $ = global.jQuery = require('jquery/dist/jquery.js')
 require('jquery-csv/src/jquery.csv.js')
@@ -73,8 +74,18 @@ var openFile = function(hot, data, format) {
   return arrays
 }
 
-var saveFile = function(hot, fileName, format, callback) {
+var saveFile = function(hot, format, filename, callback) {
+  console.log('saving')
   var data
+  if (typeof filename !== 'string') {
+    console.dir(store.state.hotTabs)
+    console.dir(`hot guid is: ${hot.guid}`)
+    let defaultQualifier = _.get(store.state.hotTabs, `${hot.guid}.tabId`, '')
+    filename = _.get(store.state.hotTabs, `${hot.guid}.title`, `Untitled${defaultQualifier}.csv`)
+    console.dir(`${filename}`)
+  }
+  store.mutations.pushHotTab(store.state, {'hotId': hot.guid, 'title': filename})
+  console.dir(store.state.hotTabs)
   // if no format specified, default to csv
   if (typeof format === 'undefined') {
     data = $.csv.fromArrays(hot.getData())
@@ -82,19 +93,19 @@ var saveFile = function(hot, fileName, format, callback) {
     data = $.csv.fromArrays(hot.getData(), format.options)
   }
   if (typeof callback === 'undefined') {
-    fs.writeFile(fileName, data, function(err) {
+    fs.writeFile(filename, data, function(err) {
       if (err) {
         console.log(err.stack)
       }
     })
   } else {
-    fs.writeFile(fileName, data, callback)
+    fs.writeFile(filename, data, callback)
   }
-  document.title = fileName
+  document.title = filename
 }
 
-module.exports = {
-  formats: formats,
-  open: openFile,
-  save: saveFile
+export {
+  formats,
+  openFile as open,
+  saveFile as save
 }

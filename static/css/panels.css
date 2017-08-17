@@ -1,0 +1,151 @@
+.message {
+  font-size: 14px;
+  padding: 5px 10px;
+  border-top: 1px solid rgba(0, 0, 0, .15);
+}
+
+.message p {
+  margin: .6em 0;
+}
+
+.message pre {
+  background-color: rgba(50, 50, 50, 0.15);
+  padding: 5px;
+  margin: .7em 0;
+}
+
+.validation-error {
+  background-color: rgba(255, 76, 66, 0.6);
+}
+
+.validation-warning {
+  background-color: rgba(255, 152, 66, 0.6);
+}
+
+.validation-info {
+  background-color: rgba(99, 149, 215, 0.6);
+}
+
+.glyphicon.spinning {
+  animation: spin 1s infinite linear;
+  -webkit-animation: spin2 1s infinite linear;
+}
+
+@keyframes spin {
+  from {
+    transform: scale(1) rotate(0deg);
+  }
+  to {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin2 {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.validation-load {
+  font-size: 1.3em;
+  width: 100%;
+  text-align: center;
+  margin: 25px 0;
+}
+
+.validation-load p {
+  margin: 0;
+  padding: 5px 0;
+}
+
+/*.hidden {display: none;}*/
+
+.nav-tabs>li.tab-heading.active a {
+  position: relative;
+}
+
+.nav-tabs>li.tab-heading a {
+  margin: 0;
+}
+
+.tab-add a {
+  position: relative;
+}
+
+.tab-add a:hover {
+  background-color: initial !important;
+  border-color: transparent !important;
+  margin: 0;
+}
+
+.tab-add a button {
+  position: absolute;
+  bottom: 0;
+}
+
+#header-panel {
+  overflow-x: auto;
+}
+
+#body-panel {
+  width: 100% !important;
+  position: relative!important;
+  z-index: 5;
+}
+
+#main-top-panel {
+  overflow: auto;
+  z-index: 15;
+}
+
+.editor {
+  z-index: 15 !important;
+}
+
+#main-middle-panel {
+  overflow: auto;
+  z-index: 15;
+}
+
+#main-bottom-panel {
+  overflow-y: scroll;
+  z-index: 15;
+}
+
+@media screen {
+  #sidenav form {
+    padding-top: 6px !important;
+    font-size: 12px !important;
+  }
+}
+@media screen and (min-width: 480px) {
+  .col-sm-4 {
+    width: 33.33333333%;
+    float: left;
+  }
+  .col-sm-8 {
+    width: 66.66666667%;
+    float: left;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #main-panel.left {
+    margin-left: 160px !important;
+  }
+  #main-panel.right {
+    margin-right: 160px !important;
+  }
+  #sidenav {
+    width: 160px !important;
+  }
+  #sidenav .navbar-brand {
+    padding-top: 25px;
+  }
+  #sidenav.closed {
+    width: 0 !important;
+  }
+}

@@ -1,65 +1,128 @@
 <template>
-<div id="container" class="">
-  <div id="top-panel">
-  </div>
-  <div id="main-panel">
-    <div id="left-panel">
-    </div>
-    <div id="middle-panel">
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#">Data-curator</a>
-          </div>
+<div id="container" class="panel panel-group">
+  <div id="header-panel" class="panel-heading">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#toolbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button> -->
+          <a class="navbar-brand" href="#">Data Curator</a>
+        </div>
+        <!-- <div class="collapse navbar-collapse" id="toolbar"> -->
+        <div id="toolbar">
           <ul class="nav navbar-nav">
-            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ active: menu === index}" v-on:click="menu = index">
-              <a href="#">{{menu}}</a>
+            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index, menu.navPosition)">
+              <a href="#">
+                <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
+                <object v-if="menu.image" :class="menu.class" id="column-properties-svg" :data="menu.image" type="image/svg+xml"/>
+                <div>{{menu.name}}</div>
+              </a>
             </li>
           </ul>
         </div>
-      </nav>
-      <div id='csvEditor' v-model='tabCount'>
-        <ul class="nav nav-tabs">
-          <li>
-            <ul class="nav nav-tabs" id='csvTab'>
-              <li v-for="(count, index) in tabCount" :key="count" :class="{ active: tab === count}" v-on:click="tab = count">
-                <a>Tab {{count}}</a>
-              </li>
-            </ul>
-          </li>
-          <li class="tab-add" v-on:click="addTab">
-            <a>&nbsp;
-              <button type="button" class="btn btn-sm">+</button>
-            </a>
-          </li>
-        </ul>
-        <div class="tab-content" id='csvContent'>
-          <div class="tab-pane" v-for="(count, index) in tabCount" :key="count " :class="{ active: tab === count}">
-            <div class="editor">
+      </div>
+    </nav>
+  </div>
+  <div id="body-panel" class="panel">
+    <nav id="sidenav" class="sidenav navbar navbar-default row" :class="updateSideNav">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <ul class="nav navbar-right closebtn">
+            <li>
+              <a href="#">
+                <span class="btn-danger fa fa-times" @click="closeSideNav" />
+              </a>
+            </li>
+          </ul>
+          <a class="navbar-brand" href="#">
+            Panel Heading
+          </a>
+          <!-- <button id="tablePropertiesBtn" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#tableProperties">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button> -->
+        </div>
+        <!-- <form class="navbar-form form-horizontal collapse navbar-collapse" id="tableProperties"> -->
+        <form class="navbar-form form-horizontal" id="tableProperties">
+          <div class="form-group-sm row container-fluid">
+            <div>
+              <label class="control-label col-sm-4" for="name">Name:</label>
+              <input type="text" class="form-control input-sm col-sm-8" id="name" />
+            </div>
+            <div>
+              <label class="control-label col-sm-4" for="title">Title:</label>
+              <input type="text" class="form-control input-sm col-sm-8" id="title" />
+            </div>
+            <div>
+              <label class="control-label col-sm-4" for="description">Description:</label>
+              <input type="text" class="form-control input-sm col-sm-8" id="description" />
+            </div>
+            <div>
+              <label class="control-label col-sm-4" for="licence">License:</label>
+              <input type="text" class="form-control input-sm col-sm-8" id="licence" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </nav>
+    <div id="main-panel" class="panel panel-default" :class="updateMainFromSideNav">
+      <!-- <div id="main-top-panel" class="panel panel-heading"></div> -->
+      <div id="main-middle-panel" class="panel panel-body">
+        <div id='csvEditor'>
+          <ul class="nav nav-tabs">
+            <li>
+              <ul class="nav nav-tabs" id='csvTab'>
+                <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" @click="setActiveTab(tab)">
+                  <a>
+                    <span>{{tabTitle(tab)}}</span>
+                    <span v-if="tabs.length > 1" class="tabclose btn-danger fa fa-times" @click.stop="closeTab"></span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="tab-add" @click="addTab">
+              <a>&nbsp;<button type="button" class="btn btn-sm">+</button></a>
+            </li>
+          </ul>
+          <div class="tab-content" id='csvContent'>
+            <div class="tab-pane" v-for="tab in tabs" :key="tab" :class="{ active: activeTab == tab}">
+              <div class="editor">
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- <div class="fly">
-        A Basic Panel
-      </div> -->
-    </div>
-    <div id="right-panel" class="hidden alert" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <div id="main-bottom-panel" class="panel-footer">
+        <button type="button" class="close">
           <span aria-hidden="true">&times;</span>
         </button>
-      <div id="message-panel">
+        <div id="message-panel" class="panel-default">
+        </div>
       </div>
     </div>
+  </div>
+  <div id="footer-panel" class="panel panel-footer">
   </div>
 </div>
 </template>
 <script>
 import {
-  setActiveTabId,
-  getActiveTabId
-} from '../tabs.js'
+  mapMutations,
+  mapState,
+  mapGetters
+} from 'vuex'
 import * as Sortable from 'sortablejs/Sortable.js'
+import {
+  addHotContainerListeners,
+  loadData
+} from '../index.js'
+import {
+  HotRegister
+} from '../hot.js'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
 const {
   shell
@@ -73,54 +136,177 @@ export default {
   name: 'home',
   data() {
     return {
-      tab: 1,
-      tabCount: 1,
+      menuIndex: 0,
+      navPosition: 'right',
+      navStatus: 'closed',
       toolbarMenus: [
-        'Find and Replace',
-        'Validate',
-        'Column',
-        'Table',
-        'Provenance',
-        'Package',
-        'Export',
-        'Publish'
-      ],
-      menu: 0
+        {
+          name: 'Validate',
+          icon: 'fa-check-circle',
+          navPosition: 'right'
+        },
+        {
+          name: 'Column',
+          image: '/static/img/column-properties.svg',
+          navPosition: 'right'
+        },
+        {
+          name: 'Table',
+          icon: 'fa-table',
+          navPosition: 'right'
+        },
+        {
+          name: 'Provenance',
+          icon: 'fa-file-text-o',
+          navPosition: 'right'
+        },
+        {
+          name: 'Package',
+          icon: 'fa-gift',
+          navPosition: 'left'
+        },
+        {
+          name: 'Export',
+          image: '/static/img/export.svg',
+          class: 'down',
+          navPosition: 'right'
+        }
+      ]
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      tabs: 'getTabs',
+      activeTab: 'getActiveTab',
+      tabIndex: 'getTabIndex',
+      tabTitle: 'getHotTitle'
+    }),
+    ...mapGetters(['getPreviousTabId']),
+    updateMainFromSideNav() {
+      return this.navStatus === 'closed' ? this.navStatus : this.navPosition
+    },
+    updateSideNav() {
+      return `${this.navStatus} ${this.navPosition}`
+    }
+  },
   methods: {
+    ...mapMutations([
+      'pushTab',
+      'pushHotTab',
+      'removeTab',
+      'setTabs',
+      'setActiveTab',
+      'incrementTabIndex'
+    ]),
     addTab: function() {
-      this.tabCount += 1
-      // console.log('tab is: ' + this.tab)
-      // console.log('tab count is: ' + this.tabCount)
-      this.activeTab = this.tabCount
-      console.log('recalculating...')
-      console.log('active id is first: ' + $('.tab-pane.active .editor').attr('id'))
-      require('../index.js').loadDefaultDataIntoContainer($('.tab-pane .editor:last')[0])
-      // setActiveTabId($('.tab-pane.active .editor').attr('id'))
-      console.log('active id is now: ' + $('.tab-pane.active .editor').attr('id'))
-      console.log('tab count is: ' + this.tabCount)
-    }
-  },
-  watch: {
-    tab: {
-      handler: function(val, oldValue) {
-        $(document).ready(function() {
-          console.log('active from watch is: ')
-          console.log($('.active .editor'))
-          setActiveTabId($('.active .editor').attr('id'))
-        })
+      console.log('.........................')
+      console.log('inside addTab function....')
+      this.incrementTabIndex()
+      let nextTabId = this.createTabId(this.tabIndex)
+      this.setActiveTab(nextTabId)
+      this.pushTab(nextTabId)
+      this.$nextTick(function() {
+        console.log('.........................')
+        console.log('...next tick')
+        // update latest tab object with content
+        this.loadDefaultDataIntoContainer($('.editor:last')[0])
+        console.log('.........................')
+      })
+      console.log('leaving addTab function....')
+      console.log('.........................')
+    },
+    loadDefaultDataIntoContainer: function(container) {
+      let defaultData = '"","",""'
+      let defaultFormat = require('../../renderer/file-actions.js').formats.csv
+      console.log('.........................')
+      console.log('inside method loadDefaultDataIntoContainer')
+      console.log(container)
+      // let hot = createHot(container)
+      HotRegister.register(container)
+      addHotContainerListeners(container)
+      // console.log(`hot is ${hot}`)
+      // console.log(hot)
+      let activeHotId = this.getActiveHotId()
+      let activeTabId = this.activeTab
+      console.log('active hot is: ' + activeHotId)
+      this.pushHotTab({'hotId': activeHotId, 'tabId': activeTabId})
+      loadData(activeHotId, defaultData, defaultFormat)
+      // require('electron').remote.getGlobal('sharedObject').hots[activeHotId] = hot
+      // global.sharedObject.hots.push(hot)
+      // console.log(require('electron').remote.getGlobal('sharedObject').hots)
+      console.log('leaving loadDefaultDataIntoContainer')
+      console.log('.........................')
+    },
+    cleanUpTabDependencies: function(tabId) {
+      // update active tab
+      if (tabId === this.activeTab) {
+        let targetTabIndex = _.indexOf(this.tabs, tabId)
+        let previousTabId = this.getPreviousTabId(targetTabIndex)
+        this.setActiveTab(previousTabId)
       }
+      // update hots
+
+      // update hottabs
+    },
+    closeTab: function(event) {
+      // do not allow single tab to be closed
+      if (this.tabs.length > 1) {
+        console.log('close triggered...')
+        let targetTabId = $(event.currentTarget).parents("[id^='tab']").attr('id')
+        console.log(`target tab id: ${targetTabId}`)
+        // remove the closed tab from the array
+        console.log(this.tabs)
+        this.removeTab(targetTabId)
+        this.cleanUpTabDependencies(targetTabId)
+      }
+    },
+    closeSideNav: function() {
+      this.navStatus = 'closed'
+      $('.closebtn').hide()
+    },
+    openSideNav: function() {
+      this.navStatus = 'open'
+      $('.closebtn').delay(200).show(0)
+    },
+    updateMenu: function(index, navPosition) {
+      this.menuIndex = index
+      this.navPosition = navPosition
+      this.openSideNav()
+    },
+    createTabId: function(tabId) {
+      return `tab${tabId}`
+    },
+    getActiveHotId: function() {
+      return $('#csvContent .active .editor').attr('id')
     }
   },
   components: {},
   mounted: function() {
+    const vueAddTab = this.addTab
+    ipc.on('addTab', function() {
+      console.log('tab add clicked...')
+      vueAddTab()
+    })
     this.$nextTick(function() {
+      console.log('.........................')
+      console.log('inside Vue ready tick....')
       require('../index.js')
+      let tabIdOrder
+      const vueSetTabs = this.setTabs
       Sortable.create(csvTab, {
-        animation: 150
+        animation: 150,
+        onSort: function(evt) {
+          console.log('dragged!')
+          tabIdOrder = $("#csvTab [id^='tab']").map(function() {
+            return this.id
+          }).get()
+          vueSetTabs(tabIdOrder)
+        }
       })
+      this.closeSideNav()
+      this.addTab()
+      console.log('leaving Vue ready tick....')
+      console.log('.........................')
     })
   }
 }
@@ -131,12 +317,15 @@ export default {
 <style scoped>
 @import '~components-font-awesome/css/font-awesome.min.css'
 </style>
-<style scoped>
-@import '/static/assets/css/default.css'
+<style lang="styl" scoped>
+@import '~static/css/default'
 </style>
 <style scoped>
 @import '~handsontable/dist/handsontable.full.css'
 </style>
 <style scoped>
-@import '/static/assets/css/panels.css'
+@import '~static/css/panels'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/panel'
 </style>

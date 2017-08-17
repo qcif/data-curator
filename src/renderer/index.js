@@ -1,4 +1,6 @@
-import {getActiveTabId, getActiveHot} from '../renderer/tabs.js'
+import {
+  HotRegister
+} from '../renderer/hot.js'
 var ipc = require('electron').ipcRenderer
 var fs = require('fs')
 
@@ -19,19 +21,7 @@ var columnLeft = require('../renderer/menu.js').columnLeft
 // var freezeRow = require('../renderer/menu.js').freezeRow
 // var unfreezeRow = require('../renderer/menu.js').unfreezeRow
 
-var hots = []
-var defaultData = '"","",""'
-var defaultTitle = 'Untitled.csv'
-var defaultFormat = file.formats.csv
-
-function createHot(container) {
-  console.log('current hots...')
-  console.log(hots.length)
-  console.log(hots)
-  console.log('loading hot...')
-  var hot = hotController.create(container)
-  console.log(hot)
-  hots.push(hot)
+export function addHotContainerListeners(container) {
   container.ondragover = function() {
     return false
   }
@@ -57,56 +47,35 @@ function createHot(container) {
     rowAbove.enabled = true
     columnLeft.enabled = true
   }, false)
-  return hot
+  console.log('leaving method createHot')
+  console.log('............................')
 }
 
-ipc.on('initTab', function(e) {
-  initDefaultTab()
-})
-
-export function initDefaultTab() {
-  loadDefaultDataIntoContainer($('.editor')[0])
-}
-
-export function loadDefaultDataIntoContainer(container) {
-  console.log('loading...')
-  console.log(container)
-  let hot = createHot(container)
-  loadData(hot, defaultData, defaultFormat)
-}
-
-export function loadDefaultData() {
-  loadDataIntoActive(defaultData, defaultFormat)
-}
-
-function loadDataIntoActive(data, format) {
-  var hot = getActiveHot(hots)
-  loadData(hot, data, format)
-}
-
-function loadAllData(data, format) {
-  hots.forEach(function(hot, index) {
-    loadData(hot, data, format)
-  })
-}
-
-function loadData(hot, data, format) {
+export function loadData(key, data, format) {
+  let hot = HotRegister.getInstance(key)
+  console.log(`hot is : ${hot}`)
+  console.dir(hot)
+  console.log('.........................')
+  console.log('inside loadData function')
   var arrays = file.open(hot, data, format)
   rows.fixRaggedRows(hot, arrays)
+  console.log('leaving loadData function')
+  console.log('.........................')
 }
 
-ipc.on('saveData', function(e, fileName, format) {
-  var hot = getActiveHot(hots)
-  file.save(hot, fileName, format)
+ipc.on('saveData', function(e, format, fileName) {
+  console.log('received message...')
+  let hot = HotRegister.getActiveInstance()
+  file.save(hot, format, fileName)
 })
 
 ipc.on('resized', function() {
-  var hot = getActiveHot(hots)
+  let hot = HotRegister.getActiveInstance()
   hot.render()
 })
 
 ipc.on('getCSV', function(e, format) {
-  var hot = getActiveHot(hots)
+  let hot = HotRegister.getActiveInstance()
   var data
   // if no format specified, default to csv
   if (typeof format === 'undefined') {
@@ -118,14 +87,14 @@ ipc.on('getCSV', function(e, format) {
 })
 
 ipc.on('validate', function() {
-  var hot = getActiveHot(hots)
+  let hot = HotRegister.getActiveInstance()
   var data = $.csv.fromArrays(hot.getData(), file.formats.csv)
   validation.validate(data)
 })
 
 ipc.on('schemaFromHeaders', function() {
   try {
-    var hot = getActiveHot(hots)
+    let hot = HotRegister.getActiveInstance()
     var assumedHeader = hot.getData()[0]
     var header = schemawizard.returnHeaderRow(assumedHeader)
     ipc.send('jsonHeaders', schemawizard.createSchema(header))
@@ -137,14 +106,14 @@ ipc.on('schemaFromHeaders', function() {
 })
 
 ipc.on('ragged_rows', function() {
-  var hot = getActiveHot(hots)
+  let hot = HotRegister.getActiveInstance()
   var csv = hot.getData()
   rows.fixRaggedRows(hot, csv)
 })
 
 ipc.on('fetchData', function() {
   console.log('receiving')
-  var hot = getActiveHot(hots)
+  let hot = HotRegister.getActiveInstance()
   var csv = $.csv.fromArrays(hot.getData(), file.formats.csv)
   console.log(csv)
   ipc.send('dataSent', csv)
@@ -155,41 +124,42 @@ ipc.on('validationStarted', function() {
 })
 
 ipc.on('validationResults', function(e, results) {
-  validation.displayResults(results)
+  let hot = HotRegister.getActiveInstance()
+  validation.displayResults(hot, results)
 })
 
 ipc.on('editUndo', function() {
-  var hot = getActiveHot(hots)
+  let hot = HotRegister.getActiveInstance()
   if (hot.isUndoAvailable) {
     hot.undo()
   }
 })
 
 ipc.on('editRedo', function() {
-  var hot = getActiveHot(hots)
+  let hot = HotRegister.getActiveInstance()
   if (hot.isRedoAvailable) {
     hot.redo()
   }
 })
 
 ipc.on('editCopy', function() {
-  var hot = getActiveHot(hots)
+  let hot = HotRegister.getActiveInstance()
   hot.copyPaste.setCopyableText()
 })
 
 ipc.on('editCut', function() {
-  var hot = getActiveHot(hots)
+  let hot = HotRegister.getActiveInstance()
   hot.copyPaste.setCopyableText()
   hot.copyPaste.triggerCut()
 })
 
 ipc.on('editPaste', function() {
-  var hot = getActiveHot(hots)
+  let hot = HotRegister.getActiveInstance()
   hot.copyPaste.triggerPaste()
 })
 
 ipc.on('editSelectAll', function() {
-  var hot = getActiveHot(hots)
+  let hot = HotRegister.getActiveInstance()
   hot.selectCell(0, 0, (hot.countRows() - 1), (hot.countCols() - 1))
 })
 
