@@ -44,7 +44,6 @@ sideNavMargin = 250px
     width sideNavMargin
     right 0
   .navbar-header
-    color #ffffff
     background-color #e4ecf6
     display block !important
     float none
@@ -76,11 +75,12 @@ sideNavMargin = 250px
       @extend #sidenav form
 
 #sidenav-footer
-  &.left
-    float left !important
+  display: block
+  .left
+    float left
     display inline-block
-  &.right
-    float right !important
+  .right
+    float right
     display inline-block
 
 #tablePropertiesBtn

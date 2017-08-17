@@ -40,7 +40,7 @@
             <!-- component changes when vm.currentView changes! -->
           </component>
         </transition>
-        <div id="sidenav-footer" class="panel panel-footer">
+        <div id="sidenav-footer" class="panel-footer">
           <div class="left">&lt;</div><div class="right">&gt;</div>
         </div>
       </div>
