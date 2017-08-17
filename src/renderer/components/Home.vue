@@ -9,7 +9,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button> -->
-          <a class="navbar-brand" href="#">Data-curator</a>
+          <a class="navbar-brand" href="#">Data Curator</a>
         </div>
         <!-- <div class="collapse navbar-collapse" id="toolbar"> -->
         <div id="toolbar">
@@ -17,7 +17,7 @@
             <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index, menu.navPosition)">
               <a href="#">
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
-                <object v-if="menu.image" id="column-properties-svg" :data="menu.image" type="image/svg+xml"/>
+                <object v-if="menu.image" :class="menu.class" id="column-properties-svg" :data="menu.image" type="image/svg+xml"/>
                 <div>{{menu.name}}</div>
               </a>
             </li>
@@ -139,46 +139,38 @@ export default {
       menuIndex: 0,
       navPosition: 'right',
       navStatus: 'closed',
-      toolbarMenus: [{
-        name: 'Find and Replace',
-        icon: 'fa-search',
-        navPosition: 'right'
-      },
-      {
-        name: 'Validate',
-        icon: 'fa-check-circle',
-        navPosition: 'right'
-      },
-      {
-        name: 'Column',
-        image: '/static/img/column-properties.svg',
-        navPosition: 'right'
-      },
-      {
-        name: 'Table',
-        icon: 'fa-table',
-        navPosition: 'right'
-      },
-      {
-        name: 'Provenance',
-        icon: 'fa-file-text-o',
-        navPosition: 'right'
-      },
-      {
-        name: 'Package',
-        icon: 'fa-gift',
-        navPosition: 'left'
-      },
-      {
-        name: 'Export',
-        icon: 'fa-search',
-        navPosition: 'right'
-      },
-      {
-        name: 'Publish',
-        icon: 'fa-cloud-upload',
-        navPosition: 'right'
-      }
+      toolbarMenus: [
+        {
+          name: 'Validate',
+          icon: 'fa-check-circle',
+          navPosition: 'right'
+        },
+        {
+          name: 'Column',
+          image: '/static/img/column-properties.svg',
+          navPosition: 'right'
+        },
+        {
+          name: 'Table',
+          icon: 'fa-table',
+          navPosition: 'right'
+        },
+        {
+          name: 'Provenance',
+          icon: 'fa-file-text-o',
+          navPosition: 'right'
+        },
+        {
+          name: 'Package',
+          icon: 'fa-gift',
+          navPosition: 'left'
+        },
+        {
+          name: 'Export',
+          image: '/static/img/export.svg',
+          class: 'down',
+          navPosition: 'right'
+        }
       ]
     }
   },
