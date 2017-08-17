@@ -21,9 +21,11 @@ export function createWindow() {
     mainWindow.webContents.send('resized')
   })
 
-  mainWindow.on('close', (event) => {
-    quitOrSaveDialog(event, 'Close All', closeWindowNoPrompt)
-  })
+  if (process.env.NODE_ENV === 'production') {
+    mainWindow.on('close', (event) => {
+      quitOrSaveDialog(event, 'Close All', closeWindowNoPrompt)
+    })
+  }
 
   return mainWindow
 }
@@ -40,6 +42,12 @@ export function createWindowTab() {
   } else {
     window.webContents.send('addTab')
   }
+}
+
+export function showAboutPanel() {
+  var window = BrowserWindow.getFocusedWindow()
+  console.log(`window is: ${window.id}`)
+  window.webContents.send('showAboutPanel')
 }
 
 function getSaveSubMenu() {
