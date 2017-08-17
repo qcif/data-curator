@@ -4,20 +4,14 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#toolbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button> -->
           <a class="navbar-brand" href="#">Data Curator</a>
         </div>
-        <!-- <div class="collapse navbar-collapse" id="toolbar"> -->
         <div id="toolbar">
           <ul class="nav navbar-nav">
-            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index, menu.navPosition)">
+            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index, menu.navPosition, menu.sideNavView)">
               <a href="#">
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
-                <object v-if="menu.image" :class="menu.class" id="column-properties-svg" :data="menu.image" type="image/svg+xml"/>
+                <object v-if="menu.image" :class="menu.class" id="column-properties-svg" :data="menu.image" type="image/svg+xml" />
                 <div>{{menu.name}}</div>
               </a>
             </li>
@@ -40,33 +34,15 @@
           <a class="navbar-brand" href="#">
             Panel Heading
           </a>
-          <!-- <button id="tablePropertiesBtn" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#tableProperties">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button> -->
         </div>
-        <!-- <form class="navbar-form form-horizontal collapse navbar-collapse" id="tableProperties"> -->
-        <form class="navbar-form form-horizontal" id="tableProperties">
-          <div class="form-group-sm row container-fluid">
-            <div>
-              <label class="control-label col-sm-4" for="name">Name:</label>
-              <input type="text" class="form-control input-sm col-sm-8" id="name" />
-            </div>
-            <div>
-              <label class="control-label col-sm-4" for="title">Title:</label>
-              <input type="text" class="form-control input-sm col-sm-8" id="title" />
-            </div>
-            <div>
-              <label class="control-label col-sm-4" for="description">Description:</label>
-              <input type="text" class="form-control input-sm col-sm-8" id="description" />
-            </div>
-            <div>
-              <label class="control-label col-sm-4" for="licence">License:</label>
-              <input type="text" class="form-control input-sm col-sm-8" id="licence" />
-            </div>
-          </div>
-        </form>
+        <transition name="component" mode="out-in">
+          <component v-bind:is="sideNavView">
+            <!-- component changes when vm.currentView changes! -->
+          </component>
+        </transition>
+        <div id="sidenav-footer" class="panel panel-footer">
+          <div class="left">&lt;</div><div class="right">&gt;</div>
+        </div>
       </div>
     </nav>
     <div id="main-panel" class="panel panel-default" :class="updateMainFromSideNav">
@@ -132,6 +108,15 @@ require('bootstrap/dist/js/bootstrap.min.js')
 require('jquery-csv/src/jquery.csv.js')
 require('lodash/lodash.min.js')
 require('../menu.js')
+var sideNavDefaultTemplate = `
+<form class="navbar-form form-horizontal" id="tableProperties">
+<div class="form-group-sm row container-fluid">
+  <div v-for="(formprop, index) in formprops" :key="index" >
+    <label class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
+    <input type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
+  </div>
+</div>
+</form>`
 export default {
   name: 'home',
   data() {
@@ -139,38 +124,44 @@ export default {
       menuIndex: 0,
       navPosition: 'right',
       navStatus: 'closed',
-      toolbarMenus: [
-        {
-          name: 'Validate',
-          icon: 'fa-check-circle',
-          navPosition: 'right'
-        },
-        {
-          name: 'Column',
-          image: '/static/img/column-properties.svg',
-          navPosition: 'right'
-        },
-        {
-          name: 'Table',
-          icon: 'fa-table',
-          navPosition: 'right'
-        },
-        {
-          name: 'Provenance',
-          icon: 'fa-file-text-o',
-          navPosition: 'right'
-        },
-        {
-          name: 'Package',
-          icon: 'fa-gift',
-          navPosition: 'left'
-        },
-        {
-          name: 'Export',
-          image: '/static/img/export.svg',
-          class: 'down',
-          navPosition: 'right'
-        }
+      sideNavView: 'default',
+      toolbarMenus: [{
+        name: 'Validate',
+        icon: 'fa-check-circle',
+        navPosition: 'right',
+        sideNavView: 'default'
+      },
+      {
+        name: 'Column',
+        image: '/static/img/column-properties.svg',
+        navPosition: 'right',
+        sideNavView: 'default'
+      },
+      {
+        name: 'Table',
+        icon: 'fa-table',
+        navPosition: 'right',
+        sideNavView: 'default2'
+      },
+      {
+        name: 'Provenance',
+        icon: 'fa-file-text-o',
+        navPosition: 'right',
+        sideNavView: 'default'
+      },
+      {
+        name: 'Package',
+        icon: 'fa-gift',
+        navPosition: 'left',
+        sideNavView: 'default'
+      },
+      {
+        name: 'Export',
+        image: '/static/img/export.svg',
+        class: 'down',
+        navPosition: 'right',
+        sideNavView: 'default'
+      }
       ]
     }
   },
@@ -229,7 +220,10 @@ export default {
       let activeHotId = this.getActiveHotId()
       let activeTabId = this.activeTab
       console.log('active hot is: ' + activeHotId)
-      this.pushHotTab({'hotId': activeHotId, 'tabId': activeTabId})
+      this.pushHotTab({
+        'hotId': activeHotId,
+        'tabId': activeTabId
+      })
       loadData(activeHotId, defaultData, defaultFormat)
       // require('electron').remote.getGlobal('sharedObject').hots[activeHotId] = hot
       // global.sharedObject.hots.push(hot)
@@ -268,9 +262,10 @@ export default {
       this.navStatus = 'open'
       $('.closebtn').delay(200).show(0)
     },
-    updateMenu: function(index, navPosition) {
+    updateMenu: function(index, navPosition, sideNavView) {
       this.menuIndex = index
       this.navPosition = navPosition
+      this.sideNavView = sideNavView
       this.openSideNav()
     },
     createTabId: function(tabId) {
@@ -280,12 +275,43 @@ export default {
       return $('#csvContent .active .editor').attr('id')
     }
   },
-  components: {},
+  components: {
+    default: {
+      data: function () {
+        return {
+          formprops: [
+            {label: 'name'},
+            {label: 'title'},
+            {label: 'description'},
+            {label: 'licence'}
+          ]
+        }
+      },
+      template: sideNavDefaultTemplate
+    },
+    default2: {
+      data: function () {
+        return {
+          formprops: [
+            {label: '2'},
+            {label: 'description'},
+            {label: 'licence'}
+          ]
+        }
+      },
+      template: sideNavDefaultTemplate
+    }
+  },
   mounted: function() {
     const vueAddTab = this.addTab
+    const vueUpdateMenu = this.updateMenu
     ipc.on('addTab', function() {
       console.log('tab add clicked...')
       vueAddTab()
+    })
+    ipc.on('showAboutPanel', function() {
+      console.log('about clicked...')
+      vueUpdateMenu(-1, 'left')
     })
     this.$nextTick(function() {
       console.log('.........................')

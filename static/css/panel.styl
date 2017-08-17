@@ -75,6 +75,14 @@ sideNavMargin = 250px
     input
       @extend #sidenav form
 
+#sidenav-footer
+  &.left
+    float left !important
+    display inline-block
+  &.right
+    float right !important
+    display inline-block
+
 #tablePropertiesBtn
   float left
   margin-left: 15px
@@ -89,6 +97,26 @@ span.tabclose
 
 .input-sm, input
   display: inline-block !important
+
+// .component-fade-enter-active, .component-fade-leave-active {
+//   transition: opacity .3s ease;
+// }
+.component-enter-active {
+  transition: all 0.4s;
+}
+
+.component-leave-active {
+  transition: all 0.5s;
+}
+.component-enter
+/* .component-fade-leave-active below version 2.1.8 */ {
+  // opacity: 0;
+  transform: translateX(230px);
+}
+ .component-leave-to{
+  //  opacity: 0;
+   transform: translateX(-180px);
+}
 
 #toolbar li
   text-align: center
