@@ -3,7 +3,7 @@ dist/electron/*
 dist/web/*
 build/*
 !build/icons
-#!build/data-curator*.*
+!build/data-curator*.*
 node_modules/
 npm-debug.log
 npm-debug.log.*
