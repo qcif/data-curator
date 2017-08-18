@@ -8,7 +8,7 @@
         </div>
         <div id="toolbar">
           <ul class="nav navbar-nav">
-            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index, menu.sideNavPosition, menu.sideNavView)">
+            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index)">
               <a href="#">
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
                 <object v-if="menu.image" :class="menu.class" id="column-properties-svg" :data="menu.image" type="image/svg+xml" />
@@ -109,8 +109,7 @@ require('jquery-csv/src/jquery.csv.js')
 require('lodash/lodash.min.js')
 require('../menu.js')
 var sideNavDefaultTemplate =
-  `
-<form class="navbar-form form-horizontal" id="tableProperties">
+`<form class="navbar-form form-horizontal" id="tableProperties">
 <div class="form-group-sm row container-fluid">
   <div v-for="(formprop, index) in formprops" :key="index" >
     <label class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
@@ -162,7 +161,7 @@ export default {
         image: '/static/img/export.svg',
         class: 'down',
         sideNavPosition: 'right',
-        sideNavView: 'default'
+        sideNavView: 'default2'
       }]
     }
   },
@@ -210,14 +209,8 @@ export default {
     loadDefaultDataIntoContainer: function(container) {
       let defaultData = '"","",""'
       let defaultFormat = require('../../renderer/file-actions.js').formats.csv
-      console.log('.........................')
-      console.log('inside method loadDefaultDataIntoContainer')
-      console.log(container)
-      // let hot = createHot(container)
       HotRegister.register(container)
       addHotContainerListeners(container)
-      // console.log(`hot is ${hot}`)
-      // console.log(hot)
       let activeHotId = this.getActiveHotId()
       let activeTabId = this.activeTab
       console.log('active hot is: ' + activeHotId)
@@ -226,11 +219,6 @@ export default {
         'tabId': activeTabId
       })
       loadData(activeHotId, defaultData, defaultFormat)
-      // require('electron').remote.getGlobal('sharedObject').hots[activeHotId] = hot
-      // global.sharedObject.hots.push(hot)
-      // console.log(require('electron').remote.getGlobal('sharedObject').hots)
-      console.log('leaving loadDefaultDataIntoContainer')
-      console.log('.........................')
     },
     cleanUpTabDependencies: function(tabId) {
       // update active tab
@@ -263,31 +251,39 @@ export default {
       this.sideNavStatus = 'open'
       $('.closebtn').delay(200).show(0)
     },
-    updateMenu: function(index, sideNavPosition, sideNavView) {
+    updateMenu: function(index) {
+      console.log(`current index is ${this.menuIndex}`)
+      console.log(`incoming index is ${index}`)
+      let maxIndex = this.toolbarMenus.length - 1
+      if (this.menuIndex === 0 && index === maxIndex) {
+        console.log('transitioning left...')
+        this.sideNavTransition = 'sideNav-left'
+      } else if (this.menuIndex === maxIndex && index === 0) {
+        console.log('transitioning right...')
+        this.sideNavTransition = 'sideNav-right'
+      } else if (index < this.menuIndex) {
+        console.log('transitioning left...')
+        this.sideNavTransition = 'sideNav-left'
+      } else if (index > this.menuIndex) {
+        console.log('transitioning right...')
+        this.sideNavTransition = 'sideNav-right'
+      } else {
+        console.log('same toolbar selection...')
+      }
+      let menu = this.toolbarMenus[index]
       this.menuIndex = index
-      this.sideNavPosition = sideNavPosition
-      this.sideNavView = sideNavView
+      console.log(`current index now is ${this.menuIndex}`)
+      this.sideNavPosition = menu.sideNavPosition
+      this.sideNavView = menu.sideNavView
       this.openSideNav()
     },
     sideNavLeft: function() {
-      this.menuIndex--
-      let maxIndex = this.toolbarMenus.length - 1
-      if (this.menuIndex < 0) {
-        this.menuIndex = maxIndex
-      }
-      let menu = this.toolbarMenus[this.menuIndex]
-      this.sideNavTransition = 'sideNav-left'
-      this.updateMenu(this.menuIndex, menu.sideNavPosition, menu.sideNavView)
+      let leftIndex = (this.menuIndex - 1) > -1 ? this.menuIndex - 1 : this.toolbarMenus.length -1
+      this.updateMenu(leftIndex)
     },
     sideNavRight: function() {
-      this.menuIndex++
-      let maxIndex = this.toolbarMenus.length - 1
-      if (this.menuIndex > maxIndex) {
-        this.menuIndex = 0
-      }
-      let menu = this.toolbarMenus[this.menuIndex]
-      this.sideNavTransition = 'sideNav-right'
-      this.updateMenu(this.menuIndex, menu.sideNavPosition, menu.sideNavView)
+      let rightIndex = (this.menuIndex + 1) < this.toolbarMenus.length ? this.menuIndex + 1 : 0
+      this.updateMenu(rightIndex)
     },
     createTabId: function(tabId) {
       return `tab${tabId}`
@@ -311,6 +307,26 @@ export default {
           },
           {
             label: 'licence'
+          }
+          ]
+        }
+      },
+      template: sideNavDefaultTemplate
+    },
+    default2: {
+      data: function() {
+        return {
+          formprops: [{
+            label: 'name2'
+          },
+          {
+            label: 'title2'
+          },
+          {
+            label: 'description2'
+          },
+          {
+            label: 'licence2'
           }
           ]
         }
