@@ -32,14 +32,14 @@
             </li>
           </ul>
           <a class="navbar-brand" href="#">
-            Panel Heading
+            {{sideNavView}}
           </a>
         </div>
-        <transition v-bind:name="sideNavTransition" mode="out-in">
+        <transition :name="sideNavTransition" mode="out-in">
           <component :is="sideNavView" >
           </component>
         </transition>
-        <div id="sidenav-footer" class="panel-footer">
+        <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
           <a href="#" class="left" @click.prevent="sideNavLeft">&lt;</a>
           <a href="#" class="right" @click.prevent="sideNavRight">&gt;</a>
         </div>
@@ -108,7 +108,7 @@ require('bootstrap/dist/js/bootstrap.min.js')
 require('jquery-csv/src/jquery.csv.js')
 require('lodash/lodash.min.js')
 require('../menu.js')
-var sideNavDefaultTemplate =
+let sideNavDefaultTemplate =
 `<form class="navbar-form form-horizontal" id="tableProperties">
 <div class="form-group-sm row container-fluid">
   <div v-for="(formprop, index) in formprops" :key="index" >
@@ -290,9 +290,20 @@ export default {
     },
     getActiveHotId: function() {
       return $('#csvContent .active .editor').attr('id')
+    },
+    triggerSideNav(properties) {
+      this.sideNavPosition = properties.sideNavPosition || 'left'
+      this.sideNavTransition = properties.sideNavTransition || 'left'
+      this.sideNavView = properties.sideNavView
+      this.sideNavStatus = 'open'
     }
   },
   components: {
+    about: {
+      template: `<div id="tableProperties">
+        About
+      </div>`
+    },
     default: {
       data: function() {
         return {
@@ -457,13 +468,14 @@ export default {
   mounted: function() {
     const vueAddTab = this.addTab
     const vueUpdateMenu = this.updateMenu
+    const vueTriggerSideNav = this.triggerSideNav
     ipc.on('addTab', function() {
       console.log('tab add clicked...')
       vueAddTab()
     })
     ipc.on('showAboutPanel', function() {
       console.log('about clicked...')
-      vueUpdateMenu(-1, 'left')
+      vueTriggerSideNav({sideNavView: 'about'})
     })
     this.$nextTick(function() {
       console.log('.........................')
