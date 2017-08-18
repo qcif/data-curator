@@ -8,7 +8,7 @@
         </div>
         <div id="toolbar">
           <ul class="nav navbar-nav">
-            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index, menu.navPosition, menu.sideNavView)">
+            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index, menu.sideNavPosition, menu.sideNavView)">
               <a href="#">
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
                 <object v-if="menu.image" :class="menu.class" id="column-properties-svg" :data="menu.image" type="image/svg+xml" />
@@ -35,13 +35,13 @@
             Panel Heading
           </a>
         </div>
-        <transition name="component" mode="out-in">
-          <component v-bind:is="sideNavView">
-            <!-- component changes when vm.currentView changes! -->
+        <transition v-bind:name="sideNavTransition" mode="out-in">
+          <component :is="sideNavView" >
           </component>
         </transition>
         <div id="sidenav-footer" class="panel-footer">
-          <div class="left">&lt;</div><div class="right">&gt;</div>
+          <a href="#" class="left" @click.prevent="sideNavLeft">&lt;</a>
+          <a href="#" class="right" @click.prevent="sideNavRight">&gt;</a>
         </div>
       </div>
     </nav>
@@ -108,7 +108,8 @@ require('bootstrap/dist/js/bootstrap.min.js')
 require('jquery-csv/src/jquery.csv.js')
 require('lodash/lodash.min.js')
 require('../menu.js')
-var sideNavDefaultTemplate = `
+var sideNavDefaultTemplate =
+  `
 <form class="navbar-form form-horizontal" id="tableProperties">
 <div class="form-group-sm row container-fluid">
   <div v-for="(formprop, index) in formprops" :key="index" >
@@ -122,47 +123,47 @@ export default {
   data() {
     return {
       menuIndex: 0,
-      navPosition: 'right',
-      navStatus: 'closed',
+      sideNavPosition: 'right',
+      sideNavStatus: 'closed',
       sideNavView: 'default',
+      sideNavTransition: '',
       toolbarMenus: [{
         name: 'Validate',
         icon: 'fa-check-circle',
-        navPosition: 'right',
+        sideNavPosition: 'right',
         sideNavView: 'default'
       },
       {
         name: 'Column',
         image: '/static/img/column-properties.svg',
-        navPosition: 'right',
-        sideNavView: 'default'
+        sideNavPosition: 'right',
+        sideNavView: 'column'
       },
       {
         name: 'Table',
         icon: 'fa-table',
-        navPosition: 'right',
-        sideNavView: 'default2'
+        sideNavPosition: 'right',
+        sideNavView: 'tablular'
       },
       {
         name: 'Provenance',
         icon: 'fa-file-text-o',
-        navPosition: 'right',
-        sideNavView: 'default'
+        sideNavPosition: 'right',
+        sideNavView: 'provenance'
       },
       {
         name: 'Package',
         icon: 'fa-gift',
-        navPosition: 'left',
-        sideNavView: 'default'
+        sideNavPosition: 'right',
+        sideNavView: 'package'
       },
       {
         name: 'Export',
         image: '/static/img/export.svg',
         class: 'down',
-        navPosition: 'right',
+        sideNavPosition: 'right',
         sideNavView: 'default'
-      }
-      ]
+      }]
     }
   },
   computed: {
@@ -174,10 +175,10 @@ export default {
     }),
     ...mapGetters(['getPreviousTabId']),
     updateMainFromSideNav() {
-      return this.navStatus === 'closed' ? this.navStatus : this.navPosition
+      return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
     updateSideNav() {
-      return `${this.navStatus} ${this.navPosition}`
+      return `${this.sideNavStatus} ${this.sideNavPosition}`
     }
   },
   methods: {
@@ -255,18 +256,38 @@ export default {
       }
     },
     closeSideNav: function() {
-      this.navStatus = 'closed'
+      this.sideNavStatus = 'closed'
       $('.closebtn').hide()
     },
     openSideNav: function() {
-      this.navStatus = 'open'
+      this.sideNavStatus = 'open'
       $('.closebtn').delay(200).show(0)
     },
-    updateMenu: function(index, navPosition, sideNavView) {
+    updateMenu: function(index, sideNavPosition, sideNavView) {
       this.menuIndex = index
-      this.navPosition = navPosition
+      this.sideNavPosition = sideNavPosition
       this.sideNavView = sideNavView
       this.openSideNav()
+    },
+    sideNavLeft: function() {
+      this.menuIndex--
+      let maxIndex = this.toolbarMenus.length - 1
+      if (this.menuIndex < 0) {
+        this.menuIndex = maxIndex
+      }
+      let menu = this.toolbarMenus[this.menuIndex]
+      this.sideNavTransition = 'sideNav-left'
+      this.updateMenu(this.menuIndex, menu.sideNavPosition, menu.sideNavView)
+    },
+    sideNavRight: function() {
+      this.menuIndex++
+      let maxIndex = this.toolbarMenus.length - 1
+      if (this.menuIndex > maxIndex) {
+        this.menuIndex = 0
+      }
+      let menu = this.toolbarMenus[this.menuIndex]
+      this.sideNavTransition = 'sideNav-right'
+      this.updateMenu(this.menuIndex, menu.sideNavPosition, menu.sideNavView)
     },
     createTabId: function(tabId) {
       return `tab${tabId}`
@@ -277,26 +298,141 @@ export default {
   },
   components: {
     default: {
-      data: function () {
+      data: function() {
         return {
-          formprops: [
-            {label: 'name'},
-            {label: 'title'},
-            {label: 'description'},
-            {label: 'licence'}
+          formprops: [{
+            label: 'name'
+          },
+          {
+            label: 'title'
+          },
+          {
+            label: 'description'
+          },
+          {
+            label: 'licence'
+          }
           ]
         }
       },
       template: sideNavDefaultTemplate
     },
-    default2: {
-      data: function () {
+    column: {
+      data: function() {
         return {
-          formprops: [
-            {label: '2'},
-            {label: 'description'},
-            {label: 'licence'}
+          formprops: [{
+            label: 'name'
+          },
+          {
+            label: 'title'
+          },
+          {
+            label: 'description'
+          },
+          {
+            label: 'type',
+            type: 'dropdown'
+          },
+          {
+            label: 'format',
+            type: 'dropdown'
+          },
+          {
+            label: 'rdfType',
+            type: 'url'
+          },
+          {
+            label: 'contraints',
+            type: 'json'
+          }
           ]
+        }
+      },
+      template: sideNavDefaultTemplate
+    },
+    tablular: {
+      data: function() {
+        return {
+          formprops: [{
+            label: 'title'
+          },
+          {
+            label: 'name'
+          },
+          {
+            label: 'profile'
+          },
+          {
+            label: 'description'
+          },
+          {
+            label: 'sources',
+            type: 'dropdown'
+          },
+          {
+            label: 'licences',
+            type: 'dropdown'
+          },
+          {
+            label: 'format'
+          },
+          {
+            label: 'mediatype'
+          },
+          {
+            label: 'encoding'
+          }
+          ]
+        }
+      },
+      template: sideNavDefaultTemplate
+    },
+    package: {
+      data: function() {
+        return {
+          formprops: [{
+            label: 'name',
+            type: 'input'
+          },
+          {
+            label: 'id',
+            type: 'input'
+          },
+          {
+            label: 'licenses',
+            type: 'json'
+          },
+          {
+            label: 'profile'
+          },
+          {
+            label: 'title',
+            type: 'input'
+          },
+          {
+            label: 'description',
+            type: 'markdown'
+          },
+          {
+            label: 'version',
+            type: 'input'
+          },
+          {
+            label: 'sources',
+            type: 'json'
+          }
+          ]
+        }
+      },
+      template: sideNavDefaultTemplate
+    },
+    provenance: {
+      data: function() {
+        return {
+          formprops: [{
+            label: 'description',
+            type: 'markdown'
+          }]
         }
       },
       template: sideNavDefaultTemplate

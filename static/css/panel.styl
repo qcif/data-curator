@@ -95,28 +95,25 @@ span.tabclose
   top 0
   right 0
 
-.input-sm, input
-  display: inline-block !important
+.input-sm input
+  display inline-block !important
 
-// .component-fade-enter-active, .component-fade-leave-active {
-//   transition: opacity .3s ease;
-// }
-.component-enter-active {
-  transition: all 0.4s;
-}
+// slide-out sideNav transitions
+.sideNav-left-enter-active
+.sideNav-left-leave-active
+.sideNav-right-enter-active
+.sideNav-right-leave-active
+  transition all 0.5s
 
-.component-leave-active {
-  transition: all 0.5s;
-}
-.component-enter
-/* .component-fade-leave-active below version 2.1.8 */ {
-  // opacity: 0;
-  transform: translateX(230px);
-}
- .component-leave-to{
-  //  opacity: 0;
-   transform: translateX(-180px);
-}
+.sideNav-left-enter
+  transform translateX(-60px) !important
+.sideNav-right-enter
+  transform translateX(230px) !important
+
+.sideNav-left-leave-to
+  transform translateX(230px) !important
+.sideNav-right-leave-to
+  transform translateX(-180px) !important
 
 #toolbar li
   text-align: center
