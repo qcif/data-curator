@@ -59,72 +59,12 @@ let HotRegister = {
     return _.get(this.hots, key)
   },
   getActiveInstance: function() {
-    console.log('inside get active instance.')
     let activeHotId = jQuery('#csvContent .active .editor').attr('id')
-    console.log(`active hot id: ${activeHotId}`)
     return _.get(this.hots, activeHotId)
   }
 }
 
-// var initialise = function(container) {
-//   var hot = new Handsontable(container, {
-//     colHeaders: true,
-//     rowHeaders: true,
-//     fixedRowsTop: 0,
-//     columnSorting: true,
-//     contextMenu: false,
-//     autoRowSize: true,
-//     enterBeginsEditing: false,
-//     persistentState: true,
-//     tabMoves: function(event) {
-//       if (!event.shiftKey) {
-//         var selection = hot.getSelected()
-//         next = hot.getCell(selection[0], selection[1] + 1)
-//         if (next === null) {
-//           hot.alter('insert_col', selection[1] + 1)
-//         }
-//       }
-//       return {row: 0, col: 1}
-//     },
-//     afterInit: function() {
-//       loader.showLoader('Loading...')
-//     },
-//     afterLoadData: function() {
-//       loader.hideLoader()
-//     },
-//     afterUpdateSettings: function() {
-//       hot.render()
-//       hot.deselectCell()
-//     },
-//     enterMoves: function(event) {
-//       if (!event.shiftKey) {
-//         var selection = hot.getSelected()
-//         next = hot.getCell(selection[0] + 1, selection[1])
-//         if (next === null) {
-//           hot.alter('insert_row', selection[0] + 1)
-//           return {
-//             row: 1,
-//             col: 0 - selection[1]
-//           }
-//         } else {
-//           return {row: 1, col: 0}
-//         }
-//       } else {
-//         return {row: 1, col: 0}
-//       }
-//     }
-//   })
-//   // var hotInstance = $(container).handsontable('getInstance')
-//   return hot
-// }
-
 var insertRowAbove = function(deselect) {
-  // hot.loadData([
-  //   ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],
-  //   ['2014', 10, 11, 12, 13],
-  //   ['2015', 20, 11, 14],
-  //   ['2016', 30, 15, 12, 13]
-  // ])
   let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
   var range = hot.getSelectedRange()

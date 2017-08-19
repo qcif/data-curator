@@ -35,6 +35,8 @@ sideNavMargin = 250px
   overflow-x hidden
   transition sideNavTransition
   padding-top 1px
+  .navbar-brand
+    text-transform: capitalize
   &.closed
     width 0 !important
   &.left
@@ -44,7 +46,6 @@ sideNavMargin = 250px
     width sideNavMargin
     right 0
   .navbar-header
-    color #ffffff
     background-color #e4ecf6
     display block !important
     float none
@@ -75,6 +76,15 @@ sideNavMargin = 250px
     input
       @extend #sidenav form
 
+#sidenav-footer
+  display: block
+  .left
+    float left
+    display inline-block
+  .right
+    float right
+    display inline-block
+
 #tablePropertiesBtn
   float left
   margin-left: 15px
@@ -87,8 +97,25 @@ span.tabclose
   top 0
   right 0
 
-.input-sm, input
-  display: inline-block !important
+.input-sm input
+  display inline-block !important
+
+// slide-out sideNav transitions
+.sideNav-left-enter-active
+.sideNav-left-leave-active
+.sideNav-right-enter-active
+.sideNav-right-leave-active
+  transition all 0.5s
+
+.sideNav-left-enter
+  transform translateX(-60px) !important
+.sideNav-right-enter
+  transform translateX(230px) !important
+
+.sideNav-left-leave-to
+  transform translateX(230px) !important
+.sideNav-right-leave-to
+  transform translateX(-180px) !important
 
 #toolbar li
   text-align: center

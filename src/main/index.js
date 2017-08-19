@@ -50,9 +50,11 @@ function closeAppNoPrompt() {
   app.exit()
 }
 
-app.on('before-quit', (event) => {
-  quitOrSaveDialog(event, 'Quit', closeAppNoPrompt)
-})
+if (process.env.NODE_ENV === 'production') {
+  app.on('before-quit', (event) => {
+    quitOrSaveDialog(event, 'Quit', closeAppNoPrompt)
+  })
+}
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

@@ -4,20 +4,14 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#toolbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button> -->
           <a class="navbar-brand" href="#">Data Curator</a>
         </div>
-        <!-- <div class="collapse navbar-collapse" id="toolbar"> -->
         <div id="toolbar">
           <ul class="nav navbar-nav">
-            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index, menu.navPosition)">
+            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index)">
               <a href="#">
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
-                <object v-if="menu.image" :class="menu.class" id="column-properties-svg" :data="menu.image" type="image/svg+xml"/>
+                <object v-if="menu.image" :class="menu.class" id="column-properties-svg" :data="menu.image" type="image/svg+xml" />
                 <div>{{menu.name}}</div>
               </a>
             </li>
@@ -38,35 +32,17 @@
             </li>
           </ul>
           <a class="navbar-brand" href="#">
-            Panel Heading
+            {{sideNavView}}
           </a>
-          <!-- <button id="tablePropertiesBtn" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#tableProperties">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button> -->
         </div>
-        <!-- <form class="navbar-form form-horizontal collapse navbar-collapse" id="tableProperties"> -->
-        <form class="navbar-form form-horizontal" id="tableProperties">
-          <div class="form-group-sm row container-fluid">
-            <div>
-              <label class="control-label col-sm-4" for="name">Name:</label>
-              <input type="text" class="form-control input-sm col-sm-8" id="name" />
-            </div>
-            <div>
-              <label class="control-label col-sm-4" for="title">Title:</label>
-              <input type="text" class="form-control input-sm col-sm-8" id="title" />
-            </div>
-            <div>
-              <label class="control-label col-sm-4" for="description">Description:</label>
-              <input type="text" class="form-control input-sm col-sm-8" id="description" />
-            </div>
-            <div>
-              <label class="control-label col-sm-4" for="licence">License:</label>
-              <input type="text" class="form-control input-sm col-sm-8" id="licence" />
-            </div>
-          </div>
-        </form>
+        <transition :name="sideNavTransition" mode="out-in">
+          <component :is="sideNavView" >
+          </component>
+        </transition>
+        <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
+          <a href="#" class="left" @click.prevent="sideNavLeft">&lt;</a>
+          <a href="#" class="right" @click.prevent="sideNavRight">&gt;</a>
+        </div>
       </div>
     </nav>
     <div id="main-panel" class="panel panel-default" :class="updateMainFromSideNav">
@@ -132,46 +108,61 @@ require('bootstrap/dist/js/bootstrap.min.js')
 require('jquery-csv/src/jquery.csv.js')
 require('lodash/lodash.min.js')
 require('../menu.js')
+let sideNavDefaultTemplate =
+`<form class="navbar-form form-horizontal" id="tableProperties">
+<div class="form-group-sm row container-fluid">
+  <div v-for="(formprop, index) in formprops" :key="index" >
+    <label class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
+    <input type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
+  </div>
+</div>
+</form>`
 export default {
   name: 'home',
   data() {
     return {
       menuIndex: 0,
-      navPosition: 'right',
-      navStatus: 'closed',
-      toolbarMenus: [
-        {
-          name: 'Validate',
-          icon: 'fa-check-circle',
-          navPosition: 'right'
-        },
-        {
-          name: 'Column',
-          image: '/static/img/column-properties.svg',
-          navPosition: 'right'
-        },
-        {
-          name: 'Table',
-          icon: 'fa-table',
-          navPosition: 'right'
-        },
-        {
-          name: 'Provenance',
-          icon: 'fa-file-text-o',
-          navPosition: 'right'
-        },
-        {
-          name: 'Package',
-          icon: 'fa-gift',
-          navPosition: 'left'
-        },
-        {
-          name: 'Export',
-          image: '/static/img/export.svg',
-          class: 'down',
-          navPosition: 'right'
-        }
-      ]
+      sideNavPosition: 'right',
+      sideNavStatus: 'closed',
+      sideNavView: 'default',
+      sideNavTransition: '',
+      toolbarMenus: [{
+        name: 'Validate',
+        icon: 'fa-check-circle',
+        sideNavPosition: 'right',
+        sideNavView: 'default'
+      },
+      {
+        name: 'Column',
+        image: '/static/img/column-properties.svg',
+        sideNavPosition: 'right',
+        sideNavView: 'column'
+      },
+      {
+        name: 'Table',
+        icon: 'fa-table',
+        sideNavPosition: 'right',
+        sideNavView: 'tablular'
+      },
+      {
+        name: 'Provenance',
+        icon: 'fa-file-text-o',
+        sideNavPosition: 'right',
+        sideNavView: 'provenance'
+      },
+      {
+        name: 'Package',
+        icon: 'fa-gift',
+        sideNavPosition: 'right',
+        sideNavView: 'package'
+      },
+      {
+        name: 'Export',
+        image: '/static/img/export.svg',
+        class: 'down',
+        sideNavPosition: 'right',
+        sideNavView: 'default2'
+      }]
     }
   },
   computed: {
@@ -183,10 +174,10 @@ export default {
     }),
     ...mapGetters(['getPreviousTabId']),
     updateMainFromSideNav() {
-      return this.navStatus === 'closed' ? this.navStatus : this.navPosition
+      return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
     updateSideNav() {
-      return `${this.navStatus} ${this.navPosition}`
+      return `${this.sideNavStatus} ${this.sideNavPosition}`
     }
   },
   methods: {
@@ -218,24 +209,16 @@ export default {
     loadDefaultDataIntoContainer: function(container) {
       let defaultData = '"","",""'
       let defaultFormat = require('../../renderer/file-actions.js').formats.csv
-      console.log('.........................')
-      console.log('inside method loadDefaultDataIntoContainer')
-      console.log(container)
-      // let hot = createHot(container)
       HotRegister.register(container)
       addHotContainerListeners(container)
-      // console.log(`hot is ${hot}`)
-      // console.log(hot)
       let activeHotId = this.getActiveHotId()
       let activeTabId = this.activeTab
       console.log('active hot is: ' + activeHotId)
-      this.pushHotTab({'hotId': activeHotId, 'tabId': activeTabId})
+      this.pushHotTab({
+        'hotId': activeHotId,
+        'tabId': activeTabId
+      })
       loadData(activeHotId, defaultData, defaultFormat)
-      // require('electron').remote.getGlobal('sharedObject').hots[activeHotId] = hot
-      // global.sharedObject.hots.push(hot)
-      // console.log(require('electron').remote.getGlobal('sharedObject').hots)
-      console.log('leaving loadDefaultDataIntoContainer')
-      console.log('.........................')
     },
     cleanUpTabDependencies: function(tabId) {
       // update active tab
@@ -261,31 +244,238 @@ export default {
       }
     },
     closeSideNav: function() {
-      this.navStatus = 'closed'
+      this.sideNavStatus = 'closed'
       $('.closebtn').hide()
     },
     openSideNav: function() {
-      this.navStatus = 'open'
+      this.sideNavStatus = 'open'
       $('.closebtn').delay(200).show(0)
     },
-    updateMenu: function(index, navPosition) {
+    updateMenu: function(index) {
+      console.log(`current index is ${this.menuIndex}`)
+      console.log(`incoming index is ${index}`)
+      let maxIndex = this.toolbarMenus.length - 1
+      if (this.menuIndex === 0 && index === maxIndex) {
+        console.log('transitioning left...')
+        this.sideNavTransition = 'sideNav-left'
+      } else if (this.menuIndex === maxIndex && index === 0) {
+        console.log('transitioning right...')
+        this.sideNavTransition = 'sideNav-right'
+      } else if (index < this.menuIndex) {
+        console.log('transitioning left...')
+        this.sideNavTransition = 'sideNav-left'
+      } else if (index > this.menuIndex) {
+        console.log('transitioning right...')
+        this.sideNavTransition = 'sideNav-right'
+      } else {
+        console.log('same toolbar selection...')
+      }
+      let menu = this.toolbarMenus[index]
       this.menuIndex = index
-      this.navPosition = navPosition
+      console.log(`current index now is ${this.menuIndex}`)
+      this.sideNavPosition = menu.sideNavPosition
+      this.sideNavView = menu.sideNavView
       this.openSideNav()
+    },
+    sideNavLeft: function() {
+      let leftIndex = (this.menuIndex - 1) > -1 ? this.menuIndex - 1 : this.toolbarMenus.length -1
+      this.updateMenu(leftIndex)
+    },
+    sideNavRight: function() {
+      let rightIndex = (this.menuIndex + 1) < this.toolbarMenus.length ? this.menuIndex + 1 : 0
+      this.updateMenu(rightIndex)
     },
     createTabId: function(tabId) {
       return `tab${tabId}`
     },
     getActiveHotId: function() {
       return $('#csvContent .active .editor').attr('id')
+    },
+    triggerSideNav(properties) {
+      this.sideNavPosition = properties.sideNavPosition || 'left'
+      this.sideNavTransition = properties.sideNavTransition || 'left'
+      this.sideNavView = properties.sideNavView
+      this.sideNavStatus = 'open'
     }
   },
-  components: {},
+  components: {
+    about: {
+      template: `<div id="tableProperties">
+        About
+      </div>`
+    },
+    default: {
+      data: function() {
+        return {
+          formprops: [{
+            label: 'name'
+          },
+          {
+            label: 'title'
+          },
+          {
+            label: 'description'
+          },
+          {
+            label: 'licence'
+          }
+          ]
+        }
+      },
+      template: sideNavDefaultTemplate
+    },
+    default2: {
+      data: function() {
+        return {
+          formprops: [{
+            label: 'name2'
+          },
+          {
+            label: 'title2'
+          },
+          {
+            label: 'description2'
+          },
+          {
+            label: 'licence2'
+          }
+          ]
+        }
+      },
+      template: sideNavDefaultTemplate
+    },
+    column: {
+      data: function() {
+        return {
+          formprops: [{
+            label: 'name'
+          },
+          {
+            label: 'title'
+          },
+          {
+            label: 'description'
+          },
+          {
+            label: 'type',
+            type: 'dropdown'
+          },
+          {
+            label: 'format',
+            type: 'dropdown'
+          },
+          {
+            label: 'rdfType',
+            type: 'url'
+          },
+          {
+            label: 'contraints',
+            type: 'json'
+          }
+          ]
+        }
+      },
+      template: sideNavDefaultTemplate
+    },
+    tablular: {
+      data: function() {
+        return {
+          formprops: [{
+            label: 'title'
+          },
+          {
+            label: 'name'
+          },
+          {
+            label: 'profile'
+          },
+          {
+            label: 'description'
+          },
+          {
+            label: 'sources',
+            type: 'dropdown'
+          },
+          {
+            label: 'licences',
+            type: 'dropdown'
+          },
+          {
+            label: 'format'
+          },
+          {
+            label: 'mediatype'
+          },
+          {
+            label: 'encoding'
+          }
+          ]
+        }
+      },
+      template: sideNavDefaultTemplate
+    },
+    package: {
+      data: function() {
+        return {
+          formprops: [{
+            label: 'name',
+            type: 'input'
+          },
+          {
+            label: 'id',
+            type: 'input'
+          },
+          {
+            label: 'licenses',
+            type: 'json'
+          },
+          {
+            label: 'profile'
+          },
+          {
+            label: 'title',
+            type: 'input'
+          },
+          {
+            label: 'description',
+            type: 'markdown'
+          },
+          {
+            label: 'version',
+            type: 'input'
+          },
+          {
+            label: 'sources',
+            type: 'json'
+          }
+          ]
+        }
+      },
+      template: sideNavDefaultTemplate
+    },
+    provenance: {
+      data: function() {
+        return {
+          formprops: [{
+            label: 'description',
+            type: 'markdown'
+          }]
+        }
+      },
+      template: sideNavDefaultTemplate
+    }
+  },
   mounted: function() {
     const vueAddTab = this.addTab
+    const vueUpdateMenu = this.updateMenu
+    const vueTriggerSideNav = this.triggerSideNav
     ipc.on('addTab', function() {
       console.log('tab add clicked...')
       vueAddTab()
+    })
+    ipc.on('showAboutPanel', function() {
+      console.log('about clicked...')
+      vueTriggerSideNav({sideNavView: 'about'})
     })
     this.$nextTick(function() {
       console.log('.........................')

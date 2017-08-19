@@ -49,7 +49,10 @@ exports.menu = [
     submenu: [
       {
         label: 'About Data Curator',
-        selector: 'orderFrontStandardAboutPanel:'
+        click: function() {
+          utils.showAboutPanel()
+        }
+        // selector: 'orderFrontStandardAboutPanel:'
       }, {
         type: 'separator'
       }, {
