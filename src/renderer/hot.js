@@ -24,12 +24,12 @@ let HotRegister = {
         }
         return {row: 0, col: 1}
       },
-      afterInit: function() {
-        loader.showLoader('Loading...')
-      },
-      afterLoadData: function() {
-        loader.hideLoader()
-      },
+      // afterInit: function() {
+      //   loader.showLoader('Loading...')
+      // },
+      // afterLoadData: function() {
+      //   loader.hideLoader()
+      // },
       afterUpdateSettings: function() {
         hot.render()
         hot.deselectCell()

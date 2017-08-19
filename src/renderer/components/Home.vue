@@ -12,7 +12,7 @@
               <a href="#">
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
                 <object v-if="menu.image" :class="menu.class" id="column-properties-svg" :data="menu.image" type="image/svg+xml" />
-                <div>{{menu.name}}</div>
+                <div class="toolbar-text">{{menu.name}}</div>
               </a>
             </li>
           </ul>
@@ -112,7 +112,7 @@ let sideNavDefaultTemplate =
 `<form class="navbar-form form-horizontal" id="tableProperties">
 <div class="form-group-sm row container-fluid">
   <div v-for="(formprop, index) in formprops" :key="index" >
-    <label class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
+    <label :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
     <input type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
   </div>
 </div>
