@@ -59,9 +59,7 @@ let HotRegister = {
     return _.get(this.hots, key)
   },
   getActiveInstance: function() {
-    console.log('inside get active instance.')
     let activeHotId = jQuery('#csvContent .active .editor').attr('id')
-    console.log(`active hot id: ${activeHotId}`)
     return _.get(this.hots, activeHotId)
   }
 }
