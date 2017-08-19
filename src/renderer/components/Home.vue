@@ -35,7 +35,7 @@
             {{sideNavView}}
           </a>
         </div>
-        <transition :name="sideNavTransition" mode="out-in">
+        <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
           <component :is="sideNavView" >
           </component>
         </transition>
@@ -55,7 +55,7 @@
                 <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" @click="setActiveTab(tab)">
                   <a>
                     <span>{{tabTitle(tab)}}</span>
-                    <span v-if="tabs.length > 1" class="tabclose btn-danger fa fa-times" @click.stop="closeTab"></span>
+                    <span v-show="sideNavStatus === 'open'" v-if="tabs.length > 1" class="tabclose btn-danger fa fa-times" @click.stop="closeTab"></span>
                   </a>
                 </li>
               </ul>
@@ -126,6 +126,7 @@ export default {
       sideNavStatus: 'closed',
       sideNavView: 'default',
       sideNavTransition: '',
+      enableTransition: false,
       toolbarMenus: [{
         name: 'Validate',
         icon: 'fa-check-circle',
@@ -244,35 +245,34 @@ export default {
       }
     },
     closeSideNav: function() {
+      this.enableTransition = false
       this.sideNavStatus = 'closed'
-      $('.closebtn').hide()
     },
     openSideNav: function() {
       this.sideNavStatus = 'open'
-      $('.closebtn').delay(200).show(0)
     },
-    updateMenu: function(index) {
-      console.log(`current index is ${this.menuIndex}`)
-      console.log(`incoming index is ${index}`)
-      let maxIndex = this.toolbarMenus.length - 1
+    updateTransitions: function(index, maxIndex) {
       if (this.menuIndex === 0 && index === maxIndex) {
-        console.log('transitioning left...')
         this.sideNavTransition = 'sideNav-left'
       } else if (this.menuIndex === maxIndex && index === 0) {
-        console.log('transitioning right...')
         this.sideNavTransition = 'sideNav-right'
       } else if (index < this.menuIndex) {
-        console.log('transitioning left...')
         this.sideNavTransition = 'sideNav-left'
       } else if (index > this.menuIndex) {
-        console.log('transitioning right...')
         this.sideNavTransition = 'sideNav-right'
       } else {
-        console.log('same toolbar selection...')
+        // console.log('same toolbar selection...')
+      }
+    },
+    updateMenu: function(index) {
+      if (this.sideNavStatus === 'open') {
+        this.updateTransitions(index, this.toolbarMenus.length - 1)
+        this.enableTransition = true
+      } else {
+        this.enableTransition = false
       }
       let menu = this.toolbarMenus[index]
       this.menuIndex = index
-      console.log(`current index now is ${this.menuIndex}`)
       this.sideNavPosition = menu.sideNavPosition
       this.sideNavView = menu.sideNavView
       this.openSideNav()
@@ -295,13 +295,104 @@ export default {
       this.sideNavPosition = properties.sideNavPosition || 'left'
       this.sideNavTransition = properties.sideNavTransition || 'left'
       this.sideNavView = properties.sideNavView
+      this.enableTransition = properties.enableTransition || false
       this.sideNavStatus = 'open'
     }
   },
   components: {
     about: {
-      template: `<div id="tableProperties">
-        About
+      data: function() {
+        return {
+          aboutListStyle: {
+            fontWeight: 'bold',
+            textAlign: 'center',
+            border: 'none'
+          },
+          listStyle: {
+            'paddingLeft': '0'
+          },
+          listItemStyle: {
+            'paddingLeft': '5px'
+          },
+          aboutProps: [
+            {
+              items: [
+                {
+                  image: '/static/img/data-curator-120.png'
+                },
+                {
+                  label: 'Data Curator',
+                  style: {fontSize: '24px', color: '#0ca831'}
+                },
+                {
+                  label: 'create usable open data',
+                  style: {fontSize: '16px', color: '#0ca831'}
+                },
+                {
+                  label: '1.0.0'
+                }
+              ]
+            },
+            {
+              items: [
+                {
+                  image: '/static/img/advance_qld_logo.png',
+                  link: 'http://advance.qld.gov.au/',
+                  height: '48px'
+                },
+                {
+                  label: 'Funded by the Queensland Government'
+                }
+              ]
+            },
+            {
+              items: [
+                {
+                  image: '/static/img/odi_aus_logo.png',
+                  link: 'https://theodi.org.au/',
+                  height: '48px'
+                },
+                {
+                  label: 'Project coordinated by the ODI Australian Network'
+                }
+              ]
+            },
+            {
+              items: [
+                {
+                  image: '/static/img/qcif_logo.png',
+                  link: 'https://www.qcif.edu.au',
+                  height: '60px'
+                },
+                {label: 'Includes software developed by the Queensland Cyber Infrastructure Foundation on behalf of the Queensland Government and the ODI Australian Network'}
+              ]
+            }
+          ]
+        }
+      },
+      template: `
+      <div id="aboutProperties" class="panel-group">
+        <ul class="list-group" v-for="(list, index) in aboutProps" :key="index">
+          <li :style="aboutListStyle" class="list-group-item" v-for="(item, index) in list.items" :key="index">
+            <template v-if="item.image">
+              <a v-if="item.link" :href="item.link"><img :height="item.height" width="auto" :src="item.image" /></a>
+              <img v-else :src="item.image" />
+            </template>
+            <template v-if="item.label">
+              <a :style="item.style" v-if="item.link" :href="item.link">{{item.label}}</a>
+              <span :style="item.style" v-else>{{item.label}}</span>
+            </template>
+          </li>
+        </ul>
+        <ul :style="listStyle">We acknowledge the great work of others. We are:
+          <li :style="listItemStyle">inspired by the <a href="https://theodi.org/">ODI</a> experiment, <a href="https://comma-chameleon.io/">Comma Chameleon</a></li>
+          <li :style="listItemStyle">using the <a href="https://okfn.org/">Open Knowledge International</a> Frictionless Data <a href="http://frictionlessdata.io/">specification</a> and <a href="http://frictionlessdata.io/tools/#javascript">code libraries</a></li>
+          <li :style="listItemStyle">adopting <a href="https://www.w3.org/TR/dwbp/#bp-summary">W3C Data on the Web Best Practices</a></li>
+          <li :style="listItemStyle">proudly using <a href="https://github.com/ODIQueensland/data-curator/blob/master/README.md">open source software</a></li>
+        </ul>
+        <div>
+          Learn how you can <a href="https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md">contribute to Data Curator</a>
+        </div>
       </div>`
     },
     default: {

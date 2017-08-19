@@ -62,8 +62,7 @@ sideNavMargin = 250px
     z-index 75
     right 0
     a
-      &:hover
-        background-color inherit !important
+      background-color inherit !important
   form
     margin 0 !important
     border-top 0
@@ -101,9 +100,10 @@ span.tabclose
   display inline-block !important
 
 // slide-out sideNav transitions
-.sideNav-left-enter-active
-.sideNav-left-leave-active
 .sideNav-right-enter-active
+.sideNav-left-enter-active
+  transition all 0.4s
+.sideNav-left-leave-active
 .sideNav-right-leave-active
   transition all 0.5s
 
