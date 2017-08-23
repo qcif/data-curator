@@ -3135,9 +3135,17 @@ electron-window@^0.8.0:
   dependencies:
     is-electron-renderer "^2.0.0"
 
-electron@1.7.6, electron@^1.6.11:
+electron@1.7.6:
   version "1.7.6"
   resolved "https://registry.yarnpkg.com/electron/-/electron-1.7.6.tgz#fb69ea31bd03df0eff247f26f0b538bd29b6ee72"
+  dependencies:
+    "@types/node" "^7.0.18"
+    electron-download "^3.0.1"
+    extract-zip "^1.0.3"
+
+electron@^1.7.5:
+  version "1.7.5"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-1.7.5.tgz#065a3102bf8b87102df50c50985fefe6c569045b"
   dependencies:
     "@types/node" "^7.0.18"
     electron-download "^3.0.1"
