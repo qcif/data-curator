@@ -27,7 +27,7 @@
           <ul class="nav navbar-right closebtn">
             <li>
               <a href="#">
-                <span class="btn-danger fa fa-times" @click="closeSideNav" />
+                <span v-show="sideNavStatus === 'open'" class="btn-danger fa fa-times" @click="closeSideNav" />
               </a>
             </li>
           </ul>
@@ -55,7 +55,7 @@
                 <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" @click="setActiveTab(tab)">
                   <a>
                     <span>{{tabTitle(tab)}}</span>
-                    <span v-show="sideNavStatus === 'open'" v-if="tabs.length > 1" class="tabclose btn-danger fa fa-times" @click.stop="closeTab"></span>
+                    <span v-if="tabs.length > 1" class="tabclose btn-danger fa fa-times" @click.stop="closeTab"></span>
                   </a>
                 </li>
               </ul>
@@ -190,25 +190,31 @@ export default {
       'setActiveTab',
       'incrementTabIndex'
     ]),
+    addTabWithData: function(data) {
+      this.initTab()
+      this.$nextTick(function() {
+        // update latest tab object with content
+        this.loadDataIntoContainer($('.editor:last')[0], data)
+      })
+    },
     addTab: function() {
-      console.log('.........................')
-      console.log('inside addTab function....')
+      this.initTab()
+      this.$nextTick(function() {
+        // update latest tab object with content
+        this.loadDefaultDataIntoContainer($('.editor:last')[0])
+      })
+    },
+    initTab: function() {
       this.incrementTabIndex()
       let nextTabId = this.createTabId(this.tabIndex)
       this.setActiveTab(nextTabId)
       this.pushTab(nextTabId)
-      this.$nextTick(function() {
-        console.log('.........................')
-        console.log('...next tick')
-        // update latest tab object with content
-        this.loadDefaultDataIntoContainer($('.editor:last')[0])
-        console.log('.........................')
-      })
-      console.log('leaving addTab function....')
-      console.log('.........................')
     },
     loadDefaultDataIntoContainer: function(container) {
       let defaultData = '"","",""'
+      this.loadDataIntoContainer(container, defaultData)
+    },
+    loadDataIntoContainer: function(container, data) {
       let defaultFormat = require('../../renderer/file-actions.js').formats.csv
       HotRegister.register(container)
       addHotContainerListeners(container)
@@ -219,7 +225,7 @@ export default {
         'hotId': activeHotId,
         'tabId': activeTabId
       })
-      loadData(activeHotId, defaultData, defaultFormat)
+      loadData(activeHotId, data, defaultFormat)
     },
     cleanUpTabDependencies: function(tabId) {
       // update active tab
@@ -557,15 +563,16 @@ export default {
     }
   },
   mounted: function() {
+    const vueAddTabWithData = this.addTabWithData
+    ipc.on('addTabWithData', function(e, data) {
+      vueAddTabWithData(data)
+    })
     const vueAddTab = this.addTab
-    const vueUpdateMenu = this.updateMenu
-    const vueTriggerSideNav = this.triggerSideNav
     ipc.on('addTab', function() {
-      console.log('tab add clicked...')
       vueAddTab()
     })
+    const vueTriggerSideNav = this.triggerSideNav
     ipc.on('showAboutPanel', function() {
-      console.log('about clicked...')
       vueTriggerSideNav({sideNavView: 'about'})
     })
     this.$nextTick(function() {

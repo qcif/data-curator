@@ -1,8 +1,9 @@
-import {BrowserWindow} from 'electron'
-import {XLSX} from 'xlsx'
+import {BrowserWindow, ipcMain as ipc, dialog as Dialog} from 'electron'
+import XLSX from 'xlsx'
+import {createWindowTabWithData} from './utils'
 
 export function importExcel() {
-  global.Dialog.showOpenDialog({
+  Dialog.showOpenDialog({
     filters: [
       {
         name: 'text',
@@ -16,24 +17,22 @@ export function importExcel() {
     var first_sheet_name = workbook.SheetNames[0]
     var worksheet = workbook.Sheets[first_sheet_name]
 
-    var popup = new BrowserWindow({width: 300, height: 150})
+    let popup = new BrowserWindow({width: 300, height: 150, closable: false})
+    popup.on('close', function(e) {
+      popup = null
+    })
     popup.loadURL(`http://localhost:9080/#/selectworksheet`)
     popup.webContents.on('did-finish-load', function() {
       popup.webContents.send('loadSheets', workbook.SheetNames)
 
-      global.ipc.once('worksheetSelected', function(e, sheet_name) {
+      ipc.on('worksheetCanceled', function() {
+        popup.hide()
+      })
+      ipc.on('worksheetSelected', function(e, sheet_name) {
         let data = XLSX.utils.sheet_to_csv(workbook.Sheets[sheet_name])
-        popup.close()
-        global.utils.createWindow(data)
+        popup.hide()
+        utils.createWindowTabWithData(data)
       })
-
-      global.ipc.once('worksheetCanceled', function() {
-        popup.close()
-      })
-    })
-
-    popup.on('closed', function() {
-      popup = null
     })
   })
 }
