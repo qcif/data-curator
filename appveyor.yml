@@ -11,10 +11,10 @@ platform:
   - x64
 
 cache:
-  # - node_modules
-  # - '%APPDATA%\npm-cache'
+  - node_modules
+  - '%APPDATA%\npm-cache'
   - '%USERPROFILE%\.electron'
-  # - '%USERPROFILE%\AppData\Local\Yarn\cache'
+  - '%USERPROFILE%\AppData\Local\Yarn\cache'
 
 init:
   - git config --global core.autocrlf input
@@ -23,7 +23,6 @@ install:
   - ps: Install-Product node 8 x64
   - choco install yarn --ignore-dependencies
   - git reset --hard HEAD
-  - yarn upgrade prebuild
   - yarn
   - node --version
 
