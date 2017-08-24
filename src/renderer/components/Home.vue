@@ -27,7 +27,7 @@
           <ul class="nav navbar-right closebtn">
             <li>
               <a href="#">
-                <span class="btn-danger fa fa-times" @click="closeSideNav" />
+                <span v-show="sideNavStatus === 'open'" class="btn-danger fa fa-times" @click="closeSideNav" />
               </a>
             </li>
           </ul>
@@ -55,7 +55,7 @@
                 <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" @click="setActiveTab(tab)">
                   <a>
                     <span>{{tabTitle(tab)}}</span>
-                    <span v-show="sideNavStatus === 'open'" v-if="tabs.length > 1" class="tabclose btn-danger fa fa-times" @click.stop="closeTab"></span>
+                    <span v-if="tabs.length > 1" class="tabclose btn-danger fa fa-times" @click.stop="closeTab"></span>
                   </a>
                 </li>
               </ul>
