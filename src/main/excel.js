@@ -1,5 +1,5 @@
 import {BrowserWindow} from 'electron'
-import {XLSX} from 'xlsx'
+import XLSX from 'xlsx'
 
 export function importExcel() {
   global.Dialog.showOpenDialog({
@@ -16,7 +16,7 @@ export function importExcel() {
     var first_sheet_name = workbook.SheetNames[0]
     var worksheet = workbook.Sheets[first_sheet_name]
 
-    var popup = new BrowserWindow({width: 300, height: 150})
+    let popup = new BrowserWindow({width: 300, height: 150})
     popup.loadURL(`http://localhost:9080/#/selectworksheet`)
     popup.webContents.on('did-finish-load', function() {
       popup.webContents.send('loadSheets', workbook.SheetNames)
@@ -24,7 +24,9 @@ export function importExcel() {
       global.ipc.once('worksheetSelected', function(e, sheet_name) {
         let data = XLSX.utils.sheet_to_csv(workbook.Sheets[sheet_name])
         popup.close()
-        global.utils.createWindow(data)
+        console.log('data is...')
+        console.dir(data)
+        global.utils.createWindowTabWithData(data)
       })
 
       global.ipc.once('worksheetCanceled', function() {

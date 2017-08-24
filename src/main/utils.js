@@ -44,6 +44,17 @@ export function createWindowTab() {
   }
 }
 
+export function createWindowTabWithData(data) {
+  var window = BrowserWindow.getFocusedWindow()
+  if (window == null) {
+    window = createWindow()
+  } else {
+    console.log('got data to send....')
+    console.dir(data)
+    window.webContents.send('addTabWithData', data)
+  }
+}
+
 export function showAboutPanel() {
   var window = BrowserWindow.getFocusedWindow()
   console.log(`window is: ${window.id}`)

@@ -15,26 +15,27 @@ const {
 } = require('electron')
 var ipc = require('electron').ipcRenderer
 require('bootstrap/dist/js/bootstrap.min.js')
-ipc.on('loadSheets', function(e, sheets) {
-  worksheets = $('#worksheets')
-  $.each(sheets, function(i, sheet) {
-    worksheets.append($('<option></option>')
-      .attr('value', sheet)
-      .text(sheet))
-  })
-
-  $('#submit').click(function(e) {
-    ipc.send('worksheetSelected', $('#worksheets').val())
-    e.preventDefault()
-  })
-
-  $('#cancel').click(function() {
-    ipc.send('worksheetCanceled')
-  })
-})
 export default {
   name: 'selectworksheet',
-  methods: {}
+  methods: {},
+  mounted: function() {
+    ipc.on('loadSheets', function(e, sheets) {
+      let worksheets = $('#worksheets')
+      $.each(sheets, function(i, sheet) {
+        worksheets.append($('<option></option>')
+          .attr('value', sheet)
+          .text(sheet))
+      })
+      $('#submit').click(function(e) {
+        console.log('clicked and selected worksheet.')
+        ipc.send('worksheetSelected', $('#worksheets').val())
+        e.preventDefault()
+      })
+      $('#cancel').click(function() {
+        ipc.send('worksheetCanceled')
+      })
+    })
+  }
 }
 </script>
 <style scoped>
