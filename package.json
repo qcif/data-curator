@@ -50,10 +50,8 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico",
-      "target": "nsis"
+      "icon": "build/icons/icon.ico"
     },
-    "buildVersion": "0.1.0",
     "linux": {
       "icon": "build/icons"
     }
