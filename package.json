@@ -78,7 +78,6 @@
     "moment": "^2.18.1",
     "node-zip": "^1.1.1",
     "pikaday": "^1.6.1",
-    "pouchdb": "^6.3.4",
     "pouchdb-adapter-idb": "^6.3.4",
     "request": "^2.81.0",
     "rx-dom": "^7.0.3",
