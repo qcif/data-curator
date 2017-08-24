@@ -4,7 +4,7 @@ version: 0.1.{build}
 
 branches:
   only:
-    - release/0.1.0
+    - windows
 
 image: Visual Studio 2017
 platform:
