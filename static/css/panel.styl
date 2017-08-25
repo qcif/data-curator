@@ -3,16 +3,24 @@
   margin 0
   padding 0
 
+#body-panel
+    border 0
+
 sideNavTransition = 0.3s
 sideNavMargin = 250px
 
 #header-panel
   background-color #f8f8f8
+  border-bottom 1px solid
+  border-color #e4e4e4
+  padding 0px
   .navbar
     border none
+    margin-bottom 0px
 
 #main-panel
   padding 5px
+  border 0
   z-index 10
   width 100%
   transition sideNavTransition
@@ -30,11 +38,13 @@ sideNavMargin = 250px
   height 100%
   position absolute
   margin-left 0px
+  border 1px
+  border-radius 0px
   z-index 50
   top 0
   overflow-x hidden
   transition sideNavTransition
-  padding-top 1px
+  padding-top 0px
   .navbar-brand
     text-transform: capitalize
   &.closed
@@ -47,11 +57,17 @@ sideNavMargin = 250px
     right 0
   .navbar-header
     background-color #e4ecf6
+    border-bottom 1px solid
+    border-color #e4e4e4
     display block !important
     float none
     margin-left -15px
     margin-right -15px
+    margin-top 0px
+    margin-bottom 26px
+    padding-top 12px
     @media screen and (min-width: 768px)
+      padding-top 12px
       padding-left 15px
       margin-bottom 15px
   .closebtn
