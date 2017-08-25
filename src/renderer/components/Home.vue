@@ -99,7 +99,13 @@ import {
 import {
   HotRegister
 } from '../hot.js'
-import About from '../partials/About'
+import about from '../partials/About'
+import column from '../partials/ColumnProperties'
+import default1 from '../partials/Default1Properties'
+import default2 from '../partials/Default2Properties'
+import tabular from '../partials/TableProperties'
+import packager from '../partials/PackageProperties'
+import provenance from '../partials/ProvenanceProperties'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
 const {
   shell
@@ -109,15 +115,6 @@ require('bootstrap/dist/js/bootstrap.min.js')
 require('jquery-csv/src/jquery.csv.js')
 require('lodash/lodash.min.js')
 require('../menu.js')
-let sideNavDefaultTemplate =
-`<form class="navbar-form form-horizontal" id="tableProperties">
-<div class="form-group-sm row container-fluid">
-  <div v-for="(formprop, index) in formprops" :key="index" >
-    <label :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
-    <input type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
-  </div>
-</div>
-</form>`
 export default {
   name: 'home',
   data() {
@@ -307,167 +304,13 @@ export default {
     }
   },
   components: {
-    About,
-    default: {
-      data: function() {
-        return {
-          formprops: [{
-            label: 'name'
-          },
-          {
-            label: 'title'
-          },
-          {
-            label: 'description'
-          },
-          {
-            label: 'licence'
-          }
-          ]
-        }
-      },
-      template: sideNavDefaultTemplate
-    },
-    default2: {
-      data: function() {
-        return {
-          formprops: [{
-            label: 'name2'
-          },
-          {
-            label: 'title2'
-          },
-          {
-            label: 'description2'
-          },
-          {
-            label: 'licence2'
-          }
-          ]
-        }
-      },
-      template: sideNavDefaultTemplate
-    },
-    column: {
-      data: function() {
-        return {
-          formprops: [{
-            label: 'name'
-          },
-          {
-            label: 'title'
-          },
-          {
-            label: 'description'
-          },
-          {
-            label: 'type',
-            type: 'dropdown'
-          },
-          {
-            label: 'format',
-            type: 'dropdown'
-          },
-          {
-            label: 'rdfType',
-            type: 'url'
-          },
-          {
-            label: 'contraints',
-            type: 'json'
-          }
-          ]
-        }
-      },
-      template: sideNavDefaultTemplate
-    },
-    tablular: {
-      data: function() {
-        return {
-          formprops: [{
-            label: 'title'
-          },
-          {
-            label: 'name'
-          },
-          {
-            label: 'profile'
-          },
-          {
-            label: 'description'
-          },
-          {
-            label: 'sources',
-            type: 'dropdown'
-          },
-          {
-            label: 'licences',
-            type: 'dropdown'
-          },
-          {
-            label: 'format'
-          },
-          {
-            label: 'mediatype'
-          },
-          {
-            label: 'encoding'
-          }
-          ]
-        }
-      },
-      template: sideNavDefaultTemplate
-    },
-    package: {
-      data: function() {
-        return {
-          formprops: [{
-            label: 'name',
-            type: 'input'
-          },
-          {
-            label: 'id',
-            type: 'input'
-          },
-          {
-            label: 'licenses',
-            type: 'json'
-          },
-          {
-            label: 'profile'
-          },
-          {
-            label: 'title',
-            type: 'input'
-          },
-          {
-            label: 'description',
-            type: 'markdown'
-          },
-          {
-            label: 'version',
-            type: 'input'
-          },
-          {
-            label: 'sources',
-            type: 'json'
-          }
-          ]
-        }
-      },
-      template: sideNavDefaultTemplate
-    },
-    provenance: {
-      data: function() {
-        return {
-          formprops: [{
-            label: 'description',
-            type: 'markdown'
-          }]
-        }
-      },
-      template: sideNavDefaultTemplate
-    }
+    about,
+    default1,
+    default2,
+    column,
+    tabular,
+    packager,
+    provenance
   },
   mounted: function() {
     const vueAddTabWithData = this.addTabWithData
