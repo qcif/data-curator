@@ -325,16 +325,14 @@ export default {
               items: [
                 {
                   image: '/static/img/data-curator-120.png',
-                  link: 'https://ask.theodi.org.au/c/projects/data-curator',
                   height: '48px'
                 },
                 {
                   label: 'Data Curator',
-                  style: {fontSize: '24px', color: '#0ca831'}
+                  style: {fontSize: '20px', color: '#0ca831'}
                 },
                 {
-                  label: 'create usable open data',
-                  style: {color: '#0ca831'}
+                  label: 'Create usable open data'
                 },
                 {
                   label: '0.1.0'
@@ -346,7 +344,7 @@ export default {
                 {
                   image: '/static/img/advance_qld_logo.png',
                   link: 'http://advance.qld.gov.au/',
-                  height: '48px'
+                  height: '56px'
                 },
                 {
                   label: 'Funded by the Queensland Government'
@@ -361,7 +359,7 @@ export default {
                   height: '48px'
                 },
                 {
-                  label: 'Project coordinated by the ODI Australian Network'
+                  label: 'Coordinated by the ODI Australian Network'
                 }
               ]
             },
