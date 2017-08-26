@@ -1,4 +1,5 @@
 var file_formats = require('../renderer/file-actions.js').formats
+const {shell} = require('electron')
 
 // build 'Open..' and 'Save As..' submenus
 var open_submenu = []
@@ -293,7 +294,17 @@ exports.menu = [
     label: 'Help',
     submenu: [
       {
-        label: 'Editor Keyboard Shortcuts',
+        label: 'Data Curator Help',
+        click: function() {
+          shell.openExternal('https://odiqueensland.github.io/data-curator-help/')
+        }
+      }, {
+        label: 'Support',
+        click: function() {
+          shell.openExternal('https://ask.theodi.org.au/c/projects/data-curator')
+        }
+      }, {
+        label: 'Keyboard Shortcuts',
         click: function() {
           help.showKeyboardHelp()
         }
