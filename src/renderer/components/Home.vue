@@ -40,8 +40,8 @@
           </component>
         </transition>
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
-          <a href="#" class="left" @click.prevent="sideNavLeft">&lt;</a>
-          <a href="#" class="right" @click.prevent="sideNavRight">&gt;</a>
+          <a href="#" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
+          <a href="#" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
         </div>
       </div>
     </nav>
