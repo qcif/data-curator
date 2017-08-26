@@ -130,6 +130,10 @@ exports.menu = [
         }
       },
       {
+        label: 'Open Google Sheet...',
+        enabled: false
+      },
+      {
         label: 'Open Data Package...',
         enabled: false
       },
@@ -152,6 +156,22 @@ exports.menu = [
         label: 'Save All',
         accelerator: 'Alt+CmdOrCtrl+S',
         enabled: false
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Close Tab',
+//        accelerator: 'CmdOrCtrl+?',
+        enabled: false
+      },
+      {
+        label: 'Close All',
+//        accelerator: 'Alt+CmdOrCtrl+?',
+        enabled: false
+      },
+      {
+        type: 'separator'
       },
       {
         label: 'Export Data Package...',
@@ -297,6 +317,53 @@ exports.menu = [
       }
     ]
   },
+
+  {
+    label: 'Find',
+    submenu: [
+      {
+        label: 'Find',
+        accelerator: 'CmdOrCtrl+F',
+        enabled: false
+      },
+      {
+        label: 'Find Next',
+        accelerator: 'CmdOrCtrl+G',
+        enabled: false
+      },
+      {
+        label: 'Find Previous',
+        accelerator: 'Shift+CmdOrCtrl+G',
+        enabled: false
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Replace',
+        accelerator: 'Alt+CmdOrCtrl+F',
+        enabled: false
+      },
+      {
+        label: 'Replace Next',
+        accelerator: 'Alt+CmdOrCtrl+E',
+        enabled: false
+      },
+      {
+        label: 'Replace All',
+        enabled: false
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Sort',
+        accelerator: 'Shift+CmdOrCtrl+R',
+        enabled: false
+      }
+    ]
+  },
+
   {
     label: 'Tools',
     submenu: [
@@ -311,6 +378,14 @@ exports.menu = [
         type: 'separator'
       },
       {
+        label: 'Validate',
+        accelerator: 'Shift+CmdOrCtrl+V',
+        enabled: false
+//        click: function() {
+//          validate.validateFile()
+//        }
+      },
+      {
         label: 'Fix Ragged Rows',
         enabled: false
 //        click: function() {
@@ -323,23 +398,30 @@ exports.menu = [
 //          tools.generateSchemaFromHeader()
 //        }
 //      },
-      {
-        label: 'Validate',
-        accelerator: 'Shift+CmdOrCtrl+V',
-        enabled: false
-//        click: function() {
-//          validate.validateFile()
-//        }
-      },
-      {
-        type: 'separator'
-      },
 //      {
 //        label: 'Validate with schema',
 //        click: function() {
 //          validate.validateWithSchema()
 //        }
 //      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Import Column Properties',
+        enabled: false
+      },
+      {
+        label: 'Guess Column Properties',
+        enabled: false
+      },
+      {
+        label: 'Guess Valid Values',
+        enabled: false
+      },
+      {
+        type: 'separator'
+      },
       {
         label: 'Column Properties',
         enabled: false
@@ -358,6 +440,10 @@ exports.menu = [
       },
       {
         type: 'separator'
+      },
+      {
+        label: 'Assess Data Quality',
+        enabled: false
       },
       {
         label: 'Publish to CKAN',
