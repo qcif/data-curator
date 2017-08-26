@@ -129,7 +129,7 @@ export default {
       enableTransition: false,
       toolbarMenus: [{
         name: 'Validate',
-        icon: 'fa-check-circle  fa-2x',
+        icon: 'fa-check-circle fa-2x',
         sideNavPosition: 'right',
         sideNavView: 'default'
       },
@@ -147,7 +147,7 @@ export default {
       },
       {
         name: 'Provenance',
-        icon: 'fa-file-text-o  fa-2x',
+        icon: 'fa-file-text-o fa-2x',
         sideNavPosition: 'right',
         sideNavView: 'provenance'
       },
