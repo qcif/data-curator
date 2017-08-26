@@ -129,7 +129,7 @@ export default {
       enableTransition: false,
       toolbarMenus: [{
         name: 'Validate',
-        icon: 'fa-check-circle',
+        icon: 'fa-check-circle  fa-2x',
         sideNavPosition: 'right',
         sideNavView: 'default'
       },
@@ -141,19 +141,19 @@ export default {
       },
       {
         name: 'Table',
-        icon: 'fa-table',
+        icon: 'fa-table fa-2x',
         sideNavPosition: 'right',
         sideNavView: 'tablular'
       },
       {
         name: 'Provenance',
-        icon: 'fa-file-text-o',
+        icon: 'fa-file-text-o  fa-2x',
         sideNavPosition: 'right',
         sideNavView: 'provenance'
       },
       {
         name: 'Package',
-        icon: 'fa-gift',
+        icon: 'fa-gift fa-2x',
         sideNavPosition: 'right',
         sideNavView: 'package'
       },
