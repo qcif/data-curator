@@ -5,6 +5,9 @@ Feature: Close Window
   I want to close all data tabs and prompt if there are unsaved changes
   So that I can finish my work quickly
 
+  Not needed as single page application
+
+
   If the changes are to be saved, they will use the appropriate CSV dialect settings.
 
   If available, use the CSV dialect settings in associated Table Properties.

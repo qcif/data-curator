@@ -1,7 +1,7 @@
 var file_formats = require('../renderer/file-actions.js').formats
 const {shell} = require('electron')
 
-// build 'Open..' and 'Save As..' submenus
+// build 'Open...' and 'Save As...' submenus
 var open_submenu = []
 var save_submenu = []
 for (var format in file_formats) {
@@ -120,7 +120,7 @@ exports.menu = [
         type: 'separator'
       },
       {
-        label: 'Open separated value file...',
+        label: 'Open separated value file',
         submenu: open_submenu
       },
       {
@@ -149,7 +149,7 @@ exports.menu = [
         id: 'save'
       },
       {
-        label: 'Save As...',
+        label: 'Save As',
         submenu: save_submenu
       },
       {
@@ -162,12 +162,11 @@ exports.menu = [
       },
       {
         label: 'Close Tab',
-//        accelerator: 'CmdOrCtrl+?',
+        accelerator: 'CmdOrCtrl+W',
         enabled: false
       },
       {
         label: 'Close All',
-//        accelerator: 'Alt+CmdOrCtrl+?',
         enabled: false
       },
       {
@@ -175,8 +174,8 @@ exports.menu = [
       },
       {
         label: 'Export Data Package...',
-        enabled: false
-//        accelerator: 'CmdOrCtrl+D',
+        enabled: false,
+        accelerator: 'CmdOrCtrl+D'
 //        click: function() {
 //          datapackage.exportdata()
 //        }
@@ -460,11 +459,6 @@ exports.menu = [
         selector: 'performMiniaturize:'
       },
       {
-        label: 'Close',
-        accelerator: 'CmdOrCtrl+W',
-        selector: 'performClose:'
-      },
-      {
         type: 'separator'
       },
       {
@@ -496,10 +490,22 @@ exports.menu = [
         }
       },
       {
-        label: 'Support',
+        type: 'separator'
+      },
+      {
+        label: 'Support Forum',
         click: function() {
           shell.openExternal('https://ask.theodi.org.au/c/projects/data-curator')
         }
+      },
+      {
+        label: 'Report Issues',
+        click: function() {
+          shell.openExternal('https://github.com/ODIQueensland/data-curator/blob/develop/.github/CONTRIBUTING.md')
+        }
+      },
+      {
+        type: 'separator'
       },
       {
         label: 'Keyboard Shortcuts',
