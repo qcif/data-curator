@@ -16,11 +16,13 @@ export default {
       },
       {
         label: 'type',
-        type: 'dropdown'
+        type: 'dropdown',
+        default: 'string'
       },
       {
         label: 'format',
-        type: 'dropdown'
+        type: 'dropdown',
+        default: 'default'
       },
       {
         label: 'rdfType',
@@ -30,7 +32,18 @@ export default {
         label: 'contraints',
         type: 'json'
       }
-      ]
+      ],
+      types: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
+      formats: {
+        'string': ['email', 'uri', 'binary', 'uuid'],
+        'date': ['any', 'pattern'],
+        'time': ['any', 'pattern'],
+        'datetime': ['any', 'pattern'],
+        'geopoint': ['array', 'object'],
+        'geojson': ['topojson']
+      },
+      constraints: ['required', 'unique', 'minLength', 'maxLength', 'minimum', 'maximum', 'pattern', 'enum'],
+      otherProperties: ['missingValues', 'primaryKey', 'foreignKey']
     }
   }
 }

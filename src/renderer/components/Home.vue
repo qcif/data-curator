@@ -107,12 +107,12 @@ import tabular from '../partials/TableProperties'
 import packager from '../partials/PackageProperties'
 import provenance from '../partials/ProvenanceProperties'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
-const {
-  shell
-} = require('electron')
+// const {
+//   shell
+// } = require('electron')
 var ipc = require('electron').ipcRenderer
 require('bootstrap/dist/js/bootstrap.min.js')
-require('jquery-csv/src/jquery.csv.js')
+// require('jquery-csv/src/jquery.csv.js')
 require('lodash/lodash.min.js')
 require('../menu.js')
 export default {
