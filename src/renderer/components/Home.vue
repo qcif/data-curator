@@ -27,7 +27,7 @@
           <ul class="nav navbar-right closebtn">
             <li>
               <a href="#">
-                <span v-show="sideNavStatus === 'open'" class="btn-danger fa fa-times" @click="closeSideNav" />
+                <span v-show="sideNavStatus === 'open'" class="btn fa fa-times" @click="closeSideNav" />
               </a>
             </li>
           </ul>
