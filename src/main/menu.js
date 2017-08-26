@@ -50,10 +50,20 @@ exports.menu = [
       {
         label: 'About Data Curator',
         click: function() {
-          utils.showAboutPanel()
+          utils.showSidePanel('about')
         }
-        // selector: 'orderFrontStandardAboutPanel:'
       }, {
+        type: 'separator'
+      }, {
+        label: process.platform === 'darwin'
+          ? 'Preferences'
+          : 'Settings',
+        click: function() {
+          utils.showSidePanel('preferences')
+        }
+      },
+      // selector: 'orderFrontStandardAboutPanel:'
+      {
         type: 'separator'
       }, {
         label: 'Services',

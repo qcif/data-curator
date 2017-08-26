@@ -100,6 +100,7 @@ import {
   HotRegister
 } from '../hot.js'
 import about from '../partials/About'
+import preferences from '../partials/Preferences'
 import column from '../partials/ColumnProperties'
 import default1 from '../partials/Default1Properties'
 import default2 from '../partials/Default2Properties'
@@ -122,7 +123,7 @@ export default {
       menuIndex: -1,
       sideNavPosition: 'right',
       sideNavStatus: 'closed',
-      sideNavView: 'default',
+      sideNavView: '',
       sideNavTransition: '',
       enableTransition: false,
       toolbarMenus: [{
@@ -304,6 +305,7 @@ export default {
   },
   components: {
     about,
+    preferences,
     default1,
     default2,
     column,
@@ -321,9 +323,9 @@ export default {
       vueAddTab()
     })
     const vueTriggerSideNav = this.triggerSideNav
-    ipc.on('showAboutPanel', function() {
+    ipc.on('showSidePanel', function(event, arg) {
       vueTriggerSideNav({
-        sideNavView: 'about'
+        sideNavView: arg
       })
     })
     this.$nextTick(function() {
