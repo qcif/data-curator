@@ -4,7 +4,7 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Data Curator</a>
+          <a class="navbar-brand">Data Curator</a>
         </div>
         <div id="toolbar">
           <ul class="nav navbar-nav">
