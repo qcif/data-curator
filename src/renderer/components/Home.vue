@@ -162,7 +162,7 @@ export default {
         image: '/static/img/export.svg',
         class: 'down',
         sideNavPosition: 'right',
-        sideNavView: 'default2'
+        sideNavView: 'export'
       }]
     }
   },
@@ -421,7 +421,7 @@ export default {
       },
       template: sideNavDefaultTemplate
     },
-    default2: {
+    export: {
       data: function() {
         return {
           formprops: [{
