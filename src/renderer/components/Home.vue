@@ -324,7 +324,9 @@ export default {
             {
               items: [
                 {
-                  image: '/static/img/data-curator-120.png'
+                  image: '/static/img/data-curator-120.png',
+                  link: 'https://ask.theodi.org.au/c/projects/data-curator',
+                  height: '48px'
                 },
                 {
                   label: 'Data Curator',
@@ -332,10 +334,10 @@ export default {
                 },
                 {
                   label: 'create usable open data',
-                  style: {fontSize: '16px', color: '#0ca831'}
+                  style: {color: '#0ca831'}
                 },
                 {
-                  label: '1.0.0'
+                  label: '0.1.0'
                 }
               ]
             },
