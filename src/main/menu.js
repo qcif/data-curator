@@ -328,9 +328,11 @@ exports.menu = [
       {type: 'separator'},
       {label: 'Assess Data Quality',
         enabled: false
+//       , icon: '../static/img/locked.svg'
       },
       {label: 'Publish to CKAN',
         enabled: false
+//       , icon: '../static/img/locked.svg'
       }
     ]
   },
@@ -352,7 +354,7 @@ exports.menu = [
       }
     ]
   },
-  {label: 'Help',
+  {role: 'help',
     submenu: [
       {label: 'Data Curator Help',
         click: function() {
