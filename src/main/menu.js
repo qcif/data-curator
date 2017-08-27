@@ -98,6 +98,10 @@ exports.menu = [
       {label: 'Open Data Package...',
         enabled: false
       },
+//      {label: 'Open Recent',
+//        enabled: false,
+//        submenu: []
+//      },
       {type: 'separator'},
       {label: 'Save',
         accelerator: 'CmdOrCtrl+S',
@@ -115,15 +119,13 @@ exports.menu = [
       },
       {type: 'separator'},
       {label: 'Close Tab',
-        accelerator: 'CmdOrCtrl+W',
-        enabled: false
+        accelerator: 'CmdOrCtrl+W'
       },
       {label: 'Close All',
         enabled: false
       },
       {type: 'separator'},
       {label: 'Export Data Package...',
-        enabled: false,
         accelerator: 'CmdOrCtrl+D',
         click: function() {
           datapackage.exportdata()
@@ -266,6 +268,9 @@ exports.menu = [
       {type: 'separator'},
       {label: 'Sort',
         accelerator: 'Shift+CmdOrCtrl+R',
+        enabled: false
+      },
+      {label: 'Filter',
         enabled: false
       }
     ]
