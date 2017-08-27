@@ -281,64 +281,76 @@ exports.menu = [
       {type: 'separator'},
       {label: 'Validate',
         accelerator: 'Shift+CmdOrCtrl+V',
-        enabled: false,
         click: function() {
           validate.validateFile()
         }
       },
+//      {label: 'Validate with schema',
+//        click: function() {
+//          validate.validateWithSchema()
+//        }
+//      },
       {label: 'Fix Ragged Rows',
-        enabled: false,
         click: function() {
           tools.fixRaggedRowsFile()
         }
+      },
+      {type: 'separator'},
+      {label: 'Import Column Properties',
+        enabled: false
+      },
+      {label: 'Guess Column Properties'
       },
 //      {label: 'Generate Header',
 //        click: function() {
 //          tools.generateSchemaFromHeader()
 //        }
 //      },
-//      {label: 'Validate with schema',
-//        click: function() {
-//          validate.validateWithSchema()
-//        }
-//      },
-      {type: 'separator'},
-      {label: 'Import Column Properties',
-        enabled: false
-      },
-      {label: 'Guess Column Properties',
-        enabled: false
-      },
       {label: 'Guess Valid Values',
         enabled: false
       },
       {type: 'separator'},
-      {label: 'Column Properties',
-        enabled: false
+      {label: 'Column Properties'
       },
-      {label: 'Table Properties',
-        enabled: false
+      {label: 'Table Properties'
       },
-      {label: 'Provenance Information',
-        enabled: false
+      {label: 'Provenance Information'
       },
-      {label: 'Data Package Properties',
-        enabled: false
+      {label: 'Data Package Properties'
       },
       {type: 'separator'},
+      {label: 'Graph Properties',
+        enabled: false
+//       , icon: '../static/img/locked.svg'
+      },
       {label: 'Assess Data Quality',
         enabled: false
 //       , icon: '../static/img/locked.svg'
       },
-      {label: 'Publish to CKAN',
-        enabled: false
-//       , icon: '../static/img/locked.svg'
+      {type: 'separator'},
+      {label: 'Publish to',
+        enabled: false,
+        submenu: [
+          {label: 'CKAN',
+            enabled: false
+//          , icon: '../static/img/locked.svg'
+          },
+          {label: 'DataHub',
+            enabled: false
+//          , icon: '../static/img/locked.svg'
+          },
+          {label: 'OctoPub',
+            enabled: false
+//          , icon: '../static/img/locked.svg'
+          }
+        ]
       }
     ]
   },
   {label: 'Window',
     submenu: [
       {role: 'minimize'},
+      {role: 'zoom'},
       {type: 'separator'},
       {label: 'Next Tab',
         enabled: false,
