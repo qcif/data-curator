@@ -282,8 +282,13 @@ exports.menu = [
           BrowserWindow.getFocusedWindow().toggleDevTools()
         }
       },
+      {label: 'Read Only',
+        type: 'checkbox',
+        checked: true,
+        enabled: false
+      },
       {type: 'separator'},
-      {label: 'Validate',
+      {label: 'Validate Table',
         accelerator: 'Shift+CmdOrCtrl+V',
         click: function() {
           validate.validateFile()
