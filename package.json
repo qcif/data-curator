@@ -26,10 +26,7 @@
       "output": "build"
     },
     "files": [
-      "dist/electron",
-      "node_modules/",
-      "package.json",
-      "static/"
+      "dist/electron/**/*"
     ],
     "dmg": {
       "contents": [
@@ -63,6 +60,7 @@
     "bootstrap-tagsinput": "^0.7.1",
     "bootstrap-webpack": "^0.0.6",
     "components-font-awesome": "^4.7.0",
+    "datapackage": "^1.0.0-alpha.11",
     "electron-prebuilt-compile": "^1.6.11",
     "escape-regexp": "^0.0.1",
     "exports-loader": "^0.6.4",
@@ -72,6 +70,7 @@
     "jquery": "^3.2.1",
     "jquery-csv": "^0.8.3",
     "jshint": "^2.9.4",
+    "jsontableschema": "^0.2.3",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "node-zip": "^1.1.1",
@@ -83,6 +82,7 @@
     "slug": "^0.9.1",
     "sortablejs": "^1.6.0",
     "svgo": "^0.7.2",
+    "tableschema": "^1.0.0-alpha.20",
     "temp": "^0.8.3",
     "vue": "^2.3.3",
     "vue-electron": "^1.0.6",

@@ -45,6 +45,8 @@ export default {
       constraints: ['required', 'unique', 'minLength', 'maxLength', 'minimum', 'maximum', 'pattern', 'enum'],
       otherProperties: ['missingValues', 'primaryKey', 'foreignKey']
     }
+  },
+  methods: {
   }
 }
 </script>
