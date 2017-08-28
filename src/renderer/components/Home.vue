@@ -324,7 +324,7 @@ export default {
             {
               items: [
                 {
-                  image: '/static/img/data-curator-120.png',
+                  image: '/static/img/data-curator-green.svg',
                   height: '48px'
                 },
                 {

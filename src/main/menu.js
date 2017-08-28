@@ -325,11 +325,11 @@ exports.menu = [
       {type: 'separator'},
       {label: 'Graph Properties',
         enabled: false
-//       , icon: '../static/img/locked.svg'
+//      ,  icon: '/static/img/locked.svg'
       },
       {label: 'Assess Data Quality',
         enabled: false
-//       , icon: '../static/img/locked.svg'
+//       , icon: '/static/img/locked.svg'
       },
       {type: 'separator'},
       {label: 'Publish to',
@@ -337,15 +337,15 @@ exports.menu = [
         submenu: [
           {label: 'CKAN',
             enabled: false
-//          , icon: '../static/img/locked.svg'
+//          , icon: '/static/img/locked.svg'
           },
           {label: 'DataHub',
             enabled: false
-//          , icon: '../static/img/locked.svg'
+//          , icon: '/static/img/locked.svg'
           },
           {label: 'OctoPub',
             enabled: false
-//          , icon: '../static/img/locked.svg'
+//          , icon: '/static/img/locked.svg'
           }
         ]
       }
