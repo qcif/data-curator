@@ -1,6 +1,6 @@
 # Contributing to Data Curator
 
-Firstly, thanks for being here. All types of contributions are valued and gratefully received. Please consider how you may be able to help contribute:
+Firstly, thanks for being here. All types of contributions are valued and gratefully received. You can contribute:
 
 - [financial support](#contribute-financial-support)
 - [ideas and feature requests](#contribute-ideas-and-feature-requests)
