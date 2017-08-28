@@ -101,7 +101,14 @@ exports.menu = [
         enabled: false
       },
       {label: 'Open Recent',
-        submenu: []
+        submenu: [
+          {label: 'example.csv',
+            enabled: false},
+          {type: 'separator'},
+          {label: 'Clear Menu',
+            enabled: false
+          }
+        ]
       },
       {type: 'separator'},
       {label: 'Save',
