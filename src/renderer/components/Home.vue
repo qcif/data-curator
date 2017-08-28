@@ -146,7 +146,7 @@ export default {
         image: '/static/img/table-properties.svg',
 //        icon: 'fa-table fa-2x',
         sideNavPosition: 'right',
-        sideNavView: 'tablular'
+        sideNavView: 'tablex'
       },
       {
         name: 'Provenance',
@@ -481,7 +481,7 @@ export default {
       },
       template: sideNavDefaultTemplate
     },
-    tablular: {
+    tablex: {
       data: function() {
         return {
           formprops: [{
