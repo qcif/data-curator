@@ -129,10 +129,11 @@ export default {
       enableTransition: false,
       toolbarMenus: [{
         name: 'Validate',
-        image: '/static/img/validate.svg',
+        image: '/static/img/validate.svg'
+//        ,
 //        icon: 'fa-check-circle fa-2x',
-        sideNavPosition: 'right',
-        sideNavView: 'default'
+//        sideNavPosition: 'right',
+//        sideNavView: 'default'
       },
       {
         name: 'Column',
@@ -164,9 +165,10 @@ export default {
       {
         name: 'Export',
         image: '/static/img/export.svg',
-        class: 'down',
-        sideNavPosition: 'right',
-        sideNavView: 'export'
+        class: 'down'
+//        ,
+//        sideNavPosition: 'right',
+//        sideNavView: 'export'
       }]
     }
   },
