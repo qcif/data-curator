@@ -95,8 +95,7 @@ exports.menu = [
       {label: 'Open Google Sheet...',
         enabled: false
       },
-      {label: 'Open Data Package...',
-        enabled: false
+      {label: 'Open Data Package...'
       },
 //      {label: 'Open Recent',
 //        enabled: false,
