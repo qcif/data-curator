@@ -18,6 +18,7 @@ for (var format in file_formats) {
   }
   open_submenu.push(open_option)
 
+// label should have ... appended to end
   var save_option = {
     label: file_formats[format].label,
     click: (function(format) {
@@ -32,13 +33,15 @@ for (var format in file_formats) {
   save_submenu.push(save_option)
 }
 open_submenu.push({
-  label: 'Custom',
+  label: 'Custom Dialect...',
+  enabled: false,
   click: function() {
     fileActions.openCustom()
   }
 })
 save_submenu.push({
-  label: 'Custom',
+  label: 'Custom Dialect...',
+  enabled: false,
   click: function() {
     fileActions.saveAsCustom()
   }
@@ -84,7 +87,7 @@ exports.menu = [
 //        }
 //      },
       {type: 'separator'},
-      {label: 'Open separated value file',
+      {label: 'Open',
         submenu: open_submenu
       },
       {label: 'Open Excel file...',
@@ -92,15 +95,14 @@ exports.menu = [
           excel.importExcel()
         }
       },
+      {label: 'Open Data Package...'
+      },
       {label: 'Open Google Sheet...',
         enabled: false
       },
-      {label: 'Open Data Package...'
+      {label: 'Open Recent',
+        submenu: []
       },
-//      {label: 'Open Recent',
-//        enabled: false,
-//        submenu: []
-//      },
       {type: 'separator'},
       {label: 'Save',
         accelerator: 'CmdOrCtrl+S',
@@ -129,7 +131,7 @@ exports.menu = [
         click: function() {
           datapackage.exportdata()
         }
-      }
+      },
 //      {label: 'Github',
 //        submenu: [
 //          {label: 'Export to Github',
@@ -146,6 +148,12 @@ exports.menu = [
 //          }
 //        ]
 //      }
+      {type: 'separator'},
+      {label: 'Print',
+        accelerator: 'CmdOrCtrl+P',
+        enabled: false
+      }
+
     ]
   },
   {label: 'Edit',
