@@ -129,7 +129,8 @@ export default {
       enableTransition: false,
       toolbarMenus: [{
         name: 'Validate',
-        icon: 'fa-check-circle fa-2x',
+        image: '/static/img/validate.svg',
+//        icon: 'fa-check-circle fa-2x',
         sideNavPosition: 'right',
         sideNavView: 'default'
       },
@@ -141,19 +142,22 @@ export default {
       },
       {
         name: 'Table',
-        icon: 'fa-table fa-2x',
+        image: '/static/img/table-properties.svg',
+//        icon: 'fa-table fa-2x',
         sideNavPosition: 'right',
         sideNavView: 'tablular'
       },
       {
         name: 'Provenance',
-        icon: 'fa-file-text-o fa-2x',
+        image: '/static/img/provenance-information.svg',
+//        icon: 'fa-file-text-o fa-2x',
         sideNavPosition: 'right',
         sideNavView: 'provenance'
       },
       {
         name: 'Package',
-        icon: 'fa-gift fa-2x',
+        image: '/static/img/data-package-properties.svg',
+//        icon: 'fa-gift fa-2x',
         sideNavPosition: 'right',
         sideNavView: 'package'
       },
@@ -324,7 +328,8 @@ export default {
             {
               items: [
                 {
-                  image: '/static/img/data-curator-green.svg',
+                  image: '/static/img/data-curator-128.png',
+//                  image: '/static/img/data-curator-green.svg',
                   height: '48px'
                 },
                 {
