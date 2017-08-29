@@ -4,7 +4,7 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Data Curator</a>
+          <a class="navbar-brand">Data Curator</a>
         </div>
         <div id="toolbar">
           <ul class="nav navbar-nav">
@@ -27,7 +27,7 @@
           <ul class="nav navbar-right closebtn">
             <li>
               <a href="#">
-                <span v-show="sideNavStatus === 'open'" class="btn-danger fa fa-times" @click="closeSideNav" />
+                <span v-show="sideNavStatus === 'open'" class="btn-default fa fa-times" @click="closeSideNav" />
               </a>
             </li>
           </ul>
@@ -40,8 +40,8 @@
           </component>
         </transition>
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
-          <a href="#" class="left" @click.prevent="sideNavLeft">&lt;</a>
-          <a href="#" class="right" @click.prevent="sideNavRight">&gt;</a>
+          <a href="#" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
+          <a href="#" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
         </div>
       </div>
     </nav>
@@ -130,7 +130,7 @@ export default {
       enableTransition: false,
       toolbarMenus: [{
         name: 'Validate',
-        icon: 'fa-check-circle',
+        image: '/static/img/validate.svg',
         sideNavPosition: 'right',
         sideNavView: 'default'
       },
@@ -142,19 +142,19 @@ export default {
       },
       {
         name: 'Table',
-        icon: 'fa-table',
+        image: '/static/img/table-properties.svg',
         sideNavPosition: 'right',
         sideNavView: 'tablular'
       },
       {
         name: 'Provenance',
-        icon: 'fa-file-text-o',
+        image: '/static/img/provenance-information.svg',
         sideNavPosition: 'right',
         sideNavView: 'provenance'
       },
       {
         name: 'Package',
-        icon: 'fa-gift',
+        image: '/static/img/data-package-properties.svg',
         sideNavPosition: 'right',
         sideNavView: 'package'
       },

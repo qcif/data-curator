@@ -12,7 +12,7 @@
 > What currently happens that isn't expected behaviour?
 
 ### Steps to Reproduce (for problems)
-> Provide a link to a live example, or an unambiguous set of steps to reproduce this bug. Include code to reproduce, if relevant. 
+> Provide a link to a live example, or an unambiguous set of steps to reproduce this bug. Include code to reproduce, if relevant.
 1.
 2.
 3.
@@ -20,3 +20,6 @@
 ### Your Environment
 > Include as many relevant details about the environment you experienced the bug in - this will help us fix the bug quicker.
 * Operating System and version (e.g. macOS Seirra 10.12.5, Windows 7):
+
+
+@Stephen-Gates @mattRedBox
