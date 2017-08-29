@@ -1,6 +1,7 @@
 var file_formats = require('../renderer/file-actions.js').formats
+const {shell} = require('electron')
 
-// build 'Open..' and 'Save As..' submenus
+// build 'Open...' and 'Save As...' submenus
 var open_submenu = []
 var save_submenu = []
 for (var format in file_formats) {
@@ -17,6 +18,7 @@ for (var format in file_formats) {
   }
   open_submenu.push(open_option)
 
+// label should have ... appended to end
   var save_option = {
     label: file_formats[format].label,
     click: (function(format) {
@@ -31,271 +33,384 @@ for (var format in file_formats) {
   save_submenu.push(save_option)
 }
 open_submenu.push({
-  label: 'Custom',
+  label: 'Custom Dialect...',
+  enabled: false,
   click: function() {
     fileActions.openCustom()
   }
 })
 save_submenu.push({
-  label: 'Custom',
+  label: 'Custom Dialect...',
+  enabled: false,
   click: function() {
     fileActions.saveAsCustom()
   }
 })
 
 exports.menu = [
-  {
-    label: 'Data Curator',
+  {label: 'Data Curator',
     submenu: [
-      {
-        label: 'About Data Curator',
+      {label: 'About Data Curator',
         click: function() {
           utils.showAboutPanel()
         }
-        // selector: 'orderFrontStandardAboutPanel:'
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Services',
-        submenu: []
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Hide Data Curator',
-        accelerator: 'CmdOrCtrl+H',
-        selector: 'hide:'
-      }, {
-        label: 'Hide Others',
-        accelerator: 'CmdOrCtrl+Shift+H',
-        selector: 'hideOtherApplications:'
-      }, {
-        label: 'Show All',
-        selector: 'unhideAllApplications:'
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Quit',
-        accelerator: 'CmdOrCtrl+Q',
-        selector: 'terminate:'
-      }
+      },
+      {label: 'Check for Update',
+        enabled: false
+      },
+      {type: 'separator'},
+      {label: 'Preferences',
+        accelerator: 'CmdOrCtrl+,',
+        enabled: false
+      },
+      {type: 'separator'},
+      {role: 'services', submenu: []},
+      {type: 'separator'},
+      {role: 'hide'},
+      {role: 'hideothers'},
+      {role: 'unhide'},
+      {type: 'separator'},
+      {role: 'quit'}
     ]
-  }, {
-    label: 'File',
+  },
+  {label: 'File',
     submenu: [
-      {
-        label: 'New',
+      {label: 'New',
         accelerator: 'CmdOrCtrl+N',
         click: function() {
           utils.createWindowTab()
         }
-      }, {
-        label: 'New from Schema...',
-        click: function() {
-          schema.generateTemplate()
-        }
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Open File..',
+      },
+//      {label: 'New from Schema...',
+//        click: function() {
+//          schema.generateTemplate()
+//        }
+//      },
+      {type: 'separator'},
+      {label: 'Open',
         submenu: open_submenu
-      }, {
-        label: 'Import Excel file',
+      },
+      {label: 'Open Excel Sheet...',
         click: function() {
           excel.importExcel()
         }
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Save',
+      },
+      {label: 'Open Google Sheet...',
+        enabled: false
+      },
+      {label: 'Open Data Package...'
+      },
+      {label: 'Open Recent',
+        submenu: [
+          {label: 'example.csv',
+            enabled: false},
+          {type: 'separator'},
+          {label: 'Clear Menu',
+            enabled: false
+          }
+        ]
+      },
+      {type: 'separator'},
+      {label: 'Save',
         accelerator: 'CmdOrCtrl+S',
         click: function() {
           fileActions.saveFile()
         },
         id: 'save'
-      }, {
-        label: 'Save As..',
+      },
+      {label: 'Save As',
         submenu: save_submenu
-      }, {
-        label: 'Export as Datapackage',
+      },
+      {label: 'Save All',
+        accelerator: 'Alt+CmdOrCtrl+S',
+        enabled: false
+      },
+      {type: 'separator'},
+      {label: 'Close Tab',
+        accelerator: 'CmdOrCtrl+W'
+      },
+      {label: 'Close All',
+        enabled: false
+      },
+      {type: 'separator'},
+      {label: 'Export Data Package...',
         accelerator: 'CmdOrCtrl+D',
         click: function() {
           datapackage.exportdata()
         }
-      }, {
-        label: 'Github',
-        submenu: [
-          {
-            label: 'Export to Github',
-            accelerator: 'CmdOrCtrl+G',
-            click: function() {
-              github.exportToGithub()
-            }
-          }, {
-            label: 'Add file to Github',
-            accelerator: 'CmdOrCtrl+Shift+G',
-            click: function() {
-              github.addFileToGithub()
-            }
-          }
-        ]
+      },
+//      {label: 'Github',
+//        submenu: [
+//          {label: 'Export to Github',
+//            accelerator: 'CmdOrCtrl+G',
+//            click: function() {
+//              github.exportToGithub()
+//            }
+//          },
+//          {label: 'Add file to Github',
+//            accelerator: 'CmdOrCtrl+Shift+G',
+//            click: function() {
+//              github.addFileToGithub()
+//            }
+//          }
+//        ]
+//      }
+      {type: 'separator'},
+      {label: 'Print',
+        accelerator: 'CmdOrCtrl+P',
+        enabled: false
       }
+
     ]
-  }, {
-    label: 'Edit',
+  },
+  {label: 'Edit',
     submenu: [
-      {
-        label: 'Undo',
+      {label: 'Undo',
         accelerator: 'CmdOrCtrl+Z',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('editUndo')
         }
-      }, {
-        label: 'Redo',
-        accelerator: 'Shift+CmdOrCtrl+Z',
+      },
+      {label: 'Redo',
+        accelerator: 'CmdOrCtrl+Y',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('editRedo')
         }
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Cut',
+      },
+      {type: 'separator'},
+      {label: 'Cut',
         accelerator: 'CmdOrCtrl+X',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('editCut')
         }
-      }, {
-        label: 'Copy',
+      },
+      {label: 'Copy',
         accelerator: 'CmdOrCtrl+C',
         selector: 'copy:',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('editCopy')
         }
-      }, {
-        label: 'Paste',
+      },
+      {label: 'Paste',
         accelerator: 'CmdOrCtrl+V',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('editPaste')
         }
-      }, {
-        label: 'Select All',
+      },
+      {label: 'Select All',
         accelerator: 'CmdOrCtrl+A',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('editSelectAll')
         }
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Freeze Header Row',
-        click: function() {
-          BrowserWindow.getFocusedWindow().webContents.send('freeze')
-        }
-      }, {
-        label: 'Unfreeze Header Row',
-        click: function() {
-          BrowserWindow.getFocusedWindow().webContents.send('unfreeze')
-        }
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Insert row above',
+      },
+      {type: 'separator'},
+//      {label: 'Freeze Header Row',
+//        click: function() {
+//          BrowserWindow.getFocusedWindow().webContents.send('freeze')
+//        }
+//      },
+//      {label: 'Unfreeze Header Row',
+//        click: function() {
+//          BrowserWindow.getFocusedWindow().webContents.send('unfreeze')
+//        }
+//      },
+//      {type: 'separator'},
+      {label: 'Insert Row Above',
         accelerator: 'CmdOrCtrl+I',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertRowAbove')
         }
-      }, {
-        label: 'Insert row below',
+      },
+      {label: 'Insert Row Below',
         accelerator: 'CmdOrCtrl+K',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertRowBelow')
         }
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Insert column left',
+      },
+      {type: 'separator'},
+      {label: 'Insert Column Left',
         accelerator: 'CmdOrCtrl+J',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnLeft')
         }
-      }, {
-        label: 'Insert column right',
+      },
+      {label: 'Insert Column Right',
         accelerator: 'CmdOrCtrl+L',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnRight')
         }
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Remove row(s)',
+      },
+      {type: 'separator'},
+      {label: 'Remove Row(s)',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('removeRows')
         }
-      }, {
-        label: 'Remove column(s)',
+      },
+      {label: 'Remove Column(s)',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('removeColumns')
         }
       }
     ]
-  }, {
-
-    label: 'Tools',
+  },
+  {label: 'Find',
     submenu: [
-      {
-        label: 'Fix Ragged Rows',
-        click: function() {
-          tools.fixRaggedRowsFile()
-        }
-      }, {
-        label: 'Toggle DevTools',
+      {label: 'Find',
+        accelerator: 'CmdOrCtrl+F',
+        enabled: false
+      },
+      {label: 'Find Next',
+        accelerator: 'CmdOrCtrl+G',
+        enabled: false
+      },
+      {label: 'Find Previous',
+        accelerator: 'Shift+CmdOrCtrl+G',
+        enabled: false
+      },
+      {type: 'separator'},
+      {label: 'Replace',
+        accelerator: 'Alt+CmdOrCtrl+F',
+        enabled: false
+      },
+      {label: 'Replace Next',
+        accelerator: 'Alt+CmdOrCtrl+E',
+        enabled: false
+      },
+      {label: 'Replace All',
+        enabled: false
+      },
+      {type: 'separator'},
+      {label: 'Sort',
+        accelerator: 'Shift+CmdOrCtrl+R',
+        enabled: false
+      },
+      {label: 'Filter',
+        enabled: false
+      }
+    ]
+  },
+  {label: 'Tools',
+    submenu: [
+      {label: 'Toggle DevTools',
         accelerator: 'Alt+CmdOrCtrl+I',
         click: function() {
           BrowserWindow.getFocusedWindow().toggleDevTools()
         }
-      }, {
-        label: 'Generate Header',
-        click: function() {
-          tools.generateSchemaFromHeader()
-        }
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Validate',
+      },
+      {label: 'Read Only',
+        type: 'checkbox',
+        checked: true,
+        enabled: false
+      },
+      {type: 'separator'},
+      {label: 'Validate Table',
         accelerator: 'Shift+CmdOrCtrl+V',
         click: function() {
           validate.validateFile()
         }
-      }, {
-        label: 'Validate with schema',
+      },
+//      {label: 'Validate with schema',
+//        click: function() {
+//          validate.validateWithSchema()
+//        }
+//      },
+      {label: 'Fix Ragged Rows',
         click: function() {
-          validate.validateWithSchema()
+          tools.fixRaggedRowsFile()
         }
+      },
+      {type: 'separator'},
+      {label: 'Import Column Properties',
+        enabled: false
+      },
+      {label: 'Guess Column Properties'
+      },
+//      {label: 'Generate Header',
+//        click: function() {
+//          tools.generateSchemaFromHeader()
+//        }
+//      },
+      {label: 'Guess Valid Values',
+        enabled: false
+      },
+      {type: 'separator'},
+      {label: 'Column Properties'
+      },
+      {label: 'Table Properties'
+      },
+      {label: 'Provenance Information'
+      },
+      {label: 'Data Package Properties'
+      },
+      {type: 'separator'},
+      {label: 'Graph Properties',
+        enabled: false
+//      ,  icon: '/static/img/locked.svg'
+      },
+      {label: 'Assess Data Quality',
+        enabled: false
+//       , icon: '/static/img/locked.svg'
+      },
+      {type: 'separator'},
+      {label: 'Publish to',
+        enabled: false,
+        submenu: [
+          {label: 'CKAN',
+            enabled: false
+//          , icon: '/static/img/locked.svg'
+          },
+          {label: 'DataHub',
+            enabled: false
+//          , icon: '/static/img/locked.svg'
+          },
+          {label: 'OctoPub',
+            enabled: false
+//          , icon: '/static/img/locked.svg'
+          }
+        ]
       }
     ]
-  }, {
-    label: 'Window',
+  },
+  {label: 'Window',
     submenu: [
-      {
-        label: 'Minimize',
-        accelerator: 'CmdOrCtrl+M',
-        selector: 'performMiniaturize:'
-      }, {
-        label: 'Close',
-        accelerator: 'CmdOrCtrl+W',
-        selector: 'performClose:'
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Bring All to Front',
+      {role: 'minimize'},
+      {role: 'zoom'},
+      {type: 'separator'},
+      {label: 'Next Tab',
+        enabled: false,
+        accelerator: 'CmdOrCtrl+Right'
+      },
+      {label: 'Previous Tab',
+        enabled: false,
+        accelerator: 'CmdOrCtrl+Left'
+      },
+      {type: 'separator'},
+      {label: 'Bring All to Front',
         selector: 'arrangeInFront:'
       }
     ]
-  }, {
-    label: 'Help',
+  },
+  {role: 'help',
     submenu: [
-      {
-        label: 'Editor Keyboard Shortcuts',
+      {label: 'Data Curator Help',
+        click: function() {
+          shell.openExternal('https://odiqueensland.github.io/data-curator-help/')
+        }
+      },
+      {label: 'Keyboard Shortcuts',
         click: function() {
           help.showKeyboardHelp()
+        }
+      },
+      {type: 'separator'},
+      {label: 'Support Forum',
+        click: function() {
+          shell.openExternal('https://ask.theodi.org.au/c/projects/data-curator')
+        }
+      },
+      {label: 'Report Issues',
+        click: function() {
+          shell.openExternal('https://github.com/ODIQueensland/data-curator/blob/develop/.github/CONTRIBUTING.md')
         }
       }
     ]

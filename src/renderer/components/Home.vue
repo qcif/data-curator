@@ -4,7 +4,7 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Data Curator</a>
+          <a class="navbar-brand">Data Curator</a>
         </div>
         <div id="toolbar">
           <ul class="nav navbar-nav">
@@ -27,7 +27,7 @@
           <ul class="nav navbar-right closebtn">
             <li>
               <a href="#">
-                <span v-show="sideNavStatus === 'open'" class="btn-danger fa fa-times" @click="closeSideNav" />
+                <span v-show="sideNavStatus === 'open'" class="btn fa fa-times" @click="closeSideNav" />
               </a>
             </li>
           </ul>
@@ -40,8 +40,8 @@
           </component>
         </transition>
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
-          <a href="#" class="left" @click.prevent="sideNavLeft">&lt;</a>
-          <a href="#" class="right" @click.prevent="sideNavRight">&gt;</a>
+          <a href="#" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
+          <a href="#" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
         </div>
       </div>
     </nav>
@@ -129,9 +129,11 @@ export default {
       enableTransition: false,
       toolbarMenus: [{
         name: 'Validate',
-        icon: 'fa-check-circle',
-        sideNavPosition: 'right',
-        sideNavView: 'default'
+        image: '/static/img/validate.svg'
+//        ,
+//        icon: 'fa-check-circle fa-2x',
+//        sideNavPosition: 'right',
+//        sideNavView: 'default'
       },
       {
         name: 'Column',
@@ -141,28 +143,32 @@ export default {
       },
       {
         name: 'Table',
-        icon: 'fa-table',
+        image: '/static/img/table-properties.svg',
+//        icon: 'fa-table fa-2x',
         sideNavPosition: 'right',
-        sideNavView: 'tablular'
+        sideNavView: 'tablex'
       },
       {
         name: 'Provenance',
-        icon: 'fa-file-text-o',
+        image: '/static/img/provenance-information.svg',
+//        icon: 'fa-file-text-o fa-2x',
         sideNavPosition: 'right',
         sideNavView: 'provenance'
       },
       {
         name: 'Package',
-        icon: 'fa-gift',
+        image: '/static/img/data-package-properties.svg',
+//        icon: 'fa-gift fa-2x',
         sideNavPosition: 'right',
         sideNavView: 'package'
       },
       {
         name: 'Export',
         image: '/static/img/export.svg',
-        class: 'down',
-        sideNavPosition: 'right',
-        sideNavView: 'default2'
+        class: 'down'
+//        ,
+//        sideNavPosition: 'right',
+//        sideNavView: 'export'
       }]
     }
   },
@@ -324,18 +330,19 @@ export default {
             {
               items: [
                 {
-                  image: '/static/img/data-curator-120.png'
+                  image: '/static/img/data-curator-128.png',
+//                  image: '/static/img/data-curator-green.svg',
+                  height: '48px'
                 },
                 {
                   label: 'Data Curator',
-                  style: {fontSize: '24px', color: '#0ca831'}
+                  style: {fontSize: '20px', color: '#0ca831'}
                 },
                 {
-                  label: 'create usable open data',
-                  style: {fontSize: '16px', color: '#0ca831'}
+                  label: 'Create usable open data'
                 },
                 {
-                  label: '1.0.0'
+                  label: '0.1.0'
                 }
               ]
             },
@@ -344,7 +351,7 @@ export default {
                 {
                   image: '/static/img/advance_qld_logo.png',
                   link: 'http://advance.qld.gov.au/',
-                  height: '48px'
+                  height: '56px'
                 },
                 {
                   label: 'Funded by the Queensland Government'
@@ -359,7 +366,7 @@ export default {
                   height: '48px'
                 },
                 {
-                  label: 'Project coordinated by the ODI Australian Network'
+                  label: 'Coordinated by the ODI Australian Network'
                 }
               ]
             },
@@ -421,7 +428,7 @@ export default {
       },
       template: sideNavDefaultTemplate
     },
-    default2: {
+    export: {
       data: function() {
         return {
           formprops: [{
@@ -474,7 +481,7 @@ export default {
       },
       template: sideNavDefaultTemplate
     },
-    tablular: {
+    tablex: {
       data: function() {
         return {
           formprops: [{

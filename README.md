@@ -4,7 +4,7 @@
 # Data Curator
 
 
-![data curator icon](static/img/data-curator-120.png)
+![data curator icon](static/img/data-curator-128.png)
 
 Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data.
 
