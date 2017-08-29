@@ -90,15 +90,15 @@ exports.menu = [
       {label: 'Open',
         submenu: open_submenu
       },
-      {label: 'Open Excel file...',
+      {label: 'Open Excel Sheet...',
         click: function() {
           excel.importExcel()
         }
       },
-      {label: 'Open Data Package...'
-      },
       {label: 'Open Google Sheet...',
         enabled: false
+      },
+      {label: 'Open Data Package...'
       },
       {label: 'Open Recent',
         submenu: [
@@ -215,38 +215,38 @@ exports.menu = [
 //        }
 //      },
 //      {type: 'separator'},
-      {label: 'Insert row above',
+      {label: 'Insert Row Above',
         accelerator: 'CmdOrCtrl+I',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertRowAbove')
         }
       },
-      {label: 'Insert row below',
+      {label: 'Insert Row Below',
         accelerator: 'CmdOrCtrl+K',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertRowBelow')
         }
       },
       {type: 'separator'},
-      {label: 'Insert column left',
+      {label: 'Insert Column Left',
         accelerator: 'CmdOrCtrl+J',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnLeft')
         }
       },
-      {label: 'Insert column right',
+      {label: 'Insert Column Right',
         accelerator: 'CmdOrCtrl+L',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnRight')
         }
       },
       {type: 'separator'},
-      {label: 'Remove row(s)',
+      {label: 'Remove Row(s)',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('removeRows')
         }
       },
-      {label: 'Remove column(s)',
+      {label: 'Remove Column(s)',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('removeColumns')
         }
