@@ -32,7 +32,7 @@
             </li>
           </ul>
           <a class="navbar-brand" href="#">
-            {{sideNavView}}
+            {{sideNavViewTitle}}
           </a>
         </div>
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
@@ -105,7 +105,7 @@ import column from '../partials/ColumnProperties'
 import default1 from '../partials/Default1Properties'
 import default2 from '../partials/Default2Properties'
 import tabular from '../partials/TableProperties'
-import package from '../partials/PackageProperties'
+import packager from '../partials/PackageProperties'
 import provenance from '../partials/ProvenanceProperties'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
 // const {
@@ -124,6 +124,7 @@ export default {
       sideNavPosition: 'right',
       sideNavStatus: 'closed',
       sideNavView: '',
+      sideNavViewTitle: '',
       sideNavTransition: '',
       enableTransition: false,
       toolbarMenus: [{
@@ -278,6 +279,7 @@ export default {
       this.menuIndex = index
       this.sideNavPosition = menu.sideNavPosition
       this.sideNavView = menu.sideNavView
+      this.sideNavViewTitle = menu.name
       this.openSideNav()
     },
     sideNavLeft: function() {
@@ -299,6 +301,7 @@ export default {
       this.sideNavPosition = properties.sideNavPosition || 'left'
       this.sideNavTransition = properties.sideNavTransition || 'left'
       this.sideNavView = properties.sideNavView
+      this.sideNavViewTitle = properties.name || properties.sideNavView
       this.enableTransition = properties.enableTransition || false
       this.sideNavStatus = 'open'
     }
@@ -310,7 +313,7 @@ export default {
     default2,
     column,
     tabular,
-    package,
+    packager,
     provenance
   },
   mounted: function() {

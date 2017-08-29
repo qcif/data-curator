@@ -2,7 +2,7 @@
 import SideNav from './SideNav'
 export default {
   extends: SideNav,
-  name: 'package',
+  name: 'packager',
   data() {
     return {
       formprops: [{
