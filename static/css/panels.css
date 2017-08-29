@@ -134,6 +134,19 @@
     visibility: visible;
   }
 }
+@media screen and (min-width: 768px) {
+  #sidenav label,#sidenav input,#sidenav select {
+    display: inline-block;
+    /*margin: 0 !important;*/
+    border-top: 0;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    text-align: left !important;
+  }
+  #sidenav select, #sidenav input {
+    width: 66.66666667%;
+  }
+}
 
 @media screen and (max-width: 480px) {
   #main-panel.left {

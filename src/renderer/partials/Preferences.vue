@@ -48,12 +48,6 @@ export default {
       console.dir(data)
       const resource = await Resource.load({table: data})
       console.dir(resource)
-      // let datapackage = await Package.load()
-
-      // let dummy = await datapackage.infer(data)
-      // console.dir(datapackage)
-      // let packageDescriptor = datapackage.descriptor
-      // console.dir(packageDescriptor)
     })
   }
 }

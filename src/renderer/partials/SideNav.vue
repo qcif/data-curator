@@ -12,34 +12,7 @@
 export default {
   name: 'sidenav',
   data() {
-    return {
-      formprops: [{
-        label: 'name'
-      },
-      {
-        label: 'title'
-      },
-      {
-        label: 'description'
-      },
-      {
-        label: 'type',
-        type: 'dropdown'
-      },
-      {
-        label: 'format',
-        type: 'dropdown'
-      },
-      {
-        label: 'rdfType',
-        type: 'url'
-      },
-      {
-        label: 'contraints',
-        type: 'json'
-      }
-      ]
-    }
+    return {}
   }
 }
 </script>
