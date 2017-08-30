@@ -11,7 +11,7 @@
             <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index)">
               <a href="#">
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
-                <object v-if="menu.image" :class="menu.class" id="column-properties-svg" :data="menu.image" type="image/svg+xml" />
+                <object v-if="menu.image" :class="menu.class" :data="menu.image" type="image/svg+xml" />
                 <div class="toolbar-text">{{menu.name}}</div>
               </a>
             </li>
@@ -129,37 +129,37 @@ export default {
       enableTransition: false,
       toolbarMenus: [{
         name: 'Validate',
-        image: '/static/img/validate.svg',
+        image: 'static/img/validate.svg',
         sideNavPosition: 'right',
         sideNavView: 'default1'
       },
       {
         name: 'Column',
-        image: '/static/img/column-properties.svg',
+        image: 'static/img/column-properties.svg',
         sideNavPosition: 'right',
         sideNavView: 'column'
       },
       {
         name: 'Table',
-        image: '/static/img/table-properties.svg',
+        image: 'static/img/table-properties.svg',
         sideNavPosition: 'right',
         sideNavView: 'tabular'
       },
       {
         name: 'Provenance',
-        image: '/static/img/provenance-information.svg',
+        image: 'static/img/provenance-information.svg',
         sideNavPosition: 'right',
         sideNavView: 'provenance'
       },
       {
         name: 'Package',
-        image: '/static/img/data-package-properties.svg',
+        image: 'static/img/data-package-properties.svg',
         sideNavPosition: 'right',
         sideNavView: 'packager'
       },
       {
         name: 'Export',
-        image: '/static/img/export.svg',
+        image: 'static/img/export.svg',
         // class: 'down',
         sideNavPosition: 'right',
         sideNavView: 'default2'

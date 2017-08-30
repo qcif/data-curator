@@ -66,7 +66,6 @@ exports.menu = [
           ? 'Preferences'
           : 'Settings',
         accelerator: 'CmdOrCtrl+,',
-        enabled: false,
         click: function() {
           utils.showSidePanel('preferences')
         }
@@ -389,11 +388,11 @@ exports.menu = [
       }, {
         label: 'Graph Properties',
         enabled: false
-        //      ,  icon: '/static/img/locked.svg'
+        //      ,  icon: 'static/img/locked.svg'
       }, {
         label: 'Assess Data Quality',
         enabled: false
-        //       , icon: '/static/img/locked.svg'
+        //       , icon: 'static/img/locked.svg'
       }, {
         type: 'separator'
       }, {
@@ -403,15 +402,15 @@ exports.menu = [
           {
             label: 'CKAN',
             enabled: false
-            //          , icon: '/static/img/locked.svg'
+            //          , icon: 'static/img/locked.svg'
           }, {
             label: 'DataHub',
             enabled: false
-            //          , icon: '/static/img/locked.svg'
+            //          , icon: 'static/img/locked.svg'
           }, {
             label: 'OctoPub',
             enabled: false
-            //          , icon: '/static/img/locked.svg'
+            //          , icon: 'static/img/locked.svg'
           }
         ]
       }

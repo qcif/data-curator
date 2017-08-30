@@ -15,7 +15,7 @@ const getters = {
 }
 
 const mutations = {
-  pushHotTab (state, hotTab) {
+  pushHotTab(state, hotTab) {
     console.log('pushing hotTab object...')
     console.dir(hotTab)
     let hotId = hotTab.hotId
@@ -30,6 +30,12 @@ const mutations = {
       _.set(state.hotTabs, `${hotId}.title`, hotTab.title)
     }
     console.log('leaving push hot tab...')
+    console.dir(state.hotTabs)
+  },
+  pushHotColumns(state, hotTab) {
+    let hotId = hotTab.hotId
+    _.set(state.hotTabs, `${hotId}.columnProperties`, hotTab.columnProperties)
+    console.log('leaving push hot tab column properties...')
     console.dir(state.hotTabs)
   }
 }
