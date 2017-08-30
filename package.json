@@ -1,6 +1,6 @@
 {
   "name": "data-curator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": " <matt@redboxresearchdata.com.au>",
   "description": "An electron-vue project for curating csv data",
   "license": "MIT",
@@ -13,6 +13,7 @@
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src",
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src",
     "pack": "yarn run pack:main && yarn run pack:renderer",
+    "release:predraft": "yarn run build && build --publish onTagOrDraft --draft true --prerelease true",
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "postinstall": "electron-builder install-app-deps",
@@ -47,7 +48,8 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon.ico",
+      "publish": ["github"]
     },
     "linux": {
       "icon": "build/icons"
