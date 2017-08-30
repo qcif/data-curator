@@ -55,7 +55,7 @@ export default {
           label: 'Create usable open data'
         },
         {
-          label: '0.1.0'
+          label: '0.2.0'
         }
         ]
       },

@@ -1,10 +1,14 @@
 {
   "name": "data-curator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": " <matt@redboxresearchdata.com.au>",
   "description": "An electron-vue project for curating csv data",
   "license": "MIT",
   "main": "./dist/electron/main.js",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/ODIQueensland/data-curator.git"
+  },
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
     "build:dir": "node .electron-vue/build.js && electron-builder --dir",
@@ -13,6 +17,7 @@
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src",
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src",
     "pack": "yarn run pack:main && yarn run pack:renderer",
+    "release:predraft": "yarn run build && build --publish onTagOrDraft --draft true --prerelease true",
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "postinstall": "electron-builder install-app-deps",
