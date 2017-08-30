@@ -66,7 +66,7 @@ exports.menu = [
           ? 'Preferences'
           : 'Settings',
         accelerator: 'CmdOrCtrl+,',
-        enabled: true,
+        enabled: false,
         click: function() {
           utils.showSidePanel('preferences')
         }
