@@ -18,7 +18,7 @@ for (var format in file_formats) {
   }
   open_submenu.push(open_option)
 
-// label should have ... appended to end
+  // label should have ... appended to end
   var save_option = {
     label: file_formats[format].label,
     click: (function(format) {
@@ -48,373 +48,420 @@ save_submenu.push({
 })
 
 exports.menu = [
-  {label: 'Data Curator',
+  {
+    label: 'Data Curator',
     submenu: [
-      {label: 'About Data Curator',
+      {
+        label: 'About Data Curator',
         click: function() {
           utils.showSidePanel('about')
         }
-      },
-      {label: 'Check for Update',
+      }, {
+        label: 'Check for Update',
         enabled: false
-      },
-      {type: 'separator'},
-     {
-             label: process.platform === 'darwin'
-               ? 'Preferences'
-               : 'Settings',
-                accelerator: 'CmdOrCtrl+,',
-                       enabled: false,
-             click: function() {
-               utils.showSidePanel('preferences')
-             }
-           },
-      {type: 'separator'},
-      {role: 'services', submenu: []},
-      {type: 'separator'},
-      {role: 'hide'},
-      {role: 'hideothers'},
-      {role: 'unhide'},
-      {type: 'separator'},
-      {role: 'quit'}
+      }, {
+        type: 'separator'
+      }, {
+        label: process.platform === 'darwin'
+          ? 'Preferences'
+          : 'Settings',
+        accelerator: 'CmdOrCtrl+,',
+        enabled: true,
+        click: function() {
+          utils.showSidePanel('preferences')
+        }
+      }, {
+        type: 'separator'
+      }, {
+        role: 'services',
+        submenu: []
+      }, {
+        type: 'separator'
+      }, {
+        role: 'hide'
+      }, {
+        role: 'hideothers'
+      }, {
+        role: 'unhide'
+      }, {
+        type: 'separator'
+      }, {
+        role: 'quit'
+      }
     ]
-  },
-  {label: 'File',
+  }, {
+    label: 'File',
     submenu: [
-      {label: 'New',
+      {
+        label: 'New',
         accelerator: 'CmdOrCtrl+N',
         click: function() {
           utils.createWindowTab()
         }
       },
-//      {label: 'New from Schema...',
-//        click: function() {
-//          schema.generateTemplate()
-//        }
-//      },
-      {type: 'separator'},
-      {label: 'Open',
+      //      {label: 'New from Schema...',
+      //        click: function() {
+      //          schema.generateTemplate()
+      //        }
+      //      },
+      {
+        type: 'separator'
+      }, {
+        label: 'Open',
         submenu: open_submenu
-      },
-      {label: 'Open Excel Sheet...',
+      }, {
+        label: 'Open Excel Sheet...',
         click: function() {
           excel.importExcel()
         }
-      },
-      {label: 'Open Google Sheet...',
+      }, {
+        label: 'Open Google Sheet...',
         enabled: false
-      },
-      {label: 'Open Data Package...'
-      },
-      {label: 'Open Recent',
+      }, {
+        label: 'Open Data Package...'
+      }, {
+        label: 'Open Recent',
         submenu: [
-          {label: 'example.csv',
-            enabled: false},
-          {type: 'separator'},
-          {label: 'Clear Menu',
+          {
+            label: 'example.csv',
+            enabled: false
+          }, {
+            type: 'separator'
+          }, {
+            label: 'Clear Menu',
             enabled: false
           }
         ]
-      },
-      {type: 'separator'},
-      {label: 'Save',
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Save',
         accelerator: 'CmdOrCtrl+S',
         click: function() {
           fileActions.saveFile()
         },
         id: 'save'
-      },
-      {label: 'Save As',
+      }, {
+        label: 'Save As',
         submenu: save_submenu
-      },
-      {label: 'Save All',
+      }, {
+        label: 'Save All',
         accelerator: 'Alt+CmdOrCtrl+S',
         enabled: false
-      },
-      {type: 'separator'},
-      {label: 'Close Tab',
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Close Tab',
         accelerator: 'CmdOrCtrl+W'
-      },
-      {label: 'Close All',
+      }, {
+        label: 'Close All',
         enabled: false
-      },
-      {type: 'separator'},
-      {label: 'Export Data Package...',
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Export Data Package...',
         accelerator: 'CmdOrCtrl+D',
         click: function() {
           datapackage.exportdata()
         }
       },
-//      {label: 'Github',
-//        submenu: [
-//          {label: 'Export to Github',
-//            accelerator: 'CmdOrCtrl+G',
-//            click: function() {
-//              github.exportToGithub()
-//            }
-//          },
-//          {label: 'Add file to Github',
-//            accelerator: 'CmdOrCtrl+Shift+G',
-//            click: function() {
-//              github.addFileToGithub()
-//            }
-//          }
-//        ]
-//      }
-      {type: 'separator'},
-      {label: 'Print',
+      //      {label: 'Github',
+      //        submenu: [
+      //          {label: 'Export to Github',
+      //            accelerator: 'CmdOrCtrl+G',
+      //            click: function() {
+      //              github.exportToGithub()
+      //            }
+      //          },
+      //          {label: 'Add file to Github',
+      //            accelerator: 'CmdOrCtrl+Shift+G',
+      //            click: function() {
+      //              github.addFileToGithub()
+      //            }
+      //          }
+      //        ]
+      //      }
+      {
+        type: 'separator'
+      }, {
+        label: 'Print',
         accelerator: 'CmdOrCtrl+P',
         enabled: false
       }
 
     ]
-  },
-  {label: 'Edit',
+  }, {
+    label: 'Edit',
     submenu: [
-      {label: 'Undo',
+      {
+        label: 'Undo',
         accelerator: 'CmdOrCtrl+Z',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('editUndo')
         }
-      },
-      {label: 'Redo',
+      }, {
+        label: 'Redo',
         accelerator: 'CmdOrCtrl+Y',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('editRedo')
         }
-      },
-      {type: 'separator'},
-      {label: 'Cut',
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Cut',
         accelerator: 'CmdOrCtrl+X',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('editCut')
         }
-      },
-      {label: 'Copy',
+      }, {
+        label: 'Copy',
         accelerator: 'CmdOrCtrl+C',
         selector: 'copy:',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('editCopy')
         }
-      },
-      {label: 'Paste',
+      }, {
+        label: 'Paste',
         accelerator: 'CmdOrCtrl+V',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('editPaste')
         }
-      },
-      {label: 'Select All',
+      }, {
+        label: 'Select All',
         accelerator: 'CmdOrCtrl+A',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('editSelectAll')
         }
+      }, {
+        type: 'separator'
       },
-      {type: 'separator'},
-//      {label: 'Freeze Header Row',
-//        click: function() {
-//          BrowserWindow.getFocusedWindow().webContents.send('freeze')
-//        }
-//      },
-//      {label: 'Unfreeze Header Row',
-//        click: function() {
-//          BrowserWindow.getFocusedWindow().webContents.send('unfreeze')
-//        }
-//      },
-//      {type: 'separator'},
-      {label: 'Insert Row Above',
+      //      {label: 'Freeze Header Row',
+      //        click: function() {
+      //          BrowserWindow.getFocusedWindow().webContents.send('freeze')
+      //        }
+      //      },
+      //      {label: 'Unfreeze Header Row',
+      //        click: function() {
+      //          BrowserWindow.getFocusedWindow().webContents.send('unfreeze')
+      //        }
+      //      },
+      //      {type: 'separator'},
+      {
+        label: 'Insert Row Above',
         accelerator: 'CmdOrCtrl+I',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertRowAbove')
         }
-      },
-      {label: 'Insert Row Below',
+      }, {
+        label: 'Insert Row Below',
         accelerator: 'CmdOrCtrl+K',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertRowBelow')
         }
-      },
-      {type: 'separator'},
-      {label: 'Insert Column Left',
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Insert Column Left',
         accelerator: 'CmdOrCtrl+J',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnLeft')
         }
-      },
-      {label: 'Insert Column Right',
+      }, {
+        label: 'Insert Column Right',
         accelerator: 'CmdOrCtrl+L',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnRight')
         }
-      },
-      {type: 'separator'},
-      {label: 'Remove Row(s)',
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Remove Row(s)',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('removeRows')
         }
-      },
-      {label: 'Remove Column(s)',
+      }, {
+        label: 'Remove Column(s)',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('removeColumns')
         }
       }
     ]
-  },
-  {label: 'Find',
+  }, {
+    label: 'Find',
     submenu: [
-      {label: 'Find',
+      {
+        label: 'Find',
         accelerator: 'CmdOrCtrl+F',
         enabled: false
-      },
-      {label: 'Find Next',
+      }, {
+        label: 'Find Next',
         accelerator: 'CmdOrCtrl+G',
         enabled: false
-      },
-      {label: 'Find Previous',
+      }, {
+        label: 'Find Previous',
         accelerator: 'Shift+CmdOrCtrl+G',
         enabled: false
-      },
-      {type: 'separator'},
-      {label: 'Replace',
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Replace',
         accelerator: 'Alt+CmdOrCtrl+F',
         enabled: false
-      },
-      {label: 'Replace Next',
+      }, {
+        label: 'Replace Next',
         accelerator: 'Alt+CmdOrCtrl+E',
         enabled: false
-      },
-      {label: 'Replace All',
+      }, {
+        label: 'Replace All',
         enabled: false
-      },
-      {type: 'separator'},
-      {label: 'Sort',
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Sort',
         accelerator: 'Shift+CmdOrCtrl+R',
         enabled: false
-      },
-      {label: 'Filter',
+      }, {
+        label: 'Filter',
         enabled: false
       }
     ]
-  },
-  {label: 'Tools',
+  }, {
+    label: 'Tools',
     submenu: [
-      {label: 'Toggle DevTools',
+      {
+        label: 'Toggle DevTools',
         accelerator: 'Alt+CmdOrCtrl+I',
         click: function() {
           BrowserWindow.getFocusedWindow().toggleDevTools()
         }
-      },
-      {label: 'Read Only',
+      }, {
+        label: 'Read Only',
         type: 'checkbox',
         checked: true,
         enabled: false
-      },
-      {type: 'separator'},
-      {label: 'Validate Table',
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Validate Table',
         accelerator: 'Shift+CmdOrCtrl+V',
         click: function() {
           validate.validateFile()
         }
       },
-//      {label: 'Validate with schema',
-//        click: function() {
-//          validate.validateWithSchema()
-//        }
-//      },
-      {label: 'Fix Ragged Rows',
+      //      {label: 'Validate with schema',
+      //        click: function() {
+      //          validate.validateWithSchema()
+      //        }
+      //      },
+      {
+        label: 'Fix Ragged Rows',
         click: function() {
           tools.fixRaggedRowsFile()
         }
-      },
-      {type: 'separator'},
-      {label: 'Import Column Properties',
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Import Column Properties',
         enabled: false
+      }, {
+        label: 'Guess Column Properties'
       },
-      {label: 'Guess Column Properties'
-      },
-//      {label: 'Generate Header',
-//        click: function() {
-//          tools.generateSchemaFromHeader()
-//        }
-//      },
-      {label: 'Guess Valid Values',
+      //      {label: 'Generate Header',
+      //        click: function() {
+      //          tools.generateSchemaFromHeader()
+      //        }
+      //      },
+      {
+        label: 'Guess Valid Values',
         enabled: false
-      },
-      {type: 'separator'},
-      {label: 'Column Properties'
-      },
-      {label: 'Table Properties'
-      },
-      {label: 'Provenance Information'
-      },
-      {label: 'Data Package Properties'
-      },
-      {type: 'separator'},
-      {label: 'Graph Properties',
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Column Properties'
+      }, {
+        label: 'Table Properties'
+      }, {
+        label: 'Provenance Information'
+      }, {
+        label: 'Data Package Properties'
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Graph Properties',
         enabled: false
-//      ,  icon: '/static/img/locked.svg'
-      },
-      {label: 'Assess Data Quality',
+        //      ,  icon: '/static/img/locked.svg'
+      }, {
+        label: 'Assess Data Quality',
         enabled: false
-//       , icon: '/static/img/locked.svg'
-      },
-      {type: 'separator'},
-      {label: 'Publish to',
+        //       , icon: '/static/img/locked.svg'
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Publish to',
         enabled: false,
         submenu: [
-          {label: 'CKAN',
+          {
+            label: 'CKAN',
             enabled: false
-//          , icon: '/static/img/locked.svg'
-          },
-          {label: 'DataHub',
+            //          , icon: '/static/img/locked.svg'
+          }, {
+            label: 'DataHub',
             enabled: false
-//          , icon: '/static/img/locked.svg'
-          },
-          {label: 'OctoPub',
+            //          , icon: '/static/img/locked.svg'
+          }, {
+            label: 'OctoPub',
             enabled: false
-//          , icon: '/static/img/locked.svg'
+            //          , icon: '/static/img/locked.svg'
           }
         ]
       }
     ]
-  },
-  {label: 'Window',
+  }, {
+    label: 'Window',
     submenu: [
-      {role: 'minimize'},
-      {role: 'zoom'},
-      {type: 'separator'},
-      {label: 'Next Tab',
+      {
+        role: 'minimize'
+      }, {
+        role: 'zoom'
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Next Tab',
         enabled: false,
         accelerator: 'CmdOrCtrl+Right'
-      },
-      {label: 'Previous Tab',
+      }, {
+        label: 'Previous Tab',
         enabled: false,
         accelerator: 'CmdOrCtrl+Left'
-      },
-      {type: 'separator'},
-      {label: 'Bring All to Front',
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Bring All to Front',
         selector: 'arrangeInFront:'
       }
     ]
-  },
-  {role: 'help',
+  }, {
+    role: 'help',
     submenu: [
-      {label: 'Data Curator Help',
+      {
+        label: 'Data Curator Help',
         click: function() {
           shell.openExternal('https://odiqueensland.github.io/data-curator-help/')
         }
-      },
-      {label: 'Keyboard Shortcuts',
+      }, {
+        label: 'Keyboard Shortcuts',
         click: function() {
           help.showKeyboardHelp()
         }
-      },
-      {type: 'separator'},
-      {label: 'Support Forum',
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Support Forum',
         click: function() {
           shell.openExternal('https://ask.theodi.org.au/c/projects/data-curator')
         }
-      },
-      {label: 'Report Issues',
+      }, {
+        label: 'Report Issues',
         click: function() {
           shell.openExternal('https://github.com/ODIQueensland/data-curator/blob/develop/.github/CONTRIBUTING.md')
         }
