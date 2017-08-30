@@ -3,29 +3,27 @@
   margin 0
   padding 0
 
-#body-panel
-  border 0
-
 sideNavTransition = 0.3s
 sideNavMargin = 400px
+borderColor = #e4e4e4
+
+#body-panel
+  border 0
 
 #header-panel
   background-color #f8f8f8
   border-bottom 1px solid
-  border-color #e4e4e4
+  border-color borderColor
   padding 0
   .navbar
     border none
-    margin-bottom 0
-    .navbar-header
-      padding-top 9px
 
 #main-panel
   padding 5px
-  border 0
   z-index 10
   width 100%
   transition sideNavTransition
+  border 0
   &.closed
     margin-right 0
     margin-left 0
@@ -39,14 +37,13 @@ sideNavMargin = 400px
 #sidenav
   height 100%
   position absolute
-  margin-left 0
+  margin-left 0px
+  z-index 50
   border 1px
   border-radius 0
-  z-index 50
   top 0
   overflow-x hidden
   transition sideNavTransition
-  padding-top 0
   .navbar-brand
     text-transform: capitalize
   &.closed
@@ -60,16 +57,12 @@ sideNavMargin = 400px
   .navbar-header
     background-color #e4ecf6
     border-bottom 1px solid
-    border-color #e4e4e4
+    border-color borderColor
     display block !important
     float none
     margin-left -15px
     margin-right -15px
-    margin-top 0
-    margin-bottom 26px
-    padding-top 12px
     @media screen and (min-width: 768px)
-      padding-top 12px
       padding-left 15px
       margin-bottom 15px
   .closebtn
@@ -92,6 +85,7 @@ sideNavMargin = 400px
       padding-left 0 !important
     div
     input
+    select
       @extend #sidenav form
 
 #sidenav-footer
@@ -121,20 +115,26 @@ span.tabclose
 // slide-out sideNav transitions
 .sideNav-right-enter-active
 .sideNav-left-enter-active
-  transition all 0.4s
+  transition all 0.4s ease-in
 .sideNav-left-leave-active
 .sideNav-right-leave-active
-  transition all 0.5s
+  transition all 0.3s ease-in
 
 .sideNav-left-enter
-  transform translateX(-60px) !important
+  transform translateX(-(sideNavMargin)) !important
 .sideNav-right-enter
-  transform translateX(230px) !important
+  transform translateX(sideNavMargin) !important
 
 .sideNav-left-leave-to
-  transform translateX(230px) !important
+  transform translateX(250px) !important
 .sideNav-right-leave-to
-  transform translateX(-180px) !important
+  transform translateX(-250px) !important
+
+#preferenceProperties
+  width inherit !important
+  margin 0 -15px 0 -15px
+  a
+    border none
 
 #toolbar li
   text-align center
@@ -148,8 +148,11 @@ span.tabclose
 #toolbar li object
   max-width 13px
   max-height 13px
-  &.down
-    margin-bottom -2px
+  // &.down
+  //   margin-bottom -2px
 
 #tableProperties .form-control
   width auto !important
+
+#columnProperties option
+  width auto

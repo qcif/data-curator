@@ -53,9 +53,9 @@ export function createWindowTabWithData(data) {
   }
 }
 
-export function showAboutPanel() {
+export function showSidePanel(name) {
   var window = BrowserWindow.getFocusedWindow()
-  window.webContents.send('showAboutPanel')
+  window.webContents.send('showSidePanel', name)
 }
 
 function getSaveSubMenu() {

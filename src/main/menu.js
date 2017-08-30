@@ -52,17 +52,23 @@ exports.menu = [
     submenu: [
       {label: 'About Data Curator',
         click: function() {
-          utils.showAboutPanel()
+          utils.showSidePanel('about')
         }
       },
       {label: 'Check for Update',
         enabled: false
       },
       {type: 'separator'},
-      {label: 'Preferences',
-        accelerator: 'CmdOrCtrl+,',
-        enabled: false
-      },
+     {
+             label: process.platform === 'darwin'
+               ? 'Preferences'
+               : 'Settings',
+                accelerator: 'CmdOrCtrl+,',
+                       enabled: false,
+             click: function() {
+               utils.showSidePanel('preferences')
+             }
+           },
       {type: 'separator'},
       {role: 'services', submenu: []},
       {type: 'separator'},
