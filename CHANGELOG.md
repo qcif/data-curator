@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/). 
 
 To see what's planned in our [milestones](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open) or unreleased changes.
 
-[Unreleased]:  https://github.com/ODIQueensland/data-curator/compare/v0.1.0...HEAD
+[Unreleased]:  https://github.com/ODIQueensland/data-curator/compare/v0.2.0...HEAD
 ## [Unreleased]
 
 [0.2.0]: https://github.com/ODIQueensland/data-curator/compare/v0.1.0...v0.2.0

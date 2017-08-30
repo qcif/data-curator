@@ -450,6 +450,7 @@ exports.menu = [
         }
       }, {
         label: 'Keyboard Shortcuts',
+        accelerator: 'CmdOrCtrl+/',
         click: function() {
           help.showKeyboardHelp()
         }
@@ -465,6 +466,11 @@ exports.menu = [
         click: function() {
           shell.openExternal('https://github.com/ODIQueensland/data-curator/blob/develop/.github/CONTRIBUTING.md')
         }
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Welcome Guide',
+        enabled: false
       }
     ]
   }
