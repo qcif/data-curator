@@ -55,7 +55,7 @@
                 <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" @click="setActiveTab(tab)">
                   <a>
                     <span>{{tabTitle(tab)}}</span>
-                    <span v-if="tabs.length > 1" class="tabclose btn-danger fa fa-times" @click.stop="closeTab"></span>
+                    <span v-if="tabs.length > 1" class="tabclose btn-default fa fa-times" @click.stop="closeTab"></span>
                   </a>
                 </li>
               </ul>
@@ -155,12 +155,12 @@ export default {
         name: 'Package',
         image: '/static/img/data-package-properties.svg',
         sideNavPosition: 'right',
-        sideNavView: 'package'
+        sideNavView: 'packager'
       },
       {
         name: 'Export',
         image: '/static/img/export.svg',
-        class: 'down',
+        // class: 'down',
         sideNavPosition: 'right',
         sideNavView: 'default2'
       }
