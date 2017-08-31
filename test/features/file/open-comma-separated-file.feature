@@ -9,17 +9,12 @@ Feature: Open a Comma separated value file
 
   Use the default CSV dialect values in the specification to open the file and separate the values into the correct columns.
 
-  Background:
-    Given I have opened Data Curator
+  The Open Comma Separated function can be invoked using the menu or a keyboard shortcut
 
   Scenario: Use the menu to open an existing comma separated value file
-    When I select "Open Comma Separated" from the menu
-    Then a prompt, requesting the file name and location is shown
-    But only files ending with a ".csv" or ".txt" can be selected
-    Then the selected file is opened in a new data tab to the right of any other open data tabs
-
-  Scenario: Use a keyboard shortcut to open an existing comma separated value file
-    When I use the "Open Comma Separated" keyboard shortcut
-    Then a prompt, requesting the file name and location is shown
-    But only files ending with a ".csv" or ".txt" can be selected
-    Then the selected file is opened in a new data tab to the right of any other open data tabs
+    Given I have opened Data Curator
+    When I invoke the "Open Comma Separated" function
+    Then a prompt, requesting the 'filename' and location is shown
+    And only files ending with a ".csv" or ".txt" can be selected
+    And the selected 'filename' is opened in a new data tab to the right of any other open data tabs
+    And name the tab the 'filename'

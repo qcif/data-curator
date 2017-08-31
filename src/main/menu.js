@@ -394,7 +394,7 @@ exports.menu = [
       }, {
         type: 'separator'
       }, {
-        label: 'Publish to',
+        label: 'Publish Data Package to',
         enabled: false,
         submenu: [
           {

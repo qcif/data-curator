@@ -1,4 +1,4 @@
-@backlog
+@backlog @draft
 
 Feature: Read Only Mode
   As a Data Packager or Data Consumer

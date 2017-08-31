@@ -1,4 +1,4 @@
-@backlog
+@backlog  @draft
 
 Feature: Open from a URL
   As a User
@@ -6,6 +6,7 @@ Feature: Open from a URL
   So that can I don't have to down the file and then open it
 
   Can type be auto-detected?
+  May just be variant on other open functions but specify url instead of directory
 
 
   Scenario: Use the menu to open an Google Sheet

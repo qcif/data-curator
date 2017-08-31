@@ -1,4 +1,4 @@
-Feature: Quit Application
+Feature: Quit 
   As a Data Packager or Data Consumer
   I want to close the application and prompt if there are unsaved changes.
   So that I can quickly and safely finish work

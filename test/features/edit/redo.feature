@@ -4,8 +4,8 @@ Feature: Redo
   So that I can make the same change quickly
 
   Rules:
-  - Not all commands can be re-done.
-  - Only Edit commands can be re-done.
+  - Not all commands can be re-done
+  - Only Edit commands can be re-done
 
   Background:
     Given I have opened Data Curator

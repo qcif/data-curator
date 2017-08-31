@@ -10,14 +10,17 @@
   - open-semi-colon-separated-file.feature
   - open-custom-csv.feature
   - open-excel-sheet.feature
+  - open-google-sheet.feature
   - open-datapackage.feature
+  - open-recent.feature
   - save.feature
   - save-as.feature
   - save-all.feature
   - close-tab.feature
   - close-all-tabs.feature
+  - export-datapackage.feature
+  - export-datapackage.feature
 - edit:
-  - edit-data.feature
   - undo.feature
   - redo.feature
   - cut.feature
@@ -30,36 +33,44 @@
   - insert-column-after.feature
   - delete-rows.feature
   - delete-columns.feature
+  - data-entry.feature
+- find:
 - tools:
+  - validate-table.feature
+  - validate-column.feature
   - fix-ragged-rows.feature
   - guess-column-properties.feature
+  - create-constraint-from-column.feature
   - set-column-properties.feature
   - set-table-properties.feature
   - set-provenance-information.feature
   - sample-provenance-information.md
   - set-datapackage-properties.feature
-  - validate-table.feature
-  - validate-column.feature
-  - export-datapackage.feature
+  - assess-data-quality.md
   - publish-data-package.feature
 - window:
   - show-next-tab.feature
   - show-previous-tab.feature
 - help:
   - help.feature
-  - show-support.feature
-- shortcuts (Keyboard Shortcuts):
+  - edit-keyboard-shortcuts.feature (Keyboard Shortcuts)
+  - support-forum.feature
+  - report-issues.feature
+- other:
+  - open-application.feature
   - menu-keyboard-shortcuts.feature (Menu keyboard shortcuts)
-  - edit-keyboard-shortcuts.feature (Edit keyboard shortcuts)
 - backlog:
-  - quality-report.md
-  - menu.feature
-  - sort-column.feature
-  - find-in-table.feature
-  - replace-in-table.feature
-  - find-in-column.feature
-  - replace-in-column.feature
-  - guess-enum-values.feature
-  - validate-as-you-type.feature
   - open-google-sheet.feature
+  - print.feature
+  - find-in-table.feature
+  - find-in-column.feature
+  - replace-in-table.feature
+  - replace-in-column.feature
+  - sort-column.feature
+  - filter-column.feature
   - read-only-mode.feature
+  - import-column-properties.feature
+  - create-lookup-table-from-column.feature
+  - validate-as-you-type.feature
+  - welcome-guide.feature
+  - menu.feature

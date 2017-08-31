@@ -9,6 +9,11 @@ Feature: Open a Data Package
   http://specs.frictionlessdata.io/data-package/
   http://specs.frictionlessdata.io/tabular-data-package/
 
+  Rules:
+  - The name of a tab should be the 'filename' without the extension
+  - The name of a tab that has been described using Table Properties should the the 'name' property
+  - the 'name' property takes precidence over the 'filename'
+
   Scenario: Use the menu to open a data package file
     Given I have opened Data Curator
     When I select Open, Data Package from the menu
@@ -17,3 +22,4 @@ Feature: Open a Data Package
     And the selected file is unzipped
     And each data file is opened in a new data tab to the right of any other open data tabs
     And the corresponding column, table and package properties and the provenance information is loaded
+    And each tab is named according to the rules

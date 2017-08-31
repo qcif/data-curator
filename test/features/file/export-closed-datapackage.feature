@@ -2,8 +2,8 @@
 
 Feature: Export Closed Data Package
   As a Data Packager
-  I want to export the data and associated metadata in a data package
-  So that Data Consumers can access usuable but not open data and associated metadata in a single file
+  I want to export the data and associated metadata in a data package using a non-open licence
+  So that I can share usuable data more restrictive terms that protect my interests 
 
   Functions the same as Export Data Package but allows a non-open licence to be applied
 
