@@ -12,12 +12,16 @@ Feature: Validate Table
   Schema validation checks include the:
   - data is the same 'type' and 'format' as defined in the column properties, ignoring 'missing values'
   - data conforms with the 'contraints'
-  - 'foreign key' relationships to other tables have valid links
+  - 'foreign key' relationships to one or more columns in:
+    - the same table
+    - the same data package
+    - at table at a url  
 
   See
   - Validation code https://github.com/frictionlessdata/tableschema-js
-  - Validation errors messages (soon) https://github.com/frictionlessdata/data-quality-spec
-  - soon... https://github.com/frictionlessdata/tableschema-js/issues/77
+  - Foreign key spec http://specs.frictionlessdata.io/table-schema/#foreign-keys
+  - Validation errors messages https://github.com/frictionlessdata/data-quality-spec (soon - https://github.com/frictionlessdata/tableschema-js/pull/88#issuecomment-325908863)
+
 
   Background:
     Given I have opened Data Curator

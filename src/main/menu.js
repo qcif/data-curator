@@ -361,18 +361,15 @@ exports.menu = [
       }, {
         type: 'separator'
       }, {
-        label: 'Import Column Properties',
+        label: 'Guess Column Properties'
+      }, {
+        label: 'Import Column Properties...',
         enabled: false
       }, {
-        label: 'Guess Column Properties'
-      },
-      //      {label: 'Generate Header',
-      //        click: function() {
-      //          tools.generateSchemaFromHeader()
-      //        }
-      //      },
-      {
-        label: 'Guess Valid Values',
+        label: 'Create Constraint from Column',
+        enabled: false
+      }, {
+        label: 'Create Look-up Table from Column',
         enabled: false
       }, {
         type: 'separator'
@@ -450,6 +447,7 @@ exports.menu = [
         }
       }, {
         label: 'Keyboard Shortcuts',
+        accelerator: 'CmdOrCtrl+/',
         click: function() {
           help.showKeyboardHelp()
         }
@@ -465,6 +463,11 @@ exports.menu = [
         click: function() {
           shell.openExternal('https://github.com/ODIQueensland/data-curator/blob/develop/.github/CONTRIBUTING.md')
         }
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Welcome Guide',
+        enabled: false
       }
     ]
   }
