@@ -1,5 +1,3 @@
-import {remote} from 'electron'
-
 const state = {
   tabs: [],
   activeTab: '',
