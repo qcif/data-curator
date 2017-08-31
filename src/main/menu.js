@@ -361,18 +361,15 @@ exports.menu = [
       }, {
         type: 'separator'
       }, {
-        label: 'Import Column Properties',
+        label: 'Guess Column Properties'
+      }, {
+        label: 'Import Column Properties...',
         enabled: false
       }, {
-        label: 'Guess Column Properties'
-      },
-      //      {label: 'Generate Header',
-      //        click: function() {
-      //          tools.generateSchemaFromHeader()
-      //        }
-      //      },
-      {
-        label: 'Guess Valid Values',
+        label: 'Create Constraint from Column',
+        enabled: false
+      }, {
+        label: 'Create Look-up Table from Column',
         enabled: false
       }, {
         type: 'separator'
