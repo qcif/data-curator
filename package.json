@@ -1,6 +1,6 @@
 {
   "name": "data-curator",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": " <matt@redboxresearchdata.com.au>",
   "description": "An electron-vue project for curating csv data",
   "license": "MIT",
@@ -52,7 +52,16 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
     },
     "linux": {
       "icon": "build/icons"
@@ -117,7 +126,7 @@
     "del": "^2.2.1",
     "devtron": "^1.1.0",
     "electron": "^1.7.5",
-    "electron-builder": "^19.10.0",
+    "electron-builder": "^19.27.2",
     "electron-debug": "^1.1.0",
     "electron-devtools-installer": "^2.0.1",
     "electron-mocha": "^4.0.0",
