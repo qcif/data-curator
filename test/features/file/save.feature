@@ -11,15 +11,23 @@ Feature: Save data
 
   The CSV dialect selected may change the file extension e.g. tab separated values files use .tsv
 
-  Background:
+  If the data has never been saved, prompt the user for a file name and location
+
+  The "Save" function can be invoked from a menu item or a keyboard shortcut
+
+  Scenario: Save data that has never been saved
     Given I have opened Data Curator
     And I have opened 1 data tab
     And I have changed the data in the active tab
+    And I have never saved the data
+    When I invoke the "Save" function
+    Then prompt for a location and name to save the filename
+    And save the data in the active tab at that location, using the filename, and using the CSV dialect settings
 
-  Scenario: Use the menu to save the data
-    When I select "Save" from the menu
-    Then save the data in the active tab using the CSV dialect settings
-
-  Scenario: Use a keyboard shortcut to save the data
-    When I use the "Save" keyboard shortcut
-    Then save the data in the active tab using the CSV dialect settings
+  Scenario: Save data that has been saved at least once
+    Given I have opened Data Curator
+    And I have opened 1 data tab
+    And I have changed the data in the active tab
+    And the data has been saved at least once
+    When I invoke the "Save" function
+    And save the data in the active tab at its current location, using the filename, and using the CSV dialect settings
