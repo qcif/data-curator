@@ -18,7 +18,7 @@ cache:
 
 environment:
   GH_TOKEN:
-    secure: B95ffCVx3exluyJcTH9Vl6VjbXD5Za/Y8nLSPZ0Bz8nt6ReoOV+8hgDkN0V4hqiM
+    secure: 2+1HLAk/YGWqOMnjgsx5nII2huvHAlPkO24vJBqggRmcyy9FhiekaaMDTsRiRnRX
 
 init:
   - git config --global core.autocrlf input
