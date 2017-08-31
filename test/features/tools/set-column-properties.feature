@@ -20,6 +20,11 @@ Feature: Set Column Properties
     - 'primaryKeys'
     - 'foreignKeys'
 
+  The user interface would need to accomodate 'foreign key' relationships to columns in:
+    - the same table
+    - a table in the same data package
+    - at table at a url
+
   Background:
     Given I have opened Data Curator
     And I have opened a data tab
