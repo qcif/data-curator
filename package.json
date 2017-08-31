@@ -18,7 +18,7 @@
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src",
     "pack": "yarn run pack:main && yarn run pack:renderer",
     "release:predraft": "yarn run build && build --publish onTagOrDraft --draft true --prerelease true",
-    "release:pre": "yarn run build && build --publish onTagOrDraft --prerelease true",
+    "release:pre": "yarn run build && build --publish always --prerelease true",
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "postinstall": "electron-builder install-app-deps",

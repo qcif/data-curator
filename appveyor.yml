@@ -33,6 +33,6 @@ install:
 build_script:
   #- yarn test
   # - yarn build
-  - yarn run release:predraft
+  - yarn run release:pre
 
 test: off
