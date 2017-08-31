@@ -24,6 +24,7 @@
   </div>
 </template>
 <script>
+import {remote} from 'electron'
 export default {
   name: 'about',
   data() {
@@ -55,7 +56,7 @@ export default {
           label: 'Create usable open data'
         },
         {
-          label: '0.2.0'
+          label: this.getApplicationVersion()
         }
         ]
       },
@@ -93,6 +94,11 @@ export default {
         ]
       }
       ]
+    }
+  },
+  methods: {
+    getApplicationVersion: function() {
+      return remote.getGlobal('version')
     }
   }
 }
