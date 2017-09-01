@@ -142,16 +142,14 @@ exports.menu = [
         submenu: save_submenu
       }, {
         label: 'Save All',
-        accelerator: 'Alt+CmdOrCtrl+S',
-        enabled: false
+        accelerator: 'Alt+CmdOrCtrl+S'
       }, {
         type: 'separator'
       }, {
         label: 'Close Tab',
         accelerator: 'CmdOrCtrl+W'
       }, {
-        label: 'Close All',
-        enabled: false
+        label: 'Close All'
       }, {
         type: 'separator'
       }, {
@@ -366,11 +364,9 @@ exports.menu = [
 // hide above
       }, {
         label: 'Next Tab',
-        enabled: false,
         accelerator: 'CmdOrCtrl+Right'
       }, {
         label: 'Previous Tab',
-        enabled: false,
         accelerator: 'CmdOrCtrl+Left'
       }, {
 // hide below in Windows and Linux
