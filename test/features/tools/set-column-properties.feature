@@ -30,7 +30,7 @@ Feature: Set Column Properties
     And I have opened a data tab
 
   Scenario: Use the menu to access Column Properties for the current column
-    When I select "Column Properties" from the menu
+    When I invoke the "Column Properties" from the menu
     Then display a panel that allows me to properties for the current column
     And accept and validate column property values
     And save the values as they are entered

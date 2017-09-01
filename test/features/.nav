@@ -18,8 +18,7 @@
   - save-all.feature
   - close-tab.feature
   - close-all-tabs.feature
-  - export-datapackage.feature
-  - export-datapackage.feature
+  - print.feature
 - edit:
   - undo.feature
   - redo.feature
@@ -34,19 +33,26 @@
   - delete-rows.feature
   - delete-columns.feature
   - data-entry.feature
+- view:
+  - read-only-mode.feature
 - find:
 - tools:
-  - validate-table.feature
-  - validate-column.feature
   - fix-ragged-rows.feature
   - guess-column-properties.feature
+  - import-column-properties.feature
   - create-constraint-from-column.feature
+  - create-lookup-table-from-column.feature
+  - validate-column.feature
+  - validate-table.feature
   - set-column-properties.feature
   - set-table-properties.feature
   - set-provenance-information.feature
   - sample-provenance-information.md
+  - data-quality-information.feature
+  - sample-data-quality-information.md
   - set-datapackage-properties.feature
-  - assess-data-quality.md
+  - export-datapackage.feature
+  - export-closed-datapackage.feature
   - publish-data-package.feature
 - window:
   - show-next-tab.feature
@@ -61,16 +67,12 @@
   - menu-keyboard-shortcuts.feature (Menu keyboard shortcuts)
 - backlog:
   - open-google-sheet.feature
-  - print.feature
   - find-in-table.feature
   - find-in-column.feature
   - replace-in-table.feature
   - replace-in-column.feature
   - sort-column.feature
   - filter-column.feature
-  - read-only-mode.feature
-  - import-column-properties.feature
-  - create-lookup-table-from-column.feature
   - validate-as-you-type.feature
   - welcome-guide.feature
   - menu.feature

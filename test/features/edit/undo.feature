@@ -10,14 +10,10 @@ Feature: Undo
     - Edit commands can be undone until the last non-edit command only when the users is in the data table.
     - If the user is in side panel (i.e. not working on the table data) and invokes Undo, nothing should be undone in the data table.
 
-  Background:
-    Given I have opened Data Curator
-    And I have performed a command that can be undone
+    The "Undo" function can be invoked using a menu item or keyboard shortcut
 
   Scenario: Use the menu to undo a command
-    When I select "Undo" from the menu
-    Then reverse the previous data entry or edit command
-
-  Scenario: Use a keyboard shortcut to undo a command
-    When I use the Undo keyboard shortcut
+    Given I have opened Data Curator
+    And I have performed a command that can be undone
+    When I invoke the "Undo" function
     Then reverse the previous data entry or edit command

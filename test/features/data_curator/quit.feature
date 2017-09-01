@@ -1,4 +1,4 @@
-Feature: Quit 
+Feature: Quit
   As a Data Packager or Data Consumer
   I want to close the application and prompt if there are unsaved changes.
   So that I can quickly and safely finish work
@@ -15,34 +15,20 @@ Feature: Quit
 
   The CSV dialect selected may change the file extension e.g. tab separated values files use .tsv
 
-  Scenario: Use the menu to close the application, all work saved
+  "Close Application" can be invoked by a menu item, keyboard shortcut, or system functions
+
+  Scenario: Close the application, all work saved
     Given I have opened Data Curator
     And I open 1 or more data tabs
     And I save all the data in every tab
-    When I select "Close Application" from the menu
+    When I invoke the "Close Application" function
     Then all tabs close
     And the application closes
 
-  Scenario: Use a keyboard shortcut to close the application, all work saved
-    Given I have opened Data Curator
-    And I open 1 or more data tabs
-    And I save all the data in every tab
-    When I use the "Close Application" keyboard shortcut
-    Then all tabs close
-    And the application closes
-
-  Scenario: Use the menu to close the application, some work unsaved
+  Scenario: Close the application, some work unsaved
     Given I have opened Data Curator
     And I open 1 or more data tabs
     And I do not save the data in every tab
-    When I select "Close Application" from the menu
-    Then a prompt for each unsaved data tab is displayed to save unsaved data in its current CSV Dialect
-    And the application closed
-
-  Scenario: Use a keyboard shortcut to close the application, some work unsaved
-    Given I have opened Data Curator
-    And I open 1 or more data tabs
-    And I do not save the data in every tab
-    When I use the "Close Application" keyboard shortcut
+    When I invoke the "Close Application" function
     Then a prompt for each unsaved data tab is displayed to save unsaved data in its current CSV Dialect
     And the application closed

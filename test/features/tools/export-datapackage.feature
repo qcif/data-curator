@@ -8,7 +8,7 @@ Feature: Export Data Package
   - The application only works with Tabular Data Packages, defined at http://specs.frictionlessdata.io/tabular-data-package/
 
   Export data package creates a datapackage.zip file that includes:
-  - readme.me (containing the provenance information)
+  - readme.md (containing the provenance information)
   - datapackage.json (containing the data package, table (data resource), csv dialect and columme (schema) properties)
   - a data directory (containing each data file in the appropriate separated value file format)
 

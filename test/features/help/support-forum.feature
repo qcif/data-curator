@@ -7,7 +7,7 @@ Feature: Support Forum
 
   The Support URL will be on https://ask.theodi.org.au/c/projects/data-curator
 
-  Scenario: Use the menu to open the support page
+  Scenario: Support Forum
     Given I have opened Data Curator
-    When I select "Support" from the menu
+    When I invoke the "Support Forum" function
     Then Open the Support web-site in a separate browser window

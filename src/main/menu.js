@@ -73,6 +73,7 @@ exports.menu = [
       }, {
         type: 'separator'
       }, {
+// hide below in Windows and Linux
         role: 'services',
         submenu: []
       }, {
@@ -85,6 +86,7 @@ exports.menu = [
         role: 'unhide'
       }, {
         type: 'separator'
+// hide above
       }, {
         role: 'quit'
       }
@@ -98,13 +100,7 @@ exports.menu = [
         click: function() {
           utils.createWindowTab()
         }
-      },
-      //      {label: 'New from Schema...',
-      //        click: function() {
-      //          schema.generateTemplate()
-      //        }
-      //      },
-      {
+      }, {
         type: 'separator'
       }, {
         label: 'Open',
@@ -159,94 +155,31 @@ exports.menu = [
       }, {
         type: 'separator'
       }, {
-        label: 'Export Data Package...',
-        accelerator: 'CmdOrCtrl+D',
-        click: function() {
-          datapackage.exportdata()
-        }
-      },
-      //      {label: 'Github',
-      //        submenu: [
-      //          {label: 'Export to Github',
-      //            accelerator: 'CmdOrCtrl+G',
-      //            click: function() {
-      //              github.exportToGithub()
-      //            }
-      //          },
-      //          {label: 'Add file to Github',
-      //            accelerator: 'CmdOrCtrl+Shift+G',
-      //            click: function() {
-      //              github.addFileToGithub()
-      //            }
-      //          }
-      //        ]
-      //      }
-      {
-        type: 'separator'
-      }, {
         label: 'Print',
         accelerator: 'CmdOrCtrl+P',
         enabled: false
       }
-
     ]
   }, {
     label: 'Edit',
     submenu: [
       {
-        label: 'Undo',
-        accelerator: 'CmdOrCtrl+Z',
-        click: function() {
-          BrowserWindow.getFocusedWindow().webContents.send('editUndo')
-        }
+        role: 'undo'
       }, {
-        label: 'Redo',
-        accelerator: 'CmdOrCtrl+Y',
-        click: function() {
-          BrowserWindow.getFocusedWindow().webContents.send('editRedo')
-        }
+        role: 'redo'
       }, {
         type: 'separator'
       }, {
-        label: 'Cut',
-        accelerator: 'CmdOrCtrl+X',
-        click: function() {
-          BrowserWindow.getFocusedWindow().webContents.send('editCut')
-        }
+        role: 'cut'
       }, {
-        label: 'Copy',
-        accelerator: 'CmdOrCtrl+C',
-        selector: 'copy:',
-        click: function() {
-          BrowserWindow.getFocusedWindow().webContents.send('editCopy')
-        }
+        role: 'copy'
       }, {
-        label: 'Paste',
-        accelerator: 'CmdOrCtrl+V',
-        click: function() {
-          BrowserWindow.getFocusedWindow().webContents.send('editPaste')
-        }
+        role: 'paste'
       }, {
-        label: 'Select All',
-        accelerator: 'CmdOrCtrl+A',
-        click: function() {
-          BrowserWindow.getFocusedWindow().webContents.send('editSelectAll')
-        }
+        role: 'selectall'
       }, {
         type: 'separator'
-      },
-      //      {label: 'Freeze Header Row',
-      //        click: function() {
-      //          BrowserWindow.getFocusedWindow().webContents.send('freeze')
-      //        }
-      //      },
-      //      {label: 'Unfreeze Header Row',
-      //        click: function() {
-      //          BrowserWindow.getFocusedWindow().webContents.send('unfreeze')
-      //        }
-      //      },
-      //      {type: 'separator'},
-      {
+      }, {
         label: 'Insert Row Above',
         accelerator: 'CmdOrCtrl+I',
         click: function() {
@@ -284,6 +217,24 @@ exports.menu = [
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('removeColumns')
         }
+      }
+    ]
+  }, {
+    label: 'View',
+    submenu: [
+      {
+        label: 'Read Only',
+        type: 'checkbox',
+        checked: true,
+        enabled: false
+      }, {
+// hide below in build or invoke using hidden shortcut
+        role: 'toggledevtools'
+      }, {
+// hide above
+        type: 'separator'
+      }, {
+        role: 'togglefullscreen'
       }
     ]
   }, {
@@ -329,31 +280,6 @@ exports.menu = [
     label: 'Tools',
     submenu: [
       {
-        label: 'Toggle DevTools',
-        accelerator: 'Alt+CmdOrCtrl+I',
-        click: function() {
-          BrowserWindow.getFocusedWindow().toggleDevTools()
-        }
-      }, {
-        label: 'Read Only',
-        type: 'checkbox',
-        checked: true,
-        enabled: false
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Validate Table',
-        accelerator: 'Shift+CmdOrCtrl+V',
-        click: function() {
-          validate.validateFile()
-        }
-      },
-      //      {label: 'Validate with schema',
-      //        click: function() {
-      //          validate.validateWithSchema()
-      //        }
-      //      },
-      {
         label: 'Fix Ragged Rows',
         click: function() {
           tools.fixRaggedRowsFile()
@@ -366,6 +292,8 @@ exports.menu = [
         label: 'Import Column Properties...',
         enabled: false
       }, {
+        type: 'separator'
+      }, {
         label: 'Create Constraint from Column',
         enabled: false
       }, {
@@ -374,25 +302,37 @@ exports.menu = [
       }, {
         type: 'separator'
       }, {
+        label: 'Validate Table',
+        accelerator: 'Shift+CmdOrCtrl+V',
+        click: function() {
+          validate.validateFile()
+        }
+      }, {
+        type: 'separator'
+      }, {
         label: 'Column Properties'
       }, {
         label: 'Table Properties'
       }, {
+        label: 'View Properties',
+        enabled: false
+//       , icon: '/static/img/locked.svg'
+      }, {
         label: 'Provenance Information'
+      }, {
+        label: 'Data Quality Information',
+        enabled: false
+//       , icon: '/static/img/locked.svg'
       }, {
         label: 'Data Package Properties'
       }, {
         type: 'separator'
       }, {
-        label: 'Graph Properties',
-        enabled: false
-        //      ,  icon: '/static/img/locked.svg'
-      }, {
-        label: 'Assess Data Quality',
-        enabled: false
-        //       , icon: '/static/img/locked.svg'
-      }, {
-        type: 'separator'
+        label: 'Export Data Package...',
+        accelerator: 'CmdOrCtrl+D',
+        click: function() {
+          datapackage.exportdata()
+        }
       }, {
         label: 'Publish Data Package to',
         enabled: false,
@@ -400,15 +340,15 @@ exports.menu = [
           {
             label: 'CKAN',
             enabled: false
-            //          , icon: '/static/img/locked.svg'
+//          , icon: '/static/img/locked.svg'
           }, {
             label: 'DataHub',
             enabled: false
-            //          , icon: '/static/img/locked.svg'
+//          , icon: '/static/img/locked.svg'
           }, {
             label: 'OctoPub',
             enabled: false
-            //          , icon: '/static/img/locked.svg'
+//          , icon: '/static/img/locked.svg'
           }
         ]
       }
@@ -416,12 +356,14 @@ exports.menu = [
   }, {
     label: 'Window',
     submenu: [
+// hide below in Windows and Linux
       {
         role: 'minimize'
       }, {
         role: 'zoom'
       }, {
         type: 'separator'
+// hide above
       }, {
         label: 'Next Tab',
         enabled: false,
@@ -431,17 +373,23 @@ exports.menu = [
         enabled: false,
         accelerator: 'CmdOrCtrl+Left'
       }, {
+// hide below in Windows and Linux
         type: 'separator'
       }, {
-        label: 'Bring All to Front',
-        selector: 'arrangeInFront:'
+        role: 'front'
       }
+// hide above
     ]
   }, {
     role: 'help',
     submenu: [
       {
         label: 'Data Curator Help',
+// show accelerator for Windows and Linux only
+        accelerator: process.platform === 'darwin'
+          ? ''
+          : 'F1',
+// hide above
         click: function() {
           shell.openExternal('https://odiqueensland.github.io/data-curator-help/')
         }
