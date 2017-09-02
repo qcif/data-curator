@@ -192,13 +192,13 @@ exports.menu = [
       }, {
         type: 'separator'
       }, {
-        label: 'Insert Column Left',
+        label: 'Insert Column Before',
         accelerator: 'CmdOrCtrl+J',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnLeft')
         }
       }, {
-        label: 'Insert Column Right',
+        label: 'Insert Column After',
         accelerator: 'CmdOrCtrl+L',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnRight')

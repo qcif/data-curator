@@ -1,121 +1,454 @@
 <template>
   <div id="container" class="container-fluid">
-  <h1>Editor Keyboard Shortcuts</h1>
-  <h2>Navigation</h2>
+
+  <h1>Keyboard Shortcuts</h1>
+
+<!-- consider index but how to do internal links?
   <ul>
-      <li>
-          <kbd>Arrow Up ↑</kbd>    – move to the cell above current active cell (if exists)
-      </li>
-      <li>
-          <kbd>Arrow Down ↓</kbd>  – move to cell underneath current active cell (if exists)
-      </li>
-      <li>
-          <kbd>Arrow Right →</kbd> – move to the cell on the right side of the current active cell (if exists)
-      </li>
-      <li>
-          <kbd>Arrow Left ←</kbd>  – move to the cell on the left side of current active cell (if exists)
-      </li>
-      <li>
-          <kbd>Tab</kbd>         – move to the cell on the right side of the current active cell (if exists)
-      </li>
-      <li>
-          <kbd>Tab</kbd> + <kbd>Shift</kbd> – move to the cell on the left side of current active cell (if exists)
-      </li>
-      <li>
-          <kbd>Home</kbd> – move to the first cell in a row
-      </li>
-      <li>
-          <kbd>End</kbd> – move to the last cell in a row
-      </li>
-      <li>
-          (<kbd>Cmd</kbd> or <kbd>Ctrl</kbd>) + <kbd>Home</kbd> – move to the first cell in a column
-      </li>
-      <li>
-          (<kbd>Cmd</kbd> or <kbd>Ctrl</kbd>) + <kbd>End</kbd> – move to the last cell in a column
-      </li>
+    <li><a href="#edit">Edit shortcuts</a></li>
   </ul>
-  <h2>Selection</h2>
-  <ul>
-      <li>
-          (<kbd>Cmd</kbd> or <kbd>Ctrl</kbd>) + <kbd>A</kbd> – select all
-      </li>
-      <li>
-          <kbd>Shift</kbd> + <kbd>Arrow Up ↑</kbd> – extend selection of the cell above
-      </li>
-      <li>
-          <kbd>Shift</kbd> + <kbd>Arrow Down ↓</kbd> – extend selection of the cell underneath
-      </li>
-      <li>
-          <kbd>Shift</kbd> + <kbd>Arrow Right →</kbd> – extend selection of the cell on the right
-      </li>
-      <li>
-          <kbd>Shift</kbd> + <kbd>Arrow Left ←</kbd> – extend selection of the cell on the left
-      </li>
-      <li>
-          <kbd>Shift</kbd> + <kbd>Home</kbd> – select all cells in the row to the right including the current cell
-      </li>
-      <li>
-          <kbd>Shift</kbd> + <kbd>End</kbd> – select all cells in the row to the left including the current cell
-      </li>
-      <li>
-          (<kbd>Cmd</kbd> or <kbd>Ctrl</kbd>) + <kbd>Shift</kbd> + <kbd>Home</kbd> – select all cells in the column to the top including the current cell
-      </li>
-      <li>
-          (<kbd>Cmd</kbd> or <kbd>Ctrl</kbd>) + <kbd>Shift</kbd> + <kbd>End</kbd> – select all cells in the column to the bottom including the current cell
-      </li>
-  </ul>
-  <h2>Editing</h2>
-  <ul>
-      <li>
-          <kbd>Enter</kbd> – insert row below (if in bottom row)
-      </li>
-      <li>
-          <kbd>Tab</kbd> – insert column right (if in rightmost column)
-      </li>
-      <li>
-          <kbd>F2</kbd> – open cell editor
-      </li>
-      <li>
-          <kbd>Esc</kbd> – cancel editing and close cell editor
-      </li>
-      <li>
-          <kbd>Backspace</kbd> – empty cell
-      </li>
-      <li>
-          <kbd>Delete</kbd> – empty cell
-      </li>
-      <li>
-          (<kbd>Cmd</kbd> or <kbd>Ctrl</kbd>) + <kbd>C</kbd> – copy cell's content
-      </li>
-      <li>
-          (<kbd>Cmd</kbd> or <kbd>Ctrl</kbd>) + <kbd>X</kbd> – cut cell's content
-      </li>
-      <li>
-          (<kbd>Cmd</kbd> or <kbd>Ctrl</kbd>) + <kbd>V</kbd> – pastle cell's content
-      </li>
-      <li>
-          (<kbd>Cmd</kbd> or <kbd>Ctrl</kbd>) + <kbd>Enter</kbd> - fill all selected cells with edited cell's value
-      </li>
-      <li>
-          (<kbd>Cmd</kbd> or <kbd>Ctrl</kbd>) + <kbd>Z</kbd> – undo
-      </li>
-      <li>
-          (<kbd>Cmd</kbd> or <kbd>Ctrl</kbd>) + <kbd>Y</kbd> – redo
-      </li>
-  </ul>
-  <h2>Context menu</h2>
-  <ul>
-      <li>
-          <kbd>Arrow Down ↓</kbd> – move to the next option in context menu
-      </li>
-      <li>
-          <kbd>Arrow Up ↑</kbd> – move to the previous option in context menu
-      </li>
-      <li>
-          <kbd>Enter</kbd> – select option from context menu
-      </li>
-  </ul>
-  </div>
+-->
+
+  <h2>Table Editor Shortcuts</h2>
+
+  <h3 id="edit"> </h3>
+<!-- add styling to keyboard-help.styl -->
+  <table width="100%">
+    <tr>
+      <th style="width:50%">Table Editing shortcuts</th>
+      <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
+      <th style="width:25%"><i class="fa fa-apple"></i></th>
+    </tr>
+    <tr>
+      <td><b>Insert row below,</b> if in last row</td>
+      <td><kbd>Enter</kbd></td>
+      <td><kbd>Enter</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Insert column after</b> if in last column</td>
+      <td><kbd>Tab</kbd></td>
+      <td><kbd>Tab</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Cancel</b> data entry</td>
+      <td><kbd>Esc</kbd></td>
+      <td><kbd>Esc</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Delete</b> cell contents</td>
+      <td><kbd>Backspace</kbd> or <kbd>Delete</kbd></td>
+      <td><kbd>Delete</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Fill all selected</b> cells with the same value</td>
+      <td><kbd>Ctrl</kbd> <kbd>Enter</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>Enter</kbd></td>
+    </tr>
+  </table>
+
+  <h3 id="move"> </h3>
+
+  <table width="100%">
+    <tr>
+      <th style="width:50%">Table Navigation shortcuts</th>
+      <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
+      <th style="width:25%"><i class="fa fa-apple"></i></th>
+    </tr>
+    <tr>
+      <td><b>Move Up</b> from the current cell</td>
+      <td><kbd>&#8593;</kbd></td>
+      <td><kbd>&#8593;</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Move Down</b> from the current cell</td>
+      <td><kbd>&#8595;</kbd></td>
+      <td><kbd>&#8595;</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Move Right</b> from the current cell</td>
+      <td><kbd>&#8594;</kbd> or <kbd>Tab</kbd></td>
+      <td><kbd>&#8594;</kbd> or <kbd>Tab</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Move Left</b> from the current cell</td>
+      <td><kbd>&#8592;</kbd> or <kbd>&#8679;</kbd> <kbd>Tab</kbd></td>
+      <td><kbd>&#8592;</kbd> or <kbd>&#8679;</kbd> <kbd>Tab</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Move to Top</b> cell in the current column</td>
+      <td><kbd>Ctrl</kbd> <kbd>Home</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>fn</kbd> <kbd>&#8593;</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Move to Bottom</b> cell in the current column</td>
+      <td><kbd>Ctrl</kbd> <kbd>End</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>fn</kbd> <kbd>&#8595;</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Move to First</b> cell in the current row</td>
+      <td><kbd>Home</kbd></td>
+      <td><kbd>fn</kbd> <kbd>&#8592;</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Move to Last</b> cell in the current row</td>
+      <td><kbd>End</kbd></td>
+      <td><kbd>fn</kbd> <kbd>&#8594;</kbd></td>
+    </tr>
+  </table>
+
+  <h3 id="select"> </h3>
+
+  <table width="100%">
+    <tr>
+      <th style="width:50%">Table Selection shortcuts</th>
+      <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
+      <th style="width:25%"><i class="fa fa-apple"></i></th>
+    </tr>
+    <tr>
+      <td><b>Select All</b> the data in the table</td>
+      <td><kbd>Ctrl</kbd> <kbd>A</kbd> </td>
+      <td><kbd>&#8984;</kbd> <kbd>A</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Select Up</b> - expand column selection to the cell above</td>
+      <td><kbd>&#8679;</kbd> <kbd>&#8593;</kbd></td>
+      <td><kbd>&#8679;</kbd> <kbd>&#8593;</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Select Down</b> - expand column selection to the cell below</td>
+      <td><kbd>&#8679;</kbd> <kbd>&#8595;</kbd></td>
+      <td><kbd>&#8679;</kbd> <kbd>&#8595;</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Select Right</b> - expand row selection to the cell right</td>
+      <td><kbd>&#8679;</kbd> <kbd>&#8594;</kbd></td>
+      <td><kbd>&#8679;</kbd> <kbd>&#8594;</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Select Left</b> - expand row selection to the cell left</td>
+      <td><kbd>&#8679;</kbd> <kbd>&#8592;</kbd></td>
+      <td><kbd>&#8679;</kbd> <kbd>&#8592;</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Select to Top</b> - expand column selection to all cells above</td>
+      <td><kbd>Ctrl</kbd> <kbd>&#8679;</kbd> <kbd>Home</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>&#8679;</kbd> <kbd>fn</kbd> <kbd>&#8593;</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Select to Bottom</b> - expand column selection to all cells below</td>
+      <td><kbd>Ctrl</kbd> <kbd>&#8679;</kbd> <kbd>End</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>&#8679;</kbd> <kbd>fn</kbd> <kbd>&#8595;</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Select to First</b> - expand row selection to all cells to the right</td>
+      <td><kbd>&#8679;</kbd> <kbd>Home</kbd></td>
+      <td><kbd>&#8679;</kbd> <kbd>fn</kbd> <kbd>&#8592;</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Select to Last</b> - expand row selection to all cells to the left</td>
+      <td><kbd>&#8679;</kbd> <kbd>End</kbd></td>
+      <td><kbd>&#8679;</kbd> <kbd>fn</kbd> <kbd>&#8594;</kbd></td>
+    </tr>
+  </table>
+
+  <h3 id="context-menu"></h3>
+
+  <table width="100%">
+    <tr>
+      <th style="width:50%">Context menu shortcuts</th>
+      <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
+      <th style="width:25%"><i class="fa fa-apple"></i></th>
+    </tr>
+    <tr>
+      <td><b>Right click</b> in a cell to display the context menu</td>
+      <td><i class="fa fa-mouse-pointer"></i></td>
+      <td><i class="fa fa-mouse-pointer"></i></td>
+    </tr>
+    <tr>
+      <td><b>Choose Next</b> option in context menu</td>
+      <td><kbd>&#8593;</kbd></td>
+      <td><kbd>&#8593;</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Choose Previous</b> option in context menu</td>
+      <td><kbd>&#8595;</kbd></td>
+      <td><kbd>&#8595;</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Perform Option</b> from context menu</td>
+      <td><kbd>Enter</kbd></td>
+      <td><kbd>Enter</kbd></td>
+    </tr>
+  </table>
+
+  <h2>Menu Shortcuts</h2>
+
+  <h3 id="data-curator-menu"> </h3>
+
+  <table width="100%">
+    <tr>
+      <th style="width:50%">Data Curator menu shortcuts</th>
+      <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
+      <th style="width:25%"><i class="fa fa-apple"></i></th>
+    </tr>
+    <tr>
+      <td><b>Settings</b> / <b>Preferences</b> - set defaults to improve productivity</td>
+      <td><kbd>Ctrl</kbd> <kbd>,</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>,</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Hide</b> the application</td>
+      <td></td>
+      <td><kbd>&#8984;</kbd> <kbd>H</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Hide Others</b> - hide all other applications</td>
+      <td></td>
+      <td><kbd>&#8997;</kbd> <kbd>&#8984;</kbd> <kbd>H</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Quit Data Curator</b> - close the application (prompt to save unsaved work)</td>
+      <td><kbd>Ctrl</kbd> <kbd>Q</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>Q</kbd></td>
+    </tr>
+  </table>
+
+  <h3 id="file-menu"> </h3>
+
+  <table width="100%">
+    <tr>
+      <th style="width:50%">File menu shortcuts</th>
+      <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
+      <th style="width:25%"><i class="fa fa-apple"></i></th>
+    </tr>
+    <tr>
+      <td><b>New</b> - create a new data table</td>
+      <td><kbd>Ctrl</kbd> <kbd>N</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>N</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Open</b>, <b>Comma Separated</b> value file</td>
+      <td><kbd>Ctrl</kbd> <kbd>O</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>O</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Save</b> the active data tab as a CSV file</td>
+      <td><kbd>Ctrl</kbd> <kbd>S</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>S</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Save As</b> - save the active data tab with a new filename or location</td>
+      <td><kbd>Ctrl</kbd> <kbd>C</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>C</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Save All</b> unsaved changes to the data tables </td>
+      <td><kbd>Alt</kbd> <kbd>Ctrl</kbd> <kbd>S</kbd></td>
+      <td><kbd>&#8997;</kbd> <kbd>&#8984;</kbd> <kbd>S</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Close Tab</b> - optionally save unsaved work before closing the active tab </td>
+      <td><kbd>Ctrl</kbd> <kbd>W</kbd> </td>
+      <td><kbd>&#8984;</kbd> <kbd>W</kbd></td>
+    </tr>
+<!--
+    <tr>
+      <td><b>Print</b> sample data and all properties</td>
+      <td><kbd>Ctrl</kbd> <kbd>P</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>P</kbd></td>
+    </tr>
+-->
+  </table>
+
+  <h3 id="edit-menu"> </h3>
+
+  <table  width="100%">
+    <tr>
+      <th style="width:50%">Edit menu shortcuts</th>
+      <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
+      <th style="width:25%"><i class="fa fa-apple"></i></th>
+    </tr>
+    <tr>
+      <td><b>Undo</b> the last edit command</td>
+      <td><kbd>Ctrl</kbd> <kbd>Z</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>Z</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Redo</b> - repeat the last data entry or edit command</td>
+      <td><kbd>Ctrl</kbd> <kbd>Y</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>Y</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Cut</b> - move the selected data to the clipboard</td>
+      <td><kbd>Ctrl</kbd> <kbd>X</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>X</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Copy</b> the selected data to the clipboard</td>
+      <td><kbd>Ctrl</kbd> <kbd>C</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>C</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Paste</b> the clipboard contents to the selected location</td>
+      <td><kbd>Ctrl</kbd> <kbd>V</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>V</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Select All</b> the data in the table</td>
+      <td><kbd>Ctrl</kbd> <kbd>A</kbd> </td>
+      <td><kbd>&#8984;</kbd> <kbd>A</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Insert Row Above</b> - add an empty row above the current cell</td>
+      <td><kbd>Ctrl</kbd> <kbd>I</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>I</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Insert Row Below</b> - add an empty row below the current cell</td>
+      <td><kbd>Ctrl</kbd> <kbd>M</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>M</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Insert Column Before</b> - add an empty column left of the current cell</td>
+      <td><kbd>Ctrl</kbd> <kbd>J</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>J</kbd></td>
+    </tr>
+    <tr>
+      <td><b>Insert Column After</b> - add an empty column right of the current cell</td>
+      <td><kbd>Ctrl</kbd> <kbd>K</kbd></td>
+      <td><kbd>&#8984;</kbd> <kbd>K</kbd></td>
+    </tr>
+  </table>
+
+<!--
+
+  <h3 id="view-menu"> </h3>
+    <table  width="100%">
+      <tr>
+        <th style="width:50%">View menu shortcuts</th>
+        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
+        <th style="width:25%"><i class="fa fa-apple"></i></th>
+      </tr>
+      <tr>
+        <td><b>Read Only Mode</b> - </td>
+        <td><kbd>Ctrl</kbd> <kbd>N</kbd></td>
+        <td><kbd>&#8984;</kbd> <kbd>N</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Enter Full Screen</b></td>
+        <td><kbd>^</kbd> <kbd>Ctrl</kbd> <kbd>F</kbd></td>
+        <td><kbd>^</kbd> <kbd>&#8984;</kbd> <kbd>F</kbd></td>
+      </tr>
+    </table>
+
+  <h3 id="find-menu"> </h3>
+
+    <table width="100%">
+      <tr>
+        <th style="width:50%">Find menu shortcuts</th>
+        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
+        <th style="width:25%"><i class="fa fa-apple"></i></th>
+      </tr>
+      <tr>
+        <td><b>Find</b> </td>
+        <td><kbd>Ctrl</kbd> <kbd>F</kbd></td>
+        <td><kbd>&#8984;</kbd> <kbd>F</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Find Next</b> </td>
+        <td><kbd>Ctrl</kbd> <kbd>G</kbd></td>
+        <td><kbd>&#8984;</kbd> <kbd>G</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Find Previous</b></td>
+        <td><kbd>Ctrl</kbd> <kbd>G</kbd></td>
+        <td><kbd>&#8984;</kbd> <kbd>G</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Replace</b></td>
+        <td><kbd>Ctrl</kbd> <kbd>F</kbd></td>
+        <td><kbd>&#8984;</kbd> <kbd>F</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Replace Next</b></td>
+        <td><kbd>Alt</kbd> <kbd>Ctrl</kbd> <kbd>E</kbd></td>
+        <td><kbd>&#8997;</kbd> <kbd>&#8984;</kbd> <kbd>E</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Sort</b></td>
+        <td><kbd>Alt</kbd> <kbd>Ctrl</kbd> <kbd>R</kbd></td>
+        <td><kbd>&#8997;</kbd> <kbd>&#8984;</kbd> <kbd>R</kbd></td>
+      </tr>
+    </table>
+
+-->
+
+  <h3 id="tools-menu"> </h3>
+
+    <table width="100%">
+      <tr>
+        <th style="width:50%">Tools menu shortcuts</th>
+        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
+        <th style="width:25%"><i class="fa fa-apple"></i></th>
+      </tr>
+      <tr>
+        <td><b>Validate Table</b> (uses Column Properties if set)</td>
+        <td><kbd>&#8679;</kbd> <kbd>Ctrl</kbd> <kbd>V</kbd></td>
+        <td><kbd>&#8679;</kbd> <kbd>&#8984;</kbd> <kbd>V</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Export Data Package</b> - save all data and properties to a .zip file</td>
+        <td><kbd>Ctrl</kbd> <kbd>D</kbd></td>
+        <td><kbd>&#8984;</kbd> <kbd>D</kbd></td>
+      </tr>
+    </table>
+
+  <h3 id="window-menu"> </h3>
+
+    <table width="100%">
+      <tr>
+        <th style="width:50%">Window menu shortcuts</th>
+        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
+        <th style="width:25%"><i class="fa fa-apple"></i></th>
+      </tr>
+      <tr>
+        <td><b>Minimize</b> - create a new table of data</td>
+        <td></td>
+        <td><kbd>&#8984;</kbd> <kbd>M</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Next Tab</b> - make the next tab (if it exists) the active tab</td>
+        <td><kbd>Ctrl</kbd> <kbd>&#8594;</kbd></td>
+        <td><kbd>&#8984;</kbd> <kbd>&#8594;</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Previous Tab</b> - make the previous tab (if it exists) the active tab</td>
+        <td><kbd>Ctrl</kbd> <kbd>&#8592;</kbd></td>
+        <td><kbd>&#8984;</kbd> <kbd>&#8592;</kbd></td>
+      </tr>
+    </table>
+
+  <h3 id="help-menu"> </h3>
+
+    <table width="100%">
+      <tr>
+        <th style="width:50%">Help menu shortcuts</th>
+        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
+        <th style="width:25%"><i class="fa fa-apple"></i></th>
+      </tr>
+      <tr>
+        <td><b>Data Curator Help</b> - create a new table of data</td>
+        <td><kbd>F1</kbd></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><b>Keyboard Shortcuts</b></td>
+        <td><kbd>Ctrl</kbd> <kbd>/</kbd></td>
+        <td><kbd>&#8984;</kbd> <kbd>/</kbd></td>
+      </tr>
+    </table>
+
+</div>
 </template>
 <script>
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
@@ -136,5 +469,5 @@ export default {
 @import '~components-font-awesome/css/font-awesome.min.css'
 </style>
 <style scoped>
-@import '/static/css/default.styl'
+@import '/static/css/keyboard-help.styl'
 </style>
