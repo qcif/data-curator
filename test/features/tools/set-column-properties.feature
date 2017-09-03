@@ -25,18 +25,16 @@ Feature: Set Column Properties
     - a table in the same data package
     - at table at a url
 
+  Set Column Properties for the current column can be invoked from the menu or toolbar
+  Set Column Properties for the next or previous column can be invoked using the next/previous buttons in the Column Properties Panel
+
   Background:
     Given I have opened Data Curator
     And I have opened a data tab
+    Add the cursor is in a column
 
-  Scenario: Use the menu to access Column Properties for the current column
+  Scenario: Set Column Properties for the current column
     When I invoke the "Column Properties" from the menu
-    Then display a panel that allows me to properties for the current column
-    And accept and validate column property values
-    And save the values as they are entered
-
-  Scenario: Use the toolbar access Column Properties for the current column
-    When I select "Column Properties" from the toolbar
     Then display a panel that allows me to properties for the current column
     And accept and validate column property values
     And save the values as they are entered
