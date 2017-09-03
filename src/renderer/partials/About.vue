@@ -12,6 +12,7 @@
         </template>
       </li>
     </ul>
+<!--
     <ul :style="listStyle">We acknowledge the great work of others. We are:
       <li :style="listItemStyle">inspired by the <a href="https://theodi.org/">ODI</a> experiment, <a href="https://comma-chameleon.io/">Comma Chameleon</a></li>
       <li :style="listItemStyle">using the <a href="https://okfn.org/">Open Knowledge International</a> Frictionless Data <a href="http://frictionlessdata.io/">specification</a> and <a href="http://frictionlessdata.io/tools/#javascript">code libraries</a></li>
@@ -21,6 +22,7 @@
     <div>
       Learn how you can <a href="https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md">contribute to Data Curator</a>
     </div>
+-->
   </div>
 </template>
 <script>
@@ -41,21 +43,11 @@ export default {
       },
       aboutProps: [{
         items: [{
-          image: '/static/img/data-curator-128.png',
-          height: '48px'
+          image: '/static/img/data-curator-banner.png',
+          link: 'https://github.com/ODIQueensland/data-curator/tree/master/'
         },
         {
-          label: 'Data Curator',
-          style: {
-            fontSize: '20px',
-            color: '#0ca831'
-          }
-        },
-        {
-          label: 'Create usable open data'
-        },
-        {
-          label: '0.1.0'
+          label: 'version: 0.2.2'
         }
         ]
       },
