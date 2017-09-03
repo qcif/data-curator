@@ -4,7 +4,7 @@
 # Data Curator
 
 
-![data curator icon](static/img/data-curator-128.png)
+![data curator icon](static/img/data-curator-banner.png)
 
 Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data.
 
@@ -176,12 +176,16 @@ We're considering:
 
 ### Building a new package
 
+To build Data Curator for macOS locally:
+
+`yarn build`
+
 To automate deployment, we are using:
 
 - [Appveyor](https://www.appveyor.com) for Windows deployment
 - [Travis](https://travis-ci.org) for macOS and Linux
 
-`Instructions on how to build a package will go here.`
+`instructions will go here`
 
 Changes are recorded in the [Change Log][changelog].
 
