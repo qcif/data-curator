@@ -27,7 +27,7 @@
           <option value="odc-by">Open Data Commons Attribution License (ODC-BY)</option>
           <option value="odc-odbl">Open Data Commons Open Database License (ODbL)</option>
           <option value="odc-pddl">Open Data Commons Public Domain Dedication and Licence (PDDL)</option>
-          <option disabled role=separator></option>
+          <option disabled role=separator> ─── </option>
           <option value="ogl-ca">Open Government Licence Canada 2.0</option>
           <option value="ogl-tw">Open Government License Taiwan</option>
           <option value="ogl-uk">Open Government Licence United Kingdom (OGL-UK)</option>
