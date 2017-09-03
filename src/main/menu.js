@@ -164,7 +164,8 @@ exports.menu = [
       {
         role: 'undo'
       }, {
-        role: 'redo'
+        role: 'redo',
+        accelerator: 'CmdOrCtrl+Y'
       }, {
         type: 'separator'
       }, {
