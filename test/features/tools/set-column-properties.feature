@@ -31,7 +31,7 @@ Feature: Set Column Properties
   Background:
     Given I have opened Data Curator
     And I have opened a data tab
-    Add the cursor is in a column
+    And the cursor is in a column
 
   Scenario: Set Column Properties for the current column
     When I invoke the "Column Properties" from the menu

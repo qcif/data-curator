@@ -326,12 +326,14 @@ exports.menu = [
       }, {
         type: 'separator'
       }, {
+// Conditionally enabled based on required properties set and successful validation
         label: 'Export Data Package...',
         accelerator: 'CmdOrCtrl+D',
         click: function() {
           datapackage.exportdata()
         }
       }, {
+// Conditionally enabled based on API keys set and Data Package Exported
         label: 'Publish Data Package to',
         enabled: false,
         submenu: [

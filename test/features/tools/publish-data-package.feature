@@ -5,20 +5,18 @@ Feature: Publish Data Package
   I want to publish a data package to an open data portal
   So that I don't have to upload it manually through the open data portal's user interface
 
-  The "Publish Data Package" function can be invoked using a menu item
+  The "Publish Data Package" function can be invoked using a menu item that is enabled when:
+
+  - Portal API credentials are set
+  - Data Package has been exported successfully
 
   Rules:
 
   - The ability to publish to an open data portal is usually secured.
-
   - Credentials (user id and password, api key, etc) will be needed to publish. These must be secured if stored locally.
-
   - Open Data Portal API URL will be stored in Preferences
-
   - CKAN is a popular open data portal and will be the initial target. Datahub.io is another target.
-
-  - There is a [CKAN extension](https://github.com/ckan/ckanext-datapackager) that supports uploading data packages through the API - 
-
+  - There is a [CKAN extension](https://github.com/ckan/ckanext-datapackager) that supports uploading data packages through the API -
   - The users prior step to this task is likely to have been `export data package`. Remember the location and filename of the export.
 
   Scenario: Publish Data Package

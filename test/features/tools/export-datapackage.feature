@@ -9,12 +9,16 @@ Feature: Export Data Package
 
   Export data package creates a datapackage.zip file that includes:
   - readme.md (containing the provenance information)
-  - datapackage.json (containing the data package, table (data resource), csv dialect and columme (schema) properties)
+  - datapackage.json (containing the data package, table (data resource), csv dialect and column (schema) properties)
   - a data directory (containing each data file in the appropriate separated value file format)
 
-  Default the file save location from the Preferences
+  Rules to enable export data package menu item:
+  - Licence property is mandatory
+  - Successful validation against Table Schema
 
-  Default the file name to datapackage.zip
+  Defaults:
+  - Default the file save location from the Preferences
+  - Default the file name to datapackage.zip
 
   Background:
     Given I have opened Data Curator
