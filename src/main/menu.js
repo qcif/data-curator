@@ -286,7 +286,9 @@ exports.menu = [
     submenu: [
       {
 // TO DO: hide toggledevtools in production release and make a application shortcut
-      role: 'toggledevtools'
+        role: 'toggledevtools'
+      }, {
+        type: 'separator'
       }, {
         label: 'Fix Ragged Rows',
         click: function() {
@@ -369,7 +371,7 @@ exports.menu = [
 //      }
     ]
   }, {
-// TO DO: Update this menu if Data Curator is a multi window app    
+// TO DO: Update this menu if Data Curator is a multi window app
     label: 'Window',
     submenu: [
 // TO DO: hide below in Windows and Linux
