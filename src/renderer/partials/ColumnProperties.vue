@@ -1,7 +1,7 @@
 <template>
 <form class="navbar-form form-horizontal" id="columnProperties">
   <div class="form-group-sm row container-fluid">
-    <template v-if="hotId && currentColumn" >
+    <!-- <template v-if="hotId && currentColumnIndex" > -->
       <div v-for="(formprop, index) in formprops" :key="index">
         <label :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
@@ -16,17 +16,22 @@
             </option>
           </select>
         </template>
-        <input v-else :value="formprop.value" @input="value => { formprop.value = propertyValue(formprop.label, value) }" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
+        <input v-else :value="getProperty(formprop.label)" @input="value => {setPropertyValue(formprop.label, value) }" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
       </div>
-    </template>
-    <div v-else>
+    <!-- </template> -->
+    <!-- <div v-else>
       Select a column
-    </div>
+    </div> -->
 </div>
   </div>
 </form>
 </template>
 <script>
+import {
+  mapMutations,
+  mapState,
+  mapGetters
+} from 'vuex'
 import {
   remote
 } from 'electron'
@@ -35,19 +40,19 @@ import {
   HotRegister,
   getCurrentColumnIndex
 } from '../hot.js'
-import {
-  mapGetters
-} from 'vuex'
 const Dialog = remote.dialog
 export default {
   extends: SideNav,
   name: 'column',
   data() {
     return {
+      ...mapState([
+        'hotTabs'
+      ]),
       selectedFormat: '',
       formprops: [{
         label: 'name',
-        value:
+        value: ''
       },
       {
         label: 'title',
@@ -94,12 +99,65 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'pushHotProperty'
+    ]),
     showErrorMessage(object) {
       Dialog.showMessageBox(Object.assign({
         type: 'error',
         buttons: ['OK'],
         title: 'Error finding column properties'
       }, object))
+    },
+    getColumnProperties() {
+      console.log('checking column...')
+      const hotId = this.hotId()
+      const currentColumnIndex = this.currentColumnIndex()
+      if (hotId && currentColumnIndex) {
+        let columnProperties = this.columnProps(hotId, currentColumnIndex)
+        if (!columnProperties) {
+          this.showErrorMessage({
+            message: 'No column properties found.',
+            detail: 'Did you `Guess column properties` first?'
+          })
+        } else {
+          return columnProperties[hotColumnIndex]
+        }
+      }
+    },
+    getProperty: function(key) {
+      console.log('checking...')
+      let columnProperty = this.getColumnProperties()
+      return columnProperty[key]
+    },
+    setProperty: function(key, value) {
+      console.log('checking...')
+      const hotId = this.hotId()
+      const currentColumnIndex = this.currentColumnIndex()
+      if (hotId && currentColumnIndex) {
+        let columnProperties = this.columnProps(hotId, currentColumnIndex)
+        if (!columnProperties) {
+          this.showErrorMessage({
+            message: 'No column properties found.',
+            detail: 'Did you `Guess column properties` first?'
+          })
+        } else {
+          this.pushHotProperty({
+            'hotId': hotId,
+            'columnIndex': currentColumnIndex,
+            'key': key,
+            'value': value
+          })
+        }
+      }
+    },
+    hotId: function() {
+      console.log('getting hot id....')
+      return HotRegister.getActiveInstance().guid
+    },
+    currentColumnIndex: function() {
+      console.log('getting column index....')
+      return getCurrentColumnIndex()
     }
     // getColumnProperties(hotId, hotColumnIndex) {
     //   let columnProperties = this.columnProps(hotId)
@@ -150,26 +208,6 @@ export default {
       })
       return found.dropdown.length < 2
     },
-    hotId() {
-      return HotRegister.getActiveInstance().guid
-    },
-    currentColumnIndex() {
-      return getCurrentColumnIndex()
-    },
-    getColumnProperties() {
-      console.log('checking...')
-      if (hotId && currentColumnIndex) {
-        let columnProperties = this.columnProps(hotId, currentColumnIndex)
-        if (!columnProperties) {
-          this.showErrorMessage({
-            message: 'No column properties found.',
-            detail: 'Did you `Guess column properties` first?'
-          })
-        } else {
-          return columnProperties[hotColumnIndex]
-        }
-      }
-    },
     selectedType: {
       get: function() {
         return this.formprops[3].value
@@ -195,6 +233,11 @@ export default {
         let properties = this.showCurrentColumnProperties()
         properties[key] = value
       }
+    }
+  },
+  watch: {
+    hotTabs: function(newHotTabs) {
+      console.log('hot tabs changed!!!')
     }
   },
   mounted: function() {

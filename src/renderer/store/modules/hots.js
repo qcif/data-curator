@@ -44,6 +44,19 @@ const mutations = {
     _.set(state.hotTabs, `${hotId}.columnProperties`, hotTab.columnProperties)
     console.log('leaving push hot tab column properties...')
     console.dir(state.hotTabs)
+  },
+  pushHotProperty(state, property) {
+    console.log('properties are...')
+    console.log(property)
+    // for (let objects of hotTab.columnProperties) {
+    //   Object.keys(objects).map(function(key) {
+    //     _.set(state.hotTabs, `${hotId}.columnProperties.label`, key)
+    //     _.set(state.hotTabs, `${hotId}.columnProperties.value`, value)
+    //   })
+    // }
+    _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
+    console.log('leaving push hot tab column properties...')
+    console.dir(state.hotTabs)
   }
 }
 
