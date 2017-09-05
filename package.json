@@ -5,9 +5,9 @@
   "description": "An electron-vue project for curating csv data",
   "license": "MIT",
   "main": "./dist/electron/main.js",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/ODIQueensland/data-curator.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ODIQueensland/data-curator.git"
   },
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
