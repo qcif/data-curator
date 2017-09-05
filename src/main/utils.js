@@ -52,6 +52,15 @@ export function createWindowTabWithData(data) {
   }
 }
 
+export function createWindowTabWithFormattedData(data, format) {
+  var window = BrowserWindow.getFocusedWindow()
+  if (window == null) {
+    window = createWindow()
+  } else {
+    window.webContents.send('addTabWithFormattedData', data, format)
+  }
+}
+
 export function showSidePanel(name) {
   var window = BrowserWindow.getFocusedWindow()
   window.webContents.send('showSidePanel', name)

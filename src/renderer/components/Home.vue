@@ -191,6 +191,13 @@ export default {
       'setActiveTab',
       'incrementTabIndex'
     ]),
+    addTabWithFormattedData: function(data, format) {
+      this.initTab()
+      this.$nextTick(function() {
+        // update latest tab object with content
+        this.loadFormattedDataIntoContainer($('.editor:last')[0], data, format)
+      })
+    },
     addTabWithData: function(data) {
       this.initTab()
       this.$nextTick(function() {
@@ -217,6 +224,9 @@ export default {
     },
     loadDataIntoContainer: function(container, data) {
       let defaultFormat = require('../../renderer/file-actions.js').formats.csv
+      this.loadFormattedDataIntoContainer(container, data, defaultFormat)
+    },
+    loadFormattedDataIntoContainer: function(container, data, format) {
       HotRegister.register(container)
       addHotContainerListeners(container)
       let activeHotId = this.getActiveHotId()
@@ -226,7 +236,7 @@ export default {
         'hotId': activeHotId,
         'tabId': activeTabId
       })
-      loadData(activeHotId, data, defaultFormat)
+      loadData(activeHotId, data, format)
     },
     cleanUpTabDependencies: function(tabId) {
       // update active tab
@@ -320,6 +330,10 @@ export default {
     const vueAddTabWithData = this.addTabWithData
     ipc.on('addTabWithData', function(e, data) {
       vueAddTabWithData(data)
+    })
+    const vueAddTabWithFormattedData = this.addTabWithFormattedData
+    ipc.on('addTabWithFormattedData', function(e, data, format) {
+      vueAddTabWithFormattedData(data, format)
     })
     const vueAddTab = this.addTab
     ipc.on('addTab', function() {
