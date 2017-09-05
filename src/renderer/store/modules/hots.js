@@ -4,13 +4,12 @@ const state = {
 
 const getters = {
   getHotTitle: (state, getters) => (hotId) => {
-    // let default = hotId.
-    console.log('getting hot id title...')
-    console.dir(state.hotTabs)
-    // let defaultQualifier = _.get(state.hotTabs, `${hotId}.tabId`, '')
     let title = _.get(state.hotTabs, `${hotId}.title`, `Untitled.csv`)
-    console.log(`title is ${title}`)
     return title
+  },
+  getHotColumnProperties: (state, getters) => (hotId) => {
+    let allColumnProperties = _.get(state.hotTabs, `${hotId}.columnProperties`)
+    return allColumnProperties
   }
 }
 
@@ -34,6 +33,14 @@ const mutations = {
   },
   pushHotColumns(state, hotTab) {
     let hotId = hotTab.hotId
+    console.log('properties are...')
+    console.log(hotTab.columnProperties)
+    // for (let objects of hotTab.columnProperties) {
+    //   Object.keys(objects).map(function(key) {
+    //     _.set(state.hotTabs, `${hotId}.columnProperties.label`, key)
+    //     _.set(state.hotTabs, `${hotId}.columnProperties.value`, value)
+    //   })
+    // }
     _.set(state.hotTabs, `${hotId}.columnProperties`, hotTab.columnProperties)
     console.log('leaving push hot tab column properties...')
     console.dir(state.hotTabs)

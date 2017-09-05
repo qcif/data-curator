@@ -24,7 +24,6 @@ export default {
   },
   methods: {
     callback(methodName) {
-      console.log(`called ${methodName}`)
       this.$emit(methodName)
     },
     ...mapMutations([
