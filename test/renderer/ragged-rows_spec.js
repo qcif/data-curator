@@ -3,15 +3,16 @@
  */
 process.env.NODE_ENV = 'test'
 import 'babel-polyfill'
-import * as hotcontroller from './../../src/renderer/hot.js'
-import * as raggedRows from './../../src/renderer/ragged-rows.js'
+import * as _ from 'lodash'
+import {HotRegister} from '../../src/renderer/hot.js'
+import * as raggedRows from '../../src/renderer/ragged-rows.js'
 import * as $ from 'jquery/dist/jquery.js'
 import {assert, expect, should} from 'chai'
 
 before(function() {
-  rpanel = document.createElement('div')
+  let rpanel = document.createElement('div')
   rpanel.setAttribute('id', 'right-panel')
-  mpanel = document.createElement('div')
+  let mpanel = document.createElement('div')
   mpanel.setAttribute('id', 'message-panel')
   document.body.appendChild(mpanel)
   document.body.appendChild(rpanel)
@@ -23,19 +24,26 @@ function stubContainer() {
   return element
 }
 
-beforeEach(function () {
-  hotView = document.createElement('div')
-  document.body.appendChild(hotView)
-  hot = hotController.create(hotView)
+beforeEach(function() {
+  let container = document.createElement('div')
+  document.body.appendChild(container)
+  var _ = require('lodash/lodash.min.js')
+  let hot = HotRegister.register(container)
 })
 
 describe('testing ragged row functions against 2D array', function() {
   it('well formed array results in no DOM change', function() {
     hot = hotController.create(stubContainer())
     var data = [
-      ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],
-      ['2014', 10, 11, 12, 13],
-      ['2015', 20, 11, 14, 11],
+      [
+        '', 'Ford', 'Volvo', 'Toyota', 'Honda'
+      ],
+      [
+        '2014', 10, 11, 12, 13
+      ],
+      [
+        '2015', 20, 11, 14, 11
+      ],
       ['2016', 30, 15, 12, 13]
     ]
 
@@ -49,9 +57,15 @@ describe('testing ragged row functions against 2D array', function() {
   it('checks a loaded CSV and returns prompt on first discovery of ragged row', function() {
     hot = hotController.create(stubContainer())
     var data = [
-      ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],
-      ['2014', 10, 11, 12, 13],
-      ['2015', 20, 11, 14],
+      [
+        '', 'Ford', 'Volvo', 'Toyota', 'Honda'
+      ],
+      [
+        '2014', 10, 11, 12, 13
+      ],
+      [
+        '2015', 20, 11, 14
+      ],
       ['2016', 30, 15, 12, 13]
     ]
     hot.loadData(data)
@@ -62,9 +76,15 @@ describe('testing ragged row functions against 2D array', function() {
   it('changes a HandsOnTable object, given a ragged array, when prompt is answered with yes', function() {
     hot = hotController.create(stubContainer())
     var data = [
-      ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],
-      ['2014', 10, 11, 12, 13],
-      ['2015', 20, 11, 14],
+      [
+        '', 'Ford', 'Volvo', 'Toyota', 'Honda'
+      ],
+      [
+        '2014', 10, 11, 12, 13
+      ],
+      [
+        '2015', 20, 11, 14
+      ],
       ['2016', 30, 15, 12, 13]
     ]
 
@@ -76,12 +96,24 @@ describe('testing ragged row functions against 2D array', function() {
   it('if ragged rows present and user consent it parses the entire CSV', function() {
     hot = hotController.create(stubContainer())
     var data = [
-      ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],
-      ['2014', 10, 11, 12, 13],
-      ['2015', 20, 11, 14],
-      ['2016', 30, 15, 12, 13],
-      ['2014', 10, 11, 12, 13],
-      ['2015', 20, 11, 14],
+      [
+        '', 'Ford', 'Volvo', 'Toyota', 'Honda'
+      ],
+      [
+        '2014', 10, 11, 12, 13
+      ],
+      [
+        '2015', 20, 11, 14
+      ],
+      [
+        '2016', 30, 15, 12, 13
+      ],
+      [
+        '2014', 10, 11, 12, 13
+      ],
+      [
+        '2015', 20, 11, 14
+      ],
       ['2016', 30, 15, 12, 13]
     ]
 

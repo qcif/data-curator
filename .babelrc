@@ -1,6 +1,15 @@
 {
   "comments": false,
   "env": {
+    "test": {
+      "presets": [
+        ["env", {
+          "targets": { "node": 8 }
+        }],
+        "es2015", "stage-0"
+      ],
+      "plugins": ["istanbul"]
+    },
     "main": {
       "presets": [
         ["env", {
@@ -16,7 +25,7 @@
         ["env", {
           "modules": false
         }],
-         "stage-0"
+         "es2015","stage-0"
       ]
     },
     "web": {
@@ -28,6 +37,5 @@
       ]
     }
   },
-  "plugins": ["transform-runtime"],
-  "presets" : ["es2015","stage-0"]
+  "plugins": ["transform-runtime"]
 }

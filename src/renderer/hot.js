@@ -1,6 +1,10 @@
 import Handsontable from 'handsontable/dist/handsontable.full.js'
 import loader from '../renderer/loader.js'
 import jQuery from 'jquery/dist/jquery.js'
+// if (typeof _ === 'undefined') {
+//   console.log('adding lodash...')
+//   import * as _ from 'lodash'
+// }
 
 let HotRegister = {
   hots: {},

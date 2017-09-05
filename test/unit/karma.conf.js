@@ -1,4 +1,4 @@
-// 'use strict'
+'use strict'
 
 const path = require('path')
 const merge = require('webpack-merge')
@@ -31,6 +31,7 @@ webpackConfig.module.rules
 module.exports = config => {
   config.set({
     browsers: ['visibleElectron'],
+    browserDisconnectTimeout: 8000,
     client: {
       useIframe: false
     },
