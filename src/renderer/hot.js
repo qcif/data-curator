@@ -61,6 +61,12 @@ let HotRegister = {
   getActiveInstance: function() {
     let activeHotId = jQuery('#csvContent .active .editor').attr('id')
     return _.get(this.hots, activeHotId)
+  },
+  getActiveHotIdData: function() {
+    let activeHot = this.getActiveInstance()
+    let data = activeHot.getData()
+    let id = activeHot.guid
+    return {'id': id, 'data': data}
   }
 }
 

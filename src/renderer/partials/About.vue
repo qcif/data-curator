@@ -42,7 +42,7 @@ export default {
       },
       aboutProps: [{
         items: [{
-          image: '/static/img/data-curator-128.png',
+          image: 'static/img/data-curator-128.png',
           height: '48px'
         },
         {
@@ -62,7 +62,7 @@ export default {
       },
       {
         items: [{
-          image: '/static/img/advance_qld_logo.png',
+          image: 'static/img/advance_qld_logo.png',
           link: 'http://advance.qld.gov.au/',
           height: '56px'
         },
@@ -73,7 +73,7 @@ export default {
       },
       {
         items: [{
-          image: '/static/img/odi_aus_logo.png',
+          image: 'static/img/odi_aus_logo.png',
           link: 'https://theodi.org.au/',
           height: '48px'
         },
@@ -84,7 +84,7 @@ export default {
       },
       {
         items: [{
-          image: '/static/img/qcif_logo.png',
+          image: 'static/img/qcif_logo.png',
           link: 'https://www.qcif.edu.au',
           height: '60px'
         },
