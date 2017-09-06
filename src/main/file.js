@@ -1,4 +1,4 @@
-import {enableSave} from './utils'
+import {enableSave, createWindowTabWithFormattedData} from './utils'
 let path = require('path')
 function makeCustomFormat(separator, delimiter) {
   // assemble a format object describing a custom format
@@ -85,8 +85,8 @@ function readFile(fileNames, format) {
       if (err) {
         console.log(err.stack)
       }
-      utils.createWindow(data, fileName, format)
-      utils.enableSave()
+      createWindowTabWithFormattedData(data, format)
+      enableSave()
     })
   }
 }

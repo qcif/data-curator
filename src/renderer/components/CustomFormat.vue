@@ -29,23 +29,23 @@ const {
 } = require('electron')
 var ipc = require('electron').ipcRenderer
 require('bootstrap/dist/js/bootstrap.min.js')
-$(function () {
-  $('#cancel').click(function(e) {
-    window.close()
-  })
-
-  $('#submit').click(function(e) {
-    e.preventDefault()
-    format = {
-      separator: $('#separator').val(),
-      delimiter: $('#delimiter').val()
-    }
-    ipc.send('formatSelected', format)
-  })
-})
 export default {
   name: 'customformat',
-  methods: {}
+  methods: {},
+  mounted: function() {
+    $('#cancel').click(function(e) {
+      window.close()
+    })
+
+    $('#submit').click(function(e) {
+      e.preventDefault()
+      let format = {
+        separator: $('#separator').val(),
+        delimiter: $('#delimiter').val()
+      }
+      ipc.send('formatSelected', format)
+    })
+  }
 }
 </script>
 <style scoped>

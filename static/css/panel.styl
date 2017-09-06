@@ -4,18 +4,29 @@
   padding 0
 
 sideNavTransition = 0.3s
-sideNavMargin = 250px
+sideNavMargin = 400px
+borderColor = #e4e4e4
+
+#body-panel
+  border 0
 
 #header-panel
   background-color #f8f8f8
+  border-bottom 1px solid
+  border-color borderColor
+  padding 0
   .navbar
     border none
+    margin-bottom 0
+    .navbar-header
+      padding-top 9px
 
 #main-panel
   padding 5px
   z-index 10
   width 100%
   transition sideNavTransition
+  border 0
   &.closed
     margin-right 0
     margin-left 0
@@ -31,10 +42,13 @@ sideNavMargin = 250px
   position absolute
   margin-left 0px
   z-index 50
+  border 1px
+  border-radius 0
   top 0
   overflow-x hidden
   transition sideNavTransition
-  padding-top 1px
+  .navbar-brand
+    text-transform: capitalize
   &.closed
     width 0 !important
   &.left
@@ -44,13 +58,18 @@ sideNavMargin = 250px
     width sideNavMargin
     right 0
   .navbar-header
-    color #ffffff
     background-color #e4ecf6
+    border-bottom 1px solid
+    border-color borderColor
     display block !important
     float none
     margin-left -15px
     margin-right -15px
+    margin-top 0
+    margin-bottom 26px
+    padding-top 12px
     @media screen and (min-width: 768px)
+      padding-top 12px
       padding-left 15px
       margin-bottom 15px
   .closebtn
@@ -61,8 +80,7 @@ sideNavMargin = 250px
     z-index 75
     right 0
     a
-      &:hover
-        background-color inherit !important
+      background-color inherit !important
   form
     margin 0 !important
     border-top 0
@@ -70,10 +88,21 @@ sideNavMargin = 250px
     padding-right 0 !important
     label
       @extend #sidenav form
-      text-align: left
+      text-align left
+      padding-left 0 !important
     div
     input
+    select
       @extend #sidenav form
+
+#sidenav-footer
+  display: block
+  .left
+    float left
+    display inline-block
+  .right
+    float right
+    display inline-block
 
 #tablePropertiesBtn
   float left
@@ -87,22 +116,50 @@ span.tabclose
   top 0
   right 0
 
-.input-sm, input
-  display: inline-block !important
+.input-sm input
+  display inline-block !important
+
+// slide-out sideNav transitions
+.sideNav-right-enter-active
+.sideNav-left-enter-active
+  transition all 0.4s ease-in
+.sideNav-left-leave-active
+.sideNav-right-leave-active
+  transition all 0.3s ease-in
+
+.sideNav-left-enter
+  transform translateX(-(sideNavMargin)) !important
+.sideNav-right-enter
+  transform translateX(sideNavMargin) !important
+
+.sideNav-left-leave-to
+  transform translateX(250px) !important
+.sideNav-right-leave-to
+  transform translateX(-250px) !important
+
+#preferenceProperties
+  width inherit !important
+  margin 0 -15px 0 -15px
+  a
+    border none
 
 #toolbar li
-  text-align: center
+  text-align center
+  display: inline-block !important
   i
   object
   a
   div
-    padding-top 0
+    margin 0
 
 #toolbar li object
   max-width 13px
   max-height 13px
-  &.down
-    margin-bottom -2px
+  // &.down
+  //   margin-bottom -2px
 
 #tableProperties .form-control
   width auto !important
+
+#columnProperties option
+  width auto

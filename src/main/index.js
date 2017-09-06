@@ -6,6 +6,9 @@ import {dialog, app} from 'electron'
 import {quitOrSaveDialog} from './utils'
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+  global.version = app.getVersion()
+} else {
+  global.version = require('../../package.json').version
 }
 
 global.electron = require('electron')
@@ -38,6 +41,7 @@ function createWindow() {
 
   var filename = clFilename
   if (filename) {
+    console.log('reading file name...')
     fileActions.readFile([filename])
   } else {
     global.utils.createWindowTab()
@@ -50,9 +54,11 @@ function closeAppNoPrompt() {
   app.exit()
 }
 
-app.on('before-quit', (event) => {
-  quitOrSaveDialog(event, 'Quit', closeAppNoPrompt)
-})
+if (process.env.NODE_ENV === 'production') {
+  app.on('before-quit', (event) => {
+    quitOrSaveDialog(event, 'Quit', closeAppNoPrompt)
+  })
+}
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

@@ -4,8 +4,7 @@ var file_formats = require('../renderer/file-actions.js').formats
 let path = require('path')
 
 export function createWindow() {
-  let mainWindow = new BrowserWindow({width: 800, height: 600})
-  console.log('browser window id is: ' + mainWindow.id)
+  let mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 480})
 
   const winURL = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080`
@@ -21,9 +20,11 @@ export function createWindow() {
     mainWindow.webContents.send('resized')
   })
 
-  mainWindow.on('close', (event) => {
-    quitOrSaveDialog(event, 'Close All', closeWindowNoPrompt)
-  })
+  if (process.env.NODE_ENV === 'production') {
+    mainWindow.on('close', (event) => {
+      quitOrSaveDialog(event, 'Close All', closeWindowNoPrompt)
+    })
+  }
 
   return mainWindow
 }
@@ -40,6 +41,29 @@ export function createWindowTab() {
   } else {
     window.webContents.send('addTab')
   }
+}
+
+export function createWindowTabWithData(data) {
+  var window = BrowserWindow.getFocusedWindow()
+  if (window == null) {
+    window = createWindow()
+  } else {
+    window.webContents.send('addTabWithData', data)
+  }
+}
+
+export function createWindowTabWithFormattedData(data, format) {
+  var window = BrowserWindow.getFocusedWindow()
+  if (window == null) {
+    window = createWindow()
+  } else {
+    window.webContents.send('addTabWithFormattedData', data, format)
+  }
+}
+
+export function showSidePanel(name) {
+  var window = BrowserWindow.getFocusedWindow()
+  window.webContents.send('showSidePanel', name)
 }
 
 function getSaveSubMenu() {

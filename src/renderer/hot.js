@@ -1,6 +1,8 @@
 import Handsontable from 'handsontable/dist/handsontable.full.js'
 import loader from '../renderer/loader.js'
 import jQuery from 'jquery/dist/jquery.js'
+import {remote} from 'electron'
+const Dialog = remote.dialog
 
 let HotRegister = {
   hots: {},
@@ -14,6 +16,7 @@ let HotRegister = {
       autoRowSize: true,
       enterBeginsEditing: false,
       persistentState: true,
+      outsideClickDeselects: false,
       tabMoves: function(event) {
         if (!event.shiftKey) {
           var selection = hot.getSelected()
@@ -24,12 +27,12 @@ let HotRegister = {
         }
         return {row: 0, col: 1}
       },
-      afterInit: function() {
-        loader.showLoader('Loading...')
-      },
-      afterLoadData: function() {
-        loader.hideLoader()
-      },
+      // afterInit: function() {
+      //   loader.showLoader('Loading...')
+      // },
+      // afterLoadData: function() {
+      //   loader.hideLoader()
+      // },
       afterUpdateSettings: function() {
         hot.render()
         hot.deselectCell()
@@ -55,76 +58,49 @@ let HotRegister = {
     _.set(this.hots, hot.guid, hot)
   },
   getInstance: function(key) {
-    console.log(`getting ${key}`)
+    // console.log(`getting ${key}`)
     return _.get(this.hots, key)
   },
   getActiveInstance: function() {
-    console.log('inside get active instance.')
     let activeHotId = jQuery('#csvContent .active .editor').attr('id')
-    console.log(`active hot id: ${activeHotId}`)
-    return _.get(this.hots, activeHotId)
+    // console.log(`active id for hot is: ${activeHotId}`)
+    let hot = _.get(this.hots, activeHotId)
+    // console.log(hot)
+    return hot
+  },
+  getActiveHotIdData: function() {
+    let activeHot = this.getActiveInstance()
+    let data = activeHot.getData()
+    let id = activeHot.guid
+    return {'id': id, 'data': data}
   }
 }
 
-// var initialise = function(container) {
-//   var hot = new Handsontable(container, {
-//     colHeaders: true,
-//     rowHeaders: true,
-//     fixedRowsTop: 0,
-//     columnSorting: true,
-//     contextMenu: false,
-//     autoRowSize: true,
-//     enterBeginsEditing: false,
-//     persistentState: true,
-//     tabMoves: function(event) {
-//       if (!event.shiftKey) {
-//         var selection = hot.getSelected()
-//         next = hot.getCell(selection[0], selection[1] + 1)
-//         if (next === null) {
-//           hot.alter('insert_col', selection[1] + 1)
-//         }
-//       }
-//       return {row: 0, col: 1}
-//     },
-//     afterInit: function() {
-//       loader.showLoader('Loading...')
-//     },
-//     afterLoadData: function() {
-//       loader.hideLoader()
-//     },
-//     afterUpdateSettings: function() {
-//       hot.render()
-//       hot.deselectCell()
-//     },
-//     enterMoves: function(event) {
-//       if (!event.shiftKey) {
-//         var selection = hot.getSelected()
-//         next = hot.getCell(selection[0] + 1, selection[1])
-//         if (next === null) {
-//           hot.alter('insert_row', selection[0] + 1)
-//           return {
-//             row: 1,
-//             col: 0 - selection[1]
-//           }
-//         } else {
-//           return {row: 1, col: 0}
-//         }
-//       } else {
-//         return {row: 1, col: 0}
-//       }
-//     }
-//   })
-//   // var hotInstance = $(container).handsontable('getInstance')
-//   return hot
-// }
+export function getCurrentCell() {
+  let activeHot = HotRegister.getActiveInstance()
+  let currentCell = activeHot.getSelected()
+  if (currentCell[0] !== currentCell[2] || currentCell[1] !== currentCell[3]) {
+    console.log('only 1 cell can be selected')
+  } else {
+    return [currentCell[0], currentCell[2]]
+  }
+}
+
+export function getCurrentColumnIndex() {
+  let activeHot = HotRegister.getActiveInstance()
+  // console.log(activeHot)
+  let currentCell = activeHot.getSelected()
+  // console.log('current cell is...')
+  // console.log(currentCell)
+  // if (!currentCell || currentCell[1] !== currentCell[3]) {
+  //   console.log('only 1 column can be selected')
+  // } else {
+  //   return currentCell[1]
+  // }
+  return currentCell ? currentCell[1] : 0
+}
 
 var insertRowAbove = function(deselect) {
-  // hot.loadData([
-  //   ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],
-  //   ['2014', 10, 11, 12, 13],
-  //   ['2015', 20, 11, 14],
-  //   ['2016', 30, 15, 12, 13]
-  // ])
   let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
   var range = hot.getSelectedRange()

@@ -1,4 +1,4 @@
-@backlog
+@backlog  @enterprise-add-in
 
 Feature: Create Data Quality Report
   As a Data Packager
@@ -14,7 +14,7 @@ Feature: Create Data Quality Report
   - prompt user for quality dimensions to include in report
   - how to include report in datapackage.zip (e.g. format, directory structure)
   - allow report before data has been validated? i.e. Assume no:
-    - [source issues](https://github.com/frictionlessdata/goodtables-py#validation-against-source-checks) 
+    - [source issues](https://github.com/frictionlessdata/goodtables-py#validation-against-source-checks)
     - [structural issues](https://github.com/frictionlessdata/goodtables-py#validation-against-structure-checks)
 
   Scenario: Create Data Quality Report

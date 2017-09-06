@@ -4,7 +4,7 @@
 # Data Curator
 
 
-![data curator icon](static/img/data-curator-120.png)
+![data curator icon](static/img/data-curator-128.png)
 
 Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data.
 
@@ -148,16 +148,18 @@ Tools to automate testing have not been selected.
 
 ### Acceptance tests
 
-We're considering:
+We have:
 
-- defining [Acceptance tests](https://github.com/ODIQueensland/data-curator/tree/master/test/features) using the [Gherkin language](https://cucumber.io/docs/reference#gherkin)
-- sharing [Acceptance tests in a pretty format](https://relishapp.com/odi-australia/data-curator/docs) [using](https://relishapp.com/relish/relish/docs) [Relish](https://relishapp.com) (or [Cucumber Pro](https://cucumber.io/pro) if it's [useful](https://app.cucumber.pro/projects/cucumber-pro), when it's ready and if it's affordable)
-- we may link acceptance tests to lower level tests
-- [cucumber-js](https://github.com/cucumber/cucumber-js/) will probably be helpful
+- defined [Acceptance tests](https://github.com/ODIQueensland/data-curator/tree/master/test/features) using the [Gherkin language](https://cucumber.io/docs/reference#gherkin)
+- shared [Acceptance tests in a pretty format](https://relishapp.com/odi-australia/data-curator/docs) [using](https://relishapp.com/relish/relish/docs) [Relish](https://relishapp.com)
 
 To push the acceptance tests (.feature files) to Relish:
 
 `relish push odi-australia/data-curator path /your-local-path/data-curator/test/features`
+
+We are experimenting with [Cucumber Pro](https://cucumber.io/pro) to see if it's [useful](https://app.cucumber.pro/projects/cucumber-pro).
+
+We may link acceptance tests to lower level tests ([cucumber-js](https://github.com/cucumber/cucumber-js/) will probably be helpful).
 
 ### Integration and Unit tests
 
@@ -174,7 +176,7 @@ We're considering:
 
 ### Building a new package
 
-A tool to automate deployment has not been selected. We're considering:
+To automate deployment, we are using:
 
 - [Appveyor](https://www.appveyor.com) for Windows deployment
 - [Travis](https://travis-ci.org) for macOS and Linux
@@ -184,4 +186,4 @@ A tool to automate deployment has not been selected. We're considering:
 Changes are recorded in the [Change Log][changelog].
 
 [changelog]: ./CHANGELOG.md
-[version-badge]: https://img.shields.io/badge/version-0.0.1-blue.svg
+[version-badge]: https://img.shields.io/badge/version-0.2.1-blue.svg
