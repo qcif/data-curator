@@ -24,8 +24,7 @@ export default {
   },
   methods: {
     callback(methodName) {
-      console.log(`called ${methodName}`)
-      this.$emit('guessProperties')
+      this.$emit(methodName)
     },
     ...mapMutations([
       'pushHotColumns'
@@ -37,6 +36,8 @@ export default {
       } catch (err) {
         console.log(err)
       }
+      console.log('captured properties are:')
+      console.log('hotColumns')
       this.pushHotColumns(hotColumns)
       // emit to column properties
     }
