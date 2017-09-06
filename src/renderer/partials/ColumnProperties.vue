@@ -5,18 +5,18 @@
       <div v-for="(formprop, index) in formprops" :key="index">
         <label :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
-          <select v-if="formprop.label === 'type'" v-model="selectedType" class="form-control input-sm col-sm-8">
+          <select v-if="formprop.label === 'type'" :value="getTypeSelected" @input="updateTypeDropdown(formprop.label, $event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
             <option v-for="option in formprop.dropdown" v-bind:value="option">
               {{ option}}
             </option>
           </select>
-          <select v-else v-model="formprop.value" :disabled="isFormatDisabled" class="form-control input-sm col-sm-8">
+          <select v-else :value="getFormatSelected" @input="setProperty(formprop.label, $event.target.value)" :id="formprop.label" :disabled="isFormatDisabled" class="form-control input-sm col-sm-8">
             <option v-for="option in formprop.dropdown" v-bind:value="option">
               {{ option}}
             </option>
           </select>
         </template>
-        <input v-else :value="getProperty(formprop.label)" @input="value => {setPropertyValue(formprop.label, value) }" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
+        <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
       </div>
     <!-- </template> -->
     <!-- <div v-else>
@@ -49,41 +49,32 @@ export default {
       ...mapState([
         'hotTabs'
       ]),
-      selectedFormat: '',
       formprops: [{
-        label: 'name',
-        value: ''
+        label: 'name'
       },
       {
-        label: 'title',
-        value: ''
+        label: 'title'
       },
       {
-        label: 'description',
-        value: ''
+        label: 'description'
       },
       {
         label: 'type',
         type: 'dropdown',
-        dropdown: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
-        default: 'string',
-        value: 'string'
+        dropdown: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any']
       },
       {
         label: 'format',
         type: 'dropdown',
-        dropdown: [],
-        value: ''
+        dropdown: []
       },
       {
         label: 'rdfType',
-        type: 'url',
-        value: ''
+        type: 'url'
       },
       {
-        label: 'contraints',
-        type: 'json',
-        value: ''
+        label: 'constraints',
+        type: 'json'
       }
       ],
       formats: {
@@ -113,90 +104,63 @@ export default {
       console.log('checking column...')
       const hotId = this.hotId()
       const currentColumnIndex = this.currentColumnIndex()
-      if (hotId && currentColumnIndex) {
-        let columnProperties = this.columnProps(hotId, currentColumnIndex)
-        if (!columnProperties) {
-          this.showErrorMessage({
-            message: 'No column properties found.',
-            detail: 'Did you `Guess column properties` first?'
-          })
-        } else {
-          return columnProperties[hotColumnIndex]
-        }
+      // if (hotId && currentColumnIndex) {
+      // console.log('have hot id and column index...')
+      let columnProperties = this.columnProps(hotId)
+      if (columnProperties) {
+        return columnProperties[currentColumnIndex]
       }
+      // }
     },
     getProperty: function(key) {
-      console.log('checking...')
-      let columnProperty = this.getColumnProperties()
-      return columnProperty[key]
+      let columnProperties = this.getColumnProperties()
+      let columnProperty = columnProperties ? columnProperties[key] : ''
+      console.log(`returning ${columnProperty} for ${key}`)
+      return columnProperty
     },
     setProperty: function(key, value) {
-      console.log('checking...')
+      console.log(`checking to set...${key}`)
       const hotId = this.hotId()
       const currentColumnIndex = this.currentColumnIndex()
-      if (hotId && currentColumnIndex) {
-        let columnProperties = this.columnProps(hotId, currentColumnIndex)
-        if (!columnProperties) {
-          this.showErrorMessage({
-            message: 'No column properties found.',
-            detail: 'Did you `Guess column properties` first?'
-          })
-        } else {
-          this.pushHotProperty({
-            'hotId': hotId,
-            'columnIndex': currentColumnIndex,
-            'key': key,
-            'value': value
-          })
-        }
+      // if (hotId && currentColumnIndex) {
+      console.log('returned from current column index...')
+      let object = {
+        'hotId': hotId,
+        'columnIndex': currentColumnIndex,
+        'key': key,
+        'value': value
       }
+      console.log('object is....')
+      console.log(object)
+      this.pushHotProperty(object)
+      // }
     },
+    updateTypeDropdown: function(key, value) {
+      console.log('updating type....')
+      this.setProperty('type', value)
+      this.updateFormatDropdown(value)
+      this.setProperty('format', this.formprops[4].dropdown[0])
+    },
+    updateFormatDropdown: function(typeValue) {
+      console.log('updating format dropdown....')
+      let formatSelection = this.formats[typeValue] || []
+      formatSelection.push('default')
+      this.formprops[4].dropdown = formatSelection
+    },
+    // updateFormatSelected: function(value) {
+    //   this.setProperty('format', value)
+    //   console.log('format selection has been updated.')
+    // },
     hotId: function() {
       console.log('getting hot id....')
       return HotRegister.getActiveInstance().guid
     },
     currentColumnIndex: function() {
       console.log('getting column index....')
-      return getCurrentColumnIndex()
+      let currentIndex = getCurrentColumnIndex()
+      console.log(`index: ${currentIndex}`)
+      return currentIndex
     }
-    // getColumnProperties(hotId, hotColumnIndex) {
-    //   let columnProperties = this.columnProps(hotId)
-    //   if (!columnProperties) {
-    //     this.showErrorMessage({
-    //       message: 'No column properties found.',
-    //       detail: 'Did you `Guess column properties` first?'
-    //     })
-    //   } else {
-    //     return columnProperties[hotColumnIndex]
-    //   }
-    // },
-    // populateColumnProperties(columnProperties) {
-    //   let nameObject = this.formprops.find(formprop => formprop.label === 'name')
-    //   nameObject.value = columnProperties.name
-    // },
-    // showCurrentColumnProperties() {
-    //   let hotId = HotRegister.getActiveInstance().guid
-    //   let hotColumnIndex = getCurrentColumn()
-    //   if (hotId && hotColumnIndex) {
-    //     let columnProperties = this.getColumnProperties(hotId, hotColumnIndex)
-    //     console.log('column properties...')
-    //     console.log(columnProperties)
-    //     // this.populateColumnProperties(columnProperties)
-    //     return columnProperties
-    //   // } else {
-    //   //   this.showErrorMessage({
-    //   //     message: 'No selection found in the active table.',
-    //   //     detail: 'Please check that you have 1 column or cell selected.'
-    //   //   })
-    //   }
-    // }
-    // getPropertyValue(key) {
-    //   console.log('key is...')
-    //   console.log(key)
-    //   let properties = this.showCurrentColumnProperties()
-    //   console.log(properties)
-    //   return properties[key]
-    // }
   },
   computed: {
     ...mapGetters({
@@ -208,41 +172,33 @@ export default {
       })
       return found.dropdown.length < 2
     },
-    selectedType: {
-      get: function() {
-        return this.formprops[3].value
-      },
-      set: function(selection) {
-        this.formprops[3].value = selection
-        let formatSelection = this.formats[selection] || []
-        formatSelection.push('default')
-        this.formprops[4].dropdown = formatSelection
-        this.formprops[4].value = formatSelection[0]
+    getTypeSelected() {
+      let property = this.getProperty('type')
+      if (!property) {
+        property = this.formprops[3].dropdown[0]
+        this.setProperty('type', property)
       }
+      return property
     },
-    propertyValue: {
-      get: function(key) {
-
-        // return this.formprops[3].value
-      },
-      set: function(key, value) {
-        console.log('key is to set...')
-        console.log(key)
-        console.log('value is to set...')
-        console.log(value)
-        let properties = this.showCurrentColumnProperties()
-        properties[key] = value
+    getFormatSelected() {
+      console.log('firing format...')
+      let property = this.getProperty('format')
+      console.log('format selected is...')
+      console.log(property)
+      if (!property) {
+        let typeSelected = this.getTypeSelected
+        this.updateFormatDropdown(typeSelected)
+        property = this.formprops[4].dropdown[0]
+        this.setProperty('format', property)
       }
+      console.log(`format property is ${property}`)
+      return property
     }
   },
   watch: {
-    hotTabs: function(newHotTabs) {
-      console.log('hot tabs changed!!!')
-    }
   },
   mounted: function() {
     this.$nextTick(function() {
-      // this.showCurrentColumnProperties()
     })
   }
 }

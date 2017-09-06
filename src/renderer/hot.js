@@ -58,14 +58,14 @@ let HotRegister = {
     _.set(this.hots, hot.guid, hot)
   },
   getInstance: function(key) {
-    console.log(`getting ${key}`)
+    // console.log(`getting ${key}`)
     return _.get(this.hots, key)
   },
   getActiveInstance: function() {
     let activeHotId = jQuery('#csvContent .active .editor').attr('id')
-    console.log(`active id for hot is: ${activeHotId}`)
+    // console.log(`active id for hot is: ${activeHotId}`)
     let hot = _.get(this.hots, activeHotId)
-    console.log(hot)
+    // console.log(hot)
     return hot
   },
   getActiveHotIdData: function() {
@@ -88,14 +88,16 @@ export function getCurrentCell() {
 
 export function getCurrentColumnIndex() {
   let activeHot = HotRegister.getActiveInstance()
-  console.log(activeHot)
+  // console.log(activeHot)
   let currentCell = activeHot.getSelected()
-  console.log(currentCell)
-  if (!currentCell || currentCell[1] !== currentCell[3]) {
-    console.log('only 1 column can be selected')
-  } else {
-    return currentCell[1]
-  }
+  // console.log('current cell is...')
+  // console.log(currentCell)
+  // if (!currentCell || currentCell[1] !== currentCell[3]) {
+  //   console.log('only 1 column can be selected')
+  // } else {
+  //   return currentCell[1]
+  // }
+  return currentCell ? currentCell[1] : 0
 }
 
 var insertRowAbove = function(deselect) {

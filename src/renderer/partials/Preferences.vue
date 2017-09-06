@@ -36,6 +36,8 @@ export default {
       } catch (err) {
         console.log(err)
       }
+      console.log('captured properties are:')
+      console.log('hotColumns')
       this.pushHotColumns(hotColumns)
       // emit to column properties
     }
