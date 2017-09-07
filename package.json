@@ -1,6 +1,6 @@
 {
   "name": "data-curator",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": " <matt@redboxresearchdata.com.au>",
   "description": "An electron-vue project for curating csv data",
   "license": "MIT",
