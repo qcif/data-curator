@@ -1,4 +1,4 @@
-@backlog, @enterprise-add-in 
+@backlog  @enterprise-add-in 
 
 Feature: Create Lookup Table from Column
   As a Data Packager

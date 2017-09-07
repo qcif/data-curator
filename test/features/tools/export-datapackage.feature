@@ -1,3 +1,5 @@
+@done
+
 Feature: Export Data Package
   As a Data Packager
   I want to export the data and associated metadata in a data package
@@ -17,23 +19,17 @@ Feature: Export Data Package
   - Successful validation against Table Schema
 
   Defaults:
-  - Default the file save location from the Preferences
-  - Default the file name to datapackage.zip
+  - Default the file save location from the Preferences/Settings (when implemented)
+  - Default the filename to datapackage name property
 
-  Background:
+  Export Data Package can be invoked by a menu item or the toolbar
+
+  Scenario: Use the menu to Export Data Package
     Given I have opened Data Curator
     And I have completed all the required column, table and data package properties
-
-    Scenario: Use the menu to Export Data Package
-    When I select "Export Data Package" from the menu
+    When I invoke "Export Data Package"
     Then prompt for location and name to save the file
     And assemble the data, properties and provenance information into a data package file
     And save it to the location
-    And warn if an existing file will be overwritten
-
-    Scenario: Use the toolbar to Export Data Package
-    When I select "Export Data Package" from the toolbar
-    Then prompt for location and name to save the file
-    And assemble the data, properties and provenance information into a data package file
-    And save it to the location
+    And default the filename
     And warn if an existing file will be overwritten

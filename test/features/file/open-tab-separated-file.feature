@@ -18,4 +18,5 @@ Feature: Open a Tab separated value file
     Then a prompt, requesting the 'filename' and location is shown
     And only files ending with a ".csv", ".tsv" or ".txt" can be selected
     And the selected 'filename' is opened in a new data tab to the right of any other open data tabs
-    And name the tab the 'filename'
+    And set the Tab name to the 'filename'
+    And set the CSV Dialect in the Table Properties to "Tab Separated"

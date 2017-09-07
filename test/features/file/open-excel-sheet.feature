@@ -15,5 +15,6 @@ Feature: Open an Excel Sheet
     But only files ending with a '.xls' or '.xlsx' can be selected
     And a prompt, requesting the sheet to open is shown
     And the selected 'sheet-name' is opened in a new data tab to the right of any other open data tabs
-    And name the tab the 'sheet-name'
-    And add the 'sheet-name' to the 'name' Table Property
+    And set the Tab name to the 'sheet-name'
+    And assign 'sheet-name' to the 'name' Table Property
+    And set the CSV Dialect in the Table Properties to "Comma Separated"

@@ -1,5 +1,4 @@
 @backlog
-
 Feature: Open an Custom CSV Dialect file
   As a Data Packager
   I want to open a separated value file with a custom CSV Dialect
@@ -22,4 +21,5 @@ Feature: Open an Custom CSV Dialect file
     Then a prompt, requesting the 'filename' and location is shown
     But only files ending with a ".csv", ".tsv" or ".txt" can be selected
     Then the selected file is opened using the CSV dialect in a new data tab to the right of any other open data tabs
-    And name the tab the 'filename'
+    And set the Tab name to the 'filename'
+    And set the CSV Dialect in the Table Properties to "Custom Dialect"
