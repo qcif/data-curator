@@ -6,6 +6,9 @@ import {dialog, app} from 'electron'
 import {quitOrSaveDialog} from './utils'
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+  global.version = app.getVersion()
+} else {
+  global.version = require('../../package.json').version
 }
 
 global.electron = require('electron')

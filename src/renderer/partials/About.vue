@@ -26,6 +26,7 @@
   </div>
 </template>
 <script>
+import {remote} from 'electron'
 export default {
   name: 'about',
   data() {
@@ -47,13 +48,13 @@ export default {
           link: 'https://github.com/ODIQueensland/data-curator/tree/master/'
         },
         {
-          label: 'version: 0.2.2'
+          label: this.getApplicationVersion()
         }
         ]
       },
       {
         items: [{
-          image: '/static/img/advance_qld_logo.png',
+          image: 'static/img/advance_qld_logo.png',
           link: 'http://advance.qld.gov.au/',
           height: '56px'
         },
@@ -64,7 +65,7 @@ export default {
       },
       {
         items: [{
-          image: '/static/img/odi_aus_logo.png',
+          image: 'static/img/odi_aus_logo.png',
           link: 'https://theodi.org.au/',
           height: '48px'
         },
@@ -75,7 +76,7 @@ export default {
       },
       {
         items: [{
-          image: '/static/img/qcif_logo.png',
+          image: 'static/img/qcif_logo.png',
           link: 'https://www.qcif.edu.au',
           height: '60px'
         },
@@ -85,6 +86,11 @@ export default {
         ]
       }
       ]
+    }
+  },
+  methods: {
+    getApplicationVersion: function() {
+      return remote.getGlobal('version')
     }
   }
 }

@@ -59,21 +59,19 @@ exports.menu = [
           utils.showSidePanel('about')
         }
       }, {
-// Placeholder for future Check for Update feature
-//        label: 'Check for Update',
-//        enabled: false
-//      }, {
-//        type: 'separator'
-//      }, {
-// Placeholder for future macOS Preferences feature
-// Windows equivalent,'Settings' will be in the File menu
-//        label: 'Preferences'
-//        accelerator: 'CmdOrCtrl+,',
-//        enabled: true,
-//        click: function() {
-//          utils.showSidePanel('preferences')
-//        }
-//      }, {
+        label: 'Check for Update',
+        enabled: false
+      }, {
+        type: 'separator'
+      }, {
+        label: process.platform === 'darwin'
+          ? 'Preferences'
+          : 'Settings',
+        accelerator: 'CmdOrCtrl+,',
+        click: function() {
+          utils.showSidePanel('preferences')
+        }
+      }, {
         type: 'separator'
       }, {
         role: 'services',

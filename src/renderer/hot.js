@@ -1,6 +1,8 @@
 import Handsontable from 'handsontable/dist/handsontable.full.js'
 import loader from '../renderer/loader.js'
 import jQuery from 'jquery/dist/jquery.js'
+import {remote} from 'electron'
+const Dialog = remote.dialog
 
 let HotRegister = {
   hots: {},
@@ -14,6 +16,7 @@ let HotRegister = {
       autoRowSize: true,
       enterBeginsEditing: false,
       persistentState: true,
+      outsideClickDeselects: false,
       tabMoves: function(event) {
         if (!event.shiftKey) {
           var selection = hot.getSelected()
@@ -55,13 +58,46 @@ let HotRegister = {
     _.set(this.hots, hot.guid, hot)
   },
   getInstance: function(key) {
-    console.log(`getting ${key}`)
+    // console.log(`getting ${key}`)
     return _.get(this.hots, key)
   },
   getActiveInstance: function() {
     let activeHotId = jQuery('#csvContent .active .editor').attr('id')
-    return _.get(this.hots, activeHotId)
+    // console.log(`active id for hot is: ${activeHotId}`)
+    let hot = _.get(this.hots, activeHotId)
+    // console.log(hot)
+    return hot
+  },
+  getActiveHotIdData: function() {
+    let activeHot = this.getActiveInstance()
+    let data = activeHot.getData()
+    let id = activeHot.guid
+    return {'id': id, 'data': data}
   }
+}
+
+export function getCurrentCell() {
+  let activeHot = HotRegister.getActiveInstance()
+  let currentCell = activeHot.getSelected()
+  if (currentCell[0] !== currentCell[2] || currentCell[1] !== currentCell[3]) {
+    console.log('only 1 cell can be selected')
+  } else {
+    return [currentCell[0], currentCell[2]]
+  }
+}
+
+export function getCurrentColumnIndex() {
+  let activeHot = HotRegister.getActiveInstance()
+  // console.log(activeHot)
+  let currentCell = activeHot.getSelected()
+  // console.log('current cell is...')
+  // console.log(currentCell)
+  // if (!currentCell || currentCell[1] !== currentCell[3]) {
+  //   console.log('only 1 column can be selected')
+  // } else {
+  //   return currentCell[1]
+  // }
+  return currentCell ? currentCell[1] : 0
 }
 
 var insertRowAbove = function(deselect) {

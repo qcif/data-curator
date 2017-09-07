@@ -31,7 +31,7 @@ export function importExcel() {
       ipc.on('worksheetSelected', function(e, sheet_name) {
         let data = XLSX.utils.sheet_to_csv(workbook.Sheets[sheet_name])
         popup.hide()
-        utils.createWindowTabWithData(data)
+        createWindowTabWithData(data)
       })
     })
   })

@@ -5,7 +5,6 @@ let path = require('path')
 
 export function createWindow() {
   let mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 800})
-  console.log('browser window id is: ' + mainWindow.id)
 
   const winURL = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080`
@@ -50,6 +49,15 @@ export function createWindowTabWithData(data) {
     window = createWindow()
   } else {
     window.webContents.send('addTabWithData', data)
+  }
+}
+
+export function createWindowTabWithFormattedData(data, format) {
+  var window = BrowserWindow.getFocusedWindow()
+  if (window == null) {
+    window = createWindow()
+  } else {
+    window.webContents.send('addTabWithFormattedData', data, format)
   }
 }
 

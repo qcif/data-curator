@@ -1,6 +1,15 @@
 {
   "comments": false,
   "env": {
+    "test": {
+      "presets": [
+        ["env", {
+          "targets": { "node": 8 }
+        }],
+        "stage-0"
+      ],
+      "plugins": ["istanbul"]
+    },
     "main": {
       "presets": [
         ["env", {
