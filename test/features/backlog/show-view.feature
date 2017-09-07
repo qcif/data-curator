@@ -1,11 +1,11 @@
-@backlog  @enterprise-add-in
+@backlog  @enterprise-add-in  @draft
 
 Feature: Show View
   As a Data Packager
   I want to preview the default view for the data
   So that it can sure it displays correctly before publishing
 
-  
+
   Background:
     Given I have opened Data Curator
     And I have opened a data tab

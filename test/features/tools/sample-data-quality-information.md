@@ -1,6 +1,4 @@
-@backlog
-
-# Data Quality Report
+# Sample Data Quality Report
 
 Sometimes data is published with known quality issues. The data publisher may intend to correct the data in the future or perhaps never correct the data as it is fit for their purpose.
 

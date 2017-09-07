@@ -11,16 +11,11 @@ Feature: Delete Columns
 
   If the first column is deleted, instead moving the cursor to the column before, move the cursor to the column after
 
-  Background:
+  The "Delete Column(s)" function can be invoked using a menu item or keyboard shortcut
+
+  Scenario: Delete Column(s)
     Given I have opened Data Curator
     And I have identified the column(s) to be deleted
-
-  Scenario: Use the menu to delete column(s)
-    When I select "Delete Column(s)" from the menu
+    When I invoke the "Delete Column(s)" function
     Then delete the selected column(s)
-    And move the cursor to the previous column above and remain in the same row
-
-  Scenario: Use a keyboard shortcut to undo a command
-    When I use "Delete Column(s)" keyboard shortcut
-    Then delete the selected column(s)
-    And move the cursor to the previous column above and remain in the same row
+    And move the cursor to the previous column and remain in the same row

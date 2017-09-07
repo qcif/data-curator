@@ -10,11 +10,13 @@ Feature: Open a Tab separated value file
   Use the default CSV dialect values in the specification but with 'delimiter' = '\t' to open the file and separate the values into the correct columns.
 
   Unresolved:
-  - is it valide to store tab separated value files in ".csv"?
+  - is it valid to store tab separated value files in ".csv"?
 
   Scenario: Use the menu to open an existing Tab Separated Value file
     Given I have opened Data Curator
     When I select "Open Tab Separated" from the menu
-    Then a prompt, requesting the file name and location is shown
-    But only files ending with a ".csv", ".tsv" or ".txt" can be selected
-    Then the selected file is opened in a new data tab to the right of any other open data tabs
+    Then a prompt, requesting the 'filename' and location is shown
+    And only files ending with a ".csv", ".tsv" or ".txt" can be selected
+    And the selected 'filename' is opened in a new data tab to the right of any other open data tabs
+    And set the Tab name to the 'filename'
+    And set the CSV Dialect in the Table Properties to "Tab Separated"

@@ -3,16 +3,11 @@ Feature: Insert Column Before
   I want to insert another column before the current column
   So that I can add more data to the data tab
 
-  Background:
-    Given I have opened Data Curator
-    And the cursor is in a column
+  The "Insert Column Before" function can be invoked using a menu item or keyboard shortcut
 
   Scenario: Use the menu to insert a column before the current column
-    When I select "Insert Column Before" from the menu
-    Then insert a column before the current column
-    And move the cursor to the new column and the current row
-
-  Scenario: Use a keyboard shortcut to insert a column before the current column
-    When I use the Insert Column Before keyboard shortcut
+    Given I have opened Data Curator
+    And the cursor is in a column
+    When I invoke the "Insert Column Before" function
     Then insert a column before the current column
     And move the cursor to the new column and the current row

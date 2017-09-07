@@ -5,12 +5,21 @@ Feature: Set Preferences
   I want to set default values and behaviours
   So that I can work efficiently and avoid re-keying values or repeating common actions
 
+  Preferences is called Settings on non-macOS platforms
+
+  Preferences can be invoked via a menu item or keyboard shortcut
+
   Preferences that can be set include:
 
   - Application
     - "check for update" - check for an application update when the application starts (yes/no)
     - "file location" - default directory for opening and saving files (path)
     - "guess column properties on open" - when a file that isn't a data package is opened, perform the guess column properties command (yes/no)
+    - "check for ragged rows on open" - when a file is opened, asynchronously check for ragged rows in the background and if found, show a warning to the users and offer to Fix Ragged Rows
+    - "validate table on open" - when a file is opened,
+       - Validate Table
+       - show a progress bar
+       - when validation complete, hide progress bar and show any errors or warnings
 
   - Default Data Package properties
     - "license name" - pick from list of valid open licences or supply another. See http://opendefinition.org/licenses/ and http://specs.frictionlessdata.io/data-package/#licenses
@@ -40,7 +49,7 @@ Feature: Set Preferences
 
   Scenario: Set Preferences
     Given I have opened Data Curator
-    When I select "Set Preferences" from the menu
-    Then display the preferances panel
-    And accept and valid user input
+    When I invoke "Set Preferences"
+    Then display the preferences panel
+    And accept and validate user input
     And save values after they are validated

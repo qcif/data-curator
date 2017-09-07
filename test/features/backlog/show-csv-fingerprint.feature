@@ -1,4 +1,4 @@
-@backlog @ready
+@backlog  @draft
 
 Feature: Show validation results as a graphic
   As a Data Packager
@@ -20,4 +20,3 @@ Feature: Show validation results as a graphic
     And I have shown the overview on the error message panel
     When I select "Close overview" on the error message panel
     Then hide the csv-fingerprint graphic in the panel
-    

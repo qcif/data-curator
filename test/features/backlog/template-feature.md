@@ -1,4 +1,4 @@
-@template
+@template @draft
 
 Feature: Template
 # the feature name should be some terse yet descriptive text of what is desired
@@ -58,7 +58,7 @@ Feature: Template
 #
 # Don't drive the User Interface in the When statement. State what happened, not how it happened.
 #
-# Single When per scenario 
+# Single When per scenario
 #
 # Then rules
 #

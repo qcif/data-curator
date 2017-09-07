@@ -3,19 +3,14 @@ Feature:  Show Previous Tab
   I want to quickly move to the previous data tab (to the left)
   So that I can view related data
 
-  If you are on the left-most tab, disable the Show next tab menu option and keyboard shortcut.
+  If you are on the left-most tab, disable the Show previous tab menu option and keyboard shortcut.
 
-  Background:
+  The "Show Previous Tab" function can be invoked using a menu item or keyboard shortcut
+
+  Scenario: Use the menu to show the previous tab
     Given I have opened Data Curator
     And I have opened more than one tab
     And I have not selected the left-most tab
-
-  Scenario: Use the menu to show the previous tab
-    When I select "Previous Tab" from the menu
-    Then deactive the current tab
-    And activate the tab to the left
-
-  Scenario: Use a keyboard shortcut to show the previous tab
-    When I use the "Previous Tab" keyboard shortcut
+    When I invoke the "Next Tab" function
     Then deactive the current tab
     And activate the tab to the left

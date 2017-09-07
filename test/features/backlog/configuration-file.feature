@@ -1,4 +1,4 @@
-@backlog @enterprise-add-in
+@backlog @enterprise-add-in @draft
 
 Feature: Read Configuration File to set preferences
   As a Open Data Leader

@@ -1,2 +1,2 @@
-These features are `@drafts`, `@templates`, or on the backlog.
+These features are `@draft` or a `@template`.
 Backlog features that are written are moved out of this directory but tagged `@backlog`.  
