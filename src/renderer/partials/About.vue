@@ -44,7 +44,7 @@ export default {
       },
       aboutProps: [{
         items: [{
-          image: '/static/img/data-curator-banner.png',
+          image: 'static/img/data-curator-banner.png',
           link: 'https://github.com/ODIQueensland/data-curator/tree/master/'
         },
         {
