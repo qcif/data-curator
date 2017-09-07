@@ -35,7 +35,8 @@
       "dist/electron/**/*"
     ],
     "dmg": {
-      "contents": [{
+      "contents": [
+        {
           "x": 410,
           "y": 150,
           "type": "link",
@@ -53,13 +54,15 @@
     },
     "win": {
       "icon": "build/icons/icon.ico",
-      "target": [{
-        "target": "nsis",
-        "arch": [
-          "x64",
-          "ia32"
-        ]
-      }]
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
     },
     "linux": {
       "icon": "build/icons"
@@ -77,7 +80,7 @@
     "escape-regexp": "^0.0.1",
     "exports-loader": "^0.6.4",
     "font-awesome": "^4.7.0",
-    "handsontable": "^0.33.0",
+    "handsontable": "^0.34.1",
     "imports-loader": "^0.7.1",
     "jquery": "^3.2.1",
     "jquery-csv": "^0.8.3",
