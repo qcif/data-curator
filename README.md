@@ -180,7 +180,7 @@ We're considering:
 
 To build Data Curator for macOS locally:
 
-`yarn build`
+`yarn run build`
 
 To automate deployment, we are using:
 
@@ -192,4 +192,4 @@ To automate deployment, we are using:
 Changes are recorded in the [Change Log][changelog].
 
 [changelog]: ./CHANGELOG.md
-[version-badge]: https://img.shields.io/badge/version-0.2.1-blue.svg
+[version-badge]: https://img.shields.io/badge/version-0.2.3-blue.svg

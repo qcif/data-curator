@@ -6,9 +6,31 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/). 
 
 To see what's planned in our [milestones](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open) or unreleased changes.
 
-[Unreleased]:  https://github.com/ODIQueensland/data-curator/compare/v0.2.1...HEAD
+[Unreleased]:  https://github.com/ODIQueensland/data-curator/compare/v0.2.3...HEAD
 ## [Unreleased]
 
+[0.2.3]: https://github.com/ODIQueensland/data-curator/compare/v0.2.2...v0.2.3
+## [0.2.3] - 2017-09-07
+
+### Changed
+- About panel
+- Menu structure reduced to v1.0 target
+- Acceptance Tests (features)
+- Keyboard shortcut help
+- Open Licenses list
+- Readme images
+
+[0.2.2]: https://github.com/ODIQueensland/data-curator/compare/v0.2.1...v0.2.2
+## [0.2.2] - 2017-09-06
+
+### Added
+
+- add corporate icons
+- bug fixes
+- add property labels
+- introduce initial frictionless specs through js libraries
+- guess column properties using frictionless
+- open excel worksheet and csv file for tabs, rather than windows
 
 [0.2.1]: https://github.com/ODIQueensland/data-curator/compare/v0.2.0...v0.2.1
 ## [0.2.1] - 2017-08-31
