@@ -9,6 +9,7 @@ Feature: Move to Next / Previous Properties Panel
   - ...
   - column n (the last column in the table)
   - table
+  - provenance information
   - data package
 
   If there is more than one data table, then the Move to Next sequence would be:
@@ -21,7 +22,8 @@ Feature: Move to Next / Previous Properties Panel
   - column 2 in table 2
   - ...
   - column n (the last column in the table 2)
-  - repeat for remaining columns and tables until on column n in table n (the last column in the last table)
+  - ... repeat for remaining columns and tables until on column n in table n (the last column in the last table)
+  - provenance information
   - data package
 
   The Move to Previous sequence is the opposite of above
