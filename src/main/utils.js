@@ -4,7 +4,7 @@ var file_formats = require('../renderer/file-actions.js').formats
 let path = require('path')
 
 export function createWindow() {
-  let mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 480})
+  let mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 800})
 
   const winURL = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080`

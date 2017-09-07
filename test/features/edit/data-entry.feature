@@ -1,7 +1,9 @@
-Feature: Edit data
+Feature: Data entry
   As a Data Packager
   I want to quickly add, modify or delete data in a cell in the data table
   So that I can create new data or correct errors found in the data
+
+  In the future this feature may change to save the data as it is entered
 
   Scenario: Edit data
     Given I have opened Data Curator

@@ -1,4 +1,4 @@
-@backlog
+@backlog @draft
 
 Feature: Replace in column
   As a Data Packager or Data Consumer

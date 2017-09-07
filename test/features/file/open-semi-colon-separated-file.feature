@@ -12,6 +12,8 @@ Feature: Open a Semi-colon separated value file
   Scenario: Use the menu to open an existing semi-colon separated value file
     Given I have opened Data Curator
     When I select "Open Semi-colon Separated" from the menu
-    Then a prompt, requesting the file name and location is shown
-    But only files ending with a ".csv" or ".txt" can be selected
-    Then the selected file is opened in a new data tab to the right of any other open data tabs
+    Then a prompt, requesting the 'filename' and location is shown
+    And only files ending with a ".csv" or ".txt" can be selected
+    And the selected 'filename' is opened in a new data tab to the right of any other open data tabs
+    And set the Tab name to the 'filename'
+    And set the CSV Dialect in the Table Properties to "Semi-colon Separated"

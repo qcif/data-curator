@@ -1,4 +1,4 @@
-Feature: New data
+Feature: New 
   As a Data Packager
   I want to open a blank data tab so I can start to enter data values
   So that I can create new data
@@ -16,4 +16,4 @@ Feature: New data
     When I use the "New" keyboard shortcut
     Then open a new data tab to the right of any other open data tabs
     And display a table with 3 columns and 2 rows with no values in any cell
-    And place the cursor in first column and first row 
+    And place the cursor in first column and first row

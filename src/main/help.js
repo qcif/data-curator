@@ -4,7 +4,7 @@ global.BrowserWindow = electron.BrowserWindow
 global.Dialog = electron.dialog
 
 var showKeyboardHelp = function() {
-  var showKeyboardHelp = new BrowserWindow({width: 600, height: 600})
+  var showKeyboardHelp = new BrowserWindow({width: 760, height: 400})
   showKeyboardHelp.loadURL(`http://localhost:9080/#/keyboardhelp`)
 
   showKeyboardHelp.on('closed', function() {

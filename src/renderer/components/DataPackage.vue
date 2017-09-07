@@ -14,21 +14,27 @@
         <label for="description">Dataset description</label>
         <textarea class="form-control" id="description" name="description" rows="3"></textarea>
       </div>
+<!-- this would be an ideal place to link to in-app help -->
       <div class="form-group">
         <label for="license">License</label>
+<!-- to be sourced from http://opendefinition.org/licenses/#recommended-conformant-licenses plus other selected open licenses -->
         <select id="license" name="license" class="form-control">
           <option value="">Please select...</option>
-          <option value="cc-by">Creative Commons Attribution</option>
-          <option value="cc-by-sa">Creative Commons Attribution Share-Alike</option>
-          <option value="cc-zero">Creative Commons CCZero</option>
-          <option value="ogl-uk">UK Open Government Licence</option>
-          <option value="odc-by">Open Data Commons Attribution License</option>
+          <option value="cc-by">Creative Commons Attribution 4.0 (CC-BY-4.0)</option>
+          <option value="cc-by-sa">Creative Commons Attribution Share-Alike 4.0 (CC-BY-SA-4.0)</option>
+          <option value="cc-zero">Creative Commons CCZero (CC0)</option>
+          <option value="pdm">Public Domain</option>
+          <option value="odc-by">Open Data Commons Attribution License (ODC-BY)</option>
           <option value="odc-odbl">Open Data Commons Open Database License (ODbL)</option>
           <option value="odc-pddl">Open Data Commons Public Domain Dedication and Licence (PDDL)</option>
+          <option disabled role=separator> ─── </option>
+          <option value="ogl-ca">Open Government Licence Canada 2.0</option>
+          <option value="ogl-tw">Open Government License Taiwan</option>
+          <option value="ogl-uk">Open Government Licence United Kingdom (OGL-UK)</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="keywords">Keywords (Comma seperated)</label><br />
+        <label for="keywords">Keywords (Comma separated)</label><br />
         <input type="text" id="keywords" class="form-control" data-role="tagsinput" name="keywords">
       </div>
       <div id="headers">

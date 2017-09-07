@@ -1,4 +1,4 @@
-Feature: About panel
+Feature: About
   As a Data Packager or Data Consumer
   I want to know the version of the application
   So that I can inform the Maintainer about issues I experience using a version of the application
@@ -17,12 +17,6 @@ Feature: About panel
     And the Application logo
     And the Application name
     And the Application version, are shown
-
-  Scenario: Click outside the About panel to hide the About panel
-    Given I have opened Data Curator
-    And I have displayed the About panel
-    When I click the mouse outside the About panel
-    Then the About panel closes
 
   Scenario: Click the About panel close button to hide the About panel
     Given I have opened Data Curator

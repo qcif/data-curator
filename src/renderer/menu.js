@@ -19,14 +19,14 @@ var rowBelow = new MenuItem({
 })
 
 var columnLeft = new MenuItem({
-  label: 'Insert column left',
+  label: 'Insert column before',
   click: function() {
     hotController.insertColumnLeft(true)
   }
 })
 
 var columnRight = new MenuItem({
-  label: 'Insert column right',
+  label: 'Insert column after',
   click: function() {
     hotController.insertColumnRight(true)
   }

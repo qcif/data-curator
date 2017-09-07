@@ -1,1 +1,1 @@
-Edit menu items and "Edit data" which is how data is edited in the table.
+Edit menu items and "Data Entry" which is how data entered in the table.
