@@ -1,4 +1,4 @@
-@backlog 
+@backlog
 
 Feature: Open CSV with Drag and Drop
   As a User
@@ -6,7 +6,7 @@ Feature: Open CSV with Drag and Drop
   So that can I quickly open it
 
   Unresolved:
-  - Can the function be extended to work for other file types (xls, tsv)?
+  - Can the command be extended to work for other file types (xls, tsv)?
   - The separator used in the CSV cannot be determined from the filename
   - Should the default separated in preferences be used to determine what type of file can be dragged on to the Application?
 

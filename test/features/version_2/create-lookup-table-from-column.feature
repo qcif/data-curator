@@ -1,4 +1,4 @@
-@backlog  @enterprise-add-in 
+@backlog  @enterprise-add-in
 
 Feature: Create Lookup Table from Column
   As a Data Packager
@@ -8,7 +8,7 @@ Feature: Create Lookup Table from Column
   Scenario: Create Lookup Table from Column
     Given I have opened Data Curator
     And the cursor is in a column in a data tab
-    When I invoke the "Create Lookup Table from Column" function
+    When I invoke the "Create Lookup Table from Column" command
     Then read all the rows in that column
     And identify all the unique values
     And use the result to populate the first column a new data tab

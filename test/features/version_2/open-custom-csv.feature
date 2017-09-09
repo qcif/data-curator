@@ -17,7 +17,7 @@ Feature: Open an Custom CSV Dialect file
 
   Scenario: Open an existing custom dialect separated value file
     Given I have opened Data Curator
-    When I invoke the "Open, Custom Dialect" function
+    When I invoke the "Open, Custom Dialect" command
     Then a prompt, requesting the 'filename' and location is shown
     But only files ending with a ".csv", ".tsv" or ".txt" can be selected
     Then the selected file is opened using the CSV dialect in a new data tab to the right of any other open data tabs

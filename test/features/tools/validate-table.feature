@@ -3,7 +3,7 @@ Feature: Validate Table
   I want to validate the data for common errors and against the schema defined by the column properties
   So that I can correct errors and only share validated data with Data Consumers
 
-  The "Validate Table" function can be invoked using a menu item, toolbar button or keyboard shortcut
+  The "Validate Table" command can be invoked using a menu item, toolbar button or keyboard shortcut
 
   Non-schema data checks include:
   - ragged rows
@@ -28,7 +28,7 @@ Feature: Validate Table
     Given I have opened Data Curator
     And I have 1 data tab open
     And column properties may have been entered for some or all columns
-    When I invoke the "Validate Table" function
+    When I invoke the "Validate Table" command
     Then assemble the Table Schema from the Column Properties
     And check for non-schema data errors
     And validate the data against the available schema

@@ -3,7 +3,7 @@ Feature: Set Provenance Information
   I want to describe the provenance information for the data
   So that Data Consumers can make an informed choice about using the data
 
-  The "Set Provenance Information" function can be invoked using a menu item or the toolbar
+  The "Set Provenance Information" command can be invoked using a menu item or the toolbar
 
   Provenance information will be
   - written using [Commonmark](http://commonmark.org)
@@ -21,7 +21,7 @@ Feature: Set Provenance Information
   Scenario: Provenance information
     Given I have opened Data Curator
     And I have opened a data tab
-    When I invoke the "Provenance Information" function
+    When I invoke the "Provenance Information" command
     Then display a panel that allows me to enter provenance information as markdown for the current tab
     And sample content will be displayed
     And values entered will be saved as they are typed

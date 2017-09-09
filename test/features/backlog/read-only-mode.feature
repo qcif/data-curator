@@ -8,6 +8,6 @@ Feature: Read Only Mode
   Scenario: Read Only Mode
     Given I have opened Data Curator
     And I have opened a file
-    When I invoke the "Read Only Mode" function
+    When I invoke the "Read Only Mode" command
     Then disable all data entry fields
     And disable all tools that can change any value

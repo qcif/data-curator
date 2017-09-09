@@ -27,7 +27,7 @@ Feature: Export Data Package
   Scenario: Use the menu to Export Data Package
     Given I have opened Data Curator
     And I have completed all the required column, table and data package properties
-    When I invoke "Export Data Package"
+    When I invoke the "Export Data Package" command
     Then prompt for location and name to save the file
     And assemble the data, properties and provenance information into a data package file
     And save it to the location

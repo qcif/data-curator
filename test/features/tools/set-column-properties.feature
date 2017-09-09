@@ -35,7 +35,7 @@ Feature: Set Column Properties
     And the cursor is in a column
 
   Scenario: Set Column Properties for the current column
-    When I invoke the "Column Properties" from the menu
+    When I invoke the "Column Properties" command
     Then display a panel that allows me to properties for the current column
     And accept and validate column property values
     And save the values as they are entered

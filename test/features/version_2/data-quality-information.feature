@@ -5,7 +5,7 @@ Feature: Data Quality Information
   I want to share data quality measures
   So that Data Consumers can make informed decisions about using the data
 
-  The "Data Quality Information" function can be invoked using a menu item 
+  The "Data Quality Information" command can be invoked using a menu item
 
   See:
   - [Sample report](https://relishapp.com/odi-australia/data-curator/docs/tools/data-quality-information)
@@ -28,7 +28,7 @@ Feature: Data Quality Information
   Scenario: Data Quality Information
     Given I have opened Data Curator
     And I have entered data in 1 or more tables
-    When I invoke the "Data Quality Information" function
+    When I invoke the "Data Quality Information" command
     Then read all the data
     And the schemas
     And generate a data quality data in a variety of formats (.md, .csv, .json)
