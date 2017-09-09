@@ -1,37 +1,38 @@
-Feature: Initiate an edit feature using a keyboard shortcut
+Feature: Initiate an editor command using a keyboard shortcut
 As a User
-I want to select a command using a keyboard shortcut
+I want to invoke an editor command using a keyboard shortcut
 So that I can initiate a command using the keyboard instead of the mouse
 
-Some keyboard shortcut are specific to an operating system e.g. Hide Application using command + H on macOS
-
-  Scenario Outline: Initiate an edit feature using a keyboard shortcut
+  Scenario Outline: Initiate an editor command using a keyboard shortcut
     Given I have opened Data Curator in an <operating system>
      When I use a <operating system> <shortcut>
-     Then the <edit command> is initiated
+     Then the <editor command> is invoked
 
     Examples:
-      | edit command                                                              | windows shortcut       | linux shortcut                     | macOS shortcut |
-      | Insert column right (if in rightmost column)                              | Tab                    |                                    |                |
-      | Open cell editor                                                          | F2                     |                                    |                |
-      | Cancel editing and close cell editor                                      | Esc                    |                                    |                |
-      | Empty cell                                                                | Backspace or Delete    |                                    |                |
-      | Fill all selected cells with edited cell's value                          | Control + Enter        |                                    |                |
-      | Move to the cell above current active cell (if exists)                    | up arrow               | up arrow                           |                |
-      | Move to cell underneath current active cell (if exists)                   | down arrow             | down arrow                         |                |
-      | move to the cell on the right side of the current active cell (if exists) | right arrow            | right arrow                        |                |
-      | move to the cell on the left side of current active cell (if exists)      | left arrow             | left arrow                         |                |
-      | Move to the cell on the right side of the current active cell (if exists) | Tab                    | Tab                                |                |
-      | Move to the cell on the left side of current active cell (if exists)      | Shift + Tab            | Shift + Tab                        |                |
-      | Move to the first cell in a row                                           | Home                   | fn + right arrow                   |                |
-      | Move to the last cell in a row                                            | End                    | fn + left arrow                    |                |
-      | Move to the first cell in a column                                        | Control + Home         | Command + fn + right arrow         |                |
-      | Move to the last cell in a column                                         | Control + End          | Command + fn+  left arrow          |                |
-      | Extend selection of the cell underneath                                   | Shift + right arrow    |                                    |                |
-      | Extend selection of the cell on the right                                 | Shift + left arrow     |                                    |                |
-      | Extend selection of the cell on the left                                  | Shift + up arrow       |                                    |                |
-      | select all cells in the row to the right including the current cell       | Shift + Home           | Shift + fn + right arrow           |                |
-      | Select all cells in the row to the left including the current cell        | Shift + End            | Shift + fn + left arrow            |                |
-      | Select all cells in the column to the top including the current cell      | Control + Shift + Home | Command + Shift + fn + right arrow |                |
-      | Select all cells in the column to the bottom including the current cell   | Control + Shift + End  | Command + Shift + fn + left arrow  |                |
-  
+    | Editor shortcut                                                  | Windows / Linux     | macOS      |
+    | Insert row below, if in last row                                 | Enter               | Enter      |
+    | Insert column after if in last column                            | Tab                 | Tab        |
+    | Cancel data entry                                                | Esc                 | Esc        |
+    | Delete cell contents                                             | Backspace or Delete | Delete     |
+    | Fill all selected cells with the same value                      | Ctrl Enter          | ⌘ Enter    |
+    | Move Up from the current cell                                    | ↑                   | ↑          |
+    | Move Down from the current cell                                  | ↓                   | ↓          |
+    | Move Right from the current cell                                 | → or Tab            | → or Tab   |
+    | Move Left from the current cell                                  | ← or ⇧ Tab          | ← or ⇧ Tab |
+    | Move to Top cell in the current column                           | Ctrl Home           | ⌘ fn ↑     |
+    | Move to Bottom cell in the current column                        | Ctrl End            | ⌘ fn ↓     |
+    | Move to First cell in the current row                            | Home                | fn ←       |
+    | Move to Last cell in the current row                             | End                 | fn →       |
+    | Select All the data in the table                                 | Ctrl A              | ⌘ A        |
+    | Select Up - expand column selection to the cell above            | ⇧ ↑                 | ⇧ ↑        |
+    | Select Down - expand column selection to the cell below          | ⇧ ↓                 | ⇧ ↓        |
+    | Select Right - expand row selection to the cell right            | ⇧ →                 | ⇧ →        |
+    | Select Left - expand row selection to the cell left              | ⇧ ←                 | ⇧ ←        |
+    | Select to Top - expand column selection to all cells above       | Ctrl ⇧ Home         | ⌘ ⇧ fn ↑   |
+    | Select to Bottom - expand column selection to all cells below    | Ctrl ⇧ End          | ⌘ ⇧ fn ↓   |
+    | Select to First - expand row selection to all cells to the right | ⇧ Home              | ⇧ fn ←     |
+    | Select to Last - expand row selection to all cells to the left   | ⇧ End               | ⇧ fn →     |
+    | Right click in a cell to display the context menu                |                     |            |
+    | Choose Next option in context menu                               | ↑                   | ↑          |
+    | Choose Previous option in context menu                           | ↓                   | ↓          |
+    | Perform Option from context menu                                 | Enter               | Enter      |
