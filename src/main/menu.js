@@ -144,9 +144,6 @@ exports.menu = [
         label: 'Save As',
         submenu: save_submenu
       }, {
-        label: 'Save All',
-        accelerator: 'Alt+CmdOrCtrl+S'
-      }, {
         type: 'separator'
       }, {
         label: 'Close Tab',
