@@ -14,4 +14,4 @@ yarn-error.log
 .idea/
 *.iml
 *.csv
-!data-curator-help-tags.csv
+!help-tags.csv
