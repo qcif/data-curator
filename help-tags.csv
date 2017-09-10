@@ -12,7 +12,7 @@ Next,Property Panels,Next Property Panel
 Previous,Property Panels,Previous Property Panel
 Name,Column Property,"The <a href=""http://specs.frictionlessdata.io/table-schema/#name"">Name</a> of the column. Usually the value of the first row in the column."
 Title,Column Property,"A human readable <a href=""http://specs.frictionlessdata.io/table-schema/#title"">Title</a> for the column."
-Description,Column Property,"A <a href=""http://specs.frictionlessdata.io/table-schema/#description>Description</a> of the column"
+Description,Column Property,"A <a href=""http://specs.frictionlessdata.io/table-schema/#description"">Description</a> of the column"
 Type,Column Property,"Choose a <a href=""http://specs.frictionlessdata.io/table-schema/#types-and-formats"">Type</a> for the data in the column"
 Format,Column Property,"Choose the <a href=""http://specs.frictionlessdata.io/table-schema/#types-and-formats"">Format</a> for the Type of data"
 RDF Type,Column Property,"Set a <a href=""http://specs.frictionlessdata.io/table-schema/#rich-types"">RDF Type</a> to provide extra meaning to the Type"
