@@ -4,7 +4,7 @@ const state = {
 
 const getters = {
   getHotTitle: (state, getters) => (hotId) => {
-    let title = _.get(state.hotTabs, `${hotId}.title`, `Untitled.csv`)
+    let title = _.get(state.hotTabs, `${hotId}.title`, `Untitled`)
     return title
   },
   getHotColumnProperties: (state, getters) => (hotId) => {

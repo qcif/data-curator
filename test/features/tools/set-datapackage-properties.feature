@@ -21,7 +21,7 @@ Feature: Set Data Package Properties
     And I have opened a data tab
 
   Scenario: Set Data Package Properties
-    When I invoke "Set Data Package Properties"
+    When I invoke the "Set Data Package Properties" command
     Then display a panel that allows me to enter properties
     And accept and validate property values
     And save the values as they are entered

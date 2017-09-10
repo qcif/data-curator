@@ -16,7 +16,7 @@ var amendRows = function(hot, worksheet, autoConfirm) {
         // only triggers if a cell returns undefined
         if (ragged_rows === 0) {
           // this is a way of prompting once and then proceeding to fix every other ragged instance
-          if (autoConfirm === true || window.confirm('Your file has ragged rows, do you want to correct this?')) {
+          if (autoConfirm === true || window.confirm('Your file has ragged rows.\n\nSelect OK to fix ragged rows and open the file with the maximum number of columns found.\n\nSelect Cancel to open the file limited to the number of columns in the first row.')) {
             ragged_rows = 1
             reportFix(worksheet, y, x)
           } else {

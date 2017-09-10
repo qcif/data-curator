@@ -3,7 +3,7 @@ Feature: Redo
   I want to repeat the edit command I just performed
   So that I can make the same change quickly
 
-  The "Redo" function can be invoked using a menu item or keyboard shortcut
+  The "Redo" command can be invoked using a menu item or keyboard shortcut
 
   Rules:
   - Only Edit commands can be re-done
@@ -11,5 +11,5 @@ Feature: Redo
   Scenario: Use the menu to redo a command
     Given I have opened Data Curator
     And I have performed a command that can be re-done
-    When I select "Redo" from the menu
+    When I invoke the "Redo" command
     Then repeat the previous edit command

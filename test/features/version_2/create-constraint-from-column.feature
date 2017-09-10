@@ -11,7 +11,7 @@ Feature: Create Constraint from Column
   Scenario: Create Constraint from Column
     Given I have opened Data Curator
     And the cursor is in a column in a data tab
-    When I invoke the "Create Constraint from Column" function
+    When I invoke the "Create Constraint from Column" command
     Then read all the rows in that column
     And identify all the unique values
     And use the result to populate the enum constraint

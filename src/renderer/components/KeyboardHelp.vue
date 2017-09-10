@@ -237,15 +237,17 @@
       <td><kbd>&#8984;</kbd> <kbd>S</kbd></td>
     </tr>
     <tr>
-      <td><b>Save As</b> - save the active data tab with a new filename or location</td>
-      <td><kbd>Ctrl</kbd> <kbd>C</kbd></td>
-      <td><kbd>&#8984;</kbd> <kbd>C</kbd></td>
+      <td><b>Save As</b>, <b>Comma Separated</b> - save the active data tab with a new filename or location</td>
+      <td><kbd>&#8679;</kbd> <kbd>Ctrl</kbd> <kbd>S</kbd></td>
+      <td><kbd>&#8679;</kbd> <kbd>&#8984;</kbd> <kbd>S</kbd></td>
     </tr>
+<!--
     <tr>
       <td><b>Save All</b> unsaved changes to the data tables </td>
       <td><kbd>Alt</kbd> <kbd>Ctrl</kbd> <kbd>S</kbd></td>
       <td><kbd>&#8997;</kbd> <kbd>&#8984;</kbd> <kbd>S</kbd></td>
     </tr>
+-->
     <tr>
       <td><b>Close Tab</b> - optionally save unsaved work before closing the active tab </td>
       <td><kbd>Ctrl</kbd> <kbd>W</kbd> </td>
@@ -447,6 +449,7 @@
         <td><kbd>&#8984;</kbd> <kbd>/</kbd></td>
       </tr>
     </table>
+<p>&nbsp;</p>
 
 </div>
 </template>

@@ -9,5 +9,5 @@ Feature: Support Forum
 
   Scenario: Support Forum
     Given I have opened Data Curator
-    When I invoke the "Support Forum" function
+    When I invoke the "Support Forum" command
     Then Open the Support web-site in a separate browser window

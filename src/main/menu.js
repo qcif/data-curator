@@ -58,19 +58,20 @@ exports.menu = [
         click: function() {
           utils.showSidePanel('about')
         }
-      }, {
-        label: 'Check for Update',
-        enabled: false
-      }, {
-        type: 'separator'
-      }, {
-        label: process.platform === 'darwin'
-          ? 'Preferences'
-          : 'Settings',
-        accelerator: 'CmdOrCtrl+,',
-        click: function() {
-          utils.showSidePanel('preferences')
-        }
+// Placeholder for future feature
+//      }, {
+//        label: 'Check for Update',
+//        enabled: false
+//      }, {
+//        type: 'separator'
+//      }, {
+//        label: process.platform === 'darwin'
+//          ? 'Preferences'
+//          : 'Settings',
+//        accelerator: 'CmdOrCtrl+,',
+//        click: function() {
+//          utils.showSidePanel('preferences')
+//        }
       }, {
         type: 'separator'
       }, {
@@ -142,9 +143,6 @@ exports.menu = [
       }, {
         label: 'Save As',
         submenu: save_submenu
-      }, {
-        label: 'Save All',
-        accelerator: 'Alt+CmdOrCtrl+S'
       }, {
         type: 'separator'
       }, {

@@ -5,8 +5,7 @@ Feature: Open an Excel Sheet
 
   Excel sheets may contain non-tabular data in a sheet, e.g. charts
 
-  Unresolved:
-  - Do we support .xls?
+  The data may be stored in a ".xlsx" or ".xls" file
 
   Scenario: Use the menu to open an Excel Sheet
     Given I have opened Data Curator

@@ -1,4 +1,4 @@
-@backlog @enterprise-add-in 
+@backlog @enterprise-add-in
 
 Feature: Import Column Properties
   As a Data Packager
@@ -8,7 +8,7 @@ Feature: Import Column Properties
   Scenario: Import Column Properties
     Given I have opened Data Curator
     And the cursor is in a column in a data tab
-    When I invoke the "Import Column Properties" function
+    When I invoke the "Import Column Properties" command
     Then a prompt, requesting the 'filename' and location, or a url is shown
     And only files ending with a ".json" can be selected
     And the contents of the file is validated as being a valid table schema fragment

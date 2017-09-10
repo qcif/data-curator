@@ -9,10 +9,11 @@
   - open-excel-sheet.feature
   - open-datapackage.feature
   - save.feature
-  - save-as.feature
+  - save-as-comma-separated-file.feature
+  - save-as-tab-separated-file.feature
+  - save-as-semi-colon-separated-file.feature
   - close-tab.feature
   - close-all-tabs.feature
-  - print.feature
 - edit:
   - undo.feature
   - redo.feature
@@ -56,6 +57,7 @@
   - check-for-update.feature
   - set-preferences.feature
   - open-custom-csv.feature
+  - open-csv-using-drag-n-drop.feature
   - open-google-sheet.feature
   - open-recent.feature
   - import-column-properties.feature
