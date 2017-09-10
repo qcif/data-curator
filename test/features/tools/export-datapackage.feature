@@ -21,6 +21,8 @@ Feature: Export Data Package
   Defaults:
   - Default the file save location from the Preferences/Settings (when implemented)
   - Default the filename to datapackage name property
+  - Set Created to Now - see http://specs.frictionlessdata.io/data-package/#created
+  - Set Profile to `tabular-data-package` - see http://specs.frictionlessdata.io/tabular-data-package/#specification
 
   Export Data Package can be invoked by a menu item or the toolbar
 
