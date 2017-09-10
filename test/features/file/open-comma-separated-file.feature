@@ -9,6 +9,8 @@ Feature: Open a Comma separated value file
 
   Use the default CSV dialect values in the specification to open the file and separate the values into the correct columns.
 
+  If the active tab is empty, when the file is opened, insert the file contents into the empty table.
+
   The Open Comma Separated command can be invoked using the menu or a keyboard shortcut
 
   Sometimes CSV files are stored with an inconsistent number of columns - known as ragged rows.
