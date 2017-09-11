@@ -3,7 +3,7 @@ Feature: Open a Tab separated value file
   I want to open a tab separated value (TSV) file
   So that I can describe, validate and package the data
 
-  The data may be stored in a ".tsv" or ".txt" file
+  The data may be stored in a ".tsv" file
 
   CSV dialect specification - http://specs.frictionlessdata.io/csv-dialect/#specification
 
@@ -18,7 +18,7 @@ Feature: Open a Tab separated value file
     Given I have opened Data Curator
     When I select "Open Tab Separated" from the menu
     Then a prompt, requesting the 'filename' and location is shown
-    And only files ending with a ".csv", ".tsv" or ".txt" can be selected
+    And only files ending with a ".tsv" can be selected
     And the selected 'filename' is opened in a new data tab to the right of any other open data tabs
     And set the Tab name to the 'filename'
     And set the CSV Dialect in the Table Properties to "Tab Separated"
