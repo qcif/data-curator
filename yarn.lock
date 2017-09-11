@@ -2525,19 +2525,18 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-datapackage@^1.0.0-alpha.11:
-  version "1.0.0-alpha.11"
-  resolved "https://registry.yarnpkg.com/datapackage/-/datapackage-1.0.0-alpha.11.tgz#68bfad83f897d7a8e5273b5dc97e6c0f909218bd"
+datapackage@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/datapackage/-/datapackage-1.0.0.tgz#2f66dc14351bfb477b095fa6eb2e87a780df4e6d"
   dependencies:
     axios "^0.16.1"
-    es6-error "^4.0.2"
     glob "^7.1.2"
     jschardet "^1.5.1"
     json-pointer "^0.6.0"
     lodash "^4.13.1"
     regenerator-runtime "^0.11.0"
     stream-to-async-iterator "^0.2.0"
-    tableschema "^1.0.0-alpha.20"
+    tableschema "^1.0.0"
     tv4 "^1.2.7"
     url-join "^2.0.1"
 
@@ -8014,9 +8013,9 @@ table@^3.7.8:
     slice-ansi "0.0.4"
     string-width "^2.0.0"
 
-tableschema@^1.0.0-alpha.20:
-  version "1.0.0-alpha.20"
-  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.0.0-alpha.20.tgz#2434976059f94b0b57584c911d6542c4f59e39eb"
+tableschema@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.0.0.tgz#56cda6b0b8e7ef0a0ff33ded198265aafa7059ba"
   dependencies:
     axios "^0.16.1"
     csv "^1.1.1"
