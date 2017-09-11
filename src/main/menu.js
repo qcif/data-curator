@@ -283,13 +283,6 @@ exports.menu = [
       {
 // TO DO: hide toggledevtools in production release and make a application shortcut
         role: 'toggledevtools'
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Fix Ragged Rows',
-        click: function() {
-          tools.fixRaggedRowsFile()
-        }
 // Placeholder for future features
 //      }, {
 //        type: 'separator'
