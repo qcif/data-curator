@@ -8,7 +8,16 @@ Feature: Open a Data Package
   - at a URL
   - locally within the package
 
-  Notes:
+  Data Tab Name Rules:
+  - The name of a tab should be the 'filename' without the extension
+  - The name of a tab that has been described using Table Properties should the the 'name' property
+  - the 'name' property takes precidence over the 'filename'
+
+  As part of loading the data in the the data package, If the data has an inconsistent number of columns, fix ragged rows
+
+  Open Data Package can be invoked from the Menu
+
+  Notes on opening data packages from CKAN:
   - The current CKAN data package extension only exports a data package with data resources available at a URL i.e. the data is not inside the package
   - The current CKAN data package extension does not support version 1.0 of the Frictionless Data specification.
   - Data Curator only supports version 1.0 of the Frictionless Data specification.
@@ -28,13 +37,6 @@ Feature: Open a Data Package
   - http://specs.frictionlessdata.io/data-package/
   - http://specs.frictionlessdata.io/tabular-data-package/
 
-  Data Tab Name Rules:
-  - The name of a tab should be the 'filename' without the extension
-  - The name of a tab that has been described using Table Properties should the the 'name' property
-  - the 'name' property takes precidence over the 'filename'
-
-  Open Data Package can be invoked from the Menu
-
   Scenario: Open a data package
     Given I have opened Data Curator
     When I invoke "Open Data Package"
@@ -42,6 +44,7 @@ Feature: Open a Data Package
     But only files ending with a '.zip' can be selected
     And the selected file is unzipped
     And each data resource is opened (from URL or local) in a new data tab to the right of any other open data tabs
+    And for each data resource Fix Ragged Rows
     And the corresponding column, table and package properties is loaded from datapackage.json into the Properties Panels
     And the provenance information is loaded from the Readme.md or Readme.txt
     And each Data tab is named according to the rules
