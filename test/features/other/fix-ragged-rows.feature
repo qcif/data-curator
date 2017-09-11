@@ -3,10 +3,7 @@ Feature: Fix Ragged Rows
   I want to make the data have the same number of columns
   So that I can create a valid separated value file
 
-  The "Fix Ragged Rows" command can be invoked using a menu item
-
   Scenario: Fix Ragged Rows
     Given I have opened Data Curator
-    And I have opened 1 data tab
-    When I invoke the "Fix Ragged Rows" command
+    When I open any data file
     Then find the maximum number of rows in the data and append empty cells to all rows with less columns
