@@ -88,15 +88,11 @@ export function getCurrentCell() {
 
 export function getCurrentColumnIndex() {
   let activeHot = HotRegister.getActiveInstance()
-  // console.log(activeHot)
   let currentCell = activeHot.getSelected()
-  // console.log('current cell is...')
-  // console.log(currentCell)
-  // if (!currentCell || currentCell[1] !== currentCell[3]) {
-  //   console.log('only 1 column can be selected')
-  // } else {
-  //   return currentCell[1]
-  // }
+  if (!currentCell) {
+    activeHot.selectCell(0, 0)
+    currentCell = activeHot.getSelected()
+  }
   return currentCell ? currentCell[1] : 0
 }
 
