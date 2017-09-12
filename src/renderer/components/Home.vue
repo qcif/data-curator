@@ -129,9 +129,7 @@ export default {
       enableTransition: false,
       toolbarMenus: [{
         name: 'Validate',
-        image: 'static/img/validate.svg',
-        sideNavPosition: 'right',
-        sideNavView: 'default1'
+        image: 'static/img/validate.svg'
       },
       {
         name: 'Column',
@@ -159,10 +157,7 @@ export default {
       },
       {
         name: 'Export',
-        image: 'static/img/export.svg',
-        // class: 'down',
-        sideNavPosition: 'right',
-        sideNavView: 'default2'
+        image: 'static/img/export.svg'
       }
       ]
     }
@@ -287,18 +282,29 @@ export default {
       }
       let menu = this.toolbarMenus[index]
       this.menuIndex = index
-      this.sideNavPosition = menu.sideNavPosition
-      this.sideNavView = menu.sideNavView
-      this.sideNavViewTitle = menu.name
-      this.openSideNav()
+      if (menu.sideNavPosition && menu.sideNavView) {
+        this.sideNavPosition = menu.sideNavPosition
+        this.sideNavView = menu.sideNavView
+        this.sideNavViewTitle = menu.name
+        this.openSideNav()
+      }
+    },
+    updateMenuFromArrows(index, callback) {
+      let menu = this.toolbarMenus[index]
+      if (menu.sideNavPosition && menu.sideNavView) {
+        this.updateMenu(index)
+      } else {
+        this.menuIndex = index
+        callback()
+      }
     },
     sideNavLeft: function() {
-      let leftIndex = (this.menuIndex - 1) > -1 ? this.menuIndex - 1 : this.toolbarMenus.length - 1
-      this.updateMenu(leftIndex)
+      let index = (this.menuIndex - 1) > -1 ? this.menuIndex - 1 : this.toolbarMenus.length - 1
+      this.updateMenuFromArrows(index, this.sideNavLeft)
     },
     sideNavRight: function() {
-      let rightIndex = (this.menuIndex + 1) < this.toolbarMenus.length ? this.menuIndex + 1 : 0
-      this.updateMenu(rightIndex)
+      let index = (this.menuIndex + 1) < this.toolbarMenus.length ? this.menuIndex + 1 : 0
+      this.updateMenuFromArrows(index, this.sideNavRight)
     },
     createTabId: function(tabId) {
       return `tab${tabId}`
