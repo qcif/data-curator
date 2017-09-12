@@ -100,9 +100,15 @@ borderColor = #e4e4e4
   .left
     float left
     display inline-block
+    &.disabled
+      pointer-events none
+      cursor default
   .right
     float right
     display inline-block
+    &.disabled
+      pointer-events none
+      cursor default
 
 #tablePropertiesBtn
   float left

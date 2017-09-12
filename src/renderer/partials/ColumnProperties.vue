@@ -49,7 +49,7 @@ import {
 import SideNav from './SideNav'
 import {
   HotRegister,
-  getCurrentColumnIndex
+  getCurrentColumnIndexOrMin as getCurrentColumnIndex
 } from '../hot.js'
 const Dialog = remote.dialog
 export default {
@@ -128,17 +128,8 @@ export default {
         title: 'Error finding column properties'
       }, object))
     },
-    getColumnProperties() {
-      console.log('checking column...')
-      const hotId = this.hotId()
-      const currentColumnIndex = this.currentColumnIndex()
-      let columnProperties = this.columnProps(hotId)
-      if (columnProperties) {
-        return columnProperties[currentColumnIndex]
-      }
-    },
     getProperty: function(key) {
-      let columnProperties = this.getColumnProperties()
+      let columnProperties = this.getColumnProperties
       let columnProperty = columnProperties ? columnProperties[key] : ''
       console.log(`returning ${columnProperty} for ${key}`)
       return columnProperty
@@ -146,7 +137,9 @@ export default {
     setProperty: function(key, value) {
       console.log(`checking to set...${key}`)
       const hotId = this.hotId()
+      console.log(`hot id is: ${hotId}`)
       const currentColumnIndex = this.currentColumnIndex()
+      console.log(`currentColumnIndex is: ${currentColumnIndex}`)
       console.log('returned from current column index...')
       let object = {
         'hotId': hotId,
@@ -178,10 +171,6 @@ export default {
       this.formprops[5].values = constraintSelection
       console.log(this.formprops[5].values)
     },
-    // updateFormatSelected: function(value) {
-    //   this.setProperty('format', value)
-    //   console.log('format selection has been updated.')
-    // },
     hotId: function() {
       console.log('getting hot id....')
       return HotRegister.getActiveInstance().guid
@@ -245,6 +234,13 @@ export default {
         let property = this.getProperty('constraints')
         console.log('constraints are...')
         console.log(property)
+      },
+      getColumnProperties() {
+        console.log('checking column...')
+        let columnProperties = this.columnProps(this.hotId)
+        if (columnProperties) {
+          return columnProperties[this.currentColumnIndex]
+        }
       }
     }
     // getTypeConstraints() {

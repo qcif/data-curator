@@ -86,14 +86,46 @@ export function getCurrentCell() {
   }
 }
 
-export function getCurrentColumnIndex() {
+export function getCurrentColumnIndex () {
+  let activeHot = HotRegister.getActiveInstance()
+  let currentCell = activeHot.getSelected()
+  return currentCell[1]
+}
+export function getCurrentColumnIndexOrMin () {
   let activeHot = HotRegister.getActiveInstance()
   let currentCell = activeHot.getSelected()
   if (!currentCell) {
     activeHot.selectCell(0, 0)
     currentCell = activeHot.getSelected()
   }
-  return currentCell ? currentCell[1] : 0
+  return currentCell[1]
+}
+export function getCurrentColumnIndexOrMax() {
+  let activeHot = HotRegister.getActiveInstance()
+  let currentCell = activeHot.getSelected()
+  if (!currentCell) {
+    let maxCol = getColumnCount() - 1
+    activeHot.selectCell(0, maxCol)
+    currentCell = activeHot.getSelected()
+  }
+  return currentCell[1]
+}
+
+export function incrementActiveColumn(activeColumnIndex) {
+  let activeHot = HotRegister.getActiveInstance()
+  activeHot.selectCell(0, activeColumnIndex + 1)
+}
+
+export function decrementActiveColumn(activeColumnIndex) {
+  let activeHot = HotRegister.getActiveInstance()
+  activeHot.selectCell(0, activeColumnIndex - 1)
+}
+
+export function getColumnCount() {
+  let activeHot = HotRegister.getActiveInstance()
+  let colCount = activeHot.countCols()
+  console.log(`col count is: ${colCount}`)
+  return colCount
 }
 
 var insertRowAbove = function(deselect) {
