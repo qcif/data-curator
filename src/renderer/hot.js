@@ -76,21 +76,21 @@ let HotRegister = {
   }
 }
 
-export function getCurrentCell() {
+// export function getCurrentCell() {
+//   let activeHot = HotRegister.getActiveInstance()
+//   let currentCell = activeHot.getSelected()
+//   if (currentCell[0] !== currentCell[2] || currentCell[1] !== currentCell[3]) {
+//     console.log('only 1 cell can be selected')
+//   } else {
+//     return [currentCell[0], currentCell[2]]
+//   }
+// }
+
+export function getActiveSelected () {
   let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getSelected()
-  if (currentCell[0] !== currentCell[2] || currentCell[1] !== currentCell[3]) {
-    console.log('only 1 cell can be selected')
-  } else {
-    return [currentCell[0], currentCell[2]]
-  }
+  return activeHot.getSelected()
 }
 
-export function getCurrentColumnIndex () {
-  let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getSelected()
-  return currentCell[1]
-}
 export function getCurrentColumnIndexOrMin () {
   let activeHot = HotRegister.getActiveInstance()
   let currentCell = activeHot.getSelected()

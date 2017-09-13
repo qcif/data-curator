@@ -9,43 +9,40 @@
 import {
   mapMutations
 } from 'vuex'
-import {
-  guessColumnProperties
-} from '../frictionless.js'
+// import {
+//   guessColumnProperties
+// } from '../frictionless.js'
 export default {
   name: 'preferences',
   data() {
     return {
-      menuItems: [{
-        label: 'Guess column property',
-        method: 'guessProperties'
-      }]
+      menuItems: []
     }
   },
   methods: {
     callback(methodName) {
       this.$emit(methodName)
-    },
-    ...mapMutations([
-      'pushHotColumns'
-    ]),
-    async updateColumnProperties() {
-      let hotColumns
-      try {
-        hotColumns = await guessColumnProperties()
-      } catch (err) {
-        console.log(err)
-      }
-      console.log('captured properties are:')
-      console.log('hotColumns')
-      this.pushHotColumns(hotColumns)
-      // emit to column properties
     }
+    // ...mapMutations([
+    //   'pushHotColumns'
+    // ]),
+    // async updateColumnProperties() {
+    //   let hotColumns
+    //   try {
+    //     hotColumns = await guessColumnProperties()
+    //   } catch (err) {
+    //     console.log(err)
+    //   }
+    //   console.log('captured properties are:')
+    //   console.log('hotColumns')
+    //   this.pushHotColumns(hotColumns)
+    //   // emit to column properties
+    // }
   },
   created: function() {
-    this.$on('guessProperties', function() {
-      this.updateColumnProperties()
-    })
+    // this.$on('guessProperties', function() {
+    //   this.updateColumnProperties()
+    // })
   }
 }
 </script>

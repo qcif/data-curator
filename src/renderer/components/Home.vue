@@ -36,7 +36,7 @@
           </a>
         </div>
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
-          <component :is="sideNavView">
+          <component :is="sideNavView" :whenApplied="testTrigger">
           </component>
         </transition>
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
@@ -103,7 +103,8 @@ import {
   getColumnCount,
   getCurrentColumnIndexOrMax,
   incrementActiveColumn,
-  decrementActiveColumn
+  decrementActiveColumn,
+  getActiveSelected
 } from '../hot.js'
 import about from '../partials/About'
 import preferences from '../partials/Preferences'
@@ -113,6 +114,9 @@ import default2 from '../partials/Default2Properties'
 import tabular from '../partials/TableProperties'
 import packager from '../partials/PackageProperties'
 import provenance from '../partials/ProvenanceProperties'
+import {
+  guessColumnProperties
+} from '../frictionless.js'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
 // const {
 //   shell
@@ -126,6 +130,8 @@ export default {
   name: 'home',
   data() {
     return {
+      dummy: '',
+      columnIndex: 0,
       toolbarIndex: -1,
       sideNavPosition: 'right',
       sideNavStatus: 'closed',
@@ -176,13 +182,26 @@ export default {
       tabIndex: 'getTabIndex',
       tabTitle: 'getHotTitle'
     }),
-    ...mapGetters(['getPreviousTabId']),
+    ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'getActiveColumnIndex']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
     sideNavProperties() {
       return `${this.sideNavStatus} ${this.sideNavPosition}`
     }
+    // anotherDummy() {
+    //   let allColumnProperties = this.getHotColumnProperties(HotRegister.getActiveInstance().guid)
+    //   let activeColumnProperties
+    //   console.log(allColumnProperties)
+    //   if (allColumnProperties) {
+    //     let currentIndex = getCurrentColumnIndexOrMax()
+    //     console.log(`current index: ${currentIndex}`)
+    //     activeColumnProperties = allColumnProperties[currentIndex]
+    //   }
+    //   console.log(activeColumnProperties)
+    //   // return activeColumnProperties ? activeColumnProperties[key] : ''
+    //   return activeColumnProperties
+    // }
   },
   methods: {
     ...mapMutations([
@@ -191,8 +210,64 @@ export default {
       'removeTab',
       'setTabs',
       'setActiveTab',
-      'incrementTabIndex'
+      'incrementTabIndex',
+      'pushActiveColumn',
+      'pushHotColumns',
+      'pushActiveColumnIndex'
     ]),
+    testTrigger: function(key) {
+      console.log(`key passed is: ${key}`)
+      let object = this.getActiveColumnIndex
+      console.log('logging object...')
+      console.log(object)
+      return this.dummy
+    },
+    getProperty: function() {
+      // let key = 'name'
+      // console.log(`entered get property for ${key}...`)
+      // console.log(this.hotTabs)
+      // let columnProperties = this.getColumnProperties()
+      let allColumnProperties = this.getHotColumnProperties(HotRegister.getActiveInstance().guid)
+      let activeColumnProperties
+      console.log(allColumnProperties)
+      if (allColumnProperties) {
+        let currentIndex = getCurrentColumnIndexOrMax()
+        console.log(`current index: ${currentIndex}`)
+        activeColumnProperties = allColumnProperties[currentIndex]
+      }
+      console.log(activeColumnProperties)
+      // return activeColumnProperties ? activeColumnProperties[key] : ''
+      return activeColumnProperties
+    },
+    // getProperty2: function() {
+    //   // let key = 'name'
+    //   // console.log(`entered get property for ${key}...`)
+    //   // console.log(this.hotTabs)
+    //   // let columnProperties = this.getColumnProperties()
+    //   let allColumnProperties = this.getHotColumnProperties(HotRegister.getActiveInstance().guid)
+    //   let activeColumnProperties
+    //   console.log(allColumnProperties)
+    //   if (allColumnProperties) {
+    //     let currentIndex = getCurrentColumnIndexOrMax()
+    //     console.log(`current index: ${currentIndex}`)
+    //     activeColumnProperties = allColumnProperties[currentIndex]
+    //   }
+    //   console.log(activeColumnProperties)
+    //   // return activeColumnProperties ? activeColumnProperties[key] : ''
+    //   return activeColumnProperties
+    // },
+    async updateColumnProperties() {
+      let hotColumns
+      try {
+        hotColumns = await guessColumnProperties()
+      } catch (err) {
+        console.log(err)
+      }
+      console.log('captured properties are:')
+      console.log('hotColumns')
+      this.pushHotColumns(hotColumns)
+      // emit to column properties
+    },
     addTabWithFormattedData: function(data, format) {
       this.initTab()
       this.$nextTick(function() {
@@ -297,6 +372,16 @@ export default {
       this.toolbarIndex = index
       this.updateSideNavState()
     },
+    updateActiveColumn: function() {
+      let selected = getActiveSelected()
+      if (!selected) {
+        console.log('Cannot update active column without a column selected.')
+      } else {
+        let currentColumnIndex = selected[1]
+        let guid = HotRegister.getActiveInstance().guid
+        this.pushActiveColumnIndex(guid, currentColumnIndex)
+      }
+    },
     updateToolbarMenuForColumn: function(index) {
       let maxColAllowed = getColumnCount() -1
       console.log(`max allowed: ${maxColAllowed}`)
@@ -304,9 +389,18 @@ export default {
       console.log(`currentColIndex: ${currentColIndex}`)
       if (index < this.toolbarIndex && currentColIndex > 0) {
         decrementActiveColumn(currentColIndex)
+        // column.trigger()
+        this.updateActiveColumn()
+        // let updateColumnIndex = getCurrentColumnIndexOrMax()
+        this.dummy = this.getProperty()
+        console.log(`dummy is ${this.dummy}`)
+        // this.pushActiveColumn(updateColumnIndex)
+        console.log(`new column index is: ${updateColumnIndex}`)
       } else if (index > this.toolbarIndex) {
         if (currentColIndex < maxColAllowed) {
           incrementActiveColumn(currentColIndex)
+          this.updateActiveColumn()
+          this.dummy = this.getProperty()
         } else {
           this.updateToolbarMenu(index)
         }
@@ -407,6 +501,7 @@ export default {
     this.$nextTick(function() {
       console.log('.........................')
       console.log('inside Vue ready tick....')
+      // this.$emit(methodName)
       require('../index.js')
       let tabIdOrder
       const vueSetTabs = this.setTabs
@@ -424,6 +519,12 @@ export default {
       this.addTab()
       console.log('leaving Vue ready tick....')
       console.log('.........................')
+    })
+  },
+  created: function() {
+    const vueGuessProperties = this.updateColumnProperties
+    ipc.on('guessColumnProperties', function(event, arg) {
+      vueGuessProperties()
     })
   },
   watch: {

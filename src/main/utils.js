@@ -66,6 +66,11 @@ export function showSidePanel(name) {
   window.webContents.send('showSidePanel', name)
 }
 
+export function guessColumnProperties() {
+  var window = BrowserWindow.getFocusedWindow()
+  window.webContents.send('guessColumnProperties')
+}
+
 function getSaveSubMenu() {
   let fileMenu = Menu.getApplicationMenu().items.find(x => x.label === 'File')
   let saveSubMenu = fileMenu.submenu.items.find(x => x.label === 'Save')
