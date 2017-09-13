@@ -478,8 +478,6 @@ export default {
   components: {
     about,
     preferences,
-    default1,
-    default2,
     column,
     tabular,
     packager,
