@@ -6,7 +6,7 @@ const Dialog = remote.dialog
 
 let HotRegister = {
   hots: {},
-  register: function(container) {
+  register: function(container, selectionListener) {
     let hot = new Handsontable(container, {
       colHeaders: true,
       rowHeaders: true,
@@ -36,6 +36,11 @@ let HotRegister = {
       afterUpdateSettings: function() {
         hot.render()
         hot.deselectCell()
+      },
+      afterSelection: function (r, c, r2, c2, preventScrolling) {
+        // setting if prevent sqcrolling after selection
+        // preventScrolling.value = true
+        selectionListener()
       },
       enterMoves: function(event) {
         if (!event.shiftKey) {

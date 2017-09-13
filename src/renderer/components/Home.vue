@@ -222,6 +222,11 @@ export default {
       console.log(object)
       return this.dummy
     },
+    selectionListener: function() {
+      console.log('selection noted in vue')
+      this.updateActiveColumn()
+      console.log('selection noted finished in vue')
+    },
     getProperty: function() {
       // let key = 'name'
       // console.log(`entered get property for ${key}...`)
@@ -304,7 +309,7 @@ export default {
       this.loadFormattedDataIntoContainer(container, data, defaultFormat)
     },
     loadFormattedDataIntoContainer: function(container, data, format) {
-      HotRegister.register(container)
+      HotRegister.register(container, this.selectionListener)
       addHotContainerListeners(container)
       let activeHotId = this.getActiveHotId()
       let activeTabId = this.activeTab
@@ -381,6 +386,7 @@ export default {
         let guid = HotRegister.getActiveInstance().guid
         this.pushActiveColumnIndex(guid, currentColumnIndex)
       }
+      this.dummy = this.getProperty()
     },
     updateToolbarMenuForColumn: function(index) {
       let maxColAllowed = getColumnCount() -1
@@ -392,15 +398,15 @@ export default {
         // column.trigger()
         this.updateActiveColumn()
         // let updateColumnIndex = getCurrentColumnIndexOrMax()
-        this.dummy = this.getProperty()
-        console.log(`dummy is ${this.dummy}`)
+        // this.dummy = this.getProperty()
+        // console.log(`dummy is ${this.dummy}`)
         // this.pushActiveColumn(updateColumnIndex)
-        console.log(`new column index is: ${updateColumnIndex}`)
+        // console.log(`new column index is: ${updateColumnIndex}`)
       } else if (index > this.toolbarIndex) {
         if (currentColIndex < maxColAllowed) {
           incrementActiveColumn(currentColIndex)
           this.updateActiveColumn()
-          this.dummy = this.getProperty()
+          // this.dummy = this.getProperty()
         } else {
           this.updateToolbarMenu(index)
         }
