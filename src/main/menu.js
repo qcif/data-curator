@@ -80,7 +80,8 @@ exports.menu = [
       }, {
         type: 'separator'
       }, {
-        role: 'hide'
+        role: 'hide',
+        label: 'Hide Data Curator'
       }, {
         role: 'hideothers'
       }, {
@@ -88,7 +89,8 @@ exports.menu = [
       }, {
         type: 'separator'
       }, {
-        role: 'quit'
+        role: 'quit',
+        label: 'Quit Data Curator'
       }
     ]
   }, {
