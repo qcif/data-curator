@@ -12,6 +12,7 @@ Feature: Add Tab
   Scenario: Add Tab
     Given I have opened Data Curator
     When I invoke the "Add Tab" command
-    Then create an empty 2x3 data tab in a new tab
+    Then create an empty 1 row by 3 column data tab in a new tab
     And show it the right-most position
     And set a unique Tab name
+    And place the cursor in row 1, column 1
