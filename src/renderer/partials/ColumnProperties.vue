@@ -1,7 +1,6 @@
 <template>
 <form class="navbar-form form-horizontal" id="columnProperties">
   <div class="form-group-sm row container-fluid">
-    <!-- <template v-if="hotId && currentColumnIndex" > -->
     <div v-for="(formprop, index) in formprops" :key="index">
       <label :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
       <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
@@ -21,18 +20,8 @@
             </option>
           </select>
         </template>
-      <!-- <div v-else-if="typeof formprop.type && formprop.type === 'checkbox'">
-        <template v-for="constraint in getTypeConstraints">
-          <input type="checkbox" :id="constraint" :value="constraint" v-model="selectConstraints" />
-          <label :for="constraint">{{constraint}}</label>
-        </template>
-      </div> -->
-      <input v-else :value="getPropert(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
+      <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
     </div>
-    <!-- </template> -->
-    <!-- <div v-else>
-      Select a column
-    </div> -->
   </div>
   </div>
 </form>
@@ -55,18 +44,19 @@ const Dialog = remote.dialog
 export default {
   extends: SideNav,
   name: 'column',
-  props: ['whenApplied'],
+  props: ['getColumnProperties', 'cIndex'],
   data() {
     return {
+      foo: '',
       formprops: [{
         label: 'name'
-      }
-      // {
-      //   label: 'title'
-      // },
-      // {
-      //   label: 'description'
-      // },
+      },
+      {
+        label: 'title'
+      },
+      {
+        label: 'description'
+      },
       // {
       //   label: 'type',
       //   type: 'dropdown',
@@ -82,10 +72,10 @@ export default {
       //   type: 'dropdown',
       //   values: []
       // },
-      // {
-      //   label: 'rdfType',
-      //   type: 'url'
-      // }
+      {
+        label: 'rdfType',
+        type: 'url'
+      }
       ],
       formats: {
         'string': ['email', 'uri', 'binary', 'uuid'],
@@ -118,55 +108,37 @@ export default {
   methods: {
     ...mapMutations([
       'pushHotProperty']),
-    // showErrorMessage(object) {
-    //   Dialog.showMessageBox(Object.assign({
-    //     type: 'error',
-    //     buttons: ['OK'],
-    //     title: 'Error finding column properties'
-    //   }, object))
-    // },
-    getPropert: function(key) {
-      // console.log(`entered get property for ${key}...`)
-      // // console.log(this.hotTabs)
-      // // let columnProperties = this.getColumnProperties()
-      // let allColumnProperties = this.getHotColumnProperties(this.hotId())
-      // let activeColumnProperties
-      // if (allColumnProperties) {
-      //   let currentIndex = this.whenApplied()
-      //   activeColumnProperties = allColumnProperties[currentIndex]
-      // }
-      // console.log('have column properties...')
-      // console.log(activeColumnProperties)
-      // columnProperties[this.currentColumnIndex]
-      // let columnProperty = ''
-      // if (!activeColumnProperties) {
-      //   this.setProperty(key, columnProperty)
-      // } else {
-      //   columnProperty = activeColumnProperties[key]
-      // }
-      // console.log(`returning ${columnProperty} for ${key}`)
+    getProperty: function(key) {
+      // getCurrentColumnIndex()
+      // console.log('getting property again ok')
+      let allColumnProperties = this.getColumnProperties
+      if (allColumnProperties) {
+        console.log('all column properties...')
+        console.log(allColumnProperties)
+        let activeColumnProperties = allColumnProperties[this.cIndex]
+        if (activeColumnProperties) {
+          return activeColumnProperties[key]
+        } else {
+          this.setProperty(key, '')
+        }
+      }
+      // console.log('in column properties')
       // return activeColumnProperties ? activeColumnProperties[key] : ''
-      // return this.whenApplied()
-      console.log('getting property again ok')
-      let activeColumnProperties = this.whenApplied(key)
-      return activeColumnProperties ? activeColumnProperties[key] : ''
+      // return this.cIndex
     },
     setProperty: function(key, value) {
-      // console.log(`checking to set...${key}`)
-      const hotId = this.hotId()
-      // console.log(`hot id is: ${hotId}`)
-      const currentColumnIndex = this.currentColumnIndex()
-      // console.log(`currentColumnIndex is: ${currentColumnIndex}`)
-      // console.log('returned from current column index...')
+      console.log(`checking to set...${key}`)
+      const hotId = HotRegister.getActiveInstance().guid
+      const currentColumnIndex = this.cIndex
       let object = {
         'hotId': hotId,
         'columnIndex': currentColumnIndex,
         'key': key,
         'value': value
       }
-      // console.log('object is....')
-      // console.log(object)
       this.pushHotProperty(object)
+      // this.postSetColumnHook()
+      console.log('returned to set property...')
     },
     updateTypeDropdown: function(key, value) {
       console.log('updating type....')
@@ -188,24 +160,12 @@ export default {
       this.formprops[5].values = constraintSelection
       console.log(this.formprops[5].values)
     },
-    hotId: function() {
-      console.log('getting hot id....')
-      return HotRegister.getActiveInstance().guid
-    },
     currentColumnIndex: function() {
       console.log('getting column index....')
       let currentIndex = getCurrentColumnIndex()
       console.log(`index: ${currentIndex}`)
       return currentIndex
     }
-    // getColumnProperties: function() {
-    //   console.log('checking column...')
-    //   let columnProperties = this.getHotColumnProperties(this.hotId())
-    //   console.log(columnProperties)
-    //   if (columnProperties) {
-    //     return columnProperties[this.currentColumnIndex]
-    //   }
-    // }
   },
   computed: {
     ...mapGetters(['getHotColumnProperties']),
@@ -261,9 +221,6 @@ export default {
         console.log(property)
       }
     }
-    // testTriggering() {
-    //   return this.activeColumnIndex
-    // }
   },
   watch: {
     // selectConstraints: function(selectedConstraints) {
@@ -280,11 +237,7 @@ export default {
   //   console.log('before mount')
   // },
   mounted: function() {
-    console.log('mounted')
-    // this.whenApplied()
-    this.$nextTick(function() {
-      console.log('ticking')
-    })
+
   }
   // beforeUpdate: function() {
   //   console.log('before update')

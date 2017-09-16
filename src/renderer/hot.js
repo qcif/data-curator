@@ -68,9 +68,9 @@ let HotRegister = {
   },
   getActiveInstance: function() {
     let activeHotId = jQuery('#csvContent .active .editor').attr('id')
-    // console.log(`active id for hot is: ${activeHotId}`)
+    console.log(`active id for hot is: ${activeHotId}`)
     let hot = _.get(this.hots, activeHotId)
-    // console.log(hot)
+    console.log(hot)
     return hot
   },
   getActiveHotIdData: function() {
@@ -91,12 +91,12 @@ let HotRegister = {
 //   }
 // }
 
-export function getActiveSelected () {
+export function getActiveSelected() {
   let activeHot = HotRegister.getActiveInstance()
   return activeHot.getSelected()
 }
 
-export function getCurrentColumnIndexOrMin () {
+export function getCurrentColumnIndexOrMin() {
   let activeHot = HotRegister.getActiveInstance()
   let currentCell = activeHot.getSelected()
   if (!currentCell) {

@@ -9,16 +9,7 @@ const getters = {
     return title
   },
   getHotColumnProperties: (state, getters) => (hotId) => {
-    // console.log(`inside get hot column properties for ${hotId}`)
-    // console.log(state.hotTabs)
     let allColumnProperties = state.hotTabs[hotId].columnProperties
-    // console.log('logging get column properties')
-    // console.log(allColumnProperties)
-    // if (allColumnProperties) {
-    //   let allColumnProperties2 = state.hotTabs[hotId].columnProperties[2]
-    //   console.log('logging get column properties2')
-    //   console.log(allColumnProperties2)
-    // }
     return state.hotTabs[hotId].columnProperties
   },
   getActiveColumnIndex: (state, getters) => {

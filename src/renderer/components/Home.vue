@@ -36,7 +36,7 @@
           </a>
         </div>
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
-          <component :is="sideNavView" :whenApplied="testTrigger">
+          <component :is="sideNavView" :getColumnProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
           </component>
         </transition>
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
@@ -101,6 +101,7 @@ import {
 import {
   HotRegister,
   getColumnCount,
+  getCurrentColumnIndexOrMin,
   getCurrentColumnIndexOrMax,
   incrementActiveColumn,
   decrementActiveColumn,
@@ -116,20 +117,17 @@ import {
   guessColumnProperties
 } from '../frictionless.js'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
-// const {
-//   shell
-// } = require('electron')
 var ipc = require('electron').ipcRenderer
 require('bootstrap/dist/js/bootstrap.min.js')
-// require('jquery-csv/src/jquery.csv.js')
 require('lodash/lodash.min.js')
 require('../menu.js')
 export default {
   name: 'home',
   data() {
     return {
-      dummy: '',
-      columnIndex: 0,
+      currentColumnIndex: 0,
+      // only set method when ready
+      getColumnPropertiesMethod: this.getActiveColumnProperties(),
       toolbarIndex: -1,
       sideNavPosition: 'right',
       sideNavStatus: 'closed',
@@ -205,63 +203,18 @@ export default {
       'pushHotColumns',
       'pushActiveColumnIndex'
     ]),
-    // isLeftNavClickable: function() {
-    //   console.log('checking left clickable...')
-    //   if (_.includes(['Column'], this.toolbarMenuName) && getCurrentColumnIndexOrMax() < 1) {
-    //     console.log('column no left')
-    //     return false
-    //   }
-    //   return true
-    // },
-    // isRightSideNavClickable: function() {
-    //   console.log('checking right clickable...')
-    //   if (_.includes(['Export'], this.toolbarMenuName)) {
-    //     return false
-    //   }
-    //   return true
-    // },
-    testTrigger: function(key) {
-      return this.dummy
-    },
     selectionListener: function() {
       console.log('selection noted in vue')
       this.updateActiveColumn()
       console.log('selection noted finished in vue')
     },
-    getProperty: function() {
-      // let key = 'name'
-      // console.log(`entered get property for ${key}...`)
-      // console.log(this.hotTabs)
-      // let columnProperties = this.getColumnProperties()
-      let allColumnProperties = this.getHotColumnProperties(HotRegister.getActiveInstance().guid)
-      let activeColumnProperties
-      console.log(allColumnProperties)
-      if (allColumnProperties) {
-        let currentIndex = getCurrentColumnIndexOrMax()
-        console.log(`current index: ${currentIndex}`)
-        activeColumnProperties = allColumnProperties[currentIndex]
+    getActiveColumnProperties: function() {
+      console.log('getting property....')
+      let hot = HotRegister.getActiveInstance()
+      if (hot) {
+        return this.getHotColumnProperties(hot.guid)
       }
-      console.log(activeColumnProperties)
-      // return activeColumnProperties ? activeColumnProperties[key] : ''
-      return activeColumnProperties
     },
-    // getProperty2: function() {
-    //   // let key = 'name'
-    //   // console.log(`entered get property for ${key}...`)
-    //   // console.log(this.hotTabs)
-    //   // let columnProperties = this.getColumnProperties()
-    //   let allColumnProperties = this.getHotColumnProperties(HotRegister.getActiveInstance().guid)
-    //   let activeColumnProperties
-    //   console.log(allColumnProperties)
-    //   if (allColumnProperties) {
-    //     let currentIndex = getCurrentColumnIndexOrMax()
-    //     console.log(`current index: ${currentIndex}`)
-    //     activeColumnProperties = allColumnProperties[currentIndex]
-    //   }
-    //   console.log(activeColumnProperties)
-    //   // return activeColumnProperties ? activeColumnProperties[key] : ''
-    //   return activeColumnProperties
-    // },
     async updateColumnProperties() {
       let hotColumns
       try {
@@ -372,6 +325,8 @@ export default {
       this.sideNavView = toolbarMenu.sideNavView
       this.sideNavViewTitle = toolbarMenu.name
       this.openSideNav()
+      // ensure a cell is selected before any of menu tools start
+      getCurrentColumnIndexOrMin()
     },
     updateToolbarMenuForSideNav: function(index) {
       if (this.sideNavStatus === 'closed' || this.toolbarIndex === -1) {
@@ -391,8 +346,10 @@ export default {
         let currentColumnIndex = selected[1]
         let guid = HotRegister.getActiveInstance().guid
         this.pushActiveColumnIndex(guid, currentColumnIndex)
+        this.currentColumnIndex = currentColumnIndex
       }
-      this.dummy = this.getProperty()
+      console.log('updated active column')
+      this.getColumnPropertiesMethod = this.getActiveColumnProperties()
     },
     updateToolbarMenuForColumn: function(index) {
       this.resetSideNavArrows()
@@ -411,7 +368,6 @@ export default {
           this.updateToolbarMenu(index)
         }
       }
-      console.log(`currentColIndex now: ${currentColIndex}`)
       this.enableSideNavLeftArrow = getCurrentColumnIndexOrMax() > 0
     },
     updateToolbarMenu: function(index) {
