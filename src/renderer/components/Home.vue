@@ -36,7 +36,7 @@
           </a>
         </div>
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
-          <component :is="sideNavView" :getColumnProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
+          <component :is="sideNavView" :getAllColumnsProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
           </component>
         </transition>
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
@@ -127,7 +127,7 @@ export default {
     return {
       currentColumnIndex: 0,
       // only set method when ready
-      getColumnPropertiesMethod: this.getActiveColumnProperties(),
+      getColumnPropertiesMethod: this.getAllColumnsProperties(),
       toolbarIndex: -1,
       sideNavPosition: 'right',
       sideNavStatus: 'closed',
@@ -208,7 +208,7 @@ export default {
       this.updateActiveColumn()
       console.log('selection noted finished in vue')
     },
-    getActiveColumnProperties: function() {
+    getAllColumnsProperties: function() {
       console.log('getting property....')
       let hot = HotRegister.getActiveInstance()
       if (hot) {
@@ -349,7 +349,7 @@ export default {
         this.currentColumnIndex = currentColumnIndex
       }
       console.log('updated active column')
-      this.getColumnPropertiesMethod = this.getActiveColumnProperties()
+      this.getColumnPropertiesMethod = this.getAllColumnsProperties()
     },
     updateToolbarMenuForColumn: function(index) {
       this.resetSideNavArrows()

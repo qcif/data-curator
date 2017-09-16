@@ -44,7 +44,7 @@ const Dialog = remote.dialog
 export default {
   extends: SideNav,
   name: 'column',
-  props: ['getColumnProperties', 'cIndex'],
+  props: ['getAllColumnsProperties', 'cIndex'],
   data() {
     return {
       foo: '',
@@ -109,22 +109,15 @@ export default {
     ...mapMutations([
       'pushHotProperty']),
     getProperty: function(key) {
-      // getCurrentColumnIndex()
-      // console.log('getting property again ok')
-      let allColumnProperties = this.getColumnProperties
-      if (allColumnProperties) {
-        console.log('all column properties...')
-        console.log(allColumnProperties)
-        let activeColumnProperties = allColumnProperties[this.cIndex]
+      let allColumnsProperties = this.getAllColumnsProperties
+      if (allColumnsProperties) {
+        let activeColumnProperties = allColumnsProperties[this.cIndex]
         if (activeColumnProperties) {
           return activeColumnProperties[key]
         } else {
           this.setProperty(key, '')
         }
       }
-      // console.log('in column properties')
-      // return activeColumnProperties ? activeColumnProperties[key] : ''
-      // return this.cIndex
     },
     setProperty: function(key, value) {
       console.log(`checking to set...${key}`)
