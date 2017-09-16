@@ -16,7 +16,6 @@ Feature: Find in table
 
   Unresolved:
   - loop through search results regardless of reaching the start/end of the table
-  - user interface
 
   Scenario: Find in table
     Given I have opened Data Curator
