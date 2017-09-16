@@ -4,18 +4,18 @@
     <div v-for="(formprop, index) in formprops" :key="index">
       <label :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
       <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
-          <select v-if="formprop.label === 'type'" :value="getTypeSelected" @input="updateTypeDropdown(formprop.label, $event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
-            <option v-for="option in formprop.values" v-bind:value="option">
+          <select v-if="formprop.label==='type'" v-model="selectType" :id="formprop.label" class="form-control input-sm col-sm-8">
+            <option v-for="option in typeValues" v-bind:value="option">
               {{ option}}
             </option>
           </select>
-          <select v-else-if="formprop.label === 'format'" :value="getFormatSelected" @input="setProperty(formprop.label, $event.target.value)" :id="formprop.label" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-8">
-            <option v-for="option in formprop.values" v-bind:value="option">
+          <!-- <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" class="form-control input-sm col-sm-8">
+            <option v-for="option in formatValues" v-bind:value="option">
               {{ option}}
             </option>
-          </select>
-          <select v-else v-model="selectConstraints" multiple :id="formprop.label" class="form-control input-sm col-sm-8">
-            <option v-for="option in formprop.values" v-bind:value="option">
+          </select> -->
+          <select v-else v-model="selectConstraints" multiple id="constraints" :size="constraintValues.length" class="form-control input-sm col-sm-8">
+            <option v-for="option in constraintValues" v-bind:value="option">
               {{ option}}
             </option>
           </select>
@@ -47,7 +47,9 @@ export default {
   props: ['getAllColumnsProperties', 'cIndex'],
   data() {
     return {
-      foo: '',
+      typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
+      formatValues: [],
+      constraintValues: [],
       formprops: [{
         label: 'name'
       },
@@ -57,21 +59,18 @@ export default {
       {
         label: 'description'
       },
-      // {
-      //   label: 'type',
-      //   type: 'dropdown',
-      //   values: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any']
-      // },
+      {
+        label: 'type',
+        type: 'dropdown'
+      },
       // {
       //   label: 'format',
-      //   type: 'dropdown',
-      //   values: []
+      //   type: 'dropdown'
       // },
-      // {
-      //   label: 'constraints',
-      //   type: 'dropdown',
-      //   values: []
-      // },
+      {
+        label: 'constraints',
+        type: 'dropdown'
+      },
       {
         label: 'rdfType',
         type: 'url'
@@ -133,25 +132,17 @@ export default {
       // this.postSetColumnHook()
       console.log('returned to set property...')
     },
-    updateTypeDropdown: function(key, value) {
-      console.log('updating type....')
-      this.setProperty('type', value)
-      this.updateFormatDropdown(value)
-      this.setProperty('format', this.formprops[4].values[0])
-      this.updateConstraintsCheckbox(value)
-    },
-    updateFormatDropdown: function(typeValue) {
-      console.log('updating format dropdown....')
-      let formatSelection = this.formats[typeValue] || []
-      formatSelection.push('default')
-      this.formprops[4].values = formatSelection
-    },
-    updateConstraintsCheckbox: function(typeValue) {
-      console.log('updating constraints checkbox....')
-      console.log(`type is ${typeValue}`)
-      let constraintSelection = this.constraints[typeValue] || []
-      this.formprops[5].values = constraintSelection
-      console.log(this.formprops[5].values)
+    // updateFormatDropdown: function(typeValue) {
+    //   console.log(`type value is: ${typeValue}`)
+    //   this.formatValues = this.formats[typeValue] || []
+    //   this.formatValues.push('default')
+    //   console.log(`selected format: ${this.formatValues}`)
+    //   // this.formatValues.push('default')
+    //   console.log(this.formatValues[0])
+    //   this.selectFormat = this.formatValues[0]
+    // },
+    updateConstraintsDropdown: function(typeValue) {
+      this.constraintValues = this.constraints[typeValue] || []
     },
     currentColumnIndex: function() {
       console.log('getting column index....')
@@ -162,36 +153,48 @@ export default {
   },
   computed: {
     ...mapGetters(['getHotColumnProperties']),
-    isDropdownFormatDisabled() {
-      let found = this.formprops.find(function(obj) {
-        return obj.label === 'format'
-      })
-      return found.values.length < 2
-    },
-    getTypeSelected() {
-      let property = this.getProperty('type')
-      console.log(`property selected is: ${property}`)
-      console.log(property)
-      if (!property) {
-        property = this.formprops[3].values[0]
-        this.setProperty('type', property)
+    // isDropdownFormatDisabled() {
+    //   let found = this.formprops.find(function(obj) {
+    //     return obj.label === 'format'
+    //   })
+    //   return found.values.length < 2
+    // },
+    // getFormatSelected() {
+    //   console.log('firing format...')
+    //   let property = this.getProperty('format')
+    //   console.log('format selected is...')
+    //   console.log(property)
+    //   if (!property) {
+    //     let typeSelected = this.getTypeSelected
+    //     this.updateFormatDropdown(typeSelected)
+    //     property = this.formprops[4].values[0]
+    //     this.setProperty('format', property)
+    //   }
+    //   console.log(`format property is ${property}`)
+    //   return property
+    // },
+    selectType: {
+      get: function() {
+        let property = this.getProperty('type')
+        console.log('type is...')
+        console.log(property)
+        if (!property) {
+          console.log('initialising property')
+          property = this.typeValues[0]
+          console.log(`property is now ${property}`)
+          this.setProperty('type', property)
+        }
+        // this.updateFormatDropdown(property)
+        this.updateConstraintsDropdown(property)
+        return property
+      },
+      set: function(value) {
+        console.log('set values for type...')
+        console.log(value)
+        this.setProperty('type', value)
+        // this.updateFormatDropdown(value)
+        this.updateConstraintsDropdown(value)
       }
-      this.updateConstraintsCheckbox(property)
-      return property
-    },
-    getFormatSelected() {
-      console.log('firing format...')
-      let property = this.getProperty('format')
-      console.log('format selected is...')
-      console.log(property)
-      if (!property) {
-        let typeSelected = this.getTypeSelected
-        this.updateFormatDropdown(typeSelected)
-        property = this.formprops[4].values[0]
-        this.setProperty('format', property)
-      }
-      console.log(`format property is ${property}`)
-      return property
     },
     selectConstraints: {
       get: function() {
@@ -209,11 +212,33 @@ export default {
         console.log('set values for constraints...')
         console.log(values)
         this.setProperty('constraints', values)
-        let property = this.getProperty('constraints')
-        console.log('constraints are...')
-        console.log(property)
       }
     }
+    // selectFormat: {
+    //   get: function() {
+    //     let property = this.getProperty('format')
+    //     console.log('formats are...')
+    //     console.log(property)
+    //     if (!property) {
+    //       console.log('initialising property')
+    //       this.setProperty('format', [])
+    //       property = []
+    //     }
+    //     return property
+    //   },
+    //   set: function(value) {
+    //     console.log('set value for format...')
+    //     console.log(value)
+    //     this.setProperty('format', value)
+    //   }
+    // }
+    // updateTypeDropdown: function(key, value) {
+    //   console.log('updating type....')
+    //   this.setProperty('type', value)
+    //   // this.updateFormatDropdown(value)
+    //   // this.setProperty('format', this.formprops[4].values[0])
+    //   this.updateConstraintsCheckbox(value)
+    // },
   },
   watch: {
     // selectConstraints: function(selectedConstraints) {
