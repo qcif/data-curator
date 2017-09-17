@@ -4,17 +4,17 @@
     <div v-for="(formprop, index) in formprops" :key="index">
       <label :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
       <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
-          <select v-if="formprop.label==='type'" v-model="selectType" :id="formprop.label" class="form-control input-sm col-sm-8">
+          <select v-if="formprop.label==='type'" :value="getProperty(formprop.label)" @input="setSelectType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
             <option v-for="option in typeValues" v-bind:value="option">
               {{ option}}
             </option>
           </select>
-          <!-- <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" class="form-control input-sm col-sm-8">
+          <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-8">
             <option v-for="option in formatValues" v-bind:value="option">
               {{ option}}
             </option>
-          </select> -->
-          <select v-else v-model="selectConstraints" multiple id="constraints" :size="constraintValues.length" class="form-control input-sm col-sm-8">
+          </select>
+          <select v-else multiple v-model="selectConstraints" id="constraints" class="form-control input-sm col-sm-8">
             <option v-for="option in constraintValues" v-bind:value="option">
               {{ option}}
             </option>
@@ -63,10 +63,10 @@ export default {
         label: 'type',
         type: 'dropdown'
       },
-      // {
-      //   label: 'format',
-      //   type: 'dropdown'
-      // },
+      {
+        label: 'format',
+        type: 'dropdown'
+      },
       {
         label: 'constraints',
         type: 'dropdown'
@@ -106,20 +106,24 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'pushHotProperty']),
+      'pushHotProperty'
+    ]),
     getProperty: function(key) {
+      console.log(`inside get property for ${key}...`)
       let allColumnsProperties = this.getAllColumnsProperties
+      console.log(`all column properties are ${allColumnsProperties}`)
+      console.log(allColumnsProperties)
       if (allColumnsProperties) {
         let activeColumnProperties = allColumnsProperties[this.cIndex]
         if (activeColumnProperties) {
+          console.log(`returning ${activeColumnProperties[key]}`)
           return activeColumnProperties[key]
-        } else {
-          this.setProperty(key, '')
         }
       }
     },
     setProperty: function(key, value) {
       console.log(`checking to set...${key}`)
+      console.log(`type is ${value}`)
       const hotId = HotRegister.getActiveInstance().guid
       const currentColumnIndex = this.cIndex
       let object = {
@@ -129,72 +133,29 @@ export default {
         'value': value
       }
       this.pushHotProperty(object)
-      // this.postSetColumnHook()
-      console.log('returned to set property...')
-    },
-    // updateFormatDropdown: function(typeValue) {
-    //   console.log(`type value is: ${typeValue}`)
-    //   this.formatValues = this.formats[typeValue] || []
-    //   this.formatValues.push('default')
-    //   console.log(`selected format: ${this.formatValues}`)
-    //   // this.formatValues.push('default')
-    //   console.log(this.formatValues[0])
-    //   this.selectFormat = this.formatValues[0]
-    // },
-    updateConstraintsDropdown: function(typeValue) {
-      this.constraintValues = this.constraints[typeValue] || []
+      console.log('returned to set property')
     },
     currentColumnIndex: function() {
       console.log('getting column index....')
       let currentIndex = getCurrentColumnIndex()
       console.log(`index: ${currentIndex}`)
       return currentIndex
+    },
+    setSelectType: function(value) {
+      this.setProperty('type', value)
+      console.log('checking type is set...')
+      this.updateTypeDependentProperties(value)
+    },
+    updateTypeDependentProperties: function(value) {
+      this.constraintValues = this.constraints[value]
+      this.formatValues = this.formats[value] || []
+      this.formatValues.push('default')
     }
   },
   computed: {
     ...mapGetters(['getHotColumnProperties']),
-    // isDropdownFormatDisabled() {
-    //   let found = this.formprops.find(function(obj) {
-    //     return obj.label === 'format'
-    //   })
-    //   return found.values.length < 2
-    // },
-    // getFormatSelected() {
-    //   console.log('firing format...')
-    //   let property = this.getProperty('format')
-    //   console.log('format selected is...')
-    //   console.log(property)
-    //   if (!property) {
-    //     let typeSelected = this.getTypeSelected
-    //     this.updateFormatDropdown(typeSelected)
-    //     property = this.formprops[4].values[0]
-    //     this.setProperty('format', property)
-    //   }
-    //   console.log(`format property is ${property}`)
-    //   return property
-    // },
-    selectType: {
-      get: function() {
-        let property = this.getProperty('type')
-        console.log('type is...')
-        console.log(property)
-        if (!property) {
-          console.log('initialising property')
-          property = this.typeValues[0]
-          console.log(`property is now ${property}`)
-          this.setProperty('type', property)
-        }
-        // this.updateFormatDropdown(property)
-        this.updateConstraintsDropdown(property)
-        return property
-      },
-      set: function(value) {
-        console.log('set values for type...')
-        console.log(value)
-        this.setProperty('type', value)
-        // this.updateFormatDropdown(value)
-        this.updateConstraintsDropdown(value)
-      }
+    isDropdownFormatDisabled() {
+      return this.formatValues.length < 2
     },
     selectConstraints: {
       get: function() {
@@ -202,6 +163,10 @@ export default {
         console.log('constraints are...')
         console.log(property)
         if (!property) {
+          if (this.getProperty('type')) {
+            let type = this.getProperty('type')
+            this.constraintValues = this.constraints[type]
+          }
           console.log('initialising property')
           this.setProperty('constraints', [])
           property = []
@@ -213,67 +178,38 @@ export default {
         console.log(values)
         this.setProperty('constraints', values)
       }
+    },
+    selectFormat: {
+      get: function() {
+        let property = this.getProperty('format')
+        console.log('formats are...')
+        console.log(property)
+        if (!property) {
+          console.log('initialising property')
+          this.setProperty('format', 'default')
+          property = 'default'
+        }
+        return property
+      },
+      set: function(value) {
+        console.log('set value for format...')
+        console.log(value)
+        this.setProperty('format', value)
+      }
     }
-    // selectFormat: {
-    //   get: function() {
-    //     let property = this.getProperty('format')
-    //     console.log('formats are...')
-    //     console.log(property)
-    //     if (!property) {
-    //       console.log('initialising property')
-    //       this.setProperty('format', [])
-    //       property = []
-    //     }
-    //     return property
-    //   },
-    //   set: function(value) {
-    //     console.log('set value for format...')
-    //     console.log(value)
-    //     this.setProperty('format', value)
-    //   }
-    // }
-    // updateTypeDropdown: function(key, value) {
-    //   console.log('updating type....')
-    //   this.setProperty('type', value)
-    //   // this.updateFormatDropdown(value)
-    //   // this.setProperty('format', this.formprops[4].values[0])
-    //   this.updateConstraintsCheckbox(value)
-    // },
   },
   watch: {
-    // selectConstraints: function(selectedConstraints) {
-    //   console.log(`constraints selected are: ${selectedConstraints}`)
-    // }
   },
-  // beforeCreate: function() {
-  //   console.log('before create')
-  // },
-  // created: function() {
-  //   console.log('created')
-  // },
-  // beforeMount: function() {
-  //   console.log('before mount')
-  // },
+  created: function() {
+    if (!this.getProperty('type')) {
+      this.setSelectType('any')
+    }
+  },
   mounted: function() {
-
+    this.$nextTick(function() {
+      let activeHot = HotRegister.getActiveInstance()
+      activeHot.selectCell(0, 0)
+    })
   }
-  // beforeUpdate: function() {
-  //   console.log('before update')
-  // },
-  // updated: function() {
-  //   console.log('updated')
-  // },
-  // activated: function() {
-  //   console.log('activated')
-  // },
-  // deactivated: function() {
-  //   console.log('deactivated')
-  // },
-  // beforeDestroy: function() {
-  //   console.log('before destroy')
-  // },
-  // destroyed: function() {
-  //   console.log('destroyed')
-  // }
 }
 </script>
