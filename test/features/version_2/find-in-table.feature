@@ -14,6 +14,9 @@ Feature: Find in table
   - When "find next" is invoked but no values are found on reaching the end of the table, inform the user
   - When "find previous" is invoked but no values are found on reaching the start of the table, inform the user
 
+  Notes:
+  - https://docs.handsontable.com/0.34.4/demo-searching.html 
+
   Unresolved:
   - loop through search results regardless of reaching the start/end of the table
 
