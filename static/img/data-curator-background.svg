@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 486 542">
   <defs>
     <linearGradient id="data-curator-background-a" x1="75.102%" x2="24.878%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="#EEE"/>
-      <stop offset="100%" stop-color="#DDD"/>
+      <stop offset="0%" stop-color="#F9F9F9"/>
+      <stop offset="100%" stop-color="#FCFCFC"/>
     </linearGradient>
   </defs>
   <g fill="none" fill-rule="evenodd" transform="translate(-114 -74)">
