@@ -110,33 +110,21 @@ export default {
       'pushHotProperty'
     ]),
     getProperty: function(key) {
-      console.log(`inside get property for ${key}...`)
       let allColumnsProperties = this.getAllColumnsProperties
-      console.log(`all column properties are ${allColumnsProperties}`)
-      console.log(allColumnsProperties)
       if (allColumnsProperties) {
         let activeColumnProperties = allColumnsProperties[this.cIndex]
-        console.log(activeColumnProperties)
         if (activeColumnProperties) {
-          console.log(`type is ${activeColumnProperties['type']}`)
-          console.log(`format is ${activeColumnProperties['format']}`)
-          console.log(`constraints is ${activeColumnProperties['constraints']}`)
           if (key === 'type') {
-            console.log('got type')
             let typeValue = activeColumnProperties['type']
             if (!typeValue) {
-              console.log('type is not set. setting....')
               this.setSelectType('any')
             }
           }
-          console.log(`returning ${activeColumnProperties[key]}`)
           return activeColumnProperties[key]
         }
       }
     },
     setProperty: function(key, value) {
-      console.log(`checking to set...${key}`)
-      console.log(`type is ${value}`)
       const hotId = HotRegister.getActiveInstance().guid
       const currentColumnIndex = this.cIndex
       let object = {
@@ -146,23 +134,21 @@ export default {
         'value': value
       }
       this.pushHotProperty(object)
-      console.log('returned to set property')
     },
     currentColumnIndex: function() {
-      console.log('getting column index....')
       let currentIndex = getCurrentColumnIndex()
-      console.log(`index: ${currentIndex}`)
       return currentIndex
     },
     setSelectType: function(value) {
       this.setProperty('type', value)
-      console.log('checking type is set...')
       this.updateTypeDependentProperties(value)
     },
     updateTypeDependentProperties: function(value) {
       this.constraintValues = this.constraints[value]
+      this.updateFormatValues(value)
+    },
+    updateFormatValues: function(value) {
       this.formatValues = this.formats[value] || []
-      console.log('pushing default for dependencies...')
       this.formatValues.push('default')
     }
   },
@@ -173,62 +159,41 @@ export default {
     },
     selectConstraints: {
       get: function() {
-        let property = this.getProperty('constraints')
-        console.log('constraints are...')
-        console.log(property)
-        if (this.getProperty('type')) {
-          let type = this.getProperty('type')
+        let type = this.getProperty('type')
+        if (type) {
           this.constraintValues = this.constraints[type]
         }
+        let property = this.getProperty('constraints')
         if (!property) {
-          console.log('initialising property')
           this.setProperty('constraints', [])
           property = []
         }
         return property
       },
       set: function(values) {
-        console.log('set values for constraints...')
-        console.log(values)
         this.setProperty('constraints', values)
       }
     },
     selectFormat: {
       get: function() {
-        let property = this.getProperty('format')
-        console.log('formats are...')
-        console.log(property)
-        if (this.getProperty('type')) {
-          let type = this.getProperty('type')
-          this.formatValues = this.formats[type] || []
-          this.formatValues.push('default')
+        let type = this.getProperty('type')
+        if (type) {
+          this.updateFormatValues(type)
         }
+        let property = this.getProperty('format')
         if (!property) {
-          console.log('initialising property')
-          console.log('pushing default for select format...')
           this.setProperty('format', 'default')
           property = 'default'
         }
         return property
       },
       set: function(value) {
-        console.log('set value for format...')
-        console.log(value)
         this.setProperty('format', value)
       }
     }
   },
-  watch: {
-  },
-  created: function() {
-    if (!this.getProperty('type')) {
-      console.log('creating and setting type....')
-      this.setSelectType('any')
-    }
-  },
   mounted: function() {
     this.$nextTick(function() {
-      console.log('readjusting position')
       reselectCurrentCellOrMin()
     })
   }

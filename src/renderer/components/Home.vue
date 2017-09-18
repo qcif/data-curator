@@ -208,7 +208,7 @@ export default {
     selectionListener: function() {
       console.log('selection noted in vue')
       this.updateActiveColumn()
-      this.enableSideNavLeftArrow = getCurrentColumnIndexOrMax() > 0
+      this.resetSideNavArrows()
       console.log('selection noted finished in vue')
     },
     getAllColumnsProperties: function() {
@@ -228,7 +228,6 @@ export default {
       console.log('captured properties are:')
       console.log('hotColumns')
       this.pushHotColumns(hotColumns)
-      // emit to column properties
     },
     addTabWithFormattedData: function(data, format) {
       this.initTab()
@@ -320,17 +319,19 @@ export default {
     resetSideNavArrows() {
       this.enableSideNavLeftArrow = true
       this.enableSideNavRightArrow = true
+      if (this.sideNavView === 'column') {
+        this.enableSideNavLeftArrow = getCurrentColumnIndexOrMax() > 0
+      }
     },
     updateSideNavState() {
-      this.resetSideNavArrows()
       let toolbarMenu = this.toolbarMenus[this.toolbarIndex]
       this.sideNavPosition = toolbarMenu.sideNavPosition
       this.sideNavView = toolbarMenu.sideNavView
       this.sideNavViewTitle = toolbarMenu.name
       this.openSideNav()
       // ensure a cell is selected before any of menu tools start
-      // getCurrentColumnIndexOrMin()
       reselectCurrentCellOrMin()
+      this.resetSideNavArrows()
     },
     updateToolbarMenuForSideNav: function(index) {
       if (this.sideNavStatus === 'closed' || this.toolbarIndex === -1) {
@@ -354,10 +355,8 @@ export default {
       }
       console.log('updated active column')
       this.getColumnPropertiesMethod = this.getAllColumnsProperties()
-      // reselectCurrentCellOrMax()
     },
     updateToolbarMenuForColumn: function(index) {
-      this.resetSideNavArrows()
       let maxColAllowed = getColumnCount() -1
       console.log(`max allowed: ${maxColAllowed}`)
       let currentColIndex = getCurrentColumnIndexOrMax()
@@ -373,7 +372,7 @@ export default {
           this.updateToolbarMenu(index)
         }
       }
-      this.enableSideNavLeftArrow = getCurrentColumnIndexOrMax() > 0
+      this.resetSideNavArrows()
     },
     updateToolbarMenu: function(index) {
       console.log('updating tool menu...')
@@ -397,7 +396,6 @@ export default {
       console.log(`next index: ${nextIndex}`)
       let nextToolbar = this.toolbarMenus[nextIndex]
       if (nextToolbar.sideNavView === 'column') {
-        console.log('next is column')
         getCurrentColumnIndexOrMax()
       }
       this.updateToolbarMenuFromArrows(nextIndex)
@@ -452,9 +450,6 @@ export default {
       })
     })
     this.$nextTick(function() {
-      console.log('.........................')
-      console.log('inside Vue ready tick....')
-      // this.$emit(methodName)
       require('../index.js')
       let tabIdOrder
       const vueSetTabs = this.setTabs
@@ -470,8 +465,6 @@ export default {
       })
       this.closeSideNav()
       this.addTab()
-      console.log('leaving Vue ready tick....')
-      console.log('.........................')
     })
   },
   created: function() {
