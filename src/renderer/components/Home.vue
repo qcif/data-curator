@@ -103,6 +103,8 @@ import {
   getColumnCount,
   getCurrentColumnIndexOrMin,
   getCurrentColumnIndexOrMax,
+  reselectCurrentCellOrMin,
+  reselectCurrentCellOrMax,
   incrementActiveColumn,
   decrementActiveColumn,
   getActiveSelected
@@ -206,6 +208,7 @@ export default {
     selectionListener: function() {
       console.log('selection noted in vue')
       this.updateActiveColumn()
+      this.enableSideNavLeftArrow = getCurrentColumnIndexOrMax() > 0
       console.log('selection noted finished in vue')
     },
     getAllColumnsProperties: function() {
@@ -326,7 +329,8 @@ export default {
       this.sideNavViewTitle = toolbarMenu.name
       this.openSideNav()
       // ensure a cell is selected before any of menu tools start
-      getCurrentColumnIndexOrMin()
+      // getCurrentColumnIndexOrMin()
+      reselectCurrentCellOrMin()
     },
     updateToolbarMenuForSideNav: function(index) {
       if (this.sideNavStatus === 'closed' || this.toolbarIndex === -1) {
@@ -350,6 +354,7 @@ export default {
       }
       console.log('updated active column')
       this.getColumnPropertiesMethod = this.getAllColumnsProperties()
+      // reselectCurrentCellOrMax()
     },
     updateToolbarMenuForColumn: function(index) {
       this.resetSideNavArrows()

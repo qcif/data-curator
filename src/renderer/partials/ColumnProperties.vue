@@ -14,7 +14,7 @@
               {{ option}}
             </option>
           </select>
-          <select v-else multiple v-model="selectConstraints" id="constraints" class="form-control input-sm col-sm-8">
+          <select v-else multiple v-model="selectConstraints" id="constraints" :size="constraintValues.length" class="form-control input-sm col-sm-8">
             <option v-for="option in constraintValues" v-bind:value="option">
               {{ option}}
             </option>
@@ -38,7 +38,8 @@ import {
 import SideNav from './SideNav'
 import {
   HotRegister,
-  getCurrentColumnIndexOrMin as getCurrentColumnIndex
+  getCurrentColumnIndexOrMin as getCurrentColumnIndex,
+  reselectCurrentCellOrMin
 } from '../hot.js'
 const Dialog = remote.dialog
 export default {
@@ -115,7 +116,19 @@ export default {
       console.log(allColumnsProperties)
       if (allColumnsProperties) {
         let activeColumnProperties = allColumnsProperties[this.cIndex]
+        console.log(activeColumnProperties)
         if (activeColumnProperties) {
+          console.log(`type is ${activeColumnProperties['type']}`)
+          console.log(`format is ${activeColumnProperties['format']}`)
+          console.log(`constraints is ${activeColumnProperties['constraints']}`)
+          if (key === 'type') {
+            console.log('got type')
+            let typeValue = activeColumnProperties['type']
+            if (!typeValue) {
+              console.log('type is not set. setting....')
+              this.setSelectType('any')
+            }
+          }
           console.log(`returning ${activeColumnProperties[key]}`)
           return activeColumnProperties[key]
         }
@@ -149,6 +162,7 @@ export default {
     updateTypeDependentProperties: function(value) {
       this.constraintValues = this.constraints[value]
       this.formatValues = this.formats[value] || []
+      console.log('pushing default for dependencies...')
       this.formatValues.push('default')
     }
   },
@@ -162,11 +176,11 @@ export default {
         let property = this.getProperty('constraints')
         console.log('constraints are...')
         console.log(property)
+        if (this.getProperty('type')) {
+          let type = this.getProperty('type')
+          this.constraintValues = this.constraints[type]
+        }
         if (!property) {
-          if (this.getProperty('type')) {
-            let type = this.getProperty('type')
-            this.constraintValues = this.constraints[type]
-          }
           console.log('initialising property')
           this.setProperty('constraints', [])
           property = []
@@ -184,8 +198,14 @@ export default {
         let property = this.getProperty('format')
         console.log('formats are...')
         console.log(property)
+        if (this.getProperty('type')) {
+          let type = this.getProperty('type')
+          this.formatValues = this.formats[type] || []
+          this.formatValues.push('default')
+        }
         if (!property) {
           console.log('initialising property')
+          console.log('pushing default for select format...')
           this.setProperty('format', 'default')
           property = 'default'
         }
@@ -202,13 +222,14 @@ export default {
   },
   created: function() {
     if (!this.getProperty('type')) {
+      console.log('creating and setting type....')
       this.setSelectType('any')
     }
   },
   mounted: function() {
     this.$nextTick(function() {
-      let activeHot = HotRegister.getActiveInstance()
-      activeHot.selectCell(0, 0)
+      console.log('readjusting position')
+      reselectCurrentCellOrMin()
     })
   }
 }
