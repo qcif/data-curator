@@ -82,6 +82,7 @@ borderColor = #e4e4e4
     a
       background-color inherit !important
   form
+    height: 100%
     margin 0 !important
     border-top 0
     padding-left 0 !important
@@ -95,7 +96,14 @@ borderColor = #e4e4e4
     select
       @extend #sidenav form
 
+#sidenav .container-fluid
+  position relative
+  height 100%
+
 #sidenav-footer
+  position absolute
+  bottom 0
+  width 100%
   display: block
   .left
     float left
