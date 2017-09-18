@@ -35,7 +35,8 @@
       "dist/electron/**/*"
     ],
     "dmg": {
-      "contents": [{
+      "contents": [
+        {
           "x": 410,
           "y": 150,
           "type": "link",
@@ -53,13 +54,15 @@
     },
     "win": {
       "icon": "build/icons/icon.ico",
-      "target": [{
-        "target": "nsis",
-        "arch": [
-          "x64",
-          "ia32"
-        ]
-      }]
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
     },
     "linux": {
       "icon": "build/icons"
@@ -72,7 +75,7 @@
     "bootstrap-tagsinput": "^0.7.1",
     "bootstrap-webpack": "^0.0.6",
     "components-font-awesome": "^4.7.0",
-    "datapackage": "^1.0.0-alpha.11",
+    "datapackage": "^1.0.0",
     "electron-prebuilt-compile": "^1.6.11",
     "escape-regexp": "^0.0.1",
     "exports-loader": "^0.6.4",
@@ -94,7 +97,7 @@
     "slug": "^0.9.1",
     "sortablejs": "^1.6.0",
     "svgo": "^0.7.2",
-    "tableschema": "^1.0.0-alpha.20",
+    "tableschema": "^1.0.0",
     "temp": "^0.8.3",
     "vue": "^2.3.3",
     "vue-electron": "^1.0.6",

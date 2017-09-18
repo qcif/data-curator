@@ -8,7 +8,7 @@
         </div>
         <div id="toolbar">
           <ul class="nav navbar-nav">
-            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': menuIndex === index}" @click="updateMenu(index)">
+            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': toolbarIndex === index}" @click="updateToolbarMenu(index)">
               <a href="#">
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
                 <object v-if="menu.image" :class="menu.class" :data="menu.image" type="image/svg+xml" />
@@ -36,12 +36,14 @@
           </a>
         </div>
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
-          <component :is="sideNavView">
+          <component :is="sideNavView" :getAllColumnsProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
           </component>
         </transition>
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
-          <a href="#" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
-          <a href="#" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
+          <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
+          <span v-else class="left disabled" ><span class="btn fa fa-chevron-left fa-2x" /></span>
+          <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
+          <span v-else class="right disabled" ><span class="btn fa fa-chevron-right fa-2x" /></span>
         </div>
       </div>
     </nav>
@@ -97,41 +99,49 @@ import {
   loadData
 } from '../index.js'
 import {
-  HotRegister
+  HotRegister,
+  getColumnCount,
+  getCurrentColumnIndexOrMin,
+  getCurrentColumnIndexOrMax,
+  reselectCurrentCellOrMin,
+  reselectCurrentCellOrMax,
+  incrementActiveColumn,
+  decrementActiveColumn,
+  getActiveSelected
 } from '../hot.js'
 import about from '../partials/About'
 import preferences from '../partials/Preferences'
 import column from '../partials/ColumnProperties'
-import default1 from '../partials/Default1Properties'
-import default2 from '../partials/Default2Properties'
 import tabular from '../partials/TableProperties'
 import packager from '../partials/PackageProperties'
 import provenance from '../partials/ProvenanceProperties'
+import {
+  guessColumnProperties
+} from '../frictionless.js'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
-// const {
-//   shell
-// } = require('electron')
 var ipc = require('electron').ipcRenderer
 require('bootstrap/dist/js/bootstrap.min.js')
-// require('jquery-csv/src/jquery.csv.js')
 require('lodash/lodash.min.js')
 require('../menu.js')
 export default {
   name: 'home',
   data() {
     return {
-      menuIndex: -1,
+      currentColumnIndex: 0,
+      // only set method when ready
+      getColumnPropertiesMethod: this.getAllColumnsProperties(),
+      toolbarIndex: -1,
       sideNavPosition: 'right',
       sideNavStatus: 'closed',
       sideNavView: '',
       sideNavViewTitle: '',
       sideNavTransition: '',
       enableTransition: false,
+      enableSideNavLeftArrow: true,
+      enableSideNavRightArrow: true,
       toolbarMenus: [{
         name: 'Validate',
-        image: 'static/img/validate.svg',
-        sideNavPosition: 'right',
-        sideNavView: 'default1'
+        image: 'static/img/validate.svg'
       },
       {
         name: 'Column',
@@ -160,9 +170,7 @@ export default {
       {
         name: 'Export',
         image: 'static/img/export.svg',
-        // class: 'down',
-        sideNavPosition: 'right',
-        sideNavView: 'default2'
+        sideNavView: 'export'
       }
       ]
     }
@@ -174,12 +182,15 @@ export default {
       tabIndex: 'getTabIndex',
       tabTitle: 'getHotTitle'
     }),
-    ...mapGetters(['getPreviousTabId']),
+    ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'getActiveColumnIndex']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
     sideNavProperties() {
       return `${this.sideNavStatus} ${this.sideNavPosition}`
+    },
+    toolbarMenuName() {
+      return _.get(this.toolbarMenus[this.toolbarIndex], 'name')
     }
   },
   methods: {
@@ -189,8 +200,35 @@ export default {
       'removeTab',
       'setTabs',
       'setActiveTab',
-      'incrementTabIndex'
+      'incrementTabIndex',
+      'pushActiveColumn',
+      'pushHotColumns',
+      'pushActiveColumnIndex'
     ]),
+    selectionListener: function() {
+      console.log('selection noted in vue')
+      this.updateActiveColumn()
+      this.resetSideNavArrows()
+      console.log('selection noted finished in vue')
+    },
+    getAllColumnsProperties: function() {
+      console.log('getting property....')
+      let hot = HotRegister.getActiveInstance()
+      if (hot) {
+        return this.getHotColumnProperties(hot.guid)
+      }
+    },
+    async updateColumnProperties() {
+      let hotColumns
+      try {
+        hotColumns = await guessColumnProperties()
+      } catch (err) {
+        console.log(err)
+      }
+      console.log('captured properties are:')
+      console.log('hotColumns')
+      this.pushHotColumns(hotColumns)
+    },
     addTabWithFormattedData: function(data, format) {
       this.initTab()
       this.$nextTick(function() {
@@ -227,7 +265,7 @@ export default {
       this.loadFormattedDataIntoContainer(container, data, defaultFormat)
     },
     loadFormattedDataIntoContainer: function(container, data, format) {
-      HotRegister.register(container)
+      HotRegister.register(container, this.selectionListener)
       addHotContainerListeners(container)
       let activeHotId = this.getActiveHotId()
       let activeTabId = this.activeTab
@@ -265,40 +303,108 @@ export default {
     openSideNav: function() {
       this.sideNavStatus = 'open'
     },
-    updateTransitions: function(index, maxIndex) {
-      if (this.menuIndex === 0 && index === maxIndex) {
+    updateTransitions: function(index) {
+      if (index < this.toolbarIndex) {
         this.sideNavTransition = 'sideNav-left'
-      } else if (this.menuIndex === maxIndex && index === 0) {
-        this.sideNavTransition = 'sideNav-right'
-      } else if (index < this.menuIndex) {
-        this.sideNavTransition = 'sideNav-left'
-      } else if (index > this.menuIndex) {
+      } else if (index > this.toolbarIndex) {
         this.sideNavTransition = 'sideNav-right'
       } else {
         // console.log('same toolbar selection...')
       }
     },
-    updateMenu: function(index) {
-      if (this.sideNavStatus === 'closed' || this.menuIndex === -1) {
+    isSideNavToolbarMenu(index) {
+      let toolbarMenu = this.toolbarMenus[index]
+      return toolbarMenu.sideNavPosition && toolbarMenu.sideNavView
+    },
+    resetSideNavArrows() {
+      this.enableSideNavLeftArrow = true
+      this.enableSideNavRightArrow = true
+      if (this.sideNavView === 'column') {
+        this.enableSideNavLeftArrow = getCurrentColumnIndexOrMax() > 0
+      }
+    },
+    updateSideNavState() {
+      let toolbarMenu = this.toolbarMenus[this.toolbarIndex]
+      this.sideNavPosition = toolbarMenu.sideNavPosition
+      this.sideNavView = toolbarMenu.sideNavView
+      this.sideNavViewTitle = toolbarMenu.name
+      this.openSideNav()
+      // ensure a cell is selected before any of menu tools start
+      reselectCurrentCellOrMin()
+      this.resetSideNavArrows()
+    },
+    updateToolbarMenuForSideNav: function(index) {
+      if (this.sideNavStatus === 'closed' || this.toolbarIndex === -1) {
         this.enableTransition = false
       } else {
-        this.updateTransitions(index, this.toolbarMenus.length - 1)
+        this.updateTransitions(index)
         this.enableTransition = true
       }
-      let menu = this.toolbarMenus[index]
-      this.menuIndex = index
-      this.sideNavPosition = menu.sideNavPosition
-      this.sideNavView = menu.sideNavView
-      this.sideNavViewTitle = menu.name
-      this.openSideNav()
+      this.toolbarIndex = index
+      this.updateSideNavState()
+    },
+    updateActiveColumn: function() {
+      let selected = getActiveSelected()
+      if (!selected) {
+        console.log('Cannot update active column without a column selected.')
+      } else {
+        let currentColumnIndex = selected[1]
+        let guid = HotRegister.getActiveInstance().guid
+        this.pushActiveColumnIndex(guid, currentColumnIndex)
+        this.currentColumnIndex = currentColumnIndex
+      }
+      console.log('updated active column')
+      this.getColumnPropertiesMethod = this.getAllColumnsProperties()
+    },
+    updateToolbarMenuForColumn: function(index) {
+      let maxColAllowed = getColumnCount() -1
+      console.log(`max allowed: ${maxColAllowed}`)
+      let currentColIndex = getCurrentColumnIndexOrMax()
+      console.log(`currentColIndex: ${currentColIndex}`)
+      if (index < this.toolbarIndex && currentColIndex > 0) {
+        decrementActiveColumn(currentColIndex)
+        this.updateActiveColumn()
+      } else if (index > this.toolbarIndex) {
+        if (currentColIndex < maxColAllowed) {
+          incrementActiveColumn(currentColIndex)
+          this.updateActiveColumn()
+        } else {
+          this.updateToolbarMenu(index)
+        }
+      }
+      this.resetSideNavArrows()
+    },
+    updateToolbarMenu: function(index) {
+      console.log('updating tool menu...')
+      if (this.isSideNavToolbarMenu(index)) {
+        this.updateToolbarMenuForSideNav(index)
+      } else {
+        this.toolbarIndex = index
+        this.closeSideNav()
+      }
+    },
+    updateToolbarMenuFromArrows: function(index) {
+      console.log(`side nav view before: ${this.sideNavView}`)
+      if (this.sideNavView === 'column') {
+        this.updateToolbarMenuForColumn(index)
+      } else if (index > 0) {
+        this.updateToolbarMenu(index)
+      }
     },
     sideNavLeft: function() {
-      let leftIndex = (this.menuIndex - 1) > -1 ? this.menuIndex - 1 : this.toolbarMenus.length - 1
-      this.updateMenu(leftIndex)
+      let nextIndex = this.toolbarIndex - 1
+      console.log(`next index: ${nextIndex}`)
+      let nextToolbar = this.toolbarMenus[nextIndex]
+      if (nextToolbar.sideNavView === 'column') {
+        getCurrentColumnIndexOrMax()
+      }
+      this.updateToolbarMenuFromArrows(nextIndex)
     },
     sideNavRight: function() {
-      let rightIndex = (this.menuIndex + 1) < this.toolbarMenus.length ? this.menuIndex + 1 : 0
-      this.updateMenu(rightIndex)
+      let nextIndex = this.toolbarIndex + 1
+      if (nextIndex < this.toolbarMenus.length) {
+        this.updateToolbarMenuFromArrows(nextIndex)
+      }
     },
     createTabId: function(tabId) {
       return `tab${tabId}`
@@ -307,7 +413,7 @@ export default {
       return $('#csvContent .active .editor').attr('id')
     },
     triggerSideNav(properties) {
-      this.menuIndex = -1
+      this.toolbarIndex = -1
       this.sideNavPosition = properties.sideNavPosition || 'left'
       this.sideNavTransition = properties.sideNavTransition || 'left'
       this.sideNavView = properties.sideNavView
@@ -319,8 +425,6 @@ export default {
   components: {
     about,
     preferences,
-    default1,
-    default2,
     column,
     tabular,
     packager,
@@ -346,8 +450,6 @@ export default {
       })
     })
     this.$nextTick(function() {
-      console.log('.........................')
-      console.log('inside Vue ready tick....')
       require('../index.js')
       let tabIdOrder
       const vueSetTabs = this.setTabs
@@ -363,9 +465,15 @@ export default {
       })
       this.closeSideNav()
       this.addTab()
-      console.log('leaving Vue ready tick....')
-      console.log('.........................')
     })
+  },
+  created: function() {
+    const vueGuessProperties = this.updateColumnProperties
+    ipc.on('guessColumnProperties', function(event, arg) {
+      vueGuessProperties()
+    })
+  },
+  watch: {
   }
 }
 </script>

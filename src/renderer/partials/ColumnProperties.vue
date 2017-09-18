@@ -1,36 +1,36 @@
 <template>
 <form class="navbar-form form-horizontal" id="columnProperties">
   <div class="form-group-sm row container-fluid">
-    <!-- <template v-if="hotId && currentColumnIndex" > -->
-      <div v-for="(formprop, index) in formprops" :key="index">
-        <label :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
-        <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
-          <select v-if="formprop.label === 'type'" :value="getTypeSelected" @input="updateTypeDropdown(formprop.label, $event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
-            <option v-for="option in formprop.dropdown" v-bind:value="option">
+    <div v-for="(formprop, index) in formprops" :key="index">
+      <label :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
+      <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
+          <select v-if="formprop.label==='type'" :value="getProperty(formprop.label)" @input="setSelectType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
+            <option v-for="option in typeValues" v-bind:value="option">
               {{ option}}
             </option>
           </select>
-          <select v-else :value="getFormatSelected" @input="setProperty(formprop.label, $event.target.value)" :id="formprop.label" :disabled="isFormatDisabled" class="form-control input-sm col-sm-8">
-            <option v-for="option in formprop.dropdown" v-bind:value="option">
+          <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-8">
+            <option v-for="option in formatValues" v-bind:value="option">
+              {{ option}}
+            </option>
+          </select>
+          <select v-else multiple v-model="selectConstraints" id="constraints" :size="constraintValues.length" class="form-control input-sm col-sm-8">
+            <option v-for="option in constraintValues" v-bind:value="option">
               {{ option}}
             </option>
           </select>
         </template>
-        <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
-      </div>
-    <!-- </template> -->
-    <!-- <div v-else>
-      Select a column
-    </div> -->
-</div>
+      <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
+    </div>
+  </div>
   </div>
 </form>
 </template>
 <script>
 import {
   mapMutations,
-  mapState,
-  mapGetters
+  mapGetters,
+  mapState
 } from 'vuex'
 import {
   remote
@@ -38,17 +38,19 @@ import {
 import SideNav from './SideNav'
 import {
   HotRegister,
-  getCurrentColumnIndex
+  getCurrentColumnIndexOrMin as getCurrentColumnIndex,
+  reselectCurrentCellOrMin
 } from '../hot.js'
 const Dialog = remote.dialog
 export default {
   extends: SideNav,
   name: 'column',
+  props: ['getAllColumnsProperties', 'cIndex'],
   data() {
     return {
-      ...mapState([
-        'hotTabs'
-      ]),
+      typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
+      formatValues: [],
+      constraintValues: [],
       formprops: [{
         label: 'name'
       },
@@ -60,21 +62,19 @@ export default {
       },
       {
         label: 'type',
-        type: 'dropdown',
-        dropdown: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any']
+        type: 'dropdown'
       },
       {
         label: 'format',
-        type: 'dropdown',
-        dropdown: []
+        type: 'dropdown'
+      },
+      {
+        label: 'constraints',
+        type: 'dropdown'
       },
       {
         label: 'rdfType',
         type: 'url'
-      },
-      {
-        label: 'constraints',
-        type: 'json'
       }
       ],
       formats: {
@@ -85,7 +85,23 @@ export default {
         'geopoint': ['array', 'object'],
         'geojson': ['topojson']
       },
-      constraints: ['required', 'unique', 'minLength', 'maxLength', 'minimum', 'maximum', 'pattern', 'enum'],
+      constraints: {
+        'string': ['required', 'unique', 'minLength', 'maxLength', 'pattern', 'enum'],
+        'number': ['required', 'unique', 'minLength', 'maxLength', 'minimum', 'maximum', 'enum'],
+        'integer': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'boolean': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'object': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
+        'array': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
+        'date': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'time': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'datetime': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'year': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'yearmonth': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'duration': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'geopoint': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
+        'geojson': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
+        'any': ['required', 'unique', 'minLength', 'maxLength', 'minimum', 'maximum', 'enum']
+      },
       otherProperties: ['missingValues', 'primaryKey', 'foreignKey']
     }
   },
@@ -93,112 +109,92 @@ export default {
     ...mapMutations([
       'pushHotProperty'
     ]),
-    showErrorMessage(object) {
-      Dialog.showMessageBox(Object.assign({
-        type: 'error',
-        buttons: ['OK'],
-        title: 'Error finding column properties'
-      }, object))
-    },
-    getColumnProperties() {
-      console.log('checking column...')
-      const hotId = this.hotId()
-      const currentColumnIndex = this.currentColumnIndex()
-      // if (hotId && currentColumnIndex) {
-      // console.log('have hot id and column index...')
-      let columnProperties = this.columnProps(hotId)
-      if (columnProperties) {
-        return columnProperties[currentColumnIndex]
-      }
-      // }
-    },
     getProperty: function(key) {
-      let columnProperties = this.getColumnProperties()
-      let columnProperty = columnProperties ? columnProperties[key] : ''
-      console.log(`returning ${columnProperty} for ${key}`)
-      return columnProperty
+      let allColumnsProperties = this.getAllColumnsProperties
+      if (allColumnsProperties) {
+        let activeColumnProperties = allColumnsProperties[this.cIndex]
+        if (activeColumnProperties) {
+          if (key === 'type') {
+            let typeValue = activeColumnProperties['type']
+            if (!typeValue) {
+              this.setSelectType('any')
+            }
+          }
+          return activeColumnProperties[key]
+        }
+      }
     },
     setProperty: function(key, value) {
-      console.log(`checking to set...${key}`)
-      const hotId = this.hotId()
-      const currentColumnIndex = this.currentColumnIndex()
-      // if (hotId && currentColumnIndex) {
-      console.log('returned from current column index...')
+      const hotId = HotRegister.getActiveInstance().guid
+      const currentColumnIndex = this.cIndex
       let object = {
         'hotId': hotId,
         'columnIndex': currentColumnIndex,
         'key': key,
         'value': value
       }
-      console.log('object is....')
-      console.log(object)
       this.pushHotProperty(object)
-      // }
-    },
-    updateTypeDropdown: function(key, value) {
-      console.log('updating type....')
-      this.setProperty('type', value)
-      this.updateFormatDropdown(value)
-      this.setProperty('format', this.formprops[4].dropdown[0])
-    },
-    updateFormatDropdown: function(typeValue) {
-      console.log('updating format dropdown....')
-      let formatSelection = this.formats[typeValue] || []
-      formatSelection.push('default')
-      this.formprops[4].dropdown = formatSelection
-    },
-    // updateFormatSelected: function(value) {
-    //   this.setProperty('format', value)
-    //   console.log('format selection has been updated.')
-    // },
-    hotId: function() {
-      console.log('getting hot id....')
-      return HotRegister.getActiveInstance().guid
     },
     currentColumnIndex: function() {
-      console.log('getting column index....')
       let currentIndex = getCurrentColumnIndex()
-      console.log(`index: ${currentIndex}`)
       return currentIndex
+    },
+    setSelectType: function(value) {
+      this.setProperty('type', value)
+      this.updateTypeDependentProperties(value)
+    },
+    updateTypeDependentProperties: function(value) {
+      this.constraintValues = this.constraints[value]
+      this.updateFormatValues(value)
+    },
+    updateFormatValues: function(value) {
+      this.formatValues = this.formats[value] || []
+      this.formatValues.push('default')
     }
   },
   computed: {
-    ...mapGetters({
-      columnProps: 'getHotColumnProperties'
-    }),
-    isFormatDisabled() {
-      let found = this.formprops.find(function(obj) {
-        return obj.label === 'format'
-      })
-      return found.dropdown.length < 2
+    ...mapGetters(['getHotColumnProperties']),
+    isDropdownFormatDisabled() {
+      return this.formatValues.length < 2
     },
-    getTypeSelected() {
-      let property = this.getProperty('type')
-      if (!property) {
-        property = this.formprops[3].dropdown[0]
-        this.setProperty('type', property)
+    selectConstraints: {
+      get: function() {
+        let type = this.getProperty('type')
+        if (type) {
+          this.constraintValues = this.constraints[type]
+        }
+        let property = this.getProperty('constraints')
+        if (!property) {
+          this.setProperty('constraints', [])
+          property = []
+        }
+        return property
+      },
+      set: function(values) {
+        this.setProperty('constraints', values)
       }
-      return property
     },
-    getFormatSelected() {
-      console.log('firing format...')
-      let property = this.getProperty('format')
-      console.log('format selected is...')
-      console.log(property)
-      if (!property) {
-        let typeSelected = this.getTypeSelected
-        this.updateFormatDropdown(typeSelected)
-        property = this.formprops[4].dropdown[0]
-        this.setProperty('format', property)
+    selectFormat: {
+      get: function() {
+        let type = this.getProperty('type')
+        if (type) {
+          this.updateFormatValues(type)
+        }
+        let property = this.getProperty('format')
+        if (!property) {
+          this.setProperty('format', 'default')
+          property = 'default'
+        }
+        return property
+      },
+      set: function(value) {
+        this.setProperty('format', value)
       }
-      console.log(`format property is ${property}`)
-      return property
     }
-  },
-  watch: {
   },
   mounted: function() {
     this.$nextTick(function() {
+      reselectCurrentCellOrMin()
     })
   }
 }

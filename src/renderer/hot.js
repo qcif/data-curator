@@ -6,7 +6,7 @@ const Dialog = remote.dialog
 
 let HotRegister = {
   hots: {},
-  register: function(container) {
+  register: function(container, selectionListener) {
     let hot = new Handsontable(container, {
       colHeaders: true,
       rowHeaders: true,
@@ -37,6 +37,11 @@ let HotRegister = {
         hot.render()
         hot.deselectCell()
       },
+      afterSelection: function (r, c, r2, c2, preventScrolling) {
+        // setting if prevent sqcrolling after selection
+        // preventScrolling.value = true
+        selectionListener()
+      },
       enterMoves: function(event) {
         if (!event.shiftKey) {
           var selection = hot.getSelected()
@@ -63,9 +68,9 @@ let HotRegister = {
   },
   getActiveInstance: function() {
     let activeHotId = jQuery('#csvContent .active .editor').attr('id')
-    // console.log(`active id for hot is: ${activeHotId}`)
+    console.log(`active id for hot is: ${activeHotId}`)
     let hot = _.get(this.hots, activeHotId)
-    // console.log(hot)
+    console.log(hot)
     return hot
   },
   getActiveHotIdData: function() {
@@ -76,28 +81,79 @@ let HotRegister = {
   }
 }
 
-export function getCurrentCell() {
+// export function getCurrentCell() {
+//   let activeHot = HotRegister.getActiveInstance()
+//   let currentCell = activeHot.getSelected()
+//   if (currentCell[0] !== currentCell[2] || currentCell[1] !== currentCell[3]) {
+//     console.log('only 1 cell can be selected')
+//   } else {
+//     return [currentCell[0], currentCell[2]]
+//   }
+// }
+
+export function getActiveSelected() {
+  let activeHot = HotRegister.getActiveInstance()
+  return activeHot.getSelected()
+}
+
+export function getCurrentColumnIndexOrMin() {
   let activeHot = HotRegister.getActiveInstance()
   let currentCell = activeHot.getSelected()
-  if (currentCell[0] !== currentCell[2] || currentCell[1] !== currentCell[3]) {
-    console.log('only 1 cell can be selected')
+  if (!currentCell) {
+    activeHot.selectCell(0, 0)
+    currentCell = activeHot.getSelected()
+  }
+  return currentCell[1]
+}
+export function getCurrentColumnIndexOrMax() {
+  let activeHot = HotRegister.getActiveInstance()
+  let currentCell = activeHot.getSelected()
+  if (!currentCell) {
+    let maxCol = getColumnCount() - 1
+    activeHot.selectCell(0, maxCol)
+    currentCell = activeHot.getSelected()
+  }
+  console.log(`current column index is ${currentCell[1]}`)
+  return currentCell[1]
+}
+
+export function reselectCurrentCellOrMin() {
+  let activeHot = HotRegister.getActiveInstance()
+  let currentCell = activeHot.getSelected()
+  if (!currentCell) {
+    activeHot.selectCell(0, 0)
+    currentCell = activeHot.getSelected()
   } else {
-    return [currentCell[0], currentCell[2]]
+    activeHot.selectCell(currentCell[0], currentCell[1])
   }
 }
 
-export function getCurrentColumnIndex() {
+export function reselectCurrentCellOrMax() {
   let activeHot = HotRegister.getActiveInstance()
-  // console.log(activeHot)
   let currentCell = activeHot.getSelected()
-  // console.log('current cell is...')
-  // console.log(currentCell)
-  // if (!currentCell || currentCell[1] !== currentCell[3]) {
-  //   console.log('only 1 column can be selected')
-  // } else {
-  //   return currentCell[1]
-  // }
-  return currentCell ? currentCell[1] : 0
+  if (!currentCell) {
+    let maxCol = getColumnCount() - 1
+    activeHot.selectCell(0, maxCol)
+  } else {
+    activeHot.selectCell(currentCell[0], currentCell[1])
+  }
+}
+
+export function incrementActiveColumn(activeColumnIndex) {
+  let activeHot = HotRegister.getActiveInstance()
+  activeHot.selectCell(0, activeColumnIndex + 1)
+}
+
+export function decrementActiveColumn(activeColumnIndex) {
+  let activeHot = HotRegister.getActiveInstance()
+  activeHot.selectCell(0, activeColumnIndex - 1)
+}
+
+export function getColumnCount() {
+  let activeHot = HotRegister.getActiveInstance()
+  let colCount = activeHot.countCols()
+  console.log(`col count is: ${colCount}`)
+  return colCount
 }
 
 var insertRowAbove = function(deselect) {
