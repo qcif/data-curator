@@ -37,28 +37,36 @@ borderColor = #e4e4e4
     margin-right sideNavMargin
     margin-left 0
 
+#csvContent
+  background url("~static/img/data-curator-background.svg") no-repeat fixed !important
+  background-size 300px !important
+  background-position 50% 60% !important
+
 #sidenav
   height 100%
   position absolute
   margin-left 0px
   z-index 50
-  border 1px
   border-radius 0
   top 0
   overflow-x hidden
   transition sideNavTransition
   .navbar-brand
     text-transform: capitalize
+    color #fff
   &.closed
     width 0 !important
+    border 0 !important
   &.left
     width sideNavMargin
     left 0
+    border-right solid 3px #337ab7
   &.right
     width sideNavMargin
     right 0
+    border-left solid 3px #337ab7
   .navbar-header
-    background-color #e4ecf6
+    background-color #337ab7
     border-bottom 1px solid
     border-color borderColor
     display block !important
@@ -130,6 +138,13 @@ span.tabclose
   top 0
   right 0
 
+// tab close buttons
+span.tabclose.btn-default
+  color #ccc !important
+
+span.tabclose.btn-default:hover
+  color #333 !important
+
 .input-sm input
   display inline-block !important
 
@@ -150,6 +165,10 @@ span.tabclose
   transform translateX(250px) !important
 .sideNav-right-leave-to
   transform translateX(-250px) !important
+
+.btn-default
+  background-color transparent !important
+  color white
 
 #preferenceProperties
   width inherit !important

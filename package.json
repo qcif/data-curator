@@ -2,7 +2,7 @@
   "name": "data-curator",
   "version": "0.2.3",
   "author": " <matt@redboxresearchdata.com.au>",
-  "description": "An electron-vue project for curating csv data",
+  "description": "Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data",
   "license": "MIT",
   "main": "./dist/electron/main.js",
   "repository": {
@@ -26,7 +26,7 @@
     "test-renderer": "electron-mocha --renderer --no-timeouts test/renderer/"
   },
   "build": {
-    "productName": "data-curator",
+    "productName": "Data Curator",
     "appId": "org.odi-qcif.data-curator",
     "directories": {
       "output": "build"

@@ -1,21 +1,35 @@
 @backlog
 
-Feature: Open CSV with Drag and Drop
+Feature: Open file with Drag and Drop
   As a User
-  I want to open a CSV file by dragging it on to the Application
+  I want to drag a file onto the Application
   So that can I quickly open it
 
-  Unresolved:
-  - Can the command be extended to work for other file types (xls, tsv)?
-  - The separator used in the CSV cannot be determined from the filename
-  - Should the default separated in preferences be used to determine what type of file can be dragged on to the Application?
+  Rules:
+  - Valid file types are .csv, .tsv, .xls, .xlsx
+  - .csv are assumed to be comma separated
+  - as semi-colon separated files do not have a unique file extension, they are treated as comma separated
+  - The CSV Dialect for .csv, .xls, .xlsx will be set to be comma separated
+  - The CSV Dialect for .tsv will be set to be Tab separated
+  - If the file type is .xls or .xlsx, prompt for a worksheet name
+  - Perform the appropriate Open file/sheet feature based on the file type
 
-  Provide instructions on the application background to indicate that a file can be dragged and dropped
+ Background:
+   Given I have opened Data Curator
+   And I have seen on the application background that a file can be dragged and dropped
 
-  Scenario: Drag a CSV file on to the application
-    Given I have opened Data Curator
-    And I have selected a file with a .csv extension
-    When I Drag and Drop the CSV file on to the application
-    Then open the file a new data tab to the right of any other open data tabs
-    And set the Tab name to the 'filename'
-    And set the CSV Dialect in the Table Properties to "Comma Separated"
+  Scenario: Drag a comma separated value file type on to the application
+    When I Drag and Drop a comma separated value file type on to the application
+    Then 'Open Comma Separated file'
+
+ Scenario: Drag a tab separated value file type on to the application
+   When I Drag and Drop a tab separated value file type on to the application
+   Then 'Open Tab Separated file'
+
+  Scenario: Drag an Excel file type on to the application
+    When I Drag and Drop a Excelfile type on to the application
+    Then 'Open Excel sheet'
+
+ Scenario: Drag a comma separated value file type on to the application
+   When I Drag and Drop an invalid file type on to the application
+   Then do nothing

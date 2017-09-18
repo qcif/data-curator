@@ -63,7 +63,7 @@
               </ul>
             </li>
             <li class="tab-add" @click="addTab">
-              <a>&nbsp;<button type="button" class="btn btn-sm">+</button></a>
+              <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
           </ul>
           <div class="tab-content" id='csvContent'>
