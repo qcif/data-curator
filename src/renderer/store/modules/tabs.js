@@ -2,7 +2,7 @@ import {remote} from 'electron'
 const state = {
   tabs: [],
   activeTab: '',
-  tabTitles: {},
+  tabObjects: {},
   tabIndex: -1,
   activeTitle: ''
 }
@@ -24,7 +24,7 @@ const getters = {
   tabTitle: (state, getters) => (tabId) => {
     console.log('getting title from tabs store')
     console.log(`tab id is: ${tabId}`)
-    return _.get(state.tabTitles, `${tabId}.title`)
+    return _.get(state.tabObjects, `${tabId}.title`)
   }
 }
 
@@ -41,7 +41,12 @@ const mutations = {
     } else {
       title = `Untitled${tab.index}`
     }
-    _.set(state.tabTitles, `${tab.id}.title`, title)
+    _.set(state.tabObjects, `${tab.id}.title`, title)
+  },
+  pushTabObject(state, tab) {
+    if (tab.filename) {
+      _.set(state.tabObjects, `${tab.id}.filename`, tab.filename)
+    }
   },
   removeTab (state, tabId) {
     // keep check for index in this function to ensure tabid still exists
@@ -52,8 +57,10 @@ const mutations = {
   },
   setActiveTab (state, tabId) {
     state.activeTab = `${tabId}`
-    state.activeTitle = state.tabTitles[tabId].title
+    state.activeTitle = state.tabObjects[tabId].title
+    console.log(`active tab is: ${state.activeTab}`)
     remote.getGlobal('tab').activeTitle = state.activeTitle
+    remote.getGlobal('tab').activeFilename = state.tabObjects[state.activeTab].filename
   },
   setTabs (state, tabIdOrder) {
     console.log(`tab order ${tabIdOrder}`)

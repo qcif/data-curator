@@ -1,4 +1,3 @@
-import hotStore from '../renderer/store/modules/hots.js'
 import tabStore from '../renderer/store/modules/tabs.js'
 const fs = require('fs')
 const $ = global.jQuery = require('jquery/dist/jquery.js')
@@ -77,12 +76,14 @@ var openFile = function(hot, data, format) {
 
 var saveFile = function(hot, format, filename, callback) {
   console.log('saving')
+  console.log(`filename is ${filename}`)
   let data
-  let tabId = _.get(hotStore.state.hotTabs, `${hot.guid}.tabId`)
+  let tabId = tabStore.state.activeTab
+  console.log(`save tab id is: ${tabId}`)
   if (typeof filename === 'string') {
-    tabStore.mutations.pushTabTitle(tabStore.state, {id: tabId, title: filename})
+    tabStore.mutations.pushTabObject(tabStore.state, {id: tabId, filename: filename})
   } else {
-    filename = tabStore.getters.tabTitle(tabId)
+    filename = _.get(tabStore.state.tabObjects, `${tabId}.filename`)
   }
   // if no format specified, default to csv
   if (typeof format === 'undefined') {
@@ -99,7 +100,7 @@ var saveFile = function(hot, format, filename, callback) {
   } else {
     fs.writeFile(filename, data, callback)
   }
-  document.title = filename
+  // document.title = filename
 }
 
 export {
