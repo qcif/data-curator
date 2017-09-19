@@ -17,7 +17,6 @@ for (var format in file_formats) {
     open_option.accelerator = 'CmdOrCtrl+O'
   }
   open_submenu.push(open_option)
-  // label should have ... appended to end of each menu item
   var save_option = {
     label: file_formats[format].label,
     click: (function(format) {
@@ -266,15 +265,6 @@ exports.menu = [
     //        enabled: false
     //      }, {
     //        label: 'Replace All',
-    //        enabled: false
-    //      }, {
-    //        type: 'separator'
-    //      }, {
-    //        label: 'Sort',
-    //        accelerator: 'Shift+CmdOrCtrl+R',
-    //        enabled: false
-    //      }, {
-    //        label: 'Filter',
     //        enabled: false
     //      }
     //    ]
