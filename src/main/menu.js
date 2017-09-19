@@ -116,7 +116,9 @@ exports.menu = [
         //        label: 'Open Google Sheet...',
         //        enabled: false
       }, {
-        label: 'Open Data Package...'
+        label: 'Open Data Package...',
+        // turned off for Beta release
+        enabled: false
         // Placeholder for future feature
         //      }, {
         //        label: 'Open Recent',
@@ -148,7 +150,9 @@ exports.menu = [
         type: 'separator'
       }, {
         label: 'Close Tab',
-        accelerator: 'CmdOrCtrl+W'
+        accelerator: 'CmdOrCtrl+W',
+        // turned off for Beta release
+        enabled: false
       }
       // Placeholder for future features
       //, {
@@ -327,9 +331,11 @@ exports.menu = [
         // TO DO: Conditionally enabled based on required properties being set and no changes since last successful validation
         label: 'Export Data Package...',
         accelerator: 'CmdOrCtrl+D',
-        click: function() {
-          datapackage.exportdata()
-        }
+        // turned off for Beta release
+        enabled: false
+//        click: function() {
+//          datapackage.exportdata()
+//        }
       }
       // Placeholder for future features
       //      , {
@@ -367,10 +373,14 @@ exports.menu = [
         // hide above
       }, {
         label: 'Next Tab',
-        accelerator: 'CmdOrCtrl+Right'
+        accelerator: 'CmdOrCtrl+Right',
+        // turned off for Beta release
+        enabled: false
       }, {
         label: 'Previous Tab',
-        accelerator: 'CmdOrCtrl+Left'
+        accelerator: 'CmdOrCtrl+Left',
+        // turned off for Beta release
+        enabled: false
       }, {
         // TO DO: hide below in Windows and Linux
         type: 'separator'
