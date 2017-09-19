@@ -1,6 +1,7 @@
 const state = {
   tabs: [],
   activeTab: '',
+  tabTitles: {},
   tabIndex: -1
 }
 
@@ -17,6 +18,11 @@ const getters = {
   getPreviousTabId: (state, getters) => (position) => {
     let previousActiveTabPos = position < 1 ? 0 : position - 1
     return state.tabs[previousActiveTabPos]
+  },
+  tabTitle: (state, getters) => (tabId) => {
+    console.log('getting title from tabs store')
+    console.log(`tab id is: ${tabId}`)
+    return _.get(state.tabTitles, `${tabId}.title`)
   }
 }
 
@@ -25,6 +31,15 @@ const mutations = {
     console.log('...pushing...')
     state.tabs.push(tabId)
     console.log(state.tabs)
+  },
+  pushTabTitle(state, tab) {
+    let title
+    if (tab.title) {
+      title = tab.title
+    } else {
+      title = `Untitled${tab.index}`
+    }
+    _.set(state.tabTitles, `${tab.id}.title`, title)
   },
   removeTab (state, tabId) {
     // keep check for index in this function to ensure tabid still exists

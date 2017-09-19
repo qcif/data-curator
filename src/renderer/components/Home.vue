@@ -74,7 +74,7 @@
           </div>
         </div>
       </div>
-      <div id="main-bottom-panel" class="panel-footer">
+      <div v-show="showBottomPanel" id="main-bottom-panel" class="panel-footer">
         <button type="button" class="close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -139,6 +139,7 @@ export default {
       enableTransition: false,
       enableSideNavLeftArrow: true,
       enableSideNavRightArrow: true,
+      showBottomPanel: false,
       toolbarMenus: [{
         name: 'Validate',
         image: 'static/img/validate.svg'
@@ -179,10 +180,9 @@ export default {
     ...mapGetters({
       tabs: 'getTabs',
       activeTab: 'getActiveTab',
-      tabIndex: 'getTabIndex',
-      tabTitle: 'getHotTitle'
+      tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'getActiveColumnIndex']),
+    ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'tabTitle']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -203,7 +203,7 @@ export default {
       'incrementTabIndex',
       'pushActiveColumn',
       'pushHotColumns',
-      'pushActiveColumnIndex'
+      'pushTabTitle'
     ]),
     selectionListener: function() {
       console.log('selection noted in vue')
@@ -255,6 +255,8 @@ export default {
       let nextTabId = this.createTabId(this.tabIndex)
       this.setActiveTab(nextTabId)
       this.pushTab(nextTabId)
+      console.log(`this tabIndex is ${this.tabIndex}`)
+      this.pushTabTitle({id: nextTabId, index: this.tabIndex})
     },
     loadDefaultDataIntoContainer: function(container) {
       let defaultData = '"","",""'
@@ -286,6 +288,8 @@ export default {
       // update hots
 
       // update hottabs
+
+      // update tab titles
     },
     closeTab: function(event) {
       // do not allow single tab to be closed
@@ -350,7 +354,6 @@ export default {
       } else {
         let currentColumnIndex = selected[1]
         let guid = HotRegister.getActiveInstance().guid
-        this.pushActiveColumnIndex(guid, currentColumnIndex)
         this.currentColumnIndex = currentColumnIndex
       }
       console.log('updated active column')

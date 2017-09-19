@@ -45,13 +45,11 @@ function saveFileAs(format, window) {
     filters: format.filters
   }, function(fileName) {
     if (fileName === undefined) {
-      console.log('returning...')
+      console.log('returning as no filename was entered...')
       return
     }
     enableSave()
     window.webContents.send('saveData', format, fileName)
-    console.log('made it here!')
-
     window.format = format
   })
 }

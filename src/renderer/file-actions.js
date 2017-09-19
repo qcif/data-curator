@@ -1,4 +1,5 @@
-import store from '../renderer/store/modules/hots.js'
+import hotStore from '../renderer/store/modules/hots.js'
+import tabStore from '../renderer/store/modules/tabs.js'
 const fs = require('fs')
 const $ = global.jQuery = require('jquery/dist/jquery.js')
 require('jquery-csv/src/jquery.csv.js')
@@ -76,16 +77,13 @@ var openFile = function(hot, data, format) {
 
 var saveFile = function(hot, format, filename, callback) {
   console.log('saving')
-  var data
-  if (typeof filename !== 'string') {
-    console.dir(store.state.hotTabs)
-    console.dir(`hot guid is: ${hot.guid}`)
-    let defaultQualifier = _.get(store.state.hotTabs, `${hot.guid}.tabId`, '')
-    filename = _.get(store.state.hotTabs, `${hot.guid}.title`, `Untitled${defaultQualifier}.csv`)
-    console.dir(`${filename}`)
+  let data
+  let tabId = _.get(hotStore.state.hotTabs, `${hot.guid}.tabId`)
+  if (typeof filename === 'string') {
+    tabStore.mutations.pushTabTitle(tabStore.state, {id: tabId, title: filename})
+  } else {
+    filename = tabStore.getters.tabTitle(tabId)
   }
-  store.mutations.pushHotTab(store.state, {'hotId': hot.guid, 'title': filename})
-  console.dir(store.state.hotTabs)
   // if no format specified, default to csv
   if (typeof format === 'undefined') {
     data = $.csv.fromArrays(hot.getData())
