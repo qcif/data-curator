@@ -1,8 +1,10 @@
+import {remote} from 'electron'
 const state = {
   tabs: [],
   activeTab: '',
   tabTitles: {},
-  tabIndex: -1
+  tabIndex: -1,
+  activeTitle: ''
 }
 
 const getters = {
@@ -49,10 +51,9 @@ const mutations = {
     }
   },
   setActiveTab (state, tabId) {
-    console.log(tabId)
-    console.log(`tab id: ${tabId}`)
-    console.log(`previous active was: ${state.activeTab}`)
     state.activeTab = `${tabId}`
+    state.activeTitle = state.tabTitles[tabId].title
+    remote.getGlobal('tab').activeTitle = state.activeTitle
   },
   setTabs (state, tabIdOrder) {
     console.log(`tab order ${tabIdOrder}`)

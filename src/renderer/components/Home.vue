@@ -201,7 +201,6 @@ export default {
       'setTabs',
       'setActiveTab',
       'incrementTabIndex',
-      'pushActiveColumn',
       'pushHotColumns',
       'pushTabTitle'
     ]),
@@ -253,10 +252,10 @@ export default {
     initTab: function() {
       this.incrementTabIndex()
       let nextTabId = this.createTabId(this.tabIndex)
+      this.pushTabTitle({id: nextTabId, index: this.tabIndex})
       this.setActiveTab(nextTabId)
       this.pushTab(nextTabId)
       console.log(`this tabIndex is ${this.tabIndex}`)
-      this.pushTabTitle({id: nextTabId, index: this.tabIndex})
     },
     loadDefaultDataIntoContainer: function(container) {
       let defaultData = '"","",""'
@@ -269,7 +268,8 @@ export default {
     loadFormattedDataIntoContainer: function(container, data, format) {
       HotRegister.register(container, this.selectionListener)
       addHotContainerListeners(container)
-      let activeHotId = this.getActiveHotId()
+      // let activeHotId = this.getActiveHotId()
+      let activeHotId = HotRegister.getActiveInstance().guid
       let activeTabId = this.activeTab
       console.log('active hot is: ' + activeHotId)
       this.pushHotTab({
@@ -412,9 +412,9 @@ export default {
     createTabId: function(tabId) {
       return `tab${tabId}`
     },
-    getActiveHotId: function() {
-      return $('#csvContent .active .editor').attr('id')
-    },
+    // getActiveHotId: function() {
+    //   return $('#csvContent .active .editor').attr('id')
+    // },
     triggerSideNav(properties) {
       this.toolbarIndex = -1
       this.sideNavPosition = properties.sideNavPosition || 'left'

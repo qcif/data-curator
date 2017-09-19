@@ -44,10 +44,6 @@ const mutations = {
     let allColumnProperties = state.hotTabs[property.hotId].columnProperties[property.columnIndex][property.key]
     console.log('logging get column properties')
     console.log(allColumnProperties)
-  },
-  pushActiveColumn(state, activeColumnIndex) {
-    state.activeColumn = activeColumnIndex
-    console.log(`active column updated: ${state.activeColumn}`)
   }
 }
 

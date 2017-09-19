@@ -42,7 +42,8 @@ function saveFileAs(format, window) {
     window = BrowserWindow.getFocusedWindow()
   }
   Dialog.showSaveDialog({
-    filters: format.filters
+    filters: format.filters,
+    defaultPath: global.tab.activeTitle
   }, function(fileName) {
     if (fileName === undefined) {
       console.log('returning as no filename was entered...')

@@ -44,7 +44,6 @@ let HotRegister = {
         hot.deselectCell()
       },
       afterSelection: function (r, c, r2, c2, preventScrolling) {
-        // setting if prevent sqcrolling after selection
         // preventScrolling.value = true
         selectionListener()
       },
@@ -69,14 +68,11 @@ let HotRegister = {
     _.set(this.hots, hot.guid, hot)
   },
   getInstance: function(key) {
-    // console.log(`getting ${key}`)
     return _.get(this.hots, key)
   },
   getActiveInstance: function() {
     let activeHotId = jQuery('#csvContent .active .editor').attr('id')
-    console.log(`active id for hot is: ${activeHotId}`)
     let hot = _.get(this.hots, activeHotId)
-    console.log(hot)
     return hot
   },
   getActiveHotIdData: function() {
