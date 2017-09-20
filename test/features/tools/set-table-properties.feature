@@ -28,7 +28,7 @@ Feature: Set Table Properties
   Scenario: Use the menu to access Table Properties for the current Tab
     Given I have opened Data Curator
     And I have opened a data tab
-    When I invoke "Table Properties"
+    When I invoke the "Table Properties" command
     Then display a panel that allows me to enter properties for the current Tab
     And accept and validate Table property values
     And save the values as they are entered

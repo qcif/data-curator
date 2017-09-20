@@ -1,25 +1,26 @@
-> Please provide a general summary of the issue in the Issue Title above
-> fill out the headings below as applicable to the issue you are reporting,
-> deleting as appropriate but offering us as much detail as you can to help us resolve the issue
-
-### Expected Behaviour
-> What should happen?
+> Use the Issue Title above to provide a summary of the problem, feature request or other issue.
+> Fill out the relevant sections below. Delete sections as appropriate.
+> Provide as much detail as you can to help us help you.
 
 ### Desired Behaviour (for feature requests only)
+> Use this section for new feature requests. If you're reporting a problem, delete this section.
 > if relevant include images or hyperlinks to other resources that clarify the feature you're seeking
 
-### Current Behaviour (for problems)
-> What currently happens that isn't expected behaviour?
+### Expected Behaviour (for problems)
+> When reporting a problem, describe what should happen
 
-### Steps to Reproduce (for problems)
-> Provide a link to a live example, or an unambiguous set of steps to reproduce this bug. Include code to reproduce, if relevant.
-1.
+### Current Behaviour
+> When reporting a problem, describe what happens that isn't expected behaviour?
+
+### Steps to Reproduce
+> When reporting a problem, provide a set of steps so others can reproduce the problem.
+
+1. Open Data Curator using the icon
 2.
 3.
 
 ### Your Environment
-> Include as many relevant details about the environment you experienced the bug in - this will help us fix the bug quicker.
-* Operating System and version (e.g. macOS Sierra 10.12.5, Windows 7):
+> Include details about the environment you experienced the problem - this will help us fix the bug quicker.
 
-
-@Stephen-Gates @mattRedBox
+* Data Curator version X.Y.Z
+* Operating System and version (e.g. macOS Sierra 10.12.2, Windows 7)

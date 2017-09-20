@@ -21,13 +21,15 @@ Feature: Export Data Package
   Defaults:
   - Default the file save location from the Preferences/Settings (when implemented)
   - Default the filename to datapackage name property
+  - Set Created to Now - see http://specs.frictionlessdata.io/data-package/#created
+  - Set Profile to `tabular-data-package` - see http://specs.frictionlessdata.io/tabular-data-package/#specification
 
   Export Data Package can be invoked by a menu item or the toolbar
 
   Scenario: Use the menu to Export Data Package
     Given I have opened Data Curator
     And I have completed all the required column, table and data package properties
-    When I invoke "Export Data Package"
+    When I invoke the "Export Data Package" command
     Then prompt for location and name to save the file
     And assemble the data, properties and provenance information into a data package file
     And save it to the location

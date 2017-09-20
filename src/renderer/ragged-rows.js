@@ -2,40 +2,33 @@
 
 // Fills undefined cells with an empty string, keeping the table in a
 // rectangular format
-
-var amendRows = function(hot, worksheet, autoConfirm) {
-  autoConfirm = typeof autoConfirm !== 'undefined'
-    ? autoConfirm
-    : false
+//
+var amendRows = function(hot, worksheet) {
+// ragged_rows is unknown
   var ragged_rows = 0
+  // find the maximum number of columns in the table
   var maxColumns = getMaxColumns(worksheet)
-  //
+  // for every row
   for (var y = 0; y < worksheet.length; y++) {
+    // for every cell in the row up to the maximum number of columns
     for (var x = 0; x < maxColumns; x++) {
+      // test if the cell is null
       if (hot.getDataAtCell(y, x) == null) {
-        // only triggers if a cell returns undefined
-        if (ragged_rows === 0) {
-          // this is a way of prompting once and then proceeding to fix every other ragged instance
-          if (autoConfirm === true || window.confirm('Your file has ragged rows, do you want to correct this?')) {
-            ragged_rows = 1
-            reportFix(worksheet, y, x)
-          } else {
-            ragged_rows = -1
-          }
-        } else if (ragged_rows === 1) {
-          reportFix(worksheet, y, x)
-        }
+      // fix the missing cell
+        worksheet[y].push('')
+        updateTable(hot, worksheet)
+      // set ragged_rows to true to potentially show information message
+        ragged_rows = 1
       }
     }
   }
-  updateTable(hot, worksheet)
-}
 
-var reportFix = function(sheet, y, x) {
-  document.querySelector('#main-bottom-panel').classList.remove('hidden')
-
-  var messagePanel = document.getElementById('message-panel')
-  messagePanel.innerHTML += '<p>' + fixCell(sheet, y, x) + '<p>'
+// Information message
+  if (ragged_rows === 1) {
+    document.querySelector('#main-bottom-panel').classList.remove('hidden')
+    var messagePanel = document.getElementById('message-panel')
+    messagePanel.innerHTML += '<p>Ragged rows corrected<p>'
+  }
 }
 
 function getMaxColumns(csv_array) {
@@ -49,24 +42,10 @@ function getMaxColumns(csv_array) {
   return max_columns
 }
 
-function fixCell(csv_array, y, x) {
-  csv_array[y].push('')
-  var logMsg = 'Cell (' + String.fromCharCode(97 + x).toUpperCase() + ',' + (y + 1) + ') has been added to file'
-  console.log(logMsg)
-  return logMsg
-}
-
 var updateTable = function(hot, csv_array) {
   hot.updateSettings({data: csv_array})
 }
 
 module.exports = {
   fixRaggedRows: amendRows
-}
-if (process.env.NODE_ENV === 'test') {
-  module.exports._private = {
-    maxColumns: getMaxColumns,
-    fix: fixCell,
-    update: updateTable
-  }
 }

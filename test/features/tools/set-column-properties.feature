@@ -15,7 +15,7 @@ Feature: Set Column Properties
 
   Each 'type' has a 'format' of 'default' and may have a limited set of other formats.
 
-  Each column may have one or more 'constraints' to further restrict the valid values that can be entered into a column. Constrants can vary by 'type'.
+  Each column may have one or more 'constraints' to further restrict the valid values that can be entered into a column. Constraints can vary by 'type'.
 
   Other properties describe:
     - 'missingValues'
@@ -35,7 +35,7 @@ Feature: Set Column Properties
     And the cursor is in a column
 
   Scenario: Set Column Properties for the current column
-    When I invoke the "Column Properties" from the menu
+    When I invoke the "Column Properties" command
     Then display a panel that allows me to properties for the current column
     And accept and validate column property values
     And save the values as they are entered

@@ -3,13 +3,9 @@ const state = {
 }
 
 const getters = {
-  getHotTitle: (state, getters) => (hotId) => {
-    let title = _.get(state.hotTabs, `${hotId}.title`, `Untitled.csv`)
-    return title
-  },
   getHotColumnProperties: (state, getters) => (hotId) => {
-    let allColumnProperties = _.get(state.hotTabs, `${hotId}.columnProperties`)
-    return allColumnProperties
+    let allColumnProperties = state.hotTabs[hotId].columnProperties
+    return state.hotTabs[hotId].columnProperties
   }
 }
 
@@ -24,9 +20,6 @@ const mutations = {
     }
     if (hotTab.tabId) {
       _.set(state.hotTabs, `${hotId}.tabId`, hotTab.tabId)
-    }
-    if (hotTab.title) {
-      _.set(state.hotTabs, `${hotId}.title`, hotTab.title)
     }
     console.log('leaving push hot tab...')
     console.dir(state.hotTabs)
@@ -45,15 +38,14 @@ const mutations = {
     console.dir(state.hotTabs)
   },
   pushHotProperty(state, property) {
-    console.log('properties are...')
+    console.log(`incoming property: ${property}`)
     console.log(property)
     let incoming = {}
     _.set(incoming, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
-    console.log('incoming is...')
-    console.log(incoming)
     _.merge(state.hotTabs, incoming)
-    console.log('leaving push hot properties...')
-    console.dir(state.hotTabs)
+    let allColumnProperties = state.hotTabs[property.hotId].columnProperties[property.columnIndex][property.key]
+    console.log('logging get column properties')
+    console.log(allColumnProperties)
   }
 }
 

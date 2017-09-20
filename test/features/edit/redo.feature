@@ -1,15 +1,15 @@
 Feature: Redo
   As a Data Packager
-  I want to repeat the edit command I just performed
-  So that I can make the same change quickly
+  I want to reserve an undo table edit command I just performed
+  So that I can continue editing as if I hadn't performed the undo command
 
-  The "Redo" function can be invoked using a menu item or keyboard shortcut
+  The "Redo" command can be invoked using a menu item or keyboard shortcut
 
   Rules:
-  - Only Edit commands can be re-done
+  - Only actions performed in editing the data in the table can be undo
 
-  Scenario: Use the menu to redo a command
+  Scenario: redo
     Given I have opened Data Curator
-    And I have performed a command that can be re-done
-    When I select "Redo" from the menu
-    Then repeat the previous edit command
+    And I have performed an undo command
+    When I invoke the "Redo" command
+    Then reserve the previous undo command

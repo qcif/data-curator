@@ -5,7 +5,7 @@ Feature: Publish Data Package
   I want to publish a data package to an open data portal
   So that I don't have to upload it manually through the open data portal's user interface
 
-  The "Publish Data Package" function can be invoked using a menu item that is enabled when:
+  The "Publish Data Package" command can be invoked using a menu item that is enabled when:
 
   - Portal API credentials are set
   - Data Package has been exported successfully
@@ -22,7 +22,7 @@ Feature: Publish Data Package
   Scenario: Publish Data Package
     Given I have opened Data Curator
     And I have exported a data package
-    When I invoke the "Publish Data Package" function
+    When I invoke the "Publish Data Package" command
     Then show the filename and location used in the last export data package command
     And offer to change the filename and location
     And use the selected file to send the data package to the open data portal via an API

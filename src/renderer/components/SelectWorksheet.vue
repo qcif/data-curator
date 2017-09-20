@@ -9,7 +9,7 @@
       </select>
     </p>
     <div class="well">
-      <button id="submit" class="btn btn-default" @click.prevent="submit">Go</button> <button id="cancel" class="btn btn-default" @click.prevent="cancel">Cancel</button>
+      <button id="submit" class="btn btn-default" @click.prevent="submit">Open Sheet</button> <button id="cancel" class="btn btn-default" @click.prevent="cancel">Cancel</button>
     </div>
   </form>
 </div>

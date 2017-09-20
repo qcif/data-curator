@@ -3,7 +3,7 @@ Feature: Guess Column Properties
   I want to derive as many column properties as possible from the data and the CSV dialect
   So that I can quickly set the column properties
 
-  The "Guess Column Properties" function can be invoked using a menu item
+  The "Guess Column Properties" command can be invoked using a menu item
 
   If the 'header' is 'true' in the CSV Dialect, then for each column, set the 'name' property to the value in the first row of the column.
   See:
@@ -19,5 +19,5 @@ Feature: Guess Column Properties
   Scenario: Use the menu to Guess column properties
     Given I have opened Data Curator
     And I have opened 1 data tab
-    When I invoke the "Guess Column Properties" function
+    When I invoke the "Guess Column Properties" command
     Then infer the column properties from the data

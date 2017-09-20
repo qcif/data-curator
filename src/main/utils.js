@@ -1,10 +1,9 @@
-import {dialog, app} from 'electron'
-var ipc = require('electron').ipcMain
+import {dialog, app, ipcMain as ipc} from 'electron'
 var file_formats = require('../renderer/file-actions.js').formats
 let path = require('path')
 
 export function createWindow() {
-  let mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 800})
+  let mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 800, minHeight: 600})
 
   const winURL = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080`
@@ -66,15 +65,30 @@ export function showSidePanel(name) {
   window.webContents.send('showSidePanel', name)
 }
 
+export function guessColumnProperties() {
+  var window = BrowserWindow.getFocusedWindow()
+  window.webContents.send('guessColumnProperties')
+}
+
 function getSaveSubMenu() {
   let fileMenu = Menu.getApplicationMenu().items.find(x => x.label === 'File')
+  // console.log(fileMenu)
   let saveSubMenu = fileMenu.submenu.items.find(x => x.label === 'Save')
+  // console.log('looking for save sub menu')
+  // console.log(saveSubMenu)
   return saveSubMenu
 }
 
+ipc.on('checkSaveMenu', (event, arg) => {
+  console.log('checking save menu') // prints "ping"
+  enableSave()
+})
+
 export function enableSave() {
   let saveSubMenu = getSaveSubMenu()
-  if (saveSubMenu) {
+  console.log(global.tab)
+  if (saveSubMenu.label) {
+    console.log('checked ok')
     saveSubMenu.enabled = true
   } else {
     console.log('Could not find save sub menu. Cannot enable it.')

@@ -1,9 +1,13 @@
-@backlog @enterprise-add-in 
+@backlog @enterprise-add-in
 
 Feature: Print
   As a Data Packager
   I want print out key portions of the data package
-  So that I can present them to the Data Custodion and seek approval to release the open data
+  So that I can present them to the Data Custodian and seek approval to release the open data
+
+  Notes:
+  - see https://electron.atom.io/docs/api/web-contents/#webcontentsprintoptions for implementation option
+  - demonstrated in https://github.com/electron/electron-api-demos
 
   'Print' can be invoked by a menu item or a keyboard shortcut
 

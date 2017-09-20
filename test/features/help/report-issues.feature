@@ -9,5 +9,5 @@ Feature: Report Issues
 
   Scenario: Use the menu to open the report issues page
     Given I have opened Data Curator
-    When I invoke the "Report Issues" function
+    When I invoke the "Report Issues" command
     Then Open the Report Issues URL in a separate browser window
