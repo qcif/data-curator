@@ -170,19 +170,45 @@ exports.menu = [
     label: 'Edit',
     submenu: [
       {
-        role: 'undo'
+        // role: 'undo',
+        // turned off for Beta release
+        label: 'Undo',
+        enabled: false,
+        accelerator: 'CmdOrCtrl+Z'
       }, {
-        role: 'redo'
+        // role: 'redo',
+        // turned off for Beta release
+        label: 'Redo',
+        enabled: false,
+        accelerator: process.platform === 'darwin'
+          ? 'Shift+CmdOrCtrl+Z'
+          : 'CmdOrCtrl+Y'
       }, {
         type: 'separator'
       }, {
-        role: 'cut'
+        // role: 'cut',
+        // turned off for Beta release
+        label: 'Cut',
+        enabled: false,
+        accelerator: 'CmdOrCtrl+X'
       }, {
-        role: 'copy'
+        // role: 'copy',
+        // turned off for Beta release
+        label: 'Copy',
+        enabled: false,
+        accelerator: 'CmdOrCtrl+C'
       }, {
-        role: 'paste'
+        // role: 'paste',
+        // turned off for Beta release
+        label: 'Paste',
+        enabled: false,
+        accelerator: 'CmdOrCtrl+V'
       }, {
-        role: 'selectall'
+        // turned off for Beta release
+        // role: 'selectall',
+        label: 'Select All',
+        enabled: false,
+        accelerator: 'CmdOrCtrl+A'
       }, {
         type: 'separator'
       }, {
