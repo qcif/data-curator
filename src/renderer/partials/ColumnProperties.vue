@@ -14,19 +14,14 @@
             {{ option}}
           </option>
         </select>
-        <!-- <select v-else multiple v-model="selectConstraints" id="constraints" :size="constraintValues.length" class="form-control input-sm col-sm-8">
-          <option v-for="option in constraintValues" v-bind:value="option">
-            {{ option}}
-          </option>
-        </select> -->
-        <div v-else id="constraints" class="col-sm-8">
-          <div v-for="option in constraintValues" class="input-group row">
-            <input type="checkbox" class="" :id="option" :value="option" v-model="selectConstraints"></input>
-            <label for="option" class="form-control-static">{{option}}</label>
-            <input type="text" class="constraint-text" />
-          </div>
-        </div>
       </template>
+      <div v-else-if="formprop.label === 'constraints'" id="constraints" class="col-sm-8">
+        <div v-for="option in constraintValues" class="input-group row">
+          <input type="checkbox" class="" :id="option" :value="option" v-model="selectConstraints"></input>
+          <label for="option" class="form-control-static">{{option}}</label>
+          <input type="text" class="constraint-text" />
+        </div>
+      </div>
       <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
     </div>
   </div>
@@ -78,7 +73,7 @@ export default {
       },
       {
         label: 'constraints',
-        type: 'dropdown'
+        type: 'checkbox'
       },
       {
         label: 'rdfType',
@@ -198,7 +193,6 @@ export default {
   },
   watch: {
     selectConstraints: function(values) {
-      console.log('watching constraints')
       this.setProperty('constraints', values)
     },
     getConstraints: function(values) {
@@ -208,6 +202,7 @@ export default {
   mounted: function() {
     this.$nextTick(function() {
       reselectCurrentCellOrMin()
+      this.selectConstraints = this.getConstraints
     })
   }
 }
