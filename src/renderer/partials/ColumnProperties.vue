@@ -4,22 +4,25 @@
     <div v-for="(formprop, index) in formprops" :key="index">
       <label :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
       <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
-          <select v-if="formprop.label==='type'" :value="getProperty(formprop.label)" @input="setSelectType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
-            <option v-for="option in typeValues" v-bind:value="option">
-              {{ option}}
-            </option>
-          </select>
-          <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-8">
-            <option v-for="option in formatValues" v-bind:value="option">
-              {{ option}}
-            </option>
-          </select>
-          <select v-else multiple v-model="selectConstraints" id="constraints" :size="constraintValues.length" class="form-control input-sm col-sm-8">
-            <option v-for="option in constraintValues" v-bind:value="option">
-              {{ option}}
-            </option>
-          </select>
-        </template>
+        <select v-if="formprop.label==='type'" :value="getProperty(formprop.label)" @input="setSelectType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
+          <option v-for="option in typeValues" v-bind:value="option">
+            {{ option}}
+          </option>
+        </select>
+        <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-8">
+          <option v-for="option in formatValues" v-bind:value="option">
+            {{ option}}
+          </option>
+        </select>
+      </template>
+      <div v-else-if="formprop.label === 'constraints'" id="constraints" class="col-sm-8">
+        <div v-for="option in constraintValues" class="input-group row">
+          <input type="checkbox" :id="option" :value="option" v-model="selectConstraints"></input>
+          <label for="option" class="form-control-static">{{option}}</label>
+          <template v-if="constraintBindings[option] == 'boolean'"/>
+          <input v-else v-show="showConstraint(option)" type="text" class="constraint-text" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/>
+        </div>
+      </div>
       <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
     </div>
   </div>
@@ -51,6 +54,7 @@ export default {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       formatValues: [],
       constraintValues: [],
+      selectConstraints: [],
       formprops: [{
         label: 'name'
       },
@@ -70,7 +74,7 @@ export default {
       },
       {
         label: 'constraints',
-        type: 'dropdown'
+        type: 'checkbox'
       },
       {
         label: 'rdfType',
@@ -102,6 +106,10 @@ export default {
         'geojson': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
         'any': ['required', 'unique', 'minLength', 'maxLength', 'minimum', 'maximum', 'enum']
       },
+      constraintBindings: {
+        'required': 'boolean',
+        'unique': 'boolean'
+      },
       otherProperties: ['missingValues', 'primaryKey', 'foreignKey']
     }
   },
@@ -109,7 +117,11 @@ export default {
     ...mapMutations([
       'pushHotProperty'
     ]),
+    showConstraint: function(option) {
+      return this.selectConstraints.indexOf(option) > -1
+    },
     getProperty: function(key) {
+      console.log(`getting property for ${key}`)
       let allColumnsProperties = this.getAllColumnsProperties
       if (allColumnsProperties) {
         let activeColumnProperties = allColumnsProperties[this.cIndex]
@@ -150,6 +162,21 @@ export default {
     updateFormatValues: function(value) {
       this.formatValues = this.formats[value] || []
       this.formatValues.push('default')
+    },
+    getConstraintValue: function(key) {
+      let object = this.getConstraintsObject
+      console.log('getting constraint keys')
+      console.log(object)
+      if (object && object[key]) {
+        return object[key]
+      }
+    },
+    setConstraintValue: function(key, value) {
+      let object = {}
+      object[key] = value
+      console.log(`set constraint...`)
+      console.log(object)
+      this.setProperty('constraintValues', object)
     }
   },
   computed: {
@@ -157,22 +184,21 @@ export default {
     isDropdownFormatDisabled() {
       return this.formatValues.length < 2
     },
-    selectConstraints: {
-      get: function() {
-        let type = this.getProperty('type')
-        if (type) {
-          this.constraintValues = this.constraints[type]
-        }
-        let property = this.getProperty('constraints')
-        if (!property) {
-          this.setProperty('constraints', [])
-          property = []
-        }
-        return property
-      },
-      set: function(values) {
-        this.setProperty('constraints', values)
+    getConstraints() {
+      let type = this.getProperty('type')
+      if (type) {
+        this.constraintValues = this.constraints[type]
       }
+      let property = this.getProperty('constraints')
+      if (!property) {
+        this.setProperty('constraints', [])
+        property = []
+      }
+      return property
+    },
+    getConstraintsObject() {
+      console.log('getting constraint object...')
+      return this.getProperty('constraintValues')
     },
     selectFormat: {
       get: function() {
@@ -192,10 +218,23 @@ export default {
       }
     }
   },
+  watch: {
+    selectConstraints: function(values) {
+      console.log(`looking at constraint values`)
+      this.setProperty('constraints', values)
+    },
+    getConstraints: function(values) {
+      this.selectConstraints = values
+    }
+  },
   mounted: function() {
     this.$nextTick(function() {
       reselectCurrentCellOrMin()
+      this.selectConstraints = this.getConstraints
     })
   }
 }
 </script>
+<style lang="styl" scoped>
+@import '~static/css/columnprops'
+</style>
