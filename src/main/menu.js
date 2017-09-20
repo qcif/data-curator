@@ -141,7 +141,8 @@ exports.menu = [
         click: function() {
           fileActions.saveFile()
         },
-        id: 'save'
+        id: 'save',
+        enabled: false
       }, {
         label: 'Save As',
         submenu: save_submenu

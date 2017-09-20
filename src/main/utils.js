@@ -1,5 +1,4 @@
-import {dialog, app} from 'electron'
-var ipc = require('electron').ipcMain
+import {dialog, app, ipcMain as ipc} from 'electron'
 var file_formats = require('../renderer/file-actions.js').formats
 let path = require('path')
 
@@ -73,13 +72,23 @@ export function guessColumnProperties() {
 
 function getSaveSubMenu() {
   let fileMenu = Menu.getApplicationMenu().items.find(x => x.label === 'File')
+  // console.log(fileMenu)
   let saveSubMenu = fileMenu.submenu.items.find(x => x.label === 'Save')
+  // console.log('looking for save sub menu')
+  // console.log(saveSubMenu)
   return saveSubMenu
 }
 
+ipc.on('checkSaveMenu', (event, arg) => {
+  console.log('checking save menu') // prints "ping"
+  enableSave()
+})
+
 export function enableSave() {
   let saveSubMenu = getSaveSubMenu()
-  if (saveSubMenu) {
+  console.log(global.tab)
+  if (saveSubMenu.label) {
+    console.log('checked ok')
     saveSubMenu.enabled = true
   } else {
     console.log('Could not find save sub menu. Cannot enable it.')

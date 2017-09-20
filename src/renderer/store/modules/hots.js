@@ -1,20 +1,11 @@
 const state = {
-  hotTabs: {},
-  activeColumnIndex: {}
+  hotTabs: {}
 }
 
 const getters = {
-  getHotTitle: (state, getters) => (hotId) => {
-    let title = _.get(state.hotTabs, `${hotId}.title`, `Untitled`)
-    return title
-  },
   getHotColumnProperties: (state, getters) => (hotId) => {
     let allColumnProperties = state.hotTabs[hotId].columnProperties
     return state.hotTabs[hotId].columnProperties
-  },
-  getActiveColumnIndex: (state, getters) => {
-    console.log('getting active column triggered...')
-    return state.activeColumnIndex
   }
 }
 
@@ -29,9 +20,6 @@ const mutations = {
     }
     if (hotTab.tabId) {
       _.set(state.hotTabs, `${hotId}.tabId`, hotTab.tabId)
-    }
-    if (hotTab.title) {
-      _.set(state.hotTabs, `${hotId}.title`, hotTab.title)
     }
     console.log('leaving push hot tab...')
     console.dir(state.hotTabs)
@@ -50,19 +38,14 @@ const mutations = {
     console.dir(state.hotTabs)
   },
   pushHotProperty(state, property) {
+    console.log(`incoming property: ${property}`)
+    console.log(property)
     let incoming = {}
     _.set(incoming, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
     _.merge(state.hotTabs, incoming)
     let allColumnProperties = state.hotTabs[property.hotId].columnProperties[property.columnIndex][property.key]
     console.log('logging get column properties')
     console.log(allColumnProperties)
-  },
-  pushActiveColumn(state, activeColumnIndex) {
-    state.activeColumn = activeColumnIndex
-    console.log(`active column updated: ${state.activeColumn}`)
-  },
-  pushActiveColumnIndex(state, activeHotId, activeColumnIndex) {
-    state.activeColumnIndex = {hot: activeHotId, index: activeColumnIndex}
   }
 }
 

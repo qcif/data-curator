@@ -1,4 +1,5 @@
-import store from '../renderer/store/modules/hots.js'
+import tabStore from '../renderer/store/modules/tabs.js'
+import {remote} from 'electron'
 const fs = require('fs')
 const $ = global.jQuery = require('jquery/dist/jquery.js')
 require('jquery-csv/src/jquery.csv.js')
@@ -76,21 +77,25 @@ var openFile = function(hot, data, format) {
 
 var saveFile = function(hot, format, filename, callback) {
   console.log('saving')
-  var data
-  if (typeof filename !== 'string') {
-    console.dir(store.state.hotTabs)
-    console.dir(`hot guid is: ${hot.guid}`)
-    let defaultQualifier = _.get(store.state.hotTabs, `${hot.guid}.tabId`, '')
-    filename = _.get(store.state.hotTabs, `${hot.guid}.title`, `Untitled${defaultQualifier}.csv`)
-    console.dir(`${filename}`)
+  console.log(`filename is ${filename}`)
+  let data
+  let tabId = tabStore.state.activeTab
+  console.log(`save tab id is: ${tabId}`)
+  if (typeof filename === 'string') {
+    tabStore.mutations.pushTabObject(tabStore.state, {id: tabId, filename: filename})
+  } else {
+    console.log('filename does not exist')
+    filename = _.get(tabStore.state.tabObjects, `${tabId}.filename`)
   }
-  store.mutations.pushHotTab(store.state, {'hotId': hot.guid, 'title': filename})
-  console.dir(store.state.hotTabs)
   // if no format specified, default to csv
   if (typeof format === 'undefined') {
     data = $.csv.fromArrays(hot.getData())
   } else {
     data = $.csv.fromArrays(hot.getData(), format.options)
+  }
+  if (!filename) {
+    console.log('No filename exists. Exiting')
+    return
   }
   if (typeof callback === 'undefined') {
     fs.writeFile(filename, data, function(err) {
@@ -101,7 +106,11 @@ var saveFile = function(hot, format, filename, callback) {
   } else {
     fs.writeFile(filename, data, callback)
   }
-  document.title = filename
+  console.log('logging globals')
+  console.log(remote.getGlobal('tab'))
+  console.log('logging tab objects...')
+  console.log(tabStore.state.tabObjects)
+  // document.title = filename
 }
 
 export {

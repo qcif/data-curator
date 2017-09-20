@@ -74,7 +74,7 @@
           </div>
         </div>
       </div>
-      <div id="main-bottom-panel" class="panel-footer">
+      <div v-show="showBottomPanel" id="main-bottom-panel" class="panel-footer">
         <button type="button" class="close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -139,6 +139,7 @@ export default {
       enableTransition: false,
       enableSideNavLeftArrow: true,
       enableSideNavRightArrow: true,
+      showBottomPanel: false,
       toolbarMenus: [{
         name: 'Validate',
         image: 'static/img/validate.svg'
@@ -179,10 +180,9 @@ export default {
     ...mapGetters({
       tabs: 'getTabs',
       activeTab: 'getActiveTab',
-      tabIndex: 'getTabIndex',
-      tabTitle: 'getHotTitle'
+      tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'getActiveColumnIndex']),
+    ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'tabTitle']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -201,9 +201,8 @@ export default {
       'setTabs',
       'setActiveTab',
       'incrementTabIndex',
-      'pushActiveColumn',
       'pushHotColumns',
-      'pushActiveColumnIndex'
+      'pushTabTitle'
     ]),
     selectionListener: function() {
       console.log('selection noted in vue')
@@ -253,8 +252,10 @@ export default {
     initTab: function() {
       this.incrementTabIndex()
       let nextTabId = this.createTabId(this.tabIndex)
+      this.pushTabTitle({id: nextTabId, index: this.tabIndex})
       this.setActiveTab(nextTabId)
       this.pushTab(nextTabId)
+      console.log(`this tabIndex is ${this.tabIndex}`)
     },
     loadDefaultDataIntoContainer: function(container) {
       let defaultData = '"","",""'
@@ -267,7 +268,8 @@ export default {
     loadFormattedDataIntoContainer: function(container, data, format) {
       HotRegister.register(container, this.selectionListener)
       addHotContainerListeners(container)
-      let activeHotId = this.getActiveHotId()
+      // let activeHotId = this.getActiveHotId()
+      let activeHotId = HotRegister.getActiveInstance().guid
       let activeTabId = this.activeTab
       console.log('active hot is: ' + activeHotId)
       this.pushHotTab({
@@ -286,6 +288,8 @@ export default {
       // update hots
 
       // update hottabs
+
+      // update tab titles
     },
     closeTab: function(event) {
       // do not allow single tab to be closed
@@ -350,7 +354,6 @@ export default {
       } else {
         let currentColumnIndex = selected[1]
         let guid = HotRegister.getActiveInstance().guid
-        this.pushActiveColumnIndex(guid, currentColumnIndex)
         this.currentColumnIndex = currentColumnIndex
       }
       console.log('updated active column')
@@ -409,9 +412,9 @@ export default {
     createTabId: function(tabId) {
       return `tab${tabId}`
     },
-    getActiveHotId: function() {
-      return $('#csvContent .active .editor').attr('id')
-    },
+    // getActiveHotId: function() {
+    //   return $('#csvContent .active .editor').attr('id')
+    // },
     triggerSideNav(properties) {
       this.toolbarIndex = -1
       this.sideNavPosition = properties.sideNavPosition || 'left'
@@ -420,6 +423,9 @@ export default {
       this.sideNavViewTitle = properties.name || properties.sideNavView
       this.enableTransition = properties.enableTransition || false
       this.sideNavStatus = 'open'
+    },
+    forceWrapper: function() {
+      this.$forceUpdate()
     }
   },
   components: {
@@ -449,6 +455,10 @@ export default {
         sideNavView: arg
       })
     })
+    const vueForceUpdate = this.forceWrapper
+    ipc.on('saveDataSuccess', function(e, format, fileName) {
+      vueForceUpdate()
+    })
     this.$nextTick(function() {
       require('../index.js')
       let tabIdOrder
@@ -472,8 +482,6 @@ export default {
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
     })
-  },
-  watch: {
   }
 }
 </script>
