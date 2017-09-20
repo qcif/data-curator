@@ -82,6 +82,7 @@ ipc.on('toggleSaveMenu', (event, arg) => {
 
 export function toggleSaveMenu() {
   let saveSubMenu = getSaveSubMenu()
+  console.log(global.tab)
   let activeFilename = global.tab.activeFilename
   saveSubMenu.enabled = (typeof activeFilename !== 'undefined' && activeFilename.length > 0)
 }
