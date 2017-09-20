@@ -17,9 +17,10 @@
       </template>
       <div v-else-if="formprop.label === 'constraints'" id="constraints" class="col-sm-8">
         <div v-for="option in constraintValues" class="input-group row">
-          <input type="checkbox" class="" :id="option" :value="option" v-model="selectConstraints"></input>
+          <input type="checkbox" :id="option" :value="option" v-model="selectConstraints"></input>
           <label for="option" class="form-control-static">{{option}}</label>
-          <input type="text" class="constraint-text" />
+          <template v-if="constraintBindings[option] == 'boolean'"/>
+          <input v-else show="showConstraint(option)" type="text" class="constraint-text" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/>
         </div>
       </div>
       <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
@@ -105,6 +106,10 @@ export default {
         'geojson': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
         'any': ['required', 'unique', 'minLength', 'maxLength', 'minimum', 'maximum', 'enum']
       },
+      constraintBindings: {
+        'required': 'boolean',
+        'unique': 'boolean'
+      },
       otherProperties: ['missingValues', 'primaryKey', 'foreignKey']
     }
   },
@@ -112,6 +117,9 @@ export default {
     ...mapMutations([
       'pushHotProperty'
     ]),
+    showConstraint: function(option) {
+      return this.selectConstraints.indexOf(option) > -1
+    },
     getProperty: function(key) {
       console.log(`getting property for ${key}`)
       let allColumnsProperties = this.getAllColumnsProperties
@@ -154,6 +162,23 @@ export default {
     updateFormatValues: function(value) {
       this.formatValues = this.formats[value] || []
       this.formatValues.push('default')
+    },
+    getConstraintValue: function(key) {
+      // let constraintKeys = this.getConstraints
+      let object = this.getConstraintsObject
+      console.log('getting constraint keys')
+      console.log(object)
+      if (object && object[key]) {
+        return object[key]
+      }
+      // return constraintObjects
+    },
+    setConstraintValue: function(key, value) {
+      let object = {}
+      object[key] = value
+      console.log(`set constraint...`)
+      console.log(object)
+      this.setProperty('constraintValues', object)
     }
   },
   computed: {
@@ -172,6 +197,10 @@ export default {
         property = []
       }
       return property
+    },
+    getConstraintsObject() {
+      console.log('getting constraint object...')
+      return this.getProperty('constraintValues')
     },
     selectFormat: {
       get: function() {
@@ -193,6 +222,7 @@ export default {
   },
   watch: {
     selectConstraints: function(values) {
+      console.log(`looking at constraint values`)
       this.setProperty('constraints', values)
     },
     getConstraints: function(values) {
