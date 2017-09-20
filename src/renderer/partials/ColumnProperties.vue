@@ -20,7 +20,7 @@
           <input type="checkbox" :id="option" :value="option" v-model="selectConstraints"></input>
           <label for="option" class="form-control-static">{{option}}</label>
           <template v-if="constraintBindings[option] == 'boolean'"/>
-          <input v-else show="showConstraint(option)" type="text" class="constraint-text" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/>
+          <input v-else v-show="showConstraint(option)" type="text" class="constraint-text" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/>
         </div>
       </div>
       <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
@@ -164,14 +164,12 @@ export default {
       this.formatValues.push('default')
     },
     getConstraintValue: function(key) {
-      // let constraintKeys = this.getConstraints
       let object = this.getConstraintsObject
       console.log('getting constraint keys')
       console.log(object)
       if (object && object[key]) {
         return object[key]
       }
-      // return constraintObjects
     },
     setConstraintValue: function(key, value) {
       let object = {}
