@@ -52,6 +52,7 @@ function saveFileAs(format, window) {
     enableSave()
     window.webContents.send('saveData', format, fileName)
     window.format = format
+    window.webContents.send('saveDataSuccess')
   })
 }
 

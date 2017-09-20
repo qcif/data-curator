@@ -423,6 +423,9 @@ export default {
       this.sideNavViewTitle = properties.name || properties.sideNavView
       this.enableTransition = properties.enableTransition || false
       this.sideNavStatus = 'open'
+    },
+    forceWrapper: function() {
+      this.$forceUpdate()
     }
   },
   components: {
@@ -452,6 +455,10 @@ export default {
         sideNavView: arg
       })
     })
+    const vueForceUpdate = this.forceWrapper
+    ipc.on('saveDataSuccess', function(e, format, fileName) {
+      vueForceUpdate()
+    })
     this.$nextTick(function() {
       require('../index.js')
       let tabIdOrder
@@ -475,11 +482,6 @@ export default {
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
     })
-  },
-  watch: {
-    activeTab: function(newTitle) {
-      console.log('active title updated.')
-    }
   }
 }
 </script>
