@@ -1,4 +1,5 @@
 import tabStore from '../renderer/store/modules/tabs.js'
+import {remote} from 'electron'
 const fs = require('fs')
 const $ = global.jQuery = require('jquery/dist/jquery.js')
 require('jquery-csv/src/jquery.csv.js')
@@ -100,6 +101,10 @@ var saveFile = function(hot, format, filename, callback) {
   } else {
     fs.writeFile(filename, data, callback)
   }
+  console.log('logging globals')
+  console.log(remote.getGlobal('tab'))
+  console.log('logging tab objects...')
+  console.log(tabStore.state.tabObjects)
   // document.title = filename
 }
 

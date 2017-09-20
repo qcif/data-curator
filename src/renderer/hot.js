@@ -10,7 +10,7 @@ let HotRegister = {
     let hot = new Handsontable(container, {
       colHeaders: true,
       rowHeaders: true,
-      autoColumnSize: {syncLimit: 300},
+      // autoColumnSize: {syncLimit: 300},
       fixedRowsTop: 0,
       columnSorting: true,
       sortIndicator: true,

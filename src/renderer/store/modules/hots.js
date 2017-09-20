@@ -38,6 +38,8 @@ const mutations = {
     console.dir(state.hotTabs)
   },
   pushHotProperty(state, property) {
+    console.log(`incoming property: ${property}`)
+    console.log(property)
     let incoming = {}
     _.set(incoming, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
     _.merge(state.hotTabs, incoming)

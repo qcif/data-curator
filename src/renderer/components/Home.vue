@@ -477,6 +477,9 @@ export default {
     })
   },
   watch: {
+    activeTab: function(newTitle) {
+      console.log('active title updated.')
+    }
   }
 }
 </script>

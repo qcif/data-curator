@@ -1,4 +1,5 @@
 import {remote} from 'electron'
+import path from 'path'
 const state = {
   tabs: [],
   activeTab: '',
@@ -44,8 +45,16 @@ const mutations = {
     _.set(state.tabObjects, `${tab.id}.title`, title)
   },
   pushTabObject(state, tab) {
+    console.log('logging tab on push tab object')
+    console.log(tab)
     if (tab.filename) {
       _.set(state.tabObjects, `${tab.id}.filename`, tab.filename)
+      // tab title should reflect basename of filename
+      let basename = path.basename(tab.filename)
+      _.set(state.tabObjects, `${tab.id}.title`, basename)
+      // update global active references for electron-main
+      remote.getGlobal('tab').activeFilename = tab.filename
+      remote.getGlobal('tab').activeTitle = basename
     }
   },
   removeTab (state, tabId) {
@@ -61,6 +70,10 @@ const mutations = {
     console.log(`active tab is: ${state.activeTab}`)
     remote.getGlobal('tab').activeTitle = state.activeTitle
     remote.getGlobal('tab').activeFilename = state.tabObjects[state.activeTab].filename
+    console.log('logging tab objects...')
+    console.log(state.tabObjects)
+    console.log('logging globals')
+    console.log(remote.getGlobal('tab'))
   },
   setTabs (state, tabIdOrder) {
     console.log(`tab order ${tabIdOrder}`)
