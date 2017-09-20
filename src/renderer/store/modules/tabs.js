@@ -49,12 +49,15 @@ const mutations = {
     console.log(tab)
     if (tab.filename) {
       _.set(state.tabObjects, `${tab.id}.filename`, tab.filename)
-      // tab title should reflect basename of filename
-      let basename = path.basename(tab.filename)
-      _.set(state.tabObjects, `${tab.id}.title`, basename)
+      // tab title should reflect basename minus extension of filename
+      let fullPath = tab.filename
+      let basename = path.basename(fullPath)
+      let extension = path.extname(basename)
+      let doctored = basename.substring(0, basename.lastIndexOf(extension))
+      _.set(state.tabObjects, `${tab.id}.title`, doctored)
       // update global active references for electron-main
       remote.getGlobal('tab').activeFilename = tab.filename
-      remote.getGlobal('tab').activeTitle = basename
+      remote.getGlobal('tab').activeTitle = doctored
     }
   },
   removeTab (state, tabId) {
