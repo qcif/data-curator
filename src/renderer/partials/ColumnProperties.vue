@@ -4,22 +4,29 @@
     <div v-for="(formprop, index) in formprops" :key="index">
       <label :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
       <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
-          <select v-if="formprop.label==='type'" :value="getProperty(formprop.label)" @input="setSelectType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
-            <option v-for="option in typeValues" v-bind:value="option">
-              {{ option}}
-            </option>
-          </select>
-          <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-8">
-            <option v-for="option in formatValues" v-bind:value="option">
-              {{ option}}
-            </option>
-          </select>
-          <select v-else multiple v-model="selectConstraints" id="constraints" :size="constraintValues.length" class="form-control input-sm col-sm-8">
-            <option v-for="option in constraintValues" v-bind:value="option">
-              {{ option}}
-            </option>
-          </select>
-        </template>
+        <select v-if="formprop.label==='type'" :value="getProperty(formprop.label)" @input="setSelectType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
+          <option v-for="option in typeValues" v-bind:value="option">
+            {{ option}}
+          </option>
+        </select>
+        <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-8">
+          <option v-for="option in formatValues" v-bind:value="option">
+            {{ option}}
+          </option>
+        </select>
+        <!-- <select v-else multiple v-model="selectConstraints" id="constraints" :size="constraintValues.length" class="form-control input-sm col-sm-8">
+          <option v-for="option in constraintValues" v-bind:value="option">
+            {{ option}}
+          </option>
+        </select> -->
+        <div v-else id="constraints" class="col-sm-8">
+          <div v-for="option in constraintValues" class="input-group row">
+            <input type="checkbox" class="" :id="option" :value="option" v-model="selectConstraints"></input>
+            <label for="option" class="form-control-static">{{option}}</label>
+            <input type="text" class="constraint-text" />
+          </div>
+        </div>
+      </template>
       <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
     </div>
   </div>
@@ -171,6 +178,7 @@ export default {
         return property
       },
       set: function(values) {
+        console.log(`values are for constraints: ${values}`)
         this.setProperty('constraints', values)
       }
     },
@@ -199,3 +207,6 @@ export default {
   }
 }
 </script>
+<style lang="styl" scoped>
+@import '~static/css/columnprops'
+</style>
