@@ -1,4 +1,4 @@
-import {remote} from 'electron'
+import {remote, ipcRenderer as ipc} from 'electron'
 import path from 'path'
 const state = {
   tabs: [],
@@ -58,6 +58,9 @@ const mutations = {
       // update global active references for electron-main
       remote.getGlobal('tab').activeFilename = tab.filename
       remote.getGlobal('tab').activeTitle = doctored
+      if (remote.getGlobal('tab').activeFilename && remote.getGlobal('tab').activeFilename != '') {
+        ipc.send('checkSaveMenu')
+      }
     }
   },
   removeTab (state, tabId) {
@@ -77,6 +80,9 @@ const mutations = {
     console.log(state.tabObjects)
     console.log('logging globals')
     console.log(remote.getGlobal('tab'))
+    if (remote.getGlobal('tab').activeFilename && remote.getGlobal('tab').activeFilename != '') {
+      ipc.send('checkSaveMenu')
+    }
   },
   setTabs (state, tabIdOrder) {
     console.log(`tab order ${tabIdOrder}`)

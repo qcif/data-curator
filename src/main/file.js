@@ -49,7 +49,7 @@ function saveFileAs(format, window) {
       console.log('returning as no filename was entered...')
       return
     }
-    enableSave()
+    // enableSave()
     window.webContents.send('saveData', format, fileName)
     window.format = format
     window.webContents.send('saveDataSuccess')
@@ -86,7 +86,7 @@ function readFile(fileNames, format) {
         console.log(err.stack)
       }
       createWindowTabWithFormattedData(data, format)
-      enableSave()
+      // enableSave()
     })
   }
 }
