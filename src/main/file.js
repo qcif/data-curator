@@ -60,6 +60,11 @@ function saveFileAs(format, window) {
     }
     if (filenameExists(filename)) {
       console.log('returning as filename exists...')
+      Dialog.showMessageBox(window, {
+        type: 'warning',
+        title: 'Save failed',
+        message: 'Filename already exists. Please try again.'
+      })
       return
     }
 
