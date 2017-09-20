@@ -12,7 +12,8 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 global.tab = {
-  activeTitle: ''
+  activeTitle: '',
+  activeFilename: ''
 }
 global.electron = require('electron')
 
