@@ -170,19 +170,31 @@ exports.menu = [
     label: 'Edit',
     submenu: [
       {
-        role: 'undo'
+        role: 'undo',
+        // turned off for Beta release
+        enabled: false
       }, {
-        role: 'redo'
+        role: 'redo',
+        // turned off for Beta release
+        enabled: false
       }, {
         type: 'separator'
       }, {
-        role: 'cut'
+        role: 'cut',
+        // turned off for Beta release
+        enabled: false
       }, {
-        role: 'copy'
+        role: 'copy',
+        // turned off for Beta release
+        enabled: false
       }, {
-        role: 'paste'
+        role: 'paste',
+        // turned off for Beta release
+        enabled: false
       }, {
-        role: 'selectall'
+        // turned off for Beta release
+        role: 'selectall',
+        enabled: false
       }, {
         type: 'separator'
       }, {
