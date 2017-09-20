@@ -15,7 +15,7 @@ Feature: Set Column Properties
 
   Each 'type' has a 'format' of 'default' and may have a limited set of other formats.
 
-  Each column may have one or more 'constraints' to further restrict the valid values that can be entered into a column. Constrants can vary by 'type'.
+  Each column may have one or more 'constraints' to further restrict the valid values that can be entered into a column. Constraints can vary by 'type'.
 
   Other properties describe:
     - 'missingValues'

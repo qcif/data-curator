@@ -11,7 +11,7 @@ require('jquery-csv/src/jquery.csv.js')
  */
 var formats = {
   csv: {
-    label: 'Comma separated',
+    label: 'Comma separated...',
     filters: [
       {
         name: 'csv files',
@@ -26,7 +26,7 @@ var formats = {
     default_extension: 'csv'
   },
   tsv: {
-    label: 'Tab separated',
+    label: 'Tab separated...',
     filters: [
       {
         name: 'tsv files',
@@ -47,7 +47,7 @@ var formats = {
     default_extension: 'tsv'
   },
   semicolon: {
-    label: 'Semicolon separated',
+    label: 'Semicolon separated...',
     filters: [
       {
         name: 'csv files',
