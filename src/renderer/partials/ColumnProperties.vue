@@ -58,6 +58,7 @@ export default {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       formatValues: [],
       constraintValues: [],
+      selectConstraints: [],
       formprops: [{
         label: 'name'
       },
@@ -117,6 +118,7 @@ export default {
       'pushHotProperty'
     ]),
     getProperty: function(key) {
+      console.log(`getting property for ${key}`)
       let allColumnsProperties = this.getAllColumnsProperties
       if (allColumnsProperties) {
         let activeColumnProperties = allColumnsProperties[this.cIndex]
@@ -164,23 +166,17 @@ export default {
     isDropdownFormatDisabled() {
       return this.formatValues.length < 2
     },
-    selectConstraints: {
-      get: function() {
-        let type = this.getProperty('type')
-        if (type) {
-          this.constraintValues = this.constraints[type]
-        }
-        let property = this.getProperty('constraints')
-        if (!property) {
-          this.setProperty('constraints', [])
-          property = []
-        }
-        return property
-      },
-      set: function(values) {
-        console.log(`values are for constraints: ${values}`)
-        this.setProperty('constraints', values)
+    getConstraints() {
+      let type = this.getProperty('type')
+      if (type) {
+        this.constraintValues = this.constraints[type]
       }
+      let property = this.getProperty('constraints')
+      if (!property) {
+        this.setProperty('constraints', [])
+        property = []
+      }
+      return property
     },
     selectFormat: {
       get: function() {
@@ -198,6 +194,15 @@ export default {
       set: function(value) {
         this.setProperty('format', value)
       }
+    }
+  },
+  watch: {
+    selectConstraints: function(values) {
+      console.log('watching constraints')
+      this.setProperty('constraints', values)
+    },
+    getConstraints: function(values) {
+      this.selectConstraints = values
     }
   },
   mounted: function() {
