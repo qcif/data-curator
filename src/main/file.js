@@ -62,8 +62,9 @@ function saveFileAs(format, window) {
       console.log('returning as filename exists...')
       Dialog.showMessageBox(window, {
         type: 'warning',
-        title: 'Save failed',
-        message: 'Filename already exists. Please try again.'
+// title is not displayed on screen on macOS
+        title: 'Data not saved',
+        message: 'The data was not saved to the file.\n\nYou selected a file name that is already used in this Data Package.\n\nTo save the data, choose a unique file name.'
       })
       return
     }
