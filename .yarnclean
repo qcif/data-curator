@@ -9,6 +9,7 @@ docs
 doc
 website
 images
+!istanbul/lib/assets
 assets
 static
 
@@ -37,6 +38,7 @@ Gruntfile.js
 .yarn-metadata.json
 !(**/.svgo.yml)
 !(**/messages.yml)
+.*.yml
 *.yml
 
 # misc
