@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for renderer/partials/ColumnProperties.vue</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">renderer/partials/</a> ColumnProperties.vue
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">1.64% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>1/61</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/22</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/15</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">1.64% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>1/61</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
+&lt;form class="navbar-form form-horizontal" id="columnProperties"&gt;
+  &lt;div class="form-group-sm row container-fluid"&gt;
+    &lt;div v-for="(formprop, index) in formprops" :key="index"&gt;
+      &lt;label v-tooltip="tooltip(formprop.tooltipId)" :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label"&gt;{{formprop.label}}:&lt;/label&gt;
+      &lt;component :is="formprop.tooltipView"/&gt;
+      &lt;template v-if="typeof formprop.type &amp;&amp; formprop.type === 'dropdown'"&gt;
+        &lt;select v-if="formprop.label==='type'" :value="getProperty(formprop.label)" @input="setSelectType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8"&gt;
+          &lt;option v-for="option in typeValues" v-bind:value="option"&gt;
+            {{ option}}
+          &lt;/option&gt;
+        &lt;/select&gt;
+        &lt;select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-8"&gt;
+          &lt;option v-for="option in formatValues" v-bind:value="option"&gt;
+            {{ option}}
+          &lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/template&gt;
+      &lt;div v-else-if="formprop.label === 'constraints'" id="constraints" class="col-sm-8"&gt;
+        &lt;div v-for="option in constraintValues" class="input-group row"&gt;
+          &lt;input type="checkbox" :id="option" :value="option" v-model="selectConstraints"&gt;&lt;/input&gt;
+          &lt;label for="option" class="form-control-static"&gt;{{option}}&lt;/label&gt;
+          &lt;template v-if="constraintBindings[option] == 'boolean'"/&gt;
+          &lt;input v-else v-show="showConstraint(option)" type="text" class="constraint-text" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" /&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/form&gt;
+&lt;/template&gt;
+&lt;script&gt;
+import {
+  mapMutations,
+  mapGetters,
+  mapState
+} from 'vuex'
+import {
+  remote
+} from 'electron'
+import SideNav from './SideNav'
+import {
+  HotRegister,
+  getCurrentColumnIndexOrMin as getCurrentColumnIndex,
+  reselectCurrentCellOrMin
+} from '../hot.js'
+const Dialog = remote.dialog
+export default {
+  extends: SideNav,
+  name: 'column',
+  props: ['getAllColumnsProperties', 'cIndex'],
+  data() {
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
+      formatValues: [],
+      constraintValues: [],
+      selectConstraints: [],
+      formprops: [{
+        label: 'name',
+        tooltipId: 'tooltip-column-name',
+        tooltipView: 'tooltipColumnName'
+      },
+      {
+        label: 'title',
+        tooltipId: 'tooltip-column-title',
+        tooltipView: 'tooltipColumnTitle'
+      },
+      {
+        label: 'description'
+      },
+      {
+        label: 'type',
+        type: 'dropdown'
+      },
+      {
+        label: 'format',
+        type: 'dropdown'
+      },
+      {
+        label: 'constraints',
+        type: 'checkbox'
+      },
+      {
+        label: 'rdfType',
+        type: 'url'
+      }
+      ],
+      formats: {
+        'string': ['email', 'uri', 'binary', 'uuid'],
+        'date': ['any', 'pattern'],
+        'time': ['any', 'pattern'],
+        'datetime': ['any', 'pattern'],
+        'geopoint': ['array', 'object'],
+        'geojson': ['topojson']
+      },
+      constraints: {
+        'string': ['required', 'unique', 'minLength', 'maxLength', 'pattern', 'enum'],
+        'number': ['required', 'unique', 'minLength', 'maxLength', 'minimum', 'maximum', 'enum'],
+        'integer': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'boolean': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'object': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
+        'array': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
+        'date': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'time': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'datetime': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'year': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'yearmonth': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'duration': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'geopoint': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
+        'geojson': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
+        'any': ['required', 'unique', 'minLength', 'maxLength', 'minimum', 'maximum', 'enum']
+      },
+      constraintBindings: {
+        'required': 'boolean',
+        'unique': 'boolean'
+      },
+      otherProperties: ['missingValues', 'primaryKey', 'foreignKey']
+    }
+  },
+  methods: {
+    ...mapMutations([
+      'pushHotProperty'
+    ]),
+    showConstraint: function(option) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      return this.selectConstraints.indexOf(option) &gt; -1</span>
+    },
+    getProperty: function(key) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      console.log(`getting property for ${key}`)</span>
+      let allColumnsProperties = <span class="cstat-no" title="statement not covered" >this.getAllColumnsProperties</span>
+<span class="cstat-no" title="statement not covered" >      if (allColumnsProperties) {</span>
+        let activeColumnProperties = <span class="cstat-no" title="statement not covered" >allColumnsProperties[this.cIndex]</span>
+<span class="cstat-no" title="statement not covered" >        if (activeColumnProperties) {</span>
+<span class="cstat-no" title="statement not covered" >          if (key === 'type') {</span>
+            let typeValue = <span class="cstat-no" title="statement not covered" >activeColumnProperties['type']</span>
+<span class="cstat-no" title="statement not covered" >            if (!typeValue) {</span>
+<span class="cstat-no" title="statement not covered" >              this.setSelectType('any')</span>
+            }
+          }
+<span class="cstat-no" title="statement not covered" >          return activeColumnProperties[key]</span>
+        }
+      }
+    },
+    setProperty: function(key, value) <span class="fstat-no" title="function not covered" >{</span>
+      const hotId = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance().guid</span>
+      const currentColumnIndex = <span class="cstat-no" title="statement not covered" >this.cIndex</span>
+      let object = <span class="cstat-no" title="statement not covered" >{</span>
+        'hotId': hotId,
+        'columnIndex': currentColumnIndex,
+        'key': key,
+        'value': value
+      }
+<span class="cstat-no" title="statement not covered" >      this.pushHotProperty(object)</span>
+    },
+    currentColumnIndex: function() <span class="fstat-no" title="function not covered" >{</span>
+      let currentIndex = <span class="cstat-no" title="statement not covered" >getCurrentColumnIndex()</span>
+<span class="cstat-no" title="statement not covered" >      return currentIndex</span>
+    },
+    setSelectType: function(value) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      this.setProperty('type', value)</span>
+<span class="cstat-no" title="statement not covered" >      this.updateTypeDependentProperties(value)</span>
+    },
+    updateTypeDependentProperties: function(value) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      this.constraintValues = this.constraints[value]</span>
+<span class="cstat-no" title="statement not covered" >      this.updateFormatValues(value)</span>
+    },
+    updateFormatValues: function(value) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      this.formatValues = this.formats[value] || []</span>
+<span class="cstat-no" title="statement not covered" >      this.formatValues.push('default')</span>
+    },
+    getConstraintValue: function(key) <span class="fstat-no" title="function not covered" >{</span>
+      let object = <span class="cstat-no" title="statement not covered" >this.getConstraintsObject</span>
+<span class="cstat-no" title="statement not covered" >      console.log('getting constraint keys')</span>
+<span class="cstat-no" title="statement not covered" >      console.log(object)</span>
+<span class="cstat-no" title="statement not covered" >      if (object &amp;&amp; object[key]) {</span>
+<span class="cstat-no" title="statement not covered" >        return object[key]</span>
+      }
+    },
+    setConstraintValue: function(key, value) <span class="fstat-no" title="function not covered" >{</span>
+      let object = <span class="cstat-no" title="statement not covered" >{}</span>
+<span class="cstat-no" title="statement not covered" >      object[key] = value</span>
+<span class="cstat-no" title="statement not covered" >      console.log(`set constraint...`)</span>
+<span class="cstat-no" title="statement not covered" >      console.log(object)</span>
+<span class="cstat-no" title="statement not covered" >      this.setProperty('constraintValues', object)</span>
+    }
+  },
+  computed: {
+    ...mapGetters(['getHotColumnProperties']),
+    isDropdownFormatDisabled() {
+<span class="cstat-no" title="statement not covered" >      return this.formatValues.length &lt; 2</span>
+    },
+    getConstraints() {
+      let type = <span class="cstat-no" title="statement not covered" >this.getProperty('type')</span>
+<span class="cstat-no" title="statement not covered" >      if (type) {</span>
+<span class="cstat-no" title="statement not covered" >        this.constraintValues = this.constraints[type]</span>
+      }
+      let property = <span class="cstat-no" title="statement not covered" >this.getProperty('constraints')</span>
+<span class="cstat-no" title="statement not covered" >      if (!property) {</span>
+<span class="cstat-no" title="statement not covered" >        this.setProperty('constraints', [])</span>
+<span class="cstat-no" title="statement not covered" >        property = []</span>
+      }
+<span class="cstat-no" title="statement not covered" >      return property</span>
+    },
+    getConstraintsObject() {
+<span class="cstat-no" title="statement not covered" >      console.log('getting constraint object...')</span>
+<span class="cstat-no" title="statement not covered" >      return this.getProperty('constraintValues')</span>
+    },
+    selectFormat: {
+      get: function() <span class="fstat-no" title="function not covered" >{</span>
+        let type = <span class="cstat-no" title="statement not covered" >this.getProperty('type')</span>
+<span class="cstat-no" title="statement not covered" >        if (type) {</span>
+<span class="cstat-no" title="statement not covered" >          this.updateFormatValues(type)</span>
+        }
+        let property = <span class="cstat-no" title="statement not covered" >this.getProperty('format')</span>
+<span class="cstat-no" title="statement not covered" >        if (!property) {</span>
+<span class="cstat-no" title="statement not covered" >          this.setProperty('format', 'default')</span>
+<span class="cstat-no" title="statement not covered" >          property = 'default'</span>
+        }
+<span class="cstat-no" title="statement not covered" >        return property</span>
+      },
+      set: function(value) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >        this.setProperty('format', value)</span>
+      }
+    }
+  },
+  watch: {
+    selectConstraints: function(values) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      console.log(`looking at constraint values`)</span>
+<span class="cstat-no" title="statement not covered" >      this.setProperty('constraints', values)</span>
+    },
+    getConstraints: function(values) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      this.selectConstraints = values</span>
+    }
+  },
+  mounted: function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    this.$nextTick(function() <span class="fstat-no" title="function not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >      reselectCurrentCellOrMin()</span>
+<span class="cstat-no" title="statement not covered" >      this.selectConstraints = this.getConstraints</span>
+    })
+  }
+}
+&lt;/script&gt;
+&lt;style lang="styl" scoped&gt;
+@import '~static/css/columnprops'
+&lt;/style&gt;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Sep 22 2017 17:32:36 GMT+1000 (AEST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

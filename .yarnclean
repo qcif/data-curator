@@ -11,6 +11,7 @@ website
 images
 !istanbul/lib/assets
 assets
+!karma/static
 static
 
 # examples

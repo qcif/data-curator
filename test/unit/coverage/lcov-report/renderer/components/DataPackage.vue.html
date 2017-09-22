@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for renderer/components/DataPackage.vue</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">renderer/components/</a> DataPackage.vue
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">25.58% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>11/43</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">26.19% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>11/42</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
+  &lt;div id="container" class="container-fluid"&gt;
+  &lt;form id="datapackage"&gt;
+    &lt;div class="form-wrapper"&gt;
+      &lt;div class="form-group"&gt;
+        &lt;label for="title"&gt;Dataset title&lt;/label&gt;
+        &lt;input type="text" class="form-control" id="title" name="title" placeholder="Dataset title" autofocus&gt;
+      &lt;/div&gt;
+      &lt;div class="form-group"&gt;
+        &lt;label for="name"&gt;Dataset name&lt;/label&gt;
+        &lt;input type="text" class="form-control" id="name" name="name" placeholder="Dataset name"&gt;
+      &lt;/div&gt;
+      &lt;div class="form-group"&gt;
+        &lt;label for="description"&gt;Dataset description&lt;/label&gt;
+        &lt;textarea class="form-control" id="description" name="description" rows="3"&gt;&lt;/textarea&gt;
+      &lt;/div&gt;
+&lt;!-- this would be an ideal place to link to in-app help --&gt;
+      &lt;div class="form-group"&gt;
+        &lt;label for="license"&gt;License&lt;/label&gt;
+&lt;!-- to be sourced from http://opendefinition.org/licenses/#recommended-conformant-licenses plus other selected open licenses --&gt;
+        &lt;select id="license" name="license" class="form-control"&gt;
+          &lt;option value=""&gt;Please select...&lt;/option&gt;
+          &lt;option value="cc-by"&gt;Creative Commons Attribution 4.0 (CC-BY-4.0)&lt;/option&gt;
+          &lt;option value="cc-by-sa"&gt;Creative Commons Attribution Share-Alike 4.0 (CC-BY-SA-4.0)&lt;/option&gt;
+          &lt;option value="cc-zero"&gt;Creative Commons CCZero (CC0)&lt;/option&gt;
+          &lt;option value="pdm"&gt;Public Domain&lt;/option&gt;
+          &lt;option value="odc-by"&gt;Open Data Commons Attribution License (ODC-BY)&lt;/option&gt;
+          &lt;option value="odc-odbl"&gt;Open Data Commons Open Database License (ODbL)&lt;/option&gt;
+          &lt;option value="odc-pddl"&gt;Open Data Commons Public Domain Dedication and Licence (PDDL)&lt;/option&gt;
+          &lt;option disabled role=separator&gt; ─── &lt;/option&gt;
+          &lt;option value="ogl-ca"&gt;Open Government Licence Canada 2.0&lt;/option&gt;
+          &lt;option value="ogl-tw"&gt;Open Government License Taiwan&lt;/option&gt;
+          &lt;option value="ogl-uk"&gt;Open Government Licence United Kingdom (OGL-UK)&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+      &lt;div class="form-group"&gt;
+        &lt;label for="keywords"&gt;Keywords (Comma separated)&lt;/label&gt;&lt;br /&gt;
+        &lt;input type="text" id="keywords" class="form-control" data-role="tagsinput" name="keywords"&gt;
+      &lt;/div&gt;
+      &lt;div id="headers"&gt;
+        &lt;label&gt;Generate Headers?&lt;/label&gt;
+        &lt;input type="radio" name="group1" value="true" checked="checked" /&gt; Yes
+        &lt;input type="radio" name="group1" value="false" /&gt; No&lt;br /&gt;
+        &lt;p id="status" /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="well"&gt;
+      &lt;button id="submit" class="btn btn-default"&gt;Go&lt;/button&gt; &lt;button id="cancel" class="btn btn-default"&gt;Cancel&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+&lt;script&gt;
+window.$ = window.jQuery = require('jquery/dist/jquery.js')
+const {
+  shell
+} = require('electron')
+var ipc = require('electron').ipcRenderer
+require('bootstrap/dist/js/bootstrap.min.js')
+require('bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js')
+jQuery.fn.serializeObject = function() <span class="fstat-no" title="function not covered" >{</span>
+  var arrayData, objectData
+<span class="cstat-no" title="statement not covered" >  arrayData = this.serializeArray()</span>
+<span class="cstat-no" title="statement not covered" >  objectData = {}</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  $.each(arrayData, function() <span class="fstat-no" title="function not covered" >{</span></span>
+    var value
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (this.value != null) {</span>
+<span class="cstat-no" title="statement not covered" >      value = this.value</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      value = ''</span>
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (objectData[this.name] != null) {</span>
+<span class="cstat-no" title="statement not covered" >      if (!objectData[this.name].push) {</span>
+<span class="cstat-no" title="statement not covered" >        objectData[this.name] = [objectData[this.name]]</span>
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      objectData[this.name].push(value)</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      objectData[this.name] = value</span>
+    }
+  })
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return objectData</span>
+}
+&nbsp;
+// integrating the schema generation
+&nbsp;
+$(function () <span class="fstat-no" title="function not covered" >{</span>
+  var rGrp = <span class="cstat-no" title="statement not covered" >$('input[name=group1]')</span>
+<span class="cstat-no" title="statement not covered" >  rGrp.click(function () <span class="fstat-no" title="function not covered" >{</span></span>
+    var checkedRadio = <span class="cstat-no" title="statement not covered" >rGrp.filter(':checked')</span>
+<span class="cstat-no" title="statement not covered" >    console.log(checkedRadio.val())</span>
+  })
+})
+&nbsp;
+$('#submit').click(function(e) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  datapackage = $('#datapackage').serializeObject()</span>
+  // serialise the wizard from the div
+  var includeHeaders = <span class="cstat-no" title="statement not covered" >headerOptionClicked()</span>
+  // retrieve a value for headers from the radio box
+<span class="cstat-no" title="statement not covered" >  ipc.send('sendDatapackage', datapackage, includeHeaders)</span>
+})
+&nbsp;
+$('#cancel').click(function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  ipc.send('datapackageCanceled')</span>
+})
+&nbsp;
+$('#title').on('input keyup', function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  title = $(this).val()</span>
+<span class="cstat-no" title="statement not covered" >  $('#name').val(slugify(title))</span>
+})
+&nbsp;
+$('#keywords').on('beforeItemAdd', function(event) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  event.item = event.item.trim()</span>
+<span class="cstat-no" title="statement not covered" >  items = $('#keywords').tagsinput('items')</span>
+<span class="cstat-no" title="statement not covered" >  if ($.inArray(event.item, items) != -1) <span class="cstat-no" title="statement not covered" >event.cancel = true</span></span>
+})
+&nbsp;
+function headerOptionClicked() <span class="fstat-no" title="function not covered" >{</span>
+  var rGrp = <span class="cstat-no" title="statement not covered" >$('input[name=group1]')</span>
+<span class="cstat-no" title="statement not covered" >  if (rGrp.filter(':checked')['length'] &gt; 0) {</span>
+    var includeHeaders = <span class="cstat-no" title="statement not covered" >rGrp.filter(':checked').val()</span>
+  } else {
+<span class="cstat-no" title="statement not covered" >    includeHeaders = false</span>
+  }
+<span class="cstat-no" title="statement not covered" >  return includeHeaders</span>
+}
+&nbsp;
+function slugify(text) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  return text.toString().toLowerCase()</span>
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(/[^\w-]+/g, '') // Remove all non-word chars
+    .replace(/--+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start of text
+    .replace(/-+$/, '') // Trim - from end of text
+}
+export default {
+  name: 'datapackage',
+  methods: {}
+}
+&lt;/script&gt;
+&lt;style scoped&gt;
+@import '~bootstrap/dist/css/bootstrap.min.css'
+&lt;/style&gt;
+&lt;style scoped&gt;
+@import '~components-font-awesome/css/font-awesome.min.css'
+&lt;/style&gt;
+&lt;style scoped&gt;
+@import '~bootstrap-tagsinput/dist/bootstrap-tagsinput.css'
+&lt;/style&gt;
+&lt;style scoped&gt;
+@import '/static/css/datapackage.css'
+&lt;/style&gt;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Sep 22 2017 17:32:36 GMT+1000 (AEST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
