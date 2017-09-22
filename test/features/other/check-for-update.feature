@@ -9,7 +9,6 @@ Feature: Check for update
   - Software releases will be available on GitHub https://github.com/ODIQueensland/data-curator/releases/latest
   - Different releases are available for different <operating system> and <platform>
 
-
   Scenario: Check for update on application start
     Given I have have not open Data Curator
     And I am using an <operating system> on a <platform>
