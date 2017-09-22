@@ -6395,6 +6395,10 @@ pluralize@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-1.2.1.tgz#d1a21483fd22bb41e58a12fa3421823140897c45"
 
+popper.js@^1.12.5:
+  version "1.12.5"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.5.tgz#229e4dea01629e1f1a1e26991ffade5024220fa6"
+
 portfinder@^1.0.9:
   version "1.0.13"
   resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.13.tgz#bb32ecd87c27104ae6ee44b5a3ccbf0ebb1aede9"
@@ -8547,6 +8551,12 @@ voc@~1.0.0:
 void-elements@^2.0.0, void-elements@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
+
+vue-directive-tooltip@^1.3.9:
+  version "1.3.9"
+  resolved "https://registry.yarnpkg.com/vue-directive-tooltip/-/vue-directive-tooltip-1.3.9.tgz#9a499c44fc7836008ca1f0696e7ebdd862c7d6a5"
+  dependencies:
+    popper.js "^1.12.5"
 
 vue-electron@^1.0.6:
   version "1.0.6"

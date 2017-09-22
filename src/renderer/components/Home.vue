@@ -9,11 +9,12 @@
         <div id="toolbar">
           <ul class="nav navbar-nav">
             <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': toolbarIndex === index}" @click="updateToolbarMenu(index)">
-              <a href="#">
+              <a href="#" v-tooltip="tooltip(menu.tooltipId)">
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
                 <object v-if="menu.image" :class="menu.class" :data="menu.image" type="image/svg+xml" />
                 <div class="toolbar-text">{{menu.name}}</div>
               </a>
+              <component :is="menu.tooltipView"/>
             </li>
           </ul>
         </div>
@@ -40,10 +41,12 @@
           </component>
         </transition>
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
-          <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
+          <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft" v-tooltip="tooltip('tooltip-previous')"><span class="btn fa fa-chevron-left fa-2x" /></a>
           <span v-else class="left disabled" ><span class="btn fa fa-chevron-left fa-2x" /></span>
-          <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
+          <component v-if="enableSideNavLeftArrow" is="tooltipPrevious"/>
+          <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight" v-tooltip="tooltip('tooltip-next')"><span class="btn fa fa-chevron-right fa-2x" /></a>
           <span v-else class="right disabled" ><span class="btn fa fa-chevron-right fa-2x" /></span>
+          <component v-if="enableSideNavRightArrow" is="tooltipNext"/>
         </div>
       </div>
     </nav>
@@ -62,9 +65,10 @@
                 </li>
               </ul>
             </li>
-            <li class="tab-add" @click="addTab">
+            <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')">
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
+            <component is="tooltipAddTab"/>
           </ul>
           <div class="tab-content" id='csvContent'>
             <div class="tab-pane" v-for="tab in tabs" :key="tab" :class="{ active: activeTab == tab}">
@@ -118,6 +122,7 @@ import provenance from '../partials/ProvenanceProperties'
 import {
   guessColumnProperties
 } from '../frictionless.js'
+import HomeTooltip from '../mixins/HomeTooltip'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
 var ipc = require('electron').ipcRenderer
 require('bootstrap/dist/js/bootstrap.min.js')
@@ -125,6 +130,7 @@ require('lodash/lodash.min.js')
 require('../menu.js')
 export default {
   name: 'home',
+  mixins: [HomeTooltip],
   data() {
     return {
       currentColumnIndex: 0,
@@ -142,7 +148,9 @@ export default {
       showBottomPanel: false,
       toolbarMenus: [{
         name: 'Validate',
-        image: 'static/img/validate.svg'
+        image: 'static/img/validate.svg',
+        tooltipId: 'tooltip-validate',
+        tooltipView: 'tooltipValidate'
       },
       {
         name: 'Column',
@@ -412,9 +420,6 @@ export default {
     createTabId: function(tabId) {
       return `tab${tabId}`
     },
-    // getActiveHotId: function() {
-    //   return $('#csvContent .active .editor').attr('id')
-    // },
     triggerSideNav(properties) {
       this.toolbarIndex = -1
       this.sideNavPosition = properties.sideNavPosition || 'left'

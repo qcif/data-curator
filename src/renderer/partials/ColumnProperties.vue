@@ -2,7 +2,8 @@
 <form class="navbar-form form-horizontal" id="columnProperties">
   <div class="form-group-sm row container-fluid">
     <div v-for="(formprop, index) in formprops" :key="index">
-      <label :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
+      <label v-tooltip="tooltip(formprop.tooltipId)" :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
+      <component :is="formprop.tooltipView"/>
       <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
         <select v-if="formprop.label==='type'" :value="getProperty(formprop.label)" @input="setSelectType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
           <option v-for="option in typeValues" v-bind:value="option">
@@ -56,10 +57,14 @@ export default {
       constraintValues: [],
       selectConstraints: [],
       formprops: [{
-        label: 'name'
+        label: 'name',
+        tooltipId: 'tooltip-column-name',
+        tooltipView: 'tooltipColumnName'
       },
       {
-        label: 'title'
+        label: 'title',
+        tooltipId: 'tooltip-column-title',
+        tooltipView: 'tooltipColumnTitle'
       },
       {
         label: 'description'

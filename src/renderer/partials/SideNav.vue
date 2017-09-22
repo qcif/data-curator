@@ -9,10 +9,14 @@
 </form>
 </template>
 <script>
+import ColumnToolTip from '../mixins/ColumnTooltip'
 export default {
   name: 'sidenav',
+  mixins: [ColumnToolTip],
   data() {
     return {}
+  },
+  mounted: function() {
   }
 }
 </script>
