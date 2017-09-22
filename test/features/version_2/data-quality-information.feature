@@ -1,4 +1,4 @@
-@backlog  @enterprise-add-in
+@backlog  @premium
 
 Feature: Data Quality Information
   As a Data Packager
@@ -8,7 +8,7 @@ Feature: Data Quality Information
   The "Data Quality Information" command can be invoked using a menu item
 
   See:
-  - [Sample report](https://relishapp.com/odi-australia/data-curator/docs/tools/data-quality-information)
+  - [Sample report](https://relishapp.com/odi-australia/data-curator/docs/version-2/sample-data-quality-information)
 
   - research:
 
