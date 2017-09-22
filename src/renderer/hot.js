@@ -66,6 +66,7 @@ let HotRegister = {
       }
     })
     _.set(this.hots, hot.guid, hot)
+    return hot.guid
   },
   getInstance: function(key) {
     return _.get(this.hots, key)
@@ -80,6 +81,15 @@ let HotRegister = {
     let data = activeHot.getData()
     let id = activeHot.guid
     return {'id': id, 'data': data}
+  },
+  destroy: function(id) {
+    _.forIn(this.hots, function(hot, id) {
+      hot.destroy()
+    })
+    for (var key in this.hots) {
+      _.unset(this.hots, key)
+    }
+    this.hots = {}
   }
 }
 
