@@ -15,5 +15,6 @@ Feature: Check for update
     And I am using an <operating system> on a <platform>
     When I open the application
     Then check if an update is available for my <operating system> and <platform>
-    And install the new application
+    And display a message that the application is being updated
+    And download and install the new application
     And restart the application
