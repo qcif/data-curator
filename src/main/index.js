@@ -11,6 +11,11 @@ if (process.env.NODE_ENV !== 'development') {
   global.version = require('../../package.json').version
 }
 
+global.tab = {
+  activeTitle: '',
+  activeFilename: '',
+  filenames: []
+}
 global.electron = require('electron')
 
 // global.app = electron.app

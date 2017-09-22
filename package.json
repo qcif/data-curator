@@ -1,8 +1,8 @@
 {
   "name": "data-curator",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "author": " <matt@redboxresearchdata.com.au>",
-  "description": "An electron-vue project for curating csv data",
+  "description": "Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data",
   "license": "MIT",
   "main": "./dist/electron/main.js",
   "repository": {
@@ -23,13 +23,13 @@
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "postinstall": "electron-builder install-app-deps",
     "test-main": "mocha-webpack --webpack-config .electron-vue/webpack.test.config.js --glob *_spec.js test/main/specs",
-    "test-renderer": "electron-mocha --preload test/testhelper.js --compilers js:babel-core/register --renderer --no-timeouts test/renderer/",
+    "test-renderer": "NODE_ENV=test electron-mocha --compilers js:babel-core/register --renderer --no-timeouts test/renderer/",
     "test": "yarn run unit && yarn run e2e",
     "unit": "karma start test/unit/karma.conf.js",
     "e2e": "yarn run pack && mocha test/e2e"
   },
   "build": {
-    "productName": "data-curator",
+    "productName": "Data Curator",
     "appId": "org.odi-qcif.data-curator",
     "directories": {
       "output": "build"
@@ -78,7 +78,7 @@
     "bootstrap-tagsinput": "^0.7.1",
     "bootstrap-webpack": "^0.0.6",
     "components-font-awesome": "^4.7.0",
-    "datapackage": "^1.0.0-alpha.11",
+    "datapackage": "^1.0.0",
     "electron-prebuilt-compile": "^1.6.11",
     "escape-regexp": "^0.0.1",
     "exports-loader": "^0.6.4",
@@ -100,9 +100,10 @@
     "slug": "^0.9.1",
     "sortablejs": "^1.6.0",
     "svgo": "^0.7.2",
-    "tableschema": "^1.0.0-alpha.20",
+    "tableschema": "^1.0.0",
     "temp": "^0.8.3",
     "vue": "^2.3.3",
+    "vue-directive-tooltip": "^1.3.9",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
     "vue-rx": "^3.3.0",

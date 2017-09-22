@@ -3,54 +3,23 @@ Feature: Close tab
   I want to close the active data tab and prompt if there are unsaved changes
   So that I can safely finish working with that data
 
-  If the changes are to be saved, they will use the appropriate CSV dialect settings.
+  The Close tab command can be:
+  - invoked by a menu item, shortcut or pressing the close button of the tab
+  - cancelled
 
-  If available, use the CSV dialect settings in associated Table Properties.
+  If the data changes in the tab are unsaved, offer to cancel the command
 
-  If these are unavailable, then use the CSV dialect specified in Preferences.
-
-  By default the CSV dialect will be a comma separated file with defaults settings as documented in http://specs.frictionlessdata.io/csv-dialect/#specification
-
-  The CSV dialect selected may change the file extension e.g. tab separated values files use .tsv
-
-  Scenario: Use the menu to close the active tab and work in the tab is saved
+  Scenario: Close the active tab and the data in the tab is saved
     Given I have opened Data Curator
     And I have opened 1 data tab
     And I have saved the data in the active tab
-    When I select "Close Tab" from the menu
+    When I invoke the "Close Tab" command
     Then close the active tab
 
-  Scenario: Use a keyboard shortcut to close the active tab and work in the tab is saved
-    Given I have opened Data Curator
-    And I have opened 1 data tab
-    And I have saved the data in the active tab
-    When I use the "Close Tab" shortcut
-    Then close the active tab
-
-  Scenario: Click the close button on a tab to close the tab and work in the tab is saved
-    Given I have opened Data Curator
-    And I have opened 1 data tab
-    And I have saved the data in the active tab
-    When I click the "Close Tab" button
-    Then close the active tab
-
-  Scenario: Use the menu to close the active tab but work in the tab is unsaved
+  Scenario: Close tab but the data in the tab is unsaved
     Given I have opened Data Curator
     And I have opened 1 data tab
     And I haven't saved the data in the active tab
-    When I select "Close Tab" from the menu
-    Then a prompt, save the unsaved data table in its current CSV Dialect, is displayed
-
-  Scenario: Use a keyboard shortcut to close active tab but work in the tab is unsaved
-    Given I have opened Data Curator
-    And I have opened 1 data tab
-    And I haven't saved the data in the active tab
-    When I use the "Close Tab" shortcut
-    Then a prompt, save the unsaved data table in its current CSV Dialect, is displayed
-
-  Scenario: Click the close button on a tab to close the tab but work in the tab is unsaved
-    Given I have opened Data Curator
-    And I have opened 1 data tab
-    And I haven't saved the data in the active tab
-    When I click the "Close Tab" button
-    Then a prompt, save the unsaved data table in its current CSV Dialect, is displayed
+    When I invoke the "Close Tab" command
+    Then provide a warning that there is unsaved work and offer to cancel the command, or quit the application
+    And action the selection

@@ -6,14 +6,10 @@ Feature: Copy
   Select some or all data in a cell
   Select one or more cells (row, column or block)
 
-  Background:
+  The "Copy" command can be invoked using a menu item or keyboard shortcut
+
+  Scenario: Copy data
     Given I have opened Data Curator
     And I have selected some data
-
-  Scenario: Use the menu to undo a command
-    When I select "Copy" from the menu
-    Then Copy the data to the "clipboard"
-
-  Scenario: Use a keyboard shortcut to undo a command
-    When I use the "Copy" keyboard shortcut
-    Then  Copy the data to the "clipboard"
+    When I invoke the  "Copy" command
+    Then copy the data to the "clipboard"

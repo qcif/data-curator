@@ -53,12 +53,8 @@
     vue-template-es2015-compiler "^1.4.2"
 
 "@types/node@^7.0.12", "@types/node@^7.0.18":
-  version "7.0.43"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.43.tgz#a187e08495a075f200ca946079c914e1a5fe962c"
-
-"@types/node@^8.0.24":
-  version "8.0.26"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.26.tgz#4d58be925306fd22b1141085535a0268b8beb189"
+  version "7.0.42"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.42.tgz#051ff1cdbd1e1b7523ba425bc388147483344dbf"
 
 abab@^1.0.0:
   version "1.0.3"
@@ -68,18 +64,11 @@ abbrev@1, abbrev@1.0.x:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.0.9.tgz#91b4792588a7738c25f35dd6f63752a2f8776135"
 
-accepts@1.3.3:
+accepts@1.3.3, accepts@~1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/accepts/-/accepts-1.3.3.tgz#c3ca7434938648c3e0d9c1e328dd68b622c284ca"
   dependencies:
     mime-types "~2.1.11"
-    negotiator "0.6.1"
-
-accepts@~1.3.3:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/accepts/-/accepts-1.3.4.tgz#86246758c7dd6d21a6474ff084a4740ec05eb21f"
-  dependencies:
-    mime-types "~2.1.16"
     negotiator "0.6.1"
 
 accessibility-developer-tools@^2.11.0:
@@ -2590,9 +2579,9 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-datapackage@^1.0.0-alpha.11:
-  version "1.0.0-alpha.14"
-  resolved "https://registry.yarnpkg.com/datapackage/-/datapackage-1.0.0-alpha.14.tgz#0318b060591c09f5b0504e7c4cb6facc6054e813"
+datapackage@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/datapackage/-/datapackage-1.0.0.tgz#2f66dc14351bfb477b095fa6eb2e87a780df4e6d"
   dependencies:
     axios "^0.16.1"
     glob "^7.1.2"
@@ -2601,7 +2590,7 @@ datapackage@^1.0.0-alpha.11:
     lodash "^4.13.1"
     regenerator-runtime "^0.11.0"
     stream-to-async-iterator "^0.2.0"
-    tableschema "^1.0.0-alpha.22"
+    tableschema "^1.0.0"
     tv4 "^1.2.7"
     url-join "^2.0.1"
 
@@ -2644,9 +2633,15 @@ debug@2.6.7:
   dependencies:
     ms "2.0.0"
 
-debug@2.6.8, debug@^2.1.1, debug@^2.1.3, debug@^2.2.0, debug@^2.4.5, debug@^2.5.1, debug@^2.6.6, debug@^2.6.8:
-  version "2.6.8"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
+debug@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.0.0.tgz#1d2feae53349047b08b264ec41906ba17a8516e4"
+  dependencies:
+    ms "2.0.0"
+
+debug@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.0.1.tgz#0564c612b521dc92d9f2988f0549e34f9c98db64"
   dependencies:
     ms "2.0.0"
 
@@ -6479,6 +6474,10 @@ pluralize@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-1.2.1.tgz#d1a21483fd22bb41e58a12fa3421823140897c45"
 
+popper.js@^1.12.5:
+  version "1.12.5"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.5.tgz#229e4dea01629e1f1a1e26991ffade5024220fa6"
+
 portfinder@^1.0.9:
   version "1.0.13"
   resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.13.tgz#bb32ecd87c27104ae6ee44b5a3ccbf0ebb1aede9"
@@ -7613,6 +7612,10 @@ slice-ansi@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/slice-ansi/-/slice-ansi-0.0.4.tgz#edbf8903f66f7ce2f8eafd6ceed65e264c831b35"
 
+slide@^1.1.5:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
+
 slug@^0.9.1:
   version "0.9.1"
   resolved "https://registry.yarnpkg.com/slug/-/slug-0.9.1.tgz#af08f608a7c11516b61778aa800dce84c518cfda"
@@ -8087,9 +8090,9 @@ table@^3.7.8:
     slice-ansi "0.0.4"
     string-width "^2.0.0"
 
-tableschema@^1.0.0-alpha.20, tableschema@^1.0.0-alpha.22:
-  version "1.0.0-alpha.22"
-  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.0.0-alpha.22.tgz#3336597e798449888674ba6b7a2f5b0035c85f13"
+tableschema@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.0.0.tgz#56cda6b0b8e7ef0a0ff33ded198265aafa7059ba"
   dependencies:
     axios "^0.16.1"
     csv "^1.1.1"
@@ -8516,10 +8519,6 @@ url@^0.11.0, url@~0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
-user-home@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/user-home/-/user-home-1.1.1.tgz#2b5be23a32b63a7c9deb8d0f28d485724a3df190"
-
 user-home@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/user-home/-/user-home-2.0.0.tgz#9c70bfd8169bc1dcbf48604e0f04b8b49cde9e9f"
@@ -8627,6 +8626,12 @@ voc@~1.0.0:
 void-elements@^2.0.0, void-elements@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
+
+vue-directive-tooltip@^1.3.9:
+  version "1.3.9"
+  resolved "https://registry.yarnpkg.com/vue-directive-tooltip/-/vue-directive-tooltip-1.3.9.tgz#9a499c44fc7836008ca1f0696e7ebdd862c7d6a5"
+  dependencies:
+    popper.js "^1.12.5"
 
 vue-electron@^1.0.6:
   version "1.0.6"

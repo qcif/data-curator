@@ -17,8 +17,6 @@ for (var format in file_formats) {
     open_option.accelerator = 'CmdOrCtrl+O'
   }
   open_submenu.push(open_option)
-
-  // label should have ... appended to end
   var save_option = {
     label: file_formats[format].label,
     click: (function(format) {
@@ -32,23 +30,26 @@ for (var format in file_formats) {
   }
   save_submenu.push(save_option)
 }
-open_submenu.push({
-  label: 'Custom Dialect...',
-  enabled: false,
-  click: function() {
-    fileActions.openCustom()
-  }
-})
-save_submenu.push({
-  label: 'Custom Dialect...',
-  enabled: false,
-  click: function() {
-    fileActions.saveAsCustom()
-  }
-})
+// Placeholder for Custom Dialect feature
+// open_submenu.push({
+//   label: 'Custom Dialect...',
+//   enabled: false,
+//   click: function() {
+//     fileActions.openCustom()
+//   }
+// })
+// save_submenu.push({
+//   label: 'Custom Dialect...',
+//   enabled: false,
+//   click: function() {
+//     fileActions.saveAsCustom()
+//   }
+// })
 
 exports.menu = [
   {
+    // Only show the Data Curator menu for macOS.
+    // TO DO: add test for macOS...
     label: 'Data Curator',
     submenu: [
       {
@@ -56,19 +57,20 @@ exports.menu = [
         click: function() {
           utils.showSidePanel('about')
         }
-      }, {
-        label: 'Check for Update',
-        enabled: false
-      }, {
-        type: 'separator'
-      }, {
-        label: process.platform === 'darwin'
-          ? 'Preferences'
-          : 'Settings',
-        accelerator: 'CmdOrCtrl+,',
-        click: function() {
-          utils.showSidePanel('preferences')
-        }
+        // Placeholder for future feature
+        //      }, {
+        //        label: 'Check for Update',
+        //        enabled: false
+        //      }, {
+        //        type: 'separator'
+        //      }, {
+        //        label: process.platform === 'darwin'
+        //          ? 'Preferences'
+        //          : 'Settings',
+        //        accelerator: 'CmdOrCtrl+,',
+        //        click: function() {
+        //          utils.showSidePanel('preferences')
+        //        }
       }, {
         type: 'separator'
       }, {
@@ -77,7 +79,8 @@ exports.menu = [
       }, {
         type: 'separator'
       }, {
-        role: 'hide'
+        role: 'hide',
+        label: 'Hide Data Curator'
       }, {
         role: 'hideothers'
       }, {
@@ -85,7 +88,8 @@ exports.menu = [
       }, {
         type: 'separator'
       }, {
-        role: 'quit'
+        role: 'quit',
+        label: 'Quit Data Curator'
       }
     ]
   }, {
@@ -97,13 +101,7 @@ exports.menu = [
         click: function() {
           utils.createWindowTab()
         }
-      },
-      //      {label: 'New from Schema...',
-      //        click: function() {
-      //          schema.generateTemplate()
-      //        }
-      //      },
-      {
+      }, {
         type: 'separator'
       }, {
         label: 'Open',
@@ -113,25 +111,30 @@ exports.menu = [
         click: function() {
           excel.importExcel()
         }
+        // Placeholder for future feature
+        //      }, {
+        //        label: 'Open Google Sheet...',
+        //        enabled: false
       }, {
-        label: 'Open Google Sheet...',
+        label: 'Open Data Package...',
+        // turned off for Beta release
         enabled: false
+        // Placeholder for future feature
+        //      }, {
+        //        label: 'Open Recent',
+        //        submenu: [
+        //          {
+        //            label: 'example.csv',
+        //            enabled: false
+        //          }, {
+        //            type: 'separator'
+        //          }, {
+        //            label: 'Clear Menu',
+        //            enabled: false
+        //          }
+        //        ]
       }, {
-        label: 'Open Data Package...'
-      }, {
-        label: 'Open Recent',
-        submenu: [
-          {
-            label: 'example.csv',
-            enabled: false
-          }, {
-            type: 'separator'
-          }, {
-            label: 'Clear Menu',
-            enabled: false
-          }
-        ]
-      }, {
+        // Placeholder for non-macOS Settings for future feature
         type: 'separator'
       }, {
         label: 'Save',
@@ -139,113 +142,76 @@ exports.menu = [
         click: function() {
           fileActions.saveFile()
         },
-        id: 'save'
+        id: 'save',
+        enabled: false
       }, {
         label: 'Save As',
         submenu: save_submenu
       }, {
-        label: 'Save All',
-        accelerator: 'Alt+CmdOrCtrl+S',
-        enabled: false
-      }, {
         type: 'separator'
       }, {
         label: 'Close Tab',
-        accelerator: 'CmdOrCtrl+W'
-      }, {
-        label: 'Close All',
-        enabled: false
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Export Data Package...',
-        accelerator: 'CmdOrCtrl+D',
-        click: function() {
-          datapackage.exportdata()
-        }
-      },
-      //      {label: 'Github',
-      //        submenu: [
-      //          {label: 'Export to Github',
-      //            accelerator: 'CmdOrCtrl+G',
-      //            click: function() {
-      //              github.exportToGithub()
-      //            }
-      //          },
-      //          {label: 'Add file to Github',
-      //            accelerator: 'CmdOrCtrl+Shift+G',
-      //            click: function() {
-      //              github.addFileToGithub()
-      //            }
-      //          }
-      //        ]
-      //      }
-      {
-        type: 'separator'
-      }, {
-        label: 'Print',
-        accelerator: 'CmdOrCtrl+P',
+        accelerator: 'CmdOrCtrl+W',
+        // turned off for Beta release
         enabled: false
       }
-
+      // Placeholder for future features
+      //, {
+      //        label: 'Close All'
+      //      }, {
+      //        type: 'separator'
+      //      }, {
+      //        label: 'Print',
+      //        accelerator: 'CmdOrCtrl+P',
+      //        enabled: false
+      //      }
     ]
   }, {
     label: 'Edit',
     submenu: [
       {
+        // role: 'undo',
+        // turned off for Beta release
         label: 'Undo',
-        accelerator: 'CmdOrCtrl+Z',
-        click: function() {
-          BrowserWindow.getFocusedWindow().webContents.send('editUndo')
-        }
+        enabled: false,
+        accelerator: 'CmdOrCtrl+Z'
       }, {
+        // role: 'redo',
+        // turned off for Beta release
         label: 'Redo',
-        accelerator: 'CmdOrCtrl+Y',
-        click: function() {
-          BrowserWindow.getFocusedWindow().webContents.send('editRedo')
-        }
+        enabled: false,
+        accelerator: process.platform === 'darwin'
+          ? 'Shift+CmdOrCtrl+Z'
+          : 'CmdOrCtrl+Y'
       }, {
         type: 'separator'
       }, {
+        // role: 'cut',
+        // turned off for Beta release
         label: 'Cut',
-        accelerator: 'CmdOrCtrl+X',
-        click: function() {
-          BrowserWindow.getFocusedWindow().webContents.send('editCut')
-        }
+        enabled: false,
+        accelerator: 'CmdOrCtrl+X'
       }, {
+        // role: 'copy',
+        // turned off for Beta release
         label: 'Copy',
-        accelerator: 'CmdOrCtrl+C',
-        selector: 'copy:',
-        click: function() {
-          BrowserWindow.getFocusedWindow().webContents.send('editCopy')
-        }
+        enabled: false,
+        accelerator: 'CmdOrCtrl+C'
       }, {
+        // role: 'paste',
+        // turned off for Beta release
         label: 'Paste',
-        accelerator: 'CmdOrCtrl+V',
-        click: function() {
-          BrowserWindow.getFocusedWindow().webContents.send('editPaste')
-        }
+        enabled: false,
+        accelerator: 'CmdOrCtrl+V'
       }, {
+        // turned off for Beta release
+        // role: 'selectall',
         label: 'Select All',
-        accelerator: 'CmdOrCtrl+A',
-        click: function() {
-          BrowserWindow.getFocusedWindow().webContents.send('editSelectAll')
-        }
+        enabled: false,
+        accelerator: 'CmdOrCtrl+A'
       }, {
         type: 'separator'
-      },
-      //      {label: 'Freeze Header Row',
-      //        click: function() {
-      //          BrowserWindow.getFocusedWindow().webContents.send('freeze')
-      //        }
-      //      },
-      //      {label: 'Unfreeze Header Row',
-      //        click: function() {
-      //          BrowserWindow.getFocusedWindow().webContents.send('unfreeze')
-      //        }
-      //      },
-      //      {type: 'separator'},
-      {
+      }, {
         label: 'Insert Row Above',
         accelerator: 'CmdOrCtrl+I',
         click: function() {
@@ -260,13 +226,13 @@ exports.menu = [
       }, {
         type: 'separator'
       }, {
-        label: 'Insert Column Left',
+        label: 'Insert Column Before',
         accelerator: 'CmdOrCtrl+J',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnLeft')
         }
       }, {
-        label: 'Insert Column Right',
+        label: 'Insert Column After',
         accelerator: 'CmdOrCtrl+L',
         click: function() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnRight')
@@ -286,58 +252,73 @@ exports.menu = [
       }
     ]
   }, {
-    label: 'Find',
-    submenu: [
-      {
-        label: 'Find',
-        accelerator: 'CmdOrCtrl+F',
-        enabled: false
-      }, {
-        label: 'Find Next',
-        accelerator: 'CmdOrCtrl+G',
-        enabled: false
-      }, {
-        label: 'Find Previous',
-        accelerator: 'Shift+CmdOrCtrl+G',
-        enabled: false
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Replace',
-        accelerator: 'Alt+CmdOrCtrl+F',
-        enabled: false
-      }, {
-        label: 'Replace Next',
-        accelerator: 'Alt+CmdOrCtrl+E',
-        enabled: false
-      }, {
-        label: 'Replace All',
-        enabled: false
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Sort',
-        accelerator: 'Shift+CmdOrCtrl+R',
-        enabled: false
-      }, {
-        label: 'Filter',
-        enabled: false
-      }
-    ]
-  }, {
+    // Placeholder for future features
+    //    label: 'View',
+    //    submenu: [
+    //      {
+    //        label: 'Read Only',
+    //        type: 'checkbox',
+    //        checked: true,
+    //        enabled: false
+    //      }, {
+    // TO DO: hide toggledevtools in production release and make a application shortcut
+    //        role: 'toggledevtools'
+    //      }, {
+    //        type: 'separator'
+    //      }, {
+    //        role: 'togglefullscreen'
+    //      }
+    //    ]
+    //  }, {
+    //    label: 'Find',
+    //    submenu: [
+    //      {
+    //        label: 'Find',
+    //        accelerator: 'CmdOrCtrl+F',
+    //        enabled: false
+    //      }, {
+    //        label: 'Find Next',
+    //        accelerator: 'CmdOrCtrl+G',
+    //        enabled: false
+    //      }, {
+    //        label: 'Find Previous',
+    //        accelerator: 'Shift+CmdOrCtrl+G',
+    //        enabled: false
+    //      }, {
+    //        type: 'separator'
+    //      }, {
+    //        label: 'Replace',
+    //        accelerator: 'Alt+CmdOrCtrl+F',
+    //        enabled: false
+    //      }, {
+    //        label: 'Replace Next',
+    //        accelerator: 'Alt+CmdOrCtrl+E',
+    //        enabled: false
+    //      }, {
+    //        label: 'Replace All',
+    //        enabled: false
+    //      }
+    //    ]
+    //  }, {
     label: 'Tools',
     submenu: [
       {
-        label: 'Toggle DevTools',
-        accelerator: 'Alt+CmdOrCtrl+I',
-        click: function() {
-          BrowserWindow.getFocusedWindow().toggleDevTools()
-        }
-      }, {
-        label: 'Read Only',
-        type: 'checkbox',
-        checked: true,
-        enabled: false
+        // TO DO: hide toggledevtools in production release and make a application shortcut
+        role: 'toggledevtools'
+        // Placeholder for future features
+        //      }, {
+        //        type: 'separator'
+        //      }, {
+        //        label: 'Import Column Properties...',
+        //        enabled: false
+        //      }, {
+        //        type: 'separator'
+        //      }, {
+        //        label: 'Create Constraint from Column',
+        //        enabled: false
+        //      }, {
+        //        label: 'Create Look-up Table from Column',
+        //        enabled: false
       }, {
         type: 'separator'
       }, {
@@ -346,105 +327,110 @@ exports.menu = [
         click: function() {
           validate.validateFile()
         }
-      },
-      //      {label: 'Validate with schema',
-      //        click: function() {
-      //          validate.validateWithSchema()
-      //        }
-      //      },
-      {
-        label: 'Fix Ragged Rows',
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Guess Column Properties',
         click: function() {
-          tools.fixRaggedRowsFile()
+          utils.guessColumnProperties()
         }
       }, {
-        type: 'separator'
+        label: 'Set Column Properties'
       }, {
-        label: 'Guess Column Properties'
+        label: 'Set Table Properties'
       }, {
-        label: 'Import Column Properties...',
-        enabled: false
+        // Placeholder for future features
+        //        label: 'Set View Properties',
+        //        enabled: false
+        //       , icon: '/static/img/locked.svg'
+        //      }, {
+        label: 'Set Provenance Information'
       }, {
-        label: 'Create Constraint from Column',
-        enabled: false
-      }, {
-        label: 'Create Look-up Table from Column',
-        enabled: false
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Column Properties'
-      }, {
-        label: 'Table Properties'
-      }, {
-        label: 'Provenance Information'
-      }, {
-        label: 'Data Package Properties'
+        // Placeholder for future features
+        //        label: 'Generate Data Quality Information',
+        //        enabled: false
+        //       , icon: '/static/img/locked.svg'
+        //      }, {
+        label: 'Set Data Package Properties'
       }, {
         type: 'separator'
       }, {
-        label: 'Graph Properties',
+        // TO DO: Conditionally enabled based on required properties being set and no changes since last successful validation
+        label: 'Export Data Package...',
+        accelerator: 'CmdOrCtrl+D',
+        // turned off for Beta release
         enabled: false
-        //      ,  icon: 'static/img/locked.svg'
-      }, {
-        label: 'Assess Data Quality',
-        enabled: false
-        //       , icon: 'static/img/locked.svg'
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Publish to',
-        enabled: false,
-        submenu: [
-          {
-            label: 'CKAN',
-            enabled: false
-            //          , icon: 'static/img/locked.svg'
-          }, {
-            label: 'DataHub',
-            enabled: false
-            //          , icon: 'static/img/locked.svg'
-          }, {
-            label: 'OctoPub',
-            enabled: false
-            //          , icon: 'static/img/locked.svg'
-          }
-        ]
+//        click: function() {
+//          datapackage.exportdata()
+//        }
       }
+      // Placeholder for future features
+      //      , {
+      // Conditionally enabled based on API keys set and Data Package Exported
+      //        label: 'Publish Data Package to',
+      //        enabled: false,
+      //        submenu: [
+      //          {
+      //            label: 'CKAN',
+      //            enabled: false
+      //          , icon: '/static/img/locked.svg'
+      //          }, {
+      //            label: 'DataHub',
+      //            enabled: false
+      //          , icon: '/static/img/locked.svg'
+      //          }, {
+      //            label: 'OctoPub',
+      //            enabled: false
+      //          , icon: '/static/img/locked.svg'
+      //          }
+      //        ]
+      //      }
     ]
   }, {
+    // TO DO: Update this menu if Data Curator is a multi window app
     label: 'Window',
     submenu: [
+      // TO DO: hide below in Windows and Linux
       {
         role: 'minimize'
       }, {
         role: 'zoom'
       }, {
         type: 'separator'
+        // hide above
       }, {
         label: 'Next Tab',
-        enabled: false,
-        accelerator: 'CmdOrCtrl+Right'
+        accelerator: 'CmdOrCtrl+Right',
+        // turned off for Beta release
+        enabled: false
       }, {
         label: 'Previous Tab',
-        enabled: false,
-        accelerator: 'CmdOrCtrl+Left'
+        accelerator: 'CmdOrCtrl+Left',
+        // turned off for Beta release
+        enabled: false
       }, {
+        // TO DO: hide below in Windows and Linux
         type: 'separator'
       }, {
-        label: 'Bring All to Front',
-        selector: 'arrangeInFront:'
+        role: 'front'
       }
+      // hide above
     ]
   }, {
     role: 'help',
     submenu: [
       {
-        label: 'Data Curator Help',
-        click: function() {
-          shell.openExternal('https://odiqueensland.github.io/data-curator-help/')
-        }
-      }, {
+        // Placeholder for future features
+        //        label: 'Data Curator Help',
+        // show accelerator for Windows and Linux only
+        //        accelerator: process.platform === 'darwin'
+        //          ? ''
+        //          : 'F1',
+        // hide above
+        //        click: function() {
+        //          shell.openExternal('https://odiqueensland.github.io/data-curator-help/')
+        //        }
+        //      }, {
         label: 'Keyboard Shortcuts',
         accelerator: 'CmdOrCtrl+/',
         click: function() {
@@ -452,6 +438,7 @@ exports.menu = [
         }
       }, {
         type: 'separator'
+        // Placeholder for Windows/Linux 'Check for Updates' future feature
       }, {
         label: 'Support Forum',
         click: function() {
@@ -462,12 +449,14 @@ exports.menu = [
         click: function() {
           shell.openExternal('https://github.com/ODIQueensland/data-curator/blob/develop/.github/CONTRIBUTING.md')
         }
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Welcome Guide',
-        enabled: false
       }
+      // Placeholder for future feature
+      //      , {
+      //        type: 'separator'
+      //      }, {
+      //        label: 'Welcome Guide',
+      //        enabled: false
+      //      }
     ]
   }
 ]

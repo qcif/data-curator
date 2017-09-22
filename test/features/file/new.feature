@@ -1,19 +1,18 @@
-Feature: New data
+Feature: New
   As a Data Packager
-  I want to open a blank data tab so I can start to enter data values
-  So that I can create new data
+  I want to open a new data tab
+  So that I can enter new data
 
-  Background:
+  The New command can be invoked by a menu item, keyboard shortcut, or the add tab button
+
+  Rules (desirable but not mandatory for v1 release):
+  - Tab names must be unique
+  - Name a new tab, "untitled-" with a sequential number appended to the end to enable uniqueness
+
+  Scenario: Open a new data tab
     Given I have opened Data Curator
-
-  Scenario: Use the menu to open a new data tab
-    When I select "New" from the menu
-    Then open a new data tab to the right of any other open data tabs
-    And display a empty table with 3 columns and 2 rows
-    And place the cursor in first column and first row
-
-  Scenario: Use a keyboard shortcut to open a new data tab
-    When I use the "New" keyboard shortcut
-    Then open a new data tab to the right of any other open data tabs
-    And display a table with 3 columns and 2 rows with no values in any cell
-    And place the cursor in first column and first row 
+    When I invoke the "New" command
+    Then create an empty 1 row by 3 column data tab in a new tab
+    And show it the right-most position
+    And set a unique Tab name
+    And place the cursor in row 1, column 1

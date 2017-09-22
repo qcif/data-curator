@@ -3,16 +3,11 @@ Feature: Insert Column After
   I want to insert another column after the current column
   So that I can add more data to the data tab
 
-  Background:
+  The "Insert Column After" command can be invoked using a menu item or keyboard shortcut
+
+  Scenario: Insert Column After
     Given I have opened Data Curator
     And the cursor is in a column
-
-  Scenario: Use the menu to insert a column after the current column
-    When I select "Insert Column After" from the menu
+    When I invoke the "Insert Column After" command
     Then insert a column after the current column
     And move the cursor to the new column and the current row
-
-  Scenario: Use a keyboard shortcut to insert a column after the current column
-    When I use the Insert Column After keyboard shortcut
-    Then insert a column after the current column
-    And move the cursor to the first column of the new column and the current row

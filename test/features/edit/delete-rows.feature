@@ -11,16 +11,11 @@ Feature: Delete Rows
 
   If the first row is deleted, instead moving the cursor to the row above, move the cursor to the row below
 
-  Background:
+  The "Delete Rows" command can be invoked using a menu item or keyboard shortcut
+
+  Scenario: Delete Row(s)
     Given I have opened Data Curator
     And I have identified the row(s) to be deleted
-
-  Scenario: Use the menu to delete row(s)
-    When I select "Delete Row(s)" from the menu
-    Then delete the selected row(s)
-    And move the cursor to the row above and remain in the same column
-
-  Scenario: Use a keyboard shortcut to undo a command
-    When I use "Delete Row(s)" keyboard shortcut
+    When I invoke the "Delete Row(s)" command
     Then delete the selected row(s)
     And move the cursor to the row above and remain in the same column

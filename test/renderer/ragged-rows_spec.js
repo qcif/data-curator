@@ -16,6 +16,7 @@ before(function() {
   mpanel.setAttribute('id', 'message-panel')
   document.body.appendChild(mpanel)
   document.body.appendChild(rpanel)
+  window._ = require('lodash')
 })
 
 function stubContainer() {

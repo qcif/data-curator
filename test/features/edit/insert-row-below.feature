@@ -3,16 +3,11 @@ Feature: Insert Row Below
   I want to insert another row below the current row
   So that I can add more data to the data tab
 
-  Background:
+  The "Insert Row Below" command can be invoked using a menu item or keyboard shortcut
+
+  Scenario: Insert Row Below
     Given I have opened Data Curator
     And the cursor is in a row
-
-  Scenario: Use the menu to insert a row below the current row
-    When I select "Insert Row Below" from the menu
-    Then insert a row below the current row
-    And move the cursor to the first column of the new row
-
-  Scenario: Use a keyboard shortcut to insert a row below the current row
-    When I use the Insert Row Below keyboard shortcut
+    When I invoke the "Insert Row Below" command
     Then insert a row below the current row
     And move the cursor to the first column of the new row

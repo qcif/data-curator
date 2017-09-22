@@ -1,10 +1,9 @@
-import {dialog, app} from 'electron'
-var ipc = require('electron').ipcMain
+import {dialog, app, ipcMain as ipc} from 'electron'
 var file_formats = require('../renderer/file-actions.js').formats
 let path = require('path')
 
 export function createWindow() {
-  let mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 480})
+  let mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 800, minHeight: 600})
 
   const winURL = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080`
@@ -52,9 +51,23 @@ export function createWindowTabWithData(data) {
   }
 }
 
+export function createWindowTabWithFormattedData(data, format) {
+  var window = BrowserWindow.getFocusedWindow()
+  if (window == null) {
+    window = createWindow()
+  } else {
+    window.webContents.send('addTabWithFormattedData', data, format)
+  }
+}
+
 export function showSidePanel(name) {
   var window = BrowserWindow.getFocusedWindow()
   window.webContents.send('showSidePanel', name)
+}
+
+export function guessColumnProperties() {
+  var window = BrowserWindow.getFocusedWindow()
+  window.webContents.send('guessColumnProperties')
 }
 
 function getSaveSubMenu() {
@@ -63,22 +76,15 @@ function getSaveSubMenu() {
   return saveSubMenu
 }
 
-export function enableSave() {
-  let saveSubMenu = getSaveSubMenu()
-  if (saveSubMenu) {
-    saveSubMenu.enabled = true
-  } else {
-    console.log('Could not find save sub menu. Cannot enable it.')
-  }
-}
+ipc.on('toggleSaveMenu', (event, arg) => {
+  toggleSaveMenu()
+})
 
-export function disableSave() {
+export function toggleSaveMenu() {
   let saveSubMenu = getSaveSubMenu()
-  if (saveSubMenu) {
-    saveSubMenu.disabled = true
-  } else {
-    console.log('Could not find save sub menu. Cannot disable it.')
-  }
+  console.log(global.tab)
+  let activeFilename = global.tab.activeFilename
+  saveSubMenu.enabled = (typeof activeFilename !== 'undefined' && activeFilename.length > 0)
 }
 
 async function saveAndExit(callback, filename) {

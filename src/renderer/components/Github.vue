@@ -59,9 +59,6 @@ export default {
 @import '~components-font-awesome/css/font-awesome.min.css'
 </style>
 <style scoped>
-@import '/static/css/default.styl'
-</style>
-<style scoped>
 @import '~bootstrap-tagsinput/dist/bootstrap-tagsinput.css'
 </style>
 <style scoped>
