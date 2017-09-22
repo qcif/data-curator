@@ -53,8 +53,14 @@ export function addHotContainerListeners(container) {
 
 export function loadData(key, data, format) {
   let hot = HotRegister.getInstance(key)
+  console.log(`hot is : ${hot}`)
+  console.dir(hot)
+  console.log('.........................')
+  console.log('inside loadData function')
   var arrays = file.open(hot, data, format)
   rows.fixRaggedRows(hot, arrays)
+  console.log('leaving loadData function')
+  console.log('.........................')
 }
 
 ipc.on('saveData', function(e, format, fileName) {

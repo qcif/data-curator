@@ -3,6 +3,7 @@ import loader from '../renderer/loader.js'
 import jQuery from 'jquery/dist/jquery.js'
 import {remote} from 'electron'
 const Dialog = remote.dialog
+
 let HotRegister = {
   hots: {},
   register: function(container, selectionListener) {
