@@ -46,53 +46,8 @@ for (var format in file_formats) {
 //   }
 // })
 
-exports.menu = [
+const template = [
   {
-    // Only show the Data Curator menu for macOS.
-    // TO DO: add test for macOS...
-    label: 'Data Curator',
-    submenu: [
-      {
-        label: 'About Data Curator',
-        click: function() {
-          utils.showSidePanel('about')
-        }
-        // Placeholder for future feature
-        //      }, {
-        //        label: 'Check for Update',
-        //        enabled: false
-        //      }, {
-        //        type: 'separator'
-        //      }, {
-        //        label: process.platform === 'darwin'
-        //          ? 'Preferences'
-        //          : 'Settings',
-        //        accelerator: 'CmdOrCtrl+,',
-        //        click: function() {
-        //          utils.showSidePanel('preferences')
-        //        }
-      }, {
-        type: 'separator'
-      }, {
-        role: 'services',
-        submenu: []
-      }, {
-        type: 'separator'
-      }, {
-        role: 'hide',
-        label: 'Hide Data Curator'
-      }, {
-        role: 'hideothers'
-      }, {
-        role: 'unhide'
-      }, {
-        type: 'separator'
-      }, {
-        role: 'quit',
-        label: 'Quit Data Curator'
-      }
-    ]
-  }, {
     label: 'File',
     submenu: [
       {
@@ -156,9 +111,7 @@ exports.menu = [
         enabled: false
       }
       // Placeholder for future features
-      //, {
-      //        label: 'Close All'
-      //      }, {
+      //,     {
       //        type: 'separator'
       //      }, {
       //        label: 'Print',
@@ -303,8 +256,6 @@ exports.menu = [
     label: 'Tools',
     submenu: [
       {
-        // TO DO: hide toggledevtools in production release and make a application shortcut
-        role: 'toggledevtools'
         // Placeholder for future features
         //      }, {
         //        type: 'separator'
@@ -319,6 +270,13 @@ exports.menu = [
         //      }, {
         //        label: 'Create Look-up Table from Column',
         //        enabled: false
+        // }, {
+        //  type: 'separator'
+        // }, {
+        label: 'Guess Column Properties',
+        click: function() {
+          utils.guessColumnProperties()
+        }
       }, {
         type: 'separator'
       }, {
@@ -329,11 +287,6 @@ exports.menu = [
         }
       }, {
         type: 'separator'
-      }, {
-        label: 'Guess Column Properties',
-        click: function() {
-          utils.guessColumnProperties()
-        }
       }, {
         label: 'Set Column Properties'
       }, {
@@ -387,17 +340,12 @@ exports.menu = [
       //      }
     ]
   }, {
-    // TO DO: Update this menu if Data Curator is a multi window app
     label: 'Window',
     submenu: [
-      // TO DO: hide below in Windows and Linux
       {
         role: 'minimize'
       }, {
-        role: 'zoom'
-      }, {
         type: 'separator'
-        // hide above
       }, {
         label: 'Next Tab',
         accelerator: 'CmdOrCtrl+Right',
@@ -409,12 +357,10 @@ exports.menu = [
         // turned off for Beta release
         enabled: false
       }, {
-        // TO DO: hide below in Windows and Linux
         type: 'separator'
       }, {
-        role: 'front'
+        role: 'quit'
       }
-      // hide above
     ]
   }, {
     role: 'help',
@@ -438,7 +384,6 @@ exports.menu = [
         }
       }, {
         type: 'separator'
-        // Placeholder for Windows/Linux 'Check for Updates' future feature
       }, {
         label: 'Support Forum',
         click: function() {
@@ -460,3 +405,105 @@ exports.menu = [
     ]
   }
 ]
+
+// Tailor menu for Windows - add About to Help menu
+if (process.platform !== 'darwin') {
+  template[4].submenu.push(
+    {
+      type: 'separator'
+    }, {
+      label: 'About Data Curator',
+      click: function() {
+        utils.showSidePanel('about')
+      }
+    }
+  )
+}
+
+// Tailor menu for macOS
+if (process.platform === 'darwin') {
+  template.unshift(
+    {
+      label: 'Data Curator',
+      submenu: [
+        {
+          label: 'About Data Curator',
+          click: function() {
+            utils.showSidePanel('about')
+          }
+          // Placeholder for future feature
+          //      }, {
+          //        type: 'separator'
+          //      }, {
+          //        label: 'Preferences'
+          //        accelerator: 'CmdOrCtrl+,',
+          //        click: function() {
+          //          utils.showSidePanel('preferences')
+          //        }
+        }, {
+          type: 'separator'
+        }, {
+          role: 'services',
+          submenu: []
+        }, {
+          type: 'separator'
+        }, {
+          role: 'hide',
+          label: 'Hide Data Curator'
+        }, {
+          role: 'hideothers'
+        }, {
+          role: 'unhide'
+        }, {
+          type: 'separator'
+        }, {
+          role: 'quit',
+          label: 'Quit Data Curator'
+        }
+      ]
+    }
+  )
+
+// overwrite Window menu
+  template[4].submenu = [
+    {
+      role: 'minimize'
+    }, {
+      role: 'zoom'
+    }, {
+      type: 'separator'
+    }, {
+      label: 'Next Tab',
+      accelerator: 'CmdOrCtrl+Right',
+      // turned off for Beta release
+      enabled: false
+    }, {
+      label: 'Previous Tab',
+      accelerator: 'CmdOrCtrl+Left',
+      // turned off for Beta release
+      enabled: false
+    }, {
+      type: 'separator'
+    }, {
+      role: 'front'
+    }
+  ]
+}
+
+// Add developer tools menu to end if not in production environment
+if (process.env.NODE_ENV !== 'production') {
+  template.push(
+    {
+      label: 'Developer',
+      submenu: [
+        {
+          role: 'reload'
+        }, {
+          role: 'toggledevtools'
+        }
+      ]
+    }
+  )
+}
+
+exports.menu = template
