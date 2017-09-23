@@ -1,19 +1,18 @@
-/**
- * Created by stephenfortune on 15/09/15.
- */
-
 import {HotRegister} from './../../src/renderer/hot.js'
+
 // process.env.NODE_ENV = 'test'
 
-let assert = require('chai').assert
-let expect = require('chai').expect
+import {assert} from 'chai'
+
+import {expect} from 'chai'
 let should = require('chai').should()
 
 // let hotController = require('./../../src/renderer/hot.js')
-let raggedRows = require('./../../src/renderer/ragged-rows.js')
-let $ = require('jquery/dist/jquery.js')
+import raggedRows from './../../src/renderer/ragged-rows.js'
 
-before(function() {
+import $ from 'jquery/dist/jquery.js'
+
+before(() => {
   let rpanel = document.createElement('div')
   rpanel.setAttribute('id', 'right-panel')
   let mpanel = document.createElement('div')
@@ -23,7 +22,7 @@ before(function() {
   window._ = require('lodash')
 })
 
-beforeEach(function () {
+beforeEach(() => {
   let hotView = document.createElement('div')
   document.body.appendChild(hotView)
   HotRegister.register(hotView)
@@ -36,8 +35,8 @@ function stubContainer() {
   return element
 }
 
-describe('testing ragged row functions against 2D array', function() {
-  it('well formed array results in no DOM change', function() {
+describe('testing ragged row functions against 2D array', () => {
+  it('well formed array results in no DOM change', () => {
     hot = hotController.create(stubContainer())
     let data = [
       ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],
@@ -53,7 +52,7 @@ describe('testing ragged row functions against 2D array', function() {
     expect(mpanel.innerText).to.not.have.string('has been added to file')
   })
 
-  it('checks a loaded CSV and returns prompt on first discovery of ragged row', function() {
+  it('checks a loaded CSV and returns prompt on first discovery of ragged row', () => {
     hot = hotController.create(stubContainer())
     let data = [
       ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],
@@ -66,7 +65,7 @@ describe('testing ragged row functions against 2D array', function() {
     expect(mpanel.innerText).to.have.string('has been added to file')
   })
 
-  it('changes a HandsOnTable object, given a ragged array, when prompt is answered with yes', function() {
+  it('changes a HandsOnTable object, given a ragged array, when prompt is answered with yes', () => {
     hot = hotController.create(stubContainer())
     let data = [
       ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],
@@ -80,7 +79,7 @@ describe('testing ragged row functions against 2D array', function() {
     expect(mpanel.innerText).to.have.string('has been added to file')
   })
 
-  it('if ragged rows present and user consent it parses the entire CSV', function() {
+  it('if ragged rows present and user consent it parses the entire CSV', () => {
     hot = hotController.create(stubContainer())
     let data = [
       ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],

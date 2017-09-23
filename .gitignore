@@ -16,3 +16,4 @@ yarn-error.log
 *.csv
 !help-tags.csv
 test/temp/
+test/unit/coverage/

@@ -30,7 +30,7 @@ webpackConfig.module.rules
 
 module.exports = config => {
   config.set({
-    browsers: ['visibleElectron'],
+    browsers: ['Electron'],
     client: {
       useIframe: false
     },

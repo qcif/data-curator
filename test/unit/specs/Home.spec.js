@@ -9,7 +9,7 @@ Vue.directive('tooltip', function(el, binding) {
 
 // const actionsInjector = require('inject-loader!../../src/renderer/storage/modules/')
 
-const mockedStore = {
+const stubbedStore = {
   state: {
     tabs: [],
     activeTab: '',
@@ -20,13 +20,13 @@ const mockedStore = {
 
   getters: {
     getTabs: state => {
-      return 'mocked tab'
+      return 'stubbed tab'
     },
     getActiveTab: state => {
-      return 'mocked active tab'
+      return 'stubbed active tab'
     },
     tabTitle: (state, getters) => (tabId) => {
-      return `mocked title for ${tabId}`
+      return `stubbed title for ${tabId}`
     }
   }
 }
@@ -36,7 +36,7 @@ describe('Home.vue toolbar menus', () => {
   const vm = new Vue({
     el: document.createElement('div'),
     render: h => h(Home),
-    store: new Vuex.Store(mockedStore)
+    store: new Vuex.Store(stubbedStore)
   }).$mount()
 
   let toolbarMenuTitles = ['Validate', 'Column', 'Table', 'Provenance', 'Package', 'Export']

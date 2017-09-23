@@ -1,6 +1,3 @@
-/**
- * Created by stephenfortune on 16/09/15.
- */
 import chai from 'chai'
 import {Handsontable} from 'handsontable/dist/handsontable.full.js'
 import {HotRegister} from './../../src/renderer/hot.js'
@@ -9,11 +6,11 @@ let assert = chai.assert
 let expect = chai.expect
 let should = chai.should()
 
-before(function() {
+before(() => {
   window._ = require('lodash')
 })
 
-beforeEach(function() {
+beforeEach(() => {
   let hotView = document.createElement('div')
   document.body.appendChild(hotView)
   HotRegister.register(hotView)
@@ -45,7 +42,7 @@ function stubContainer() {
 
 function stubDefaultHotProperties(data) {
   return {
-    data: data,
+    data,
     colHeaders: true,
     rowHeaders: true,
     columnSorting: true,
@@ -56,30 +53,30 @@ function stubDefaultHotProperties(data) {
   }
 }
 
-describe('loading Hands On Table library into workview', function() {
-  it('constructs hands on table via controller without altering loaded data', function() {
+describe('loading Hands On Table library into workview', () => {
+  it('constructs hands on table via controller without altering loaded data', () => {
     // hot = hotController.create(stubContainer())
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       expect(hot.getData()).to.deep.equal(expectedData)
       expect()
     })
     hot.loadData(data)
   })
 
-  it('returns the same data when loaded via hot controller as it does directly throught hot library', function() {
+  it('returns the same data when loaded via hot controller as it does directly throught hot library', () => {
     // hot = hotController.create(stubContainer())
     let hot2 = new Handsontable(stubContainer(), stubDefaultHotProperties(data))
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       expect(hot.getData()).to.deep.equal(hot2.getData())
     })
     hot.loadData(data)
   })
 })
 
-describe('insertRowAbove tests', function() {
-  it('adds a row above (first row)', function() {
+describe('insertRowAbove tests', () => {
+  it('adds a row above (first row)', () => {
     // hot = hotController.create(stubContainer())
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       hot.selectCell(0, 0, 0, 4) // select whole row
       hotController.insertRowAbove(true)
       expectedData.unshift([
@@ -90,9 +87,9 @@ describe('insertRowAbove tests', function() {
     hot.loadData(data)
   })
 
-  it('adds a row above (middle)', function() {
+  it('adds a row above (middle)', () => {
     // hot = hotController.create(stubContainer())
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       hot.selectCell(2, 0, 2, 0) // select only one cell
       hotController.insertRowAbove(true)
       assert.deepEqual(hot.getData(), [
@@ -106,9 +103,9 @@ describe('insertRowAbove tests', function() {
     hot.loadData(data)
   })
 
-  it('adds a row above (end row)', function() {
+  it('adds a row above (end row)', () => {
     // hot = hotController.create(stubContainer())
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       hot.selectCell(3, 2, 3, 4) // select partial row
       hotController.insertRowAbove(true)
       assert.deepEqual(hot.getData(), [
@@ -123,10 +120,10 @@ describe('insertRowAbove tests', function() {
   })
 })
 
-describe('insertRowBelow tests', function() {
-  it('adds a row below (first row)', function() {
+describe('insertRowBelow tests', () => {
+  it('adds a row below (first row)', () => {
     // hot = hotController.create(stubContainer())
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       hot.selectCell(0, 0, 0, 4) // select whole row
       hotController.insertRowBelow(true)
       assert.deepEqual(hot.getData(), [
@@ -140,9 +137,9 @@ describe('insertRowBelow tests', function() {
     hot.loadData(data)
   })
 
-  it('adds a row below (middle)', function() {
+  it('adds a row below (middle)', () => {
     // hot = hotController.create(stubContainer())
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       hot.selectCell(1, 2, 1, 2) // select only one cell
       hotController.insertRowBelow(true)
       assert.deepEqual(hot.getData(), [
@@ -156,9 +153,9 @@ describe('insertRowBelow tests', function() {
     hot.loadData(data)
   })
 
-  it('adds a row below (end row)', function() {
+  it('adds a row below (end row)', () => {
     // hot = hotController.create(stubContainer())
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       hot.selectCell(2, 0, 3, 3) // select rectangular area
       hotController.insertRowBelow(true)
       assert.deepEqual(hot.getData(), [
@@ -173,10 +170,10 @@ describe('insertRowBelow tests', function() {
   })
 })
 
-describe('insertColumnLeft tests', function() {
-  it('adds a column to the left (first col)', function() {
+describe('insertColumnLeft tests', () => {
+  it('adds a column to the left (first col)', () => {
     // hot = hotController.create(stubContainer())
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       hot.selectCell(0, 0, 3, 0) // select whole column
       hotController.insertColumnLeft(true)
       assert.deepEqual(hot.getData(), [
@@ -189,9 +186,9 @@ describe('insertColumnLeft tests', function() {
     hot.loadData(data)
   })
 
-  it('adds a column to the left (middle)', function() {
+  it('adds a column to the left (middle)', () => {
     // hot = hotController.create(stubContainer())
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       hot.selectCell(2, 2, 2, 2) // select only one cell
       hotController.insertColumnLeft(true)
       assert.deepEqual(hot.getData(), [
@@ -204,9 +201,9 @@ describe('insertColumnLeft tests', function() {
     hot.loadData(data)
   })
 
-  it('adds a column to the left (last col)', function() {
+  it('adds a column to the left (last col)', () => {
     // hot = hotController.create(stubContainer())
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       hot.selectCell(1, 4, 2, 4) // select partial column
       hotController.insertColumnLeft(true)
       assert.deepEqual(hot.getData(), [
@@ -220,10 +217,10 @@ describe('insertColumnLeft tests', function() {
   })
 })
 
-describe('insertColumnRight tests', function() {
-  it('adds a column to the left (first col)', function() {
+describe('insertColumnRight tests', () => {
+  it('adds a column to the left (first col)', () => {
     // hot = hotController.create(stubContainer())
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       hot.selectCell(0, 0, 3, 0) // select whole column
       hotController.insertColumnRight(true)
       assert.deepEqual(hot.getData(), [
@@ -236,9 +233,9 @@ describe('insertColumnRight tests', function() {
     hot.loadData(data)
   })
 
-  it('adds a column to the left (middle)', function() {
+  it('adds a column to the left (middle)', () => {
     // hot = hotController.create(stubContainer())
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       hot.selectCell(1, 1, 1, 1) // select only one cell
       hotController.insertColumnRight(true)
       assert.deepEqual(hot.getData(), [
@@ -251,9 +248,9 @@ describe('insertColumnRight tests', function() {
     hot.loadData(data)
   })
 
-  it('adds a column to the left (last col)', function() {
+  it('adds a column to the left (last col)', () => {
     // hot = hotController.create(stubContainer())
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       hot.selectCell(1, 3, 2, 4) // select a rectangular range
       hotController.insertColumnRight(true)
       assert.deepEqual(hot.getData(), [
@@ -267,10 +264,10 @@ describe('insertColumnRight tests', function() {
   })
 })
 
-describe('freeze rows and columns', function () {
-  it('freezes the upper most row', function () {
+describe('freeze rows and columns', () => {
+  it('freezes the upper most row', () => {
     // hot = hotController.create(stubContainer())
-    hot.addHook('afterLoadData', function() {
+    hot.addHook('afterLoadData', () => {
       // tests happen here
       assert.strictEqual(hot.getSettings()['fixedRowsTop'], 0)
       hot.selectCell(1, 0, 1, 4)

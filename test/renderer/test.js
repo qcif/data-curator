@@ -1,21 +1,18 @@
-/**
- * Created by stephenfortune on 15/09/15.
- */
-let assert = require('chai').assert
-let expect = require('chai').expect
+import {assert} from 'chai'
+import {expect} from 'chai'
 let should = require('chai').should()
 
-before(function() {
+before(() => {
   window._ = require('lodash')
 })
 
-describe('populate a web page and check that everything is there', function() {
-  it('has document', function () {
+describe('populate a web page and check that everything is there', () => {
+  it('has document', () => {
     let div = document.createElement('div')
     expect(div.nodeName).eql('DIV')
   })
 
-  it('loads a web page and confirms that changes to DIV are evaluated', function() {
+  it('loads a web page and confirms that changes to DIV are evaluated', () => {
     let div = document.createElement('div')
     let targetdiv = document.createElement('div')
     targetdiv.innerHTML = 'populated'
