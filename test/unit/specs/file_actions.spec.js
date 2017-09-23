@@ -1,20 +1,32 @@
 import {HotRegister} from '@/hot.js'
-import chai from 'chai'
 import {rows} from '@/ragged-rows'
 import * as file_actions from '@/file-actions'
 import { mutations } from '@/store'
+import {remote} from 'electron'
 import fs from 'fs'
 import os from 'os'
 
+import sinon from 'sinon'
+import chai from 'chai'
+sinon.config = {
+  useFakeTimers: false
+}
 let assert = chai.assert
 let expect = chai.expect
 let should = chai.should()
 
-items = {}
+let items = {
+  tab: {
+    activeTitle: '',
+    activeFilename: '',
+    filenames: []
+  }
+}
 
 describe('file actions', () => {
   let hot
   let hotId
+  let stubGlobal
   before(function() {
     window._ = require('lodash')
   })
@@ -24,10 +36,15 @@ describe('file actions', () => {
     document.body.appendChild(hotView)
     hotId = HotRegister.register(hotView)
     hot = HotRegister.getInstance(hotId)
-    spyOn(global.localStorage, 'setItem').andCallFake (key, item) -> items[key] = item.toString(); undefined
-    spyOn(global.localStorage, 'getItem').andCallFake (key) -> items[key] ? null
-    spyOn(global.localStorage, 'removeItem').andCallFake (key) -> delete items[key]; undefined
   })
+
+  let stubGlobalTab = () => {
+    stubGlobal = sinon.stub(remote, 'getGlobal')
+    stubGlobal.withArgs('tab').returns({ activeTitle: '',
+      activeFilename: '',
+      filenames: []
+    })
+  }
 
   afterEach(() => {
     HotRegister.destroy(hotId)
@@ -73,27 +90,35 @@ describe('file actions', () => {
   describe('saving csv data into a file', () => {
     it('saves simple csv data to a file, with data intact', done => {
       let data = 'foo,bar,baz\r\n1,2,3\r\n4,5,6\r\n'
+      let tempFile = `${os.tmpdir()}/mycsv.csv`
+      stubGlobalTab()
       hot.addHook('afterLoadData', () => {
-        file_actions.save(hot, file_actions.formats.csv, `${os.tmpdir()}/mycsv.csv`)
-        let callback = fs.readFile(`${os.tmpdir()}/mycsv.csv`, 'utf-8', (err, d) => {
-          if (err) {
-            console.log(err.stack)
-          }
-          expect(d).to.eq(data)
-          expect(document.title).to.eq(`${os.tmpdir()}/mycsv.csv`)
-          done()
+        file_actions.save(hot, file_actions.formats.csv, tempFile, () => {
+          fs.readFile(tempFile, 'utf-8', (err, d) => {
+            console.log('running callback...')
+            if (err) {
+              console.log(err.stack)
+            }
+            expect(d).to.eq(data)
+
+            // TODO : title is now in tab - test this.
+            done()
+          })
         })
       })
       file_actions.open(hot, data)
+      stubGlobal.restore()
     })
   })
 
   describe('convert file', () => {
     it('converts a file from csv to tsv', done => {
       let data = 'foo,bar,baz\r\n1,2,3\r\n4,5,6'
+      let tempFile = `${os.tmpdir()}/mytsv.tsv`
+      stubGlobalTab()
       hot.addHook('afterLoadData', () => {
-        file_actions.save(hot, file_actions.formats.tsv, `${os.tmpdir()}/mytsv.tsv`, () => {
-          fs.readFile(`${os.tmpdir()}/mytsv.tsv`, 'utf-8', (err, d) => {
+        file_actions.save(hot, file_actions.formats.tsv, tempFile, () => {
+          fs.readFile(tempFile, 'utf-8', (err, d) => {
             if (err) {
               console.log(err.stack)
             }
@@ -103,6 +128,7 @@ describe('file actions', () => {
         })
       })
       file_actions.open(hot, data)
+      stubGlobal.restore()
     })
   })
 })

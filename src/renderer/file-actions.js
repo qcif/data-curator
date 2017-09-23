@@ -76,8 +76,6 @@ var openFile = function(hot, data, format) {
 }
 
 var saveFile = function(hot, format, filename, callback) {
-  console.log('saving')
-  console.log(`filename is ${filename}`)
   let data
   let tabId = tabStore.state.activeTab
   console.log(`save tab id is: ${tabId}`)
@@ -110,7 +108,6 @@ var saveFile = function(hot, format, filename, callback) {
   console.log(remote.getGlobal('tab'))
   console.log('logging tab objects...')
   console.log(tabStore.state.tabObjects)
-  // document.title = filename
 }
 
 export {
