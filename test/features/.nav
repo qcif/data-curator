@@ -32,7 +32,7 @@
   - read-only-mode.feature
 - find:
 - tools:
-  - fix-ragged-rows.feature
+  - header-row.feature
   - guess-column-properties.feature
   - validate-column.feature
   - validate-table.feature
