@@ -24,3 +24,13 @@ export async function guessColumnProperties() {
     'columnProperties': tableDescriptor.fields
   }
 }
+
+export async function validate() {
+  console.log('validating...')
+  let activeHot = HotRegister.getActiveHotIdData()
+  let table = await initData(activeHot.data)
+  table.schema.commit()
+  let isSchemaValid = table.schema.valid
+  console.log(isSchemaValid)
+  console.log(table.schema.errors)
+}
