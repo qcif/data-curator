@@ -4,8 +4,10 @@ const state = {
 
 const getters = {
   getHotColumnProperties: (state, getters) => (hotId) => {
-    let allColumnProperties = state.hotTabs[hotId].columnProperties
     return state.hotTabs[hotId].columnProperties
+  },
+  getHotTableSchema: (state, getters) => (hotId) => {
+    return state.hotTabs[hotId].tableSchema
   }
 }
 
@@ -35,6 +37,13 @@ const mutations = {
     _.set(state.hotTabs, `${hotId}.columnProperties`, hotTab.columnProperties)
     _.merge(state.hotTabs, current)
     console.log('leaving push hot tab column properties...')
+    console.dir(state.hotTabs)
+  },
+  pushTableSchema(state, hotTable) {
+    console.log('state is...')
+    console.log(state.hotTabs)
+    let hotId = hotTable.hotId
+    _.set(state.hotTabs, `${hotId}.tableSchema`, hotTable.tableSchema)
     console.dir(state.hotTabs)
   },
   pushHotProperty(state, property) {

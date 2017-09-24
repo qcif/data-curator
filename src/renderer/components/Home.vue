@@ -120,7 +120,8 @@ import tabular from '../partials/TableProperties'
 import packager from '../partials/PackageProperties'
 import provenance from '../partials/ProvenanceProperties'
 import {
-  guessColumnProperties
+  guessColumnProperties,
+  validateActiveData
 } from '../frictionless.js'
 import HomeTooltip from '../mixins/HomeTooltip'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
@@ -233,8 +234,29 @@ export default {
         console.log(err)
       }
       console.log('captured properties are:')
-      console.log('hotColumns')
+      console.log(hotColumns)
       this.pushHotColumns(hotColumns)
+    },
+    async validateTable() {
+      try {
+        await validateActiveData()
+      } catch (err) {
+        console.log('back here')
+        if (err.multiple) {
+          for (const error of err.errors) {
+            console.log(error)
+          }
+        }
+        // console.log(error)
+        // console.log(`error is: ${error}`)
+        // console.log('name')
+        // console.log(error.name)
+        // console.log('errors')
+        // console.log(error.errors)
+        // console.log('multiple')
+        // console.log(error.multiple)
+        // console.log(error.message)
+      }
     },
     addTabWithFormattedData: function(data, format) {
       this.initTab()
@@ -486,6 +508,10 @@ export default {
     const vueGuessProperties = this.updateColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
+    })
+    const vueValidateTable = this.validateTable
+    ipc.on('validateTable', function(event, arg) {
+      vueValidateTable()
     })
   }
 }

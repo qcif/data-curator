@@ -79,6 +79,8 @@ let HotRegister = {
   getActiveHotIdData: function() {
     let activeHot = this.getActiveInstance()
     let data = activeHot.getData()
+    console.log('logging data...')
+    console.log(data)
     let id = activeHot.guid
     return {'id': id, 'data': data}
   },

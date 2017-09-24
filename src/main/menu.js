@@ -325,7 +325,7 @@ exports.menu = [
         label: 'Validate Table',
         accelerator: 'Shift+CmdOrCtrl+V',
         click: function() {
-          validate.validateFile()
+          utils.validateTable()
         }
       }, {
         type: 'separator'
@@ -360,9 +360,9 @@ exports.menu = [
         accelerator: 'CmdOrCtrl+D',
         // turned off for Beta release
         enabled: false
-//        click: function() {
-//          datapackage.exportdata()
-//        }
+        //        click: function() {
+        //          datapackage.exportdata()
+        //        }
       }
       // Placeholder for future features
       //      , {
