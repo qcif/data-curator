@@ -1,5 +1,3 @@
-@done
-
 Feature: Export Data Package
   As a Data Packager
   I want to export the data and associated metadata in a data package

@@ -1,5 +1,3 @@
-@done
-
 Feature: Set Column Properties
   As a Data Packager
   I want to describe the meaning and structure of the data

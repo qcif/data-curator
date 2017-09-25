@@ -205,7 +205,6 @@ exports.menu = [
         accelerator: 'CmdOrCtrl+V'
       }, {
         // turned off for Beta release
-        // role: 'selectall',
         label: 'Select All',
         enabled: false,
         accelerator: 'CmdOrCtrl+A'

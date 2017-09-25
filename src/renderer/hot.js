@@ -12,8 +12,10 @@ let HotRegister = {
       rowHeaders: true,
       // autoColumnSize: {syncLimit: 300},
       fixedRowsTop: 0,
-      columnSorting: true,
-      sortIndicator: true,
+// enable when header row function implemented - otherwise header is sorted with values
+      columnSorting: false,
+      sortIndicator: false,
+//
       contextMenu: false,
       autoRowSize: true,
       autoWrap: true,
