@@ -192,17 +192,23 @@ exports.menu = [
         enabled: false,
         accelerator: 'CmdOrCtrl+X'
       }, {
-        // role: 'copy',
+        role: 'copy',
         // turned off for Beta release
-        label: 'Copy',
-        enabled: false,
-        accelerator: 'CmdOrCtrl+C'
+        // label: 'Copy',
+        // enabled: true,
+        // accelerator: 'CmdOrCtrl+C',
+        click: function() {
+          BrowserWindow.getFocusedWindow().webContents.send('editCopy')
+        }
       }, {
-        // role: 'paste',
+        role: 'paste',
         // turned off for Beta release
-        label: 'Paste',
-        enabled: false,
-        accelerator: 'CmdOrCtrl+V'
+        // label: 'Paste',
+        // enabled: true,
+        // accelerator: 'CmdOrCtrl+V',
+        click: function() {
+          BrowserWindow.getFocusedWindow().webContents.send('editPaste')
+        }
       }, {
         // turned off for Beta release
         // role: 'selectall',

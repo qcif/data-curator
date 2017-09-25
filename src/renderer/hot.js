@@ -6,7 +6,7 @@ const Dialog = remote.dialog
 
 let HotRegister = {
   hots: {},
-  register: function(container, selectionListener) {
+  register(container, selectionListener) {
     let hot = new Handsontable(container, {
       colHeaders: true,
       rowHeaders: true,
@@ -23,9 +23,9 @@ let HotRegister = {
       enterBeginsEditing: false,
       persistentState: true,
       outsideClickDeselects: false,
-      tabMoves: function(event) {
-        if (!event.shiftKey) {
-          var selection = hot.getSelected()
+      tabMoves({shiftKey}) {
+        if (!shiftKey) {
+          const selection = hot.getSelected()
           let next = hot.getCell(selection[0], selection[1] + 1)
           if (next == null) {
             hot.alter('insert_col', selection[1] + 1)
@@ -33,23 +33,23 @@ let HotRegister = {
         }
         return {row: 0, col: 1}
       },
-      // afterInit: function() {
+      // afterInit() {
       //   loader.showLoader('Loading...')
       // },
-      // afterLoadData: function() {
+      // afterLoadData() {
       //   loader.hideLoader()
       // },
-      afterUpdateSettings: function() {
+      afterUpdateSettings() {
         hot.render()
         hot.deselectCell()
       },
-      afterSelection: function (r, c, r2, c2, preventScrolling) {
+      afterSelection(r, c, r2, c2, preventScrolling) {
         // preventScrolling.value = true
         selectionListener()
       },
-      enterMoves: function(event) {
-        if (!event.shiftKey) {
-          var selection = hot.getSelected()
+      enterMoves({shiftKey}) {
+        if (!shiftKey) {
+          const selection = hot.getSelected()
           let next = hot.getCell(selection[0] + 1, selection[1])
           if (next == null) {
             hot.alter('insert_row', selection[0] + 1)
@@ -68,15 +68,15 @@ let HotRegister = {
     _.set(this.hots, hot.guid, hot)
     return hot.guid
   },
-  getInstance: function(key) {
+  getInstance(key) {
     return _.get(this.hots, key)
   },
-  getActiveInstance: function() {
+  getActiveInstance() {
     let activeHotId = jQuery('#csvContent .active .editor').attr('id')
     let hot = _.get(this.hots, activeHotId)
     return hot
   },
-  getActiveHotIdData: function() {
+  getActiveHotIdData() {
     let activeHot = this.getActiveInstance()
     let data = activeHot.getData()
     console.log('logging data...')
@@ -84,11 +84,11 @@ let HotRegister = {
     let id = activeHot.guid
     return {'id': id, 'data': data}
   },
-  destroy: function(id) {
-    _.forIn(this.hots, function(hot, id) {
+  destroy(id) {
+    _.forIn(this.hots, (hot, id) => {
       hot.destroy()
     })
-    for (var key in this.hots) {
+    for (const key in this.hots) {
       _.unset(this.hots, key)
     }
     this.hots = {}
@@ -170,73 +170,73 @@ export function getColumnCount() {
   return colCount
 }
 
-var insertRowAbove = function(deselect) {
+const insertRowAbove = deselect => {
   let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
-  var range = hot.getSelectedRange()
+  const range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
     return
   }
-  var start = Math.min(range.from.row, range.to.row)
+  const start = Math.min(range.from.row, range.to.row)
   hot.alter('insert_row', start)
   if (deselect) {
     hot.deselectCell()
   }
 }
 
-var insertRowBelow = function(deselect) {
+const insertRowBelow = deselect => {
   let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
-  var range = hot.getSelectedRange()
+  const range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
     return
   }
-  var end = Math.max(range.from.row, range.to.row)
+  const end = Math.max(range.from.row, range.to.row)
   hot.alter('insert_row', (end + 1))
   if (deselect) {
     hot.deselectCell()
   }
 }
 
-var insertColumnLeft = function(deselect) {
+const insertColumnLeft = deselect => {
   let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
-  var range = hot.getSelectedRange()
+  const range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
     return
   }
-  var start = Math.min(range.from.col, range.to.col)
+  const start = Math.min(range.from.col, range.to.col)
   hot.alter('insert_col', start)
   if (deselect) {
     hot.deselectCell()
   }
 }
 
-var insertColumnRight = function(deselect) {
+const insertColumnRight = deselect => {
   let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
-  var range = hot.getSelectedRange()
+  const range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
     return
   }
-  var end = Math.max(range.from.col, range.to.col)
+  const end = Math.max(range.from.col, range.to.col)
   hot.alter('insert_col', (end + 1))
   if (deselect) {
     hot.deselectCell()
   }
 }
 
-var removeRows = function() {
+const removeRows = () => {
   let hot = HotRegister.getActiveInstance()
-  var range = hot.getSelectedRange()
+  const range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
     return
   }
 
-  var start = Math.min(range.from.row, range.to.row)
-  var end = Math.max(range.from.row, range.to.row)
+  const start = Math.min(range.from.row, range.to.row)
+  const end = Math.max(range.from.row, range.to.row)
 
-  for (var row = start; row <= end; row++) {
+  for (let row = start; row <= end; row++) {
     // rows are re-indexed after each remove
     // so always remove 'start'
     hot.alter('remove_row', start)
@@ -245,17 +245,17 @@ var removeRows = function() {
   hot.deselectCell()
 }
 
-var removeColumns = function() {
+const removeColumns = () => {
   let hot = HotRegister.getActiveInstance()
-  var range = hot.getSelectedRange()
+  const range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
     return
   }
 
-  var start = Math.min(range.from.col, range.to.col)
-  var end = Math.max(range.from.col, range.to.col)
+  const start = Math.min(range.from.col, range.to.col)
+  const end = Math.max(range.from.col, range.to.col)
 
-  for (var col = start; col <= end; col++) {
+  for (let col = start; col <= end; col++) {
     // cols are re-indexed after each remove
     // so always remove 'start'
     hot.alter('remove_col', start)
@@ -264,13 +264,13 @@ var removeColumns = function() {
   hot.deselectCell()
 }
 
-var unfreezeHeaderRow = function() {
+const unfreezeHeaderRow = () => {
   console.log('unfreezing...')
   let hot = HotRegister.getActiveInstance()
   hot.updateSettings({fixedRowsTop: 0, colHeaders: true})
 }
 
-var freezeHeaderRow = function() {
+const freezeHeaderRow = () => {
   console.log('freezing...')
   let hot = HotRegister.getActiveInstance()
   hot.updateSettings({fixedRowsTop: 1})

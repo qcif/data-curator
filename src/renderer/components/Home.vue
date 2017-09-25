@@ -79,12 +79,16 @@
         </div>
       </div>
       <div v-show="showBottomPanel" id="main-bottom-panel" class="panel-footer">
-        <button type="button" class="close">
-          <span aria-hidden="true">&times;</span>
-        </button>
         <div id="message-panel" class="panel-default">
         </div>
       </div>
+    </div>
+  </div>
+  <div v-show="loadingDataMessage" class="loading-pane" >
+    <div class="validation-load">
+      <p><span class="glyphicon glyphicon-refresh spinning">
+      </span></p>
+      <p>{{loadingDataMessage}}</p>
     </div>
   </div>
   <div id="footer-panel" class="panel panel-footer">
@@ -121,7 +125,7 @@ import packager from '../partials/PackageProperties'
 import provenance from '../partials/ProvenanceProperties'
 import {
   guessColumnProperties,
-  validateActiveData
+  validateActiveDataWithNoSchema
 } from '../frictionless.js'
 import HomeTooltip from '../mixins/HomeTooltip'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
@@ -147,6 +151,7 @@ export default {
       enableSideNavLeftArrow: true,
       enableSideNavRightArrow: true,
       showBottomPanel: false,
+      loadingDataMessage: '',
       toolbarMenus: [{
         name: 'Validate',
         image: 'static/img/validate.svg',
@@ -191,6 +196,9 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
+    getMessage() {
+      return this.loadingDataMessage
+    },
     ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'tabTitle']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
@@ -234,12 +242,11 @@ export default {
         console.log(err)
       }
       console.log('captured properties are:')
-      console.log(hotColumns)
       this.pushHotColumns(hotColumns)
     },
     async validateTable() {
       try {
-        await validateActiveData()
+        await validateActiveDataWithNoSchema()
       } catch (err) {
         console.log('back here')
         if (err.multiple) {
@@ -247,15 +254,6 @@ export default {
             console.log(error)
           }
         }
-        // console.log(error)
-        // console.log(`error is: ${error}`)
-        // console.log('name')
-        // console.log(error.name)
-        // console.log('errors')
-        // console.log(error.errors)
-        // console.log('multiple')
-        // console.log(error.multiple)
-        // console.log(error.message)
       }
     },
     addTabWithFormattedData: function(data, format) {
@@ -306,7 +304,11 @@ export default {
         'hotId': activeHotId,
         'tabId': activeTabId
       })
+      this.loadingDataMessage = 'Loading data'
+      this.forceWrapper()
       loadData(activeHotId, data, format)
+      this.loadingDataMessage = null
+      this.forceWrapper()
     },
     cleanUpTabDependencies: function(tabId) {
       // update active tab

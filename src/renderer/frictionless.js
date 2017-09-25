@@ -1,11 +1,28 @@
-import {Table} from 'tableSchema'
+import {Table} from 'tableschema'
 import {Resource, Package} from 'datapackage'
 import {HotRegister} from '../renderer/hot.js'
 import store from '../renderer/store/modules/hots.js'
 
-async function initData(data) {
+async function initDataAndInferSchema(data) {
   const table = await Table.load(data)
   await table.infer()
+  return table
+}
+
+async function initData(data) {
+  const table = await Table.load(data)
+  return table
+}
+
+async function initStrictData(data) {
+  const table = await Table.load(data, {strict: true})
+  return table
+}
+
+async function initDataAgainstSchema(data, schema) {
+  // provide schema rather than infer
+  const table = await Table.load(data, {schema: schema})
+  // await table.infer()
   return table
 }
 
@@ -17,58 +34,113 @@ async function storeData(hotId, table) {
   })
 }
 
-async function getDescriptor(activeHotObject) {
-  let table = await initData(activeHotObject.data)
-  let tableDescriptor = table.schema.descriptor
-  console.log('got table descriptor...')
-  return tableDescriptor
-}
-
 export async function guessColumnProperties() {
-  let activeHotObject = HotRegister.getActiveHotIdData()
-  let table = await initData(activeHotObject.data)
-  // storeData(activeHotObject.id, table)
+  let activeHot = HotRegister.getActiveHotIdData()
+  let table = await initDataAndInferSchema(activeHot.data)
+  storeData(activeHot.id, table)
   let tableDescriptor = table.schema.descriptor
-  return {'hotId': activeHotObject.id, 'columnProperties': tableDescriptor.fields}
+  return {
+    'hotId': activeHot.id,
+    'columnProperties': tableDescriptor.fields
+  }
 }
 
-export async function validateActiveData() {
+// function checkRowCells(row, schema) {
+//   try {
+//     console.log('checking each cell of row:')
+//     console.log(row)
+//     let indexCount = -1
+//
+//     for (const [index, cell] of row.entries()) {
+//       console.log(`index is ${index}`)
+//       console.log(`cell value is ${cell}`)
+//       const field = schema.fields[index]
+//       console.log('logging field...')
+//       console.log(field)
+//       field.castValue(cell)
+//     }
+//   } catch (err) {
+//     console.log('got cell error')
+//     console.log(err)
+//     // if (err.multiple) {
+//     //   for (const error of err.errors) {
+//     //     console.log(error)
+//     //   }
+//     // } else {
+//     //   console.log(err)
+//     // }
+//   }
+// }
+
+function checkRow(row, schema, errorCallback) {
+  try {
+    console.log('next row')
+    console.log(row)
+    schema.castRow(row)
+    console.log('cast ok')
+  } catch (err) {
+    console.log('got row error')
+    if (err.multiple) {
+      for (const error of err.errors) {
+        console.log(error)
+      }
+    } else {
+      console.log(err)
+    }
+    // do something with the problem row
+    if (errorCallback) {
+      callback(row, schema)
+    }
+  }
+}
+
+export async function validateActiveDataWithNoSchema() {
   let activeHotObject = HotRegister.getActiveHotIdData()
-  let table = _.get(store.state.hotTabs, store.state.getters, activeHotObject.id)
-  console.log('table before commit')
+  let table = await initStrictData(activeHotObject.data)
   console.log(table)
-  table.schema.commit()
+  try {
+    let result = await table.read({keyed: true})
+  } catch (err) {
+    console.log('caught error')
+    if (err.multiple) {
+      for (const error of err.errors) {
+        console.log(error)
+      }
+    } else {
+      console.log(err)
+    }
+  }
+}
+
+export async function validateActiveDataAgainstSchema() {
+  let activeHotObject = HotRegister.getActiveHotIdData()
+  let table = _.get(store.state.hotTabs, `${activeHotObject.id}.tableSchema`)
   console.log(table)
   console.log(table.schema.valid)
-  // await table.read({keyed: true, extended: true})
-  // const stream = await table.iter({keyed: true, stream: true})
-  let table2 = initData(activeHotObject)
+  let table2 = await initDataAgainstSchema(activeHotObject.data, table.schema)
+  console.log('table2')
+  console.log(table2)
   try {
-    const stream = await table2.iter(table.schema, {
-      keyed: true,
+    const stream = await table2.iter({
       extended: true,
-      stream: true
+      stream: true,
+      cast: false
     })
     stream.on('data', (row) => {
-      // handle row ['london', [51.50,-0.11]] etc
-      console.log('next row')
-      console.log(row)
+      // is row 'extended'
+      console.log(`row number: ${row[0]}`)
+      checkRow(row[2], table.schema, checkRowCells)
     }).on('error', function(err) {
-      console.log(err)
       if (err.multiple) {
         for (const error of err.errors) {
           console.log(error)
         }
+      } else {
+        console.log(err)
       }
     })
   } catch (err) {
-    // keyed/extended/cast supported in a stream mode too
     console.log('caught error')
     console.log(err)
-    // if (err.multiple) {
-    //   for (const error of err.errors) {
-    //     console.log(error)
-    //   }
-    // }
   }
 }

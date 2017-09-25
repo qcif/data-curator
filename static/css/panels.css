@@ -49,18 +49,6 @@
   }
 }
 
-.validation-load {
-  font-size: 1.3em;
-  width: 100%;
-  text-align: center;
-  margin: 25px 0;
-}
-
-.validation-load p {
-  margin: 0;
-  padding: 5px 0;
-}
-
 /*.hidden {display: none;}*/
 
 .nav-tabs>li.tab-heading.active a {
