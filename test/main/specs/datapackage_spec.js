@@ -1,15 +1,10 @@
-/**
- * Created by stephenfortune on 15/09/15.
- */
-var assert = require('chai').assert
-var expect = require('chai').expect
-var should = require('chai').should()
-var datapackage = require('./../../../src/main/datapackage')
+import {assert, expect, should} from 'chai'
+import datapackage from './../../../src/main/datapackage'
 
-describe('methods access for datapackage object', function() {
+describe('methods access for datapackage object', () => {
   // console.log(JSON.stringify(process.env));
   // expect(datapackage.hello).to.be.a('function');
-  it('can successfully import an exported function and access private methods', function() {
+  it('can successfully import an exported function and access private methods', () => {
     expect(datapackage.exportdata).to.be.a('function')
     expect(datapackage._private.inputToVocab).to.be.a('function')
     expect(datapackage._private.zipPackage).to.be.a('function')
@@ -18,9 +13,9 @@ describe('methods access for datapackage object', function() {
   // expect(add).to.be.a('function');
 })
 
-describe('testing datapackage', function() {
-  it('generates a vocabulary from an array', function() {
-    var input = {
+describe('testing datapackage', () => {
+  it('generates a vocabulary from an array', () => {
+    const input = {
       description: 'description',
       keywords: 'tags',
       license: 'cc-by-sa',
@@ -28,7 +23,7 @@ describe('testing datapackage', function() {
       title: 'title'
     }
 
-    var vocab = datapackage._private.inputToVocab(input, {}, {
+    const vocab = datapackage._private.inputToVocab(input, {}, {
       label: 'Comma separated',
       filters: [
         { name: 'csv files', extensions: ['csv'] }

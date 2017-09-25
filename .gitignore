@@ -15,3 +15,5 @@ yarn-error.log
 *.iml
 *.csv
 !help-tags.csv
+test/temp/
+test/unit/coverage/

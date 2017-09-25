@@ -70,6 +70,11 @@ export function guessColumnProperties() {
   window.webContents.send('guessColumnProperties')
 }
 
+export function validateTable() {
+  var window = BrowserWindow.getFocusedWindow()
+  window.webContents.send('validateTable')
+}
+
 function getSaveSubMenu() {
   let fileMenu = Menu.getApplicationMenu().items.find(x => x.label === 'File')
   let saveSubMenu = fileMenu.submenu.items.find(x => x.label === 'Save')

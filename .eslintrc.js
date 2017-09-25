@@ -6,7 +6,8 @@ module.exports = {
   },
   env: {
     browser: true,
-    node: true
+    node: true,
+    es6: true
   },
   extends: 'standard',
   globals: {

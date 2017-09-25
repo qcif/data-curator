@@ -79,15 +79,20 @@
         </div>
       </div>
       <div v-show="showBottomPanel" id="main-bottom-panel" class="panel-footer">
-        <button type="button" class="close">
-          <span aria-hidden="true">&times;</span>
-        </button>
         <div id="message-panel" class="panel-default">
         </div>
       </div>
     </div>
   </div>
   <div id="footer-panel" class="panel panel-footer">
+    <div v-show="loadingDataMessage" class="loading-pane" />
+    <div v-show="loadingDataMessage" class="modalHide modal1">
+      <span class="glyphicon glyphicon-refresh spinning">
+      </span>
+      <span class="validation-load">
+        {{loadingDataMessage}}
+      </span>
+    </div>
   </div>
 </div>
 </template>
@@ -120,7 +125,8 @@ import tabular from '../partials/TableProperties'
 import packager from '../partials/PackageProperties'
 import provenance from '../partials/ProvenanceProperties'
 import {
-  guessColumnProperties
+  guessColumnProperties,
+  validateActiveDataWithNoSchema
 } from '../frictionless.js'
 import HomeTooltip from '../mixins/HomeTooltip'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
@@ -146,6 +152,7 @@ export default {
       enableSideNavLeftArrow: true,
       enableSideNavRightArrow: true,
       showBottomPanel: false,
+      loadingDataMessage: false,
       toolbarMenus: [{
         name: 'Validate',
         image: 'static/img/validate.svg',
@@ -233,8 +240,19 @@ export default {
         console.log(err)
       }
       console.log('captured properties are:')
-      console.log('hotColumns')
       this.pushHotColumns(hotColumns)
+    },
+    async validateTable() {
+      try {
+        await validateActiveDataWithNoSchema()
+      } catch (err) {
+        console.log('back here')
+        if (err.multiple) {
+          for (const error of err.errors) {
+            console.log(error)
+          }
+        }
+      }
     },
     addTabWithFormattedData: function(data, format) {
       this.initTab()
@@ -273,18 +291,25 @@ export default {
       let defaultFormat = require('../../renderer/file-actions.js').formats.csv
       this.loadFormattedDataIntoContainer(container, data, defaultFormat)
     },
+    showLoadingScreen(message) {
+      this.loadingDataMessage = message
+    },
+    closeLoadingScreen() {
+      this.loadingDataMessage = false
+    },
     loadFormattedDataIntoContainer: function(container, data, format) {
-      HotRegister.register(container, this.selectionListener)
+      HotRegister.register(container, {selectionListener: this.selectionListener, loadingStartListener: this.showLoadingScreen, loadingFinishListener: this.closeLoadingScreen})
       addHotContainerListeners(container)
-      // let activeHotId = this.getActiveHotId()
       let activeHotId = HotRegister.getActiveInstance().guid
       let activeTabId = this.activeTab
-      console.log('active hot is: ' + activeHotId)
+      // force data to wait for loader message
+      window.setTimeout(function() {
+        loadData(activeHotId, data, format)
+      }, 1)
       this.pushHotTab({
         'hotId': activeHotId,
         'tabId': activeTabId
       })
-      loadData(activeHotId, data, format)
     },
     cleanUpTabDependencies: function(tabId) {
       // update active tab
@@ -487,6 +512,15 @@ export default {
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
     })
+    const vueValidateTable = this.validateTable
+    ipc.on('validateTable', function(event, arg) {
+      vueValidateTable()
+    })
+  },
+  updated: function() {
+    if (this.loadingDataMessage && this.loadingDataMessage.length > 0) {
+      document.querySelector('.modal1').classList.remove('modalHide')
+    }
   }
 }
 </script>

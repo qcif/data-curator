@@ -192,17 +192,23 @@ exports.menu = [
         enabled: false,
         accelerator: 'CmdOrCtrl+X'
       }, {
-        // role: 'copy',
+        role: 'copy',
         // turned off for Beta release
-        label: 'Copy',
-        enabled: false,
-        accelerator: 'CmdOrCtrl+C'
+        // label: 'Copy',
+        // enabled: true,
+        // accelerator: 'CmdOrCtrl+C',
+        click: function() {
+          BrowserWindow.getFocusedWindow().webContents.send('editCopy')
+        }
       }, {
-        // role: 'paste',
+        role: 'paste',
         // turned off for Beta release
-        label: 'Paste',
-        enabled: false,
-        accelerator: 'CmdOrCtrl+V'
+        // label: 'Paste',
+        // enabled: true,
+        // accelerator: 'CmdOrCtrl+V',
+        click: function() {
+          BrowserWindow.getFocusedWindow().webContents.send('editPaste')
+        }
       }, {
         // turned off for Beta release
         label: 'Select All',
@@ -324,7 +330,7 @@ exports.menu = [
         label: 'Validate Table',
         accelerator: 'Shift+CmdOrCtrl+V',
         click: function() {
-          validate.validateFile()
+          utils.validateTable()
         }
       }, {
         type: 'separator'
@@ -359,9 +365,9 @@ exports.menu = [
         accelerator: 'CmdOrCtrl+D',
         // turned off for Beta release
         enabled: false
-//        click: function() {
-//          datapackage.exportdata()
-//        }
+        //        click: function() {
+        //          datapackage.exportdata()
+        //        }
       }
       // Placeholder for future features
       //      , {
