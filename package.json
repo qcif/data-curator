@@ -104,7 +104,7 @@
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
     "vue-rx": "^3.3.0",
-    "vuex": "^2.3.1",
+    "vuex": "^2.4.0",
     "webpack-fix-default-import-plugin": "^1.0.3",
     "xlsx": "^0.10.5",
     "zeroclipboard": "^2.3.0"
