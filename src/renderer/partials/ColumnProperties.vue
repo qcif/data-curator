@@ -67,22 +67,32 @@ export default {
         tooltipView: 'tooltipColumnTitle'
       },
       {
-        label: 'description'
+        label: 'description',
+        tooltipId: 'tooltip-column-description',
+        tooltipView: 'tooltipColumnDescription'
       },
       {
         label: 'type',
+        tooltipId: 'tooltip-column-type',
+        tooltipView: 'tooltipColumnType',
         type: 'dropdown'
       },
       {
         label: 'format',
+        tooltipId: 'tooltip-column-format',
+        tooltipView: 'tooltipColumnFormat',
         type: 'dropdown'
       },
       {
         label: 'constraints',
+        tooltipId: 'tooltip-column-constraints',
+        tooltipView: 'tooltipColumnConstraints',
         type: 'checkbox'
       },
       {
         label: 'rdfType',
+        tooltipId: 'tooltip-column-rdfType',
+        tooltipView: 'tooltipColumnRdfType',
         type: 'url'
       }
       ],
