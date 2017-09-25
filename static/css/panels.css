@@ -26,11 +26,6 @@
   background-color: rgba(99, 149, 215, 0.6);
 }
 
-.glyphicon.spinning {
-  animation: spin 1s infinite linear;
-  -webkit-animation: spin2 1s infinite linear;
-}
-
 @keyframes spin {
   from {
     transform: scale(1) rotate(0deg);

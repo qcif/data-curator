@@ -6,6 +6,7 @@
 sideNavTransition = 0.3s
 sideNavMargin = 400px
 borderColor = #e4e4e4
+sideNavColor = #337ab7
 
 #body-panel
   border 0
@@ -44,27 +45,41 @@ borderColor = #e4e4e4
   background-size 300px !important
   background-position 50% 60% !important
 
-.loading-pane {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  z-index: 10;
-  background-color: rgba(0,0,0,0.4);
-}
-.validation-load {
-  font-size: 1.3em;
-  width: 100%;
-  text-align: center;
-  margin: 25px 0;
-}
+.loading-pane
+  position fixed
+  top 0
+  left 0
+  height 100%
+  width 100%
+  z-index 200
+  background-color rgba(0,0,0,0.4)
 
-.validation-load p {
-  margin: 0;
-  padding: 5px 0;
-}
-
+.modalHide
+  display: none
+.modal1
+  width 300px
+  height 200px
+  line-height 200px
+  position fixed
+  top 50%
+  left 50%
+  margin-top -100px
+  margin-left -150px
+  background-color #f8f8f8
+  border-radius 5px
+  text-align center
+  z-index 205 /* 1px higher than the overlay layer */
+  .glyphicon.spinning
+    animation spin 1s infinite linear
+    -webkit-animation spin2 1s infinite linear
+    margin-top 10px
+    vertical-align top
+    display block
+  .validation-load
+    display block
+    vertical-align bottom
+    font-size 1.3em
+    text-align: center
 
 #sidenav
   height 100%
@@ -84,13 +99,13 @@ borderColor = #e4e4e4
   &.left
     width sideNavMargin
     left 0
-    border-right solid 3px #337ab7
+    border-right solid 3px sideNavColor
   &.right
     width sideNavMargin
     right 0
-    border-left solid 3px #337ab7
+    border-left solid 3px sideNavColor
   .navbar-header
-    background-color #337ab7
+    background-color sideNavColor
     border-bottom 1px solid
     border-color borderColor
     display block !important

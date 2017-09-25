@@ -6,14 +6,15 @@ const Dialog = remote.dialog
 
 let HotRegister = {
   hots: {},
-  register(container, selectionListener) {
+  register(container, listeners={}) {
     let hot = new Handsontable(container, {
       colHeaders: true,
       rowHeaders: true,
       // autoColumnSize: {syncLimit: 300},
       fixedRowsTop: 0,
-      columnSorting: true,
-      sortIndicator: true,
+// enable when header row function implemented - otherwise header is sorted with values
+      columnSorting: false,
+      sortIndicator: false,
       contextMenu: false,
       autoRowSize: true,
       autoWrap: true,
@@ -33,19 +34,25 @@ let HotRegister = {
         }
         return {row: 0, col: 1}
       },
-      // afterInit() {
-      //   loader.showLoader('Loading...')
-      // },
-      // afterLoadData() {
-      //   loader.hideLoader()
-      // },
+      afterInit() {
+        if (typeof listeners.loadingStartListener !== 'undefined') {
+          listeners.loadingStartListener('Loading data. Please wait...')
+        }
+      },
+      afterLoadData(firstTime) {
+        if (typeof listeners.loadingFinishListener !== 'undefined') {
+          listeners.loadingFinishListener()
+        }
+      },
       afterUpdateSettings() {
         hot.render()
         hot.deselectCell()
       },
       afterSelection(r, c, r2, c2, preventScrolling) {
         // preventScrolling.value = true
-        selectionListener()
+        if (typeof listeners.selectionListener !== 'undefined') {
+          listeners.selectionListener()
+        }
       },
       enterMoves({shiftKey}) {
         if (!shiftKey) {
@@ -79,8 +86,6 @@ let HotRegister = {
   getActiveHotIdData() {
     let activeHot = this.getActiveInstance()
     let data = activeHot.getData()
-    console.log('logging data...')
-    console.log(data)
     let id = activeHot.guid
     return {'id': id, 'data': data}
   },
@@ -94,16 +99,6 @@ let HotRegister = {
     this.hots = {}
   }
 }
-
-// export function getCurrentCell() {
-//   let activeHot = HotRegister.getActiveInstance()
-//   let currentCell = activeHot.getSelected()
-//   if (currentCell[0] !== currentCell[2] || currentCell[1] !== currentCell[3]) {
-//     console.log('only 1 cell can be selected')
-//   } else {
-//     return [currentCell[0], currentCell[2]]
-//   }
-// }
 
 export function getActiveSelected() {
   let activeHot = HotRegister.getActiveInstance()
