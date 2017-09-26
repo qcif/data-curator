@@ -122,7 +122,6 @@ export function getCurrentColumnIndexOrMax() {
     activeHot.selectCell(0, maxCol)
     currentCell = activeHot.getSelected()
   }
-  console.log(`current column index is ${currentCell[1]}`)
   return currentCell[1]
 }
 

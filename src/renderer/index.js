@@ -38,7 +38,7 @@ export function addHotContainerListeners(container) {
       }
       // if we're dragging a file in, default the format to comma-separated
       var arrays = loadData(hot, data, file.formats.csv.options)
-      // fixRaggedRows(hot, arrays)
+      fixRaggedRows(hot, arrays)
     })
   }
 
@@ -59,8 +59,8 @@ export function loadData(key, data, format) {
   console.log('.........................')
   console.log('inside loadData function')
   var arrays = loadDataIntoHot(hot, data, format)
-  matchColumnHeadersToMaxRowLength(hot, arrays)
-  // fixRaggedRows(hot, arrays)
+  // matchColumnHeadersToMaxRowLength(hot, arrays)
+  fixRaggedRows(hot, arrays)
   console.log(arrays)
   console.log('leaving loadData function')
   console.log('.........................')
@@ -115,7 +115,6 @@ ipc.on('ragged_rows', function() {
 })
 
 ipc.on('fetchData', function() {
-  console.log('receiving')
   let hot = HotRegister.getActiveInstance()
   var csv = $.csv.fromArrays(hot.getData(), file.formats.csv)
   console.log(csv)

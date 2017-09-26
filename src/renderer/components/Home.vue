@@ -78,8 +78,14 @@
           </div>
         </div>
       </div>
-      <div v-show="showBottomPanel" id="main-bottom-panel" class="panel-footer">
+      <div id="main-bottom-panel" class="panel-footer">
         <div id="message-panel" class="panel-default">
+          <template v-if="errorMessages">
+              <h3>Validation errors</h3>
+              <div v-for="errorMessage in errorMessages">
+                <span>row no.{{errorMessage.rowNumber}}</span><span>: {{errorMessage.message}}</span>
+              </div>
+          </template>
         </div>
       </div>
     </div>
@@ -153,7 +159,7 @@ export default {
       enableTransition: false,
       enableSideNavLeftArrow: true,
       enableSideNavRightArrow: true,
-      showBottomPanel: false,
+      errorMessages: false,
       loadingDataMessage: false,
       toolbarMenus: [{
         name: 'Validate',
@@ -228,12 +234,9 @@ export default {
       console.log('selection noted finished in vue')
     },
     getAllColumnsProperties: function() {
-      console.log('getting property....')
       let hot = HotRegister.getActiveInstance()
       if (hot) {
         let columnProps = this.getHotColumnProperties(hot.guid)
-        console.log('have all columns props...')
-        console.log(columnProps)
         return this.getHotColumnProperties(hot.guid)
       }
     },
@@ -244,19 +247,15 @@ export default {
       } catch (err) {
         console.log(err)
       }
-      console.log('captured properties are:')
       this.pushHotColumns(hotColumns)
+    },
+    reportValidationRowErrors: function(errorCollection) {
+      this.errorMessages = errorCollection
     },
     async validateTable() {
       try {
-        await validateActiveDataAgainstSchema()
+        await validateActiveDataAgainstSchema(this.reportValidationRowErrors)
       } catch (err) {
-        console.log('back here')
-        if (err.multiple) {
-          for (const error of err.errors) {
-            console.log(error)
-          }
-        }
       }
     },
     addTabWithFormattedData: function(data, format) {
@@ -394,14 +393,11 @@ export default {
         let guid = HotRegister.getActiveInstance().guid
         this.currentColumnIndex = currentColumnIndex
       }
-      console.log('updated active column')
       this.getColumnPropertiesMethod = this.getAllColumnsProperties()
     },
     updateToolbarMenuForColumn: function(index) {
       let maxColAllowed = getColumnCount() -1
-      console.log(`max allowed: ${maxColAllowed}`)
       let currentColIndex = getCurrentColumnIndexOrMax()
-      console.log(`currentColIndex: ${currentColIndex}`)
       if (index < this.toolbarIndex && currentColIndex > 0) {
         decrementActiveColumn(currentColIndex)
         this.updateActiveColumn()
@@ -416,7 +412,6 @@ export default {
       this.resetSideNavArrows()
     },
     updateToolbarMenu: function(index) {
-      console.log('updating tool menu...')
       if (this.isSideNavToolbarMenu(index)) {
         this.updateToolbarMenuForSideNav(index)
       } else {
@@ -425,7 +420,6 @@ export default {
       }
     },
     updateToolbarMenuFromArrows: function(index) {
-      console.log(`side nav view before: ${this.sideNavView}`)
       if (this.sideNavView === 'column') {
         this.updateToolbarMenuForColumn(index)
       } else if (index > 0) {
@@ -434,7 +428,6 @@ export default {
     },
     sideNavLeft: function() {
       let nextIndex = this.toolbarIndex - 1
-      console.log(`next index: ${nextIndex}`)
       let nextToolbar = this.toolbarMenus[nextIndex]
       if (nextToolbar.sideNavView === 'column') {
         getCurrentColumnIndexOrMax()
@@ -501,7 +494,6 @@ export default {
       Sortable.create(csvTab, {
         animation: 150,
         onSort: function(evt) {
-          console.log('dragged!')
           tabIdOrder = $("#csvTab [id^='tab']").map(function() {
             return this.id
           }).get()

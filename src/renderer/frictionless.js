@@ -6,8 +6,6 @@ import store from '../renderer/store/modules/hots.js'
 async function initPackage(data) {
   const dataPackage = await Package.load()
   await dataPackage.infer(data)
-  console.log('package is...')
-  console.log(dataPackage.descriptor)
   return dataPackage
 }
 
@@ -35,7 +33,6 @@ async function initDataAgainstSchema(data, schema) {
 }
 
 async function storeData(hotId, table) {
-  console.log('init and storing data...')
   await store.mutations.pushTableSchema(store.state, {
     hotId: hotId,
     tableSchema: table
@@ -65,7 +62,7 @@ export async function guessColumnProperties() {
 //       const field = schema.fields[index]
 //       console.log('logging field...')
 //       console.log(field)
-//       field.castValue(cell)
+//       field.castValue(cell, false)
 //     }
 //   } catch (err) {
 //     console.log('got cell error')
@@ -80,24 +77,17 @@ export async function guessColumnProperties() {
 //   }
 // }
 
-function checkRow(row, schema, errorCallback) {
+function checkRow(rowNumber, row, schema, errorCollector) {
   try {
-    console.log('next row')
-    console.log(row)
     schema.castRow(row)
-    console.log('cast ok')
   } catch (err) {
-    console.log('got row error')
     if (err.multiple) {
       for (const error of err.errors) {
-        console.log(error)
+        // console.log(error)
+        errorCollector.push({rowNumber: rowNumber, message: error.message, name: error.name})
       }
     } else {
       console.log(err)
-    }
-    // do something with the problem row
-    if (errorCallback) {
-      callback(row, schema)
     }
   }
 }
@@ -106,10 +96,8 @@ export async function validateActiveDataWithNoSchema() {
   let activeHotObject = HotRegister.getActiveHotIdData()
   try {
     let table = await initStrictData(activeHotObject.data)
-    console.log(table)
     let result = await table.read({keyed: true})
   } catch (err) {
-    console.log('caught error')
     if (err.multiple) {
       for (const error of err.errors) {
         console.log(error)
@@ -120,66 +108,31 @@ export async function validateActiveDataWithNoSchema() {
   }
 }
 
-export async function validateActiveDataAgainstSchema() {
+export async function validateActiveDataAgainstSchema(callback) {
   let activeHotObject = HotRegister.getActiveHotIdData()
-  let table = _.get(store.state.hotTabs, `${activeHotObject.id}.tableSchema`)
-  console.log('basic checks')
-  console.log(table.schema.descriptor.fields)
-  console.log(table.schema.descriptor.missingValues)
-  console.log(table.schema.descriptor.constraints)
-  let currentProperties =
-  console.log(table)
-  // existing schema may not be valid
-  console.log(table.schema.valid)
-  // console.log(table.schema.errors)
-  try {
-    console.log('initialising data')
-    let table2 = await initDataAgainstSchema(activeHotObject.data, table.schema)
-    console.log('reading data')
-    let result = await table2.read({keyed: true})
-    console.log(result)
-    console.log(table2.schema.valid)
-    if (table2.schema.errors) {
-      let err = table2.schema.errors
-      if (err.multiple) {
-        for (const error of err.errors) {
-          console.log(error)
-        }
-      } else if (err.length > 1) {
-        for (const error of err) {
-          console.log(error)
-        }
-      } else {
-        console.log(err)
-      }
-    }
-    console.log('table2')
-    console.log(table2)
-    console.log('table data is...')
-    console.log(activeHotObject.data)
-    console.log(activeHotObject.data.length)
-    let check2 = table2.schema.infer(activeHotObject.data)
-    console.log(check2)
-    const stream = await table2.iter({
-      extended: true,
-      stream: true,
-      cast: false
-    })
-    stream.on('data', (row) => {
-      // is row 'extended'
-      console.log(`row number: ${row[0]}`)
-      checkRow(row[2], table.schema)
-    }).on('error', function(err) {
-      if (err.multiple) {
-        for (const error of err.errors) {
-          console.log(error)
-        }
-      } else {
-        console.log(err)
-      }
-    })
-  } catch (err) {
-    console.log('caught error')
-    console.log(err)
-  }
+  let tableSchema = _.get(store.state.hotTabs, `${activeHotObject.id}.tableSchema`)
+  let table = await initDataAgainstSchema(activeHotObject.data, tableSchema.schema)
+  // commit schema so errors can be found
+  table.schema.commit()
+  // don't cast at stream, wait until row to cast otherwise not all errors will be reported.
+  const errorCollector = []
+  const stream = await table.iter({
+    extended: true,
+    stream: true,
+    cast: false
+  })
+  stream.on('data', (row) => {
+    // console.log(`row number: ${row[0]}`)
+    checkRow(row[0], row[2], table.schema, errorCollector)
+  })
+  callback(errorCollector)
+  // stream.on('error', function(err) {
+  //   if (err.multiple) {
+  //     for (const error of err.errors) {
+  //       console.log(error)
+  //     }
+  //   } else {
+  //     console.log(err)
+  //   }
+  // })
 }

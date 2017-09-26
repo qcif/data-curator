@@ -19,7 +19,6 @@ export function loadDataIntoHot(hot, data, format) {
 export function saveDataToFile(hot, format, filename, callback) {
   let data
   let tabId = tabStore.state.activeTab
-  console.log(`save tab id is: ${tabId}`)
   if (typeof filename === 'string') {
     tabStore.mutations.pushTabObject(tabStore.state, {id: tabId, filename})
   } else {
@@ -45,8 +44,4 @@ export function saveDataToFile(hot, format, filename, callback) {
   } else {
     fs.writeFile(filename, data, callback)
   }
-  console.log('logging globals')
-  console.log(remote.getGlobal('tab'))
-  console.log('logging tab objects...')
-  console.log(tabStore.state.tabObjects)
 }

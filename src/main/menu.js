@@ -8,7 +8,6 @@ import {shell} from 'electron'
 const open_submenu = []
 const save_submenu = []
 for (const format in fileFormats) {
-  console.log(`format is: ${fileFormats[format].label}`)
   const open_option = {
     label: fileFormats[format].label,
     click: ((format => () => {

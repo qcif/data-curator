@@ -132,15 +132,10 @@ export default {
       'pushHotProperty'
     ]),
     showConstraint: function(option) {
-      console.log(`option is ${option}`)
-      console.log(`select constraints are:`)
-      console.log(this.selectConstraints)
-      console.log('index')
       // console.log(this.selectConstraints[option])
       return this.constraintBooleanBindings.indexOf(option) === -1 && this.selectConstraints.indexOf(option) > -1
     },
     getProperty: function(key) {
-      console.log(`getting property for ${key}`)
       let allColumnsProperties = this.getAllColumnsProperties
       if (allColumnsProperties) {
         let activeColumnProperties = allColumnsProperties[this.cIndex]
@@ -184,8 +179,6 @@ export default {
     getConstraintValue: function(key) {
       // let object = this.getConstraintsObject
       let object = this.getConstraints
-      console.log('getting constraint keys')
-      console.log(object)
       if (object && object[key]) {
         return object[key]
       }
@@ -193,8 +186,6 @@ export default {
     setConstraintValue: function(key, value) {
       let object = {}
       object[key] = value
-      console.log(`set constraint...`)
-      console.log(object)
       this.setProperty('constraints', object)
     }
   },
@@ -235,14 +226,6 @@ export default {
   },
   watch: {
     selectConstraints: function(values) {
-      console.log(`looking at constraint values`)
-      // this.setProperty('constraints', values)
-      // let vueConstraintBooleanBindings = this.constraintBooleanBindings
-      console.log('in select constraints...')
-      console.log(values)
-      console.log(typeof values)
-      console.log('this.constraintBooleanBindings')
-      console.log(this.constraintBooleanBindings)
       const object = this.constraintBooleanBindings.reduce(
         function(previous, current) {
           if (values.indexOf(current) > -1) {
@@ -253,23 +236,15 @@ export default {
         },
         {}
       )
-      console.log('select constraints')
-      console.log(object)
       this.setProperty('constraints', object)
     },
     getConstraints: function(object) {
-      console.log('get constraints....')
-      console.log(Object.keys(object))
       this.selectConstraints = Object.keys(object)
-      console.log('this select constraints now is: ')
-      console.log(this.selectConstraints)
     }
   },
   mounted: function() {
     this.$nextTick(function() {
       reselectCurrentCellOrMin()
-      console.log('mounted')
-
       this.selectConstraints = Object.keys(this.getConstraints)
     })
   }
