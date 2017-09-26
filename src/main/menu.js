@@ -1,19 +1,19 @@
-// import {openFile, saveFileAs, saveFile} from './file.js'
+import {openFile, saveFileAs, saveFile} from './file.js'
+// import {fileFormats} from '../renderer/file-formats.js'
+import {fileFormats} from '../renderer/file-formats.js'
 const {shell} = require('electron')
-var fileFormats = require('../renderer/file-formats.js').formats
-fileActions = require('./file')
+// fileActions = require('./file')
 
 // build 'Open...' and 'Save As...' submenus
 var open_submenu = []
 var save_submenu = []
-console.log('file formats...')
-console.log(fileFormats)
 for (var format in fileFormats) {
+  console.log(`format is: ${fileFormats[format].label}`)
   var open_option = {
     label: fileFormats[format].label,
     click: (function(format) {
       return function() {
-        fileActions.openFile(format)
+        openFile(format)
       }
     }(fileFormats[format]))
   }
@@ -25,7 +25,7 @@ for (var format in fileFormats) {
     label: fileFormats[format].label,
     click: (function(format) {
       return function() {
-        fileActions.saveFileAs(format)
+        saveFileAs(format)
       }
     }(fileFormats[format]))
   }
@@ -49,8 +49,7 @@ for (var format in fileFormats) {
 //     fileActions.saveAsCustom()
 //   }
 // })
-
-exports.menu = [
+let menu = [
   {
     // Only show the Data Curator menu for macOS.
     // TO DO: add test for macOS...
@@ -144,7 +143,7 @@ exports.menu = [
         label: 'Save',
         accelerator: 'CmdOrCtrl+S',
         click: function() {
-          fileActions.saveFile()
+          saveFile()
         },
         id: 'save',
         enabled: false
@@ -469,3 +468,6 @@ exports.menu = [
     ]
   }
 ]
+export {
+  menu
+}
