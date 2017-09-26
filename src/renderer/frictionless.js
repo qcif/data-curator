@@ -3,6 +3,14 @@ import {Resource, Package} from 'datapackage'
 import {HotRegister} from '../renderer/hot.js'
 import store from '../renderer/store/modules/hots.js'
 
+async function initPackage(data) {
+  const dataPackage = await Package.load()
+  await dataPackage.infer(data)
+  console.log('package is...')
+  console.log(dataPackage.descriptor)
+  return dataPackage
+}
+
 async function initDataAndInferSchema(data) {
   const table = await Table.load(data)
   await table.infer()
@@ -96,9 +104,9 @@ function checkRow(row, schema, errorCallback) {
 
 export async function validateActiveDataWithNoSchema() {
   let activeHotObject = HotRegister.getActiveHotIdData()
-  let table = await initStrictData(activeHotObject.data)
-  console.log(table)
   try {
+    let table = await initStrictData(activeHotObject.data)
+    console.log(table)
     let result = await table.read({keyed: true})
   } catch (err) {
     console.log('caught error')
@@ -115,12 +123,43 @@ export async function validateActiveDataWithNoSchema() {
 export async function validateActiveDataAgainstSchema() {
   let activeHotObject = HotRegister.getActiveHotIdData()
   let table = _.get(store.state.hotTabs, `${activeHotObject.id}.tableSchema`)
+  console.log('basic checks')
+  console.log(table.schema.descriptor.fields)
+  console.log(table.schema.descriptor.missingValues)
+  console.log(table.schema.descriptor.constraints)
+  let currentProperties =
   console.log(table)
+  // existing schema may not be valid
   console.log(table.schema.valid)
-  let table2 = await initDataAgainstSchema(activeHotObject.data, table.schema)
-  console.log('table2')
-  console.log(table2)
+  // console.log(table.schema.errors)
   try {
+    console.log('initialising data')
+    let table2 = await initDataAgainstSchema(activeHotObject.data, table.schema)
+    console.log('reading data')
+    let result = await table2.read({keyed: true})
+    console.log(result)
+    console.log(table2.schema.valid)
+    if (table2.schema.errors) {
+      let err = table2.schema.errors
+      if (err.multiple) {
+        for (const error of err.errors) {
+          console.log(error)
+        }
+      } else if (err.length > 1) {
+        for (const error of err) {
+          console.log(error)
+        }
+      } else {
+        console.log(err)
+      }
+    }
+    console.log('table2')
+    console.log(table2)
+    console.log('table data is...')
+    console.log(activeHotObject.data)
+    console.log(activeHotObject.data.length)
+    let check2 = table2.schema.infer(activeHotObject.data)
+    console.log(check2)
     const stream = await table2.iter({
       extended: true,
       stream: true,
@@ -129,7 +168,7 @@ export async function validateActiveDataAgainstSchema() {
     stream.on('data', (row) => {
       // is row 'extended'
       console.log(`row number: ${row[0]}`)
-      checkRow(row[2], table.schema, checkRowCells)
+      checkRow(row[2], table.schema)
     }).on('error', function(err) {
       if (err.multiple) {
         for (const error of err.errors) {

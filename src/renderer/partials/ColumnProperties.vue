@@ -20,8 +20,8 @@
         <div v-for="option in constraintValues" class="input-group row">
           <input type="checkbox" :id="option" :value="option" v-model="selectConstraints"></input>
           <label for="option" class="form-control-static">{{option}}</label>
-          <template v-if="constraintBindings[option] == 'boolean'"/>
-          <input v-else v-show="showConstraint(option)" type="text" class="constraint-text" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/>
+          <!-- <template v-if="[option] == 'boolean'"/> -->
+          <input v-if="option" v-show="showConstraint(option)" type="text" class="constraint-text" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/>
         </div>
       </div>
       <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
@@ -87,12 +87,21 @@ export default {
       }
       ],
       formats: {
-        'string': ['email', 'uri', 'binary', 'uuid'],
-        'date': ['any', 'pattern'],
-        'time': ['any', 'pattern'],
-        'datetime': ['any', 'pattern'],
-        'geopoint': ['array', 'object'],
-        'geojson': ['topojson']
+        'string': ['email', 'uri', 'binary', 'uuid', 'default'],
+        'number': ['default'],
+        'integer': ['default'],
+        'boolean': ['default'],
+        'object': ['default'],
+        'array': ['default'],
+        'date': ['any', 'pattern', 'default'],
+        'time': ['any', 'pattern', 'default'],
+        'datetime': ['any', 'pattern', 'default'],
+        'year': ['default'],
+        'yearmonth': ['default'],
+        'duration': ['default'],
+        'geopoint': ['array', 'object', 'default'],
+        'geojson': ['topojson', 'default'],
+        'any': ['default']
       },
       constraints: {
         'string': ['required', 'unique', 'minLength', 'maxLength', 'pattern', 'enum'],
@@ -111,10 +120,10 @@ export default {
         'geojson': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
         'any': ['required', 'unique', 'minLength', 'maxLength', 'minimum', 'maximum', 'enum']
       },
-      constraintBindings: {
-        'required': 'boolean',
-        'unique': 'boolean'
-      },
+      constraintBooleanBindings: [
+        'required',
+        'unique'
+      ],
       otherProperties: ['missingValues', 'primaryKey', 'foreignKey']
     }
   },
@@ -123,7 +132,12 @@ export default {
       'pushHotProperty'
     ]),
     showConstraint: function(option) {
-      return this.selectConstraints.indexOf(option) > -1
+      console.log(`option is ${option}`)
+      console.log(`select constraints are:`)
+      console.log(this.selectConstraints)
+      console.log('index')
+      // console.log(this.selectConstraints[option])
+      return this.constraintBooleanBindings.indexOf(option) === -1 && this.selectConstraints.indexOf(option) > -1
     },
     getProperty: function(key) {
       console.log(`getting property for ${key}`)
@@ -165,11 +179,11 @@ export default {
       this.updateFormatValues(value)
     },
     updateFormatValues: function(value) {
-      this.formatValues = this.formats[value] || []
-      this.formatValues.push('default')
+      this.formatValues = this.formats[value]
     },
     getConstraintValue: function(key) {
-      let object = this.getConstraintsObject
+      // let object = this.getConstraintsObject
+      let object = this.getConstraints
       console.log('getting constraint keys')
       console.log(object)
       if (object && object[key]) {
@@ -181,7 +195,7 @@ export default {
       object[key] = value
       console.log(`set constraint...`)
       console.log(object)
-      this.setProperty('constraintValues', object)
+      this.setProperty('constraints', object)
     }
   },
   computed: {
@@ -196,14 +210,10 @@ export default {
       }
       let property = this.getProperty('constraints')
       if (!property) {
-        this.setProperty('constraints', [])
-        property = []
+        this.setProperty('constraints', {})
+        property = {}
       }
       return property
-    },
-    getConstraintsObject() {
-      console.log('getting constraint object...')
-      return this.getProperty('constraintValues')
     },
     selectFormat: {
       get: function() {
@@ -226,16 +236,41 @@ export default {
   watch: {
     selectConstraints: function(values) {
       console.log(`looking at constraint values`)
-      this.setProperty('constraints', values)
+      // this.setProperty('constraints', values)
+      // let vueConstraintBooleanBindings = this.constraintBooleanBindings
+      console.log('in select constraints...')
+      console.log(values)
+      console.log(typeof values)
+      console.log('this.constraintBooleanBindings')
+      console.log(this.constraintBooleanBindings)
+      const object = this.constraintBooleanBindings.reduce(
+        function(previous, current) {
+          if (values.indexOf(current) > -1) {
+            return { ...previous, [current]: true }
+          } else {
+            return previous
+          }
+        },
+        {}
+      )
+      console.log('select constraints')
+      console.log(object)
+      this.setProperty('constraints', object)
     },
-    getConstraints: function(values) {
-      this.selectConstraints = values
+    getConstraints: function(object) {
+      console.log('get constraints....')
+      console.log(Object.keys(object))
+      this.selectConstraints = Object.keys(object)
+      console.log('this select constraints now is: ')
+      console.log(this.selectConstraints)
     }
   },
   mounted: function() {
     this.$nextTick(function() {
       reselectCurrentCellOrMin()
-      this.selectConstraints = this.getConstraints
+      console.log('mounted')
+
+      this.selectConstraints = Object.keys(this.getConstraints)
     })
   }
 }

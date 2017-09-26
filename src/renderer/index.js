@@ -2,6 +2,7 @@ import {
   HotRegister
 } from '../renderer/hot.js'
 import {loadDataIntoHot, saveDataToFile} from '../renderer/data-actions.js'
+import {fixRaggedRows, matchColumnHeadersToMaxRowLength} from '../renderer/ragged-rows.js'
 var ipc = require('electron').ipcRenderer
 var fs = require('fs')
 
@@ -37,7 +38,7 @@ export function addHotContainerListeners(container) {
       }
       // if we're dragging a file in, default the format to comma-separated
       var arrays = loadData(hot, data, file.formats.csv.options)
-      rows.fixRaggedRows(hot, arrays)
+      // fixRaggedRows(hot, arrays)
     })
   }
 
@@ -58,7 +59,9 @@ export function loadData(key, data, format) {
   console.log('.........................')
   console.log('inside loadData function')
   var arrays = loadDataIntoHot(hot, data, format)
-  // rows.fixRaggedRows(hot, arrays)
+  matchColumnHeadersToMaxRowLength(hot, arrays)
+  // fixRaggedRows(hot, arrays)
+  console.log(arrays)
   console.log('leaving loadData function')
   console.log('.........................')
 }
@@ -108,7 +111,7 @@ ipc.on('schemaFromHeaders', function() {
 ipc.on('ragged_rows', function() {
   let hot = HotRegister.getActiveInstance()
   var csv = hot.getData()
-  rows.fixRaggedRows(hot, csv)
+  fixRaggedRows(hot, csv)
 })
 
 ipc.on('fetchData', function() {

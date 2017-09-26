@@ -126,7 +126,8 @@ import packager from '../partials/PackageProperties'
 import provenance from '../partials/ProvenanceProperties'
 import {
   guessColumnProperties,
-  validateActiveDataWithNoSchema
+  validateActiveDataWithNoSchema,
+  validateActiveDataAgainstSchema
 } from '../frictionless.js'
 import HomeTooltip from '../mixins/HomeTooltip'
 import {fileFormats} from '../file-formats.js'
@@ -230,6 +231,9 @@ export default {
       console.log('getting property....')
       let hot = HotRegister.getActiveInstance()
       if (hot) {
+        let columnProps = this.getHotColumnProperties(hot.guid)
+        console.log('have all columns props...')
+        console.log(columnProps)
         return this.getHotColumnProperties(hot.guid)
       }
     },
@@ -245,7 +249,7 @@ export default {
     },
     async validateTable() {
       try {
-        await validateActiveDataWithNoSchema()
+        await validateActiveDataAgainstSchema()
       } catch (err) {
         console.log('back here')
         if (err.multiple) {
@@ -303,7 +307,7 @@ export default {
       addHotContainerListeners(container)
       let activeHotId = HotRegister.getActiveInstance().guid
       let activeTabId = this.activeTab
-      // force data to wait for loader message
+      // hack! - force data to wait for latest render e.g, for loader message
       window.setTimeout(function() {
         loadData(activeHotId, data, format)
       }, 1)
