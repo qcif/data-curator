@@ -181,7 +181,6 @@ var addFileToGithub = function() {
 
   ipc.on('addFileToExisting', function(e, data, apiKey) {
     parentWindow.webContents.send('getCSV', file_formats.csv)
-    console.log(data)
 
     ipc.once('sendCSV', function(e, csv) {
       dataset = querystring.parse(data)

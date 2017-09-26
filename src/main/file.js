@@ -54,7 +54,7 @@ function saveFileAs(format, window) {
     defaultPath: global.tab.activeTitle
   }, function(filename) {
     if (filename === undefined) {
-      console.log('returning as no filename was entered...')
+      // console.log('returning as no filename was entered...')
       return
     }
     if (filenameExists(filename)) {
