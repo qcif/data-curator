@@ -1,33 +1,29 @@
 import {openFile, saveFileAs, saveFile} from './file.js'
 // import {fileFormats} from '../renderer/file-formats.js'
 import {fileFormats} from '../renderer/file-formats.js'
-const {shell} = require('electron')
+import {shell} from 'electron'
 // fileActions = require('./file')
 
 // build 'Open...' and 'Save As...' submenus
-var open_submenu = []
-var save_submenu = []
-for (var format in fileFormats) {
+const open_submenu = []
+const save_submenu = []
+for (const format in fileFormats) {
   console.log(`format is: ${fileFormats[format].label}`)
-  var open_option = {
+  const open_option = {
     label: fileFormats[format].label,
-    click: (function(format) {
-      return function() {
-        openFile(format)
-      }
-    }(fileFormats[format]))
+    click: ((format => () => {
+      openFile(format)
+    })(fileFormats[format]))
   }
   if (format === 'csv') {
     open_option.accelerator = 'CmdOrCtrl+O'
   }
   open_submenu.push(open_option)
-  var save_option = {
+  const save_option = {
     label: fileFormats[format].label,
-    click: (function(format) {
-      return function() {
-        saveFileAs(format)
-      }
-    }(fileFormats[format]))
+    click: ((format => () => {
+      saveFileAs(format)
+    })(fileFormats[format]))
   }
   if (format === 'csv') {
     save_option.accelerator = 'Shift+CmdOrCtrl+S'
@@ -57,7 +53,7 @@ let menu = [
     submenu: [
       {
         label: 'About Data Curator',
-        click: function() {
+        click() {
           utils.showSidePanel('about')
         }
         // Placeholder for future feature
@@ -101,7 +97,7 @@ let menu = [
       {
         label: 'New',
         accelerator: 'CmdOrCtrl+N',
-        click: function() {
+        click() {
           utils.createWindowTab()
         }
       }, {
@@ -111,7 +107,7 @@ let menu = [
         submenu: open_submenu
       }, {
         label: 'Open Excel Sheet...',
-        click: function() {
+        click() {
           excel.importExcel()
         }
         // Placeholder for future feature
@@ -142,7 +138,7 @@ let menu = [
       }, {
         label: 'Save',
         accelerator: 'CmdOrCtrl+S',
-        click: function() {
+        click() {
           saveFile()
         },
         id: 'save',
@@ -200,7 +196,7 @@ let menu = [
         // label: 'Copy',
         // enabled: true,
         // accelerator: 'CmdOrCtrl+C',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('editCopy')
         }
       }, {
@@ -209,7 +205,7 @@ let menu = [
         // label: 'Paste',
         // enabled: true,
         // accelerator: 'CmdOrCtrl+V',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('editPaste')
         }
       }, {
@@ -222,13 +218,13 @@ let menu = [
       }, {
         label: 'Insert Row Above',
         accelerator: 'CmdOrCtrl+I',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('insertRowAbove')
         }
       }, {
         label: 'Insert Row Below',
         accelerator: 'CmdOrCtrl+K',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('insertRowBelow')
         }
       }, {
@@ -236,25 +232,25 @@ let menu = [
       }, {
         label: 'Insert Column Before',
         accelerator: 'CmdOrCtrl+J',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnLeft')
         }
       }, {
         label: 'Insert Column After',
         accelerator: 'CmdOrCtrl+L',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnRight')
         }
       }, {
         type: 'separator'
       }, {
         label: 'Remove Row(s)',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('removeRows')
         }
       }, {
         label: 'Remove Column(s)',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('removeColumns')
         }
       }
@@ -332,14 +328,14 @@ let menu = [
       }, {
         label: 'Validate Table',
         accelerator: 'Shift+CmdOrCtrl+V',
-        click: function() {
+        click() {
           utils.validateTable()
         }
       }, {
         type: 'separator'
       }, {
         label: 'Guess Column Properties',
-        click: function() {
+        click() {
           utils.guessColumnProperties()
         }
       }, {
@@ -441,7 +437,7 @@ let menu = [
         //      }, {
         label: 'Keyboard Shortcuts',
         accelerator: 'CmdOrCtrl+/',
-        click: function() {
+        click() {
           help.showKeyboardHelp()
         }
       }, {
@@ -449,12 +445,12 @@ let menu = [
         // Placeholder for Windows/Linux 'Check for Updates' future feature
       }, {
         label: 'Support Forum',
-        click: function() {
+        click() {
           shell.openExternal('https://ask.theodi.org.au/c/projects/data-curator')
         }
       }, {
         label: 'Report Issues',
-        click: function() {
+        click() {
           shell.openExternal('https://github.com/ODIQueensland/data-curator/blob/develop/.github/CONTRIBUTING.md')
         }
       }
