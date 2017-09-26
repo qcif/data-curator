@@ -4,6 +4,7 @@
  */
 import {dialog, app} from 'electron'
 import {quitOrSaveDialog} from './utils'
+import {readFile} from './file.js'
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
   global.version = app.getVersion()
@@ -33,7 +34,7 @@ global.datapackage = require('./datapackage')
 global.github = require('./github')
 global.schema = require('./schema')
 global.excel = require('./excel')
-global.fileActions = require('./file')
+// global.fileActions = require('./file')
 global.tools = require('./tools')
 global.validate = require('./validate')
 global.help = require('./help')
@@ -41,13 +42,15 @@ global.help = require('./help')
 var template = require('./menu').menu
 // var mainWindow = null
 function createWindow() {
+  console.log('checking menu ok')
+  console.log(template)
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 
   var filename = clFilename
   if (filename) {
     console.log('reading file name...')
-    fileActions.readFile([filename])
+    readFile([filename])
   } else {
     global.utils.createWindowTab()
   }

@@ -129,6 +129,7 @@ import {
   validateActiveDataWithNoSchema
 } from '../frictionless.js'
 import HomeTooltip from '../mixins/HomeTooltip'
+import {fileFormats} from '../file-formats.js'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
 var ipc = require('electron').ipcRenderer
 require('bootstrap/dist/js/bootstrap.min.js')
@@ -288,7 +289,7 @@ export default {
       this.loadDataIntoContainer(container, defaultData)
     },
     loadDataIntoContainer: function(container, data) {
-      let defaultFormat = require('../../renderer/file-actions.js').formats.csv
+      let defaultFormat = fileFormats.csv
       this.loadFormattedDataIntoContainer(container, data, defaultFormat)
     },
     showLoadingScreen(message) {

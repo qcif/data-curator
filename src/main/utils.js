@@ -1,5 +1,5 @@
 import {dialog, app, ipcMain as ipc} from 'electron'
-var file_formats = require('../renderer/file-actions.js').formats
+import {fileFormats} from '../renderer/file-formats.js'
 let path = require('path')
 
 export function createWindow() {
@@ -10,7 +10,7 @@ export function createWindow() {
     : `file://${__dirname}/index.html`
   mainWindow.loadURL(winURL)
   mainWindow.title = 'Data-curator'
-  mainWindow.format = file_formats.csv
+  mainWindow.format = fileFormats.csv
   mainWindow.on('closed', function() {
     mainWindow = null
   })

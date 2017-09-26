@@ -1,6 +1,7 @@
 import {
   HotRegister
 } from '../renderer/hot.js'
+import {loadDataIntoHot, saveDataToFile} from '../renderer/data-actions.js'
 var ipc = require('electron').ipcRenderer
 var fs = require('fs')
 
@@ -8,8 +9,7 @@ var hotController = require('../renderer/hot.js')
 var schemawizard = require('../renderer/schemawizard.js')
 var rows = require('../renderer/ragged-rows.js')
 var validation = require('../renderer/validate.js')
-var file = require('../renderer/file-actions.js')
-var loader = require('../renderer/loader.js')
+// var loader = require('../renderer/loader.js')
 var menu = require('../renderer/menu.js').menu
 var remote = require('../renderer/menu.js').remote
 var rowAbove = require('../renderer/menu.js').rowAbove
@@ -36,7 +36,7 @@ export function addHotContainerListeners(container) {
         console.log(err.stack)
       }
       // if we're dragging a file in, default the format to comma-separated
-      var arrays = file.open(hot, data, file.formats.csv.options)
+      var arrays = loadData(hot, data, file.formats.csv.options)
       rows.fixRaggedRows(hot, arrays)
     })
   }
@@ -57,8 +57,8 @@ export function loadData(key, data, format) {
   console.dir(hot)
   console.log('.........................')
   console.log('inside loadData function')
-  var arrays = file.open(hot, data, format)
-  rows.fixRaggedRows(hot, arrays)
+  var arrays = loadDataIntoHot(hot, data, format)
+  // rows.fixRaggedRows(hot, arrays)
   console.log('leaving loadData function')
   console.log('.........................')
 }
@@ -66,7 +66,7 @@ export function loadData(key, data, format) {
 ipc.on('saveData', function(e, format, fileName) {
   console.log('received message...')
   let hot = HotRegister.getActiveInstance()
-  file.save(hot, format, fileName)
+  saveDataToFile(hot, format, fileName)
 })
 
 ipc.on('resized', function() {

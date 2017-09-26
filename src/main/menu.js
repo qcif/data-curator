@@ -1,29 +1,33 @@
-var file_formats = require('../renderer/file-actions.js').formats
+// import {openFile, saveFileAs, saveFile} from './file.js'
 const {shell} = require('electron')
+var fileFormats = require('../renderer/file-formats.js').formats
+fileActions = require('./file')
 
 // build 'Open...' and 'Save As...' submenus
 var open_submenu = []
 var save_submenu = []
-for (var format in file_formats) {
+console.log('file formats...')
+console.log(fileFormats)
+for (var format in fileFormats) {
   var open_option = {
-    label: file_formats[format].label,
+    label: fileFormats[format].label,
     click: (function(format) {
       return function() {
         fileActions.openFile(format)
       }
-    }(file_formats[format]))
+    }(fileFormats[format]))
   }
   if (format === 'csv') {
     open_option.accelerator = 'CmdOrCtrl+O'
   }
   open_submenu.push(open_option)
   var save_option = {
-    label: file_formats[format].label,
+    label: fileFormats[format].label,
     click: (function(format) {
       return function() {
         fileActions.saveFileAs(format)
       }
-    }(file_formats[format]))
+    }(fileFormats[format]))
   }
   if (format === 'csv') {
     save_option.accelerator = 'Shift+CmdOrCtrl+S'
