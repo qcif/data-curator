@@ -1,4 +1,4 @@
-@backlog @enterprise-add-in
+@backlog @premium
 
 Feature: Print
   As a Data Packager

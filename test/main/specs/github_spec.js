@@ -1,38 +1,35 @@
-let path = require('path')
-var assert = require('chai').assert
-var expect = require('chai').expect
-var should = require('chai').should()
-var github = require('./../../../src/main/github')
-var sinon = require('sinon')
+import path from 'path'
+import {assert, expect, should} from 'chai'
+import github from './../../../src/main/github'
+import sinon from 'sinon'
+import Fs from 'fs'
 
-var Fs = require('fs')
-
-describe('github', function() {
-  describe('checkForAPIKey', function() {
-    it('extracts the API key from a URL', function() {
+describe('github', () => {
+  describe('checkForAPIKey', () => {
+    it('extracts the API key from a URL', () => {
       let url = 'https://octopub.io/redirect?api_key=foobarbaz'
       expect(github._private.checkForAPIKey(url)[0]).to.eq(url)
       expect(github._private.checkForAPIKey(url)[1]).to.eq('foobarbaz')
     })
 
-    it('returns nothing when the url does not match', function() {
+    it('returns nothing when the url does not match', () => {
       let url = 'http://octopub.herokuapp.com/foo'
       expect(github._private.checkForAPIKey(url)).to.eq(null)
     })
   })
 
-  describe('writeData', function() {
-    it('writes a data to a file', function() {
+  describe('writeData', () => {
+    it('writes a data to a file', () => {
       let data = 'here,is,some,data'
       let filename = 'My File Name'
       let path = github._private.writeData(data, filename)
-      expect(path).to.eq(require('os-tmpdir')() + '/my-file-name.csv')
+      expect(path).to.eq(`${require('os-tmpdir')()}/my-file-name.csv`)
       expect(Fs.readFileSync(path, 'utf8')).to.eq(data)
     })
   })
 
-  describe('postData', function() {
-    it('posts data to the right place', function() {
+  describe('postData', () => {
+    it('posts data to the right place', () => {
       let dataset = {
         'name': 'My awesome dataset',
         'description': 'My awesome description',
@@ -75,8 +72,8 @@ describe('github', function() {
     })
   })
 
-  describe('putData', function() {
-    it('puts data to the right place', function() {
+  describe('putData', () => {
+    it('puts data to the right place', () => {
       let file = path.join(__dirname, './../../fixtures/fixture.csv')
 
       let dataset = {

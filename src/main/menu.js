@@ -1,29 +1,28 @@
-var file_formats = require('../renderer/file-actions.js').formats
-const {shell} = require('electron')
+import {openFile, saveFileAs, saveFile} from './file.js'
+// import {fileFormats} from '../renderer/file-formats.js'
+import {fileFormats} from '../renderer/file-formats.js'
+import {shell} from 'electron'
+// fileActions = require('./file')
 
 // build 'Open...' and 'Save As...' submenus
-var open_submenu = []
-var save_submenu = []
-for (var format in file_formats) {
-  var open_option = {
-    label: file_formats[format].label,
-    click: (function(format) {
-      return function() {
-        fileActions.openFile(format)
-      }
-    }(file_formats[format]))
+const open_submenu = []
+const save_submenu = []
+for (const format in fileFormats) {
+  const open_option = {
+    label: fileFormats[format].label,
+    click: ((format => () => {
+      openFile(format)
+    })(fileFormats[format]))
   }
   if (format === 'csv') {
     open_option.accelerator = 'CmdOrCtrl+O'
   }
   open_submenu.push(open_option)
-  var save_option = {
-    label: file_formats[format].label,
-    click: (function(format) {
-      return function() {
-        fileActions.saveFileAs(format)
-      }
-    }(file_formats[format]))
+  const save_option = {
+    label: fileFormats[format].label,
+    click: ((format => () => {
+      saveFileAs(format)
+    })(fileFormats[format]))
   }
   if (format === 'csv') {
     save_option.accelerator = 'Shift+CmdOrCtrl+S'
@@ -46,59 +45,14 @@ for (var format in file_formats) {
 //   }
 // })
 
-exports.menu = [
+const template = [
   {
-    // Only show the Data Curator menu for macOS.
-    // TO DO: add test for macOS...
-    label: 'Data Curator',
-    submenu: [
-      {
-        label: 'About Data Curator',
-        click: function() {
-          utils.showSidePanel('about')
-        }
-        // Placeholder for future feature
-        //      }, {
-        //        label: 'Check for Update',
-        //        enabled: false
-        //      }, {
-        //        type: 'separator'
-        //      }, {
-        //        label: process.platform === 'darwin'
-        //          ? 'Preferences'
-        //          : 'Settings',
-        //        accelerator: 'CmdOrCtrl+,',
-        //        click: function() {
-        //          utils.showSidePanel('preferences')
-        //        }
-      }, {
-        type: 'separator'
-      }, {
-        role: 'services',
-        submenu: []
-      }, {
-        type: 'separator'
-      }, {
-        role: 'hide',
-        label: 'Hide Data Curator'
-      }, {
-        role: 'hideothers'
-      }, {
-        role: 'unhide'
-      }, {
-        type: 'separator'
-      }, {
-        role: 'quit',
-        label: 'Quit Data Curator'
-      }
-    ]
-  }, {
     label: 'File',
     submenu: [
       {
         label: 'New',
         accelerator: 'CmdOrCtrl+N',
-        click: function() {
+        click() {
           utils.createWindowTab()
         }
       }, {
@@ -108,7 +62,7 @@ exports.menu = [
         submenu: open_submenu
       }, {
         label: 'Open Excel Sheet...',
-        click: function() {
+        click() {
           excel.importExcel()
         }
         // Placeholder for future feature
@@ -139,8 +93,8 @@ exports.menu = [
       }, {
         label: 'Save',
         accelerator: 'CmdOrCtrl+S',
-        click: function() {
-          fileActions.saveFile()
+        click() {
+          saveFile()
         },
         id: 'save',
         enabled: false
@@ -156,9 +110,7 @@ exports.menu = [
         enabled: false
       }
       // Placeholder for future features
-      //, {
-      //        label: 'Close All'
-      //      }, {
+      //,     {
       //        type: 'separator'
       //      }, {
       //        label: 'Print',
@@ -170,31 +122,63 @@ exports.menu = [
     label: 'Edit',
     submenu: [
       {
-        role: 'undo'
+        // role: 'undo',
+        // turned off for Beta release
+        label: 'Undo',
+        enabled: false,
+        accelerator: 'CmdOrCtrl+Z'
       }, {
-        role: 'redo'
+        // role: 'redo',
+        // turned off for Beta release
+        label: 'Redo',
+        enabled: false,
+        accelerator: process.platform === 'darwin'
+          ? 'Shift+CmdOrCtrl+Z'
+          : 'CmdOrCtrl+Y'
       }, {
         type: 'separator'
       }, {
-        role: 'cut'
+        // role: 'cut',
+        // turned off for Beta release
+        label: 'Cut',
+        enabled: false,
+        accelerator: 'CmdOrCtrl+X'
       }, {
-        role: 'copy'
+        role: 'copy',
+        // turned off for Beta release
+        // label: 'Copy',
+        // enabled: true,
+        // accelerator: 'CmdOrCtrl+C',
+        click() {
+          BrowserWindow.getFocusedWindow().webContents.send('editCopy')
+        }
       }, {
-        role: 'paste'
+        role: 'paste',
+        // turned off for Beta release
+        // label: 'Paste',
+        // enabled: true,
+        // accelerator: 'CmdOrCtrl+V',
+        click() {
+          BrowserWindow.getFocusedWindow().webContents.send('editPaste')
+        }
       }, {
-        role: 'selectall'
+        // turned off for Beta release
+        // role: 'selectall',
+        label: 'Select All',
+        enabled: false,
+        accelerator: 'CmdOrCtrl+A'
       }, {
         type: 'separator'
       }, {
         label: 'Insert Row Above',
         accelerator: 'CmdOrCtrl+I',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('insertRowAbove')
         }
       }, {
         label: 'Insert Row Below',
         accelerator: 'CmdOrCtrl+K',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('insertRowBelow')
         }
       }, {
@@ -202,25 +186,25 @@ exports.menu = [
       }, {
         label: 'Insert Column Before',
         accelerator: 'CmdOrCtrl+J',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnLeft')
         }
       }, {
         label: 'Insert Column After',
         accelerator: 'CmdOrCtrl+L',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnRight')
         }
       }, {
         type: 'separator'
       }, {
         label: 'Remove Row(s)',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('removeRows')
         }
       }, {
         label: 'Remove Column(s)',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('removeColumns')
         }
       }
@@ -277,8 +261,6 @@ exports.menu = [
     label: 'Tools',
     submenu: [
       {
-        // TO DO: hide toggledevtools in production release and make a application shortcut
-        role: 'toggledevtools'
         // Placeholder for future features
         //      }, {
         //        type: 'separator'
@@ -293,19 +275,26 @@ exports.menu = [
         //      }, {
         //        label: 'Create Look-up Table from Column',
         //        enabled: false
+        // }, {
+        //  type: 'separator'
+        // }, {
+        label: 'Guess Column Properties',
+        click: function() {
+          utils.guessColumnProperties()
+        }
       }, {
         type: 'separator'
       }, {
         label: 'Validate Table',
         accelerator: 'Shift+CmdOrCtrl+V',
-        click: function() {
-          validate.validateFile()
+        click() {
+          utils.validateTable()
         }
       }, {
         type: 'separator'
       }, {
         label: 'Guess Column Properties',
-        click: function() {
+        click() {
           utils.guessColumnProperties()
         }
       }, {
@@ -334,9 +323,9 @@ exports.menu = [
         accelerator: 'CmdOrCtrl+D',
         // turned off for Beta release
         enabled: false
-//        click: function() {
-//          datapackage.exportdata()
-//        }
+        //        click: function() {
+        //          datapackage.exportdata()
+        //        }
       }
       // Placeholder for future features
       //      , {
@@ -361,17 +350,12 @@ exports.menu = [
       //      }
     ]
   }, {
-    // TO DO: Update this menu if Data Curator is a multi window app
     label: 'Window',
     submenu: [
-      // TO DO: hide below in Windows and Linux
       {
         role: 'minimize'
       }, {
-        role: 'zoom'
-      }, {
         type: 'separator'
-        // hide above
       }, {
         label: 'Next Tab',
         accelerator: 'CmdOrCtrl+Right',
@@ -383,12 +367,10 @@ exports.menu = [
         // turned off for Beta release
         enabled: false
       }, {
-        // TO DO: hide below in Windows and Linux
         type: 'separator'
       }, {
-        role: 'front'
+        role: 'quit'
       }
-      // hide above
     ]
   }, {
     role: 'help',
@@ -407,20 +389,19 @@ exports.menu = [
         //      }, {
         label: 'Keyboard Shortcuts',
         accelerator: 'CmdOrCtrl+/',
-        click: function() {
+        click() {
           help.showKeyboardHelp()
         }
       }, {
         type: 'separator'
-        // Placeholder for Windows/Linux 'Check for Updates' future feature
       }, {
         label: 'Support Forum',
-        click: function() {
+        click() {
           shell.openExternal('https://ask.theodi.org.au/c/projects/data-curator')
         }
       }, {
         label: 'Report Issues',
-        click: function() {
+        click() {
           shell.openExternal('https://github.com/ODIQueensland/data-curator/blob/develop/.github/CONTRIBUTING.md')
         }
       }
@@ -434,3 +415,107 @@ exports.menu = [
     ]
   }
 ]
+
+// Tailor menu for Windows - add About to Help menu
+if (process.platform !== 'darwin') {
+  template[4].submenu.push(
+    {
+      type: 'separator'
+    }, {
+      label: 'About Data Curator',
+      click: function() {
+        utils.showSidePanel('about')
+      }
+    }
+  )
+}
+
+// Tailor menu for macOS
+if (process.platform === 'darwin') {
+  template.unshift(
+    {
+      label: 'Data Curator',
+      submenu: [
+        {
+          label: 'About Data Curator',
+          click: function() {
+            utils.showSidePanel('about')
+          }
+          // Placeholder for future feature
+          //      }, {
+          //        type: 'separator'
+          //      }, {
+          //        label: 'Preferences'
+          //        accelerator: 'CmdOrCtrl+,',
+          //        click: function() {
+          //          utils.showSidePanel('preferences')
+          //        }
+        }, {
+          type: 'separator'
+        }, {
+          role: 'services',
+          submenu: []
+        }, {
+          type: 'separator'
+        }, {
+          role: 'hide',
+          label: 'Hide Data Curator'
+        }, {
+          role: 'hideothers'
+        }, {
+          role: 'unhide'
+        }, {
+          type: 'separator'
+        }, {
+          role: 'quit',
+          label: 'Quit Data Curator'
+        }
+      ]
+    }
+  )
+
+// overwrite Window menu
+  template[4].submenu = [
+    {
+      role: 'minimize'
+    }, {
+      role: 'zoom'
+    }, {
+      type: 'separator'
+    }, {
+      label: 'Next Tab',
+      accelerator: 'CmdOrCtrl+Right',
+      // turned off for Beta release
+      enabled: false
+    }, {
+      label: 'Previous Tab',
+      accelerator: 'CmdOrCtrl+Left',
+      // turned off for Beta release
+      enabled: false
+    }, {
+      type: 'separator'
+    }, {
+      role: 'front'
+    }
+  ]
+}
+
+// Add developer tools menu to end if not in production environment
+if (process.env.NODE_ENV !== 'production') {
+  template.push(
+    {
+      label: 'Developer',
+      submenu: [
+        {
+          role: 'reload'
+        }, {
+          role: 'toggledevtools'
+        }
+      ]
+    }
+  )
+}
+
+export {
+ template as menu
+}

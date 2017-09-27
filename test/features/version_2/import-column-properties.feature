@@ -1,4 +1,4 @@
-@backlog @enterprise-add-in
+@backlog @premium
 
 Feature: Import Column Properties
   As a Data Packager

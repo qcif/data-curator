@@ -9,11 +9,12 @@
         <div id="toolbar">
           <ul class="nav navbar-nav">
             <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': toolbarIndex === index}" @click="updateToolbarMenu(index)">
-              <a href="#">
+              <a href="#" v-tooltip="tooltip(menu.tooltipId)">
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
                 <object v-if="menu.image" :class="menu.class" :data="menu.image" type="image/svg+xml" />
                 <div class="toolbar-text">{{menu.name}}</div>
               </a>
+              <component :is="menu.tooltipView" />
             </li>
           </ul>
         </div>
@@ -39,12 +40,14 @@
           <component :is="sideNavView" :getAllColumnsProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
           </component>
         </transition>
-        <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
-          <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
-          <span v-else class="left disabled" ><span class="btn fa fa-chevron-left fa-2x" /></span>
-          <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
-          <span v-else class="right disabled" ><span class="btn fa fa-chevron-right fa-2x" /></span>
-        </div>
+      </div>
+      <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
+        <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft" v-tooltip="tooltip('tooltip-previous')"><span class="btn fa fa-chevron-left fa-2x" /></a>
+        <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span>
+        <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" />
+        <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight" v-tooltip="tooltip('tooltip-next')"><span class="btn fa fa-chevron-right fa-2x" /></a>
+        <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span>
+        <component v-if="enableSideNavRightArrow" is="tooltipNext" />
       </div>
     </nav>
     <div id="main-panel" class="panel panel-default" :class="sideNavPropertiesForMain">
@@ -62,9 +65,10 @@
                 </li>
               </ul>
             </li>
-            <li class="tab-add" @click="addTab">
+            <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')">
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
+            <component is="tooltipAddTab" />
           </ul>
           <div class="tab-content" id='csvContent'>
             <div class="tab-pane" v-for="tab in tabs" :key="tab" :class="{ active: activeTab == tab}">
@@ -74,16 +78,34 @@
           </div>
         </div>
       </div>
-      <div v-show="showBottomPanel" id="main-bottom-panel" class="panel-footer">
-        <button type="button" class="close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+      <div id="main-bottom-panel" class="panel-footer">
         <div id="message-panel" class="panel-default">
+          <div v-show="errorMessages && errorMessages.length > 0">
+            <ul class="nav navbar-right closebtn">
+              <li>
+                <a href="#" @click="closeErrorMessages()">
+                  <span style="color:#000" class="btn-default fa fa-times" />
+                </a>
+              </li>
+            </ul>
+            <h3>Validation errors</h3>
+            <div v-for="errorMessage in errorMessages">
+              <span>row no.{{errorMessage.rowNumber}}</span><span>: {{errorMessage.message}}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div id="footer-panel" class="panel panel-footer">
+    <div v-show="loadingDataMessage" class="loading-pane" />
+    <div v-show="loadingDataMessage" class="modalHide modal1">
+      <span class="glyphicon glyphicon-refresh spinning">
+      </span>
+      <span class="validation-load">
+        {{loadingDataMessage}}
+      </span>
+    </div>
   </div>
 </div>
 </template>
@@ -116,8 +138,14 @@ import tabular from '../partials/TableProperties'
 import packager from '../partials/PackageProperties'
 import provenance from '../partials/ProvenanceProperties'
 import {
-  guessColumnProperties
+  guessColumnProperties,
+  validateActiveDataWithNoSchema,
+  validateActiveDataAgainstSchema
 } from '../frictionless.js'
+import HomeTooltip from '../mixins/HomeTooltip'
+import {
+  fileFormats
+} from '../file-formats.js'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
 var ipc = require('electron').ipcRenderer
 require('bootstrap/dist/js/bootstrap.min.js')
@@ -125,6 +153,7 @@ require('lodash/lodash.min.js')
 require('../menu.js')
 export default {
   name: 'home',
+  mixins: [HomeTooltip],
   data() {
     return {
       currentColumnIndex: 0,
@@ -139,38 +168,51 @@ export default {
       enableTransition: false,
       enableSideNavLeftArrow: true,
       enableSideNavRightArrow: true,
-      showBottomPanel: false,
+      errorMessages: false,
+      loadingDataMessage: false,
       toolbarMenus: [{
         name: 'Validate',
-        image: 'static/img/validate.svg'
+        image: 'static/img/validate.svg',
+        tooltipId: 'tooltip-validate',
+        tooltipView: 'tooltipValidate'
       },
       {
         name: 'Column',
         image: 'static/img/column-properties.svg',
+        tooltipId: 'tooltip-column',
+        tooltipView: 'tooltipColumn',
         sideNavPosition: 'right',
         sideNavView: 'column'
       },
       {
         name: 'Table',
         image: 'static/img/table-properties.svg',
+        tooltipId: 'tooltip-table',
+        tooltipView: 'tooltipTable',
         sideNavPosition: 'right',
         sideNavView: 'tabular'
       },
       {
         name: 'Provenance',
         image: 'static/img/provenance-information.svg',
+        tooltipId: 'tooltip-provenance',
+        tooltipView: 'tooltipProvenance',
         sideNavPosition: 'right',
         sideNavView: 'provenance'
       },
       {
         name: 'Package',
         image: 'static/img/data-package-properties.svg',
+        tooltipId: 'tooltip-package',
+        tooltipView: 'tooltipPackage',
         sideNavPosition: 'right',
         sideNavView: 'packager'
       },
       {
         name: 'Export',
         image: 'static/img/export.svg',
+        tooltipId: 'tooltip-export',
+        tooltipView: 'tooltipExport',
         sideNavView: 'export'
       }
       ]
@@ -204,6 +246,9 @@ export default {
       'pushHotColumns',
       'pushTabTitle'
     ]),
+    closeErrorMessages: function() {
+      this.errorMessages = false
+    },
     selectionListener: function() {
       console.log('selection noted in vue')
       this.updateActiveColumn()
@@ -211,9 +256,9 @@ export default {
       console.log('selection noted finished in vue')
     },
     getAllColumnsProperties: function() {
-      console.log('getting property....')
       let hot = HotRegister.getActiveInstance()
       if (hot) {
+        let columnProps = this.getHotColumnProperties(hot.guid)
         return this.getHotColumnProperties(hot.guid)
       }
     },
@@ -224,9 +269,21 @@ export default {
       } catch (err) {
         console.log(err)
       }
-      console.log('captured properties are:')
-      console.log('hotColumns')
       this.pushHotColumns(hotColumns)
+    },
+    reportValidationRowErrors: function(errorCollection) {
+      console.log('errors...')
+      console.log(errorCollection)
+      this.errorMessages = errorCollection
+    },
+    async validateTable() {
+      console.log('firing validate table...')
+      try {
+        await validateActiveDataAgainstSchema(this.reportValidationRowErrors)
+      } catch (err) {
+        console.log('There was an error(s) validating table.')
+        console.log(err)
+      }
     },
     addTabWithFormattedData: function(data, format) {
       this.initTab()
@@ -252,7 +309,10 @@ export default {
     initTab: function() {
       this.incrementTabIndex()
       let nextTabId = this.createTabId(this.tabIndex)
-      this.pushTabTitle({id: nextTabId, index: this.tabIndex})
+      this.pushTabTitle({
+        id: nextTabId,
+        index: this.tabIndex
+      })
       this.setActiveTab(nextTabId)
       this.pushTab(nextTabId)
       console.log(`this tabIndex is ${this.tabIndex}`)
@@ -262,21 +322,32 @@ export default {
       this.loadDataIntoContainer(container, defaultData)
     },
     loadDataIntoContainer: function(container, data) {
-      let defaultFormat = require('../../renderer/file-actions.js').formats.csv
+      let defaultFormat = fileFormats.csv
       this.loadFormattedDataIntoContainer(container, data, defaultFormat)
     },
+    showLoadingScreen(message) {
+      this.loadingDataMessage = message
+    },
+    closeLoadingScreen() {
+      this.loadingDataMessage = false
+    },
     loadFormattedDataIntoContainer: function(container, data, format) {
-      HotRegister.register(container, this.selectionListener)
+      HotRegister.register(container, {
+        selectionListener: this.selectionListener,
+        loadingStartListener: this.showLoadingScreen,
+        loadingFinishListener: this.closeLoadingScreen
+      })
       addHotContainerListeners(container)
-      // let activeHotId = this.getActiveHotId()
       let activeHotId = HotRegister.getActiveInstance().guid
       let activeTabId = this.activeTab
-      console.log('active hot is: ' + activeHotId)
+      // hack! - force data to wait for latest render e.g, for loader message
+      window.setTimeout(function() {
+        loadData(activeHotId, data, format)
+      }, 1)
       this.pushHotTab({
         'hotId': activeHotId,
         'tabId': activeTabId
       })
-      loadData(activeHotId, data, format)
     },
     cleanUpTabDependencies: function(tabId) {
       // update active tab
@@ -356,14 +427,11 @@ export default {
         let guid = HotRegister.getActiveInstance().guid
         this.currentColumnIndex = currentColumnIndex
       }
-      console.log('updated active column')
       this.getColumnPropertiesMethod = this.getAllColumnsProperties()
     },
     updateToolbarMenuForColumn: function(index) {
-      let maxColAllowed = getColumnCount() -1
-      console.log(`max allowed: ${maxColAllowed}`)
+      let maxColAllowed = getColumnCount() - 1
       let currentColIndex = getCurrentColumnIndexOrMax()
-      console.log(`currentColIndex: ${currentColIndex}`)
       if (index < this.toolbarIndex && currentColIndex > 0) {
         decrementActiveColumn(currentColIndex)
         this.updateActiveColumn()
@@ -378,16 +446,17 @@ export default {
       this.resetSideNavArrows()
     },
     updateToolbarMenu: function(index) {
-      console.log('updating tool menu...')
       if (this.isSideNavToolbarMenu(index)) {
         this.updateToolbarMenuForSideNav(index)
       } else {
         this.toolbarIndex = index
         this.closeSideNav()
+        if (index === 0) {
+          this.validateTable()
+        }
       }
     },
     updateToolbarMenuFromArrows: function(index) {
-      console.log(`side nav view before: ${this.sideNavView}`)
       if (this.sideNavView === 'column') {
         this.updateToolbarMenuForColumn(index)
       } else if (index > 0) {
@@ -396,7 +465,6 @@ export default {
     },
     sideNavLeft: function() {
       let nextIndex = this.toolbarIndex - 1
-      console.log(`next index: ${nextIndex}`)
       let nextToolbar = this.toolbarMenus[nextIndex]
       if (nextToolbar.sideNavView === 'column') {
         getCurrentColumnIndexOrMax()
@@ -412,9 +480,6 @@ export default {
     createTabId: function(tabId) {
       return `tab${tabId}`
     },
-    // getActiveHotId: function() {
-    //   return $('#csvContent .active .editor').attr('id')
-    // },
     triggerSideNav(properties) {
       this.toolbarIndex = -1
       this.sideNavPosition = properties.sideNavPosition || 'left'
@@ -435,6 +500,8 @@ export default {
     tabular,
     packager,
     provenance
+  },
+  watch: {
   },
   mounted: function() {
     const vueAddTabWithData = this.addTabWithData
@@ -466,7 +533,6 @@ export default {
       Sortable.create(csvTab, {
         animation: 150,
         onSort: function(evt) {
-          console.log('dragged!')
           tabIdOrder = $("#csvTab [id^='tab']").map(function() {
             return this.id
           }).get()
@@ -482,6 +548,15 @@ export default {
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
     })
+    const vueValidateTable = this.validateTable
+    ipc.on('validateTable', function(event, arg) {
+      vueValidateTable()
+    })
+  },
+  updated: function() {
+    if (this.loadingDataMessage && this.loadingDataMessage.length > 0) {
+      document.querySelector('.modal1').classList.remove('modalHide')
+    }
   }
 }
 </script>

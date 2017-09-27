@@ -8,7 +8,6 @@
 
 Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data.
 
-
 ## Why do we need Data Curator?
 
 Open data producers are increasingly focusing on improving open data publishing so that data can be used to create insight and drive positive change.
@@ -192,4 +191,4 @@ To automate deployment, we are using:
 Changes are recorded in the [Change Log][changelog].
 
 [changelog]: ./CHANGELOG.md
-[version-badge]: https://img.shields.io/badge/version-0.2.3-blue.svg
+[version-badge]: https://img.shields.io/badge/version-0.3.0-blue.svg

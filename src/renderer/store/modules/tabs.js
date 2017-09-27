@@ -1,5 +1,28 @@
-import {remote, ipcRenderer as ipc} from 'electron'
 import path from 'path'
+import {remote, ipcRenderer as ipc} from 'electron'
+
+function setGlobal(filename, title) {
+  // let remoteTab = remote.getGlobal('tab')
+  remote.getGlobal('tab').activeFilename = filename
+  remote.getGlobal('tab').activeTitle = title
+  remote.getGlobal('tab').filenames = getAllFilenames()
+
+  // remoteTab = tab
+  console.log(`global remote tab is`)
+  console.log(remote.getGlobal('tab'))
+}
+
+function extractNameFromFile(fullPath) {
+  let basename = path.basename(fullPath)
+  let extension = path.extname(basename)
+  return basename.substring(0, basename.lastIndexOf(extension))
+}
+
+function getAllFilenames() {
+  let tabObjects = state.tabObjects
+  return _.values(_.mapValues(tabObjects, function(o) { return o.filename }))
+}
+
 const state = {
   tabs: [],
   activeTab: '',
@@ -45,22 +68,13 @@ const mutations = {
     _.set(state.tabObjects, `${tab.id}.title`, title)
   },
   pushTabObject(state, tab) {
-    console.log('logging tab on push tab object')
-    console.log(tab)
     if (tab.filename) {
       _.set(state.tabObjects, `${tab.id}.filename`, tab.filename)
-      // tab title should reflect basename minus extension of filename
-      let fullPath = tab.filename
-      let basename = path.basename(fullPath)
-      let extension = path.extname(basename)
-      let doctored = basename.substring(0, basename.lastIndexOf(extension))
-      _.set(state.tabObjects, `${tab.id}.title`, doctored)
+      let title = extractNameFromFile(tab.filename)
+      _.set(state.tabObjects, `${tab.id}.title`, title)
       // update global active references for electron-main
-      remote.getGlobal('tab').activeFilename = tab.filename
-      remote.getGlobal('tab').activeTitle = doctored
-      if (remote.getGlobal('tab').activeFilename && remote.getGlobal('tab').activeFilename != '') {
-        ipc.send('checkSaveMenu')
-      }
+      setGlobal(tab.filename, title)
+      ipc.send('toggleSaveMenu')
     }
   },
   removeTab (state, tabId) {
@@ -73,16 +87,8 @@ const mutations = {
   setActiveTab (state, tabId) {
     state.activeTab = `${tabId}`
     state.activeTitle = state.tabObjects[tabId].title
-    console.log(`active tab is: ${state.activeTab}`)
-    remote.getGlobal('tab').activeTitle = state.activeTitle
-    remote.getGlobal('tab').activeFilename = state.tabObjects[state.activeTab].filename
-    console.log('logging tab objects...')
-    console.log(state.tabObjects)
-    console.log('logging globals')
-    console.log(remote.getGlobal('tab'))
-    if (remote.getGlobal('tab').activeFilename && remote.getGlobal('tab').activeFilename != '') {
-      ipc.send('checkSaveMenu')
-    }
+    setGlobal(state.tabObjects[state.activeTab].filename, state.activeTitle)
+    ipc.send('toggleSaveMenu')
   },
   setTabs (state, tabIdOrder) {
     console.log(`tab order ${tabIdOrder}`)

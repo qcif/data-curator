@@ -1,3 +1,4 @@
+import {fileFormats} from '../renderer/file-formats.js'
 global.electron = require('electron')
 
 global.BrowserWindow = electron.BrowserWindow
@@ -12,7 +13,6 @@ var querystring = require('querystring')
 var escape = require('escape-regexp')
 var slug = require('slug')
 var tmpdir = require('os-tmpdir')()
-var file_formats = require('../renderer/file-actions.js').formats
 
 var rootURL = process.env.NODE_ENV == 'development'
   ? 'http://git-data-publisher.dev'
@@ -181,7 +181,6 @@ var addFileToGithub = function() {
 
   ipc.on('addFileToExisting', function(e, data, apiKey) {
     parentWindow.webContents.send('getCSV', file_formats.csv)
-    console.log(data)
 
     ipc.once('sendCSV', function(e, csv) {
       dataset = querystring.parse(data)
@@ -191,9 +190,9 @@ var addFileToGithub = function() {
   })
 }
 
-module.exports = {
-  exportToGithub: exportToGithub,
-  addFileToGithub: addFileToGithub
+export {
+  exportToGithub,
+  addFileToGithub
 }
 
 if (process.env.NODE_ENV === 'test') {

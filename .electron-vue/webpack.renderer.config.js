@@ -3,7 +3,7 @@
 process.env.BABEL_ENV = 'renderer'
 
 const path = require('path')
-const {dependencies} = require('../package.json')
+const { dependencies } = require('../package.json')
 const webpack = require('webpack')
 
 const BabiliWebpackPlugin = require('babili-webpack-plugin')
@@ -26,7 +26,9 @@ let rendererConfig = {
   entry: {
     renderer: path.join(__dirname, '../src/renderer/main.js')
   },
-  externals: [...Object.keys(dependencies || {}).filter(d => !whiteListedModules.includes(d))],
+  externals: [
+    ...Object.keys(dependencies || {}).filter(d => !whiteListedModules.includes(d))
+  ],
   module: {
     rules: [
       {
@@ -39,21 +41,28 @@ let rendererConfig = {
             formatter: require('eslint-friendly-formatter')
           }
         }
-      }, {
+      },
+      {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader'
+        })
       },
       {
         test: /\.html$/,
         use: 'vue-html-loader'
-      }, {
+      },
+      {
         test: /\.js$/,
         use: 'babel-loader',
         exclude: /node_modules/
-      }, {
+      },
+      {
         test: /\.node$/,
         use: 'node-loader'
-      }, {
+      },
+      {
         test: /\.vue$/,
         use: {
           loader: 'vue-loader',
@@ -66,22 +75,32 @@ let rendererConfig = {
             }
           }
         }
-      }, {
+      },
+      {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         use: {
           loader: 'url-loader',
           query: {
             limit: 10000,
-            name: 'imgs/[name].[ext]'
+            name: 'imgs/[name]--[folder].[ext]'
           }
         }
-      }, {
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: 'media/[name]--[folder].[ext]'
+        }
+      },
+      {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         use: {
           loader: 'url-loader',
           query: {
             limit: 10000,
-            name: 'fonts/[name].[ext]'
+            name: 'fonts/[name]--[folder].[ext]'
           }
         }
       }
@@ -129,9 +148,11 @@ let rendererConfig = {
  * Adjust rendererConfig for development settings
  */
 if (process.env.NODE_ENV !== 'production') {
-  rendererConfig.plugins.push(new webpack.DefinePlugin({
-    '__static': `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`
-  }))
+  rendererConfig.plugins.push(
+    new webpack.DefinePlugin({
+      '__static': `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`
+    })
+  )
 }
 
 /**
@@ -140,13 +161,22 @@ if (process.env.NODE_ENV !== 'production') {
 if (process.env.NODE_ENV === 'production') {
   rendererConfig.devtool = ''
 
-  rendererConfig.plugins.push(new BabiliWebpackPlugin({removeConsole: true, removeDebugger: true}), new CopyWebpackPlugin([
-    {
-      from: path.join(__dirname, '../static'),
-      to: path.join(__dirname, '../dist/electron/static'),
-      ignore: ['.*']
-    }
-  ]), new webpack.DefinePlugin({'process.env.NODE_ENV': '"production"'}), new webpack.LoaderOptionsPlugin({minimize: true}))
+  rendererConfig.plugins.push(
+    new BabiliWebpackPlugin(),
+    new CopyWebpackPlugin([
+      {
+        from: path.join(__dirname, '../static'),
+        to: path.join(__dirname, '../dist/electron/static'),
+        ignore: ['.*']
+      }
+    ]),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"production"'
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
+    })
+  )
 }
 
 module.exports = rendererConfig

@@ -1,24 +1,21 @@
-let path = require('path')
-var assert = require('chai').assert
-var expect = require('chai').expect
-var should = require('chai').should()
-var sinon = require('sinon')
-var Fs = require('fs')
-const {Dialog} = require('electron')
+import path from 'path'
+import {assert, expect, should} from 'chai'
+import sinon from 'sinon'
+import Fs from 'fs'
+import {Dialog} from 'electron'
+import schema from '../../../src/main/schema'
 
-var schema = require('../../../src/main/schema')
-
-describe('methods access for datapackage object', function() {
-  it('can successfully import an exported function and access private methods', function() {
+describe('methods access for datapackage object', () => {
+  it('can successfully import an exported function and access private methods', () => {
     expect(schema.generateTemplate).to.be.a('function')
     expect(schema._private.templateFromSchema).to.be.a('function')
   })
 })
 
-describe('templateFromSchema', function() {
-  it('can generate headers from a schema', function(done) {
+describe('templateFromSchema', () => {
+  it('can generate headers from a schema', done => {
     let fileName = path.resolve('test/fixtures/schema.json')
-    Fs.readFile(fileName, 'utf-8', function (err, data) {
+    Fs.readFile(fileName, 'utf-8', (err, data) => {
       if (err) {
         console.log('Error occurred when reading file')
         console.log(err.stack)
@@ -30,9 +27,9 @@ describe('templateFromSchema', function() {
     })
   })
 
-  it('returns an error if json is invalid', function(done) {
+  it('returns an error if json is invalid', done => {
     let fileName = path.resolve('test/fixtures/invalid.json')
-    Fs.readFile(fileName, 'utf-8', function (err, data) {
+    Fs.readFile(fileName, 'utf-8', (err, data) => {
       if (err) {
         console.log(err.stack)
       }

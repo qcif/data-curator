@@ -1,0 +1,35 @@
+<script>
+import Tooltip from '../mixins/Tooltip'
+export default {
+  extends: Tooltip,
+  components: {
+    'tooltipValidate': {
+      template: '<div id="tooltip-validate">Validate Table</div>'
+    },
+    'tooltipColumn': {
+      template: '<div id="tooltip-column">Set Column Properties</div>'
+    },
+    'tooltipTable': {
+      template: '<div id="tooltip-table">Set Table Properties</div>'
+    },
+    'tooltipProvenance': {
+      template: '<div id="tooltip-provenance">Set Provenance Information</div>'
+    },
+    'tooltipPackage': {
+      template: '<div id="tooltip-package">Set Data Package Properties</div>'
+    },
+    'tooltipExport': {
+      template: '<div id="tooltip-export">Export Data Package</div>'
+    },
+    'tooltipAddTab': {
+      template: '<div id="tooltip-add-tab">Add Data Tab</div>'
+    },
+    'tooltipPrevious': {
+      template: '<div id="tooltip-previous">Previous Property Panel</div>'
+    },
+    'tooltipNext': {
+      template: '<div id="tooltip-next">Next Property Panel</div>'
+    }
+  }
+}
+</script>

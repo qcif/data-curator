@@ -1,5 +1,5 @@
 import {dialog, app, ipcMain as ipc} from 'electron'
-var file_formats = require('../renderer/file-actions.js').formats
+import {fileFormats} from '../renderer/file-formats.js'
 let path = require('path')
 
 export function createWindow() {
@@ -10,7 +10,7 @@ export function createWindow() {
     : `file://${__dirname}/index.html`
   mainWindow.loadURL(winURL)
   mainWindow.title = 'Data-curator'
-  mainWindow.format = file_formats.csv
+  mainWindow.format = fileFormats.csv
   mainWindow.on('closed', function() {
     mainWindow = null
   })
@@ -70,38 +70,25 @@ export function guessColumnProperties() {
   window.webContents.send('guessColumnProperties')
 }
 
+export function validateTable() {
+  var window = BrowserWindow.getFocusedWindow()
+  window.webContents.send('validateTable')
+}
+
 function getSaveSubMenu() {
   let fileMenu = Menu.getApplicationMenu().items.find(x => x.label === 'File')
-  // console.log(fileMenu)
   let saveSubMenu = fileMenu.submenu.items.find(x => x.label === 'Save')
-  // console.log('looking for save sub menu')
-  // console.log(saveSubMenu)
   return saveSubMenu
 }
 
-ipc.on('checkSaveMenu', (event, arg) => {
-  console.log('checking save menu') // prints "ping"
-  enableSave()
+ipc.on('toggleSaveMenu', (event, arg) => {
+  toggleSaveMenu()
 })
 
-export function enableSave() {
+export function toggleSaveMenu() {
   let saveSubMenu = getSaveSubMenu()
-  console.log(global.tab)
-  if (saveSubMenu.label) {
-    console.log('checked ok')
-    saveSubMenu.enabled = true
-  } else {
-    console.log('Could not find save sub menu. Cannot enable it.')
-  }
-}
-
-export function disableSave() {
-  let saveSubMenu = getSaveSubMenu()
-  if (saveSubMenu) {
-    saveSubMenu.disabled = true
-  } else {
-    console.log('Could not find save sub menu. Cannot disable it.')
-  }
+  let activeFilename = global.tab.activeFilename
+  saveSubMenu.enabled = (typeof activeFilename !== 'undefined' && activeFilename.length > 0)
 }
 
 async function saveAndExit(callback, filename) {

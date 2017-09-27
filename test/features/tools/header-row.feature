@@ -1,5 +1,3 @@
-@backlog
-
 Feature: Header Row
   As a Data Packager
   I want specify if my table has a header row
@@ -7,7 +5,7 @@ Feature: Header Row
 
   Notes:
   - see https://handsontable.com/examples.html?headers&sorting
-  - for version 1.0 Header row could be defaulted to on (i.e. menu item checked)
+  - see https://electron.atom.io/docs/api/menu-item/#menuitemchecked
 
   Header Row can be toggled on/off by a checkbox menu item
   The default setting for Header Row is "on" (checked)

@@ -7,5 +7,20 @@
 .panel, .container-fluid
   background transparent !important
 
-/* add styling for vertical-align:top, banded table rows, th styling, table width, a, a.hover, h1, h2, h3 */
-/* something to avoid using <b> in keyboardHelp.vue */
+h1, h2, h3
+  color #337ab7 !important
+
+table
+  border-collapse collapse
+  width 100%
+
+th, td
+  text-align left
+  padding 8px
+
+tr
+  &:nth-child(even)
+    background-color #f2f2f2
+
+kbd
+  background-color #999

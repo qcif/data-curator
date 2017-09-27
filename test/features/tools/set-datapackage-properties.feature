@@ -1,5 +1,3 @@
-@done
-
 Feature: Set Data Package Properties
   As a Data Packager
   I want to describe the data package properties
