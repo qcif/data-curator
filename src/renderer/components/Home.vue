@@ -253,6 +253,7 @@ export default {
       this.errorMessages = errorCollection
     },
     async validateTable() {
+      console.log('firing validate table...')
       try {
         await validateActiveDataAgainstSchema(this.reportValidationRowErrors)
       } catch (err) {
@@ -463,6 +464,14 @@ export default {
     tabular,
     packager,
     provenance
+  },
+  watch: {
+    toolbarIndex: function(indexSelected) {
+      if (indexSelected === 0) {
+        console.log('selected validate')
+        this.validateTable()
+      }
+    }
   },
   mounted: function() {
     const vueAddTabWithData = this.addTabWithData

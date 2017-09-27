@@ -112,6 +112,10 @@ export async function validateActiveDataAgainstSchema(callback) {
   let activeHotObject = HotRegister.getActiveHotIdData()
   let tableSchema = _.get(store.state.hotTabs, `${activeHotObject.id}.tableSchema`)
   let table = await initDataAgainstSchema(activeHotObject.data, tableSchema.schema)
+  // if no current schema - infer, but don't store it - this should be done if 'guess column properties'
+  if (!table) {
+    table = initDataAndInferSchema(activeHotObject.data)
+  }
   // commit schema so errors can be found
   table.schema.commit()
   // don't cast at stream, wait until row to cast otherwise not all errors will be reported.
