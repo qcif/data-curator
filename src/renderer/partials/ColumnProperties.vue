@@ -2,7 +2,7 @@
 <form class="navbar-form form-horizontal" id="columnProperties">
   <div class="form-group-sm row container-fluid">
     <div v-for="(formprop, index) in formprops" :key="index">
-      <label v-tooltip="tooltip(formprop.tooltipId)" :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
+      <label v-tooltip.left.click="tooltip(formprop.tooltipId)" :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
       <component :is="formprop.tooltipView"/>
       <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
         <select v-if="formprop.label==='type'" :value="getProperty(formprop.label)" @input="setSelectType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
@@ -67,22 +67,32 @@ export default {
         tooltipView: 'tooltipColumnTitle'
       },
       {
-        label: 'description'
+        label: 'description',
+        tooltipId: 'tooltip-column-description',
+        tooltipView: 'tooltipColumnDescription'
       },
       {
         label: 'type',
+        tooltipId: 'tooltip-column-type',
+        tooltipView: 'tooltipColumnType',
         type: 'dropdown'
       },
       {
         label: 'format',
+        tooltipId: 'tooltip-column-format',
+        tooltipView: 'tooltipColumnFormat',
         type: 'dropdown'
       },
       {
         label: 'constraints',
+        tooltipId: 'tooltip-column-constraints',
+        tooltipView: 'tooltipColumnConstraints',
         type: 'checkbox'
       },
       {
         label: 'rdfType',
+        tooltipId: 'tooltip-column-rdfType',
+        tooltipView: 'tooltipColumnRdfType',
         type: 'url'
       }
       ],

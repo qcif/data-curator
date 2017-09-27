@@ -179,30 +179,40 @@ export default {
       {
         name: 'Column',
         image: 'static/img/column-properties.svg',
+        tooltipId: 'tooltip-column',
+        tooltipView: 'tooltipColumn',
         sideNavPosition: 'right',
         sideNavView: 'column'
       },
       {
         name: 'Table',
         image: 'static/img/table-properties.svg',
+        tooltipId: 'tooltip-table',
+        tooltipView: 'tooltipTable',
         sideNavPosition: 'right',
         sideNavView: 'tabular'
       },
       {
         name: 'Provenance',
         image: 'static/img/provenance-information.svg',
+        tooltipId: 'tooltip-provenance',
+        tooltipView: 'tooltipProvenance',
         sideNavPosition: 'right',
         sideNavView: 'provenance'
       },
       {
         name: 'Package',
         image: 'static/img/data-package-properties.svg',
+        tooltipId: 'tooltip-package',
+        tooltipView: 'tooltipPackage',
         sideNavPosition: 'right',
         sideNavView: 'packager'
       },
       {
         name: 'Export',
         image: 'static/img/export.svg',
+        tooltipId: 'tooltip-export',
+        tooltipView: 'tooltipExport',
         sideNavView: 'export'
       }
       ]
