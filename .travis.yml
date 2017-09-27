@@ -24,6 +24,8 @@ script:
 branches:
   only:
   - osx
+before_deploy:
+  - git config --global user.name "mattRedBox"
 deploy:
   provider: releases
   skip_cleanup: true
@@ -35,5 +37,5 @@ deploy:
   file: data-curator-*.*.*.dmg
   on:
     repo: ODIQueensland/data-curator
-    branch: osx
+    all_branches: true
     tags: false
