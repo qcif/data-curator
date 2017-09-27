@@ -7,11 +7,6 @@ cache:
   - node_modules
   - "$HOME/.electron"
   - "$HOME/.cache"
-addons:
-  apt:
-    packages:
-    - libgnome-keyring-dev
-    - icnsutils
 before_install:
 - brew update
 install:
