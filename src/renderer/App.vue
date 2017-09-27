@@ -9,6 +9,6 @@
     name: 'data-curator'
   }
 </script>
-<style>
-  /* CSS */
+<style lang="styl" scoped>
+@import '~static/css/default'
 </style>

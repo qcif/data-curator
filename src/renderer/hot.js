@@ -8,6 +8,8 @@ let HotRegister = {
   hots: {},
   register(container, listeners={}) {
     let hot = new Handsontable(container, {
+      width: 800,
+      height: 400,
       colHeaders: true,
       rowHeaders: true,
       // autoColumnSize: {syncLimit: 300},

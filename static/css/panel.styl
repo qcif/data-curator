@@ -45,6 +45,9 @@ sideNavColor = #337ab7
   background-size 300px !important
   background-position 50% 60% !important
 
+  .editor
+    overflow: scroll
+
 .loading-pane
   position fixed
   top 0
@@ -88,7 +91,6 @@ sideNavColor = #337ab7
   z-index 50
   border-radius 0
   top 0
-  overflow-x hidden
   transition sideNavTransition
   .navbar-brand
     text-transform: capitalize
@@ -144,16 +146,18 @@ sideNavColor = #337ab7
     input
     select
       @extend #sidenav form
+      height auto
 
 #sidenav .container-fluid
   position relative
   height 100%
+  overflow-x scroll
+  overflow-y scroll
 
 #sidenav-footer
-  position relative
+  position absolute
   bottom 0
   width 100%
-  // height: 10%
   display: block
   .left
     float left
