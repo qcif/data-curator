@@ -117,12 +117,44 @@ async function checkForSchema(activeHotObject) {
   return table
 }
 
+function isRowBlank(row) {
+  return row.filter(Boolean).length === 0
+}
+
+function blankCellCount(row) {
+  let sanitised = row.filter(Boolean)
+  return row.length - sanitised.length
+}
+
+function duplicatesCount(row) {
+  let uniques = new Set(row)
+  return row.length - uniques.size
+}
+
+function checkHeaderErrors(headers, errorCollector) {
+  if (isRowBlank(headers)) {
+    errorCollector.push({rowNumber: 1, message: `Headers are completely blank`, name: 'Blank Row'})
+  } else {
+    let diff = blankCellCount(headers)
+    if (diff > 0) {
+      errorCollector.push({rowNumber: 1, message: `There are ${diff} blank header(s)`, name: 'Blank Header'})
+    }
+    let diff2 = duplicatesCount(headers)
+    if (diff2 > 0) {
+      errorCollector.push({rowNumber: 1, message: `There are ${diff2} duplicate header(s)`, name: 'Duplicate Header'})
+    }
+  }
+}
+
 export async function validateActiveDataAgainstSchema(callback) {
   let activeHotObject = HotRegister.getActiveHotIdData()
   // if no current schema - infer, but don't store it - this should be done if 'guess column properties'
   let table = await checkForSchema(activeHotObject)
   // don't cast at stream, wait until row to cast otherwise not all errors will be reported.
+  // console.log(activeHotObject)
   const errorCollector = []
+  checkHeaderErrors(activeHotObject.data[0], errorCollector)
+  // setFromArray(activeHotObject.data)
   const stream = await table.iter({
     extended: true,
     stream: true,
@@ -130,6 +162,9 @@ export async function validateActiveDataAgainstSchema(callback) {
   })
   stream.on('data', (row) => {
     // console.log(`row number: ${row[0]}`)
+    if (isRowBlank(row[2])) {
+      errorCollector.push({rowNumber: row[0], message: `Row ${row[0]} is completely blank`, name: 'Blank Row'})
+    }
     checkRow(row[0], row[2], table.schema, errorCollector)
   })
   callback(errorCollector)
