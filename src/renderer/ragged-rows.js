@@ -16,6 +16,6 @@ function getMaxRowLength(csv_array) {
 
 export function matchColumnHeadersToMaxRowLength(hot, arrays) {
   const maxRowLength = getMaxRowLength(arrays)
-  arrays[0].push(...(Array(maxRowLength - arrays[0].length).fill('')))
+  arrays[0].push(...(Array(maxRowLength - arrays[0].length).fill(null)))
   hot.updateSettings({data: arrays})
 }
