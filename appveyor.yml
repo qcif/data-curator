@@ -3,8 +3,10 @@
 version: 1.2.{build}
 
 branches:
-  on:
-    appveyor_repo_tag: true
+  only:
+    - osx
+#  on:
+#    appveyor_repo_tag: true
 
 image: Visual Studio 2017
 
@@ -25,7 +27,7 @@ init:
   - git config --global core.autocrlf input
 
 install:
-  - ps: Install-Product node 8 x64
+  - ps: Install-Product node 7 x64
   - choco install yarn --ignore-dependencies
   - git reset --hard HEAD
   - yarn
