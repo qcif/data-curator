@@ -16,7 +16,7 @@ addons:
 before_install:
 - brew update
 install:
-- nvm install 8
+- nvm install 7
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
 # - npm install -g xvfb-maybe
