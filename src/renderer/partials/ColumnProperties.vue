@@ -105,20 +105,20 @@ export default {
       },
       constraints: {
         'string': ['required', 'unique', 'minLength', 'maxLength', 'pattern', 'enum'],
-        'number': ['required', 'unique', 'minLength', 'maxLength', 'minimum', 'maximum', 'enum'],
-        'integer': ['required', 'unique', 'minimum', 'maximum', 'enum'],
-        'boolean': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'number': ['required', 'unique', 'minimum', 'maximum', 'pattern', 'enum'],
+        'integer': ['required', 'unique', 'minimum', 'maximum', 'pattern', 'enum'],
+        'boolean': ['required', 'enum'],
         'object': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
         'array': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
         'date': ['required', 'unique', 'minimum', 'maximum', 'enum'],
         'time': ['required', 'unique', 'minimum', 'maximum', 'enum'],
         'datetime': ['required', 'unique', 'minimum', 'maximum', 'enum'],
         'year': ['required', 'unique', 'minimum', 'maximum', 'enum'],
-        'yearmonth': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'yearmonth': ['required', 'unique', 'minimum', 'maximum', 'pattern', 'enum'],
         'duration': ['required', 'unique', 'minimum', 'maximum', 'enum'],
-        'geopoint': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
+        'geopoint': ['required', 'unique', 'enum'],
         'geojson': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
-        'any': ['required', 'unique', 'minLength', 'maxLength', 'minimum', 'maximum', 'enum']
+        'any': ['required', 'unique', 'enum']
       },
       constraintBooleanBindings: [
         'required',
