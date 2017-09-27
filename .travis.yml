@@ -2,11 +2,7 @@
 sudo: required
 dist: trusty
 language: c
-matrix:
-  include:
-  - os: osx
-    env: CC=clang CXX=clang++ npm_config_clang=1
-    compiler: clang
+os: osx
 cache:
   directories:
   - node_modules
