@@ -291,13 +291,6 @@ const template = [
           utils.validateTable()
         }
       }, {
-        type: 'separator'
-      }, {
-        label: 'Guess Column Properties',
-        click() {
-          utils.guessColumnProperties()
-        }
-      }, {
         label: 'Set Column Properties'
       }, {
         label: 'Set Table Properties'
