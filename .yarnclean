@@ -9,7 +9,9 @@ docs
 doc
 website
 images
+!istanbul/lib/assets
 assets
+!karma/static
 static
 
 # examples
@@ -37,6 +39,7 @@ Gruntfile.js
 .yarn-metadata.json
 !(**/.svgo.yml)
 !(**/messages.yml)
+.*.yml
 *.yml
 
 # misc

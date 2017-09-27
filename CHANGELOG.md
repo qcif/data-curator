@@ -6,8 +6,26 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/). 
 
 To see what's planned in our [milestones](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open) or unreleased changes.
 
-[Unreleased]:  https://github.com/ODIQueensland/data-curator/compare/v0.2.3...HEAD
+[Unreleased]:  https://github.com/ODIQueensland/data-curator/compare/v0.3.0...HEAD
 ## [Unreleased]
+
+[0.3.0]: https://github.com/ODIQueensland/data-curator/compare/v0.2.3...v0.3.0
+## [0.3.0] - 2017-09-20
+
+### Added
+- version 2 acceptance tests
+- progress thru properties Panels
+- collect and persist properties
+- support for semi-colon and tab separated value files #14
+- column sorting
+- row moving
+
+### Changed
+- updated acceptance tests
+- app styling, including #37, #38, #39, #80
+- fix ragged rows on open and fixed #69
+- improved tab management #82
+- improvements to saving files, and fixed #71
 
 [0.2.3]: https://github.com/ODIQueensland/data-curator/compare/v0.2.2...v0.2.3
 ## [0.2.3] - 2017-09-07

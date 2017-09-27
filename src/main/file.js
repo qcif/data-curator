@@ -1,5 +1,6 @@
 import {enableSave, createWindowTabWithFormattedData} from './utils'
 let path = require('path')
+const _ = require('lodash')
 function makeCustomFormat(separator, delimiter) {
   // assemble a format object describing a custom format
   return {
@@ -17,8 +18,8 @@ function makeCustomFormat(separator, delimiter) {
 function openFile(format) {
   Dialog.showOpenDialog({
     filters: format.filters
-  }, function(fileNames) {
-    readFile(fileNames, format)
+  }, function(filenames) {
+    readFile(filenames, format)
   })
 }
 
@@ -37,6 +38,13 @@ function openCustom() {
   dialog.loadURL(`http://localhost:9080/#/customformat`)
 }
 
+function filenameExists(filename) {
+  let threshold = global.tab.activeFilename ? 1 : 0
+  let length = global.tab.filenames.length
+  let filtered = _.without(global.tab.filenames, filename)
+  return length - filtered.length > threshold
+}
+
 function saveFileAs(format, window) {
   if (!window) {
     window = BrowserWindow.getFocusedWindow()
@@ -44,13 +52,24 @@ function saveFileAs(format, window) {
   Dialog.showSaveDialog({
     filters: format.filters,
     defaultPath: global.tab.activeTitle
-  }, function(fileName) {
-    if (fileName === undefined) {
-      console.log('returning as no filename was entered...')
+  }, function(filename) {
+    if (filename === undefined) {
+      // console.log('returning as no filename was entered...')
       return
     }
+    if (filenameExists(filename)) {
+      // console.log('returning as filename exists...')
+      Dialog.showMessageBox(window, {
+        type: 'warning',
+        // title is not displayed on screen on macOS
+        title: 'Data not saved',
+        message: 'The data was not saved to the file.\n\nYou selected a file name that is already used in this Data Package.\n\nTo save the data, choose a unique file name.'
+      })
+      return
+    }
+
     // enableSave()
-    window.webContents.send('saveData', format, fileName)
+    window.webContents.send('saveData', format, filename)
     window.format = format
     window.webContents.send('saveDataSuccess')
   })
@@ -76,12 +95,12 @@ function saveFile() {
   window.webContents.send('saveData', window.format)
 }
 
-function readFile(fileNames, format) {
-  if (fileNames === undefined) {
+function readFile(filenames, format) {
+  if (filenames === undefined) {
 
   } else {
-    var fileName = fileNames[0]
-    Fs.readFile(fileName, 'utf-8', function(err, data) {
+    var filename = filenames[0]
+    Fs.readFile(filename, 'utf-8', function(err, data) {
       if (err) {
         console.log(err.stack)
       }

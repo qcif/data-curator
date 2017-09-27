@@ -21,7 +21,9 @@ let mainConfig = {
   entry: {
     main: path.join(__dirname, '../src/main/index.js')
   },
-  externals: [...Object.keys(dependencies || {})],
+  externals: [
+    ...Object.keys(dependencies || {})
+  ],
   module: {
     rules: [
       {
@@ -34,11 +36,13 @@ let mainConfig = {
             formatter: require('eslint-friendly-formatter')
           }
         }
-      }, {
+      },
+      {
         test: /\.js$/,
         use: 'babel-loader',
         exclude: /node_modules/
-      }, {
+      },
+      {
         test: /\.node$/,
         use: 'node-loader'
       }
@@ -67,19 +71,26 @@ let mainConfig = {
 }
 
 /**
-* Adjust mainConfig for development settings
-*/
+ * Adjust mainConfig for development settings
+ */
 if (process.env.NODE_ENV !== 'production') {
-  mainConfig.plugins.push(new webpack.DefinePlugin({
-    '__static': `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`
-  }))
+  mainConfig.plugins.push(
+    new webpack.DefinePlugin({
+      '__static': `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`
+    })
+  )
 }
 
 /**
-* Adjust mainConfig for production settings
-*/
+ * Adjust mainConfig for production settings
+ */
 if (process.env.NODE_ENV === 'production') {
-  mainConfig.plugins.push(new BabiliWebpackPlugin({removeConsole: true, removeDebugger: true}), new webpack.DefinePlugin({'process.env.NODE_ENV': '"production"'}))
+  mainConfig.plugins.push(
+    new BabiliWebpackPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"production"'
+    })
+  )
 }
 
 module.exports = mainConfig

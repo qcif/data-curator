@@ -1,29 +1,28 @@
-var file_formats = require('../renderer/file-actions.js').formats
-const {shell} = require('electron')
+import {openFile, saveFileAs, saveFile} from './file.js'
+// import {fileFormats} from '../renderer/file-formats.js'
+import {fileFormats} from '../renderer/file-formats.js'
+import {shell} from 'electron'
+// fileActions = require('./file')
 
 // build 'Open...' and 'Save As...' submenus
-var open_submenu = []
-var save_submenu = []
-for (var format in file_formats) {
-  var open_option = {
-    label: file_formats[format].label,
-    click: (function(format) {
-      return function() {
-        fileActions.openFile(format)
-      }
-    }(file_formats[format]))
+const open_submenu = []
+const save_submenu = []
+for (const format in fileFormats) {
+  const open_option = {
+    label: fileFormats[format].label,
+    click: ((format => () => {
+      openFile(format)
+    })(fileFormats[format]))
   }
   if (format === 'csv') {
     open_option.accelerator = 'CmdOrCtrl+O'
   }
   open_submenu.push(open_option)
-  var save_option = {
-    label: file_formats[format].label,
-    click: (function(format) {
-      return function() {
-        fileActions.saveFileAs(format)
-      }
-    }(file_formats[format]))
+  const save_option = {
+    label: fileFormats[format].label,
+    click: ((format => () => {
+      saveFileAs(format)
+    })(fileFormats[format]))
   }
   if (format === 'csv') {
     save_option.accelerator = 'Shift+CmdOrCtrl+S'
@@ -53,7 +52,7 @@ const template = [
       {
         label: 'New',
         accelerator: 'CmdOrCtrl+N',
-        click: function() {
+        click() {
           utils.createWindowTab()
         }
       }, {
@@ -63,7 +62,7 @@ const template = [
         submenu: open_submenu
       }, {
         label: 'Open Excel Sheet...',
-        click: function() {
+        click() {
           excel.importExcel()
         }
         // Placeholder for future feature
@@ -94,8 +93,8 @@ const template = [
       }, {
         label: 'Save',
         accelerator: 'CmdOrCtrl+S',
-        click: function() {
-          fileActions.saveFile()
+        click() {
+          saveFile()
         },
         id: 'save',
         enabled: false
@@ -145,17 +144,23 @@ const template = [
         enabled: false,
         accelerator: 'CmdOrCtrl+X'
       }, {
-        // role: 'copy',
+        role: 'copy',
         // turned off for Beta release
-        label: 'Copy',
-        enabled: false,
-        accelerator: 'CmdOrCtrl+C'
+        // label: 'Copy',
+        // enabled: true,
+        // accelerator: 'CmdOrCtrl+C',
+        click() {
+          BrowserWindow.getFocusedWindow().webContents.send('editCopy')
+        }
       }, {
-        // role: 'paste',
+        role: 'paste',
         // turned off for Beta release
-        label: 'Paste',
-        enabled: false,
-        accelerator: 'CmdOrCtrl+V'
+        // label: 'Paste',
+        // enabled: true,
+        // accelerator: 'CmdOrCtrl+V',
+        click() {
+          BrowserWindow.getFocusedWindow().webContents.send('editPaste')
+        }
       }, {
         // turned off for Beta release
         // role: 'selectall',
@@ -167,13 +172,13 @@ const template = [
       }, {
         label: 'Insert Row Above',
         accelerator: 'CmdOrCtrl+I',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('insertRowAbove')
         }
       }, {
         label: 'Insert Row Below',
         accelerator: 'CmdOrCtrl+K',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('insertRowBelow')
         }
       }, {
@@ -181,25 +186,25 @@ const template = [
       }, {
         label: 'Insert Column Before',
         accelerator: 'CmdOrCtrl+J',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnLeft')
         }
       }, {
         label: 'Insert Column After',
         accelerator: 'CmdOrCtrl+L',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('insertColumnRight')
         }
       }, {
         type: 'separator'
       }, {
         label: 'Remove Row(s)',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('removeRows')
         }
       }, {
         label: 'Remove Column(s)',
-        click: function() {
+        click() {
           BrowserWindow.getFocusedWindow().webContents.send('removeColumns')
         }
       }
@@ -282,11 +287,16 @@ const template = [
       }, {
         label: 'Validate Table',
         accelerator: 'Shift+CmdOrCtrl+V',
-        click: function() {
-          validate.validateFile()
+        click() {
+          utils.validateTable()
         }
       }, {
         type: 'separator'
+      }, {
+        label: 'Guess Column Properties',
+        click() {
+          utils.guessColumnProperties()
+        }
       }, {
         label: 'Set Column Properties'
       }, {
@@ -313,9 +323,9 @@ const template = [
         accelerator: 'CmdOrCtrl+D',
         // turned off for Beta release
         enabled: false
-//        click: function() {
-//          datapackage.exportdata()
-//        }
+        //        click: function() {
+        //          datapackage.exportdata()
+        //        }
       }
       // Placeholder for future features
       //      , {
@@ -379,19 +389,19 @@ const template = [
         //      }, {
         label: 'Keyboard Shortcuts',
         accelerator: 'CmdOrCtrl+/',
-        click: function() {
+        click() {
           help.showKeyboardHelp()
         }
       }, {
         type: 'separator'
       }, {
         label: 'Support Forum',
-        click: function() {
+        click() {
           shell.openExternal('https://ask.theodi.org.au/c/projects/data-curator')
         }
       }, {
         label: 'Report Issues',
-        click: function() {
+        click() {
           shell.openExternal('https://github.com/ODIQueensland/data-curator/blob/develop/.github/CONTRIBUTING.md')
         }
       }
@@ -506,4 +516,6 @@ if (process.env.NODE_ENV !== 'production') {
   )
 }
 
-exports.menu = template
+export {
+ template as menu
+}

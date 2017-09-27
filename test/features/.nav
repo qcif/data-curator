@@ -32,7 +32,7 @@
   - read-only-mode.feature
 - find:
 - tools:
-  - fix-ragged-rows.feature
+  - header-row.feature
   - guess-column-properties.feature
   - validate-column.feature
   - validate-table.feature
@@ -60,18 +60,19 @@
   - open-csv-using-drag-n-drop.feature
   - open-google-sheet.feature
   - open-recent.feature
+  - print.feature
+  - find.feature
   - import-column-properties.feature
   - create-constraint-from-column.feature
   - create-lookup-table-from-column.feature
   - data-quality-information.feature
   - sample-data-quality-information.md
+  - set-view-properties.feature
   - export-closed-datapackage.feature
   - publish-data-package.feature
   - help.feature
 - backlog:
   - save-all.feature
-  - find-in-table.feature
-  - find-in-column.feature
   - replace-in-table.feature
   - replace-in-column.feature
   - sort-column.feature

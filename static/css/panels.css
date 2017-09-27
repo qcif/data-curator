@@ -26,11 +26,6 @@
   background-color: rgba(99, 149, 215, 0.6);
 }
 
-.glyphicon.spinning {
-  animation: spin 1s infinite linear;
-  -webkit-animation: spin2 1s infinite linear;
-}
-
 @keyframes spin {
   from {
     transform: scale(1) rotate(0deg);
@@ -47,18 +42,6 @@
   to {
     -webkit-transform: rotate(360deg);
   }
-}
-
-.validation-load {
-  font-size: 1.3em;
-  width: 100%;
-  text-align: center;
-  margin: 25px 0;
-}
-
-.validation-load p {
-  margin: 0;
-  padding: 5px 0;
 }
 
 /*.hidden {display: none;}*/

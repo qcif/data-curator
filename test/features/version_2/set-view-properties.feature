@@ -1,4 +1,4 @@
-@backlog  @enterprise-add-in
+@backlog  @premium
 
 Feature: Set View Properties
   As a Data Packager
