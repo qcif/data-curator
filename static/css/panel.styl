@@ -91,7 +91,6 @@ sideNavColor = #337ab7
   z-index 50
   border-radius 0
   top 0
-  overflow-x hidden
   transition sideNavTransition
   .navbar-brand
     text-transform: capitalize
@@ -152,9 +151,11 @@ sideNavColor = #337ab7
 #sidenav .container-fluid
   position relative
   height 100%
+  overflow-x scroll
+  overflow-y auto
 
 #sidenav-footer
-  position relative
+  position absolute
   bottom 0
   width 100%
   // height: 10%
