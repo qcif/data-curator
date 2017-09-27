@@ -260,6 +260,8 @@ export default {
       try {
         await validateActiveDataAgainstSchema(this.reportValidationRowErrors)
       } catch (err) {
+        console.log('There was an error(s) validating table.')
+        console.log(err)
       }
     },
     addTabWithFormattedData: function(data, format) {

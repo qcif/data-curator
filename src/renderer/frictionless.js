@@ -27,8 +27,7 @@ async function initStrictData(data) {
 
 async function initDataAgainstSchema(data, schema) {
   // provide schema rather than infer
-  const table = await Table.load(data, {schema: schema})
-  // await table.infer()
+  let table = await Table.load(data, {schema: schema})
   return table
 }
 
@@ -108,16 +107,20 @@ export async function validateActiveDataWithNoSchema() {
   }
 }
 
+async function checkForSchema(activeHotObject) {
+  let tableSchema = _.get(store.state.hotTabs, `${activeHotObject.id}.tableSchema`)
+  if (!tableSchema) {
+    tableSchema = await initDataAndInferSchema(activeHotObject.data)
+  }
+  let table = await initDataAgainstSchema(activeHotObject.data, tableSchema.schema)
+  table.schema.commit()
+  return table
+}
+
 export async function validateActiveDataAgainstSchema(callback) {
   let activeHotObject = HotRegister.getActiveHotIdData()
-  let tableSchema = _.get(store.state.hotTabs, `${activeHotObject.id}.tableSchema`)
-  let table = await initDataAgainstSchema(activeHotObject.data, tableSchema.schema)
   // if no current schema - infer, but don't store it - this should be done if 'guess column properties'
-  if (!table) {
-    table = initDataAndInferSchema(activeHotObject.data)
-  }
-  // commit schema so errors can be found
-  table.schema.commit()
+  let table = await checkForSchema(activeHotObject)
   // don't cast at stream, wait until row to cast otherwise not all errors will be reported.
   const errorCollector = []
   const stream = await table.iter({
@@ -130,13 +133,4 @@ export async function validateActiveDataAgainstSchema(callback) {
     checkRow(row[0], row[2], table.schema, errorCollector)
   })
   callback(errorCollector)
-  // stream.on('error', function(err) {
-  //   if (err.multiple) {
-  //     for (const error of err.errors) {
-  //       console.log(error)
-  //     }
-  //   } else {
-  //     console.log(err)
-  //   }
-  // })
 }
