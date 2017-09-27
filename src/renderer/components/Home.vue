@@ -14,7 +14,7 @@
                 <object v-if="menu.image" :class="menu.class" :data="menu.image" type="image/svg+xml" />
                 <div class="toolbar-text">{{menu.name}}</div>
               </a>
-              <component :is="menu.tooltipView"/>
+              <component :is="menu.tooltipView" />
             </li>
           </ul>
         </div>
@@ -43,11 +43,11 @@
       </div>
       <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
         <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft" v-tooltip="tooltip('tooltip-previous')"><span class="btn fa fa-chevron-left fa-2x" /></a>
-        <span v-else class="left disabled" ><span class="btn fa fa-chevron-left fa-2x" /></span>
-        <component v-if="enableSideNavLeftArrow" is="tooltipPrevious"/>
+        <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span>
+        <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" />
         <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight" v-tooltip="tooltip('tooltip-next')"><span class="btn fa fa-chevron-right fa-2x" /></a>
-        <span v-else class="right disabled" ><span class="btn fa fa-chevron-right fa-2x" /></span>
-        <component v-if="enableSideNavRightArrow" is="tooltipNext"/>
+        <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span>
+        <component v-if="enableSideNavRightArrow" is="tooltipNext" />
       </div>
     </nav>
     <div id="main-panel" class="panel panel-default" :class="sideNavPropertiesForMain">
@@ -68,7 +68,7 @@
             <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')">
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
-            <component is="tooltipAddTab"/>
+            <component is="tooltipAddTab" />
           </ul>
           <div class="tab-content" id='csvContent'>
             <div class="tab-pane" v-for="tab in tabs" :key="tab" :class="{ active: activeTab == tab}">
@@ -80,12 +80,19 @@
       </div>
       <div id="main-bottom-panel" class="panel-footer">
         <div id="message-panel" class="panel-default">
-         <template v-if="errorMessages">
-                       <h3>Validation errors</h3>
-                       <div v-for="errorMessage in errorMessages">
-                         <span>row no.{{errorMessage.rowNumber}}</span><span>: {{errorMessage.message}}</span>
-                       </div>
-                   </template>
+          <div v-show="errorMessages && errorMessages.length > 0">
+            <ul class="nav navbar-right closebtn">
+              <li>
+                <a href="#" @click="closeErrorMessages()">
+                  <span style="color:#000" class="btn-default fa fa-times" />
+                </a>
+              </li>
+            </ul>
+            <h3>Validation errors</h3>
+            <div v-for="errorMessage in errorMessages">
+              <span>row no.{{errorMessage.rowNumber}}</span><span>: {{errorMessage.message}}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -136,7 +143,9 @@ import {
   validateActiveDataAgainstSchema
 } from '../frictionless.js'
 import HomeTooltip from '../mixins/HomeTooltip'
-import {fileFormats} from '../file-formats.js'
+import {
+  fileFormats
+} from '../file-formats.js'
 window.$ = window.jQuery = require('jquery/dist/jquery.js')
 var ipc = require('electron').ipcRenderer
 require('bootstrap/dist/js/bootstrap.min.js')
@@ -253,6 +262,8 @@ export default {
       this.pushHotColumns(hotColumns)
     },
     reportValidationRowErrors: function(errorCollection) {
+      console.log('errors...')
+      console.log(errorCollection)
       this.errorMessages = errorCollection
     },
     async validateTable() {
@@ -288,7 +299,10 @@ export default {
     initTab: function() {
       this.incrementTabIndex()
       let nextTabId = this.createTabId(this.tabIndex)
-      this.pushTabTitle({id: nextTabId, index: this.tabIndex})
+      this.pushTabTitle({
+        id: nextTabId,
+        index: this.tabIndex
+      })
       this.setActiveTab(nextTabId)
       this.pushTab(nextTabId)
       console.log(`this tabIndex is ${this.tabIndex}`)
@@ -308,7 +322,11 @@ export default {
       this.loadingDataMessage = false
     },
     loadFormattedDataIntoContainer: function(container, data, format) {
-      HotRegister.register(container, {selectionListener: this.selectionListener, loadingStartListener: this.showLoadingScreen, loadingFinishListener: this.closeLoadingScreen})
+      HotRegister.register(container, {
+        selectionListener: this.selectionListener,
+        loadingStartListener: this.showLoadingScreen,
+        loadingFinishListener: this.closeLoadingScreen
+      })
       addHotContainerListeners(container)
       let activeHotId = HotRegister.getActiveInstance().guid
       let activeTabId = this.activeTab
@@ -402,7 +420,7 @@ export default {
       this.getColumnPropertiesMethod = this.getAllColumnsProperties()
     },
     updateToolbarMenuForColumn: function(index) {
-      let maxColAllowed = getColumnCount() -1
+      let maxColAllowed = getColumnCount() - 1
       let currentColIndex = getCurrentColumnIndexOrMax()
       if (index < this.toolbarIndex && currentColIndex > 0) {
         decrementActiveColumn(currentColIndex)
@@ -423,6 +441,9 @@ export default {
       } else {
         this.toolbarIndex = index
         this.closeSideNav()
+        if (index === 0) {
+          this.validateTable()
+        }
       }
     },
     updateToolbarMenuFromArrows: function(index) {
@@ -471,12 +492,6 @@ export default {
     provenance
   },
   watch: {
-    toolbarIndex: function(indexSelected) {
-      if (indexSelected === 0) {
-        console.log('selected validate')
-        this.validateTable()
-      }
-    }
   },
   mounted: function() {
     const vueAddTabWithData = this.addTabWithData
