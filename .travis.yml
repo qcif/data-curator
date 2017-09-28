@@ -18,11 +18,10 @@ script:
 - yarn run release:predraft
 deploy:
   provider: releases
-  skip_cleanup: true
-  file_glob: true
   api_key:
-    secure: QF+dR63h4uhDSziEszy0g9Gbj+Oc3Y3v3k2lLyCmu8fONlrXLIY9I9LBD/tU9mPGlWbQCrjlxG1WbVHLNsPFSg190IbXk8lhl81rQ0PRV/oyyn8zDJoC3wgFXaAY2PwxYfdj+AvwZPEQ54W+zXrdsvDrBqV+jdIXtPtEsRsFXdByYxTT+rA9QbSe4Mc64tSkUlcaIRQH6fwgvLadsTPFj1NhN9xx4cIc1khZhNKPGdhPiFdGlYaA2KfFrEqZZ7tMhZXEVV/ix/nq64go5plzd9F6E8C04sBPLD4beSGLQ1pXHswuAXenQS44DJvrn018JQodjIEcqw9uHuxVnJ3G/BLwfnL+4xEQ0bRN/4oRcC35az6PEMS4M0Y5AfUJ1lqvT/zIx4/3b1em5F+I3ILl1ufxdGxjAHq/IO7UROvcwAo7U7EgFh2+BL6dlNezBakV1M9JMMyMn1smGxB/XWMGPJBXduXDsea5C6osTkW7Numjn8Zk1HqymbWgsG7QnBWQyOdZrLsRmHNb9qS5uDjFeMgOxawMlY73FchmGGq/9JKA2DAGzoZX7vIG2/0COx0ZfahYz7izhWi/Kq72BmfZTD/6oyjGLSWMtE9IGy1yG8bxko8oOF0HJZ980iQLDfX1nGQABGg4XThrZ0PxR9DmwBs1zuRQK4jm3idfwl8L4Ps=
-  file: data-curator-*.*.*.dmg
+    secure: tHFiLB+5iIohFizb2if1kuULsMUALC6ETZLwr3sTYd7oGJHsmiycg7JVcdhc6OcZanBb3DwBt/58Zs0JhhNxlbCNRPunfn2OhnLOlVp79g12k1Yy95gs1+rjdP9BB0Fw4yd2xYqx4l/Mj7+KWOGtlCTqr8OJ1KDvNEP4NX2S/f5QqCxhPy3yJ1L3KuTXY8do/qOz1+W2AE3UR9LLvUYLwX7IxQJ7NmKi9G8Ob2wXXGkYdblFzIQa5Rdf1L72x3FMgVYI0RI3AnD/ztXN+NjHq2suhF1sVLgTMI/J73768RQqyY/22f9EPXYkufJI8tqMPCFOfgXaWUyj12R7zo/SSGiy/Gj5TF50IIBWoyekcVovadrBxJw130AGb55tqVLHnc0nxBSPDrfn9kpvDQG3eoCaVeycf2Pb3Q6QSHrIvJjUvzuCfwHLS+n/R78eVAl0oKJIN1PmUBW6FF/Cy4dbuC1pnNeB2zcUX42ysrpudhxuo34oeQRhFl+7T9A7mwp42AmCoDlHaBVY1cKSjn7wjnBlrxwyrLEgbYXz12V/hys0yCjh3Zz9eK9BNpYMNzbsAmjBM+tWJoxNXWm5VWKVNfzN8yS8Z1BN+yfmpm3CD0O9Y8jbtI62tVnqG/n9KCGwQ1s/WlrmbYb5c2AyY+c8Q6brPf7Cro8c/+Du2HGIKMI=
+  file: DataCurator-*.*.*.dmg
+  skip_cleanup: true
   on:
     repo: ODIQueensland/data-curator
     tags: true

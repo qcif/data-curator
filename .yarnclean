@@ -37,8 +37,8 @@ Gruntfile.js
 .flowconfig
 .documentup.json
 .yarn-metadata.json
-!(**/.svgo.yml)
-!(**/messages.yml)
+!**/.svgo.yml
+!**/messages.yml
 .*.yml
 *.yml
 

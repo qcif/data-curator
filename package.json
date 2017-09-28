@@ -30,7 +30,7 @@
     "e2e": "yarn run pack && mocha test/e2e"
   },
   "build": {
-    "productName": "Data Curator",
+    "productName": "DataCurator",
     "appId": "org.odi-qcif.data-curator",
     "directories": {
       "output": "build"
