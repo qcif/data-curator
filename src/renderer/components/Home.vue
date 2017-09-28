@@ -1,5 +1,5 @@
 <template>
-<div id="container" class="panel panel-group">
+<div id="home-container" class="panel panel-group">
   <div id="header-panel" class="panel-heading">
     <nav class="navbar navbar-default">
       <div class="container-fluid">
