@@ -77,6 +77,7 @@
     "bootstrap": "^3.3.7",
     "bootstrap-tagsinput": "^0.7.1",
     "bootstrap-webpack": "^0.0.6",
+    "bootstrap.native": "^2.0.15",
     "components-font-awesome": "^4.7.0",
     "datapackage": "^1.0.0",
     "electron-prebuilt-compile": "^1.6.11",

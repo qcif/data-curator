@@ -1,5 +1,4 @@
 import Handsontable from 'handsontable/dist/handsontable.full.js'
-import loader from '../renderer/loader.js'
 import jQuery from 'jquery/dist/jquery.js'
 import {remote} from 'electron'
 const Dialog = remote.dialog
@@ -79,7 +78,11 @@ let HotRegister = {
     return _.get(this.hots, key)
   },
   getActiveInstance() {
-    let activeHotId = jQuery('#csvContent .active .editor').attr('id')
+    // let activeHotId = jQuery('#csvContent .active .editor').attr('id')
+    // let activeHot = document.querySelectorAll('#csvContent .active .editor')
+    let activeHotId = document.querySelector('#csvContent').querySelector('.active').querySelector('.editor').id
+    console.log(`active id is: ${activeHot}`)
+    // let activeHotId = activeHot.id
     let hot = _.get(this.hots, activeHotId)
     return hot
   },
