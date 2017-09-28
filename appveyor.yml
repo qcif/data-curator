@@ -3,10 +3,8 @@
 version: 1.2.{build}
 
 branches:
-  only:
-    - osx
-#  on:
-#    appveyor_repo_tag: true
+ on:
+   appveyor_repo_tag: true
 
 image: Visual Studio 2017
 
