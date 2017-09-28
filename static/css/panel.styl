@@ -15,6 +15,7 @@ sideNavColor = #337ab7
 
 #body-panel
   border 0
+  height 100%
 
 #header-panel
   background-color #f8f8f8
@@ -28,11 +29,13 @@ sideNavColor = #337ab7
       padding-top 9px
 
 #main-panel
+  position fixed
   padding 0
   padding-left 5px
   padding-right 5px
   z-index 10
   width 100%
+  height 100%
   transition sideNavTransition
   border 0
   &.closed
@@ -44,14 +47,25 @@ sideNavColor = #337ab7
   &.right
     margin-right sideNavMargin
     margin-left 0
+  #main-middle-panel
+  #csvEditor
+    height 100%
+    width 100%
+  .tab-pane
+    height 100%
+    width 100%
+    position fixed
 
 #csvContent
   background url("~static/img/data-curator-background.svg") no-repeat fixed !important
   background-size 300px !important
   background-position 50% 60% !important
+  height 100%
+  width 100%
 
   .editor
     overflow: scroll
+    height: 100%
 
 .loading-pane
   position fixed
