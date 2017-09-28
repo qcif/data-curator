@@ -16,12 +16,6 @@ install:
 - yarn
 script:
 - yarn run release:predraft
-deploy:
-  provider: releases
-  api_key:
-    secure: tHFiLB+5iIohFizb2if1kuULsMUALC6ETZLwr3sTYd7oGJHsmiycg7JVcdhc6OcZanBb3DwBt/58Zs0JhhNxlbCNRPunfn2OhnLOlVp79g12k1Yy95gs1+rjdP9BB0Fw4yd2xYqx4l/Mj7+KWOGtlCTqr8OJ1KDvNEP4NX2S/f5QqCxhPy3yJ1L3KuTXY8do/qOz1+W2AE3UR9LLvUYLwX7IxQJ7NmKi9G8Ob2wXXGkYdblFzIQa5Rdf1L72x3FMgVYI0RI3AnD/ztXN+NjHq2suhF1sVLgTMI/J73768RQqyY/22f9EPXYkufJI8tqMPCFOfgXaWUyj12R7zo/SSGiy/Gj5TF50IIBWoyekcVovadrBxJw130AGb55tqVLHnc0nxBSPDrfn9kpvDQG3eoCaVeycf2Pb3Q6QSHrIvJjUvzuCfwHLS+n/R78eVAl0oKJIN1PmUBW6FF/Cy4dbuC1pnNeB2zcUX42ysrpudhxuo34oeQRhFl+7T9A7mwp42AmCoDlHaBVY1cKSjn7wjnBlrxwyrLEgbYXz12V/hys0yCjh3Zz9eK9BNpYMNzbsAmjBM+tWJoxNXWm5VWKVNfzN8yS8Z1BN+yfmpm3CD0O9Y8jbtI62tVnqG/n9KCGwQ1s/WlrmbYb5c2AyY+c8Q6brPf7Cro8c/+Du2HGIKMI=
-  file: DataCurator-*.*.*.dmg
-  skip_cleanup: true
-  on:
-    repo: ODIQueensland/data-curator
-    tags: true
+branches:
+  only:
+  - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
