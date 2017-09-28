@@ -4,7 +4,9 @@ version: 1.2.{build}
 
 branches:
   only:
-    - windows
+    - osx
+#  on:
+#    appveyor_repo_tag: true
 
 image: Visual Studio 2017
 
@@ -34,6 +36,6 @@ install:
 build_script:
   #- yarn test
   # - yarn build
-  - yarn run release:pre
+  - yarn run release:predraft
 
 test: off
