@@ -1,4 +1,4 @@
-@backlog  @draft
+@draft
 
 Feature: Open from a URL
   As a User
