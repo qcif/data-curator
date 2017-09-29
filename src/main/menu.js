@@ -291,6 +291,8 @@ const template = [
           utils.validateTable()
         }
       }, {
+        type: 'separator'
+      }, {
         label: 'Set Column Properties'
       }, {
         label: 'Set Table Properties'
@@ -382,6 +384,7 @@ const template = [
         //      }, {
         label: 'Keyboard Shortcuts',
         accelerator: 'CmdOrCtrl+/',
+        enabled: true,
         click() {
           help.showKeyboardHelp()
         }
@@ -467,7 +470,7 @@ if (process.platform === 'darwin') {
     }
   )
 
-// overwrite Window menu
+  // overwrite Window menu
   template[4].submenu = [
     {
       role: 'minimize'
@@ -510,5 +513,5 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export {
- template as menu
+  template as menu
 }

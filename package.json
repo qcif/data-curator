@@ -1,6 +1,6 @@
 {
   "name": "data-curator",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "author": " <matt@redboxresearchdata.com.au>",
   "description": "Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src",
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src",
     "pack": "yarn run pack:main && yarn run pack:renderer",
-    "release:predraft": "yarn run build && build --publish always --prerelease true --draft true",
+    "release:predraft": "yarn run build && build --publish onTagOrDraft --prerelease true --draft true",
     "release:pre": "yarn run build && build --publish always --prerelease true --draft false",
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",

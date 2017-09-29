@@ -1,10 +1,6 @@
-# Commented sections below can be used to run tests on the CI server
-# https://simulatedgreg.gitbooks.io/electron-vue/content/en/testing.html#on-the-subject-of-ci-testing
-version: 1.2.{build}
+version: 1.4.{build}
 
-branches:
- on:
-   appveyor_repo_tag: true
+skip_non_tags: true
 
 image: Visual Studio 2017
 

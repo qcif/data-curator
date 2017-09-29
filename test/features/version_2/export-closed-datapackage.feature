@@ -1,4 +1,4 @@
-@backlog @premium
+@backlog
 
 Feature: Export Closed Data Package
   As a Data Packager
