@@ -291,6 +291,8 @@ const template = [
           utils.validateTable()
         }
       }, {
+        type: 'separator'
+      }, {
         label: 'Set Column Properties'
       }, {
         label: 'Set Table Properties'

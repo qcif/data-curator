@@ -1,4 +1,4 @@
-@backlog  @premium
+@backlog
 
 Feature: Data Quality Information
   As a Data Packager

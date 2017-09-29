@@ -9,12 +9,13 @@
         <div id="toolbar">
           <ul class="nav navbar-nav">
             <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': toolbarIndex === index}" @click="updateToolbarMenu(index)">
-              <a href="#" v-tooltip="tooltip(menu.tooltipId)">
+<!--              <a href="#" v-tooltip="tooltip(menu.tooltipId)"> -->
+              <a href="#">
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
                 <object v-if="menu.image" :class="menu.class" :data="menu.image" type="image/svg+xml" />
                 <div class="toolbar-text">{{menu.name}}</div>
               </a>
-              <component :is="menu.tooltipView" />
+<!--              <component :is="menu.tooltipView" /> -->
             </li>
           </ul>
         </div>
@@ -65,10 +66,11 @@
                 </li>
               </ul>
             </li>
-            <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')">
+<!--          <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')"> -->
+            <li class="tab-add" @click="addTab">
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
-            <component is="tooltipAddTab" />
+<!--            <component is="tooltipAddTab" /> -->
           </ul>
           <div class="tab-content" id='csvContent'>
             <div class="tab-pane" v-for="tab in tabs" :key="tab" :class="{ active: activeTab == tab}">
