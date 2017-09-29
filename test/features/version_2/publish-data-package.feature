@@ -1,5 +1,3 @@
-@backlog @premium
-
 Feature: Publish Data Package
   As a Data Packager
   I want to publish a data package to an open data portal

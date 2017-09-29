@@ -1,4 +1,4 @@
-@backlog @premium
+@backlog
 
 Feature: Print
   As a Data Packager

@@ -1,5 +1,3 @@
-@backlog @premium
-
 Feature: Import Column Properties
   As a Data Packager
   I want access a library of pre-defined column properties
