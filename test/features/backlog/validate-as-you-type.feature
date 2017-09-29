@@ -1,4 +1,4 @@
-@backlog  @draft
+@backlog
 
 Feature: Validate as you type
   As a Data Packager
