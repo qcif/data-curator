@@ -5,19 +5,18 @@ Feature: Open a Comma separated value file
 
   The most common form of separated value files is a comma separated value (CSV) file.
 
-  There are variations that use Tab or Semicolon to seperate values. Custom formats are sometimes used. Each of these formats can be described using a CSV Dialect that describes the 'delimiter' used and other options. See: http://specs.frictionlessdata.io/csv-dialect/#specification
+  The [CSV Dialect specification](http://specs.frictionlessdata.io/csv-dialect/#specification) describes variations that use Tab or Semicolon to seperate values. Custom formats are sometimes used. Each of these formats can be described using a CSV Dialect that describes the 'delimiter' and other options.
 
   Use the default CSV dialect values in the specification to open the file and separate the values into the correct columns.
 
   The Open Comma Separated command can be invoked using the menu or a keyboard shortcut
 
-  If the active tab is empty, when the file is opened, insert the file contents into the empty table.
+  (A desirable feature would be, If the active tab is empty, when the file is opened, insert the file contents into the empty table.)
 
-  If the CSV has an inconsistent number of columns, fix ragged rows (see separate feature in Other)
+  If the CSV has an inconsistent number of columns, [fix ragged rows] (https://relishapp.com/odi-australia/data-curator/docs/other/fix-ragged-rows)
 
   Scenario: Open an existing comma separated value file
     Given I have opened Data Curator
-    And the file to be opened has inconsistent number of columns
     When I invoke the "Open Comma Separated" command
     Then a prompt, requesting the 'filename' and 'location' is shown
     And only files ending with a ".csv" can be selected
