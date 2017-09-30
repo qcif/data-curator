@@ -226,7 +226,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'tabTitle']),
+    ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'tabTitle', 'getHotIdFromTabId']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -242,11 +242,14 @@ export default {
       'pushTab',
       'pushHotTab',
       'removeTab',
-      'setTabs',
+      'setTabsOrder',
       'setActiveTab',
       'incrementTabIndex',
+      'decrementTabIndex',
       'pushHotColumns',
-      'pushTabTitle'
+      'pushTabTitle',
+      'destroyHotTab',
+      'destroyTabObject'
     ]),
     closeErrorMessages: function() {
       this.errorMessages = false
@@ -362,11 +365,10 @@ export default {
         let previousTabId = this.getPreviousTabId(targetTabIndex)
         this.setActiveTab(previousTabId)
       }
-      // update hots
-
-      // update hottabs
-
-      // update tab titles
+      this.destroyTabObject(tabId)
+      let hotId = this.getHotIdFromTabId(tabId)
+      this.destroyHotTab(hotId)
+      HotRegister.destroyHot(hotId)
     },
     closeTab: function(event) {
       // do not allow single tab to be closed
@@ -540,14 +542,14 @@ export default {
     this.$nextTick(function() {
       require('../index.js')
       let tabIdOrder
-      const vueSetTabs = this.setTabs
+      const vueSetTabsOrder = this.setTabsOrder
       Sortable.create(csvTab, {
         animation: 150,
         onSort: function(evt) {
           tabIdOrder = $("#csvTab [id^='tab']").map(function() {
             return this.id
           }).get()
-          vueSetTabs(tabIdOrder)
+          vueSetTabsOrder(tabIdOrder)
         }
       })
       this.closeSideNav()
