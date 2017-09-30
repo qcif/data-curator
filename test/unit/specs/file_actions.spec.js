@@ -1,6 +1,7 @@
 import {HotRegister} from '@/hot.js'
 import {rows} from '@/ragged-rows'
-import * as file_actions from '@/file-actions'
+import {saveDataToFile, loadDataIntoHot} from '@/data-actions'
+import {fileFormats} from '@/file-formats'
 import { mutations } from '@/store'
 import {remote} from 'electron'
 import fs from 'fs'
@@ -47,7 +48,7 @@ describe('file actions', () => {
   }
 
   afterEach(() => {
-    HotRegister.destroy(hotId)
+    HotRegister.destroyAllHots()
     hot = null
   })
 
@@ -65,7 +66,7 @@ describe('file actions', () => {
           ['4', '5', '6']
         ])
       })
-      file_actions.open(hot, data)
+      loadDataIntoHot(hot, data)
     })
   })
 
@@ -83,7 +84,7 @@ describe('file actions', () => {
           ['4', '5', '6']
         ])
       })
-      file_actions.open(hot, data, file_actions.formats.semicolon)
+      loadDataIntoHot(hot, data, fileFormats.semicolon)
     })
   })
 
@@ -93,7 +94,7 @@ describe('file actions', () => {
       let tempFile = `${os.tmpdir()}/mycsv.csv`
       stubGlobalTab()
       hot.addHook('afterLoadData', () => {
-        file_actions.save(hot, file_actions.formats.csv, tempFile, () => {
+        saveDataToFile(hot, fileFormats.csv, tempFile, () => {
           fs.readFile(tempFile, 'utf-8', (err, d) => {
             console.log('running callback...')
             if (err) {
@@ -106,7 +107,7 @@ describe('file actions', () => {
           })
         })
       })
-      file_actions.open(hot, data)
+      loadDataIntoHot(hot, data)
       stubGlobal.restore()
     })
   })
@@ -117,7 +118,7 @@ describe('file actions', () => {
       let tempFile = `${os.tmpdir()}/mytsv.tsv`
       stubGlobalTab()
       hot.addHook('afterLoadData', () => {
-        file_actions.save(hot, file_actions.formats.tsv, tempFile, () => {
+        saveDataToFile(hot, fileFormats.tsv, tempFile, () => {
           fs.readFile(tempFile, 'utf-8', (err, d) => {
             if (err) {
               console.log(err.stack)
@@ -127,7 +128,7 @@ describe('file actions', () => {
           })
         })
       })
-      file_actions.open(hot, data)
+      loadDataIntoHot(hot, data)
       stubGlobal.restore()
     })
   })
