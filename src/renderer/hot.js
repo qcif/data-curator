@@ -78,7 +78,7 @@ let HotRegister = {
   },
   getActiveInstance() {
     let activeHot = document.querySelectorAll('#csvContent .active .editor')[0]
-    return getInstance(activeHot.id)
+    return this.getInstance(activeHot.id)
   },
   getActiveHotIdData() {
     let activeHot = this.getActiveInstance()
@@ -89,8 +89,13 @@ let HotRegister = {
       hot.destroy()
       _.unset(this.hots, id)
     })
-    // just to ensure no references left
+    // just a safeguard
     this.hots = {}
+  },
+  destroyHot(id) {
+    let hot = this.getInstance(id)
+    hot.destroy()
+    _.unset(this.hots, id)
   }
 }
 
@@ -154,7 +159,6 @@ export function decrementActiveColumn(activeColumnIndex) {
 export function getColumnCount() {
   let activeHot = HotRegister.getActiveInstance()
   let colCount = activeHot.countCols()
-  console.log(`col count is: ${colCount}`)
   return colCount
 }
 
@@ -253,13 +257,11 @@ const removeColumns = () => {
 }
 
 const unfreezeHeaderRow = () => {
-  console.log('unfreezing...')
   let hot = HotRegister.getActiveInstance()
   hot.updateSettings({fixedRowsTop: 0, colHeaders: true})
 }
 
 const freezeHeaderRow = () => {
-  console.log('freezing...')
   let hot = HotRegister.getActiveInstance()
   hot.updateSettings({fixedRowsTop: 1})
 }
