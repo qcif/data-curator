@@ -160,7 +160,7 @@ export default {
     return {
       currentColumnIndex: 0,
       // only set method when ready
-      getColumnPropertiesMethod: this.getAllColumnsProperties(),
+      getColumnPropertiesMethod: function() {},
       toolbarIndex: -1,
       sideNavPosition: 'right',
       sideNavStatus: 'closed',
@@ -287,25 +287,28 @@ export default {
         console.log(err)
       }
     },
+    latestHotContainer: function() {
+      let allEditors = document.querySelectorAll('#csvContent .editor')
+      return allEditors[allEditors.length - 1]
+    },
     addTabWithFormattedData: function(data, format) {
       this.initTab()
       this.$nextTick(function() {
-        // update latest tab object with content
-        this.loadFormattedDataIntoContainer($('.editor:last')[0], data, format)
+        this.loadFormattedDataIntoContainer(latestHotContainer(), data, format)
       })
     },
     addTabWithData: function(data) {
       this.initTab()
       this.$nextTick(function() {
-        // update latest tab object with content
-        this.loadDataIntoContainer($('.editor:last')[0], data)
+        this.loadDataIntoContainer(latestHotContainer(), data)
       })
     },
     addTab: function() {
       this.initTab()
+      let vueLatestHotContainer = this.latestHotContainer
       this.$nextTick(function() {
         // update latest tab object with content
-        this.loadDefaultDataIntoContainer($('.editor:last')[0])
+        this.loadDefaultDataIntoContainer(vueLatestHotContainer())
       })
     },
     initTab: function() {
@@ -339,6 +342,7 @@ export default {
         loadingStartListener: this.showLoadingScreen,
         loadingFinishListener: this.closeLoadingScreen
       })
+      console.log('loading format')
       addHotContainerListeners(container)
       let activeHotId = HotRegister.getActiveInstance().guid
       let activeTabId = this.activeTab
@@ -368,6 +372,11 @@ export default {
       // do not allow single tab to be closed
       if (this.tabs.length > 1) {
         let targetTabId = $(event.currentTarget).parents("[id^='tab']").attr('id')
+        let targetTabId3 = event.currentTarget.parentElement.parentElement
+        console.log(targetTabId3)
+        let targetTabId2 = event.currentTarget.parentElement.parentElement.querySelectorAll('#tab0 ')
+        console.log(targetTabId2)
+        // querySelectorAll('#csvContent .editor')
         // remove the closed tab from the array
         this.removeTab(targetTabId)
         this.cleanUpTabDependencies(targetTabId)

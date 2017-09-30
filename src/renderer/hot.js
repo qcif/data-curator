@@ -1,5 +1,4 @@
 import Handsontable from 'handsontable/dist/handsontable.full.js'
-import jQuery from 'jquery/dist/jquery.js'
 import {remote} from 'electron'
 const Dialog = remote.dialog
 
@@ -74,31 +73,23 @@ let HotRegister = {
     _.set(this.hots, hot.guid, hot)
     return hot.guid
   },
-  getInstance(key) {
-    return _.get(this.hots, key)
+  getInstance(id) {
+    return _.get(this.hots, id)
   },
   getActiveInstance() {
-    // let activeHotId = jQuery('#csvContent .active .editor').attr('id')
-    // let activeHot = document.querySelectorAll('#csvContent .active .editor')
-    let activeHotId = document.querySelector('#csvContent').querySelector('.active').querySelector('.editor').id
-    console.log(`active id is: ${activeHot}`)
-    // let activeHotId = activeHot.id
-    let hot = _.get(this.hots, activeHotId)
-    return hot
+    let activeHot = document.querySelectorAll('#csvContent .active .editor')[0]
+    return getInstance(activeHot.id)
   },
   getActiveHotIdData() {
     let activeHot = this.getActiveInstance()
-    let data = activeHot.getData()
-    let id = activeHot.guid
-    return {'id': id, 'data': data}
+    return {'id': activeHot.guid, 'data': activeHot.getData()}
   },
-  destroy(id) {
+  destroyAllHots() {
     _.forIn(this.hots, (hot, id) => {
       hot.destroy()
+      _.unset(this.hots, id)
     })
-    for (const key in this.hots) {
-      _.unset(this.hots, key)
-    }
+    // just to ensure no references left
     this.hots = {}
   }
 }
