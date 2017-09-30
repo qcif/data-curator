@@ -58,7 +58,7 @@
           <ul class="nav nav-tabs">
             <li>
               <ul class="nav nav-tabs" id='csvTab'>
-                <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" @click="setActiveTab(tab)">
+                <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" class="tab-header" @click="setActiveTab(tab)">
                   <a>
                     <span>{{tabTitle(tab)}}</span>
                     <span v-if="tabs.length > 1" class="tabclose btn-default fa fa-times" @click.stop="closeTab"></span>
@@ -148,7 +148,6 @@ import HomeTooltip from '../mixins/HomeTooltip'
 import {
   fileFormats
 } from '../file-formats.js'
-window.$ = window.jQuery = require('jquery/dist/jquery.js')
 var ipc = require('electron').ipcRenderer
 require('bootstrap/dist/js/bootstrap.min.js')
 require('lodash/lodash.min.js')
@@ -373,13 +372,7 @@ export default {
     closeTab: function(event) {
       // do not allow single tab to be closed
       if (this.tabs.length > 1) {
-        let targetTabId = $(event.currentTarget).parents("[id^='tab']").attr('id')
-        let targetTabId3 = event.currentTarget.parentElement.parentElement
-        console.log(targetTabId3)
-        let targetTabId2 = event.currentTarget.parentElement.parentElement.querySelectorAll('#tab0 ')
-        console.log(targetTabId2)
-        // querySelectorAll('#csvContent .editor')
-        // remove the closed tab from the array
+        let targetTabId = event.currentTarget.closest('.tab-header').id
         this.removeTab(targetTabId)
         this.cleanUpTabDependencies(targetTabId)
       }
@@ -541,14 +534,14 @@ export default {
     })
     this.$nextTick(function() {
       require('../index.js')
-      let tabIdOrder
       const vueSetTabsOrder = this.setTabsOrder
       Sortable.create(csvTab, {
         animation: 150,
         onSort: function(evt) {
-          tabIdOrder = $("#csvTab [id^='tab']").map(function() {
-            return this.id
-          }).get()
+          let tabIdOrder = []
+          document.querySelectorAll('#csvTab .tab-header').forEach((el) => {
+            tabIdOrder.push(el.id)
+          })
           vueSetTabsOrder(tabIdOrder)
         }
       })
