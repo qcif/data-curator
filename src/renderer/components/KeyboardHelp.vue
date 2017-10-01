@@ -3,19 +3,13 @@
 
   <h1>Keyboard Shortcuts</h1>
 
-<!-- consider index but how to do internal links?
-  <ul>
-    <li><a href="#edit">Edit shortcuts</a></li>
-  </ul>
--->
-
   <h2>Table Editor Shortcuts</h2>
 
   <h3 id="edit"> </h3>
-<!-- add styling to keyboard-help.styl -->
+
   <table width="100%">
     <tr>
-      <th style="width:50%">Table Editing shortcuts</th>
+      <th style="width:50%" class="heading-text">Table Editing shortcuts</th>
       <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
       <th style="width:25%"><i class="fa fa-apple"></i></th>
     </tr>
@@ -50,7 +44,7 @@
 
   <table width="100%">
     <tr>
-      <th style="width:50%">Table Navigation shortcuts</th>
+      <th style="width:50%" class="heading-text">Table Navigation shortcuts</th>
       <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
       <th style="width:25%"><i class="fa fa-apple"></i></th>
     </tr>
@@ -100,7 +94,7 @@
 
   <table width="100%">
     <tr>
-      <th style="width:50%">Table Selection shortcuts</th>
+      <th style="width:50%" class="heading-text">Table Selection shortcuts</th>
       <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
       <th style="width:25%"><i class="fa fa-apple"></i></th>
     </tr>
@@ -155,14 +149,14 @@
 
   <table width="100%">
     <tr>
-      <th style="width:50%">Context menu shortcuts</th>
+      <th style="width:50%" class="heading-text">Context menu shortcuts</th>
       <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
       <th style="width:25%"><i class="fa fa-apple"></i></th>
     </tr>
     <tr>
       <td><b>Right click</b> in a cell to display the context menu</td>
-      <td><i class="fa fa-mouse-pointer"></i></td>
-      <td><i class="fa fa-mouse-pointer"></i></td>
+      <td><img src="static/img/mouse-right-click.svg"></td>
+      <td><img src="static/img/mouse-right-click.svg"></td>
     </tr>
     <tr>
       <td><b>Choose Next</b> option in context menu</td>
@@ -187,7 +181,7 @@
 
   <table width="100%">
     <tr>
-      <th style="width:50%">Data Curator menu shortcuts</th>
+      <th style="width:50%" class="heading-text">Data Curator menu shortcuts</th>
       <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
       <th style="width:25%"><i class="fa fa-apple"></i></th>
     </tr>
@@ -217,7 +211,7 @@
 
   <table width="100%">
     <tr>
-      <th style="width:50%">File menu shortcuts</th>
+      <th style="width:50%" class="heading-text">File menu shortcuts</th>
       <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
       <th style="width:25%"><i class="fa fa-apple"></i></th>
     </tr>
@@ -241,32 +235,18 @@
       <td><kbd>Shift &#8679;</kbd> <kbd>Ctrl</kbd> <kbd>S</kbd></td>
       <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>S</kbd></td>
     </tr>
-<!--
-    <tr>
-      <td><b>Save All</b> unsaved changes to the data tables </td>
-      <td><kbd>Alt</kbd> <kbd>Ctrl</kbd> <kbd>S</kbd></td>
-      <td><kbd>Option &#8997;</kbd> <kbd>Command &#8984;</kbd> <kbd>S</kbd></td>
-    </tr>
--->
     <tr>
       <td><b>Close Tab</b> - optionally save unsaved work before closing the active tab </td>
       <td><kbd>Ctrl</kbd> <kbd>W</kbd> </td>
       <td><kbd>Command &#8984;</kbd> <kbd>W</kbd></td>
     </tr>
-<!--
-    <tr>
-      <td><b>Print</b> sample data and all properties</td>
-      <td><kbd>Ctrl</kbd> <kbd>P</kbd></td>
-      <td><kbd>Command &#8984;</kbd> <kbd>P</kbd></td>
-    </tr>
--->
   </table>
 
   <h3 id="edit-menu"> </h3>
 
   <table  width="100%">
     <tr>
-      <th style="width:50%">Edit menu shortcuts</th>
+      <th style="width:50%" class="heading-text">Edit menu shortcuts</th>
       <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
       <th style="width:25%"><i class="fa fa-apple"></i></th>
     </tr>
@@ -278,7 +258,7 @@
     <tr>
       <td><b>Redo</b> - repeat the last data entry or edit command</td>
       <td><kbd>Ctrl</kbd> <kbd>Y</kbd></td>
-      <td><kbd>Command &#8984;</kbd> <kbd>Y</kbd></td>
+      <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>Z</kbd></td>
     </tr>
     <tr>
       <td><b>Cut</b> - move the selected data to the clipboard</td>
@@ -323,31 +303,11 @@
   </table>
 
 <!--
-
-  <h3 id="view-menu"> </h3>
-    <table  width="100%">
-      <tr>
-        <th style="width:50%">View menu shortcuts</th>
-        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
-        <th style="width:25%"><i class="fa fa-apple"></i></th>
-      </tr>
-      <tr>
-        <td><b>Read Only Mode</b> - </td>
-        <td><kbd>Ctrl</kbd> <kbd>N</kbd></td>
-        <td><kbd>Command &#8984;</kbd> <kbd>N</kbd></td>
-      </tr>
-      <tr>
-        <td><b>Enter Full Screen</b></td>
-        <td><kbd>^</kbd> <kbd>Ctrl</kbd> <kbd>F</kbd></td>
-        <td><kbd>^</kbd> <kbd>Command &#8984;</kbd> <kbd>F</kbd></td>
-      </tr>
-    </table>
-
   <h3 id="find-menu"> </h3>
 
     <table width="100%">
       <tr>
-        <th style="width:50%">Find menu shortcuts</th>
+        <th style="width:50%" class="heading-text">Find menu shortcuts</th>
         <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
         <th style="width:25%"><i class="fa fa-apple"></i></th>
       </tr>
@@ -382,14 +342,13 @@
         <td><kbd>Option &#8997;</kbd> <kbd>Command &#8984;</kbd> <kbd>R</kbd></td>
       </tr>
     </table>
-
 -->
 
   <h3 id="tools-menu"> </h3>
 
     <table width="100%">
       <tr>
-        <th style="width:50%">Tools menu shortcuts</th>
+        <th style="width:50%" class="heading-text">Tools menu shortcuts</th>
         <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
         <th style="width:25%"><i class="fa fa-apple"></i></th>
       </tr>
@@ -409,7 +368,7 @@
 
     <table width="100%">
       <tr>
-        <th style="width:50%">Window menu shortcuts</th>
+        <th style="width:50%" class="heading-text">Window menu shortcuts</th>
         <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
         <th style="width:25%"><i class="fa fa-apple"></i></th>
       </tr>
@@ -434,7 +393,7 @@
 
     <table width="100%">
       <tr>
-        <th style="width:50%">Help menu shortcuts</th>
+        <th style="width:50%" class="heading-text">Help menu shortcuts</th>
         <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
         <th style="width:25%"><i class="fa fa-apple"></i></th>
       </tr>
