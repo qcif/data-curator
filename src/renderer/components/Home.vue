@@ -148,10 +148,10 @@ import HomeTooltip from '../mixins/HomeTooltip'
 import {
   fileFormats
 } from '../file-formats.js'
-var ipc = require('electron').ipcRenderer
-require('bootstrap/dist/js/bootstrap.min.js')
-require('lodash/lodash.min.js')
-require('../menu.js')
+import {ipcRenderer as ipc} from 'electron'
+import 'bootstrap/dist/js/bootstrap.min.js'
+import 'lodash/lodash.min.js'
+import '../menu.js'
 export default {
   name: 'home',
   mixins: [HomeTooltip],

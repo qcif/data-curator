@@ -471,15 +471,9 @@
 </div>
 </template>
 <script>
-window.$ = window.jQuery = require('jquery/dist/jquery.js')
-const {
-  shell
-} = require('electron')
-var ipc = require('electron').ipcRenderer
-require('bootstrap/dist/js/bootstrap.min.js')
+import 'bootstrap/dist/js/bootstrap.min.js'
 export default {
-  name: 'keyboardhelp',
-  methods: {}
+  name: 'keyboardhelp'
 }
 </script>
 <style scoped>
