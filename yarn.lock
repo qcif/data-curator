@@ -3191,7 +3191,7 @@ electron@1.6.13:
     electron-download "^3.0.1"
     extract-zip "^1.0.3"
 
-electron@^1.7.8:
+electron@^1.7.5:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/electron/-/electron-1.8.1.tgz#19b6f39f2013e204a91a60bc3086dc7a4a07ed88"
   dependencies:
@@ -4231,9 +4231,9 @@ handlebars@^4.0.1:
   optionalDependencies:
     uglify-js "^2.6"
 
-handsontable@^0.33.0:
-  version "0.33.0"
-  resolved "https://registry.yarnpkg.com/handsontable/-/handsontable-0.33.0.tgz#3df41804fd00a878b3904a478bf7ef54f2bc6d95"
+handsontable@^0.34.4:
+  version "0.34.4"
+  resolved "https://registry.yarnpkg.com/handsontable/-/handsontable-0.34.4.tgz#c3d1d9730aac6d993fd49b8282447e378de952d4"
   dependencies:
     moment "2.18.1"
     numbro "1.11.0"
@@ -8699,7 +8699,7 @@ uglify-js@3.1.x:
     commander "~2.11.0"
     source-map "~0.5.1"
 
-uglify-js@^2.6, uglify-js@^2.8.29:
+uglify-js@^2.4.19, uglify-js@^2.6, uglify-js@^2.8.29:
   version "2.8.29"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.8.29.tgz#29c5733148057bb4e1f75df35b7a9cb72e6a59dd"
   dependencies:

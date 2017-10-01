@@ -83,7 +83,7 @@
     "escape-regexp": "^0.0.1",
     "exports-loader": "^0.6.4",
     "font-awesome": "^4.7.0",
-    "handsontable": "^0.33.0",
+    "handsontable": "^0.34.4",
     "imports-loader": "^0.7.1",
     "jquery": "^3.2.1",
     "jquery-csv": "^0.8.3",
