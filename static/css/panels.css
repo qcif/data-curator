@@ -1,4 +1,4 @@
-.message {
+/*.message {
   font-size: 14px;
   padding: 5px 10px;
   border-top: 1px solid rgba(0, 0, 0, .15);
@@ -24,7 +24,7 @@
 
 .validation-info {
   background-color: rgba(99, 149, 215, 0.6);
-}
+}*/
 
 @keyframes spin {
   from {
@@ -69,7 +69,7 @@
   bottom: 0;
 }
 
-#header-panel {
+/*#header-panel {
   overflow-x: auto;
 }
 
@@ -82,13 +82,13 @@
 #main-top-panel {
   overflow: auto;
   z-index: 15;
-}
+}*/
 
-.editor {
+/*.editor {
   z-index: 15 !important;
-}
+}*/
 
-#main-middle-panel {
+/*#main-middle-panel {
   overflow: auto;
   z-index: 15;
 }
@@ -96,14 +96,14 @@
 #main-bottom-panel {
   overflow-y: scroll;
   z-index: 15;
-}
+}*/
 
-@media screen {
+/*@media screen {
   #sidenav form {
     padding-top: 6px !important;
     font-size: 12px !important;
   }
-}
+}*/
 @media screen and (min-width: 480px) {
   .col-sm-4 {
     width: 33.33333333%;

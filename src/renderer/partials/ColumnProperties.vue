@@ -114,7 +114,7 @@ export default {
         'any': ['default']
       },
       constraints: {
-        'string': ['required', 'unique', 'minLength', 'maxLength', 'pattern', 'enum'],
+        'string': ['required', 'unique', 'minLength', 'maxLength', 'pattern', 'enum', 'maxLength', 'pattern', 'enum'],
         'number': ['required', 'unique', 'minimum', 'maximum', 'pattern', 'enum'],
         'integer': ['required', 'unique', 'minimum', 'maximum', 'pattern', 'enum'],
         'boolean': ['required', 'enum'],

@@ -5,13 +5,11 @@ Feature: Open a Semi-colon separated value file
 
   The data may be stored in a ".csv" file
 
-  CSV dialect specification - http://specs.frictionlessdata.io/csv-dialect/#specification
+  Use the default values in the [CSV Dialect specification](http://specs.frictionlessdata.io/csv-dialect/#specification) but with 'delimiter' = ';' to open the file and separate the values into the correct columns.
 
-  Use the default CSV dialect values in the specification but with 'delimiter' = ';' to open the file and separate the values into the correct columns.
+  (A desirable feature would be, If the active tab is empty, when the file is opened, insert the file contents into the empty table.)
 
-  If the active tab is empty, when the file is opened, insert the file contents into the empty table.
-
-  If the CSV has an inconsistent number of columns, fix ragged rows (see separate feature in Other)
+  If the CSV has an inconsistent number of columns, [fix ragged rows] (https://relishapp.com/odi-australia/data-curator/docs/other/fix-ragged-rows)
 
   Scenario: Use the menu to open an existing semi-colon separated value file
     Given I have opened Data Curator

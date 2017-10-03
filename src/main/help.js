@@ -1,8 +1,4 @@
-electron = require('electron')
-
-BrowserWindow = electron.BrowserWindow
-Dialog = electron.dialog
-Menu = electron.Menu
+import {BrowserWindow} from 'electron'
 
 function getKeyboardShorcutsMenu() {
   let helpMenu = Menu.getApplicationMenu().items.find(x => x.role === 'help')
@@ -10,18 +6,15 @@ function getKeyboardShorcutsMenu() {
   return keyboardShortcutsSubMenu
 }
 
-var showKeyboardHelp = function() {
+export function showKeyboardHelp() {
   let keyboardShortcutsSubMenu = getKeyboardShorcutsMenu()
   keyboardShortcutsSubMenu.enabled = false
-  var keyboardHelpWindow = new BrowserWindow({width: 760, height: 400})
-
+  let keyboardHelpWindow = new BrowserWindow({width: 760, height: 400})
+  keyboardHelpWindow.setMenu(null)
   keyboardHelpWindow.loadURL(`http://localhost:9080/#/keyboardhelp`)
+
   keyboardHelpWindow.on('closed', function() {
     keyboardShortcutsSubMenu.enabled = true
-    showKeyboardHelp = null
+    keyboardHelpWindow = null
   })
-}
-
-module.exports = {
-  showKeyboardHelp: showKeyboardHelp
 }

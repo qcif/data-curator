@@ -7,17 +7,14 @@
   width 100%
   position fixed
 
-
 sideNavTransition = 0.3s
 sideNavMargin = 400px
 borderColor = #e4e4e4
 sideNavColor = #337ab7
 
-#body-panel
-  border 0
-  height 100%
-
 #header-panel
+  display: block !important
+  position relative
   background-color #f8f8f8
   border-bottom 1px solid
   border-color borderColor
@@ -27,6 +24,12 @@ sideNavColor = #337ab7
     margin-bottom 0
     .navbar-header
       padding-top 9px
+
+#body-panel
+  border 0
+  display: block !important
+  position relative
+  height: 100%
 
 #main-panel
   position fixed
@@ -47,14 +50,33 @@ sideNavColor = #337ab7
   &.right
     margin-right sideNavMargin
     margin-left 0
-  #main-middle-panel
-  #csvEditor
-    height 100%
-    width 100%
-  .tab-pane
-    height 100%
-    width 100%
-    position fixed
+
+#main-bottom-panel
+  height 0
+  width: 100%
+  position fixed
+  bottom 0
+  left 0
+  z-index 200
+  transition: 0.5s
+  &.opened
+    height 150px !important
+    overflow-y scroll
+
+#main-middle-panel
+  transition: margin-bottom .5s
+  height 85% !important
+  width 100%
+  margin-bottom 0
+  &.opened
+    margin-bottom 150px !important
+#csvEditor
+  height 90%
+  width 100%
+.tab-pane
+  height 100%
+  width 100%
+  // position fixed
 
 #csvContent
   background url("~static/img/data-curator-background.svg") no-repeat fixed !important
@@ -62,10 +84,10 @@ sideNavColor = #337ab7
   background-position 50% 60% !important
   height 100%
   width 100%
-
   .editor
     overflow: scroll
     height: 100%
+    width 100%
 
 .loading-pane
   position fixed
@@ -103,17 +125,19 @@ sideNavColor = #337ab7
     font-size 1.3em
     text-align: center
 
+sideNavHeaderHeight = 55px
+
 #sidenav
-  height 100%
+  height calc(100% - 55px)
   position absolute
-  margin-left 0px
+  margin 0
   z-index 50
   border-radius 0
   top 0
+  overflow-x: hidden
+  overflow-y: hidden
   transition sideNavTransition
-  .navbar-brand
-    text-transform: capitalize
-    color #fff
+  border-top solid 3px sideNavColor
   &.closed
     width 0 !important
     border 0 !important
@@ -125,59 +149,68 @@ sideNavColor = #337ab7
     width sideNavMargin
     right 0
     border-left solid 3px sideNavColor
+  div.row
+    //   border 0
+    // height 250px
+    position relative
+    //   padding 0
+    //   margin-top 0
   .navbar-header
-    background-color sideNavColor
-    border-bottom 1px solid
-    border-color borderColor
-    display block !important
-    float none
-    margin-left -15px
-    margin-right -15px
-    margin-top 0
-    margin-bottom 26px
-    padding-top 12px
-    @media screen and (min-width: 768px)
-      padding-top 12px
-      padding-left 15px
-      margin-bottom 15px
-  .closebtn
-    position absolute
+    position relative
     top 0
-    margin 0
-    padding 0
-    z-index 75
-    right 0
+    overflow-y hidden
+    background-color sideNavColor
+    display block !important
+    height sideNavHeaderHeight !important
+    width 100%
+    z-index 70
+    .navbar-brand
+      position relative
+      text-transform: capitalize
+      color #fff
+    .closebtn
+      position absolute
+      top 0
+      margin 0
+      padding 0
+      z-index 75
+      right 0
     a
       background-color inherit !important
+  &.left
+    .btn-default
+      color #000 !important
+
   form
-    height 100%
-    position relative
-    margin 0 !important
-    border-top 0
-    padding-left 0 !important
-    padding-right 0 !important
+    z-index 30
+    min-height 250px !important
+    max-height 350px
+    margin-top sideNavHeaderHeight !important
+    margin-bottom 100px
+    overflow-y scroll !important
+    padding 10px 10px 0 15px !important
+    position relative !important
+    display block !important
     label
-      @extend #sidenav form
       text-align left
       padding-left 0 !important
       display inline-block
     div
     input
+      width auto
     select
-      @extend #sidenav form
       height auto
-
-#sidenav .container-fluid
-  position relative
-  height 100%
-  overflow-x scroll
-  overflow-y scroll
+  // .row
+  //   height 100px
+  //   position relative
 
 #sidenav-footer
-  position absolute
-  bottom 0
   width 100%
+  position absolute !important
+  bottom 0 !important
+  height 70px
   display: block
+  // overflow-y hidden
   .left
     float left
     display inline-block
@@ -267,9 +300,3 @@ span.tabclose.btn-default:hover
   .tooltip-text
     &a
       color #fff !important
-
-#main-bottom-panel
-  width: 100%
-  position absolute
-  bottom 0
-  left 0

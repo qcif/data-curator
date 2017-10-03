@@ -2,14 +2,9 @@ import path from 'path'
 import {remote, ipcRenderer as ipc} from 'electron'
 
 function setGlobal(filename, title) {
-  // let remoteTab = remote.getGlobal('tab')
   remote.getGlobal('tab').activeFilename = filename
   remote.getGlobal('tab').activeTitle = title
   remote.getGlobal('tab').filenames = getAllFilenames()
-
-  // remoteTab = tab
-  console.log(`global remote tab is`)
-  console.log(remote.getGlobal('tab'))
 }
 
 function extractNameFromFile(fullPath) {
@@ -46,17 +41,13 @@ const getters = {
     return state.tabs[previousActiveTabPos]
   },
   tabTitle: (state, getters) => (tabId) => {
-    console.log('getting title from tabs store')
-    console.log(`tab id is: ${tabId}`)
     return _.get(state.tabObjects, `${tabId}.title`)
   }
 }
 
 const mutations = {
   pushTab (state, tabId) {
-    console.log('...pushing...')
     state.tabs.push(tabId)
-    console.log(state.tabs)
   },
   pushTabTitle(state, tab) {
     let title
@@ -86,16 +77,19 @@ const mutations = {
   },
   setActiveTab (state, tabId) {
     state.activeTab = `${tabId}`
+    // TODO : now that we use activeTitle as global and we can access with activeTab and tabObjects, keeping it in store is redundant - remove.
     state.activeTitle = state.tabObjects[tabId].title
     setGlobal(state.tabObjects[state.activeTab].filename, state.activeTitle)
     ipc.send('toggleSaveMenu')
   },
-  setTabs (state, tabIdOrder) {
-    console.log(`tab order ${tabIdOrder}`)
+  setTabsOrder (state, tabIdOrder) {
     state.tabs = tabIdOrder
   },
   incrementTabIndex(state) {
     state.tabIndex++
+  },
+  destroyTabObject(state, tabId) {
+    _.unset(state.tabObjects, tabId)
   }
 }
 

@@ -9,13 +9,13 @@
         <div id="toolbar">
           <ul class="nav navbar-nav">
             <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': toolbarIndex === index}" @click="updateToolbarMenu(index)">
-<!--              <a href="#" v-tooltip="tooltip(menu.tooltipId)"> -->
+            <!--              <a href="#" v-tooltip="tooltip(menu.tooltipId)"> -->
               <a href="#">
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
                 <object v-if="menu.image" :class="menu.class" :data="menu.image" type="image/svg+xml" />
                 <div class="toolbar-text">{{menu.name}}</div>
               </a>
-<!--              <component :is="menu.tooltipView" /> -->
+              <!--              <component :is="menu.tooltipView" /> -->
             </li>
           </ul>
         </div>
@@ -24,7 +24,7 @@
   </div>
   <div id="body-panel" class="panel">
     <nav id="sidenav" class="sidenav navbar navbar-default row" :class="sideNavProperties">
-      <div class="container-fluid">
+      <!-- <div> -->
         <div class="navbar-header">
           <ul class="nav navbar-right closebtn">
             <li>
@@ -37,19 +37,22 @@
             {{sideNavViewTitle}}
           </a>
         </div>
+        <!-- <div class="row"> -->
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
           <component :is="sideNavView" :getAllColumnsProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
           </component>
         </transition>
-      </div>
-      <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
-        <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft" v-tooltip="tooltip('tooltip-previous')"><span class="btn fa fa-chevron-left fa-2x" /></a>
-        <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span>
-        <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" />
-        <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight" v-tooltip="tooltip('tooltip-next')"><span class="btn fa fa-chevron-right fa-2x" /></a>
-        <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span>
-        <component v-if="enableSideNavRightArrow" is="tooltipNext" />
-      </div>
+        <!-- </div> -->
+        <!-- <div class="row"/> -->
+        <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
+          <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
+          <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span>
+          <!-- <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" /> -->
+          <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
+          <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span>
+          <!-- <component v-if="enableSideNavRightArrow" is="tooltipNext" /> -->
+        </div>
+        <!-- </div> -->
     </nav>
     <div id="main-panel" class="panel panel-default" :class="sideNavPropertiesForMain">
       <!-- <div id="main-top-panel" class="panel panel-heading"></div> -->
@@ -58,7 +61,7 @@
           <ul class="nav nav-tabs">
             <li>
               <ul class="nav nav-tabs" id='csvTab'>
-                <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" @click="setActiveTab(tab)">
+                <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" class="tab-header" @click="setActiveTab(tab)">
                   <a>
                     <span>{{tabTitle(tab)}}</span>
                     <span v-if="tabs.length > 1" class="tabclose btn-default fa fa-times" @click.stop="closeTab"></span>
@@ -66,11 +69,11 @@
                 </li>
               </ul>
             </li>
-<!--          <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')"> -->
+            <!--        <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')"> -->
             <li class="tab-add" @click="addTab">
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
-<!--            <component is="tooltipAddTab" /> -->
+            <!--        <component is="tooltipAddTab" /> -->
           </ul>
           <div class="tab-content" id='csvContent'>
             <div class="tab-pane" v-for="tab in tabs" :key="tab" :class="{ active: activeTab == tab}">
@@ -148,11 +151,10 @@ import HomeTooltip from '../mixins/HomeTooltip'
 import {
   fileFormats
 } from '../file-formats.js'
-window.$ = window.jQuery = require('jquery/dist/jquery.js')
-var ipc = require('electron').ipcRenderer
-require('bootstrap/dist/js/bootstrap.min.js')
-require('lodash/lodash.min.js')
-require('../menu.js')
+import {ipcRenderer as ipc} from 'electron'
+import 'bootstrap/dist/js/bootstrap.min.js'
+import 'lodash/lodash.min.js'
+import '../menu.js'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
@@ -160,7 +162,7 @@ export default {
     return {
       currentColumnIndex: 0,
       // only set method when ready
-      getColumnPropertiesMethod: this.getAllColumnsProperties(),
+      getColumnPropertiesMethod: function() {},
       toolbarIndex: -1,
       sideNavPosition: 'right',
       sideNavStatus: 'closed',
@@ -226,7 +228,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'tabTitle']),
+    ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'tabTitle', 'getHotIdFromTabId']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -242,13 +244,19 @@ export default {
       'pushTab',
       'pushHotTab',
       'removeTab',
-      'setTabs',
+      'setTabsOrder',
       'setActiveTab',
       'incrementTabIndex',
+      'decrementTabIndex',
       'pushHotColumns',
-      'pushTabTitle'
+      'pushTabTitle',
+      'destroyHotTab',
+      'destroyTabObject'
     ]),
     closeErrorMessages: function() {
+      for (let el of ['main-bottom-panel', 'main-middle-panel']) {
+        document.getElementById(el).classList.remove('opened')
+      }
       this.errorMessages = false
     },
     selectionListener: function() {
@@ -277,6 +285,9 @@ export default {
       console.log('errors...')
       console.log(errorCollection)
       this.errorMessages = errorCollection
+      for (let el of ['main-bottom-panel', 'main-middle-panel']) {
+        document.getElementById(el).classList += ' opened'
+      }
     },
     async validateTable() {
       console.log('firing validate table...')
@@ -287,25 +298,28 @@ export default {
         console.log(err)
       }
     },
+    latestHotContainer: function() {
+      let allEditors = document.querySelectorAll('#csvContent .editor')
+      return allEditors[allEditors.length - 1]
+    },
     addTabWithFormattedData: function(data, format) {
       this.initTab()
       this.$nextTick(function() {
-        // update latest tab object with content
-        this.loadFormattedDataIntoContainer($('.editor:last')[0], data, format)
+        this.loadFormattedDataIntoContainer(this.latestHotContainer(), data, format)
       })
     },
     addTabWithData: function(data) {
       this.initTab()
       this.$nextTick(function() {
-        // update latest tab object with content
-        this.loadDataIntoContainer($('.editor:last')[0], data)
+        this.loadDataIntoContainer(this.latestHotContainer(), data)
       })
     },
     addTab: function() {
       this.initTab()
+      let vueLatestHotContainer = this.latestHotContainer
       this.$nextTick(function() {
         // update latest tab object with content
-        this.loadDefaultDataIntoContainer($('.editor:last')[0])
+        this.loadDefaultDataIntoContainer(vueLatestHotContainer())
       })
     },
     initTab: function() {
@@ -358,17 +372,15 @@ export default {
         let previousTabId = this.getPreviousTabId(targetTabIndex)
         this.setActiveTab(previousTabId)
       }
-      // update hots
-
-      // update hottabs
-
-      // update tab titles
+      this.destroyTabObject(tabId)
+      let hotId = this.getHotIdFromTabId(tabId)
+      this.destroyHotTab(hotId)
+      HotRegister.destroyHot(hotId)
     },
     closeTab: function(event) {
       // do not allow single tab to be closed
       if (this.tabs.length > 1) {
-        let targetTabId = $(event.currentTarget).parents("[id^='tab']").attr('id')
-        // remove the closed tab from the array
+        let targetTabId = event.currentTarget.closest('.tab-header').id
         this.removeTab(targetTabId)
         this.cleanUpTabDependencies(targetTabId)
       }
@@ -530,15 +542,15 @@ export default {
     })
     this.$nextTick(function() {
       require('../index.js')
-      let tabIdOrder
-      const vueSetTabs = this.setTabs
+      const vueSetTabsOrder = this.setTabsOrder
       Sortable.create(csvTab, {
         animation: 150,
         onSort: function(evt) {
-          tabIdOrder = $("#csvTab [id^='tab']").map(function() {
-            return this.id
-          }).get()
-          vueSetTabs(tabIdOrder)
+          let tabIdOrder = []
+          document.querySelectorAll('#csvTab .tab-header').forEach((el) => {
+            tabIdOrder.push(el.id)
+          })
+          vueSetTabsOrder(tabIdOrder)
         }
       })
       this.closeSideNav()
