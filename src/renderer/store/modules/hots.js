@@ -8,22 +8,23 @@ const getters = {
   },
   getHotTableSchema: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].tableSchema
+  },
+  getHotIdFromTabId: (state, getters) => (tabId) => {
+    let hotId = _.findKey(state.hotTabs, {tabId: tabId})
+    return hotId
   }
 }
 
 const mutations = {
   pushHotTab(state, hotTab) {
-    console.log('pushing hotTab object...')
     console.dir(hotTab)
     let hotId = hotTab.hotId
     if (!hotId) {
-      console.log('No hotTab id found. Aborting hotTab object update...')
       return
     }
     if (hotTab.tabId) {
       _.set(state.hotTabs, `${hotId}.tabId`, hotTab.tabId)
     }
-    console.log('leaving push hot tab...')
     console.dir(state.hotTabs)
   },
   pushHotColumns(state, hotTab) {
@@ -70,6 +71,13 @@ const mutations = {
     let allColumnProperties = state.hotTabs[property.hotId].columnProperties[property.columnIndex][property.key]
     console.log('logging get column properties')
     console.log(allColumnProperties)
+  },
+  destroyHotTab(state, hotId) {
+    _.unset(state.hotTabs, hotId)
+  },
+  destroyHotTabFromTabId(state, tabId) {
+    let hotId = getters.getHotIdFromTabId()
+    _.unset(state.hotTabs, hotId)
   }
 }
 

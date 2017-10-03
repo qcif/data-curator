@@ -35,7 +35,6 @@ export function importExcel() {
       })
     })
     popup.on('closed', function(e) {
-      console.log('closing...')
       if (popup) {
         popup = null
       }

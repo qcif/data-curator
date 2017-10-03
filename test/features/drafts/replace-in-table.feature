@@ -1,11 +1,11 @@
-@backlog @draft
+@draft
 
-Feature: Replace in column
+Feature: Replace in table
   As a Data Packager or Data Consumer
   I want to ...
   So that I ...
 
-  Scenario: Replace in column
+  Scenario: Replace in table
     Given I have opened Data Curator
-    When I select "Replace in column" from the menu
+    When I select "Replace in table" from the menu
     Then Do something

@@ -1,6 +1,4 @@
 import Handsontable from 'handsontable/dist/handsontable.full.js'
-import loader from '../renderer/loader.js'
-import jQuery from 'jquery/dist/jquery.js'
 import {remote} from 'electron'
 const Dialog = remote.dialog
 
@@ -75,28 +73,29 @@ let HotRegister = {
     _.set(this.hots, hot.guid, hot)
     return hot.guid
   },
-  getInstance(key) {
-    return _.get(this.hots, key)
+  getInstance(id) {
+    return _.get(this.hots, id)
   },
   getActiveInstance() {
-    let activeHotId = jQuery('#csvContent .active .editor').attr('id')
-    let hot = _.get(this.hots, activeHotId)
-    return hot
+    let activeHot = document.querySelectorAll('#csvContent .active .editor')[0]
+    return this.getInstance(activeHot.id)
   },
   getActiveHotIdData() {
     let activeHot = this.getActiveInstance()
-    let data = activeHot.getData()
-    let id = activeHot.guid
-    return {'id': id, 'data': data}
+    return {'id': activeHot.guid, 'data': activeHot.getData()}
   },
-  destroy(id) {
+  destroyAllHots() {
     _.forIn(this.hots, (hot, id) => {
       hot.destroy()
+      _.unset(this.hots, id)
     })
-    for (const key in this.hots) {
-      _.unset(this.hots, key)
-    }
+    // just a safeguard
     this.hots = {}
+  },
+  destroyHot(id) {
+    let hot = this.getInstance(id)
+    hot.destroy()
+    _.unset(this.hots, id)
   }
 }
 
@@ -160,7 +159,6 @@ export function decrementActiveColumn(activeColumnIndex) {
 export function getColumnCount() {
   let activeHot = HotRegister.getActiveInstance()
   let colCount = activeHot.countCols()
-  console.log(`col count is: ${colCount}`)
   return colCount
 }
 
@@ -259,13 +257,11 @@ const removeColumns = () => {
 }
 
 const unfreezeHeaderRow = () => {
-  console.log('unfreezing...')
   let hot = HotRegister.getActiveInstance()
   hot.updateSettings({fixedRowsTop: 0, colHeaders: true})
 }
 
 const freezeHeaderRow = () => {
-  console.log('freezing...')
   let hot = HotRegister.getActiveInstance()
   hot.updateSettings({fixedRowsTop: 1})
 }

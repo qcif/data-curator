@@ -13,7 +13,6 @@
   - save-as-tab-separated-file.feature
   - save-as-semi-colon-separated-file.feature
   - close-tab.feature
-  - close-all-tabs.feature
 - edit:
   - undo.feature
   - redo.feature
@@ -28,13 +27,9 @@
   - delete-rows.feature
   - delete-columns.feature
   - data-entry.feature
-- view:
-  - read-only-mode.feature
-- find:
 - tools:
   - header-row.feature
   - guess-column-properties.feature
-  - validate-column.feature
   - validate-table.feature
   - set-column-properties.feature
   - set-table-properties.feature
@@ -51,27 +46,37 @@
   - report-issues.feature
 - other:
   - open-application.feature
+  - fix-ragged-rows.feature
+  - add-tab.feature
+  - move-cursor-in-table.feature
+  - sort-column.feature
+  - move-to-next-previous-panel.feature
   - show-help-tags.feature
   - menu-keyboard-shortcuts.feature (Menu keyboard shortcuts)
 - version-2 (Version 2):
   - check-for-update.feature
+  - set-preferences-configuration-file.feature
+  - import-column-properties.feature
+  - create-constraint-from-column.feature
+  - create-lookup-table-from-column.feature
+  - validate-column.feature
+  - publish-data-package.feature
+  - help.feature
+- backlog:
   - set-preferences.feature
   - open-custom-csv.feature
   - open-csv-using-drag-n-drop.feature
   - open-google-sheet.feature
   - open-recent.feature
+  - close-all-tabs.feature
   - print.feature
+  - read-only-mode.feature
   - find.feature
-  - import-column-properties.feature
-  - create-constraint-from-column.feature
-  - create-lookup-table-from-column.feature
   - data-quality-information.feature
   - sample-data-quality-information.md
   - set-view-properties.feature
   - export-closed-datapackage.feature
-  - publish-data-package.feature
-  - help.feature
-- backlog:
+- drafts:
   - save-all.feature
   - replace-in-table.feature
   - replace-in-column.feature

@@ -58,7 +58,7 @@
           <ul class="nav nav-tabs">
             <li>
               <ul class="nav nav-tabs" id='csvTab'>
-                <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" @click="setActiveTab(tab)">
+                <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" class="tab-header" @click="setActiveTab(tab)">
                   <a>
                     <span>{{tabTitle(tab)}}</span>
                     <span v-if="tabs.length > 1" class="tabclose btn-default fa fa-times" @click.stop="closeTab"></span>
@@ -148,11 +148,10 @@ import HomeTooltip from '../mixins/HomeTooltip'
 import {
   fileFormats
 } from '../file-formats.js'
-window.$ = window.jQuery = require('jquery/dist/jquery.js')
-var ipc = require('electron').ipcRenderer
-require('bootstrap/dist/js/bootstrap.min.js')
-require('lodash/lodash.min.js')
-require('../menu.js')
+import {ipcRenderer as ipc} from 'electron'
+import 'bootstrap/dist/js/bootstrap.min.js'
+import 'lodash/lodash.min.js'
+import '../menu.js'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
@@ -160,7 +159,7 @@ export default {
     return {
       currentColumnIndex: 0,
       // only set method when ready
-      getColumnPropertiesMethod: this.getAllColumnsProperties(),
+      getColumnPropertiesMethod: function() {},
       toolbarIndex: -1,
       sideNavPosition: 'right',
       sideNavStatus: 'closed',
@@ -226,7 +225,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'tabTitle']),
+    ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'tabTitle', 'getHotIdFromTabId']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -242,11 +241,14 @@ export default {
       'pushTab',
       'pushHotTab',
       'removeTab',
-      'setTabs',
+      'setTabsOrder',
       'setActiveTab',
       'incrementTabIndex',
+      'decrementTabIndex',
       'pushHotColumns',
-      'pushTabTitle'
+      'pushTabTitle',
+      'destroyHotTab',
+      'destroyTabObject'
     ]),
     closeErrorMessages: function() {
       this.errorMessages = false
@@ -287,28 +289,28 @@ export default {
         console.log(err)
       }
     },
+    latestHotContainer: function() {
+      let allEditors = document.querySelectorAll('#csvContent .editor')
+      return allEditors[allEditors.length - 1]
+    },
     addTabWithFormattedData: function(data, format) {
       this.initTab()
       this.$nextTick(function() {
-        // update latest tab object with content
-        this.loadFormattedDataIntoContainer($('.editor:last')[0], data, format)
+        this.loadFormattedDataIntoContainer(latestHotContainer(), data, format)
       })
     },
     addTabWithData: function(data) {
-      console.log('received call for adding tab with data.')
       this.initTab()
       this.$nextTick(function() {
-        // update latest tab object with content
-        console.log('looking for container')
-        console.log(data)
-        this.loadDataIntoContainer($('.editor:last')[0], data)
+        this.loadDataIntoContainer(latestHotContainer(), data)
       })
     },
     addTab: function() {
       this.initTab()
+      let vueLatestHotContainer = this.latestHotContainer
       this.$nextTick(function() {
         // update latest tab object with content
-        this.loadDefaultDataIntoContainer($('.editor:last')[0])
+        this.loadDefaultDataIntoContainer(vueLatestHotContainer())
       })
     },
     initTab: function() {
@@ -361,17 +363,15 @@ export default {
         let previousTabId = this.getPreviousTabId(targetTabIndex)
         this.setActiveTab(previousTabId)
       }
-      // update hots
-
-      // update hottabs
-
-      // update tab titles
+      this.destroyTabObject(tabId)
+      let hotId = this.getHotIdFromTabId(tabId)
+      this.destroyHotTab(hotId)
+      HotRegister.destroyHot(hotId)
     },
     closeTab: function(event) {
       // do not allow single tab to be closed
       if (this.tabs.length > 1) {
-        let targetTabId = $(event.currentTarget).parents("[id^='tab']").attr('id')
-        // remove the closed tab from the array
+        let targetTabId = event.currentTarget.closest('.tab-header').id
         this.removeTab(targetTabId)
         this.cleanUpTabDependencies(targetTabId)
       }
@@ -533,15 +533,15 @@ export default {
     })
     this.$nextTick(function() {
       require('../index.js')
-      let tabIdOrder
-      const vueSetTabs = this.setTabs
+      const vueSetTabsOrder = this.setTabsOrder
       Sortable.create(csvTab, {
         animation: 150,
         onSort: function(evt) {
-          tabIdOrder = $("#csvTab [id^='tab']").map(function() {
-            return this.id
-          }).get()
-          vueSetTabs(tabIdOrder)
+          let tabIdOrder = []
+          document.querySelectorAll('#csvTab .tab-header').forEach((el) => {
+            tabIdOrder.push(el.id)
+          })
+          vueSetTabsOrder(tabIdOrder)
         }
       })
       this.closeSideNav()
