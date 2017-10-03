@@ -1,4 +1,4 @@
-@backlog  @draft
+@draft
 
 Feature: Filter column
   As a Data Packager

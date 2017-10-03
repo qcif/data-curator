@@ -22,5 +22,5 @@
 ### Your Environment
 > Include details about the environment you experienced the problem - this will help us fix the bug quicker.
 
-* Data Curator version X.Y.Z
-* Operating System and version (e.g. macOS Sierra 10.12.6, Windows 7)
+* Data Curator version 0.Y.Z
+* Operating System and version (e.g. macOS High Sierra 10.13, Windows 7)

@@ -10,12 +10,7 @@ Feature: Show Help Tags
     - Toolbar buttons
     - Field labels
 
-  Help Tag content may contain simple HTML:
-   - simply formatted text e.g. `<b>Don’t</b><br> press this button <hr>`
-   - a text or icon hyperlink to an external URL e.g.  `<a href=”url”>learn more <i class="fa fa-question-circle"></i></a>`
-
-  Notes:
-  - see https://getbootstrap.com/docs/3.3/javascript/#popovers-examples for implementation 
+  Help Tags contain simple HTML
 
   Rules:
     - Delay showing the help tag until the cursor has hovered over the target for a “help-tag-delay” period

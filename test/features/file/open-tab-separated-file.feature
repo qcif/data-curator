@@ -5,14 +5,11 @@ Feature: Open a Tab separated value file
 
   The data may be stored in a ".tsv" file
 
-  CSV dialect specification - http://specs.frictionlessdata.io/csv-dialect/#specification
+  Use the default values in the [CSV Dialect specification](http://specs.frictionlessdata.io/csv-dialect/#specification) but with 'delimiter' = '\t' to open the file and separate the values into the correct columns.
 
-  Use the default CSV dialect values in the specification but with 'delimiter' = '\t' to open the file and separate the values into the correct columns.
-  If the CSV has an incosistent number of columns, fix ragged rows (see separate feature in Other)
+  (A desirable feature would be, If the active tab is empty, when the file is opened, insert the file contents into the empty table.)
 
-  If the active tab is empty, when the file is opened, insert the file contents into the empty table.
-
-  If the CSV has an inconsistent number of columns, fix ragged rows (see separate feature in Other)
+  If the CSV has an inconsistent number of columns, [fix ragged rows] (https://relishapp.com/odi-australia/data-curator/docs/other/fix-ragged-rows)
 
   Scenario: Use the menu to open an existing Tab Separated Value file
     Given I have opened Data Curator
