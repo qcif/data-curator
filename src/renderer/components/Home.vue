@@ -24,7 +24,7 @@
   </div>
   <div id="body-panel" class="panel">
     <nav id="sidenav" class="sidenav navbar navbar-default row" :class="sideNavProperties">
-      <div>
+      <!-- <div> -->
         <div class="navbar-header">
           <ul class="nav navbar-right closebtn">
             <li>
@@ -37,21 +37,22 @@
             {{sideNavViewTitle}}
           </a>
         </div>
-        <!-- <div class="container-fluid" id="sidenav-main"> -->
-          <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
-            <component :is="sideNavView" :getAllColumnsProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
-            </component>
-          </transition>
+        <!-- <div class="row"> -->
+        <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
+          <component :is="sideNavView" :getAllColumnsProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
+          </component>
+        </transition>
         <!-- </div> -->
-        <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
-        <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
-        <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span>
-        <!-- <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" /> -->
-        <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
-        <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span>
-        <!-- <component v-if="enableSideNavRightArrow" is="tooltipNext" /> -->
-      </div>
-      </div>
+        <!-- <div class="row"/> -->
+        <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
+          <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
+          <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span>
+          <!-- <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" /> -->
+          <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
+          <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span>
+          <!-- <component v-if="enableSideNavRightArrow" is="tooltipNext" /> -->
+        </div>
+        <!-- </div> -->
     </nav>
     <div id="main-panel" class="panel panel-default" :class="sideNavPropertiesForMain">
       <!-- <div id="main-top-panel" class="panel panel-heading"></div> -->

@@ -135,6 +135,7 @@ sideNavHeaderHeight = 55px
   border-radius 0
   top 0
   overflow-x: hidden
+  overflow-y: hidden
   transition sideNavTransition
   border-top solid 3px sideNavColor
   &.closed
@@ -148,19 +149,21 @@ sideNavHeaderHeight = 55px
     width sideNavMargin
     right 0
     border-left solid 3px sideNavColor
-  #sidenav div:first-child
-    border 0
-    height 100%
+  div.row
+    //   border 0
+    // height 250px
     position relative
-    padding 0
-    margin 0
+    //   padding 0
+    //   margin-top 0
   .navbar-header
-    position absolute
+    position relative
     top 0
+    overflow-y hidden
     background-color sideNavColor
     display block !important
     height sideNavHeaderHeight !important
     width 100%
+    z-index 70
     .navbar-brand
       position relative
       text-transform: capitalize
@@ -179,8 +182,12 @@ sideNavHeaderHeight = 55px
       color #000 !important
 
   form
+    z-index 30
+    min-height 250px !important
+    max-height 350px
     margin-top sideNavHeaderHeight !important
-    position absolute
+    margin-bottom 100px
+    overflow-y scroll !important
     padding 10px 10px 0 15px !important
     position relative !important
     display block !important
@@ -193,12 +200,17 @@ sideNavHeaderHeight = 55px
       width auto
     select
       height auto
+  // .row
+  //   height 100px
+  //   position relative
 
 #sidenav-footer
   width 100%
-  position absolute
-  bottom 0
+  position absolute !important
+  bottom 0 !important
+  height 70px
   display: block
+  // overflow-y hidden
   .left
     float left
     display inline-block
