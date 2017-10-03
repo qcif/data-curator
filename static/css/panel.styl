@@ -47,14 +47,15 @@ sideNavColor = #337ab7
   &.right
     margin-right sideNavMargin
     margin-left 0
-  #main-middle-panel
-  #csvEditor
-    height 100%
-    width 100%
-  .tab-pane
-    height 100%
-    width 100%
-    position fixed
+
+#main-middle-panel
+#csvEditor
+  height 100%
+  width 100%
+.tab-pane
+  height 100%
+  width 100%
+  position fixed
 
 #csvContent
   background url("~static/img/data-curator-background.svg") no-repeat fixed !important
@@ -104,12 +105,16 @@ sideNavColor = #337ab7
     text-align: center
 
 #sidenav
+  border 0
   height 100%
   position absolute
   margin-left 0px
   z-index 50
   border-radius 0
   top 0
+  overflow-x scroll
+  overflow-y scroll
+  // padding 20px
   transition sideNavTransition
   .navbar-brand
     text-transform: capitalize
@@ -117,6 +122,7 @@ sideNavColor = #337ab7
   &.closed
     width 0 !important
     border 0 !important
+    margin-right 5px
   &.left
     width sideNavMargin
     left 0
@@ -130,9 +136,8 @@ sideNavColor = #337ab7
     border-bottom 1px solid
     border-color borderColor
     display block !important
+    width 100%
     float none
-    margin-left -15px
-    margin-right -15px
     margin-top 0
     margin-bottom 26px
     padding-top 12px
@@ -154,8 +159,6 @@ sideNavColor = #337ab7
     position relative
     margin 0 !important
     border-top 0
-    padding-left 0 !important
-    padding-right 0 !important
     label
       @extend #sidenav form
       text-align left
@@ -167,16 +170,27 @@ sideNavColor = #337ab7
       @extend #sidenav form
       height auto
 
-#sidenav .container-fluid
-  position relative
-  height 100%
-  overflow-x scroll
-  overflow-y scroll
+#sidenav-main
+  width 100%
+  padding-left: 0px
+  height calc(100% - 30px)
+  // height auto
+  // position relative
+  // min-height 80%
+  // margin-bottom 30px
 
 #sidenav-footer
-  position absolute
-  bottom 0
+  // position absolute
+  // bottom 59
+  height 30px !important
+  line-height 30px
+  // clear both
+
+
+  // margin-bottom 30px
   width 100%
+  // height 60%
+  // z-index 60
   display: block
   .left
     float left
