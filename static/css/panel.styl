@@ -29,7 +29,7 @@ sideNavColor = #337ab7
   border 0
   display: block !important
   position relative
-  min-height: 100%
+  height: 100%
 
 #main-panel
   position fixed
@@ -51,14 +51,23 @@ sideNavColor = #337ab7
     margin-right sideNavMargin
     margin-left 0
 
+#main-bottom-panel
+  overflow-y scroll !important
+  // height auto
+  width: 100%
+  position relative
+  bottom 0
+  left 0
+  // height 30px
+
 #main-middle-panel
 #csvEditor
-  height 100%
+  height 75%
   width 100%
 .tab-pane
-  height 100%
+  height 75%
   width 100%
-  position fixed
+  // position fixed
 
 #csvContent
   background url("~static/img/data-curator-background.svg") no-repeat fixed !important
@@ -69,6 +78,7 @@ sideNavColor = #337ab7
   .editor
     overflow: scroll
     height: 100%
+    width 100%
 
 .loading-pane
   position fixed
@@ -109,25 +119,18 @@ sideNavColor = #337ab7
 sideNavHeaderHeight = 55px
 
 #sidenav
-  // border 0
   height calc(100% - 55px)
   position absolute
-  // box-sizing: border-box
   margin 0
   z-index 50
   border-radius 0
   top 0
-  // bottom 0
-  // margin-bottom 20px
-  // padding 20px
-  // hide overflow-x for transitions
   overflow-x: hidden
   transition sideNavTransition
   border-top solid 3px sideNavColor
   &.closed
     width 0 !important
     border 0 !important
-    // margin-right 5px
   &.left
     width sideNavMargin
     left 0
@@ -137,33 +140,19 @@ sideNavHeaderHeight = 55px
     right 0
     border-left solid 3px sideNavColor
   #sidenav div:first-child
-    // overflow-x scroll !important
-    // overflow-y scroll !important
     border 0
     height 100%
     position relative
-    // background-color transparent
     padding 0
     margin 0
   .navbar-header
     position absolute
     top 0
     background-color sideNavColor
-    // border-bottom 1px solid
-    // border-color borderColor
     display block !important
     height sideNavHeaderHeight !important
     width 100%
-    // float none
-    // margin-top 0
-    // margin-bottom 26px
-    // padding-top 12px
-    @media screen and (min-width: 768px)
-      // padding-top 12px
-      // padding-left 15px
-      // margin-bottom 15px
     .navbar-brand
-      // height auto
       position relative
       text-transform: capitalize
       color #fff
@@ -181,19 +170,12 @@ sideNavHeaderHeight = 55px
       color #000 !important
 
   form
-    // box-sizing border-box
-    // overflow-x scroll !important
-    // overflow-y scroll !important
-    // height 100%
     margin-top sideNavHeaderHeight !important
     position absolute
     padding 10px 10px 0 15px !important
     position relative !important
     display block !important
-    // margin 0 !important
-    // border-top 0
     label
-      // @extend #sidenav form
       text-align left
       padding-left 0 !important
       display inline-block
@@ -201,40 +183,10 @@ sideNavHeaderHeight = 55px
     input
       width auto
     select
-      // @extend #sidenav form
       height auto
 
-// #sidenav-main
-//   position relative
-//   // box-sizing border-box
-//   // position absolute
-//   // top 0
-//   width 100%
-//   // padding-top 60px
-//   // padding-left: 0px
-//   height 100%
-  // min-height 87%
-  // max-height 92%
-  // overflow-x scroll !important
-  // overflow-y scroll !important
-  // // height auto
-  // position relative
-  // min-height 80%
-  // margin-bottom 30px
-
 #sidenav-footer
-  // position relative
-  // position absolute
-  // bottom 59
-  // bottom 0
-  // margin-bottom -50px
-  // height 10px !important
-  // line-height 10px !important
-  // clear both
-  // margin-bottom 30px
   width 100%
-  // height 60%
-  // z-index 60
   position absolute
   bottom 0
   display: block
@@ -327,9 +279,3 @@ span.tabclose.btn-default:hover
   .tooltip-text
     &a
       color #fff !important
-
-#main-bottom-panel
-  width: 100%
-  position absolute
-  bottom 0
-  left 0

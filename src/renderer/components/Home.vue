@@ -298,13 +298,13 @@ export default {
     addTabWithFormattedData: function(data, format) {
       this.initTab()
       this.$nextTick(function() {
-        this.loadFormattedDataIntoContainer(latestHotContainer(), data, format)
+        this.loadFormattedDataIntoContainer(this.latestHotContainer(), data, format)
       })
     },
     addTabWithData: function(data) {
       this.initTab()
       this.$nextTick(function() {
-        this.loadDataIntoContainer(latestHotContainer(), data)
+        this.loadDataIntoContainer(this.latestHotContainer(), data)
       })
     },
     addTab: function() {
