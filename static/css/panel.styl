@@ -7,17 +7,14 @@
   width 100%
   position fixed
 
-
 sideNavTransition = 0.3s
 sideNavMargin = 400px
 borderColor = #e4e4e4
 sideNavColor = #337ab7
 
-#body-panel
-  border 0
-  height 100%
-
 #header-panel
+  display: block !important
+  position relative
   background-color #f8f8f8
   border-bottom 1px solid
   border-color borderColor
@@ -27,6 +24,12 @@ sideNavColor = #337ab7
     margin-bottom 0
     .navbar-header
       padding-top 9px
+
+#body-panel
+  border 0
+  display: block !important
+  position relative
+  min-height: 100%
 
 #main-panel
   position fixed
@@ -63,7 +66,6 @@ sideNavColor = #337ab7
   background-position 50% 60% !important
   height 100%
   width 100%
-
   .editor
     overflow: scroll
     height: 100%
@@ -104,25 +106,28 @@ sideNavColor = #337ab7
     font-size 1.3em
     text-align: center
 
+sideNavHeaderHeight = 55px
+
 #sidenav
-  border 0
-  height 100%
+  // border 0
+  height calc(100% - 55px)
   position absolute
-  margin-left 0px
+  // box-sizing: border-box
+  margin 0
   z-index 50
   border-radius 0
   top 0
-  overflow-x scroll
-  overflow-y scroll
+  // bottom 0
+  // margin-bottom 20px
   // padding 20px
+  // hide overflow-x for transitions
+  overflow-x: hidden
   transition sideNavTransition
-  .navbar-brand
-    text-transform: capitalize
-    color #fff
+  border-top solid 3px sideNavColor
   &.closed
     width 0 !important
     border 0 !important
-    margin-right 5px
+    // margin-right 5px
   &.left
     width sideNavMargin
     left 0
@@ -131,66 +136,107 @@ sideNavColor = #337ab7
     width sideNavMargin
     right 0
     border-left solid 3px sideNavColor
-  .navbar-header
-    background-color sideNavColor
-    border-bottom 1px solid
-    border-color borderColor
-    display block !important
-    width 100%
-    float none
-    margin-top 0
-    margin-bottom 26px
-    padding-top 12px
-    @media screen and (min-width: 768px)
-      padding-top 12px
-      padding-left 15px
-      margin-bottom 15px
-  .closebtn
-    position absolute
-    top 0
-    margin 0
-    padding 0
-    z-index 75
-    right 0
-    a
-      background-color inherit !important
-  form
+  #sidenav div:first-child
+    // overflow-x scroll !important
+    // overflow-y scroll !important
+    border 0
     height 100%
     position relative
-    margin 0 !important
-    border-top 0
+    // background-color transparent
+    padding 0
+    margin 0
+  .navbar-header
+    position absolute
+    top 0
+    background-color sideNavColor
+    // border-bottom 1px solid
+    // border-color borderColor
+    display block !important
+    height sideNavHeaderHeight !important
+    width 100%
+    // float none
+    // margin-top 0
+    // margin-bottom 26px
+    // padding-top 12px
+    @media screen and (min-width: 768px)
+      // padding-top 12px
+      // padding-left 15px
+      // margin-bottom 15px
+    .navbar-brand
+      // height auto
+      position relative
+      text-transform: capitalize
+      color #fff
+    .closebtn
+      position absolute
+      top 0
+      margin 0
+      padding 0
+      z-index 75
+      right 0
+    a
+      background-color inherit !important
+  &.left
+    .btn-default
+      color #000 !important
+
+  form
+    // box-sizing border-box
+    // overflow-x scroll !important
+    // overflow-y scroll !important
+    // height 100%
+    margin-top sideNavHeaderHeight !important
+    position absolute
+    padding 10px 10px 0 15px !important
+    position relative !important
+    display block !important
+    // margin 0 !important
+    // border-top 0
     label
-      @extend #sidenav form
+      // @extend #sidenav form
       text-align left
       padding-left 0 !important
       display inline-block
     div
     input
+      width auto
     select
-      @extend #sidenav form
+      // @extend #sidenav form
       height auto
 
-#sidenav-main
-  width 100%
-  padding-left: 0px
-  height calc(100% - 30px)
-  // height auto
+// #sidenav-main
+//   position relative
+//   // box-sizing border-box
+//   // position absolute
+//   // top 0
+//   width 100%
+//   // padding-top 60px
+//   // padding-left: 0px
+//   height 100%
+  // min-height 87%
+  // max-height 92%
+  // overflow-x scroll !important
+  // overflow-y scroll !important
+  // // height auto
   // position relative
   // min-height 80%
   // margin-bottom 30px
 
 #sidenav-footer
+  // position relative
   // position absolute
   // bottom 59
-  height 30px !important
-  line-height 30px
+  // bottom 0
+  // margin-bottom -50px
+  // height 10px !important
+  // line-height 10px !important
   // clear both
-
-
   // margin-bottom 30px
   width 100%
   // height 60%
   // z-index 60
+  position absolute
+  bottom 0
   display: block
   .left
     float left

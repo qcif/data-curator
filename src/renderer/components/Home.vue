@@ -9,13 +9,13 @@
         <div id="toolbar">
           <ul class="nav navbar-nav">
             <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': toolbarIndex === index}" @click="updateToolbarMenu(index)">
-<!--              <a href="#" v-tooltip="tooltip(menu.tooltipId)"> -->
+            <!--              <a href="#" v-tooltip="tooltip(menu.tooltipId)"> -->
               <a href="#">
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
                 <object v-if="menu.image" :class="menu.class" :data="menu.image" type="image/svg+xml" />
                 <div class="toolbar-text">{{menu.name}}</div>
               </a>
-<!--              <component :is="menu.tooltipView" /> -->
+              <!--              <component :is="menu.tooltipView" /> -->
             </li>
           </ul>
         </div>
@@ -24,7 +24,7 @@
   </div>
   <div id="body-panel" class="panel">
     <nav id="sidenav" class="sidenav navbar navbar-default row" :class="sideNavProperties">
-      <div class="container-fluid">
+      <div>
         <div class="navbar-header">
           <ul class="nav navbar-right closebtn">
             <li>
@@ -37,18 +37,20 @@
             {{sideNavViewTitle}}
           </a>
         </div>
-        <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
-          <component :is="sideNavView" :getAllColumnsProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
-          </component>
-        </transition>
-      </div>
-      <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
-        <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft" v-tooltip="tooltip('tooltip-previous')"><span class="btn fa fa-chevron-left fa-2x" /></a>
+        <!-- <div class="container-fluid" id="sidenav-main"> -->
+          <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
+            <component :is="sideNavView" :getAllColumnsProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
+            </component>
+          </transition>
+        <!-- </div> -->
+        <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer">
+        <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
         <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span>
-        <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" />
-        <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight" v-tooltip="tooltip('tooltip-next')"><span class="btn fa fa-chevron-right fa-2x" /></a>
+        <!-- <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" /> -->
+        <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
         <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span>
-        <component v-if="enableSideNavRightArrow" is="tooltipNext" />
+        <!-- <component v-if="enableSideNavRightArrow" is="tooltipNext" /> -->
+      </div>
       </div>
     </nav>
     <div id="main-panel" class="panel panel-default" :class="sideNavPropertiesForMain">
@@ -66,11 +68,11 @@
                 </li>
               </ul>
             </li>
-<!--          <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')"> -->
+            <!--        <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')"> -->
             <li class="tab-add" @click="addTab">
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
-<!--            <component is="tooltipAddTab" /> -->
+            <!--        <component is="tooltipAddTab" /> -->
           </ul>
           <div class="tab-content" id='csvContent'>
             <div class="tab-pane" v-for="tab in tabs" :key="tab" :class="{ active: activeTab == tab}">
