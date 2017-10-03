@@ -1,6 +1,4 @@
-import electron from 'electron'
-
-import {BrowserWindow, dialog as Dialog} from 'electron'
+import {BrowserWindow} from 'electron'
 
 function getKeyboardShorcutsMenu() {
   let helpMenu = Menu.getApplicationMenu().items.find(x => x.role === 'help')
