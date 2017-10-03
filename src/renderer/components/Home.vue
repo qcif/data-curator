@@ -253,6 +253,9 @@ export default {
       'destroyTabObject'
     ]),
     closeErrorMessages: function() {
+      for (let el of ['main-bottom-panel', 'main-middle-panel']) {
+        document.getElementById(el).classList.remove('opened')
+      }
       this.errorMessages = false
     },
     selectionListener: function() {
@@ -281,6 +284,9 @@ export default {
       console.log('errors...')
       console.log(errorCollection)
       this.errorMessages = errorCollection
+      for (let el of ['main-bottom-panel', 'main-middle-panel']) {
+        document.getElementById(el).classList += ' opened'
+      }
     },
     async validateTable() {
       console.log('firing validate table...')

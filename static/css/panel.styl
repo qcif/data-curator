@@ -52,17 +52,24 @@ sideNavColor = #337ab7
     margin-left 0
 
 #main-bottom-panel
-  overflow-y scroll !important
-  // height auto
+  height 0
   width: 100%
-  position relative
+  position fixed
   bottom 0
   left 0
-  // height 30px
+  z-index 200
+  transition: 0.5s
+  &.opened
+    height 150px !important
+    overflow-y scroll
 
 #main-middle-panel
-  height 90%
+  transition: margin-bottom .5s
+  height 85% !important
   width 100%
+  margin-bottom 0
+  &.opened
+    margin-bottom 150px !important
 #csvEditor
   height 90%
   width 100%
