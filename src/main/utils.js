@@ -43,13 +43,10 @@ export function createWindowTab() {
 }
 
 export function createWindowTabWithData(data) {
-  console.log('received data...')
-  console.log(data)
   var window = BrowserWindow.getFocusedWindow()
   if (window == null) {
     window = createWindow()
   } else {
-    console.log('already got window')
     window.webContents.send('addTabWithData', data)
   }
 }

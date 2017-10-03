@@ -28,15 +28,12 @@ export default {
   },
   methods: {
     submit: function() {
-      console.log('submitting...')
       ipc.send('worksheetSelected', this.selected)
     },
     cancel: function() {
-      console.log('cancelling...')
       ipc.send('worksheetCanceled')
     },
     updateSelected: function(selected) {
-      console.log('got update...')
       this.selected = selected
     }
   },
@@ -48,9 +45,6 @@ export default {
         vueOptions.push({text: sheet, value: sheet})
         vueUpdateSelected(sheet)
       })
-    })
-    ipc.on('addTabWithData', function(e, data) {
-      console.log('whoops!')
     })
   }
 }
