@@ -295,9 +295,12 @@ export default {
       })
     },
     addTabWithData: function(data) {
+      console.log('received call for adding tab with data.')
       this.initTab()
       this.$nextTick(function() {
         // update latest tab object with content
+        console.log('looking for container')
+        console.log(data)
         this.loadDataIntoContainer($('.editor:last')[0], data)
       })
     },
