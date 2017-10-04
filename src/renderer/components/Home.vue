@@ -175,10 +175,10 @@ export default {
       errorMessages: false,
       loadingDataMessage: false,
       toolbarMenus: [{
-        name: 'Validate',
-        image: 'static/img/validate.svg',
-        tooltipId: 'tooltip-validate',
-        tooltipView: 'tooltipValidate'
+        name: 'Guess',
+        image: 'static/img/guess-column-properties.svg',
+        tooltipId: 'tooltip-guess',
+        tooltipView: 'tooltipGuess'
       },
       {
         name: 'Column',
@@ -213,11 +213,16 @@ export default {
         sideNavView: 'packager'
       },
       {
+        name: 'Validate',
+        image: 'static/img/validate.svg',
+        tooltipId: 'tooltip-validate',
+        tooltipView: 'tooltipValidate'
+      },
+      {
         name: 'Export',
         image: 'static/img/export.svg',
         tooltipId: 'tooltip-export',
-        tooltipView: 'tooltipExport',
-        sideNavView: 'export'
+        tooltipView: 'tooltipExport'
       }
       ]
     }
@@ -465,7 +470,7 @@ export default {
       } else {
         this.toolbarIndex = index
         this.closeSideNav()
-        if (index === 0) {
+        if (index === 5) {
           this.validateTable()
         }
       }
