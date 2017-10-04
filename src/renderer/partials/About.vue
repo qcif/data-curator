@@ -45,7 +45,7 @@ export default {
       aboutProps: [{
         items: [{
           image: 'static/img/data-curator-banner.png',
-          link: 'https://theodi.org.au/'
+          link: 'https://theodi.org.au/data-curator/'
         },
         {
           label: this.getApplicationVersion()
