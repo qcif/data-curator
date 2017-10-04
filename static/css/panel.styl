@@ -126,7 +126,6 @@ sideNavColor = #337ab7
     text-align: center
 
 sideNavHeaderHeight = 55px
-
 #sidenav
   height calc(100% - 55px)
   position absolute
@@ -204,11 +203,16 @@ sideNavHeaderHeight = 55px
   //   height 100px
   //   position relative
 
+sideNavFooterHeight = 70px
+#aboutProperties
+  @extend #sidenav form
+  max-height calc(100% - 70px) !important
+
 #sidenav-footer
   width 100%
   position absolute !important
   bottom 0 !important
-  height 70px
+  height sideNavFooterHeight
   display: block
   // overflow-y hidden
   .left
