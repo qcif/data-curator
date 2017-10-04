@@ -28,39 +28,40 @@ const mutations = {
     console.dir(state.hotTabs)
   },
   pushHotColumns(state, hotTab) {
-    console.log('state is...')
-    console.log(state.hotTabs)
+    mutations.pushHotColumnsAndOverwrite(state, hotTab)
+  },
+  pushHotColumnsAndOverwrite(state, hotTab) {
+    let hotId = hotTab.hotId
+    let incoming = {}
+    _.set(incoming, `${hotId}.columnProperties`, hotTab.columnProperties)
+    // update existing values and write in new ones where none currently exist
+    _.merge(state.hotTabs, incoming)
+  },
+  pushHotColumnsAndUnderwrite(state, hotTab) {
     let hotId = hotTab.hotId
     let current = {}
     _.set(current, `${hotId}.columnProperties`, state.hotTabs[hotId].columnProperties)
-    console.log('current is...')
-    console.log(current)
     // intended for pushing schema descriptor: only write new values for those which don't already exist
     _.set(state.hotTabs, `${hotId}.columnProperties`, hotTab.columnProperties)
     _.merge(state.hotTabs, current)
-    console.log('leaving push hot tab column properties...')
-    console.dir(state.hotTabs)
+  },
+  // pushing a new schema should also merge over current column properties
+  mergeTableSchemaOverCurrentColumnProperties(state, hotId) {
+    let hotTab = state.hotTabs[hotId]
+    let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.fields
+    _.merge(columnProperties, tableSchemaProperties)
   },
   // a new schema infer shouldn't overwrite any user created input
   mergeCurrentColumnPropertiesOverTableSchema(state, hotId) {
     let hotTab = state.hotTabs[hotId]
     let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.fields
     let columnProperties = hotTab.columnProperties || []
-    console.log('table schema properties')
-    console.log(tableSchemaProperties)
-    console.log('column properties are')
-    console.log(columnProperties)
     _.merge(tableSchemaProperties, columnProperties)
-    console.log(`finished constraints from column over schema`)
-    console.log(tableSchemaProperties)
   },
   pushTableSchema(state, hotTable) {
-    console.log('state is...')
-    console.log(state.hotTabs)
     let hotId = hotTable.hotId
     _.set(state.hotTabs, `${hotId}.tableSchema`, hotTable.tableSchema)
-    mutations.mergeCurrentColumnPropertiesOverTableSchema(state, hotId)
-    console.dir(state.hotTabs)
+    mutations.mergeTableSchemaOverCurrentColumnProperties(state, hotId)
   },
   pushHotProperty(state, property) {
     console.log(`incoming property: ${property}`)

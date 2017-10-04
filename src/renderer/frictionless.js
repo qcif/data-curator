@@ -12,6 +12,8 @@ async function initPackage(data) {
 async function initDataAndInferSchema(data) {
   const table = await Table.load(data)
   await table.infer()
+  console.log('inferred table...')
+  console.log(table)
   return table
 }
 

@@ -51,18 +51,6 @@ sideNavColor = #337ab7
     margin-right sideNavMargin
     margin-left 0
 
-#main-bottom-panel
-  height 0
-  width: 100%
-  position fixed
-  bottom 0
-  left 0
-  z-index 200
-  transition: 0.5s
-  &.opened
-    height 150px !important
-    overflow-y scroll
-
 #main-middle-panel
   transition: margin-bottom .5s
   height 85% !important
@@ -208,12 +196,27 @@ sideNavFooterHeight = 70px
   @extend #sidenav form
   max-height calc(100% - 70px) !important
 
+#main-bottom-panel
+  box-sizing border-box !important
+  height 55px
+  width: 100%
+  position fixed
+  bottom 0
+  left 0
+  z-index 200
+  transition: 0.5s
+  &.opened
+    height 150px !important
+    overflow-y scroll
+
 #sidenav-footer
   width 100%
   position absolute !important
   bottom 0 !important
   height sideNavFooterHeight
   display: block
+  padding 0
+  margin 0
   // overflow-y hidden
   .left
     float left
