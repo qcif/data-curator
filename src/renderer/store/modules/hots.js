@@ -49,6 +49,7 @@ const mutations = {
   mergeTableSchemaOverCurrentColumnProperties(state, hotId) {
     let hotTab = state.hotTabs[hotId]
     let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.fields
+    let columnProperties = hotTab.columnProperties || []
     _.merge(columnProperties, tableSchemaProperties)
   },
   // a new schema infer shouldn't overwrite any user created input
@@ -64,14 +65,10 @@ const mutations = {
     mutations.mergeTableSchemaOverCurrentColumnProperties(state, hotId)
   },
   pushHotProperty(state, property) {
-    console.log(`incoming property: ${property}`)
-    console.log(property)
     let incoming = {}
     _.set(incoming, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
     _.merge(state.hotTabs, incoming)
     let allColumnProperties = state.hotTabs[property.hotId].columnProperties[property.columnIndex][property.key]
-    console.log('logging get column properties')
-    console.log(allColumnProperties)
   },
   destroyHotTab(state, hotId) {
     _.unset(state.hotTabs, hotId)
