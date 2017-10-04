@@ -5088,7 +5088,6 @@ jade@^1.11.0:
     jstransformer "0.0.2"
     mkdirp "~0.5.0"
     transformers "2.1.0"
-    uglify-js "^2.4.19"
     void-elements "~2.0.1"
     with "~4.0.0"
 
@@ -8324,21 +8323,7 @@ table@^3.7.8:
     slice-ansi "0.0.4"
     string-width "^2.0.0"
 
-tableschema@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.0.1.tgz#d827d4e766bf2842e07e88e064738d308934b24f"
-  dependencies:
-    axios "^0.16.1"
-    csv "^1.1.1"
-    d3-time-format "^0.3.2"
-    es6-error "^4.0.2"
-    lodash "^4.13.1"
-    moment "^2.13.0"
-    regenerator-runtime "^0.11.0"
-    stream-to-async-iterator "^0.2.0"
-    tv4 "^1.2.7"
-
-tableschema@^1.1.1:
+tableschema@^1.0.0, tableschema@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.1.1.tgz#cf22c5aabe5924385fc4d6ebdf5dbacd4417dc41"
   dependencies:

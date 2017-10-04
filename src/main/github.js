@@ -163,6 +163,7 @@ var authAndLoad = function(viewName) {
 
   githubWindow = new BrowserWindow({width: 450, height: 600})
   githubWindow.loadURL(rootURL + '/auth/github?referer=data-curator')
+  githubWindow.setMenu(null)
 
   githubWindow.webContents.on('did-get-redirect-request', function(event, oldUrl, newUrl) {
     match = checkForAPIKey(newUrl)

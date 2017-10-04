@@ -11,6 +11,7 @@ export function exportdata() {
   var window = BrowserWindow.getFocusedWindow()
   var datapackage = new BrowserWindow({width: 450, height: 600})
   datapackage.loadURL(`http://localhost:9080/#/datapackage`)
+  datapackage.setMenu(null)
 
   datapackage.on('closed', function() {
     datapackage = null
