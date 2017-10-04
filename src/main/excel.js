@@ -19,6 +19,7 @@ export function importExcel() {
 
     let popup = new BrowserWindow({width: 300, height: 150})
     popup.loadURL(`http://localhost:9080/#/selectworksheet`)
+    popup.setMenu(null)
     popup.webContents.on('did-finish-load', function() {
       popup.webContents.send('loadSheets', workbook.SheetNames)
       ipc.once('worksheetCanceled', function() {
