@@ -33,6 +33,10 @@ export default {
       },
       {
         label: 'encoding'
+      },
+      {
+        label: 'missing values',
+        type: 'text'
       }
       ]
     }

@@ -12,6 +12,9 @@ const getters = {
   getHotIdFromTabId: (state, getters) => (tabId) => {
     let hotId = _.findKey(state.hotTabs, {tabId: tabId})
     return hotId
+  },
+  getMissingValues: (state, getters) => (hotId) => {
+    return state.hotTabs[hotId].missingValues
   }
 }
 
@@ -69,6 +72,12 @@ const mutations = {
     _.set(incoming, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
     _.merge(state.hotTabs, incoming)
     let allColumnProperties = state.hotTabs[property.hotId].columnProperties[property.columnIndex][property.key]
+  },
+  pushMissingValues(state, hotMissingValues) {
+    let hotId = hotMissingValues.hotId
+    _.set(state.hotTabs, `${hotId}.missingValues`, hotMissingValues.missingValues)
+    console.log('pushed missing values')
+    console.log(state.hotTabs)
   },
   destroyHotTab(state, hotId) {
     _.unset(state.hotTabs, hotId)

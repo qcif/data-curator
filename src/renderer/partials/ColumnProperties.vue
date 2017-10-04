@@ -200,7 +200,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getHotColumnProperties']),
     isDropdownFormatDisabled() {
       return this.formatValues.length < 2
     },
