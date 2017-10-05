@@ -144,7 +144,6 @@ import packager from '../partials/PackageProperties'
 import provenance from '../partials/ProvenanceProperties'
 import {
   guessColumnProperties,
-  validateActiveDataWithNoSchema,
   validateActiveDataAgainstSchema
 } from '../frictionless.js'
 import HomeTooltip from '../mixins/HomeTooltip'
@@ -277,7 +276,6 @@ export default {
       } catch (err) {
         console.log(err)
       }
-      this.pushHotColumns(hotColumns)
     },
     reportValidationRowErrors: function(errorCollection) {
       this.errorMessages = errorCollection

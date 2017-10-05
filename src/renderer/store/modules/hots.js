@@ -39,7 +39,11 @@ const mutations = {
     }
   },
   pushHotColumns(state, hotTab) {
+    console.log('pushing hot columns')
+    console.log(hotTab)
     mutations.pushHotColumnsAndOverwrite(state, hotTab)
+    // update table schema
+    mutations.updateTableSchemaWithColumnProperties(state, hotTab.hotId)
   },
   pushHotColumnsAndOverwrite(state, hotTab) {
     let hotId = hotTab.hotId
@@ -56,12 +60,39 @@ const mutations = {
     _.set(state.hotTabs, `${hotId}.columnProperties`, hotTab.columnProperties)
     _.merge(state.hotTabs, current)
   },
+  pushHotProperty(state, property) {
+    let incoming = {}
+    _.set(incoming, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
+    _.merge(state.hotTabs, incoming)
+    let temp = property.hotId
+    mutations.updateTableSchemaWithColumnProperties(state, property.hotId)
+  },
+  pushMissingValues(state, hotMissingValues) {
+    let hotId = hotMissingValues.hotId
+    _.set(state.hotTabs, `${hotId}.missingValues`, hotMissingValues.missingValues)
+    if (state.hotTabs[hotId].tableSchema) {
+      mutations.mergeCurrentMissingValuesOverTableSchema(state, hotId)
+    }
+  },
+  updateTableSchemaWithColumnProperties(state, hotId) {
+    if (state.hotTabs[hotId].tableSchema) {
+      mutations.mergeCurrentColumnPropertiesOverTableSchema(state, hotId)
+    }
+  },
+  pushTableSchema(state, hotTable) {
+    let hotId = hotTable.hotId
+    _.set(state.hotTabs, `${hotId}.tableSchema`, hotTable.tableSchema)
+    mutations.mergeTableSchemaOverCurrentColumnProperties(state, hotId)
+    console.log(state.hotTabs)
+  },
   // pushing a new schema should also merge over current column properties
   mergeTableSchemaOverCurrentColumnProperties(state, hotId) {
     let hotTab = state.hotTabs[hotId]
     let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.fields
-    let columnProperties = hotTab.columnProperties || []
-    _.merge(columnProperties, tableSchemaProperties)
+    if (!hotTab.columnProperties) {
+      hotTab.columnProperties = []
+    }
+    _.merge(hotTab.columnProperties, tableSchemaProperties)
   },
   // a new schema infer shouldn't overwrite any user created input
   mergeCurrentColumnPropertiesOverTableSchema(state, hotId) {
@@ -69,23 +100,14 @@ const mutations = {
     let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.fields
     let columnProperties = hotTab.columnProperties || []
     _.merge(tableSchemaProperties, columnProperties)
+    console.log(state.hotTabs)
   },
-  pushTableSchema(state, hotTable) {
-    let hotId = hotTable.hotId
-    _.set(state.hotTabs, `${hotId}.tableSchema`, hotTable.tableSchema)
-    mutations.mergeTableSchemaOverCurrentColumnProperties(state, hotId)
-  },
-  pushHotProperty(state, property) {
-    let incoming = {}
-    _.set(incoming, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
-    _.merge(state.hotTabs, incoming)
-    let allColumnProperties = state.hotTabs[property.hotId].columnProperties[property.columnIndex][property.key]
-  },
-  pushMissingValues(state, hotMissingValues) {
-    let hotId = hotMissingValues.hotId
-    _.set(state.hotTabs, `${hotId}.missingValues`, hotMissingValues.missingValues)
-    // console.log('pushed missing values')
-    // console.log(state.hotTabs)
+  mergeCurrentMissingValuesOverTableSchema(state, hotId) {
+    let hotTab = state.hotTabs[hotId]
+    let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.missingValues
+    let missingValues = hotTab.missingValues || []
+    _.merge(tableSchemaProperties, missingValues)
+    console.log(state.hotTabs)
   },
   destroyHotTab(state, hotId) {
     _.unset(state.hotTabs, hotId)

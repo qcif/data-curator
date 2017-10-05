@@ -29,6 +29,10 @@ async function initStrictData(data) {
 
 async function initDataAgainstSchema(data, schema) {
   // provide schema rather than infer
+  console.log('data for schema')
+  console.log(data)
+  console.log('schema')
+  console.log(schema)
   let table = await Table.load(data, {schema: schema})
   return table
 }
@@ -44,11 +48,11 @@ export async function guessColumnProperties() {
   let activeHot = HotRegister.getActiveHotIdData()
   let table = await initDataAndInferSchema(activeHot.data)
   storeData(activeHot.id, table)
-  let tableDescriptor = table.schema.descriptor
-  return {
-    'hotId': activeHot.id,
-    'columnProperties': tableDescriptor.fields
-  }
+  // let tableDescriptor = table.schema.descriptor
+  // return {
+  //   'hotId': activeHot.id,
+  //   'columnProperties': tableDescriptor.fields
+  // }
 }
 
 // function checkRowCells(row, schema) {
@@ -84,7 +88,8 @@ function checkRow(rowNumber, row, schema, errorCollector) {
   } catch (err) {
     if (err.multiple) {
       for (const error of err.errors) {
-        // console.log(error)
+        console.log('pushing error from frictionless...')
+        console.log(error)
         errorCollector.push({rowNumber: rowNumber, message: error.message, name: error.name})
       }
     } else {
@@ -93,25 +98,26 @@ function checkRow(rowNumber, row, schema, errorCollector) {
   }
 }
 
-export async function validateActiveDataWithNoSchema() {
-  let activeHotObject = HotRegister.getActiveHotIdData()
-  try {
-    let table = await initStrictData(activeHotObject.data)
-    let result = await table.read({keyed: true})
-  } catch (err) {
-    if (err.multiple) {
-      for (const error of err.errors) {
-        console.log(error)
-      }
-    } else {
-      console.log(err)
-    }
-  }
-}
+// export async function validateActiveDataWithNoSchema() {
+//   let activeHotObject = HotRegister.getActiveHotIdData()
+//   try {
+//     let table = await initStrictData(activeHotObject.data)
+//     let result = await table.read({keyed: true})
+//   } catch (err) {
+//     if (err.multiple) {
+//       for (const error of err.errors) {
+//         console.log(error)
+//       }
+//     } else {
+//       console.log(err)
+//     }
+//   }
+// }
 
 async function checkForSchema(activeHotObject) {
   let tableSchema = _.get(store.state.hotTabs, `${activeHotObject.id}.tableSchema`)
   if (!tableSchema) {
+    console.log('No table schema found. Creating...')
     tableSchema = await initDataAndInferSchema(activeHotObject.data)
   }
   let table = await initDataAgainstSchema(activeHotObject.data, tableSchema.schema)
