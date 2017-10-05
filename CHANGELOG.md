@@ -6,8 +6,45 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/). 
 
 To see what's planned in our [milestones](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open) or unreleased changes.
 
-[Unreleased]:  https://github.com/ODIQueensland/data-curator/compare/v0.3.0...HEAD
+[Unreleased]:  https://github.com/ODIQueensland/data-curator/compare/v0.3.4...HEAD
 ## [Unreleased]
+
+[0.3.4]: https://github.com/ODIQueensland/data-curator/compare/v0.3.3...v0.3.4
+## [0.3.4] - 2017-10-04
+
+### Changed
+- bug fixes
+- application styling
+
+[0.3.3]: https://github.com/ODIQueensland/data-curator/compare/v0.3.2...v0.3.3
+## [0.3.3] - 2017-09-29
+
+### Changed
+- bug fixes
+
+[0.3.2]: https://github.com/ODIQueensland/data-curator/compare/v0.3.1...v0.3.2
+## [0.3.2] - 2017-09-28
+
+### Changed
+- bug fixes
+
+[0.3.1]: https://github.com/ODIQueensland/data-curator/compare/v0.3.0...v0.3.1
+## [0.3.1] - 2017-09-27
+
+### Added
+- Introduction of validation for table with schemas
+- Tooltips
+- Added constraints to column properties
+
+### Changed
+- Menu updates according to OS conventions
+- Improved navigation through menus and columns
+- Updated format/type according to frictionless data.spec
+- Improved save file behaviour and association with tab names
+- Improved style
+- Improved scroll behaviour
+- Improved Windows and Mac CI, unit and e2e configuration with support for ES6.
+- Started migration of single-csv tests from parent app to multi-csv app.
 
 [0.3.0]: https://github.com/ODIQueensland/data-curator/compare/v0.2.3...v0.3.0
 ## [0.3.0] - 2017-09-20

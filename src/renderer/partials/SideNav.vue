@@ -9,6 +9,11 @@
 </form>
 </template>
 <script>
+import {
+  mapMutations,
+  mapState,
+  mapGetters
+} from 'vuex'
 import ColumnToolTip from '../mixins/ColumnTooltip'
 export default {
   name: 'sidenav',
@@ -16,7 +21,6 @@ export default {
   data() {
     return {}
   },
-  mounted: function() {
-  }
+  mounted: function() {}
 }
 </script>

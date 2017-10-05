@@ -32,14 +32,14 @@
 </template>
 <script>
 import {
-  mapMutations,
-  mapGetters,
-  mapState
-} from 'vuex'
-import {
   remote
 } from 'electron'
 import SideNav from './SideNav'
+import {
+  mapMutations,
+  mapState,
+  mapGetters
+} from 'vuex'
 import {
   HotRegister,
   getCurrentColumnIndexOrMin as getCurrentColumnIndex,
@@ -114,7 +114,7 @@ export default {
         'any': ['default']
       },
       constraints: {
-        'string': ['required', 'unique', 'minLength', 'maxLength', 'pattern', 'enum', 'maxLength', 'pattern', 'enum'],
+        'string': ['required', 'unique', 'minLength', 'maxLength', 'pattern', 'enum'],
         'number': ['required', 'unique', 'minimum', 'maximum', 'pattern', 'enum'],
         'integer': ['required', 'unique', 'minimum', 'maximum', 'pattern', 'enum'],
         'boolean': ['required', 'enum'],
@@ -200,7 +200,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getHotColumnProperties']),
     isDropdownFormatDisabled() {
       return this.formatValues.length < 2
     },

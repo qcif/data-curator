@@ -26,6 +26,7 @@ function openFile(format) {
 function openCustom() {
   // var window = BrowserWindow.getFocusedWindow()
   var dialog = new BrowserWindow({width: 200, height: 400})
+  dialog.setMenu(null)
   dialog.once('closed', function() {
     ipc.removeAllListeners('formatSelected')
     dialog = null
@@ -78,6 +79,7 @@ function saveFileAs(format, window) {
 function saveAsCustom() {
   var window = BrowserWindow.getFocusedWindow()
   var dialog = new BrowserWindow({width: 200, height: 400})
+  dialog.setMenu(null)
   dialog.once('closed', function() {
     ipc.removeAllListeners('formatSelected')
     dialog = null

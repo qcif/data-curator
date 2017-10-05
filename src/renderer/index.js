@@ -46,26 +46,16 @@ export function addHotContainerListeners(container) {
     rowAbove.enabled = true
     columnLeft.enabled = true
   }, false)
-  console.log('leaving method createHot')
-  console.log('............................')
 }
 
 export function loadData(key, data, format) {
   let hot = HotRegister.getInstance(key)
-  console.log(`hot is : ${hot}`)
-  console.dir(hot)
-  console.log('.........................')
-  console.log('inside loadData function')
   var arrays = loadDataIntoHot(hot, data, format)
   // matchColumnHeadersToMaxRowLength(hot, arrays)
   fixRaggedRows(hot, arrays)
-  console.log(arrays)
-  console.log('leaving loadData function')
-  console.log('.........................')
 }
 
 ipc.on('saveData', function(e, format, fileName) {
-  console.log('received message...')
   let hot = HotRegister.getActiveInstance()
   saveDataToFile(hot, format, fileName)
 })
@@ -115,7 +105,6 @@ ipc.on('ragged_rows', function() {
 ipc.on('fetchData', function() {
   let hot = HotRegister.getActiveInstance()
   var csv = $.csv.fromArrays(hot.getData(), file.formats.csv)
-  console.log(csv)
   ipc.send('dataSent', csv)
 })
 

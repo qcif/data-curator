@@ -1,4 +1,6 @@
 [![version][version-badge]][changelog] [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
+[![Travis Build Status](https://travis-ci.org/ODIQueensland/data-curator.svg)](https://travis-ci.org/ODIQueensland/data-curator)
+[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/?svg=true)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
 
 
 # Data Curator
@@ -194,4 +196,4 @@ To automate deployment, we are using:
 Changes are recorded in the [Change Log][changelog].
 
 [changelog]: ./CHANGELOG.md
-[version-badge]: https://img.shields.io/badge/version-0.3.3-blue.svg
+[version-badge]: https://img.shields.io/github/package-json/v/ODIQueensland/data-curator.svg

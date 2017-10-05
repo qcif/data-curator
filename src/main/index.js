@@ -48,12 +48,32 @@ function createWindow() {
 
   var filename = clFilename
   if (filename) {
-    console.log('reading file name...')
     readFile([filename])
   } else {
     global.utils.createWindowTab()
   }
 }
+
+// function checkForMultipleWindows() {
+//   console.log('checking for multiple windows...')
+// }
+
+const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
+// Someone tried to run a second instance, we should focus our window.
+  console.log('Attempted to open a second instance. Disallowing...')
+  let firstWindow = BrowserWindow.getAllWindows()[0]
+  if (firstWindow) {
+    if (firstWindow.isMinimized()) firstWindow.restore()
+    firstWindow.focus()
+  }
+})
+
+if (isSecondInstance) {
+  console.log('second app detected. Quitting this.')
+  app.quit()
+}
+
+// app.on('activate', checkForMultipleWindows)
 
 app.on('ready', createWindow)
 

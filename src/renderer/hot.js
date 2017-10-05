@@ -94,7 +94,9 @@ let HotRegister = {
   },
   destroyHot(id) {
     let hot = this.getInstance(id)
-    hot.destroy()
+    if (hot) {
+      hot.destroy()
+    }
     _.unset(this.hots, id)
   }
 }
