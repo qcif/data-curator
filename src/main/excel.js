@@ -17,7 +17,7 @@ export function importExcel() {
     var first_sheet_name = workbook.SheetNames[0]
     var worksheet = workbook.Sheets[first_sheet_name]
 
-    let popup = new BrowserWindow({width: 300, height: 150})
+    let popup = new BrowserWindow({width: 300, height: 150, transparent: false})
     popup.loadURL(`http://localhost:9080/#/selectworksheet`)
     popup.setMenu(null)
     popup.webContents.on('did-finish-load', function() {

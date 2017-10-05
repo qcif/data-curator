@@ -10,17 +10,26 @@ const getters = {
     return state.hotTabs[hotId].tableSchema
   },
   getHotIdFromTabId: (state, getters) => (tabId) => {
-    let hotId = _.findKey(state.hotTabs, {tabId: tabId})
-    return hotId
+    return new Promise((resolve, reject) => {
+      let hotId = _.findKey(state.hotTabs, {tabId: tabId})
+      if (!hotId) {
+        // There is a short render wait in home page, so if hotId not first returned, just wait and try again
+        _.delay(function(tabId) {
+          // console.log('finally returning...')
+          resolve(_.findKey(state.hotTabs, {tabId: tabId}))
+        }, 10, tabId)
+      } else {
+        resolve(hotId)
+      }
+    })
   },
-  getMissingValues: (state, getters) => (hotId) => {
+  getMissingValuesFromHot: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].missingValues
   }
 }
 
 const mutations = {
   pushHotTab(state, hotTab) {
-    console.dir(hotTab)
     let hotId = hotTab.hotId
     if (!hotId) {
       return
@@ -28,7 +37,6 @@ const mutations = {
     if (hotTab.tabId) {
       _.set(state.hotTabs, `${hotId}.tabId`, hotTab.tabId)
     }
-    console.dir(state.hotTabs)
   },
   pushHotColumns(state, hotTab) {
     mutations.pushHotColumnsAndOverwrite(state, hotTab)
@@ -76,8 +84,8 @@ const mutations = {
   pushMissingValues(state, hotMissingValues) {
     let hotId = hotMissingValues.hotId
     _.set(state.hotTabs, `${hotId}.missingValues`, hotMissingValues.missingValues)
-    console.log('pushed missing values')
-    console.log(state.hotTabs)
+    // console.log('pushed missing values')
+    // console.log(state.hotTabs)
   },
   destroyHotTab(state, hotId) {
     _.unset(state.hotTabs, hotId)

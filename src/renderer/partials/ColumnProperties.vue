@@ -32,14 +32,14 @@
 </template>
 <script>
 import {
-  mapMutations,
-  mapGetters,
-  mapState
-} from 'vuex'
-import {
   remote
 } from 'electron'
 import SideNav from './SideNav'
+import {
+  mapMutations,
+  mapState,
+  mapGetters
+} from 'vuex'
 import {
   HotRegister,
   getCurrentColumnIndexOrMin as getCurrentColumnIndex,

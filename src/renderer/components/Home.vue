@@ -260,10 +260,8 @@ export default {
       this.errorMessages = false
     },
     selectionListener: function() {
-      console.log('selection noted in vue')
       this.updateActiveColumn()
       this.resetSideNavArrows()
-      console.log('selection noted finished in vue')
     },
     getAllColumnsProperties: function() {
       let hot = HotRegister.getActiveInstance()
@@ -282,15 +280,12 @@ export default {
       this.pushHotColumns(hotColumns)
     },
     reportValidationRowErrors: function(errorCollection) {
-      console.log('errors...')
-      console.log(errorCollection)
       this.errorMessages = errorCollection
       for (let el of ['main-bottom-panel', 'main-middle-panel']) {
         document.getElementById(el).classList += ' opened'
       }
     },
     async validateTable() {
-      console.log('firing validate table...')
       try {
         await validateActiveDataAgainstSchema(this.reportValidationRowErrors)
       } catch (err) {
@@ -331,7 +326,6 @@ export default {
       })
       this.setActiveTab(nextTabId)
       this.pushTab(nextTabId)
-      console.log(`this tabIndex is ${this.tabIndex}`)
     },
     loadDefaultDataIntoContainer: function(container) {
       let defaultData = '"","",""'

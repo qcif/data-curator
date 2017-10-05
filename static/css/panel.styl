@@ -83,7 +83,7 @@ sideNavColor = #337ab7
   left 0
   height 100%
   width 100%
-  z-index 200
+  z-index 2000
   background-color rgba(0,0,0,0.4)
 
 .modalHide
@@ -100,7 +100,7 @@ sideNavColor = #337ab7
   background-color #f8f8f8
   border-radius 5px
   text-align center
-  z-index 205 /* 1px higher than the overlay layer */
+  z-index 2005 /* 1px higher than the overlay layer */
   .glyphicon.spinning
     animation spin 1s infinite linear
     -webkit-animation spin2 1s infinite linear
@@ -203,13 +203,14 @@ sideNavFooterHeight = 70px
   position fixed
   bottom 0
   left 0
-  z-index 200
+  z-index 200 !important
   transition: 0.5s
   &.opened
     height 150px !important
     overflow-y scroll
 
 #sidenav-footer
+  z-index 100
   width 100%
   position absolute !important
   bottom 0 !important
