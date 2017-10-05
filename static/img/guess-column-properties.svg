@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <g fill="none" fill-rule="evenodd">
+    <path fill="#000" fill-rule="nonzero" d="M464,0 L48,0 C21.49,0 0,21.49 0,48 L0,400 C0,426.51 21.49,448 48,448 L464,448 C490.51,448 512,426.51 512,400 L512,48 C512,21.49 490.51,0 464,0 Z M160,416 L48,416 C39.163,416 32,408.837 32,400 L32,320 L160,320 L160,416 Z M480,320 L480,400 C480,408.837 462.0925,416 440,416 L160,416 L160,320 L480,320 Z M480,320 L32,320 L32,64 L480,64 L480,320 Z"/>
+    <text fill="#4A90E2" font-family="Lato-Black, Lato" font-size="356" font-weight="700">
+      <tspan x="172" y="372">?</tspan>
+    </text>
+  </g>
+</svg>
