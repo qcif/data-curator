@@ -273,6 +273,7 @@ export default {
       let hotColumns
       try {
         hotColumns = await guessColumnProperties()
+        this.pushHotColumns(hotColumns)
       } catch (err) {
         console.log(err)
       }

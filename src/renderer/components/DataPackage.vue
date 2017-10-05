@@ -92,7 +92,6 @@ $(function () {
   var rGrp = $('input[name=group1]')
   rGrp.click(function () {
     var checkedRadio = rGrp.filter(':checked')
-    console.log(checkedRadio.val())
   })
 })
 

@@ -48,7 +48,6 @@ function createWindow() {
 
   var filename = clFilename
   if (filename) {
-    console.log('reading file name...')
     readFile([filename])
   } else {
     global.utils.createWindowTab()

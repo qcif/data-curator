@@ -41,12 +41,12 @@ async function storeData(hotId, table) {
 export async function guessColumnProperties() {
   let activeHot = HotRegister.getActiveHotIdData()
   let table = await initDataAndInferSchema(activeHot.data)
-  storeData(activeHot.id, table)
-  // let tableDescriptor = table.schema.descriptor
-  // return {
-  //   'hotId': activeHot.id,
-  //   'columnProperties': tableDescriptor.fields
-  // }
+  await storeData(activeHot.id, table)
+  let tableDescriptor = table.schema.descriptor
+  return {
+    'hotId': activeHot.id,
+    'columnProperties': tableDescriptor.fields
+  }
 }
 
 // function checkRowCells(row, schema) {
@@ -110,7 +110,6 @@ function checkRow(rowNumber, row, schema, errorCollector) {
 async function checkForSchema(activeHotObject) {
   let tableSchema = _.get(store.state.hotTabs, `${activeHotObject.id}.tableSchema`)
   if (!tableSchema) {
-    console.log('No table schema found. Creating...')
     tableSchema = await initDataAndInferSchema(activeHotObject.data)
   }
   let table = await initDataAgainstSchema(activeHotObject.data, tableSchema.schema)
