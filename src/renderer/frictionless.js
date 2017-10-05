@@ -12,8 +12,6 @@ async function initPackage(data) {
 async function initDataAndInferSchema(data) {
   const table = await Table.load(data)
   await table.infer()
-  console.log('inferred table...')
-  console.log(table)
   return table
 }
 
@@ -29,10 +27,6 @@ async function initStrictData(data) {
 
 async function initDataAgainstSchema(data, schema) {
   // provide schema rather than infer
-  console.log('data for schema')
-  console.log(data)
-  console.log('schema')
-  console.log(schema)
   let table = await Table.load(data, {schema: schema})
   return table
 }
@@ -88,7 +82,6 @@ function checkRow(rowNumber, row, schema, errorCollector) {
   } catch (err) {
     if (err.multiple) {
       for (const error of err.errors) {
-        console.log('pushing error from frictionless...')
         console.log(error)
         errorCollector.push({rowNumber: rowNumber, message: error.message, name: error.name})
       }
@@ -140,6 +133,7 @@ function duplicatesCount(row) {
 }
 
 function checkHeaderErrors(headers, errorCollector) {
+  console.log('checking header errors')
   if (isRowBlank(headers)) {
     errorCollector.push({rowNumber: 1, message: `Headers are completely blank`, name: 'Blank Row'})
   } else {
@@ -156,24 +150,22 @@ function checkHeaderErrors(headers, errorCollector) {
 
 export async function validateActiveDataAgainstSchema(callback) {
   let activeHotObject = HotRegister.getActiveHotIdData()
-  // if no current schema - infer, but don't store it - this should be done if 'guess column properties'
-  let table = await checkForSchema(activeHotObject)
-  // don't cast at stream, wait until row to cast otherwise not all errors will be reported.
-  // console.log(activeHotObject)
   const errorCollector = []
   checkHeaderErrors(activeHotObject.data[0], errorCollector)
-  // setFromArray(activeHotObject.data)
+  let table = await checkForSchema(activeHotObject)
+  // don't cast at stream, wait until row to cast otherwise not all errors will be reported.
   const stream = await table.iter({
     extended: true,
     stream: true,
     cast: false
   })
   stream.on('data', (row) => {
-    // console.log(`row number: ${row[0]}`)
     if (isRowBlank(row[2])) {
       errorCollector.push({rowNumber: row[0], message: `Row ${row[0]} is completely blank`, name: 'Blank Row'})
     }
     checkRow(row[0], row[2], table.schema, errorCollector)
   })
-  callback(errorCollector)
+  stream.on('end', () => {
+    callback(errorCollector)
+  })
 }

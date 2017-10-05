@@ -15,7 +15,6 @@ const getters = {
       if (!hotId) {
         // There is a short render wait in home page, so if hotId not first returned, just wait and try again
         _.delay(function(tabId) {
-          // console.log('finally returning...')
           resolve(_.findKey(state.hotTabs, {tabId: tabId}))
         }, 10, tabId)
       } else {
@@ -39,8 +38,6 @@ const mutations = {
     }
   },
   pushHotColumns(state, hotTab) {
-    console.log('pushing hot columns')
-    console.log(hotTab)
     mutations.pushHotColumnsAndOverwrite(state, hotTab)
     // update table schema
     mutations.updateTableSchemaWithColumnProperties(state, hotTab.hotId)
@@ -64,7 +61,6 @@ const mutations = {
     let incoming = {}
     _.set(incoming, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
     _.merge(state.hotTabs, incoming)
-    let temp = property.hotId
     mutations.updateTableSchemaWithColumnProperties(state, property.hotId)
   },
   pushMissingValues(state, hotMissingValues) {
@@ -83,7 +79,6 @@ const mutations = {
     let hotId = hotTable.hotId
     _.set(state.hotTabs, `${hotId}.tableSchema`, hotTable.tableSchema)
     mutations.mergeTableSchemaOverCurrentColumnProperties(state, hotId)
-    console.log(state.hotTabs)
   },
   // pushing a new schema should also merge over current column properties
   mergeTableSchemaOverCurrentColumnProperties(state, hotId) {
@@ -100,14 +95,12 @@ const mutations = {
     let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.fields
     let columnProperties = hotTab.columnProperties || []
     _.merge(tableSchemaProperties, columnProperties)
-    console.log(state.hotTabs)
   },
   mergeCurrentMissingValuesOverTableSchema(state, hotId) {
     let hotTab = state.hotTabs[hotId]
     let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.missingValues
     let missingValues = hotTab.missingValues || []
     _.merge(tableSchemaProperties, missingValues)
-    console.log(state.hotTabs)
   },
   destroyHotTab(state, hotId) {
     _.unset(state.hotTabs, hotId)

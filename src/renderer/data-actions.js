@@ -22,7 +22,6 @@ export function saveDataToFile(hot, format, filename, callback) {
   if (typeof filename === 'string') {
     tabStore.mutations.pushTabObject(tabStore.state, {id: tabId, filename})
   } else {
-    console.log('filename does not exist')
     filename = _.get(tabStore.state.tabObjects, `${tabId}.filename`)
   }
   // if no format specified, default to csv
@@ -32,7 +31,6 @@ export function saveDataToFile(hot, format, filename, callback) {
     data = $.csv.fromArrays(hot.getData(), format.options)
   }
   if (!filename) {
-    console.log('No filename exists. Exiting')
     return
   }
   if (typeof callback === 'undefined') {

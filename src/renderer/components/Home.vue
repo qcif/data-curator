@@ -277,11 +277,22 @@ export default {
         console.log(err)
       }
     },
-    reportValidationRowErrors: function(errorCollection) {
-      this.errorMessages = errorCollection
-      for (let el of ['main-bottom-panel', 'main-middle-panel']) {
+    openValidationMessagesOnIds: function(ids) {
+      for (let el of ids) {
         document.getElementById(el).classList += ' opened'
       }
+    },
+    closeValidationMessagesOnIds: function(ids) {
+      for (let el of ids) {
+        document.getElementById(el).classList.remove('opened')
+      }
+    },
+    reportValidationRowErrors: function(errorCollection) {
+      this.errorMessages = errorCollection
+      let ids = ['main-bottom-panel', 'main-middle-panel']
+      let cssUpdateFunction = this.errorMessages.length > 0
+        ? this.openValidationMessagesOnIds(ids)
+        : this.closeValidationMessagesOnIds(ids)
     },
     async validateTable() {
       try {
