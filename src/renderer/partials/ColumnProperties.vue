@@ -58,7 +58,6 @@ export default {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       formatValues: [],
       constraintValues: [],
-      selectConstraints: [],
       constraintInputKeyValues: {},
       formprops: [{
         label: 'name',
@@ -221,26 +220,25 @@ export default {
       //   }
       // }
       return ''
+    },
+    updateConstraints: function(selectConstraints) {
+      console.log('got constraints update')
+      let merged = { ...this.constraintInputKeyValues
+      }
+      _.merge(merged, this.constraintBooleanBindings)
+      this.constraintInputKeyValues = selectConstraints.reduce(
+        function(previous, current) {
+          if (_.has(merged, current)) {
+            return { ...previous,
+              [current]: merged[current]
+            }
+          } else {
+            return previous
+          }
+        }, {}
+      )
+      this.setProperty('constraints', this.constraintInputKeyValues)
     }
-    // updateConstraints: function() {
-    // console.log('got constraints update')
-    // let test = this.selectConstraints
-    // let merged = { ...this.constraintInputKeyValues
-    // }
-    // _.merge(merged, this.constraintBooleanBindings)
-    // this.constraintInputKeyValues = this.selectConstraints.reduce(
-    //   function(previous, current) {
-    //     if (_.has(merged, current)) {
-    //       return { ...previous,
-    //         [current]: merged[current]
-    //       }
-    //     } else {
-    //       return previous
-    //     }
-    //   }, {}
-    // )
-    // this.setProperty('constraints', this.constraintInputKeyValues)
-    // }
   },
   computed: {
     ...mapGetters([
@@ -280,12 +278,21 @@ export default {
       // if (type) {
       //   this.constraintValues = this.constraints[type]
       // }
-      // let property = this.getProperty('constraints')
-      // if (!property) {
-      //   this.setProperty('constraints', {})
-      //   property = {}
-      // }
-      // return property
+      let property = this.getProperty('constraints')
+      if (!property) {
+        this.setProperty('constraints', {})
+        property = {}
+      }
+      return property
+    },
+    setConstraints() {
+      let property = this.selectConstraints
+      console.log('constraints changed')
+      console.log(property)
+      if (!property) {
+        property = {}
+      }
+      this.setProperty('constraints', {})
     },
     selectFormat: {
       get: function() {
@@ -302,17 +309,36 @@ export default {
       set: function(value) {
         this.setProperty('format', value)
       }
+    },
+    selectConstraints: {
+      get: function() {
+        let property = this.getProperty('constraints')
+        if (!property) {
+          this.setProperty('constraints', {})
+          property = {}
+        }
+        let array = Object.keys(property)
+        console.log('returning constraints...')
+        console.log(array)
+        return array
+      },
+      set: function(value) {
+        this.updateConstraints(value)
+      }
+
     }
   },
   watch: {
     // selectConstraints: function(values) {
     //   console.log('constraint watched...')
-    //   // this.getConstraints
+    //   console.log(values)
     //   this.updateConstraints()
+    //   //   // this.getConstraints
+    //   //   this.updateConstraints()
     // }
     // getConstraints: function(object) {
     //   this.selectConstraints = Object.keys(object)
-    // },
+    // }
   },
   // created: function() {
   //   if (!this.formatValues) {
