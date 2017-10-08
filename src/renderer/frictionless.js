@@ -39,14 +39,15 @@ async function storeData(hotId, table) {
 }
 
 export async function guessColumnProperties() {
+  console.log('about to guess...')
   let activeHot = HotRegister.getActiveHotIdData()
   let table = await initDataAndInferSchema(activeHot.data)
   await storeData(activeHot.id, table)
-  let tableDescriptor = table.schema.descriptor
-  return {
-    'hotId': activeHot.id,
-    'columnProperties': tableDescriptor.fields
-  }
+  // let tableDescriptor = table.schema.descriptor
+  // return {
+  //   'hotId': activeHot.id,
+  //   'columnProperties': tableDescriptor.fields
+  // }
 }
 
 // function checkRowCells(row, schema) {

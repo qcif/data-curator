@@ -1,32 +1,36 @@
-<template>
-<form class="navbar-form form-horizontal" id="columnProperties">
-  <div class="form-group-sm row container-fluid">
-    <div v-for="(formprop, index) in formprops" :key="index">
-      <label v-tooltip.left.click="tooltip(formprop.tooltipId)" :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
-      <component :is="formprop.tooltipView"/>
-      <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
-        <select v-if="formprop.label==='type'" :value="getProperty(formprop.label)" @input="setSelectType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
-          <option v-for="option in typeValues" v-bind:value="option">
-            {{ option}}
-          </option>
-        </select>
-        <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-8">
-          <option v-for="option in formatValues" v-bind:value="option">
-            {{ option}}
-          </option>
-        </select>
-      </template>
-      <div v-else-if="formprop.label === 'constraints'" id="constraints" class="col-sm-8">
-        <div v-for="option in constraintValues" class="input-group row">
-          <input type="checkbox" :id="option" :value="option" v-model="selectConstraints"></input>
-          <label for="option" class="form-control-static">{{option}}</label>
-          <!-- <template v-if="[option] == 'boolean'"/> -->
-          <input v-if="option" v-show="showConstraint(option)" type="text" class="constraint-text" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/>
+  <template>
+  <form class="navbar-form form-horizontal" id="columnProperties">
+    <div class="form-group-sm row container-fluid">
+      <div v-for="(formprop, index) in formprops" :key="index">
+        <label v-tooltip.left.click="tooltip(formprop.tooltipId)" :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
+        <component :is="formprop.tooltipView"/>
+        <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
+          <select v-if="formprop.label==='type'" :value="getPropertyType()" @input="setPropertyType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
+            <option v-for="option in typeValues" v-bind:value="option">
+              {{ option}}
+            </option>
+          </select>
+          <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-8">
+            <option v-for="option in formatValues" v-bind:value="option">
+              {{ option}}
+            </option>
+          </select>
+        </template>
+        <div v-else-if="formprop.label === 'constraints'" id="constraints" class="col-sm-8">
+          <template v-for="option in constraintValues">
+            <div class="input-group row">
+              <input type="checkbox" :id="option" :value="option" v-model="selectConstraints"></input>
+              <label for="option" class="form-control-static">{{option}}</label>
+              <input v-show="showConstraint(option)" v-validate="constraintValidationRules(option)" :name="option" type="text" :class="{ 'form-group-sm constraint-text': true, 'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/>
+            </div>
+            <div v-show="errors.has(option) && selectConstraints.indexOf(option) > -1" class="row help validate-danger">
+              {{ errors.first(option)}}
+            </div>
+          </template>
         </div>
+        <!-- <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-8" :id="formprop.label" /> -->
       </div>
-      <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
     </div>
-  </div>
   </div>
 </form>
 </template>
@@ -42,7 +46,6 @@ import {
 } from 'vuex'
 import {
   HotRegister,
-  getCurrentColumnIndexOrMin as getCurrentColumnIndex,
   reselectCurrentCellOrMin
 } from '../hot.js'
 const Dialog = remote.dialog
@@ -56,10 +59,12 @@ export default {
       formatValues: [],
       constraintValues: [],
       selectConstraints: [],
+      constraintInputKeyValues: {},
       formprops: [{
         label: 'name',
         tooltipId: 'tooltip-column-name',
         tooltipView: 'tooltipColumnName'
+
       },
       {
         label: 'title',
@@ -120,21 +125,29 @@ export default {
         'boolean': ['required', 'enum'],
         'object': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
         'array': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
-        'date': ['required', 'unique', 'minimum', 'maximum', 'enum'],
-        'time': ['required', 'unique', 'minimum', 'maximum', 'enum'],
-        'datetime': ['required', 'unique', 'minimum', 'maximum', 'enum'],
-        'year': ['required', 'unique', 'minimum', 'maximum', 'enum'],
-        'yearmonth': ['required', 'unique', 'minimum', 'maximum', 'pattern', 'enum'],
+        'date': ['required', 'unique', 'minimum', 'maximum', 'enum', 'pattern'],
+        'time': ['required', 'unique', 'minimum', 'maximum', 'enum', 'pattern'],
+        'datetime': ['required', 'unique', 'minimum', 'maximum', 'enum', 'pattern'],
+        'year': ['required', 'unique', 'minimum', 'maximum', 'enum', 'pattern'],
+        'yearmonth': ['required', 'unique', 'minimum', 'maximum', 'pattern', 'enum', 'pattern'],
         'duration': ['required', 'unique', 'minimum', 'maximum', 'enum'],
         'geopoint': ['required', 'unique', 'enum'],
         'geojson': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
         'any': ['required', 'unique', 'enum']
       },
-      constraintBooleanBindings: [
-        'required',
-        'unique'
-      ],
-      otherProperties: ['missingValues', 'primaryKey', 'foreignKey']
+      constraintBooleanBindings: {
+        'required': true,
+        'unique': true
+      },
+      validationRulesByType: {
+        'integer': 'numeric',
+        'number': 'decimal',
+        'date': 'date_format',
+        'time': 'date_format',
+        'datetime': 'date_format',
+        'year': 'date_format',
+        'yearmonth': 'date_format'
+      }
     }
   },
   methods: {
@@ -142,23 +155,7 @@ export default {
       'pushHotProperty'
     ]),
     showConstraint: function(option) {
-      // console.log(this.selectConstraints[option])
-      return this.constraintBooleanBindings.indexOf(option) === -1 && this.selectConstraints.indexOf(option) > -1
-    },
-    getProperty: function(key) {
-      let allColumnsProperties = this.getAllColumnsProperties
-      if (allColumnsProperties) {
-        let activeColumnProperties = allColumnsProperties[this.cIndex]
-        if (activeColumnProperties) {
-          if (key === 'type') {
-            let typeValue = activeColumnProperties['type']
-            if (!typeValue) {
-              this.setSelectType('any')
-            }
-          }
-          return activeColumnProperties[key]
-        }
-      }
+      return Object.keys(this.constraintBooleanBindings).indexOf(option) === -1 && this.selectConstraints.indexOf(option) > -1
     },
     setProperty: function(key, value) {
       const hotId = HotRegister.getActiveInstance().guid
@@ -171,61 +168,135 @@ export default {
       }
       this.pushHotProperty(object)
     },
-    currentColumnIndex: function() {
-      let currentIndex = getCurrentColumnIndex()
-      return currentIndex
+    getProperty: function(key) {
+      const hotId = HotRegister.getActiveInstance().guid
+      const currentColumnIndex = this.cIndex
+      let object = {
+        'hotId': hotId,
+        'columnIndex': currentColumnIndex,
+        'key': key
+      }
+      return this.getHotProperty(object)
     },
-    setSelectType: function(value) {
+    // must not cache to ensure view always updates on selection
+    getPropertyType() {
+      let type = this.getProperty('type')
+      if (!type) {
+        type = 'any'
+        this.setPropertyType(type)
+      }
+      this.updateTypeDependentProperties(type)
+      return type
+    },
+    setPropertyType: function(value) {
       this.setProperty('type', value)
       this.updateTypeDependentProperties(value)
     },
     updateTypeDependentProperties: function(value) {
       this.constraintValues = this.constraints[value]
-      this.updateFormatValues(value)
-    },
-    updateFormatValues: function(value) {
       this.formatValues = this.formats[value]
     },
     getConstraintValue: function(key) {
-      // let object = this.getConstraintsObject
-      let object = this.getConstraints
-      if (object && object[key]) {
-        return object[key]
-      }
+      // let constraints = this.getConstraints
+      // // let constraints = this.getProperty('constraints')
+      // if (constraints) {
+      //   return constraints[key]
+      // }
     },
     setConstraintValue: function(key, value) {
-      let object = {}
-      object[key] = value
-      this.setProperty('constraints', object)
+      // this.constraintInputKeyValues[key] = value
+      // this.updateConstraints()
+    },
+    constraintValidationRules: function(option) {
+      // if (this.selectConstraints.indexOf(option) > -1) {
+      //   if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
+      //     return 'numeric'
+      //   } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
+      //   // let type = this.getProperty('type')
+      //   // if (type === 'integer') {
+      //   //   return numeric
+      //   // }
+      //   } else {
+      //   // console.log('No validation rules to apply this constraint')
+      //   }
+      // }
+      return ''
     }
+    // updateConstraints: function() {
+    // console.log('got constraints update')
+    // let test = this.selectConstraints
+    // let merged = { ...this.constraintInputKeyValues
+    // }
+    // _.merge(merged, this.constraintBooleanBindings)
+    // this.constraintInputKeyValues = this.selectConstraints.reduce(
+    //   function(previous, current) {
+    //     if (_.has(merged, current)) {
+    //       return { ...previous,
+    //         [current]: merged[current]
+    //       }
+    //     } else {
+    //       return previous
+    //     }
+    //   }, {}
+    // )
+    // this.setProperty('constraints', this.constraintInputKeyValues)
+    // }
   },
   computed: {
+    ...mapGetters([
+      'getHotProperty'
+    ]),
+    // updateConstraints() {
+    //   console.log('got constraints update')
+    //   return this.selectConstraints
+    // },
+    // getActiveColumnProperties() {
+    //   // console.log('getting active column properties...')
+    //   let allColumnsProperties = this.getAllColumnsProperties
+    //   // console.log(allColumnsProperties)
+    //   // console.log(`active column index: ${this.cIndex}`)
+    //   if (allColumnsProperties) {
+    //     // console.log('got all columns properties')
+    //     // allColumnsProperties.forEach((el) => {
+    //     //   console.log('counting')
+    //     //   console.log(el)
+    //     // })
+    //     // console.log(allColumnsProperties[this.cIndex])
+    //     return allColumnsProperties[this.cIndex]
+    //   }
+    // },
     isDropdownFormatDisabled() {
       return this.formatValues.length < 2
     },
+    // getPropertyFormat() {
+    //   return this.getProperty('format')
+    // },
+    // getPropertyConstraints() {
+    //   return this.getProperty('constraints')
+    // },
     getConstraints() {
-      let type = this.getProperty('type')
-      if (type) {
-        this.constraintValues = this.constraints[type]
-      }
-      let property = this.getProperty('constraints')
-      if (!property) {
-        this.setProperty('constraints', {})
-        property = {}
-      }
-      return property
+      // console.log('triggered get constraints')
+      // let type = this.getProperty('type')
+      // if (type) {
+      //   this.constraintValues = this.constraints[type]
+      // }
+      // let property = this.getProperty('constraints')
+      // if (!property) {
+      //   this.setProperty('constraints', {})
+      //   property = {}
+      // }
+      // return property
     },
     selectFormat: {
       get: function() {
-        let type = this.getProperty('type')
-        if (type) {
-          this.updateFormatValues(type)
-        }
         let property = this.getProperty('format')
         if (!property) {
           this.setProperty('format', 'default')
           property = 'default'
         }
+        // if (property === 'pattern') {
+        //   this.selectConstraints.push(property)
+        // }
         return property
       },
       set: function(value) {
@@ -234,27 +305,25 @@ export default {
     }
   },
   watch: {
-    selectConstraints: function(values) {
-      const object = this.constraintBooleanBindings.reduce(
-        function(previous, current) {
-          if (values.indexOf(current) > -1) {
-            return { ...previous, [current]: true }
-          } else {
-            return previous
-          }
-        },
-        {}
-      )
-      this.setProperty('constraints', object)
-    },
-    getConstraints: function(object) {
-      this.selectConstraints = Object.keys(object)
-    }
+    // selectConstraints: function(values) {
+    //   console.log('constraint watched...')
+    //   // this.getConstraints
+    //   this.updateConstraints()
+    // }
+    // getConstraints: function(object) {
+    //   this.selectConstraints = Object.keys(object)
+    // },
   },
+  // created: function() {
+  //   if (!this.formatValues) {
+  //     this.formatValues = []
+  //   }
+  // },
   mounted: function() {
     this.$nextTick(function() {
       reselectCurrentCellOrMin()
-      this.selectConstraints = Object.keys(this.getConstraints)
+      console.log('next tick')
+      // this.selectConstraints = Object.keys(this.getConstraints)
     })
   }
 }

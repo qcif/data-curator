@@ -265,15 +265,35 @@ export default {
     getAllColumnsProperties: function() {
       let hot = HotRegister.getActiveInstance()
       if (hot) {
-        let columnProps = this.getHotColumnProperties(hot.guid)
         return this.getHotColumnProperties(hot.guid)
       }
     },
     async updateColumnProperties() {
+      console.log('making call')
       let hotColumns
       try {
-        hotColumns = await guessColumnProperties()
-        this.pushHotColumns(hotColumns)
+        await guessColumnProperties()
+        console.log('finished call...')
+        // let hot = HotRegister.getActiveInstance()
+        // hot.render()
+        // hot.deselectCell()
+        // this.currentColumnIndex = -1
+        // reselectCurrentCellOrMin()
+        // this.updateActiveColumn()
+        // column.$forceUpdate()
+        // this.resetSideNavArrows()
+        // this.$forceUpdate()
+        // this.pushHotColumns(hotColumns)
+        // this.getColumnPropertiesMethod = function() {}
+        // this.getColumnPropertiesMethod = this.getAllColumnsProperties()
+        // this.$nextTick(function() {
+        //   reselectCurrentCellOrMin()
+        //   this.$forceUpdate()
+        // })
+        //
+        // this.$forceUpdate()
+        // this.updateActiveColumn()
+        // this.getColumnPropertiesMethod = this.getAllColumnsProperties()
       } catch (err) {
         console.log(err)
       }
@@ -562,9 +582,11 @@ export default {
     })
   },
   created: function() {
+    const vueForceUpdate = this.forceWrapper
     const vueGuessProperties = this.updateColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
+      vueForceUpdate()
     })
     const vueValidateTable = this.validateTable
     ipc.on('validateTable', function(event, arg) {
