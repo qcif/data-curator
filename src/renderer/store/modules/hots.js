@@ -3,17 +3,12 @@ const state = {
 }
 
 function getHotColumnPropertiesFromPropertyObject(property) {
-  // console.log(`getting...`)
-  // console.log(property)
   let allHotColumnProperties = state.hotTabs[property.hotId].columnProperties
   if (!allHotColumnProperties) {
-    // console.log('resetting all hot columns')
     allHotColumnProperties = state.hotTabs[property.hotId].columnProperties = []
-    // console.log(state.hotTabs)
   }
   let hotColumnProperties = allHotColumnProperties[property.columnIndex]
   if (!hotColumnProperties) {
-    // console.log('resetting hot column properties')
     hotColumnProperties = state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}
   }
   return hotColumnProperties

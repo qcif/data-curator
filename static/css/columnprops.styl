@@ -19,6 +19,10 @@ div#constraints
         float right
       &.validate-danger
         border-color dangerColor
+        &:focus
+          outline-color dangerColor
+        // -webkit-tap-highlight-color dangerColor
+          // outline 0!important
 
 .help.validate-danger
   @extend div#constraints div

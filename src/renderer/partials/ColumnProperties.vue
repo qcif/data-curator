@@ -17,17 +17,17 @@
           </select>
         </template>
         <div v-else-if="formprop.label === 'constraints'" id="constraints" class="col-sm-8">
-            <div class="input-group row" v-for="option3 in constraintValues" :key="option3">
-              <input type="checkbox" :id="option3" :checked="getConstraintCheck(option3)" @click="setConstraintCheck(option3, $event.target)"></input>
-              <label for="option3" class="form-control-static">{{option3}}</label>
-              <!-- <input v-show="showConstraintValue(option)" v-validate="constraintValidationRules(option)" :name="option" type="text" :class="{ 'form-group-sm constraint-text': true, 'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/> -->
-              <template v-if="!isBooleanConstraint(option3)">
-                <input type="text" :class="{ 'form-group-sm constraint-text': true }" :value="getConstraintValue(option3)" @input="setConstraintValue(option3, $event.target.value)"/>
-              </template>
-            </div>
-            <!-- <div v-show="errors.has(option) && selectConstraints.indexOf(option) > -1" class="row help validate-danger">
+          <div class="input-group row" v-for="option in constraintValues" :key="option">
+            <input type="checkbox" :id="option" :checked="getConstraintCheck(option)" @click="setConstraintCheck(option, $event.target)"></input>
+            <label :for="option" class="form-control-static">{{option}}</label>
+            <!-- <input v-show="showConstraintValue(option)" v-validate="constraintValidationRules(option)" :name="option" type="text" :class="{ 'form-group-sm constraint-text': true, 'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/> -->
+            <template v-if="!isBooleanConstraint(option)">
+              <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate="constraintValidationRules(option)" :name="option"/>
+            </template>
+            <div v-show="errors.has(option) && removeConstraint(option)" class="row help validate-danger">
               {{ errors.first(option)}}
-            </div> -->
+            </div>
+          </div>
         </div>
         <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-8" :id="formprop.label" />
       </div>
@@ -159,22 +159,27 @@ export default {
     setProperty: function(key, value) {
       const hotId = HotRegister.getActiveInstance().guid
       const currentColumnIndex = this.cIndex
-      let object = {
-        'hotId': hotId,
-        'columnIndex': currentColumnIndex,
-        'key': key,
-        'value': value
-      }
+      let object = storeObject
+      object.key = key
+      object.value = value
+      // let object = {
+      //   'hotId': hotId,
+      //   'columnIndex': currentColumnIndex,
+      //   'key': key,
+      //   'value': value
+      // }
       this.pushHotProperty(object)
     },
     getProperty: function(key) {
       const hotId = HotRegister.getActiveInstance().guid
       const currentColumnIndex = this.cIndex
-      let object = {
-        'hotId': hotId,
-        'columnIndex': currentColumnIndex,
-        'key': key
-      }
+      let object = storeObject
+      object.key = key
+      // let object = {
+      //   'hotId': hotId,
+      //   'columnIndex': currentColumnIndex,
+      //   'key': key
+      // }
       return this.getHotColumnProperty(object)
     },
     // must not cache to ensure view always updates on selection
@@ -196,27 +201,17 @@ export default {
       this.constraintValues = this.constraints[value]
     },
     getConstraintCheck: function(key) {
-      const hotId = HotRegister.getActiveInstance().guid
-      const currentColumnIndex = this.cIndex
-      let object = {
-        'hotId': hotId,
-        'columnIndex': currentColumnIndex
-      }
+      let object = storeObject
+      // const hotId = HotRegister.getActiveInstance().guid
+      // const currentColumnIndex = this.cIndex
+      // let object = {
+      //   'hotId': hotId,
+      //   'columnIndex': currentColumnIndex
+      // }
       let constraints = this.getHotColumnConstraints(object)
       this.constraintInputKeyValues = constraints || {}
       return _.has(constraints, key)
     },
-    // showSiblingTextConstraint(element, isVisible) {
-    //   let parent = element.parentNode
-    //   if (parent) {
-    //     let textNode = parent.querySelector('.constraint-text')
-    //     console.log('text node')
-    //     console.log(textNode)
-    //     if (textNode) {
-    //       textNode.style.display = isVisible ? 'inline-block' : 'none'
-    //     }
-    //   }
-    // },
     setConstraintCheck: function(key, target) {
       let isChecked = target.checked
       if (!isChecked) {
@@ -224,13 +219,15 @@ export default {
       } else if (this.constraintBooleanBindings.indexOf(key) > -1) {
         this.constraintInputKeyValues[key] = isChecked
       } else {
-        const hotId = HotRegister.getActiveInstance().guid
-        const currentColumnIndex = this.cIndex
-        let object = {
-          'hotId': hotId,
-          'columnIndex': currentColumnIndex,
-          'key': key
-        }
+        let object = storeObject
+        object.key = key
+        // const hotId = HotRegister.getActiveInstance().guid
+        // const currentColumnIndex = this.cIndex
+        // let object = {
+        //   'hotId': hotId,
+        //   'columnIndex': currentColumnIndex,
+        //   'key': key
+        // }
         let currentValue = this.getConstraint(object) || ''
         this.constraintInputKeyValues[key] = currentValue
       }
@@ -244,22 +241,28 @@ export default {
       }
       return property[key]
     },
+    removeConstraint: function(key) {
+      this.constraintInputKeyValues[key] = ''
+      this.setProperty('constraints', this.constraintInputKeyValues)
+      return true
+    },
     setConstraintValue: function(key, value) {
       this.constraintInputKeyValues[key] = value
       this.setProperty('constraints', this.constraintInputKeyValues)
     },
     constraintValidationRules: function(option) {
-      // if (this.selectConstraints.indexOf(option) > -1) {
-      //   if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
-      //     return 'numeric'
-      //   } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
-      //   // let type = this.getProperty('type')
-      //   // if (type === 'integer') {
-      //   //   return numeric
-      //   // }
-      //   } else {
-      //   // console.log('No validation rules to apply this constraint')
-      //   }
+      if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
+        return 'numeric'
+      } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
+        let type = this.getProperty('type')
+        if (type === 'integer') {
+          return 'numeric'
+        } else if (type === 'number') {
+          return 'decimal'
+        }
+      } else {
+        // console.log('No validation rules to apply this constraint')
+      }
       // }
       return ''
     }
@@ -268,8 +271,14 @@ export default {
     ...mapGetters([
       'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints'
     ]),
-    currentConstraintsKeys() {
-      return _.keys(this.constraintInputKeyValues)
+    storeObject() {
+      const hotId = HotRegister.getActiveInstance().guid
+      const currentColumnIndex = this.cIndex
+      let object = {
+        'hotId': hotId,
+        'columnIndex': currentColumnIndex
+      }
+      return object
     },
     isDropdownFormatDisabled() {
       return this.formatValues.length < 2
