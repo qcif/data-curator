@@ -227,7 +227,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'tabTitle', 'getHotIdFromTabId']),
+    ...mapGetters(['getPreviousTabId', 'getAllHotColumnPropertiesFromHotId', 'tabTitle', 'getHotIdFromTabId']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -265,7 +265,7 @@ export default {
     getAllColumnsProperties: function() {
       let hot = HotRegister.getActiveInstance()
       if (hot) {
-        return this.getHotColumnProperties(hot.guid)
+        return this.getAllHotColumnPropertiesFromHotId(hot.guid)
       }
     },
     async updateColumnProperties() {

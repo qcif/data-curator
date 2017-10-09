@@ -6,29 +6,30 @@
         <component :is="formprop.tooltipView"/>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
           <select v-if="formprop.label==='type'" :value="getPropertyType()" @input="setPropertyType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
-            <option v-for="option in typeValues" v-bind:value="option">
-              {{ option}}
+            <option v-for="option1 in typeValues" :key="option1" v-bind:value="option1">
+              {{ option1}}
             </option>
           </select>
           <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-8">
-            <option v-for="option in formatValues" v-bind:value="option">
-              {{ option}}
+            <option v-for="option2 in formatValues" :key="option2" v-bind:value="option2">
+              {{ option2}}
             </option>
           </select>
         </template>
         <div v-else-if="formprop.label === 'constraints'" id="constraints" class="col-sm-8">
-          <template v-for="option in constraintValues">
-            <div class="input-group row">
-              <input type="checkbox" :id="option" :value="option" v-model="selectConstraints"></input>
-              <label for="option" class="form-control-static">{{option}}</label>
-              <input v-show="showConstraint(option)" v-validate="constraintValidationRules(option)" :name="option" type="text" :class="{ 'form-group-sm constraint-text': true, 'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/>
+            <div class="input-group row" v-for="option3 in constraintValues" :key="option3">
+              <input type="checkbox" :id="option3" :checked="getConstraintCheck(option3)" @click="setConstraintCheck(option3, $event.target)"></input>
+              <label for="option3" class="form-control-static">{{option3}}</label>
+              <!-- <input v-show="showConstraintValue(option)" v-validate="constraintValidationRules(option)" :name="option" type="text" :class="{ 'form-group-sm constraint-text': true, 'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/> -->
+              <template v-if="!isBooleanConstraint(option3)">
+                <input type="text" :class="{ 'form-group-sm constraint-text': true }" :value="getConstraintValue(option3)" @input="setConstraintValue(option3, $event.target.value)"/>
+              </template>
             </div>
-            <div v-show="errors.has(option) && selectConstraints.indexOf(option) > -1" class="row help validate-danger">
+            <!-- <div v-show="errors.has(option) && selectConstraints.indexOf(option) > -1" class="row help validate-danger">
               {{ errors.first(option)}}
-            </div>
-          </template>
+            </div> -->
         </div>
-        <!-- <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-8" :id="formprop.label" /> -->
+        <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-8" :id="formprop.label" />
       </div>
     </div>
   </div>
@@ -58,7 +59,9 @@ export default {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       formatValues: [],
       constraintValues: [],
+      selectConstraints: [],
       constraintInputKeyValues: {},
+      constraintInputKeys: [],
       formprops: [{
         label: 'name',
         tooltipId: 'tooltip-column-name',
@@ -134,10 +137,7 @@ export default {
         'geojson': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
         'any': ['required', 'unique', 'enum']
       },
-      constraintBooleanBindings: {
-        'required': true,
-        'unique': true
-      },
+      constraintBooleanBindings: ['required', 'unique'],
       validationRulesByType: {
         'integer': 'numeric',
         'number': 'decimal',
@@ -151,10 +151,10 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'pushHotProperty'
+      'pushHotProperty', 'pushConstraint'
     ]),
-    showConstraint: function(option) {
-      return Object.keys(this.constraintBooleanBindings).indexOf(option) === -1 && this.selectConstraints.indexOf(option) > -1
+    isBooleanConstraint: function(option) {
+      return this.constraintBooleanBindings.indexOf(option) > -1
     },
     setProperty: function(key, value) {
       const hotId = HotRegister.getActiveInstance().guid
@@ -175,7 +175,7 @@ export default {
         'columnIndex': currentColumnIndex,
         'key': key
       }
-      return this.getHotProperty(object)
+      return this.getHotColumnProperty(object)
     },
     // must not cache to ensure view always updates on selection
     getPropertyType() {
@@ -192,19 +192,61 @@ export default {
       this.updateTypeDependentProperties(value)
     },
     updateTypeDependentProperties: function(value) {
-      this.constraintValues = this.constraints[value]
       this.formatValues = this.formats[value]
+      this.constraintValues = this.constraints[value]
+    },
+    getConstraintCheck: function(key) {
+      const hotId = HotRegister.getActiveInstance().guid
+      const currentColumnIndex = this.cIndex
+      let object = {
+        'hotId': hotId,
+        'columnIndex': currentColumnIndex
+      }
+      let constraints = this.getHotColumnConstraints(object)
+      this.constraintInputKeyValues = constraints || {}
+      return _.has(constraints, key)
+    },
+    // showSiblingTextConstraint(element, isVisible) {
+    //   let parent = element.parentNode
+    //   if (parent) {
+    //     let textNode = parent.querySelector('.constraint-text')
+    //     console.log('text node')
+    //     console.log(textNode)
+    //     if (textNode) {
+    //       textNode.style.display = isVisible ? 'inline-block' : 'none'
+    //     }
+    //   }
+    // },
+    setConstraintCheck: function(key, target) {
+      let isChecked = target.checked
+      if (!isChecked) {
+        _.unset(this.constraintInputKeyValues, key)
+      } else if (this.constraintBooleanBindings.indexOf(key) > -1) {
+        this.constraintInputKeyValues[key] = isChecked
+      } else {
+        const hotId = HotRegister.getActiveInstance().guid
+        const currentColumnIndex = this.cIndex
+        let object = {
+          'hotId': hotId,
+          'columnIndex': currentColumnIndex,
+          'key': key
+        }
+        let currentValue = this.getConstraint(object) || ''
+        this.constraintInputKeyValues[key] = currentValue
+      }
+      this.setProperty('constraints', this.constraintInputKeyValues)
     },
     getConstraintValue: function(key) {
-      // let constraints = this.getConstraints
-      // // let constraints = this.getProperty('constraints')
-      // if (constraints) {
-      //   return constraints[key]
-      // }
+      let property = this.getProperty('constraints')
+      if (!property) {
+        this.setProperty('constraints', {})
+        property = {}
+      }
+      return property[key]
     },
     setConstraintValue: function(key, value) {
-      // this.constraintInputKeyValues[key] = value
-      // this.updateConstraints()
+      this.constraintInputKeyValues[key] = value
+      this.setProperty('constraints', this.constraintInputKeyValues)
     },
     constraintValidationRules: function(option) {
       // if (this.selectConstraints.indexOf(option) > -1) {
@@ -220,79 +262,17 @@ export default {
       //   }
       // }
       return ''
-    },
-    updateConstraints: function(selectConstraints) {
-      console.log('got constraints update')
-      let merged = { ...this.constraintInputKeyValues
-      }
-      _.merge(merged, this.constraintBooleanBindings)
-      this.constraintInputKeyValues = selectConstraints.reduce(
-        function(previous, current) {
-          if (_.has(merged, current)) {
-            return { ...previous,
-              [current]: merged[current]
-            }
-          } else {
-            return previous
-          }
-        }, {}
-      )
-      this.setProperty('constraints', this.constraintInputKeyValues)
     }
   },
   computed: {
     ...mapGetters([
-      'getHotProperty'
+      'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints'
     ]),
-    // updateConstraints() {
-    //   console.log('got constraints update')
-    //   return this.selectConstraints
-    // },
-    // getActiveColumnProperties() {
-    //   // console.log('getting active column properties...')
-    //   let allColumnsProperties = this.getAllColumnsProperties
-    //   // console.log(allColumnsProperties)
-    //   // console.log(`active column index: ${this.cIndex}`)
-    //   if (allColumnsProperties) {
-    //     // console.log('got all columns properties')
-    //     // allColumnsProperties.forEach((el) => {
-    //     //   console.log('counting')
-    //     //   console.log(el)
-    //     // })
-    //     // console.log(allColumnsProperties[this.cIndex])
-    //     return allColumnsProperties[this.cIndex]
-    //   }
-    // },
+    currentConstraintsKeys() {
+      return _.keys(this.constraintInputKeyValues)
+    },
     isDropdownFormatDisabled() {
       return this.formatValues.length < 2
-    },
-    // getPropertyFormat() {
-    //   return this.getProperty('format')
-    // },
-    // getPropertyConstraints() {
-    //   return this.getProperty('constraints')
-    // },
-    getConstraints() {
-      // console.log('triggered get constraints')
-      // let type = this.getProperty('type')
-      // if (type) {
-      //   this.constraintValues = this.constraints[type]
-      // }
-      let property = this.getProperty('constraints')
-      if (!property) {
-        this.setProperty('constraints', {})
-        property = {}
-      }
-      return property
-    },
-    setConstraints() {
-      let property = this.selectConstraints
-      console.log('constraints changed')
-      console.log(property)
-      if (!property) {
-        property = {}
-      }
-      this.setProperty('constraints', {})
     },
     selectFormat: {
       get: function() {
@@ -309,47 +289,13 @@ export default {
       set: function(value) {
         this.setProperty('format', value)
       }
-    },
-    selectConstraints: {
-      get: function() {
-        let property = this.getProperty('constraints')
-        if (!property) {
-          this.setProperty('constraints', {})
-          property = {}
-        }
-        let array = Object.keys(property)
-        console.log('returning constraints...')
-        console.log(array)
-        return array
-      },
-      set: function(value) {
-        this.updateConstraints(value)
-      }
-
     }
   },
   watch: {
-    // selectConstraints: function(values) {
-    //   console.log('constraint watched...')
-    //   console.log(values)
-    //   this.updateConstraints()
-    //   //   // this.getConstraints
-    //   //   this.updateConstraints()
-    // }
-    // getConstraints: function(object) {
-    //   this.selectConstraints = Object.keys(object)
-    // }
   },
-  // created: function() {
-  //   if (!this.formatValues) {
-  //     this.formatValues = []
-  //   }
-  // },
   mounted: function() {
     this.$nextTick(function() {
       reselectCurrentCellOrMin()
-      console.log('next tick')
-      // this.selectConstraints = Object.keys(this.getConstraints)
     })
   }
 }

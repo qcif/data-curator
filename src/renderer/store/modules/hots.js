@@ -2,8 +2,25 @@ const state = {
   hotTabs: {}
 }
 
+function getHotColumnPropertiesFromPropertyObject(property) {
+  // console.log(`getting...`)
+  // console.log(property)
+  let allHotColumnProperties = state.hotTabs[property.hotId].columnProperties
+  if (!allHotColumnProperties) {
+    // console.log('resetting all hot columns')
+    allHotColumnProperties = state.hotTabs[property.hotId].columnProperties = []
+    // console.log(state.hotTabs)
+  }
+  let hotColumnProperties = allHotColumnProperties[property.columnIndex]
+  if (!hotColumnProperties) {
+    // console.log('resetting hot column properties')
+    hotColumnProperties = state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}
+  }
+  return hotColumnProperties
+}
+
 const getters = {
-  getHotColumnProperties: (state, getters) => (hotId) => {
+  getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].columnProperties
   },
   getHotTableSchema: (state, getters) => (hotId) => {
@@ -25,25 +42,21 @@ const getters = {
   getMissingValuesFromHot: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].missingValues
   },
-  getHotProperty: (state, getters) => (property) => {
-    console.log(`getting...`)
-    console.log(property)
-    let allHotColumnProperties = state.hotTabs[property.hotId].columnProperties
-    if (!allHotColumnProperties) {
-      console.log('resetting all hot columns')
-      allHotColumnProperties = state.hotTabs[property.hotId].columnProperties = []
-      console.log(state.hotTabs)
+  getHotColumnProperty: (state, getters) => (property) => {
+    let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
+    return hotColumnProperties[property.key]
+  },
+  getHotColumnConstraints: (state, getters) => (property) => {
+    let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
+    return hotColumnProperties['constraints']
+  },
+  getConstraint: (state, getters) => (property) => {
+    let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
+    let constraints = hotColumnProperties['constraints']
+    if (!constraints) {
+      constraints = state.hotTabs[property.hotId].columnProperties[property.columnIndex].constraints = {}
     }
-    let hotColumnProperties = allHotColumnProperties[property.columnIndex]
-    if (!hotColumnProperties) {
-      console.log('resetting hot column properties')
-      hotColumnProperties = state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}
-    }
-    console.log(state.hotTabs)
-    let returned = _.get(hotColumnProperties, property.key)
-    console.log('returned...')
-    console.log(returned)
-    return returned
+    return constraints[property.key]
   }
 }
 
@@ -78,14 +91,10 @@ const mutations = {
     _.merge(state.hotTabs, current)
   },
   pushHotProperty(state, property) {
-    // let incoming = {}
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
-    // _.merge(state.hotTabs, incoming)
-    // _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
-    // console.log(_.get(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`))
-    console.log('pushed property')
-    console.log(state.hotTabs)
-    // mutations.updateTableSchemaWithColumnProperties(state, property.hotId)
+  },
+  pushConstraint(state, property) {
+    _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].constraints[${property.key}]`, property.value)
   },
   pushMissingValues(state, hotMissingValues) {
     let hotId = hotMissingValues.hotId
@@ -112,8 +121,6 @@ const mutations = {
       hotTab.columnProperties = []
     }
     _.merge(hotTab.columnProperties, tableSchemaProperties)
-    console.log('updated column properties')
-    console.log(state.hotTabs)
   },
   // a new schema infer shouldn't overwrite any user created input
   mergeCurrentColumnPropertiesOverTableSchema(state, hotId) {
