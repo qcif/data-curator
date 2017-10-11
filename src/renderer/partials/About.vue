@@ -53,6 +53,13 @@ export default {
         ]
       },
       {
+        items: [
+          {
+            label: 'Beta Release'
+          }
+        ]
+      },
+      {
         items: [{
           image: 'static/img/advance_qld_logo.png',
           link: 'http://advance.qld.gov.au/',

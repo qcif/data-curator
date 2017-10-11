@@ -157,29 +157,30 @@ export default {
       return this.constraintBooleanBindings.indexOf(option) > -1
     },
     setProperty: function(key, value) {
+      // let object = this.storeObject
+      // object.key = key
+      // object.value = value
+      // TODO: change to use method once tested object refs ok
       const hotId = HotRegister.getActiveInstance().guid
       const currentColumnIndex = this.cIndex
-      let object = storeObject
-      object.key = key
-      object.value = value
-      // let object = {
-      //   'hotId': hotId,
-      //   'columnIndex': currentColumnIndex,
-      //   'key': key,
-      //   'value': value
-      // }
+      let object = {
+        'hotId': hotId,
+        'columnIndex': currentColumnIndex,
+        'key': key,
+        'value': value
+      }
       this.pushHotProperty(object)
     },
     getProperty: function(key) {
+      // let object = this.storeObject
+      // object.key = key
       const hotId = HotRegister.getActiveInstance().guid
       const currentColumnIndex = this.cIndex
-      let object = storeObject
-      object.key = key
-      // let object = {
-      //   'hotId': hotId,
-      //   'columnIndex': currentColumnIndex,
-      //   'key': key
-      // }
+      let object = {
+        'hotId': hotId,
+        'columnIndex': currentColumnIndex,
+        'key': key
+      }
       return this.getHotColumnProperty(object)
     },
     // must not cache to ensure view always updates on selection
@@ -201,13 +202,13 @@ export default {
       this.constraintValues = this.constraints[value]
     },
     getConstraintCheck: function(key) {
-      let object = storeObject
-      // const hotId = HotRegister.getActiveInstance().guid
-      // const currentColumnIndex = this.cIndex
-      // let object = {
-      //   'hotId': hotId,
-      //   'columnIndex': currentColumnIndex
-      // }
+      // let object = this.storeObject
+      const hotId = HotRegister.getActiveInstance().guid
+      const currentColumnIndex = this.cIndex
+      let object = {
+        'hotId': hotId,
+        'columnIndex': currentColumnIndex
+      }
       let constraints = this.getHotColumnConstraints(object)
       this.constraintInputKeyValues = constraints || {}
       return _.has(constraints, key)
@@ -219,15 +220,15 @@ export default {
       } else if (this.constraintBooleanBindings.indexOf(key) > -1) {
         this.constraintInputKeyValues[key] = isChecked
       } else {
-        let object = storeObject
-        object.key = key
-        // const hotId = HotRegister.getActiveInstance().guid
-        // const currentColumnIndex = this.cIndex
-        // let object = {
-        //   'hotId': hotId,
-        //   'columnIndex': currentColumnIndex,
-        //   'key': key
-        // }
+        // let object = this.storeObject()
+        // object.key = key
+        const hotId = HotRegister.getActiveInstance().guid
+        const currentColumnIndex = this.cIndex
+        let object = {
+          'hotId': hotId,
+          'columnIndex': currentColumnIndex,
+          'key': key
+        }
         let currentValue = this.getConstraint(object) || ''
         this.constraintInputKeyValues[key] = currentValue
       }

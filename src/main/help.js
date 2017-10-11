@@ -9,7 +9,7 @@ function getKeyboardShorcutsMenu() {
 export function showKeyboardHelp() {
   let keyboardShortcutsSubMenu = getKeyboardShorcutsMenu()
   keyboardShortcutsSubMenu.enabled = false
-  let keyboardHelpWindow = new BrowserWindow({width: 760, height: 400, transparent: true})
+  let keyboardHelpWindow = new BrowserWindow({width: 760, height: 400})
   keyboardHelpWindow.setMenu(null)
   keyboardHelpWindow.loadURL(`http://localhost:9080/#/keyboardhelp`)
 

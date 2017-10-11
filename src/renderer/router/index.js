@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
+//TODO : refactor with queries/ multiple components as won't accomodate in current form for built packages
 export default new Router({
   routes: [
     {
