@@ -20,13 +20,13 @@
           <div class="input-group row" v-for="option in constraintValues" :key="option">
             <input type="checkbox" :id="option" :checked="getConstraintCheck(option)" @click="setConstraintCheck(option, $event.target)"></input>
             <label :for="option" class="form-control-static">{{option}}</label>
-            <!-- <input v-show="showConstraintValue(option)" v-validate="constraintValidationRules(option)" :name="option" type="text" :class="{ 'form-group-sm constraint-text': true, 'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/> -->
             <template v-if="!isBooleanConstraint(option)">
-              <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate="constraintValidationRules(option)" :name="option"/>
+              <!-- <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate="constraintValidationRules(option)" :name="option"/> -->
+              <input type="text" :class="{ 'form-group-sm constraint-text': true }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" :name="option"/>
             </template>
-            <div v-show="errors.has(option) && removeConstraint(option)" class="row help validate-danger">
+            <!-- <div v-show="errors.has(option) && removeConstraint(option)" class="row help validate-danger">
               {{ errors.first(option)}}
-            </div>
+            </div> -->
           </div>
         </div>
         <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-8" :id="formprop.label" />
@@ -127,11 +127,11 @@ export default {
         'boolean': ['required', 'enum'],
         'object': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
         'array': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
-        'date': ['required', 'unique', 'minimum', 'maximum', 'enum', 'pattern'],
-        'time': ['required', 'unique', 'minimum', 'maximum', 'enum', 'pattern'],
-        'datetime': ['required', 'unique', 'minimum', 'maximum', 'enum', 'pattern'],
-        'year': ['required', 'unique', 'minimum', 'maximum', 'enum', 'pattern'],
-        'yearmonth': ['required', 'unique', 'minimum', 'maximum', 'pattern', 'enum', 'pattern'],
+        'date': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'time': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'datetime': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'year': ['required', 'unique', 'minimum', 'maximum', 'enum'],
+        'yearmonth': ['required', 'unique', 'minimum', 'maximum', 'pattern', 'enum'],
         'duration': ['required', 'unique', 'minimum', 'maximum', 'enum'],
         'geopoint': ['required', 'unique', 'enum'],
         'geojson': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
@@ -252,18 +252,18 @@ export default {
       this.setProperty('constraints', this.constraintInputKeyValues)
     },
     constraintValidationRules: function(option) {
-      if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
-        return 'numeric'
-      } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
-        let type = this.getProperty('type')
-        if (type === 'integer') {
-          return 'numeric'
-        } else if (type === 'number') {
-          return 'decimal'
-        }
-      } else {
-        // console.log('No validation rules to apply this constraint')
-      }
+      // if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
+      //   return 'numeric'
+      // } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
+      //   let type = this.getProperty('type')
+      //   if (type === 'integer') {
+      //     return 'numeric'
+      //   } else if (type === 'number') {
+      //     return 'decimal'
+      //   }
+      // } else {
+      //   // console.log('No validation rules to apply this constraint')
+      // }
       // }
       return ''
     }
