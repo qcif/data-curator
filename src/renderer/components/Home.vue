@@ -265,7 +265,6 @@ export default {
     getAllColumnsProperties: function() {
       let hot = HotRegister.getActiveInstance()
       if (hot) {
-        let columnProps = this.getHotColumnProperties(hot.guid)
         return this.getHotColumnProperties(hot.guid)
       }
     },
@@ -562,9 +561,11 @@ export default {
     })
   },
   created: function() {
+    const vueForceUpdate = this.forceWrapper
     const vueGuessProperties = this.updateColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
+      vueForceUpdate()
     })
     const vueValidateTable = this.validateTable
     ipc.on('validateTable', function(event, arg) {

@@ -53,6 +53,13 @@ export default {
         ]
       },
       {
+        items: [
+          {
+            label: `Beta version ${this.getApplicationVersion()} - access the support forum or report issues via the help menu`
+          }
+        ]
+      },
+      {
         items: [{
           image: 'static/img/advance_qld_logo.png',
           link: 'http://advance.qld.gov.au/',
