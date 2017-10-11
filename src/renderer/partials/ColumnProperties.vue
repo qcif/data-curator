@@ -213,8 +213,15 @@ export default {
       this.constraintInputKeyValues = constraints || {}
       return _.has(constraints, key)
     },
+    toggleTextNode: function(checkedInput) {
+      let textNode = checkedInput.parentNode.querySelector('.constraint-text')
+      if (textNode) {
+        textNode.style.display = checkedInput.checked ? 'inline-block' : 'none'
+      }
+    },
     setConstraintCheck: function(key, target) {
       let isChecked = target.checked
+      this.toggleTextNode(target)
       if (!isChecked) {
         _.unset(this.constraintInputKeyValues, key)
       } else if (this.constraintBooleanBindings.indexOf(key) > -1) {
@@ -233,6 +240,7 @@ export default {
         this.constraintInputKeyValues[key] = currentValue
       }
       this.setProperty('constraints', this.constraintInputKeyValues)
+      this.$forceUpdate()
     },
     getConstraintValue: function(key) {
       let property = this.getProperty('constraints')

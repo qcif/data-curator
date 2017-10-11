@@ -87,9 +87,11 @@ const mutations = {
   },
   pushHotProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
+    console.log(state.hotTabs)
   },
   pushConstraint(state, property) {
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].constraints[${property.key}]`, property.value)
+    // console.log(state.hotTabs)
   },
   pushMissingValues(state, hotMissingValues) {
     let hotId = hotMissingValues.hotId

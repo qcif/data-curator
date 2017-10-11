@@ -294,23 +294,27 @@ const template = [
       }, {
         type: 'separator'
       }, {
-        label: 'Set Column Properties'
+        label: 'Set Column Properties',
+        enabled: false
       }, {
-        label: 'Set Table Properties'
+        label: 'Set Table Properties',
+        enabled: false
       }, {
         // Placeholder for future features
         //        label: 'Set View Properties',
         //        enabled: false
         //       , icon: '/static/img/locked.svg'
         //      }, {
-        label: 'Set Provenance Information'
+        label: 'Set Provenance Information',
+        enabled: false
       }, {
         // Placeholder for future features
         //        label: 'Generate Data Quality Information',
         //        enabled: false
         //       , icon: '/static/img/locked.svg'
         //      }, {
-        label: 'Set Data Package Properties'
+        label: 'Set Data Package Properties',
+        enabled: false
       }, {
         type: 'separator'
       }, {
