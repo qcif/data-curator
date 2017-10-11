@@ -11,6 +11,8 @@ Feature: Open a Semi-colon separated value file
 
   If the CSV has an inconsistent number of columns, [fix ragged rows] (https://relishapp.com/odi-australia/data-curator/docs/other/fix-ragged-rows)
 
+  When the file is opened, invoke [Guess Column Properties](https://relishapp.com/odi-australia/data-curator/docs/tools/guess-column-properties)
+
   Scenario: Use the menu to open an existing semi-colon separated value file
     Given I have opened Data Curator
     When I select "Open Semi-colon Separated" from the menu
@@ -20,3 +22,4 @@ Feature: Open a Semi-colon separated value file
     And set the Tab name to the 'filename'
     And set the CSV Dialect in the Table Properties to "Semi-colon Separated"
     And Fix Ragged Rows
+    And Guess Column Properties

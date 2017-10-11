@@ -21,3 +21,4 @@ Feature: Guess Column Properties
     And I have opened 1 data tab
     When I invoke the "Guess Column Properties" command
     Then infer the column properties from the data
+    And open the Column Properties panel

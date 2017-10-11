@@ -15,6 +15,8 @@ Feature: Open a Comma separated value file
 
   If the CSV has an inconsistent number of columns, [fix ragged rows] (https://relishapp.com/odi-australia/data-curator/docs/other/fix-ragged-rows)
 
+  When the file is opened, invoke [Guess Column Properties](https://relishapp.com/odi-australia/data-curator/docs/tools/guess-column-properties)
+
   Scenario: Open an existing comma separated value file
     Given I have opened Data Curator
     When I invoke the "Open Comma Separated" command
@@ -24,3 +26,4 @@ Feature: Open a Comma separated value file
     And set the Tab name to the 'filename'
     And set the CSV Dialect in the Table Properties to "Comma Separated"
     And Fix Ragged Rows
+    And Guess Column Properties
