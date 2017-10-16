@@ -6,8 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/). 
 
 To see what's planned in our [milestones](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open) or unreleased changes.
 
-[Unreleased]:  https://github.com/ODIQueensland/data-curator/compare/v0.3.5...HEAD
+[Unreleased]:  https://github.com/ODIQueensland/data-curator/compare/v0.3.6...HEAD
 ## [Unreleased]
+
+[0.3.6]: https://github.com/ODIQueensland/data-curator/compare/v0.3.5...v0.3.6
+## [0.3.6] - 2017-10-11
+
+### Changed
+
+- Updated menu label with beta info
+- Commented out menu items not part of release
 
 [0.3.5]: https://github.com/ODIQueensland/data-curator/compare/v0.3.4...v0.3.5
 ## [0.3.5] - 2017-10-06
