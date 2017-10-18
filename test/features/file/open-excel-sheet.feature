@@ -23,5 +23,6 @@ Feature: Open an Excel Sheet
     And set the Tab name to the 'sheet-name'
     And assign 'sheet-name' to the 'name' Table Property
     And set the CSV Dialect in the Table Properties to "Comma Separated"
-    And Fix Ragged Rows
-    And Guess Column Properties
+    And "Fix Ragged Rows"
+    And "Guess Column Properties"
+    And "Freeze Header Row"

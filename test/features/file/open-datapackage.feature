@@ -17,21 +17,10 @@ Feature: Open a Data Package
 
   Open Data Package can be invoked from the Menu
 
+  Data Curator sets 'header' in the CSV Dialect to 'true' and doesn't allow this to be changed. The data package being opened may have 'header' set to 'false'. This would create an inconsistently and would force the user to add a header row to resolve them.
+
   Notes on opening data packages from CKAN:
   - The current CKAN data package extension only exports a data package with data resources available at a URL i.e. the data is not inside the package
-  - The current CKAN data package extension does not support version 1.0 of the Frictionless Data specification.
-  - Data Curator only supports version 1.0 of the Frictionless Data specification.
-  - To enable Data Curator and data.qld.gov.au to interoperate using Data Packages:
-    - the CKAN data package extension must be upgraded to support version 1.0 of the Frictionless Data specification.
-    - the upgraded CKAN data package extension must be installed on data.qld.gov.au
-  - Resources:
-    - Extension: https://github.com/ckan/ckanext-datapackager
-    - CSV at URL: https://github.com/ckan/ckanext-datapackager/issues/52
-    - v1.0 specification not supported: https://github.com/ckan/ckanext-datapackager/pull/54
-    - Discussion: https://gitter.im/frictionlessdata/chat?at=59aba377b16f264642fdd8df
-    - Estimate to fix extension: https://gitter.im/frictionlessdata/chat?at=59abab1ec101bc4e3a84f46f
-  - Alternatives:
-    - explore when ready https://github.com/frictionlessdata/ckanext-validation/issues/12
 
   Frictionless Data specification:
   - http://specs.frictionlessdata.io/data-package/
@@ -44,7 +33,8 @@ Feature: Open a Data Package
     But only files ending with a '.zip' can be selected
     And the selected file is unzipped
     And each data resource is opened (from URL or local) in a new data tab to the right of any other open data tabs
-    And for each data resource Fix Ragged Rows
+    And for each data resource "Fix Ragged Rows"
+    And for each data resource  "Freeze Header Row"
     And the corresponding column, table and package properties is loaded from datapackage.json into the Properties Panels
     And the provenance information is loaded from the Readme.md or Readme.txt
     And each Data tab is named according to the rules

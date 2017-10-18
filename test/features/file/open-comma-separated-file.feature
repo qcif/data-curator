@@ -25,5 +25,6 @@ Feature: Open a Comma separated value file
     And the selected 'filename' is opened in a new data tab to the right of any other open data tabs
     And set the Tab name to the 'filename'
     And set the CSV Dialect in the Table Properties to "Comma Separated"
-    And Fix Ragged Rows
-    And Guess Column Properties
+    And "Fix Ragged Rows"
+    And "Guess Column Properties"
+    And "Freeze Header Row"

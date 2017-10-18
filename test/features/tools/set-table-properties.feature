@@ -20,7 +20,9 @@ Feature: Set Table Properties
   - 'format' the standard file extension for this type of resource
   - 'mediatype' the mediatype/mimetype of the resource 'text/csv'
   - 'encoding' UTF-8.
-  - 'CSV Dialect' based on the format of the opened/saved file
+  - 'CSV Dialect'
+    - 'delimiter' based on the format of the opened/saved file
+    - 'header' true
 
   These properties are optional:
   - 'title'
