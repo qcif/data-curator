@@ -5976,7 +5976,7 @@ mocha@^3.0.2, mocha@^3.5.3:
     mkdirp "0.5.1"
     supports-color "3.1.2"
 
-moment@2.18.1, moment@2.x, moment@^2.13.0, moment@^2.18.1:
+moment@2.18.1, moment@2.x, moment@^2.13.0, moment@^2.18.1, moment@~2.18.0:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
 
@@ -8323,7 +8323,7 @@ table@^3.7.8:
     slice-ansi "0.0.4"
     string-width "^2.0.0"
 
-tableschema@^1.0.0, tableschema@^1.1.1:
+tableschema@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.1.1.tgz#cf22c5aabe5924385fc4d6ebdf5dbacd4417dc41"
   dependencies:
@@ -8333,6 +8333,20 @@ tableschema@^1.0.0, tableschema@^1.1.1:
     es6-error "^4.0.2"
     lodash "^4.13.1"
     moment "^2.13.0"
+    regenerator-runtime "^0.11.0"
+    stream-to-async-iterator "^0.2.0"
+    tv4 "^1.2.7"
+
+tableschema@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.3.0.tgz#7432e04eab4407a943b8c9735c6eac2a412b02a7"
+  dependencies:
+    axios "^0.16.1"
+    csv "^1.1.1"
+    d3-time-format "^0.3.2"
+    es6-error "^4.0.2"
+    lodash "^4.13.1"
+    moment "~2.18.0"
     regenerator-runtime "^0.11.0"
     stream-to-async-iterator "^0.2.0"
     tv4 "^1.2.7"
