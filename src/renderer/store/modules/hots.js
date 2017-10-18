@@ -1,5 +1,6 @@
 const state = {
-  hotTabs: {}
+  hotTabs: {},
+  packageProperties: {}
 }
 
 function getHotColumnPropertiesFromPropertyObject(property) {
@@ -22,14 +23,22 @@ const getters = {
     return state.hotTabs[hotId].tableSchema
   },
   getHotIdFromTabId: (state, getters) => (tabId) => {
+    if (state.hotTabs && state.hotTabs.tableProperties) {
+      console.log(state.hotTabs.tableProperties.filter(x => x.licenses.length))
+    } else {
+      console.log('no table properties yet')
+    }
     return new Promise((resolve, reject) => {
+      console.log('getting promise')
       let hotId = _.findKey(state.hotTabs, {tabId: tabId})
       if (!hotId) {
         // There is a short render wait in home page, so if hotId not first returned, just wait and try again
         _.delay(function(tabId) {
+          console.log('had to delay...')
           resolve(_.findKey(state.hotTabs, {tabId: tabId}))
         }, 10, tabId)
       } else {
+        console.log('no delay...')
         resolve(hotId)
       }
     })
@@ -40,6 +49,16 @@ const getters = {
   getHotColumnProperty: (state, getters) => (property) => {
     let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
     return hotColumnProperties[property.key]
+  },
+  getTableProperty: (state, getters) => (property) => {
+    console.log('getting table property')
+    console.log(property.hotId)
+    console.log(state.hotTabs[property.hotId])
+    let tableProperties = state.hotTabs[property.hotId].tableProperties || {}
+    return tableProperties[property.key]
+  },
+  getPackageProperty: (state, getters) => (property) => {
+    return state.packageProperties[property.key]
   },
   getHotColumnConstraints: (state, getters) => (property) => {
     let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
@@ -88,6 +107,16 @@ const mutations = {
   pushHotProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
     console.log(state.hotTabs)
+  },
+  pushTableProperty(state, property) {
+    console.log('pushing property...')
+    console.log(property)
+    _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
+    console.log(state.hotTabs)
+  },
+  pushPackageProperty(state, property) {
+    _.set(state.packageProperties, property.key, property.value)
+    console.log(state.packageProperties)
   },
   pushConstraint(state, property) {
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].constraints[${property.key}]`, property.value)
