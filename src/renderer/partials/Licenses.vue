@@ -73,24 +73,12 @@ export default {
 
     }
   },
-  created: async function() {
-    console.log('before create...')
-    let tab = this.getActiveTab
-    console.log(`tab is ${tab}`)
-    let hotId = await this.waitForHotIdFromTabId(tab)
-    this.initInput(hotId)
-    // initiate input
-    // this.$nextTick(function() {
-    //   console.log('next tick')
-    //   this.initInput()
-    // })
+  created: function() {
+    this.initInput(this.getActiveTab)
   },
   watch: {
-    getActiveTab: async function(tab) {
-      console.log(`tab is updated: ${tab}`)
-      let hotId = await this.waitForHotIdFromTabId(tab)
-      console.log(`watched hot id is ${hotId}`)
-      this.initInput(hotId)
+    getActiveTab: function(tab) {
+      this.initInput(tab)
     }
   },
   computed: {
@@ -116,23 +104,23 @@ export default {
     ...mapMutations([
       'pushPackageProperty'
     ]),
-    initInput: function(hotId) {
-      // selectedLicenses: [],
-      // licenseHints: [],
-      this.licenseInput = []
+    initInput: async function(tab) {
+      let hotId = await this.waitForHotIdFromTabId(tab)
       this.selectedLicenses = []
-      // this.selectLicenseHints('')
-      console.log(`now in init Input with ${hotId}`)
-      let inputArray = this.getPropertyGivenHotId('licenses', hotId) || []
-      this.selectLicenseHints(inputArray.join(','))
+      let licenseObjects = this.getPropertyGivenHotId('licenses', hotId) || []
+      let licenseIds = licenseObjects.map(function(license) {
+        return license.id
+      })
+      this.selectLicenseHints(licenseIds.join(','))
+      // show all the hints on returning to tab
+      this.licenseHints = this.licenses.map(x => {
+        return x.id
+      })
     },
     licensesObject: function(ids) {
       return this.licenses.filter(x => ids.indexOf(x.id) !== -1)
     },
     selectLicenseHints: function(value) {
-      console.log('updating hints...')
-      console.log(`value is ${value}`)
-      console.log(value)
       let splitArray = value.split(',')
       let lastInput = splitArray[splitArray.length-1]
       this.licenseInput = splitArray
