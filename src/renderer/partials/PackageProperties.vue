@@ -3,11 +3,11 @@
   <div class="form-group-sm row container-fluid">
     <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
       <template v-if="formprop.type !== 'hidden'">
-        <label class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
+        <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
         <template v-if="formprop.label==='licenses'">
           <!-- <component is="licenses"></component> -->
         </template>
-        <input v-else type="text" class="form-control input-sm col-sm-8" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)"/>
+        <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)"/>
       </template>
     </div>
   </div>

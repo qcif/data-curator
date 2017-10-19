@@ -7,12 +7,18 @@
           <input class="form-control input-sm" v-model="source[prop]" type="text" />
         </div>
       </div>
-      <!-- <div class="button-container"> -->
-        <!-- <div>&nbsp;</div> -->
-        <button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-minus"></span></button>
-        <!-- <div>&nbsp;</div> -->
-      <!-- </div> -->
+        <button v-show="sources.length > 1" type="button" class="btn btn-danger btn-sm" @click="removeSource(index)">
+          <span class="glyphicon glyphicon-minus"/>
+        </button>
     </div>
+    <div class="b">
+      <button type="button" class="add-source btn btn-primary" @click="addSource()">
+        <span class="glyphicon glyphicon-plus"/>Add source
+      </button>
+    </div>
+    <!-- <div class="dummy">
+
+    </div> -->
   </div>
 </template>
 <script>
@@ -34,16 +40,27 @@ export default {
   methods: {
     ...mapMutations([
       'pushPackageProperty'
-    ])
+    ]),
+    removeSource: function(index) {
+      console.log(`index is ${index}`)
+      this.sources.splice(index, 1)
+      console.log(this.sources)
+    },
+    addSource: function() {
+      let object = {}
+      object.title = ''
+      object.path = ''
+      object.path = ''
+      this.sources.push(object)
+    }
   },
   data() {
     return {
-      sources: [{
-        title: '',
-        path: '',
-        email: ''
-      }]
+      sources: []
     }
+  },
+  mounted() {
+    this.addSource()
   }
 }
 </script>
