@@ -392,6 +392,11 @@ export default {
     },
     openSideNav: function() {
       this.sideNavStatus = 'open'
+      // ensure sidenav menu is rendered before adjusting form height
+      const vueAdjustSidenavFormHeight = this.adjustSidenavFormHeight
+      _.delay(function() {
+        vueAdjustSidenavFormHeight()
+      }, 100)
     },
     updateTransitions: function(index) {
       if (index < this.toolbarIndex) {
@@ -506,6 +511,15 @@ export default {
     },
     forceWrapper: function() {
       this.$forceUpdate()
+    },
+    adjustSidenavFormHeight: function() {
+      let sidenav = document.querySelector('#sidenav')
+      let sidenavHeight = sidenav.clientHeight
+      let form = sidenav.querySelector('form')
+      if (form) {
+        console.log('updated form height')
+        form.style.height = (sidenavHeight - 150) + 'px'
+      }
     }
   },
   components: {
@@ -540,6 +554,12 @@ export default {
     const vueForceUpdate = this.forceWrapper
     ipc.on('saveDataSuccess', function(e, format, fileName) {
       vueForceUpdate()
+    })
+    const vueAdjustSidenavFormHeight = this.adjustSidenavFormHeight
+    ipc.on('resized', function() {
+      vueAdjustSidenavFormHeight()
+      let hot = HotRegister.getActiveInstance()
+      hot.render()
     })
     this.$nextTick(function() {
       require('../index.js')
