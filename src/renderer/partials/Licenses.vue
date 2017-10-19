@@ -1,7 +1,7 @@
 <template>
   <div>
     <input :value="collectedLicenses" @input="selectLicenseHints($event.target.value)" class="form-control input-sm col-sm-8" type="text" />
-    <div id="license">
+    <div id="licenses">
       <label class="control-label col-sm-4" />
       <select v-model="selectedLicenses" class="form-control input-sm col-sm-8" multiple>
         <option v-for="license in licenseHints" :value="license">{{license}}</option>
@@ -135,5 +135,5 @@ export default {
 }
 </script>
 <style lang="styl" scoped>
-@import '~static/css/license'
+@import '~static/css/licenses'
 </style>
