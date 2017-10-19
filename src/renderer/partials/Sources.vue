@@ -11,14 +11,11 @@
           <span class="glyphicon glyphicon-minus"/>
         </button>
     </div>
-    <div class="b">
-      <button type="button" class="add-source btn btn-primary" @click="addSource()">
+    <div class="button-container">
+      <button type="button" class="add-source btn btn-primary btn-sm" @click="addSource()">
         <span class="glyphicon glyphicon-plus"/>Add source
       </button>
     </div>
-    <!-- <div class="dummy">
-
-    </div> -->
   </div>
 </template>
 <script>
