@@ -16,7 +16,15 @@ export function createWindow() {
   })
 
   mainWindow.on('resize', function() {
-    mainWindow.webContents.send('resized')
+    // TODO : replace with debounce
+    if (global.resizeTimerId) {
+      clearTimeout(global.resizeTimerId)
+    }
+    let timerId = setTimeout(function() {
+      console.log('sending resize event')
+      mainWindow.webContents.send('resized')
+    }, 250)
+    global.resizeTimerId = timerId
   })
 
   if (process.env.NODE_ENV === 'production') {
