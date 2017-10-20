@@ -1,13 +1,13 @@
 <template>
   <div id="sources">
-    <div v-for="(source,index) in sources" :key="index" class="source col-sm-12">
+    <div v-for="(source,index) in getSources" :key="index" class="source col-sm-12">
       <div class="inputs-container">
-        <div v-for="prop in ['title','path','email']" class="input-group">
+        <div v-for="prop in Object.keys(source)" class="input-group">
           <span class="input-group-addon input-sm">{{prop}}</span>
-          <input class="form-control input-sm" v-model="source[prop]" type="text" />
+          <input class="form-control input-sm" :value="source[prop]" @input="setSourceProp(index, prop, $event.target.value)" type="text" />
         </div>
       </div>
-        <button v-show="sources.length > 1" type="button" class="btn btn-danger btn-sm" @click="removeSource(index)">
+        <button v-show="getSources.length > 1" type="button" class="btn btn-danger btn-sm" @click="removeSource(index)">
           <span class="glyphicon glyphicon-minus"/>
         </button>
     </div>
@@ -25,14 +25,38 @@ import {
   mapGetters
 } from 'vuex'
 import SideNav from './SideNav'
+import AsyncComputed from 'vue-async-computed'
+import Vue from 'vue'
+Vue.use(AsyncComputed)
 export default {
   name: 'sources',
-  // props: ['pushLicenses'],
-  extends: SideNav,
-  watch: {
+  data() {
+    return {
+      sources: []
+    }
   },
+  props: ['setProperty', 'getProperty', 'getPropertyGivenHotId'],
+  extends: SideNav,
   computed: {
-    ...mapGetters(['getActiveTab'])
+    ...mapGetters(['getActiveTab']),
+    ...mapState(['hotTabs'])
+  },
+  asyncComputed: {
+    getSources: {
+      async get() {
+        console.log('get triggered....')
+        let tab = this.getActiveTab
+        let hotId = await this.waitForHotIdFromTabId(tab)
+        let sources = this.getPropertyGivenHotId('sources', hotId)
+        console.log('async sources')
+        console.log(sources)
+        return sources
+      },
+      watch() {
+        console.log('watched sources')
+        return this.sources
+      }
+    }
   },
   methods: {
     ...mapMutations([
@@ -40,24 +64,57 @@ export default {
     ]),
     removeSource: function(index) {
       console.log(`index is ${index}`)
-      this.sources.splice(index, 1)
-      console.log(this.sources)
+      let sources = this.getProperty('sources')
+      sources.splice(index, 1)
+      this.setProperty('sources', sources)
+      console.log(sources)
+      this.sources = sources
     },
     addSource: function() {
-      let object = {}
-      object.title = ''
-      object.path = ''
-      object.path = ''
-      this.sources.push(object)
+      console.log('adding source...')
+      let sources = this.getProperty('sources') || []
+      console.log(sources.length)
+      console.log(sources)
+      sources.push(this.emptySource())
+      this.setProperty('sources', sources)
+      console.log(sources.length)
+      console.log(sources)
+      this.sources = sources
+    },
+    emptySource() {
+      return {'title': '', 'path': '', 'email': ''}
+    },
+    initSources: async function(tab) {
+      let hotId = await this.waitForHotIdFromTabId(tab)
+      let sources = this.getPropertyGivenHotId('sources', hotId)
+      console.log('active tab triggered in sources')
+      if (!sources) {
+        const vueAddSource = this.addSource
+        _.delay(function() {
+          console.log('now adding source')
+          vueAddSource()
+        }, 100)
+      }
+    },
+    setSourceProp: function(index, prop, value) {
+      console.log('setting source')
+      this.setProperty(`sources[${index}][${prop}]`, value)
+      let sources = this.getProperty('sources') || []
+      this.sources = sources
     }
   },
-  data() {
-    return {
-      sources: []
-    }
+  mounted: function() {
+    let tab = this.getActiveTab
+    this.initSources(tab)
   },
-  mounted() {
-    this.addSource()
+  watch: {
+    sources: function(updated) {
+      console.log(updated)
+    },
+    getActiveTab: function(tab) {
+      console.log('active tab triggered')
+      this.initSources(tab)
+    }
   }
 }
 </script>

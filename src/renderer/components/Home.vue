@@ -515,10 +515,12 @@ export default {
     adjustSidenavFormHeight: function() {
       let sidenav = document.querySelector('#sidenav')
       let sidenavHeight = sidenav.clientHeight
+      // let sidenavHeight = window.innerHeight
+      console.log(`height is ${sidenavHeight}`)
       let form = sidenav.querySelector('form')
       if (form) {
-        console.log('updated form height')
         form.style.height = (sidenavHeight - 150) + 'px'
+        // form.style.height = (sidenavHeight - 200) + 'px'
       }
     }
   },

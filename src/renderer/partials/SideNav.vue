@@ -45,6 +45,7 @@ export default {
     },
     propertyGetObject: function(key) {
       const hotId = HotRegister.getActiveInstance().guid
+      console.log(`hotid is ${hotId}`)
       return {
         'hotId': hotId,
         'key': key

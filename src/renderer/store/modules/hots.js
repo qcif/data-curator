@@ -55,6 +55,10 @@ const getters = {
     console.log(property.hotId)
     console.log(state.hotTabs[property.hotId])
     let tableProperties = state.hotTabs[property.hotId].tableProperties || {}
+    console.log('length is...')
+    if (tableProperties[property.key]) {
+      console.log(tableProperties[property.key].length)
+    }
     return tableProperties[property.key]
   },
   getPackageProperty: (state, getters) => (property) => {
@@ -111,6 +115,7 @@ const mutations = {
   pushTableProperty(state, property) {
     console.log('pushing property...')
     console.log(property)
+    console.log(state.hotTabs)
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
     console.log(state.hotTabs)
   },
