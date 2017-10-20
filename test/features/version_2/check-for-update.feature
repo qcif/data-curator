@@ -10,6 +10,12 @@ Feature: Check for update
   - Different releases are available for different <operating system> and <platform>
   - Allow user to defer the update
 
+  Unresolved:
+  - What is the best approach to updating software?
+  - Many organisations are adopting application whitelisting to reduce the threat of cyber intrusions
+  - [Application whitelisting](https://asd.gov.au/publications/protect/application_whitelisting.htm) is identified as the most effective strategy to mitigate cyber security incidents by the Australian Signals Directorate.
+
+
   Scenario: Check for update on application start
     Given I have have not open Data Curator
     And I am using an <operating system> on a <platform>
