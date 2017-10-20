@@ -45,7 +45,7 @@
   - support-forum.feature
   - report-issues.feature
 - other:
-  - open-application.feature
+  - open-data-curator.feature
   - fix-ragged-rows.feature
   - add-tab.feature
   - move-cursor-in-table.feature
@@ -69,6 +69,7 @@
   - open-csv-using-drag-n-drop.feature
   - open-google-sheet.feature
   - open-recent.feature
+  - open-with.feature
   - close-all-tabs.feature
   - print.feature
   - read-only-mode.feature
