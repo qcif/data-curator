@@ -55,6 +55,7 @@
   - menu-keyboard-shortcuts.feature (Menu keyboard shortcuts)
 - version-2 (Version 2):
   - check-for-update.feature
+  - set-preferences.feature
   - set-preferences-configuration-file.feature
   - import-column-properties.feature
   - create-constraint-from-column.feature
