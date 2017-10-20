@@ -61,10 +61,8 @@ export default {
     },
     // convenience method
     waitForHotIdFromTabId: async function(tabId) {
-      console.log('checking on wait for hot')
       try {
         let hotId = await this.getHotIdFromTabId(tabId)
-        console.log(`hot id is ${hotId}`)
         return hotId
       } catch (err) {
         if (err) {

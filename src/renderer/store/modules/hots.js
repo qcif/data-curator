@@ -23,22 +23,14 @@ const getters = {
     return state.hotTabs[hotId].tableSchema
   },
   getHotIdFromTabId: (state, getters) => (tabId) => {
-    if (state.hotTabs && state.hotTabs.tableProperties) {
-      console.log(state.hotTabs.tableProperties.filter(x => x.licenses.length))
-    } else {
-      console.log('no table properties yet')
-    }
     return new Promise((resolve, reject) => {
-      console.log('getting promise')
       let hotId = _.findKey(state.hotTabs, {tabId: tabId})
       if (!hotId) {
         // There is a short render wait in home page, so if hotId not first returned, just wait and try again
         _.delay(function(tabId) {
-          console.log('had to delay...')
           resolve(_.findKey(state.hotTabs, {tabId: tabId}))
         }, 10, tabId)
       } else {
-        console.log('no delay...')
         resolve(hotId)
       }
     })
@@ -51,14 +43,7 @@ const getters = {
     return hotColumnProperties[property.key]
   },
   getTableProperty: (state, getters) => (property) => {
-    console.log('getting table property')
-    console.log(property.hotId)
-    console.log(state.hotTabs[property.hotId])
     let tableProperties = state.hotTabs[property.hotId].tableProperties || {}
-    console.log('length is...')
-    if (tableProperties[property.key]) {
-      console.log(tableProperties[property.key].length)
-    }
     return tableProperties[property.key]
   },
   getPackageProperty: (state, getters) => (property) => {
