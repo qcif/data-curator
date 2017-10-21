@@ -12,11 +12,6 @@ export default new Router({
       component: require('@/components/Home')
     },
     {
-      path: '/datapackage',
-      name: 'datapackage',
-      component: require('@/components/DataPackage')
-    },
-    {
       path: '/keyboardhelp',
       name: 'keyboardhelp',
       component: require('@/components/KeyboardHelp')
