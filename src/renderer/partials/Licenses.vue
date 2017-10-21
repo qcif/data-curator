@@ -91,20 +91,31 @@ export default {
   computed: {
     ...mapGetters(['getActiveTab']),
     uniqueLicenses() {
+      console.log(`current input is ${typeof this.licenseInput}`)
+      console.log(this.licenseInput)
       return _.uniq(this.selectedLicenses.concat(this.licenseInput))
     },
     collectedLicenses() {
       let unique = this.uniqueLicenses
       let lastInput = _.last(unique)
+      console.log(`last input is ${lastInput}`)
+      console.log(`type of last input is ${typeof lastInput}`)
       let uniqueDrop = _.dropRight(unique)
+      console.log(`unique drop is ${uniqueDrop}`)
+      console.log(`selected licenses are`)
+      console.log(this.selectedLicenses)
       let licensesObject
-      if (this.selectedLicenses.find(x => x.id === lastInput)) {
+      if (this.selectedLicenses.indexOf(lastInput) !== -1) {
         licensesObject = this.licensesObject(unique)
       } else {
         licensesObject = this.licensesObject(uniqueDrop)
       }
+      console.log(`licenses object...`)
+      console.log(licensesObject)
       this.setProperty('licenses', licensesObject)
-      return unique.join(',')
+      let collected = unique.join(',')
+      return collected
+      // return collected
     }
   },
   methods: {
@@ -114,11 +125,15 @@ export default {
     initInput: async function(tab) {
       let hotId = await this.waitForHotIdFromTabId(tab)
       this.selectedLicenses = []
+      console.log('initing licenses')
       let licenseObjects = this.getPropertyGivenHotId('licenses', hotId) || []
+      console.log(licenseObjects.length)
       let licenseIds = licenseObjects.map(function(license) {
         return license.id
       })
-      this.selectLicenseHints(licenseIds.join(','))
+      this.selectedLicenses = licenseIds
+      console.log(licenseIds)
+      // this.selectLicenseHints(licenseIds.join(','))
       // show all the hints on returning to tab
       this.licenseHints = this.licenses.map(x => {
         return x.id

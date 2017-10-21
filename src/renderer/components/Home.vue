@@ -39,7 +39,7 @@
         </div>
         <!-- <div class="row"> -->
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
-          <component :is="sideNavView" :getAllColumnsProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
+          <component :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :getAllColumnsProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
           </component>
         </transition>
         <!-- </div> -->
@@ -173,6 +173,7 @@ export default {
       enableSideNavRightArrow: true,
       errorMessages: false,
       loadingDataMessage: false,
+      sideNavFormHeight: '300px',
       toolbarMenus: [{
         name: 'Validate',
         image: 'static/img/validate.svg',
@@ -515,12 +516,11 @@ export default {
     adjustSidenavFormHeight: function() {
       let sidenav = document.querySelector('#sidenav')
       let sidenavHeight = sidenav.clientHeight
-      // let sidenavHeight = window.innerHeight
       console.log(`height is ${sidenavHeight}`)
       let form = sidenav.querySelector('form')
+      this.sideNavFormHeight = (sidenavHeight - 150) + 'px'
       if (form) {
-        form.style.height = (sidenavHeight - 150) + 'px'
-        // form.style.height = (sidenavHeight - 200) + 'px'
+        form.style.height = this.sideNavFormHeight
       }
     }
   },

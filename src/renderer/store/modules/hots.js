@@ -51,6 +51,7 @@ const getters = {
   getPackageProperty: (state, getters) => (property) => {
     console.log(`property key is `)
     console.log(property)
+    console.log(state.packageProperties)
     return state.packageProperties[property.key]
   },
   getHotColumnConstraints: (state, getters) => (property) => {

@@ -78,6 +78,7 @@ export default {
       })
     },
     getPropertyGivenHotId: function(key, hotId) {
+      console.log(`key is ${key}`)
       return this.getProperty(key)
     },
     setProperty: function(key, value) {

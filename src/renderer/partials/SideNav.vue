@@ -20,6 +20,7 @@ import {
 import ColumnToolTip from '../mixins/ColumnTooltip'
 export default {
   name: 'sidenav',
+  props: ['sideNavFormHeight', 'adjustSidenavFormHeight'],
   mixins: [ColumnToolTip],
   data() {
     return {
@@ -67,9 +68,16 @@ export default {
           console.log(err)
         }
       }
+    },
+    syncSidenavFormHeight: function() {
+      let sidenav = document.querySelector('#sidenav')
+      let form = sidenav.querySelector('form')
+      form.style.height = this.sideNavFormHeight
     }
   },
-  mounted: function() {},
+  mounted: function() {
+    this.syncSidenavFormHeight()
+  },
   beforeCreate: function() {
     this.$nextTick(function() {
       // set hidden inputs
@@ -79,6 +87,12 @@ export default {
         }
       })
     })
+  },
+  watch: {
+    sideNavFormHeight: function() {
+      console.log('watched side nav form height')
+      this.adjustSidenavFormHeight()
+    }
   }
 }
 </script>
