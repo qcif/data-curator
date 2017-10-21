@@ -151,7 +151,7 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'pushHotProperty', 'pushConstraint'
+      'pushColumnProperty'
     ]),
     isBooleanConstraint: function(option) {
       return this.constraintBooleanBindings.indexOf(option) > -1
@@ -169,7 +169,7 @@ export default {
         'key': key,
         'value': value
       }
-      this.pushHotProperty(object)
+      this.pushColumnProperty(object)
     },
     getProperty: function(key) {
       // let object = this.storeObject

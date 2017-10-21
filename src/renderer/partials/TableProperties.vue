@@ -44,6 +44,12 @@ export default {
         label: 'name'
       },
       {
+        label: 'primary key(s)'
+      },
+      {
+        label: 'foreign key(s)'
+      },
+      {
         label: 'profile',
         type: 'hidden',
         value: 'tabular-data-resource'
@@ -103,6 +109,24 @@ export default {
     ...mapMutations([
       'pushMissingValues', 'pushTableProperty'
     ]),
+    setArrayValues: function(value) {
+      let hot = HotRegister.getActiveInstance()
+      if (hot) {
+        let array = Array.from(new Set(value.split(',')))
+        this.pushMissingValues({
+          hotId: hot.guid,
+          missingValues: array
+        })
+      }
+    },
+    getArrayValuesFromTabId: async function(tabId) {
+      let hotId = await this.waitForHotIdFromTabId(tabId)
+      if (hotId) {
+        let array = this.getMissingValuesFromHot(hotId) || ['']
+        let string = array.join()
+        return string
+      }
+    },
     setMissingValues: function(value) {
       let hot = HotRegister.getActiveInstance()
       if (hot) {
