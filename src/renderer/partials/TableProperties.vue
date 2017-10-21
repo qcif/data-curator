@@ -6,6 +6,8 @@
         <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
         <!-- until all labels have input only setup get/set for explicity set type-->
         <input v-if="formprop.label === 'missing values'" :value="missingValues" @input="setMissingValues($event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
+        <input v-else-if="formprop.type === 'primary key(s)'" :value="primaryKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
+        <input v-else-if="formprop.type === 'foreign key(s)'" :value="foreignKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
         <component v-else-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
         <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)"/>
       </template>
@@ -44,10 +46,12 @@ export default {
         label: 'name'
       },
       {
-        label: 'primary key(s)'
+        label: 'primary key(s)',
+        type: 'array'
       },
       {
-        label: 'foreign key(s)'
+        label: 'foreign key(s)',
+        type: 'array'
       },
       {
         label: 'profile',
@@ -88,18 +92,24 @@ export default {
         value: 'UTF-8'
       },
       {
-        label: 'missing values'
+        label: 'missing values',
+        type: 'array'
       }
       ]
     }
   },
   asyncComputed: {
     async missingValues() {
-      let tabId = this.getActiveTab
-      let missingValues = await this.getMissingValuesFromTabId(tabId)
-      // ensure re-render in input
-      this.$forceUpdate()
-      return missingValues
+      let values = await this.getArrayValues('missingValues')
+      return values
+    },
+    async primaryKeys() {
+      let values = await this.getArrayValues('primaryKeys')
+      return values
+    },
+    async foreignKeys() {
+      let values = await this.getArrayValues('foreignKeys')
+      return values
     }
   },
   computed: {
@@ -109,21 +119,28 @@ export default {
     ...mapMutations([
       'pushTableSchemaDescriptorProperty', 'pushTableProperty'
     ]),
-    setArrayValues: function(value) {
+    getArrayValues: async function(key) {
+      let tabId = this.getActiveTab
+      let values = await this.getArrayValuesFromTabId(key, tabId)
+      // ensure re-render in input
+      this.$forceUpdate()
+      return values
+    },
+    setArrayValues: function(key, value) {
       let hot = HotRegister.getActiveInstance()
       if (hot) {
         let array = Array.from(new Set(value.split(',')))
-        this.pushTableSchemaDescriptorProperty({
+        this.pushTableSchemaProperty({
           hotId: hot.guid,
-          key: 'missingValues',
+          key: key,
           value: array
         })
       }
     },
-    getArrayValuesFromTabId: async function(tabId) {
+    getArrayValuesFromTabId: async function(key, tabId) {
       let hotId = await this.waitForHotIdFromTabId(tabId)
       if (hotId) {
-        let array = this.getMissingValuesFromHot(hotId) || ['']
+        let array = this.getTableProperty({hotId: hotId, key: key}) || ['']
         let string = array.join()
         return string
       }
@@ -137,14 +154,6 @@ export default {
           key: 'missingValues',
           value: array
         })
-      }
-    },
-    getMissingValuesFromTabId: async function(tabId) {
-      let hotId = await this.waitForHotIdFromTabId(tabId)
-      if (hotId) {
-        let array = this.getMissingValuesFromHot(hotId) || ['']
-        let string = array.join()
-        return string
       }
     },
     getProperty: function(key) {
