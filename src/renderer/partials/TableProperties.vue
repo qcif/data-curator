@@ -7,7 +7,7 @@
         <!-- until all labels have input only setup get/set for explicity set type-->
         <input v-if="formprop.label === 'missing values'" :value="missingValues" @input="setMissingValues($event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
         <input v-else-if="formprop.type === 'primary key(s)'" :value="primaryKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
-        <input v-else-if="formprop.type === 'foreign key(s)'" :value="foreignKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
+        <!-- <input v-else-if="formprop.type === 'foreign key(s)'" :value="foreignKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" /> -->
         <component v-else-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
         <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)"/>
       </template>
@@ -49,10 +49,10 @@ export default {
         label: 'primary key(s)',
         type: 'array'
       },
-      {
-        label: 'foreign key(s)',
-        type: 'array'
-      },
+      // {
+      //   label: 'foreign key(s)',
+      //   type: 'array'
+      // },
       {
         label: 'profile',
         type: 'hidden',
