@@ -107,15 +107,16 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'pushMissingValues', 'pushTableProperty'
+      'pushTableSchemaDescriptorProperty', 'pushTableProperty'
     ]),
     setArrayValues: function(value) {
       let hot = HotRegister.getActiveInstance()
       if (hot) {
         let array = Array.from(new Set(value.split(',')))
-        this.pushMissingValues({
+        this.pushTableSchemaDescriptorProperty({
           hotId: hot.guid,
-          missingValues: array
+          key: 'missingValues',
+          value: array
         })
       }
     },
@@ -131,9 +132,10 @@ export default {
       let hot = HotRegister.getActiveInstance()
       if (hot) {
         let array = Array.from(new Set(value.split(',')))
-        this.pushMissingValues({
+        this.pushTableSchemaDescriptorProperty({
           hotId: hot.guid,
-          missingValues: array
+          key: 'missingValues',
+          value: array
         })
       }
     },
