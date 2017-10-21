@@ -31,10 +31,7 @@ export default {
   },
   methods: {
     isSharedComponent: function(label) {
-      console.log('checking shared component')
-      console.log(label)
       let isShared = ['sources', 'licenses'].indexOf(label) !== -1
-      console.log(isShared)
       return isShared
     },
     propertyGetObjectGivenHotId: function(key, hotId) {
