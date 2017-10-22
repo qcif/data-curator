@@ -1,8 +1,9 @@
 <template>
 <div>
+  <!-- <input :value="collectedLicenses" @input="selectLicenseHints($event.target.value)" class="form-control input-sm col-sm-8" type="text" /> -->
   <div id="licenses">
-    <label class="control-label col-sm-4" />
-    <select v-model="selectedLicenses" class="form-control input-sm col-sm-8" multiple>
+    <!-- <label class="control-label col-sm-4" /> -->
+    <select v-model="selectedLicenses" class="form-control input-sm col-sm-9" multiple>
         <option v-for="license in licenses" :value="license.id">{{license.id}}</option>
       </select>
   </div>
@@ -10,8 +11,13 @@
 </template>
 <script>
 import {
+  mapMutations,
+  mapState,
   mapGetters
 } from 'vuex'
+import {
+  HotRegister
+} from '../hot.js'
 export default {
   name: 'licenses',
   props: ['getPropertyGivenHotId', 'setProperty', 'waitForHotIdFromTabId'],
