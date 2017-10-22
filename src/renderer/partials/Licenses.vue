@@ -1,18 +1,15 @@
 <template>
 <div>
-  <input :value="collectedLicenses" @input="selectLicenseHints($event.target.value)" class="form-control input-sm col-sm-8" type="text" />
   <div id="licenses">
     <label class="control-label col-sm-4" />
     <select v-model="selectedLicenses" class="form-control input-sm col-sm-8" multiple>
-        <option v-for="license in licenseHints" :value="license">{{license}}</option>
+        <option v-for="license in licenses" :value="license.id">{{license.id}}</option>
       </select>
   </div>
 </div>
 </template>
 <script>
 import {
-  mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
 export default {
@@ -75,84 +72,50 @@ export default {
         'title': 'Other (Public Domain)',
         'url': ''
       }],
-      selectedLicenses: [],
-      licenseHints: [],
-      licenseInput: []
+      selectedLicenses: []
     }
   },
-  created: function() {
-    this.initInput(this.getActiveTab)
-  },
   watch: {
-    getActiveTab: function(tab) {
-      this.initInput(tab)
+    getActiveTab: function() {
+      // update licenses when adding tabs
+      this.initLicenses()
+    },
+    selectedLicenses: function(selected) {
+      this.setProperty('licenses', this.licensesObject(selected))
     }
   },
   computed: {
-    ...mapGetters(['getActiveTab']),
-    uniqueLicenses() {
-      console.log(`current input is ${typeof this.licenseInput}`)
-      console.log(this.licenseInput)
-      return _.uniq(this.selectedLicenses.concat(this.licenseInput))
-    },
-    collectedLicenses() {
-      let unique = this.uniqueLicenses
-      let lastInput = _.last(unique)
-      console.log(`last input is ${lastInput}`)
-      console.log(`type of last input is ${typeof lastInput}`)
-      let uniqueDrop = _.dropRight(unique)
-      console.log(`unique drop is ${uniqueDrop}`)
-      console.log(`selected licenses are`)
-      console.log(this.selectedLicenses)
-      let licensesObject
-      if (this.selectedLicenses.indexOf(lastInput) !== -1) {
-        licensesObject = this.licensesObject(unique)
-      } else {
-        licensesObject = this.licensesObject(uniqueDrop)
-      }
-      console.log(`licenses object...`)
-      console.log(licensesObject)
-      this.setProperty('licenses', licensesObject)
-      let collected = unique.join(',')
-      return collected
-      // return collected
-    }
+    ...mapGetters(['getActiveTab'])
   },
   methods: {
-    ...mapMutations([
-      'pushPackageProperty'
-    ]),
-    initInput: async function(tab) {
-      let hotId = await this.waitForHotIdFromTabId(tab)
-      this.selectedLicenses = []
-      console.log('initing licenses')
-      let licenseObjects = this.getPropertyGivenHotId('licenses', hotId) || []
-      console.log(licenseObjects.length)
-      let licenseIds = licenseObjects.map(function(license) {
-        return license.id
-      })
+    initLicenses: async function() {
+      let licenseIds = await this.getLicenseIdsFromTab()
       this.selectedLicenses = licenseIds
-      console.log(licenseIds)
-      // this.selectLicenseHints(licenseIds.join(','))
-      // show all the hints on returning to tab
-      this.licenseHints = this.licenses.map(x => {
+    },
+    getLicenseIdsFromTab: async function() {
+      let licenses = await this.getLicensesFromTab()
+      let licenseIds = licenses ? licenses.map(x => {
         return x.id
-      })
+      }) : []
+      return licenseIds
+    },
+    getLicensesFromTab: async function() {
+      let tab = this.getActiveTab
+      let hotId = await this.waitForHotIdFromTabId(tab)
+      let licenses = this.getPropertyGivenHotId('licenses', hotId)
+      return licenses
     },
     licensesObject: function(ids) {
-      return this.licenses.filter(x => ids.indexOf(x.id) !== -1)
-    },
-    selectLicenseHints: function(value) {
-      let splitArray = value.split(',')
-      let lastInput = splitArray[splitArray.length - 1]
-      this.licenseInput = splitArray
-      this.licenseHints = []
-      let found = this.licenses.forEach(x => {
-        if (x.id.toLowerCase().startsWith(lastInput.toLowerCase())) {
-          this.licenseHints.push(x.id)
-        }
-      })
+      if (ids && ids.length > 0) {
+        return this.licenses.filter(x => ids.indexOf(x.id) !== -1)
+      } else {
+        return []
+      }
     }
+  },
+  mounted: function() {
+    // update license when re-opening panel with licenses
+    this.initLicenses()
   }
 }
 </script>

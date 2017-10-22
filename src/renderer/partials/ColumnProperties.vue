@@ -278,7 +278,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints'
+      'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty'
     ]),
     storeObject() {
       const hotId = HotRegister.getActiveInstance().guid
@@ -314,6 +314,10 @@ export default {
   mounted: function() {
     this.$nextTick(function() {
       reselectCurrentCellOrMin()
+      let hot = HotRegister.getActiveInstance()
+      let tableProperties = this.getTableProperty({hotId: hot.guid, key: 'licenses'})
+      console.log('table properties')
+      console.log(tableProperties)
     })
   }
 }

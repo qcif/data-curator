@@ -84,6 +84,7 @@ const mutations = {
   },
   pushTableProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
+    console.log(state.hotTabs)
   },
   pushTableSchemaProperty(state, property) {
     mutations.pushTableProperty(state, property)
