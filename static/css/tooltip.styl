@@ -1,0 +1,15 @@
+@keyframes opac
+  from
+    opacity 0
+  to
+    opacity 1
+div.tooltip-content
+  color #fff !important
+  // animation opac 0.8s !important
+  div
+    @extend div.tooltip-content
+    a
+      color #fff !important
+      text-decoration underline
+      &:hover
+        color #ccc !important

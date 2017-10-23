@@ -1,8 +1,12 @@
   <template>
   <form class="navbar-form form-horizontal" id="columnProperties">
-    <div class="form-group-sm row container-fluid">
+    <div class="form-group-sm row container-fluid"
       <div v-for="(formprop, index) in formprops" :key="index">
-        <label v-tooltip.left.click="tooltip(formprop.tooltipId)" :style="{paddingLeft: '0'}" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
+        <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
+        <!-- <label class="control-label col-sm-3" :for="formprop.label"> -->
+          <!-- <span style="position:absolute;right:20px;" class="w3-blue-grey w3-text w3-tag w3-round w3-small w3-animate-opacity">(<em>9 million inhabitants</em>)</span> -->
+          {{formprop.label}}:
+        </label>
         <component :is="formprop.tooltipView"/>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
           <select v-if="formprop.label==='type'" :value="getPropertyType()" @input="setPropertyType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-9">
@@ -49,10 +53,12 @@ import {
   HotRegister,
   reselectCurrentCellOrMin
 } from '../hot.js'
+import ColumnTooltip from '../mixins/ColumnTooltip'
 const Dialog = remote.dialog
 export default {
   extends: SideNav,
   name: 'column',
+  mixins: [ColumnTooltip],
   props: ['getAllColumnsProperties', 'cIndex'],
   data() {
     return {
@@ -324,4 +330,7 @@ export default {
 </script>
 <style lang="styl" scoped>
 @import '~static/css/columnprops'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/tooltip'
 </style>
