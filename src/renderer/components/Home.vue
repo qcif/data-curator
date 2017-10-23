@@ -45,12 +45,12 @@
         <!-- </div> -->
         <!-- <div class="row"/> -->
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
-          <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
+          <a v-if="enableSideNavLeftArrow" href="#" v-tooltip="tooltip('tooltip-previous')" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
           <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span>
-          <!-- <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" /> -->
-          <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
+          <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" />
+          <a v-if="enableSideNavRightArrow" href="#" v-tooltip="tooltip('tooltip-next')" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
           <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span>
-          <!-- <component v-if="enableSideNavRightArrow" is="tooltipNext" /> -->
+          <component v-if="enableSideNavRightArrow" is="tooltipNext" />
         </div>
         <!-- </div> -->
     </nav>
@@ -69,11 +69,11 @@
                 </li>
               </ul>
             </li>
-            <!--        <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')"> -->
-            <li class="tab-add" @click="addTab">
+            <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')">
+            <!-- <li class="tab-add" @click="addTab"> -->
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
-            <!--        <component is="tooltipAddTab" /> -->
+            <component is="tooltipAddTab" />
           </ul>
           <div class="tab-content" id='csvContent'>
             <div class="tab-pane" v-for="tab in tabs" :key="tab" :class="{ active: activeTab == tab}">

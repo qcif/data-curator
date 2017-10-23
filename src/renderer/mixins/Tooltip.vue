@@ -8,6 +8,7 @@ export default {
     tooltip: function(property) {
       let object = {}
       object.html = property
+      // ensure delay is long enough to allow hover over tooltip when it contains link, but short enough so tooltip closes before another opens
       object.delay = 80
       object.visible = property || false
       return object
