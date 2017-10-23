@@ -10,45 +10,40 @@ export default new Router({
       path: '/',
       name: 'home',
       component: require('@/components/Home')
-    },
-    {
-      path: '/datapackage',
-      name: 'datapackage',
-      component: require('@/components/DataPackage')
-    },
-    {
-      path: '/keyboardhelp',
-      name: 'keyboardhelp',
-      component: require('@/components/KeyboardHelp')
-    },
-    {
-      path: '/chooserepo',
-      name: 'chooserepo',
-      component: require('@/components/ChooseRepo')
-    },
-    {
-      path: '/customformat',
-      name: 'customformat',
-      component: require('@/components/CustomFormat')
-    },
-    {
-      path: '/github',
-      name: 'github',
-      component: require('@/components/Github')
-    },
-    {
-      path: '/githubsuccess',
-      name: 'githubsuccess',
-      component: require('@/components/GithubSuccess')
-    },
-    {
-      path: '/selectworksheet',
-      name: 'selectworksheet',
-      component: require('@/components/SelectWorksheet')
-    },
-    {
-      path: '*',
-      redirect: '/'
     }
+    // {
+    //   path: '/keyboardhelp',
+    //   name: 'keyboardhelp',
+    //   component: require('@/components/KeyboardHelp')
+    // },
+    // {
+    //   path: '/chooserepo',
+    //   name: 'chooserepo',
+    //   component: require('@/components/ChooseRepo')
+    // },
+    // {
+    //   path: '/customformat',
+    //   name: 'customformat',
+    //   component: require('@/components/CustomFormat')
+    // },
+    // {
+    //   path: '/github',
+    //   name: 'github',
+    //   component: require('@/components/Github')
+    // },
+    // {
+    //   path: '/githubsuccess',
+    //   name: 'githubsuccess',
+    //   component: require('@/components/GithubSuccess')
+    // },
+    // {
+    //   path: '/selectworksheet',
+    //   name: 'selectworksheet',
+    //   component: require('@/components/SelectWorksheet')
+    // },
+    // {
+    //   path: '*',
+    //   redirect: '/'
+    // }
   ]
 })

@@ -1,22 +1,26 @@
   <template>
   <form class="navbar-form form-horizontal" id="columnProperties">
-    <div class="form-group-sm row container-fluid">
+    <div class="form-group-sm row container-fluid"
       <div v-for="(formprop, index) in formprops" :key="index">
-        <label v-tooltip.left.click="tooltip(formprop.tooltipId)" :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
+        <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
+        <!-- <label class="control-label col-sm-3" :for="formprop.label"> -->
+          <!-- <span style="position:absolute;right:20px;" class="w3-blue-grey w3-text w3-tag w3-round w3-small w3-animate-opacity">(<em>9 million inhabitants</em>)</span> -->
+          {{formprop.label}}:
+        </label>
         <component :is="formprop.tooltipView"/>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
-          <select v-if="formprop.label==='type'" :value="getPropertyType()" @input="setPropertyType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
+          <select v-if="formprop.label==='type'" :value="getPropertyType()" @input="setPropertyType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-9">
             <option v-for="option1 in typeValues" :key="option1" v-bind:value="option1">
               {{ option1}}
             </option>
           </select>
-          <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-8">
+          <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
             <option v-for="option2 in formatValues" :key="option2" v-bind:value="option2">
               {{ option2}}
             </option>
           </select>
         </template>
-        <div v-else-if="formprop.label === 'constraints'" id="constraints" class="col-sm-8">
+        <div v-else-if="formprop.label === 'constraints'" id="constraints" class="col-sm-9">
           <div class="input-group row" v-for="option in constraintValues" :key="option">
             <input type="checkbox" :id="option" :checked="getConstraintCheck(option)" @click="setConstraintCheck(option, $event.target)"></input>
             <label :for="option" class="form-control-static">{{option}}</label>
@@ -29,7 +33,7 @@
             </div> -->
           </div>
         </div>
-        <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-8" :id="formprop.label" />
+        <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
       </div>
     </div>
   </div>
@@ -49,10 +53,12 @@ import {
   HotRegister,
   reselectCurrentCellOrMin
 } from '../hot.js'
+import ColumnTooltip from '../mixins/ColumnTooltip'
 const Dialog = remote.dialog
 export default {
   extends: SideNav,
   name: 'column',
+  mixins: [ColumnTooltip],
   props: ['getAllColumnsProperties', 'cIndex'],
   data() {
     return {
@@ -151,7 +157,7 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'pushHotProperty', 'pushConstraint'
+      'pushColumnProperty'
     ]),
     isBooleanConstraint: function(option) {
       return this.constraintBooleanBindings.indexOf(option) > -1
@@ -169,7 +175,7 @@ export default {
         'key': key,
         'value': value
       }
-      this.pushHotProperty(object)
+      this.pushColumnProperty(object)
     },
     getProperty: function(key) {
       // let object = this.storeObject
@@ -278,7 +284,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints'
+      'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty'
     ]),
     storeObject() {
       const hotId = HotRegister.getActiveInstance().guid
@@ -314,10 +320,17 @@ export default {
   mounted: function() {
     this.$nextTick(function() {
       reselectCurrentCellOrMin()
+      let hot = HotRegister.getActiveInstance()
+      let tableProperties = this.getTableProperty({hotId: hot.guid, key: 'licenses'})
+      console.log('table properties')
+      console.log(tableProperties)
     })
   }
 }
 </script>
 <style lang="styl" scoped>
 @import '~static/css/columnprops'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/tooltip'
 </style>

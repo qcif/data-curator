@@ -60,11 +60,6 @@ ipc.on('saveData', function(e, format, fileName) {
   saveDataToFile(hot, format, fileName)
 })
 
-ipc.on('resized', function() {
-  let hot = HotRegister.getActiveInstance()
-  hot.render()
-})
-
 ipc.on('getCSV', function(e, format) {
   let hot = HotRegister.getActiveInstance()
   var data

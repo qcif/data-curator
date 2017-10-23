@@ -101,7 +101,7 @@ sideNavColor = #337ab7
   border-radius 5px
   text-align center
   z-index 2005 /* 1px higher than the overlay layer */
-  .glyphicon.spinning
+  .glyphicon.externalurlning
     animation spin 1s infinite linear
     -webkit-animation spin2 1s infinite linear
     margin-top 10px
@@ -169,11 +169,12 @@ sideNavHeaderHeight = 55px
       color #000 !important
 
   form
+    clear both
     z-index 30
     min-height 250px !important
-    max-height 350px
+    height 300px
     margin-top sideNavHeaderHeight !important
-    margin-bottom 100px
+    margin-bottom 70px
     overflow-y scroll !important
     padding 10px 10px 0 15px !important
     position relative !important
@@ -302,9 +303,3 @@ span.tabclose.btn-default:hover
 
 #columnProperties option
   width auto
-
-.tooltip-container
-  color blue !important
-  .tooltip-text
-    &a
-      color #fff !important

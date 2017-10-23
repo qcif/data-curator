@@ -78,6 +78,8 @@ let HotRegister = {
   },
   getActiveInstance() {
     let activeHot = document.querySelectorAll('#csvContent .active .editor')[0]
+    console.log('getting active hot')
+    console.log(activeHot.id)
     return this.getInstance(activeHot.id)
   },
   getActiveHotIdData() {
