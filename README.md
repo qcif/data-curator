@@ -12,7 +12,7 @@ Data Curator is a simple desktop CSV editor to help describe, validate and share
 
 ## Why do we need Data Curator?
 
-Open data producers are increasingly focusing on improving open data publishing so that data can be used to create insight and drive positive change.
+Open data creators are increasingly focusing on improving open data publishing so that data can be used to create insight and drive positive change.
 
 Open data is more likely to be used if data consumers can:
 
@@ -25,26 +25,25 @@ Open data is more likely to be used if data consumers can:
 
 ## Planned features
 
-[Using Data Curator](https://odiqueensland.github.io/data-curator-help/) open data producers can:
+Using Data Curator open data producers can:
 
 - create new tabular data from scratch or from a template
 - open data from a CSV or Microsoft Excel file
 - open multiple related data tables from a [Data Package](http://frictionlessdata.io/data-packages/)
-- automatically correct [common problems](https://github.com/frictionlessdata/data-quality-spec/blob/master/README.md) found in CSV and Excel files
+- automatically correct common problems found in CSV and Excel files
 - edit data
 
 Using data from any of these sources, you can:
 
 - automatically create a [schema](http://specs.frictionlessdata.io/table-schema/) that describes the data fields
 - refine the schema to include extra [data validation rules](http://specs.frictionlessdata.io/table-schema/#constraints)
-- describe the [provenance](https://discuss.okfn.org/t/readme-md-practice-for-data-packages/5555) of your data
+- describe the [provenance](https://relishapp.com/odi-australia/data-curator/docs/tools/set-provenance-information) of your data
 - save data as a valid CSV file in various [CSV dialects](http://specs.frictionlessdata.io/csv-dialect/)
 
 The schema enables you to:
 
 - validate the whole table at once
 - validate a column at a time
-- (and in a future release, validate as you type)
 
 Once the data is described and validated, you can share the data and its description by exporting a [Data Package](http://frictionlessdata.io/data-packages/) to:
 
@@ -79,7 +78,7 @@ We acknowledge the great work of others. We are:
 - using the [Open Knowledge International](https://okfn.org) Frictionless Data [specification](http://frictionlessdata.io) and [code libraries](http://frictionlessdata.io/tools/#javascript)
 - adopting [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/#bp-summary)
 
-Data Curator proudly includes the following open source software:
+Data Curator proudly [uses open source software](https://github.com/ODIQueensland/data-curator/network/dependencies), including:
 
   software                                                             | organisation                                                         | licence                                                                          | support                                                                        
   -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------
@@ -100,13 +99,12 @@ Data Curator proudly includes the following open source software:
 
 ### On macOS
 
-If you encounter a warning message informing you the application cannot be opened due to being from an unknown developer, try:
+If you encounter [a warning message](https://github.com/ODIQueensland/data-curator/issues/111) informing you the application cannot be opened due to being from an unknown developer, try:
 
 - Right click the app
 - then option + click on Open.
 
-This occurs due to macOS quarantining applications when it cannot determine the certificate used to sign the application.
-We're planning to sign the application so this goes away.
+This warning occurs due to macOS quarantining applications when it cannot determine the certificate used to sign the application. We're planning to sign the application so this goes away.
 
 --------------------------------------------------------------------------------
 
@@ -120,17 +118,21 @@ We develop against the 'develop' branch. The 'master' branch contains tagged rel
 `yarn`<br>
 `electron`
 
-You can use [yarn](https://yarnpkg.com/en/) to install all relevant packages and development dependencies. See the [yarn installation page](https://yarnpkg.com/en/docs/install).
+You can use [yarn](https://yarnpkg.com/en/) to install all relevant packages and development dependencies. ([Install yarn](https://yarnpkg.com/en/docs/install))
 
-We're considering keeping our dependencies up to date with [Dependabot](https://dependabot.com).
+We're keeping our dependencies up to date with [Dependabot](https://dependabot.com).
 
 ### Development: Running the full application locally
 
-To open the app on your local machine, run in development mode:
+To open the app on your local machine and run Data Curator in development mode:
 
-`yarn` _(pulls down all dependencies)_
+- change to your local Data Curator directory
+- `yarn` _(pulls down all dependencies)_
+- `yarn run dev`
 
-`yarn run dev`
+Data Curator will launch with an extra Developer menu.
+
+![data curator developer mode](static/img/data-curator-developer-menu.png)
 
 ### Application Architecture
 
@@ -150,7 +152,7 @@ We have adopted [Standard JS](https://standardjs.com) as our JavaScript coding s
 
 ## Tests
 
-Tools to automate testing have not been selected.
+Tools to automate testing are being established.
 
 ### Acceptance tests
 
@@ -163,8 +165,6 @@ To push the acceptance tests (.feature files) to Relish:
 
 `relish push odi-australia/data-curator path /your-local-path/data-curator/test/features`
 
-We are experimenting with [Cucumber Pro](https://cucumber.io/pro) to see if it's [useful](https://app.cucumber.pro/projects/cucumber-pro).
-
 We may link acceptance tests to lower level tests ([cucumber-js](https://github.com/cucumber/cucumber-js/) will probably be helpful).
 
 ### Integration and Unit tests
@@ -176,7 +176,9 @@ We're considering:
 - Spectron can be used with any testing library, including [Mocha](https://mochajs.org), [Chai](http://chaijs.com), [Jasmine](http://jasmine.github.io), and [AVA](https://github.com/sindresorhus/ava)
 - [Travis](https://travis-ci.org) for continuous integration
 
-`Instructions on how to run tests will go here.`
+To run tests and launch Data Curator:
+
+`yarn run test`
 
 ## Deployment
 
@@ -191,7 +193,7 @@ To automate deployment, we are using:
 - [Appveyor](https://www.appveyor.com) for Windows deployment
 - [Travis](https://travis-ci.org) for macOS and Linux
 
-`instructions will go here`
+`instructions to build and release on the master branch will go here`
 
 Changes are recorded in the [Change Log][changelog].
 

@@ -12,4 +12,5 @@ Feature: Sort column
     And the cursor is on a column header
     When I invoke "Sort column"
     Then sort the rows in order based on the column values and the previous sort order
+    And do not include the header row (the first row) in the sort
     And show a sort order indicator next to the column heading
