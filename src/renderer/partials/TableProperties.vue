@@ -29,36 +29,56 @@ export default {
   data() {
     return {
       formprops: [{
-        label: 'title'
+        label: 'title',
+        tooltipId: 'tooltip-table-title',
+        tooltipView: 'tooltipTableTitle'
       },
       {
-        label: 'name'
+        label: 'name',
+        tooltipId: 'tooltip-table-name',
+        tooltipView: 'tooltipTableName'
       },
       {
-        label: 'profile'
+        label: 'profile',
+        tooltipId: 'tooltip-table-profile',
+        tooltipView: 'tooltipTableProfile'
       },
       {
-        label: 'description'
+        label: 'description',
+        tooltipId: 'tooltip-table-description',
+        tooltipView: 'tooltipTableDescription'
       },
       {
         label: 'sources',
+        tooltipId: 'tooltip-table-sources',
+        tooltipView: 'tooltipTableSources',
         type: 'dropdown'
       },
       {
         label: 'licences',
+        tooltipId: 'tooltip-table-licences',
+        tooltipView: 'tooltipTableLicences',
         type: 'dropdown'
       },
       {
-        label: 'format'
+        label: 'format',
+        tooltipId: 'tooltip-table-format',
+        tooltipView: 'tooltipTableFormat'
       },
       {
-        label: 'mediatype'
+        label: 'mediatype',
+        tooltipId: 'tooltip-table-mediatype',
+        tooltipView: 'tooltipTableMediatype'
       },
       {
-        label: 'encoding'
+        label: 'encoding',
+        tooltipId: 'tooltip-table-encoding',
+        tooltipView: 'tooltipTableEncoding'
       },
       {
         label: 'missing values',
+        tooltipId: 'tooltip-table-missing-values',
+        tooltipView: 'tooltipTableMissingValues',
         type: 'text'
       }
       ]
