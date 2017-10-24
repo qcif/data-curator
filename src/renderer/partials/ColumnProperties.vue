@@ -58,7 +58,7 @@ export default {
   extends: SideNav,
   name: 'column',
   mixins: [ColumnTooltip],
-  props: ['getAllColumnsProperties', 'cIndex'],
+  props: ['cIndex'],
   data() {
     return {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
@@ -67,6 +67,7 @@ export default {
       selectConstraints: [],
       constraintInputKeyValues: {},
       constraintInputKeys: [],
+      activeTabColumnProperties: [],
       formprops: [{
         label: 'name',
         tooltipId: 'tooltip-column-name',
@@ -179,14 +180,10 @@ export default {
     getProperty: function(key) {
       // let object = this.storeObject
       // object.key = key
-      const hotId = HotRegister.getActiveInstance().guid
-      const currentColumnIndex = this.cIndex
-      let object = {
-        'hotId': hotId,
-        'columnIndex': currentColumnIndex,
-        'key': key
-      }
-      return this.getHotColumnProperty(object)
+      let columnProperties = this.activeTabColumnProperties[this.cIndex] || {}
+      let value = columnProperties[key]
+      console.log(`got column property key value: ${key}: ${value}`)
+      return value
     },
     // must not cache to ensure view always updates on selection
     getPropertyType() {
@@ -280,11 +277,24 @@ export default {
         // console.log('No validation rules to apply this constraint')
       }
       return ''
+    },
+    getAllColumnsProperties: async function(tab) {
+      console.log('firing get all column properties method...')
+      console.log(`tab is ${tab}`)
+      let hotId = await this.waitForHotIdFromTabId(tab)
+      console.log(`hot id in all column properties is ${hotId}`)
+      return this.getAllHotColumnPropertiesFromHotId(hotId)
+    },
+    initColumnProperties: async function(tab) {
+      let columnProperties = await this.getAllColumnsProperties(tab)
+      console.log('received all column properties...')
+      console.log(columnProperties)
+      this.activeTabColumnProperties = columnProperties
     }
   },
   computed: {
     ...mapGetters([
-      'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty'
+      'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty', 'getAllHotColumnPropertiesFromHotId'
     ]),
     storeObject() {
       const hotId = HotRegister.getActiveInstance().guid
@@ -316,14 +326,21 @@ export default {
     }
   },
   watch: {
+    getActiveTab: function(tab) {
+      console.log('watch received active tab change')
+      // this.initSources(tab)
+      this.initColumnProperties(tab)
+      this.$nextTick(function() {
+        reselectCurrentCellOrMin()
+      })
+    }
   },
   mounted: function() {
+    let tab = this.getActiveTab
+    this.initColumnProperties(tab)
+    console.log(`mounted in column properties: ${tab}`)
     this.$nextTick(function() {
       reselectCurrentCellOrMin()
-      let hot = HotRegister.getActiveInstance()
-      let tableProperties = this.getTableProperty({hotId: hot.guid, key: 'licenses'})
-      console.log('table properties')
-      console.log(tableProperties)
     })
   }
 }

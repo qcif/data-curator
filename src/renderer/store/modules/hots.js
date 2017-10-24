@@ -6,18 +6,20 @@ const state = {
 function getHotColumnPropertiesFromPropertyObject(property) {
   let allHotColumnProperties = state.hotTabs[property.hotId].columnProperties
   if (!allHotColumnProperties) {
-    allHotColumnProperties = state.hotTabs[property.hotId].columnProperties = []
+    mutations.resetAllColumnPropertiesForHotId(state, property.hotId)
+    allHotColumnProperties = state.hotTabs[property.hotId].columnProperties
   }
   let hotColumnProperties = allHotColumnProperties[property.columnIndex]
   if (!hotColumnProperties) {
-    hotColumnProperties = state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}
+    mutations.resetColumnPropertiesForHotId(state, property)
+    hotColumnProperties = allHotColumnProperties[property.columnIndex]
   }
   return hotColumnProperties
 }
 
 const getters = {
   getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
-    return state.hotTabs[hotId].columnProperties
+    return state.hotTabs[hotId].columnProperties || []
   },
   getHotTableSchema: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].tableSchema
@@ -139,8 +141,14 @@ const mutations = {
     _.unset(state.hotTabs, hotId)
   },
   destroyHotTabFromTabId(state, tabId) {
-    let hotId = getters.getHotIdFromTabId()
+    let hotId = getters.getHotIdFromTabId(tabId)
     _.unset(state.hotTabs, hotId)
+  },
+  resetAllColumnPropertiesForHotId(state, hotId) {
+    state.hotTabs[hotId].columnProperties = []
+  },
+  resetColumnPropertiesForHotId(state, property) {
+    state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}
   }
 }
 
