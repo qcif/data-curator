@@ -263,12 +263,12 @@ export default {
       this.updateActiveColumn()
       this.resetSideNavArrows()
     },
-    getAllColumnsProperties: function() {
-      let hot = HotRegister.getActiveInstance()
-      if (hot) {
-        return this.getAllHotColumnPropertiesFromHotId(hot.guid)
-      }
-    },
+    // getAllColumnsProperties: function() {
+    //   let hot = HotRegister.getActiveInstance()
+    //   if (hot) {
+    //     return this.getAllHotColumnPropertiesFromHotId(hot.guid)
+    //   }
+    // },
     async updateColumnProperties() {
       try {
         await guessColumnProperties()
@@ -445,10 +445,10 @@ export default {
         console.log('Cannot update active column without a column selected.')
       } else {
         let currentColumnIndex = selected[1]
-        let guid = HotRegister.getActiveInstance().guid
+        // let guid = HotRegister.getActiveInstance().guid
         this.currentColumnIndex = currentColumnIndex
       }
-      this.getColumnPropertiesMethod = this.getAllColumnsProperties()
+      // this.getColumnPropertiesMethod = this.getAllColumnsProperties()
     },
     updateToolbarMenuForColumn: function(index) {
       let maxColAllowed = getColumnCount() - 1

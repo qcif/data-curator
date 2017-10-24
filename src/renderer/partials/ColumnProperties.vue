@@ -1,6 +1,6 @@
   <template>
   <form class="navbar-form form-horizontal" id="columnProperties">
-    <div class="form-group-sm row container-fluid"
+    <div class="form-group-sm row container-fluid">
       <div v-for="(formprop, index) in formprops" :key="index">
         <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
         <!-- <label class="control-label col-sm-3" :for="formprop.label"> -->
