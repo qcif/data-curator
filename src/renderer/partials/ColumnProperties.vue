@@ -1,7 +1,7 @@
   <template>
   <form class="navbar-form form-horizontal" id="columnProperties">
     <div class="form-group-sm row container-fluid">
-      <div v-for="(formprop, index) in formprops" :key="index">
+      <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
         <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
         <!-- <label class="control-label col-sm-3" :for="formprop.label"> -->
           {{formprop.label}}:
@@ -178,11 +178,9 @@ export default {
       this.pushColumnProperty(object)
     },
     getProperty: function(key) {
-      // let object = this.storeObject
-      // object.key = key
       let columnProperties = this.activeTabColumnProperties[this.cIndex] || {}
       let value = columnProperties[key]
-      console.log(`got column property key value: ${key}: ${value}`)
+      // console.log(`got column property key value: ${key}: ${value}`)
       return value
     },
     // must not cache to ensure view always updates on selection
@@ -315,9 +313,6 @@ export default {
           this.setProperty('format', 'default')
           property = 'default'
         }
-        // if (property === 'pattern') {
-        //   this.selectConstraints.push(property)
-        // }
         return property
       },
       set: function(value) {
