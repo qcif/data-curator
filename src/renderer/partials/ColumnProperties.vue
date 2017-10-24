@@ -343,5 +343,8 @@ export default {
 @import '~static/css/columnprops'
 </style>
 <style lang="styl" scoped>
+@import '~static/css/validationrules'
+</style>
+<style lang="styl" scoped>
 @import '~static/css/tooltip'
 </style>

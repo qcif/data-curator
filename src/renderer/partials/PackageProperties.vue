@@ -8,8 +8,8 @@
         <!-- <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)"/> -->
         <input v-else type="text" class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
       </template>
-      <div v-show="errors.has(option) && removeProperty(option)" class="row help validate-danger">
-        {{ errors.first(option)}}
+      <div v-show="errors.has(formprop.label) && removeProperty(formprop.label)" class="row help validate-danger">
+        {{ errors.first(formprop.label)}}
       </div>
     </div>
   </div>
@@ -97,7 +97,7 @@ export default {
       if (name === 'version') {
         return {
           rules: {
-            regex: /[/d]+\.[/d+]+\.[/d]/
+            regex: /[\d]+\.[\d+]+\.[\d]/
           }
         }
       }
@@ -115,6 +115,21 @@ export default {
     })
   },
   watch: {
+  },
+  mounted: function() {
+    const dict = {
+      en: {
+        custom: {
+          version: {
+            regex: 'The version field must comply with semantic versioning.'
+          }
+        }
+      }
+    }
+    this.$validator.updateDictionary(dict)
   }
 }
 </script>
+<style lang="styl" scoped>
+@import '~static/css/validationrules'
+</style>
