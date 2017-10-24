@@ -90,7 +90,6 @@ export default {
   },
   watch: {
     sideNavFormHeight: function() {
-      console.log('watched side nav form height')
       this.adjustSidenavFormHeight()
     }
   }

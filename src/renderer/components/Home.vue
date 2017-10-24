@@ -39,18 +39,18 @@
         </div>
         <!-- <div class="row"> -->
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
-          <component :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :getAllColumnsProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
+          <component :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :cIndex="currentColumnIndex">
           </component>
         </transition>
         <!-- </div> -->
         <!-- <div class="row"/> -->
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
-          <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
+          <a v-if="enableSideNavLeftArrow" href="#" v-tooltip="tooltip('tooltip-previous')" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
           <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span>
-          <!-- <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" /> -->
-          <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
+          <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" />
+          <a v-if="enableSideNavRightArrow" href="#" v-tooltip="tooltip('tooltip-next')" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
           <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span>
-          <!-- <component v-if="enableSideNavRightArrow" is="tooltipNext" /> -->
+          <component v-if="enableSideNavRightArrow" is="tooltipNext" />
         </div>
         <!-- </div> -->
     </nav>
@@ -69,11 +69,11 @@
                 </li>
               </ul>
             </li>
-            <!--        <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')"> -->
-            <li class="tab-add" @click="addTab">
+            <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')">
+            <!-- <li class="tab-add" @click="addTab"> -->
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
-            <!--        <component is="tooltipAddTab" /> -->
+            <component is="tooltipAddTab" />
           </ul>
           <div class="tab-content" id='csvContent'>
             <div class="tab-pane" v-for="tab in tabs" :key="tab" :class="{ active: activeTab == tab}">
@@ -160,8 +160,6 @@ export default {
   data() {
     return {
       currentColumnIndex: 0,
-      // only set method when ready
-      getColumnPropertiesMethod: function() {},
       toolbarIndex: -1,
       sideNavPosition: 'right',
       sideNavStatus: 'closed',
@@ -262,12 +260,6 @@ export default {
     selectionListener: function() {
       this.updateActiveColumn()
       this.resetSideNavArrows()
-    },
-    getAllColumnsProperties: function() {
-      let hot = HotRegister.getActiveInstance()
-      if (hot) {
-        return this.getAllHotColumnPropertiesFromHotId(hot.guid)
-      }
     },
     async updateColumnProperties() {
       try {
@@ -444,11 +436,8 @@ export default {
       if (!selected) {
         console.log('Cannot update active column without a column selected.')
       } else {
-        let currentColumnIndex = selected[1]
-        let guid = HotRegister.getActiveInstance().guid
-        this.currentColumnIndex = currentColumnIndex
+        this.currentColumnIndex = selected[1]
       }
-      this.getColumnPropertiesMethod = this.getAllColumnsProperties()
     },
     updateToolbarMenuForColumn: function(index) {
       let maxColAllowed = getColumnCount() - 1
@@ -516,7 +505,7 @@ export default {
     adjustSidenavFormHeight: function() {
       let sidenav = document.querySelector('#sidenav')
       let sidenavHeight = sidenav.clientHeight
-      console.log(`height is ${sidenavHeight}`)
+      // console.log(`height is ${sidenavHeight}`)
       let form = sidenav.querySelector('form')
       this.sideNavFormHeight = (sidenavHeight - 150) + 'px'
       if (form) {

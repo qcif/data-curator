@@ -1,10 +1,9 @@
   <template>
   <form class="navbar-form form-horizontal" id="columnProperties">
-    <div class="form-group-sm row container-fluid"
-      <div v-for="(formprop, index) in formprops" :key="index">
+    <div class="form-group-sm row container-fluid">
+      <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
         <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
         <!-- <label class="control-label col-sm-3" :for="formprop.label"> -->
-          <!-- <span style="position:absolute;right:20px;" class="w3-blue-grey w3-text w3-tag w3-round w3-small w3-animate-opacity">(<em>9 million inhabitants</em>)</span> -->
           {{formprop.label}}:
         </label>
         <component :is="formprop.tooltipView"/>
@@ -25,12 +24,12 @@
             <input type="checkbox" :id="option" :checked="getConstraintCheck(option)" @click="setConstraintCheck(option, $event.target)"></input>
             <label :for="option" class="form-control-static">{{option}}</label>
             <template v-if="!isBooleanConstraint(option)">
-              <!-- <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate="constraintValidationRules(option)" :name="option"/> -->
-              <input type="text" :class="{ 'form-group-sm constraint-text': true }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" :name="option"/>
+              <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate="constraintValidationRules(option)" :name="option"/>
+              <!-- <input type="text" :class="{ 'form-group-sm constraint-text': true }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" :name="option"/> -->
             </template>
-            <!-- <div v-show="errors.has(option) && removeConstraint(option)" class="row help validate-danger">
+            <div v-show="errors.has(option) && removeConstraint(option)" class="row help validate-danger">
               {{ errors.first(option)}}
-            </div> -->
+            </div>
           </div>
         </div>
         <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
@@ -59,7 +58,7 @@ export default {
   extends: SideNav,
   name: 'column',
   mixins: [ColumnTooltip],
-  props: ['getAllColumnsProperties', 'cIndex'],
+  props: ['cIndex'],
   data() {
     return {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
@@ -68,6 +67,7 @@ export default {
       selectConstraints: [],
       constraintInputKeyValues: {},
       constraintInputKeys: [],
+      activeTabColumnProperties: [],
       formprops: [{
         label: 'name',
         tooltipId: 'tooltip-column-name',
@@ -178,16 +178,10 @@ export default {
       this.pushColumnProperty(object)
     },
     getProperty: function(key) {
-      // let object = this.storeObject
-      // object.key = key
-      const hotId = HotRegister.getActiveInstance().guid
-      const currentColumnIndex = this.cIndex
-      let object = {
-        'hotId': hotId,
-        'columnIndex': currentColumnIndex,
-        'key': key
-      }
-      return this.getHotColumnProperty(object)
+      let columnProperties = this.activeTabColumnProperties[this.cIndex] || {}
+      let value = columnProperties[key]
+      // console.log(`got column property key value: ${key}: ${value}`)
+      return value
     },
     // must not cache to ensure view always updates on selection
     getPropertyType() {
@@ -266,25 +260,39 @@ export default {
       this.setProperty('constraints', this.constraintInputKeyValues)
     },
     constraintValidationRules: function(option) {
-      // if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
-      //   return 'numeric'
-      // } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
-      //   let type = this.getProperty('type')
-      //   if (type === 'integer') {
-      //     return 'numeric'
-      //   } else if (type === 'number') {
-      //     return 'decimal'
-      //   }
-      // } else {
-      //   // console.log('No validation rules to apply this constraint')
-      // }
-      // }
+      if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
+        return 'numeric'
+      } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
+        let type = this.getProperty('type')
+        if (type === 'integer') {
+          return 'numeric'
+        } else if (type === 'number') {
+          return 'decimal'
+        } else {
+          // console.log('No validation rules to apply this type for constraints: min/max')
+        }
+      } else {
+        // console.log('No validation rules to apply this constraint')
+      }
       return ''
+    },
+    getAllColumnsProperties: async function(tab) {
+      console.log('firing get all column properties method...')
+      console.log(`tab is ${tab}`)
+      let hotId = await this.waitForHotIdFromTabId(tab)
+      console.log(`hot id in all column properties is ${hotId}`)
+      return this.getAllHotColumnPropertiesFromHotId(hotId)
+    },
+    initColumnProperties: async function(tab) {
+      let columnProperties = await this.getAllColumnsProperties(tab)
+      console.log('received all column properties...')
+      console.log(columnProperties)
+      this.activeTabColumnProperties = columnProperties
     }
   },
   computed: {
     ...mapGetters([
-      'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty'
+      'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty', 'getAllHotColumnPropertiesFromHotId'
     ]),
     storeObject() {
       const hotId = HotRegister.getActiveInstance().guid
@@ -305,9 +313,6 @@ export default {
           this.setProperty('format', 'default')
           property = 'default'
         }
-        // if (property === 'pattern') {
-        //   this.selectConstraints.push(property)
-        // }
         return property
       },
       set: function(value) {
@@ -316,14 +321,20 @@ export default {
     }
   },
   watch: {
+    getActiveTab: function(tab) {
+      console.log('watch received active tab change')
+      // this.initSources(tab)
+      this.initColumnProperties(tab)
+      this.$nextTick(function() {
+        reselectCurrentCellOrMin()
+      })
+    }
   },
   mounted: function() {
+    let tab = this.getActiveTab
+    this.initColumnProperties(tab)
     this.$nextTick(function() {
       reselectCurrentCellOrMin()
-      let hot = HotRegister.getActiveInstance()
-      let tableProperties = this.getTableProperty({hotId: hot.guid, key: 'licenses'})
-      console.log('table properties')
-      console.log(tableProperties)
     })
   }
 }

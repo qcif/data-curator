@@ -76,10 +76,11 @@ let HotRegister = {
   getInstance(id) {
     return _.get(this.hots, id)
   },
+  // TODO: consider cache (vue computed) of method, and moving to Home.vue to use with props, as used a lot
   getActiveInstance() {
     let activeHot = document.querySelectorAll('#csvContent .active .editor')[0]
-    console.log('getting active hot')
-    console.log(activeHot.id)
+//    console.log('getting active hot')
+//    console.log(activeHot.id)
     return this.getInstance(activeHot.id)
   },
   getActiveHotIdData() {
