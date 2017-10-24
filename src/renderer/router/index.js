@@ -2,20 +2,22 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 Vue.use(Router)
-
-// TODO : refactor with queries/ multiple components as won't accomodate in current form for built packages
 export default new Router({
   routes: [
     {
       path: '/',
       name: 'home',
-      component: require('@/components/Home')
+      components: {
+        default: require('@/components/Home'),
+        keyboardhelp: require('@/components/KeyboardHelp'),
+        openexcel: require('@/components/SelectWorksheet')
+      }
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
-    // {
-    //   path: '/keyboardhelp',
-    //   name: 'keyboardhelp',
-    //   component: require('@/components/KeyboardHelp')
-    // },
+    // Keep below commented out until implemented
     // {
     //   path: '/chooserepo',
     //   name: 'chooserepo',
@@ -35,15 +37,6 @@ export default new Router({
     //   path: '/githubsuccess',
     //   name: 'githubsuccess',
     //   component: require('@/components/GithubSuccess')
-    // },
-    // {
-    //   path: '/selectworksheet',
-    //   name: 'selectworksheet',
-    //   component: require('@/components/SelectWorksheet')
-    // },
-    // {
-    //   path: '*',
-    //   redirect: '/'
     // }
   ]
 })

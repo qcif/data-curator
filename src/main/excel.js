@@ -18,7 +18,10 @@ export function importExcel() {
     var worksheet = workbook.Sheets[first_sheet_name]
 
     let popup = new BrowserWindow({width: 300, height: 150})
-    popup.loadURL(`http://localhost:9080/#/selectworksheet`)
+    const winURL = process.env.NODE_ENV === 'development'
+      ? `http://localhost:9080/openexcel.html`
+      : `file://${__dirname}/openexcel.html`
+    popup.loadURL(winURL)
     popup.setMenu(null)
     popup.webContents.on('did-finish-load', function() {
       popup.webContents.send('loadSheets', workbook.SheetNames)

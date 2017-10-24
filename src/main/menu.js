@@ -62,7 +62,7 @@ const template = [
         submenu: open_submenu
       }, {
         label: 'Open Excel Sheet...',
-        enabled: false,
+        enabled: true,
         click() {
           excel.importExcel()
         }
@@ -389,7 +389,7 @@ const template = [
         //      }, {
         label: 'Keyboard Shortcuts',
         accelerator: 'CmdOrCtrl+/',
-        enabled: false,
+        enabled: true,
         click() {
           help.showKeyboardHelp()
         }
