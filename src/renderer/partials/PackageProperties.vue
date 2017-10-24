@@ -5,8 +5,12 @@
       <template v-if="formprop.type !== 'hidden'">
         <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
         <component v-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
-        <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)"/>
+        <!-- <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)"/> -->
+        <input v-else type="text" class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
       </template>
+      <div v-show="errors.has(option) && removeProperty(option)" class="row help validate-danger">
+        {{ errors.first(option)}}
+      </div>
     </div>
   </div>
 </form>
@@ -83,6 +87,21 @@ export default {
     },
     setProperty: function(key, value) {
       this.pushPackageProperty({key: key, value: value})
+    },
+    removeProperty: function(key) {
+      let value = ''
+      this.setProperty(key, value)
+      return true
+    },
+    validationRules: function(name) {
+      if (name === 'version') {
+        return {
+          rules: {
+            regex: /[/d]+\.[/d+]+\.[/d]/
+          }
+        }
+      }
+      return ''
     }
   },
   beforeCreate: function() {

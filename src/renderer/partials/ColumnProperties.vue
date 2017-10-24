@@ -338,7 +338,6 @@ export default {
   mounted: function() {
     let tab = this.getActiveTab
     this.initColumnProperties(tab)
-    console.log(`mounted in column properties: ${tab}`)
     this.$nextTick(function() {
       reselectCurrentCellOrMin()
     })

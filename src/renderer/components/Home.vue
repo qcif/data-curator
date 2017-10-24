@@ -39,7 +39,7 @@
         </div>
         <!-- <div class="row"> -->
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
-          <component :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :getAllColumnsProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
+          <component :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :cIndex="currentColumnIndex">
           </component>
         </transition>
         <!-- </div> -->
@@ -160,8 +160,6 @@ export default {
   data() {
     return {
       currentColumnIndex: 0,
-      // only set method when ready
-      getColumnPropertiesMethod: function() {},
       toolbarIndex: -1,
       sideNavPosition: 'right',
       sideNavStatus: 'closed',
@@ -263,12 +261,6 @@ export default {
       this.updateActiveColumn()
       this.resetSideNavArrows()
     },
-    // getAllColumnsProperties: function() {
-    //   let hot = HotRegister.getActiveInstance()
-    //   if (hot) {
-    //     return this.getAllHotColumnPropertiesFromHotId(hot.guid)
-    //   }
-    // },
     async updateColumnProperties() {
       try {
         await guessColumnProperties()
@@ -444,11 +436,8 @@ export default {
       if (!selected) {
         console.log('Cannot update active column without a column selected.')
       } else {
-        let currentColumnIndex = selected[1]
-        // let guid = HotRegister.getActiveInstance().guid
-        this.currentColumnIndex = currentColumnIndex
+        this.currentColumnIndex = selected[1]
       }
-      // this.getColumnPropertiesMethod = this.getAllColumnsProperties()
     },
     updateToolbarMenuForColumn: function(index) {
       let maxColAllowed = getColumnCount() - 1
@@ -516,7 +505,7 @@ export default {
     adjustSidenavFormHeight: function() {
       let sidenav = document.querySelector('#sidenav')
       let sidenavHeight = sidenav.clientHeight
-      console.log(`height is ${sidenavHeight}`)
+      // console.log(`height is ${sidenavHeight}`)
       let form = sidenav.querySelector('form')
       this.sideNavFormHeight = (sidenavHeight - 150) + 'px'
       if (form) {

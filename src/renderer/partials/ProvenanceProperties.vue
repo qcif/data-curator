@@ -5,7 +5,7 @@
       <label class="control-label col-sm-3">description:</label>
       <span>
         <button type="button" class="btn btn-primary btn-sm" @click="togglePreview()">
-          <span class="glyphicon glyphicon-search"/>Preview
+            <span class="provenance-preview-icon glyphicon" :class="buttonIconClass"/>{{buttonText}}
         </button>
       </span>
       <div v-if="isPreview" v-html="markText" class="col-sm-9" id="preview" />
@@ -25,6 +25,12 @@ export default {
   computed: {
     markText() {
       return md.render(this.provenance)
+    },
+    buttonIconClass() {
+      return this.isPreview ? 'glyphicon-pencil' : 'glyphicon-search'
+    },
+    buttonText() {
+      return this.isPreview ? 'Edit' : 'Preview'
     }
   },
   methods: {

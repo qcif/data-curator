@@ -4,7 +4,6 @@
     <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
       <template v-if="formprop.type !== 'hidden'">
         <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
-        <!-- until all labels have input only setup get/set for explicity set type-->
         <input v-if="formprop.label === 'missing values'" :value="missingValues" @input="setMissingValues($event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
         <input v-else-if="formprop.type === 'primary key(s)'" :value="primaryKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
         <!-- <input v-else-if="formprop.type === 'foreign key(s)'" :value="foreignKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" /> -->
