@@ -31,23 +31,19 @@ async function initDataAgainstSchema(data, schema) {
   return table
 }
 
-async function storeData(hotId, table) {
-  await store.mutations.pushTableSchema(store.state, {
+function storeData(hotId, table) {
+  return store.mutations.pushTableSchema(store.state, {
     hotId: hotId,
     tableSchema: table
   })
 }
 
 export async function guessColumnProperties() {
-  console.log('about to guess...')
   let activeHot = HotRegister.getActiveHotIdData()
   let table = await initDataAndInferSchema(activeHot.data)
-  await storeData(activeHot.id, table)
-  // let tableDescriptor = table.schema.descriptor
-  // return {
-  //   'hotId': activeHot.id,
-  //   'columnProperties': tableDescriptor.fields
-  // }
+  let isStored = storeData(activeHot.id, table)
+  let message = isStored ? 'Success: Guess column properties succeeded.' : 'Failed: Guess column properties failed.'
+  return message
 }
 
 // function checkRowCells(row, schema) {

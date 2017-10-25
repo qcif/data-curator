@@ -116,9 +116,9 @@ const mutations = {
   pushTableSchema(state, hotTable) {
     console.log('pushing table schema')
     let hotId = hotTable.hotId
-    _.set(state.hotTabs, `${hotId}.tableSchema`, hotTable.tableSchema)
-    mutations.mergeTableSchemaOverCurrentColumnProperties(state, hotId)
-    console.log(state.hotTabs)
+    let tableSchema = _.set(state.hotTabs, `${hotId}.tableSchema`, hotTable.tableSchema)
+    let columnProperties = mutations.mergeTableSchemaOverCurrentColumnProperties(state, hotId)
+    return tableSchema && columnProperties
   },
   mergeTableSchemaOverCurrentColumnProperties(state, hotId) {
     let hotTab = state.hotTabs[hotId]
@@ -126,7 +126,7 @@ const mutations = {
     if (!hotTab.columnProperties) {
       hotTab.columnProperties = []
     }
-    _.merge(hotTab.columnProperties, tableSchemaProperties)
+    return _.merge(hotTab.columnProperties, tableSchemaProperties)
   },
   mergeCurrentColumnPropertiesOverTableSchema(state, hotId) {
     let hotTab = state.hotTabs[hotId]

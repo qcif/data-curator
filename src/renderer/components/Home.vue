@@ -85,18 +85,24 @@
       </div>
       <div id="main-bottom-panel" class="panel-footer">
         <div id="message-panel" class="panel-default">
-          <div v-show="errorMessages && errorMessages.length > 0">
+          <!-- tidy up messages view with components -->
+          <div v-show="messages">
             <ul class="nav navbar-right closebtn">
               <li>
-                <a href="#" @click="closeErrorMessages()">
+                <a href="#" @click="closeMessages()">
                   <span style="color:#000" class="btn-default fa fa-times" />
                 </a>
               </li>
             </ul>
-            <h3>Validation errors</h3>
-            <div v-for="errorMessage in errorMessages">
-              <span>row no.{{errorMessage.rowNumber}}</span><span>: {{errorMessage.message}}</span>
-            </div>
+              <h3>{{messagesTitle}}</h3>
+              <template  v-if="messagesType === 'error'">
+                <div v-for="errorMessage in messages">
+                  <span>row no.{{errorMessage.rowNumber}}</span><span>: {{errorMessage.message}}</span>
+                </div>
+              </template>
+              <div v-else>
+                <span>{{messages}}</span>
+              </div>
           </div>
         </div>
       </div>
@@ -169,7 +175,9 @@ export default {
       enableTransition: false,
       enableSideNavLeftArrow: true,
       enableSideNavRightArrow: true,
-      errorMessages: false,
+      messagesType: '',
+      messages: false,
+      messagesTitle: 'Feedback',
       loadingDataMessage: false,
       sideNavFormHeight: '300px',
       toolbarMenus: [{
@@ -254,11 +262,13 @@ export default {
       'destroyHotTab',
       'destroyTabObject'
     ]),
-    closeErrorMessages: function() {
+    closeMessages: function() {
       for (let el of ['main-bottom-panel', 'main-middle-panel']) {
         document.getElementById(el).classList.remove('opened')
       }
-      this.errorMessages = false
+      this.messages = false
+      this.messagesType = ''
+      this.messageTitle = ''
     },
     selectionListener: function() {
       this.updateActiveColumn()
@@ -266,27 +276,43 @@ export default {
     },
     async updateColumnProperties() {
       try {
-        await guessColumnProperties()
+        let feedback = await guessColumnProperties()
+        this.messages = feedback
+        this.messagesType = 'feedback'
+        this.messagesTitle = 'Guess column properties'
+        this.reportFeedback()
       } catch (err) {
         console.log(err)
       }
     },
-    openValidationMessagesOnIds: function(ids) {
+    // TODO: tidy up error view handling
+    openMessagesOnIds: function(ids) {
       for (let el of ids) {
         document.getElementById(el).classList += ' opened'
       }
     },
-    closeValidationMessagesOnIds: function(ids) {
+    closeMessagesOnIds: function(ids) {
       for (let el of ids) {
         document.getElementById(el).classList.remove('opened')
       }
     },
     reportValidationRowErrors: function(errorCollection) {
-      this.errorMessages = errorCollection
+      if (errorCollection.length > 0) {
+        this.messagesTitle = 'Validation Errors'
+        this.messages = errorCollection
+        this.messagesType = 'error'
+      } else {
+        this.messagesTitle = 'Validation Success'
+        this.messages = 'No validation errors reported.'
+        this.messagesType = 'feedback'
+      }
+      this.reportFeedback()
+    },
+    reportFeedback: function() {
       let ids = ['main-bottom-panel', 'main-middle-panel']
-      let cssUpdateFunction = this.errorMessages.length > 0
-        ? this.openValidationMessagesOnIds(ids)
-        : this.closeValidationMessagesOnIds(ids)
+      let cssUpdateFunction = this.messages
+        ? this.openMessagesOnIds(ids)
+        : this.closeMessagesOnIds(ids)
     },
     async validateTable() {
       try {
@@ -575,11 +601,9 @@ export default {
     })
   },
   created: function() {
-    const vueForceUpdate = this.forceWrapper
     const vueGuessProperties = this.updateColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
-      vueForceUpdate()
     })
     const vueValidateTable = this.validateTable
     ipc.on('validateTable', function(event, arg) {
