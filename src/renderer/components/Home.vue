@@ -46,10 +46,10 @@
         <!-- <div class="row"/> -->
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
           <a v-if="enableSideNavLeftArrow" href="#" v-tooltip="tooltip('tooltip-previous')" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
-          <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span>
+          <!-- <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span> -->
           <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" />
           <a v-if="enableSideNavRightArrow" href="#" v-tooltip="tooltip('tooltip-next')" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
-          <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span>
+          <!-- <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span> -->
           <component v-if="enableSideNavRightArrow" is="tooltipNext" />
         </div>
         <!-- </div> -->
@@ -235,6 +235,9 @@ export default {
     },
     toolbarMenuName() {
       return _.get(this.toolbarMenus[this.toolbarIndex], 'name')
+    },
+    maxColAllowed() {
+      return getColumnCount() - 1
     }
   },
   methods: {
@@ -405,10 +408,12 @@ export default {
       return toolbarMenu.sideNavPosition && toolbarMenu.sideNavView
     },
     resetSideNavArrows() {
-      this.enableSideNavLeftArrow = true
-      this.enableSideNavRightArrow = true
+      this.enableSideNavLeftArrow = false
+      this.enableSideNavRightArrow = false
       if (this.sideNavView === 'column') {
-        this.enableSideNavLeftArrow = getCurrentColumnIndexOrMax() > 0
+        // this.currentColumnIndex = getCurrentColumnIndexOrMin()
+        this.enableSideNavLeftArrow = this.currentColumnIndex > 0
+        this.enableSideNavRightArrow = this.currentColumnIndex < this.maxColAllowed
       }
     },
     updateSideNavState() {
@@ -440,7 +445,7 @@ export default {
       }
     },
     updateToolbarMenuForColumn: function(index) {
-      let maxColAllowed = getColumnCount() - 1
+      let maxColAllowed = this.maxColAllowed
       let currentColIndex = getCurrentColumnIndexOrMax()
       if (index < this.toolbarIndex && currentColIndex > 0) {
         decrementActiveColumn(currentColIndex)
