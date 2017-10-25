@@ -6,13 +6,14 @@ let HotRegister = {
   hots: {},
   register(container, listeners={}) {
     let hot = new Handsontable(container, {
-      colHeaders: true,
+      // do not allow headers on initialisation - no default headers unless toggled
+      colHeaders: false,
       rowHeaders: true,
       // autoColumnSize: {syncLimit: 300},
       fixedRowsTop: 0,
       // enable when header row function implemented - otherwise header is sorted with values
-      columnSorting: false,
-      sortIndicator: false,
+      columnSorting: true,
+      sortIndicator: true,
       contextMenu: false,
       autoRowSize: true,
       autoWrap: true,
@@ -79,8 +80,8 @@ let HotRegister = {
   // TODO: consider cache (vue computed) of method, and moving to Home.vue to use with props, as used a lot
   getActiveInstance() {
     let activeHot = document.querySelectorAll('#csvContent .active .editor')[0]
-//    console.log('getting active hot')
-//    console.log(activeHot.id)
+    //    console.log('getting active hot')
+    //    console.log(activeHot.id)
     return this.getInstance(activeHot.id)
   },
   getActiveHotIdData() {

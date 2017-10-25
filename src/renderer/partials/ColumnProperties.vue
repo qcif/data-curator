@@ -32,7 +32,7 @@
             </div>
           </div>
         </div>
-        <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
+        <input :disabled="formprop.isDisabled" v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
       </div>
     </div>
   </div>
@@ -71,8 +71,8 @@ export default {
       formprops: [{
         label: 'name',
         tooltipId: 'tooltip-column-name',
-        tooltipView: 'tooltipColumnName'
-
+        tooltipView: 'tooltipColumnName',
+        isDisabled: true
       },
       {
         label: 'title',

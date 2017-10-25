@@ -31,6 +31,15 @@ async function initDataAgainstSchema(data, schema) {
   return table
 }
 
+function updateDataForHeaders(hot) {
+  let allData = hot.getData()
+  if (hot.hasColHeaders()) {
+    let headers = hot.getColHeader()
+    allData = _.concat([headers], allData)
+  }
+  return allData
+}
+
 function storeData(hotId, table) {
   return store.mutations.pushTableSchema(store.state, {
     hotId: hotId,
@@ -39,9 +48,12 @@ function storeData(hotId, table) {
 }
 
 export async function guessColumnProperties() {
-  let activeHot = HotRegister.getActiveHotIdData()
-  let table = await initDataAndInferSchema(activeHot.data)
-  let isStored = storeData(activeHot.id, table)
+  let hot = HotRegister.getActiveInstance()
+  let id = hot.guid
+  let data = updateDataForHeaders(hot)
+  // let activeHot = HotRegister.getActiveHotIdData()
+  let table = await initDataAndInferSchema(data)
+  let isStored = storeData(id, table)
   let message = isStored ? 'Success: Guess column properties succeeded.' : 'Failed: Guess column properties failed.'
   return message
 }
@@ -104,12 +116,12 @@ function checkRow(rowNumber, row, schema, errorCollector) {
 //   }
 // }
 
-async function checkForSchema(activeHotObject) {
-  let tableSchema = _.get(store.state.hotTabs, `${activeHotObject.id}.tableSchema`)
+async function checkForSchema(data, id) {
+  let tableSchema = _.get(store.state.hotTabs, `${id}.tableSchema`)
   if (!tableSchema) {
-    tableSchema = await initDataAndInferSchema(activeHotObject.data)
+    tableSchema = await initDataAndInferSchema(data)
   }
-  let table = await initDataAgainstSchema(activeHotObject.data, tableSchema.schema)
+  let table = await initDataAgainstSchema(data, tableSchema.schema)
   table.schema.commit()
   return table
 }
@@ -128,27 +140,31 @@ function duplicatesCount(row) {
   return row.length - uniques.size
 }
 
-function checkHeaderErrors(headers, errorCollector) {
+function checkHeaderErrors(headers, errorCollector, hasColHeaders) {
   console.log('checking header errors')
+  let rowNumber = hasColHeaders ? 0 : 1
   if (isRowBlank(headers)) {
-    errorCollector.push({rowNumber: 1, message: `Headers are completely blank`, name: 'Blank Row'})
+    errorCollector.push({rowNumber: rowNumber, message: `Headers are completely blank`, name: 'Blank Row'})
   } else {
     let diff = blankCellCount(headers)
     if (diff > 0) {
-      errorCollector.push({rowNumber: 1, message: `There are ${diff} blank header(s)`, name: 'Blank Header'})
+      errorCollector.push({rowNumber: rowNumber, message: `There are ${diff} blank header(s)`, name: 'Blank Header'})
     }
     let diff2 = duplicatesCount(headers)
     if (diff2 > 0) {
-      errorCollector.push({rowNumber: 1, message: `There are ${diff2} duplicate header(s)`, name: 'Duplicate Header'})
+      errorCollector.push({rowNumber: rowNumber, message: `There are ${diff2} duplicate header(s)`, name: 'Duplicate Header'})
     }
   }
 }
 
 export async function validateActiveDataAgainstSchema(callback) {
-  let activeHotObject = HotRegister.getActiveHotIdData()
+  let hot = HotRegister.getActiveInstance()
+  let id = hot.guid
+  let data = updateDataForHeaders(hot)
+  // let activeHotObject = HotRegister.getActiveHotIdData()
   const errorCollector = []
-  checkHeaderErrors(activeHotObject.data[0], errorCollector)
-  let table = await checkForSchema(activeHotObject)
+  checkHeaderErrors(data[0], errorCollector, hot.hasColHeaders())
+  let table = await checkForSchema(data, id)
   // don't cast at stream, wait until row to cast otherwise not all errors will be reported.
   const stream = await table.iter({
     extended: true,
@@ -156,10 +172,11 @@ export async function validateActiveDataAgainstSchema(callback) {
     cast: false
   })
   stream.on('data', (row) => {
+    let rowNumber = hot.hasColHeaders() ? row[0] - 1 : row[0]
     if (isRowBlank(row[2])) {
-      errorCollector.push({rowNumber: row[0], message: `Row ${row[0]} is completely blank`, name: 'Blank Row'})
+      errorCollector.push({rowNumber: rowNumber, message: `Row ${rowNumber} is completely blank`, name: 'Blank Row'})
     }
-    checkRow(row[0], row[2], table.schema, errorCollector)
+    checkRow(rowNumber, row[2], table.schema, errorCollector)
   })
   stream.on('end', () => {
     callback(errorCollector)

@@ -13,7 +13,22 @@ export function loadDataIntoHot(hot, data, format) {
     arrays = $.csv.toArrays(data, format.options)
   }
   hot.loadData(arrays)
+  hot.render()
   return arrays
+}
+
+export function toggleHeaders(hot) {
+  let data = hot.getData()
+  let headers = false
+  if (hot.hasColHeaders()) {
+    data = _.concat([hot.getColHeader()], data)
+  } else {
+    headers = data[0]
+    data = _.drop(data)
+  }
+  hot.loadData(data)
+  hot.updateSettings({colHeaders: headers})
+  hot.render()
 }
 
 export function saveDataToFile(hot, format, filename, callback) {
