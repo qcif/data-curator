@@ -22,7 +22,7 @@ init:
 
 install:
   - ps: Install-Product node 8 x64
-  - choco upgrade yarn --ignore-dependencies
+  # - choco upgrade yarn --ignore-dependencies
   - git reset --hard HEAD
   - yarn
   - node --version
