@@ -4,7 +4,7 @@
   <div id="licenses">
     <!-- <label class="control-label col-sm-4" /> -->
     <select v-model="selectedLicenses" class="form-control input-sm col-sm-9" multiple>
-        <option v-for="license in licenses" :value="license.id">{{license.id}}</option>
+        <option v-for="license in licenses" :value="license.title">{{license.title}}</option>
       </select>
   </div>
 </div>
@@ -101,7 +101,7 @@ export default {
     getLicenseIdsFromTab: async function() {
       let licenses = await this.getLicensesFromTab()
       let licenseIds = licenses ? licenses.map(x => {
-        return x.id
+        return x.title
       }) : []
       return licenseIds
     },
@@ -113,7 +113,7 @@ export default {
     },
     licensesObject: function(ids) {
       if (ids && ids.length > 0) {
-        return this.licenses.filter(x => ids.indexOf(x.id) !== -1)
+        return this.licenses.filter(x => ids.indexOf(x.title) !== -1)
       } else {
         return []
       }
