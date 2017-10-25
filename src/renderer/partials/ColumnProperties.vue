@@ -1,32 +1,40 @@
-<template>
-<form class="navbar-form form-horizontal" id="columnProperties">
-  <div class="form-group-sm row container-fluid">
-    <div v-for="(formprop, index) in formprops" :key="index">
-      <label v-tooltip.left.click="tooltip(formprop.tooltipId)" :style="{paddingLeft: '0'}" class="control-label col-sm-4" :for="formprop.label">{{formprop.label}}:</label>
-      <component :is="formprop.tooltipView"/>
-      <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
-        <select v-if="formprop.label==='type'" :value="getProperty(formprop.label)" @input="setSelectType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-8">
-          <option v-for="option in typeValues" v-bind:value="option">
-            {{ option}}
-          </option>
-        </select>
-        <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-8">
-          <option v-for="option in formatValues" v-bind:value="option">
-            {{ option}}
-          </option>
-        </select>
-      </template>
-      <div v-else-if="formprop.label === 'constraints'" id="constraints" class="col-sm-8">
-        <div v-for="option in constraintValues" class="input-group row">
-          <input type="checkbox" :id="option" :value="option" v-model="selectConstraints"></input>
-          <label for="option" class="form-control-static">{{option}}</label>
-          <!-- <template v-if="[option] == 'boolean'"/> -->
-          <input v-if="option" v-show="showConstraint(option)" type="text" class="constraint-text" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)"/>
+  <template>
+  <form class="navbar-form form-horizontal" id="columnProperties">
+    <div class="form-group-sm row container-fluid">
+      <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
+        <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
+        <!-- <label class="control-label col-sm-3" :for="formprop.label"> -->
+          {{formprop.label}}:
+        </label>
+        <component :is="formprop.tooltipView"/>
+        <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
+          <select v-if="formprop.label==='type'" :value="getPropertyType()" @input="setPropertyType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-9">
+            <option v-for="option1 in typeValues" :key="option1" v-bind:value="option1">
+              {{ option1}}
+            </option>
+          </select>
+          <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
+            <option v-for="option2 in formatValues" :key="option2" v-bind:value="option2">
+              {{ option2}}
+            </option>
+          </select>
+        </template>
+        <div v-else-if="formprop.label === 'constraints'" id="constraints" class="col-sm-9">
+          <div class="input-group row" v-for="option in constraintValues" :key="option">
+            <input type="checkbox" :id="option" :checked="getConstraintCheck(option)" @click="setConstraintCheck(option, $event.target)"></input>
+            <label :for="option" class="form-control-static">{{option}}</label>
+            <template v-if="!isBooleanConstraint(option)">
+              <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate="constraintValidationRules(option)" :name="option"/>
+              <!-- <input type="text" :class="{ 'form-group-sm constraint-text': true }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" :name="option"/> -->
+            </template>
+            <div v-show="errors.has(option) && removeConstraint(option)" class="row help validate-danger">
+              {{ errors.first(option)}}
+            </div>
+          </div>
         </div>
+        <input :disabled="formprop.isDisabled" v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
       </div>
-      <input v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control input-sm col-sm-8" :id="formprop.label" />
     </div>
-  </div>
   </div>
 </form>
 </template>
@@ -42,24 +50,29 @@ import {
 } from 'vuex'
 import {
   HotRegister,
-  getCurrentColumnIndexOrMin as getCurrentColumnIndex,
   reselectCurrentCellOrMin
 } from '../hot.js'
+import ColumnTooltip from '../mixins/ColumnTooltip'
 const Dialog = remote.dialog
 export default {
   extends: SideNav,
   name: 'column',
-  props: ['getAllColumnsProperties', 'cIndex'],
+  mixins: [ColumnTooltip],
+  props: ['cIndex'],
   data() {
     return {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       formatValues: [],
       constraintValues: [],
       selectConstraints: [],
+      constraintInputKeyValues: {},
+      constraintInputKeys: [],
+      activeTabColumnProperties: [],
       formprops: [{
         label: 'name',
         tooltipId: 'tooltip-column-name',
-        tooltipView: 'tooltipColumnName'
+        tooltipView: 'tooltipColumnName',
+        isDisabled: true
       },
       {
         label: 'title',
@@ -130,37 +143,30 @@ export default {
         'geojson': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
         'any': ['required', 'unique', 'enum']
       },
-      constraintBooleanBindings: [
-        'required',
-        'unique'
-      ],
-      otherProperties: ['missingValues', 'primaryKey', 'foreignKey']
+      constraintBooleanBindings: ['required', 'unique'],
+      validationRulesByType: {
+        'integer': 'numeric',
+        'number': 'decimal',
+        'date': 'date_format',
+        'time': 'date_format',
+        'datetime': 'date_format',
+        'year': 'date_format',
+        'yearmonth': 'date_format'
+      }
     }
   },
   methods: {
     ...mapMutations([
-      'pushHotProperty'
+      'pushColumnProperty'
     ]),
-    showConstraint: function(option) {
-      // console.log(this.selectConstraints[option])
-      return this.constraintBooleanBindings.indexOf(option) === -1 && this.selectConstraints.indexOf(option) > -1
-    },
-    getProperty: function(key) {
-      let allColumnsProperties = this.getAllColumnsProperties
-      if (allColumnsProperties) {
-        let activeColumnProperties = allColumnsProperties[this.cIndex]
-        if (activeColumnProperties) {
-          if (key === 'type') {
-            let typeValue = activeColumnProperties['type']
-            if (!typeValue) {
-              this.setSelectType('any')
-            }
-          }
-          return activeColumnProperties[key]
-        }
-      }
+    isBooleanConstraint: function(option) {
+      return this.constraintBooleanBindings.indexOf(option) > -1
     },
     setProperty: function(key, value) {
+      // let object = this.storeObject
+      // object.key = key
+      // object.value = value
+      // TODO: change to use method once tested object refs ok
       const hotId = HotRegister.getActiveInstance().guid
       const currentColumnIndex = this.cIndex
       let object = {
@@ -169,58 +175,139 @@ export default {
         'key': key,
         'value': value
       }
-      this.pushHotProperty(object)
+      this.pushColumnProperty(object)
     },
-    currentColumnIndex: function() {
-      let currentIndex = getCurrentColumnIndex()
-      return currentIndex
+    getProperty: function(key) {
+      let columnProperties = this.activeTabColumnProperties[this.cIndex] || {}
+      let value = columnProperties[key]
+      // console.log(`got column property key value: ${key}: ${value}`)
+      return value
     },
-    setSelectType: function(value) {
+    // must not cache to ensure view always updates on selection
+    getPropertyType() {
+      let type = this.getProperty('type')
+      if (!type) {
+        type = 'any'
+        this.setPropertyType(type)
+      }
+      this.updateTypeDependentProperties(type)
+      return type
+    },
+    setPropertyType: function(value) {
       this.setProperty('type', value)
       this.updateTypeDependentProperties(value)
     },
     updateTypeDependentProperties: function(value) {
-      this.constraintValues = this.constraints[value]
-      this.updateFormatValues(value)
-    },
-    updateFormatValues: function(value) {
       this.formatValues = this.formats[value]
+      this.constraintValues = this.constraints[value]
+    },
+    getConstraintCheck: function(key) {
+      // let object = this.storeObject
+      const hotId = HotRegister.getActiveInstance().guid
+      const currentColumnIndex = this.cIndex
+      let object = {
+        'hotId': hotId,
+        'columnIndex': currentColumnIndex
+      }
+      let constraints = this.getHotColumnConstraints(object)
+      this.constraintInputKeyValues = constraints || {}
+      return _.has(constraints, key)
+    },
+    toggleTextNode: function(checkedInput) {
+      let textNode = checkedInput.parentNode.querySelector('.constraint-text')
+      if (textNode) {
+        textNode.style.display = checkedInput.checked ? 'inline-block' : 'none'
+      }
+    },
+    setConstraintCheck: function(key, target) {
+      let isChecked = target.checked
+      this.toggleTextNode(target)
+      if (!isChecked) {
+        _.unset(this.constraintInputKeyValues, key)
+      } else if (this.constraintBooleanBindings.indexOf(key) > -1) {
+        this.constraintInputKeyValues[key] = isChecked
+      } else {
+        // let object = this.storeObject()
+        // object.key = key
+        const hotId = HotRegister.getActiveInstance().guid
+        const currentColumnIndex = this.cIndex
+        let object = {
+          'hotId': hotId,
+          'columnIndex': currentColumnIndex,
+          'key': key
+        }
+        let currentValue = this.getConstraint(object) || ''
+        this.constraintInputKeyValues[key] = currentValue
+      }
+      this.setProperty('constraints', this.constraintInputKeyValues)
+      this.$forceUpdate()
     },
     getConstraintValue: function(key) {
-      // let object = this.getConstraintsObject
-      let object = this.getConstraints
-      if (object && object[key]) {
-        return object[key]
-      }
-    },
-    setConstraintValue: function(key, value) {
-      let object = {}
-      object[key] = value
-      this.setProperty('constraints', object)
-    }
-  },
-  computed: {
-    isDropdownFormatDisabled() {
-      return this.formatValues.length < 2
-    },
-    getConstraints() {
-      let type = this.getProperty('type')
-      if (type) {
-        this.constraintValues = this.constraints[type]
-      }
       let property = this.getProperty('constraints')
       if (!property) {
         this.setProperty('constraints', {})
         property = {}
       }
-      return property
+      return property[key]
+    },
+    removeConstraint: function(key) {
+      this.constraintInputKeyValues[key] = ''
+      this.setProperty('constraints', this.constraintInputKeyValues)
+      return true
+    },
+    setConstraintValue: function(key, value) {
+      this.constraintInputKeyValues[key] = value
+      this.setProperty('constraints', this.constraintInputKeyValues)
+    },
+    constraintValidationRules: function(option) {
+      if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
+        return 'numeric'
+      } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
+        let type = this.getProperty('type')
+        if (type === 'integer') {
+          return 'numeric'
+        } else if (type === 'number') {
+          return 'decimal'
+        } else {
+          // console.log('No validation rules to apply this type for constraints: min/max')
+        }
+      } else {
+        // console.log('No validation rules to apply this constraint')
+      }
+      return ''
+    },
+    getAllColumnsProperties: async function(tab) {
+      console.log('firing get all column properties method...')
+      console.log(`tab is ${tab}`)
+      let hotId = await this.waitForHotIdFromTabId(tab)
+      console.log(`hot id in all column properties is ${hotId}`)
+      return this.getAllHotColumnPropertiesFromHotId(hotId)
+    },
+    initColumnProperties: async function(tab) {
+      let columnProperties = await this.getAllColumnsProperties(tab)
+      console.log('received all column properties...')
+      console.log(columnProperties)
+      this.activeTabColumnProperties = columnProperties
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty', 'getAllHotColumnPropertiesFromHotId'
+    ]),
+    storeObject() {
+      const hotId = HotRegister.getActiveInstance().guid
+      const currentColumnIndex = this.cIndex
+      let object = {
+        'hotId': hotId,
+        'columnIndex': currentColumnIndex
+      }
+      return object
+    },
+    isDropdownFormatDisabled() {
+      return this.formatValues.length < 2
     },
     selectFormat: {
       get: function() {
-        let type = this.getProperty('type')
-        if (type) {
-          this.updateFormatValues(type)
-        }
         let property = this.getProperty('format')
         if (!property) {
           this.setProperty('format', 'default')
@@ -234,31 +321,30 @@ export default {
     }
   },
   watch: {
-    selectConstraints: function(values) {
-      const object = this.constraintBooleanBindings.reduce(
-        function(previous, current) {
-          if (values.indexOf(current) > -1) {
-            return { ...previous, [current]: true }
-          } else {
-            return previous
-          }
-        },
-        {}
-      )
-      this.setProperty('constraints', object)
-    },
-    getConstraints: function(object) {
-      this.selectConstraints = Object.keys(object)
+    getActiveTab: function(tab) {
+      console.log('watch received active tab change')
+      // this.initSources(tab)
+      this.initColumnProperties(tab)
+      this.$nextTick(function() {
+        reselectCurrentCellOrMin()
+      })
     }
   },
   mounted: function() {
+    let tab = this.getActiveTab
+    this.initColumnProperties(tab)
     this.$nextTick(function() {
       reselectCurrentCellOrMin()
-      this.selectConstraints = Object.keys(this.getConstraints)
     })
   }
 }
 </script>
 <style lang="styl" scoped>
 @import '~static/css/columnprops'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/validationrules'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/tooltip'
 </style>

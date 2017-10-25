@@ -9,13 +9,13 @@
         <div id="toolbar">
           <ul class="nav navbar-nav">
             <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': toolbarIndex === index}" @click="updateToolbarMenu(index)">
-            <!--              <a href="#" v-tooltip="tooltip(menu.tooltipId)"> -->
-              <a href="#">
+              <a href="#" v-tooltip="tooltip(menu.tooltipId)">
+              <!-- <a href="#"> -->
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
                 <object v-if="menu.image" :class="menu.class" :data="menu.image" type="image/svg+xml" />
                 <div class="toolbar-text">{{menu.name}}</div>
               </a>
-              <!--              <component :is="menu.tooltipView" /> -->
+              <component :is="menu.tooltipView" />
             </li>
           </ul>
         </div>
@@ -39,18 +39,18 @@
         </div>
         <!-- <div class="row"> -->
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
-          <component :is="sideNavView" :getAllColumnsProperties="getColumnPropertiesMethod" :cIndex="currentColumnIndex">
+          <component :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :cIndex="currentColumnIndex">
           </component>
         </transition>
         <!-- </div> -->
         <!-- <div class="row"/> -->
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
-          <a v-if="enableSideNavLeftArrow" href="#" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
-          <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span>
-          <!-- <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" /> -->
-          <a v-if="enableSideNavRightArrow" href="#" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
-          <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span>
-          <!-- <component v-if="enableSideNavRightArrow" is="tooltipNext" /> -->
+          <a v-if="enableSideNavLeftArrow" href="#" v-tooltip="tooltip('tooltip-previous')" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
+          <!-- <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span> -->
+          <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" />
+          <a v-if="enableSideNavRightArrow" href="#" v-tooltip="tooltip('tooltip-next')" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
+          <!-- <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span> -->
+          <component v-if="enableSideNavRightArrow" is="tooltipNext" />
         </div>
         <!-- </div> -->
     </nav>
@@ -69,11 +69,11 @@
                 </li>
               </ul>
             </li>
-            <!--        <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')"> -->
-            <li class="tab-add" @click="addTab">
+            <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')">
+            <!-- <li class="tab-add" @click="addTab"> -->
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
-            <!--        <component is="tooltipAddTab" /> -->
+            <component is="tooltipAddTab" />
           </ul>
           <div class="tab-content" id='csvContent'>
             <div class="tab-pane" v-for="tab in tabs" :key="tab" :class="{ active: activeTab == tab}">
@@ -85,18 +85,24 @@
       </div>
       <div id="main-bottom-panel" class="panel-footer">
         <div id="message-panel" class="panel-default">
-          <div v-show="errorMessages && errorMessages.length > 0">
+          <!-- tidy up messages view with components -->
+          <div v-show="messages">
             <ul class="nav navbar-right closebtn">
               <li>
-                <a href="#" @click="closeErrorMessages()">
+                <a href="#" @click="closeMessages()">
                   <span style="color:#000" class="btn-default fa fa-times" />
                 </a>
               </li>
             </ul>
-            <h3>Validation errors</h3>
-            <div v-for="errorMessage in errorMessages">
-              <span>row no.{{errorMessage.rowNumber}}</span><span>: {{errorMessage.message}}</span>
-            </div>
+              <h3>{{messagesTitle}}</h3>
+              <template  v-if="messagesType === 'error'">
+                <div v-for="errorMessage in messages">
+                  <span>row no.{{errorMessage.rowNumber}}</span><span>: {{errorMessage.message}}</span>
+                </div>
+              </template>
+              <div v-else>
+                <span>{{messages}}</span>
+              </div>
           </div>
         </div>
       </div>
@@ -160,8 +166,6 @@ export default {
   data() {
     return {
       currentColumnIndex: 0,
-      // only set method when ready
-      getColumnPropertiesMethod: function() {},
       toolbarIndex: -1,
       sideNavPosition: 'right',
       sideNavStatus: 'closed',
@@ -171,8 +175,11 @@ export default {
       enableTransition: false,
       enableSideNavLeftArrow: true,
       enableSideNavRightArrow: true,
-      errorMessages: false,
+      messagesType: '',
+      messages: false,
+      messagesTitle: 'Feedback',
       loadingDataMessage: false,
+      sideNavFormHeight: '300px',
       toolbarMenus: [{
         name: 'Validate',
         image: 'static/img/validate.svg',
@@ -227,7 +234,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'getHotColumnProperties', 'tabTitle', 'getHotIdFromTabId']),
+    ...mapGetters(['getPreviousTabId', 'getAllHotColumnPropertiesFromHotId', 'tabTitle', 'getHotIdFromTabId']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -236,6 +243,9 @@ export default {
     },
     toolbarMenuName() {
       return _.get(this.toolbarMenus[this.toolbarIndex], 'name')
+    },
+    maxColAllowed() {
+      return getColumnCount() - 1
     }
   },
   methods: {
@@ -252,47 +262,80 @@ export default {
       'destroyHotTab',
       'destroyTabObject'
     ]),
-    closeErrorMessages: function() {
+    closeMessages: function() {
       for (let el of ['main-bottom-panel', 'main-middle-panel']) {
         document.getElementById(el).classList.remove('opened')
       }
-      this.errorMessages = false
+      this.messages = false
+      this.messagesType = ''
+      this.messageTitle = ''
     },
     selectionListener: function() {
       this.updateActiveColumn()
       this.resetSideNavArrows()
     },
-    getAllColumnsProperties: function() {
-      let hot = HotRegister.getActiveInstance()
-      if (hot) {
-        return this.getHotColumnProperties(hot.guid)
-      }
-    },
     async updateColumnProperties() {
-      let hotColumns
       try {
-        hotColumns = await guessColumnProperties()
-        this.pushHotColumns(hotColumns)
+        let feedback = await guessColumnProperties()
+        this.messages = feedback
+        this.messagesType = 'feedback'
+        this.messagesTitle = 'Guess column properties'
+        this.reportFeedback()
       } catch (err) {
         console.log(err)
       }
     },
-    openValidationMessagesOnIds: function(ids) {
+    // TODO: tidy up error view handling
+    openMessagesOnIds: function(ids) {
       for (let el of ids) {
         document.getElementById(el).classList += ' opened'
       }
     },
-    closeValidationMessagesOnIds: function(ids) {
+    closeMessagesOnIds: function(ids) {
       for (let el of ids) {
         document.getElementById(el).classList.remove('opened')
       }
     },
+    // TODO: tidy up message objects
     reportValidationRowErrors: function(errorCollection) {
-      this.errorMessages = errorCollection
+      if (errorCollection.length > 0) {
+        this.messagesTitle = 'Validation Errors'
+        this.messages = errorCollection
+        this.messagesType = 'error'
+      } else {
+        this.messagesTitle = 'Validation Success'
+        this.messages = 'No validation errors reported.'
+        this.messagesType = 'feedback'
+      }
+      this.reportFeedback()
+    },
+    reportFeedback: function() {
       let ids = ['main-bottom-panel', 'main-middle-panel']
-      let cssUpdateFunction = this.errorMessages.length > 0
-        ? this.openValidationMessagesOnIds(ids)
-        : this.closeValidationMessagesOnIds(ids)
+      let cssUpdateFunction = this.messages
+        ? this.openMessagesOnIds(ids)
+        : this.closeMessagesOnIds(ids)
+    },
+    // TODO : extract out logic into methods to make clearer
+    toggleHeaders: function(hot) {
+      let data = hot.getData()
+      let headers = false
+      if (hot.hasColHeaders()) {
+        data = _.concat([hot.getColHeader()], data)
+      } else {
+        // ensure at least 2 rows before setting header
+        if (data.length > 1) {
+          headers = data[0]
+          data = _.drop(data)
+        } else {
+          this.messagesTitle = 'Headers Error'
+          this.messages = 'At least 2 rows are required before a header row can be set.'
+          this.messagesType = 'feedback'
+          this.reportFeedback()
+        }
+      }
+      hot.loadData(data)
+      hot.updateSettings({colHeaders: headers})
+      hot.render()
     },
     async validateTable() {
       try {
@@ -394,6 +437,11 @@ export default {
     },
     openSideNav: function() {
       this.sideNavStatus = 'open'
+      // ensure sidenav menu is rendered before adjusting form height
+      const vueAdjustSidenavFormHeight = this.adjustSidenavFormHeight
+      _.delay(function() {
+        vueAdjustSidenavFormHeight()
+      }, 100)
     },
     updateTransitions: function(index) {
       if (index < this.toolbarIndex) {
@@ -409,10 +457,12 @@ export default {
       return toolbarMenu.sideNavPosition && toolbarMenu.sideNavView
     },
     resetSideNavArrows() {
-      this.enableSideNavLeftArrow = true
-      this.enableSideNavRightArrow = true
+      this.enableSideNavLeftArrow = false
+      this.enableSideNavRightArrow = false
       if (this.sideNavView === 'column') {
-        this.enableSideNavLeftArrow = getCurrentColumnIndexOrMax() > 0
+        // this.currentColumnIndex = getCurrentColumnIndexOrMin()
+        this.enableSideNavLeftArrow = this.currentColumnIndex > 0
+        this.enableSideNavRightArrow = this.currentColumnIndex < this.maxColAllowed
       }
     },
     updateSideNavState() {
@@ -440,14 +490,11 @@ export default {
       if (!selected) {
         console.log('Cannot update active column without a column selected.')
       } else {
-        let currentColumnIndex = selected[1]
-        let guid = HotRegister.getActiveInstance().guid
-        this.currentColumnIndex = currentColumnIndex
+        this.currentColumnIndex = selected[1]
       }
-      this.getColumnPropertiesMethod = this.getAllColumnsProperties()
     },
     updateToolbarMenuForColumn: function(index) {
-      let maxColAllowed = getColumnCount() - 1
+      let maxColAllowed = this.maxColAllowed
       let currentColIndex = getCurrentColumnIndexOrMax()
       if (index < this.toolbarIndex && currentColIndex > 0) {
         decrementActiveColumn(currentColIndex)
@@ -508,6 +555,16 @@ export default {
     },
     forceWrapper: function() {
       this.$forceUpdate()
+    },
+    adjustSidenavFormHeight: function() {
+      let sidenav = document.querySelector('#sidenav')
+      let sidenavHeight = sidenav.clientHeight
+      // console.log(`height is ${sidenavHeight}`)
+      let form = sidenav.querySelector('form')
+      this.sideNavFormHeight = (sidenavHeight - 150) + 'px'
+      if (form) {
+        form.style.height = this.sideNavFormHeight
+      }
     }
   },
   components: {
@@ -521,6 +578,11 @@ export default {
   watch: {
   },
   mounted: function() {
+    const vueToggleHeaders = this.toggleHeaders
+    ipc.on('toggleHeaders', function() {
+      let hot = HotRegister.getActiveInstance()
+      vueToggleHeaders(hot)
+    })
     const vueAddTabWithData = this.addTabWithData
     ipc.on('addTabWithData', function(e, data) {
       vueAddTabWithData(data)
@@ -543,6 +605,12 @@ export default {
     ipc.on('saveDataSuccess', function(e, format, fileName) {
       vueForceUpdate()
     })
+    const vueAdjustSidenavFormHeight = this.adjustSidenavFormHeight
+    ipc.on('resized', function() {
+      vueAdjustSidenavFormHeight()
+      let hot = HotRegister.getActiveInstance()
+      hot.render()
+    })
     this.$nextTick(function() {
       require('../index.js')
       const vueSetTabsOrder = this.setTabsOrder
@@ -561,11 +629,9 @@ export default {
     })
   },
   created: function() {
-    const vueForceUpdate = this.forceWrapper
     const vueGuessProperties = this.updateColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
-      vueForceUpdate()
     })
     const vueValidateTable = this.validateTable
     ipc.on('validateTable', function(event, arg) {
@@ -596,4 +662,8 @@ export default {
 </style>
 <style lang="styl" scoped>
 @import '~static/css/panel'
+</style>
+</style>
+<style lang="styl" scoped>
+@import '~static/css/tooltip'
 </style>

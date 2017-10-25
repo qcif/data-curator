@@ -13,6 +13,7 @@ export function loadDataIntoHot(hot, data, format) {
     arrays = $.csv.toArrays(data, format.options)
   }
   hot.loadData(arrays)
+  hot.render()
   return arrays
 }
 

@@ -1,3 +1,5 @@
+dangerColor = #ff3860
+
 div#constraints
   display inline-block
   padding-right 0
@@ -10,10 +12,24 @@ div#constraints
     input
       display inline-block
       width auto
+      border-left 0
       &.constraint-text
         float right
+      // &.validate-danger
+      //   border-color dangerColor
+      //   &:focus
+      //     outline-color dangerColor
 
-.tooltip-text
-  color white
-  a
-    text-decoration underline !important
+// .help.validate-danger
+//   @extend div#constraints div
+//   color dangerColor
+//   // transform translateX(-40%)
+//   // width 160% !important
+//   margin-left 5px
+//   font-size 12px
+//   text-align right !important
+
+// .tooltip-text
+//   color white
+//   a
+//     text-decoration underline !important

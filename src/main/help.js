@@ -13,7 +13,11 @@ export function showKeyboardHelp() {
   keyboardHelpWindow.setMenu(null)
   keyboardHelpWindow.loadURL(`http://localhost:9080/#/keyboardhelp`)
 
-  keyboardHelpWindow.on('closed', function() {
+  const winURL = process.env.NODE_ENV === 'development'
+    ? `http://localhost:9080/keyboardhelp.html`
+    : `file://${__dirname}/keyboardhelp.html`
+  keyboardHelpWindow.loadURL(winURL)
+  keyboardHelpWindow.on('closed', function () {
     keyboardShortcutsSubMenu.enabled = true
     keyboardHelpWindow = null
   })

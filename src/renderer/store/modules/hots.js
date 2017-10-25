@@ -1,10 +1,25 @@
 const state = {
-  hotTabs: {}
+  hotTabs: {},
+  packageProperties: {}
+}
+
+function getHotColumnPropertiesFromPropertyObject(property) {
+  let allHotColumnProperties = state.hotTabs[property.hotId].columnProperties
+  if (!allHotColumnProperties) {
+    mutations.resetAllColumnPropertiesForHotId(state, property.hotId)
+    allHotColumnProperties = state.hotTabs[property.hotId].columnProperties
+  }
+  let hotColumnProperties = allHotColumnProperties[property.columnIndex]
+  if (!hotColumnProperties) {
+    mutations.resetColumnPropertiesForHotId(state, property)
+    hotColumnProperties = allHotColumnProperties[property.columnIndex]
+  }
+  return hotColumnProperties
 }
 
 const getters = {
-  getHotColumnProperties: (state, getters) => (hotId) => {
-    return state.hotTabs[hotId].columnProperties
+  getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
+    return state.hotTabs[hotId].columnProperties || []
   },
   getHotTableSchema: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].tableSchema
@@ -23,7 +38,35 @@ const getters = {
     })
   },
   getMissingValuesFromHot: (state, getters) => (hotId) => {
-    return state.hotTabs[hotId].missingValues
+    if (state.hotTabs[hotId].tableProperties) {
+      return state.hotTabs[hotId].tableProperties.missingValues
+    }
+  },
+  getHotColumnProperty: (state, getters) => (property) => {
+    let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
+    return hotColumnProperties[property.key]
+  },
+  getTableProperty: (state, getters) => (property) => {
+    let tableProperties = state.hotTabs[property.hotId].tableProperties || {}
+    return tableProperties[property.key]
+  },
+  getPackageProperty: (state, getters) => (property) => {
+    console.log(`property key is `)
+    console.log(property)
+    console.log(state.packageProperties)
+    return state.packageProperties[property.key]
+  },
+  getHotColumnConstraints: (state, getters) => (property) => {
+    let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
+    return hotColumnProperties['constraints']
+  },
+  getConstraint: (state, getters) => (property) => {
+    let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
+    let constraints = hotColumnProperties['constraints']
+    if (!constraints) {
+      constraints = state.hotTabs[property.hotId].columnProperties[property.columnIndex].constraints = {}
+    }
+    return constraints[property.key]
   }
 }
 
@@ -37,77 +80,75 @@ const mutations = {
       _.set(state.hotTabs, `${hotId}.tabId`, hotTab.tabId)
     }
   },
-  pushHotColumns(state, hotTab) {
-    mutations.pushHotColumnsAndOverwrite(state, hotTab)
-    // update table schema
-    mutations.updateTableSchemaWithColumnProperties(state, hotTab.hotId)
+  pushColumnProperty(state, property) {
+    _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
+    mutations.mergeCurrentColumnPropertiesOverTableSchema(state, property.hotId)
   },
-  pushHotColumnsAndOverwrite(state, hotTab) {
-    let hotId = hotTab.hotId
-    let incoming = {}
-    _.set(incoming, `${hotId}.columnProperties`, hotTab.columnProperties)
-    // update existing values and write in new ones where none currently exist
-    _.merge(state.hotTabs, incoming)
+  pushTableProperty(state, property) {
+    _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
+    console.log(state.hotTabs)
   },
-  pushHotColumnsAndUnderwrite(state, hotTab) {
-    let hotId = hotTab.hotId
-    let current = {}
-    _.set(current, `${hotId}.columnProperties`, state.hotTabs[hotId].columnProperties)
-    // intended for pushing schema descriptor: only write new values for those which don't already exist
-    _.set(state.hotTabs, `${hotId}.columnProperties`, hotTab.columnProperties)
-    _.merge(state.hotTabs, current)
+  pushTableSchemaProperty(state, property) {
+    mutations.pushTableProperty(state, property)
+    let hotTab = state.hotTabs[property.hotId]
+    if (hotTab.tableSchema) {
+      hotTab.tableSchema.schema[property.key] = property.value
+    }
   },
-  pushHotProperty(state, property) {
-    let incoming = {}
-    _.set(incoming, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
-    _.merge(state.hotTabs, incoming)
-    mutations.updateTableSchemaWithColumnProperties(state, property.hotId)
+  pushTableSchemaDescriptorProperty(state, property) {
+    mutations.pushTableProperty(state, property)
+    let hotTab = state.hotTabs[property.hotId]
+    if (hotTab.tableSchema) {
+      hotTab.tableSchema.schema.descriptor[property.key] = property.value
+    }
+  },
+  pushPackageProperty(state, property) {
+    _.set(state.packageProperties, property.key, property.value)
+    console.log(state.packageProperties)
   },
   pushMissingValues(state, hotMissingValues) {
     let hotId = hotMissingValues.hotId
-    _.set(state.hotTabs, `${hotId}.missingValues`, hotMissingValues.missingValues)
+    _.set(state.hotTabs, `${hotId}.tableProperties.missingValues`, hotMissingValues.missingValues)
     if (state.hotTabs[hotId].tableSchema) {
-      mutations.mergeCurrentMissingValuesOverTableSchema(state, hotId)
-    }
-  },
-  updateTableSchemaWithColumnProperties(state, hotId) {
-    if (state.hotTabs[hotId].tableSchema) {
-      mutations.mergeCurrentColumnPropertiesOverTableSchema(state, hotId)
+      mutations.overwriteTableSchemaDescriptorProperty(state, hotId, 'missingValues')
     }
   },
   pushTableSchema(state, hotTable) {
+    console.log('pushing table schema')
     let hotId = hotTable.hotId
-    _.set(state.hotTabs, `${hotId}.tableSchema`, hotTable.tableSchema)
-    mutations.mergeTableSchemaOverCurrentColumnProperties(state, hotId)
+    let tableSchema = _.set(state.hotTabs, `${hotId}.tableSchema`, hotTable.tableSchema)
+    let columnProperties = mutations.mergeTableSchemaOverCurrentColumnProperties(state, hotId)
+    return tableSchema && columnProperties
   },
-  // pushing a new schema should also merge over current column properties
   mergeTableSchemaOverCurrentColumnProperties(state, hotId) {
     let hotTab = state.hotTabs[hotId]
     let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.fields
     if (!hotTab.columnProperties) {
       hotTab.columnProperties = []
     }
-    _.merge(hotTab.columnProperties, tableSchemaProperties)
+    return _.merge(hotTab.columnProperties, tableSchemaProperties)
   },
-  // a new schema infer shouldn't overwrite any user created input
   mergeCurrentColumnPropertiesOverTableSchema(state, hotId) {
     let hotTab = state.hotTabs[hotId]
-    let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.fields
-    let columnProperties = hotTab.columnProperties || []
-    _.merge(tableSchemaProperties, columnProperties)
-  },
-  mergeCurrentMissingValuesOverTableSchema(state, hotId) {
-    let hotTab = state.hotTabs[hotId]
-    let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.missingValues
-    let missingValues = hotTab.missingValues || []
-    _.merge(tableSchemaProperties, missingValues)
+    let tableSchema = hotTab.tableSchema
+    if (tableSchema) {
+      let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.fields
+      let columnProperties = hotTab.columnProperties || []
+      _.merge(tableSchemaProperties, columnProperties)
+    }
   },
   destroyHotTab(state, hotId) {
     _.unset(state.hotTabs, hotId)
   },
   destroyHotTabFromTabId(state, tabId) {
-    let hotId = getters.getHotIdFromTabId()
+    let hotId = getters.getHotIdFromTabId(tabId)
     _.unset(state.hotTabs, hotId)
+  },
+  resetAllColumnPropertiesForHotId(state, hotId) {
+    state.hotTabs[hotId].columnProperties = []
+  },
+  resetColumnPropertiesForHotId(state, property) {
+    state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}
   }
 }
 

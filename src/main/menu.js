@@ -62,7 +62,7 @@ const template = [
         submenu: open_submenu
       }, {
         label: 'Open Excel Sheet...',
-        enabled: false,
+        enabled: true,
         click() {
           excel.importExcel()
         }
@@ -170,6 +170,11 @@ const template = [
         accelerator: 'CmdOrCtrl+A'
       }, {
         type: 'separator'
+      }, {
+        label: 'Toggle Headers',
+        click() {
+          BrowserWindow.getFocusedWindow().webContents.send('toggleHeaders')
+        }
       }, {
         label: 'Insert Row Above',
         accelerator: 'CmdOrCtrl+I',
@@ -389,7 +394,7 @@ const template = [
         //      }, {
         label: 'Keyboard Shortcuts',
         accelerator: 'CmdOrCtrl+/',
-        enabled: false,
+        enabled: true,
         click() {
           help.showKeyboardHelp()
         }
@@ -419,61 +424,57 @@ const template = [
 
 // Tailor menu for Windows - add About to Help menu
 if (process.platform !== 'darwin') {
-  template[4].submenu.push(
-    {
-      type: 'separator'
-    }, {
-      label: 'About Data Curator',
-      click: function() {
-        utils.showSidePanel('about')
-      }
+  template[4].submenu.push({
+    type: 'separator'
+  }, {
+    label: 'About Data Curator',
+    click: function() {
+      utils.showSidePanel('about')
     }
-  )
+  })
 }
 
 // Tailor menu for macOS
 if (process.platform === 'darwin') {
-  template.unshift(
-    {
-      label: 'Data Curator',
-      submenu: [
-        {
-          label: 'About Data Curator',
-          click: function() {
-            utils.showSidePanel('about')
-          }
-          // Placeholder for future feature
-          //      }, {
-          //        type: 'separator'
-          //      }, {
-          //        label: 'Preferences'
-          //        accelerator: 'CmdOrCtrl+,',
-          //        click: function() {
-          //          utils.showSidePanel('preferences')
-          //        }
-        }, {
-          type: 'separator'
-        }, {
-          role: 'services',
-          submenu: []
-        }, {
-          type: 'separator'
-        }, {
-          role: 'hide',
-          label: 'Hide Data Curator'
-        }, {
-          role: 'hideothers'
-        }, {
-          role: 'unhide'
-        }, {
-          type: 'separator'
-        }, {
-          role: 'quit',
-          label: 'Quit Data Curator'
+  template.unshift({
+    label: 'Data Curator',
+    submenu: [
+      {
+        label: 'About Data Curator',
+        click: function() {
+          utils.showSidePanel('about')
         }
-      ]
-    }
-  )
+        // Placeholder for future feature
+        //      }, {
+        //        type: 'separator'
+        //      }, {
+        //        label: 'Preferences'
+        //        accelerator: 'CmdOrCtrl+,',
+        //        click: function() {
+        //          utils.showSidePanel('preferences')
+        //        }
+      }, {
+        type: 'separator'
+      }, {
+        role: 'services',
+        submenu: []
+      }, {
+        type: 'separator'
+      }, {
+        role: 'hide',
+        label: 'Hide Data Curator'
+      }, {
+        role: 'hideothers'
+      }, {
+        role: 'unhide'
+      }, {
+        type: 'separator'
+      }, {
+        role: 'quit',
+        label: 'Quit Data Curator'
+      }
+    ]
+  })
 
   // overwrite Window menu
   template[4].submenu = [
@@ -503,20 +504,16 @@ if (process.platform === 'darwin') {
 
 // Add developer tools menu to end if not in production environment
 if (process.env.NODE_ENV !== 'production') {
-  template.push(
-    {
-      label: 'Developer',
-      submenu: [
-        {
-          role: 'reload'
-        }, {
-          role: 'toggledevtools'
-        }
-      ]
-    }
-  )
+  template.push({
+    label: 'Developer',
+    submenu: [
+      {
+        role: 'reload'
+      }, {
+        role: 'toggledevtools'
+      }
+    ]
+  })
 }
 
-export {
-  template as menu
-}
+export {template as menu}

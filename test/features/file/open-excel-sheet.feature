@@ -9,7 +9,9 @@ Feature: Open an Excel Sheet
 
   If the active tab is empty, when the file is opened, insert the file contents into the empty table.
 
-  If the CSV has an inconsistent number of columns, fix ragged rows (see separate feature in Other)
+  If the CSV has an inconsistent number of columns, [fix ragged rows] (https://relishapp.com/odi-australia/data-curator/docs/other/fix-ragged-rows)
+
+  When the file is opened, invoke [Guess Column Properties](https://relishapp.com/odi-australia/data-curator/docs/tools/guess-column-properties)
 
   Scenario: Use the menu to open an Excel Sheet
     Given I have opened Data Curator
@@ -21,4 +23,6 @@ Feature: Open an Excel Sheet
     And set the Tab name to the 'sheet-name'
     And assign 'sheet-name' to the 'name' Table Property
     And set the CSV Dialect in the Table Properties to "Comma Separated"
-    And Fix Ragged Rows
+    And "Fix Ragged Rows"
+    And "Guess Column Properties"
+    And "Freeze Header Row"
