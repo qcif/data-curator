@@ -296,6 +296,7 @@ export default {
         document.getElementById(el).classList.remove('opened')
       }
     },
+    // TODO: tidy up message objects
     reportValidationRowErrors: function(errorCollection) {
       if (errorCollection.length > 0) {
         this.messagesTitle = 'Validation Errors'
@@ -313,6 +314,28 @@ export default {
       let cssUpdateFunction = this.messages
         ? this.openMessagesOnIds(ids)
         : this.closeMessagesOnIds(ids)
+    },
+    // TODO : extract out logic into methods to make clearer
+    toggleHeaders: function(hot) {
+      let data = hot.getData()
+      let headers = false
+      if (hot.hasColHeaders()) {
+        data = _.concat([hot.getColHeader()], data)
+      } else {
+        // ensure at least 2 rows before setting header
+        if (data.length > 1) {
+          headers = data[0]
+          data = _.drop(data)
+        } else {
+          this.messagesTitle = 'Headers Error'
+          this.messages = 'At least 2 rows are required before a header row can be set.'
+          this.messagesType = 'feedback'
+          this.reportFeedback()
+        }
+      }
+      hot.loadData(data)
+      hot.updateSettings({colHeaders: headers})
+      hot.render()
     },
     async validateTable() {
       try {
@@ -555,6 +578,11 @@ export default {
   watch: {
   },
   mounted: function() {
+    const vueToggleHeaders = this.toggleHeaders
+    ipc.on('toggleHeaders', function() {
+      let hot = HotRegister.getActiveInstance()
+      vueToggleHeaders(hot)
+    })
     const vueAddTabWithData = this.addTabWithData
     ipc.on('addTabWithData', function(e, data) {
       vueAddTabWithData(data)

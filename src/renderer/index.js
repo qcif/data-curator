@@ -1,7 +1,7 @@
 import {
   HotRegister
 } from '../renderer/hot.js'
-import {loadDataIntoHot, saveDataToFile, toggleHeaders} from '../renderer/data-actions.js'
+import {loadDataIntoHot, saveDataToFile} from '../renderer/data-actions.js'
 import {fixRaggedRows, matchColumnHeadersToMaxRowLength} from '../renderer/ragged-rows.js'
 var ipc = require('electron').ipcRenderer
 var fs = require('fs')
@@ -53,17 +53,11 @@ export function loadData(key, data, format) {
   var arrays = loadDataIntoHot(hot, data, format)
   // matchColumnHeadersToMaxRowLength(hot, arrays)
   fixRaggedRows(hot, arrays)
-  // updateHeaders(hot, arrays)
 }
 
 ipc.on('saveData', function(e, format, fileName) {
   let hot = HotRegister.getActiveInstance()
   saveDataToFile(hot, format, fileName)
-})
-
-ipc.on('toggleHeaders', function(e, format, fileName) {
-  let hot = HotRegister.getActiveInstance()
-  toggleHeaders(hot)
 })
 
 ipc.on('getCSV', function(e, format) {
