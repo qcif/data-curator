@@ -78,7 +78,7 @@
     "bootstrap-webpack": "^0.0.6",
     "bootstrap.native": "^2.0.17",
     "components-font-awesome": "^4.7.0",
-    "datapackage": "^1.0.3",
+    "datapackage": "^1.0.5",
     "electron-prebuilt-compile": "^1.7.9",
     "escape-regexp": "^0.0.1",
     "exports-loader": "^0.6.4",

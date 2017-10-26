@@ -2592,9 +2592,9 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-datapackage@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/datapackage/-/datapackage-1.0.3.tgz#1e2f82b3828f0f6e8eb96ba79ec18a952052fca6"
+datapackage@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/datapackage/-/datapackage-1.0.5.tgz#1f08fa999de32d0917086a66d5725f71bafd561c"
   dependencies:
     axios "^0.16.1"
     glob "^7.1.2"
@@ -2603,7 +2603,7 @@ datapackage@^1.0.3:
     lodash "^4.13.1"
     regenerator-runtime "^0.11.0"
     stream-to-async-iterator "^0.2.0"
-    tableschema "^1.0.0"
+    tableschema "^1.2.1"
     tv4 "^1.2.7"
     url-join "^2.0.1"
 
@@ -8339,7 +8339,7 @@ table@^3.7.8:
     slice-ansi "0.0.4"
     string-width "^2.0.0"
 
-tableschema@^1.0.0, tableschema@^1.3.0:
+tableschema@^1.2.1, tableschema@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.3.0.tgz#7432e04eab4407a943b8c9735c6eac2a412b02a7"
   dependencies:
