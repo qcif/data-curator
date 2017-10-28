@@ -35,7 +35,7 @@ export default {
       },
       {
         'id': 'CC0-1.0',
-        'title': 'Creative Commons CCZero',
+        'title': 'Creative Commons CCZero 1.0',
         'url': 'https://creativecommons.org/publicdomain/zero/1.0/'
       },
       {
@@ -72,11 +72,6 @@ export default {
         'id': 'pdm',
         'title': 'Public Domain Mark',
         'url': 'http://creativecommons.org/publicdomain/mark/1.0/'
-      },
-      {
-        'id': 'other-pd',
-        'title': 'Other (Public Domain)',
-        'url': ''
       }],
       selectedLicenses: []
     }
