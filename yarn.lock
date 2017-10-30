@@ -8349,9 +8349,9 @@ tableschema@^1.0.0:
     stream-to-async-iterator "^0.2.0"
     tv4 "^1.2.7"
 
-tableschema@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.4.0.tgz#3cf4ba818c25b070f020a06845405dffff9317bb"
+tableschema@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.4.1.tgz#faf3f25a0f81ddc7ba9de2c8effe188825b0a00f"
   dependencies:
     axios "^0.16.1"
     csv "^1.1.1"

@@ -99,7 +99,7 @@
     "slug": "^0.9.1",
     "sortablejs": "^1.6.0",
     "svgo": "^0.7.2",
-    "tableschema": "^1.4.0",
+    "tableschema": "^1.4.1",
     "temp": "^0.8.3",
     "vee-validate": "^2.0.0-rc.18",
     "vue": "^2.5.2",
