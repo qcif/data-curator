@@ -166,7 +166,7 @@
     "node-gyp": "^3.6.2",
     "node-loader": "^0.6.0",
     "require-dir": "^0.3.0",
-    "sinon": "^2.3.8",
+    "sinon": "^4.0.2",
     "sinon-chai": "^2.12.0",
     "spectron": "^3.7.1",
     "style-loader": "^0.18.1",
