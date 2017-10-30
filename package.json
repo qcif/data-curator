@@ -174,7 +174,7 @@
     "stylus-loader": "^3.0.1",
     "url-loader": "^0.5.7",
     "vue-html-loader": "^1.2.2",
-    "vue-loader": "^12.2.1",
+    "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.3.0",
