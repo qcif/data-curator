@@ -152,6 +152,7 @@ import {
   guessColumnProperties,
   validateActiveDataAgainstSchema
 } from '../frictionless.js'
+import {createDataPackage} from '@/frictionlessDataPackage.js'
 import HomeTooltip from '../mixins/HomeTooltip'
 import {
   fileFormats
@@ -234,7 +235,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'getAllHotColumnPropertiesFromHotId', 'tabTitle', 'getHotIdFromTabId']),
+    ...mapGetters(['getPreviousTabId', 'getAllHotColumnPropertiesFromHotId', 'tabTitle', 'getHotIdFromTabId', 'getHotTabs', 'getTabs']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -345,6 +346,18 @@ export default {
         console.log(err)
       }
     },
+    packageCallback(message) {
+      console.log('entered data package callback')
+      console.log(message)
+    },
+    async createPackage() {
+      try {
+        await createDataPackage(this.packageCallback)
+      } catch (err) {
+        console.log('There was an error(s) creating a data package.')
+        console.log(err)
+      }
+    },
     latestHotContainer: function() {
       let allEditors = document.querySelectorAll('#csvContent .editor')
       return allEditors[allEditors.length - 1]
@@ -411,7 +424,7 @@ export default {
         'tabId': activeTabId
       })
     },
-    cleanUpTabDependencies: function(tabId) {
+    cleanUpTabDependencies: async function(tabId) {
       // update active tab
       if (tabId === this.activeTab) {
         let targetTabIndex = _.indexOf(this.tabs, tabId)
@@ -419,16 +432,16 @@ export default {
         this.setActiveTab(previousTabId)
       }
       this.destroyTabObject(tabId)
-      let hotId = this.getHotIdFromTabId(tabId)
+      let hotId = await this.getHotIdFromTabId(tabId)
       this.destroyHotTab(hotId)
       HotRegister.destroyHot(hotId)
     },
-    closeTab: function(event) {
+    closeTab: async function(event) {
       // do not allow single tab to be closed
       if (this.tabs.length > 1) {
         let targetTabId = event.currentTarget.closest('.tab-header').id
         this.removeTab(targetTabId)
-        this.cleanUpTabDependencies(targetTabId)
+        await this.cleanUpTabDependencies(targetTabId)
       }
     },
     closeSideNav: function() {
@@ -509,15 +522,25 @@ export default {
       }
       this.resetSideNavArrows()
     },
+    updateToolbarMenuForButton: function(index) {
+      this.toolbarIndex = index
+      this.closeSideNav()
+      switch (this.toolbarMenus[index].name) {
+        case 'Validate':
+          this.validateTable()
+          break
+        case 'Export':
+          this.createPackage()
+          break
+        default:
+          console.log(`Error: No case exists for menu index: ${index}`)
+      }
+    },
     updateToolbarMenu: function(index) {
       if (this.isSideNavToolbarMenu(index)) {
         this.updateToolbarMenuForSideNav(index)
       } else {
-        this.toolbarIndex = index
-        this.closeSideNav()
-        if (index === 0) {
-          this.validateTable()
-        }
+        this.updateToolbarMenuForButton(index)
       }
     },
     updateToolbarMenuFromArrows: function(index) {
