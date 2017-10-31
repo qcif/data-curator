@@ -23,7 +23,6 @@
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "postinstall": "electron-builder install-app-deps",
     "test-main": "mocha-webpack --webpack-config .electron-vue/webpack.test.config.js --glob *_spec.js test/main/specs",
-    "test-renderer": "NODE_ENV=test electron-mocha --compilers js:babel-core/register --renderer --no-timeouts test/renderer/",
     "test": "yarn run unit && yarn run e2e",
     "unit": "karma start test/unit/karma.conf.js",
     "e2e": "yarn run pack && mocha test/e2e"
@@ -136,7 +135,6 @@
     "electron-builder": "^19.27.2",
     "electron-debug": "^1.1.0",
     "electron-devtools-installer": "^2.0.1",
-    "electron-mocha": "^4.0.0",
     "eslint": "^4.9.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",

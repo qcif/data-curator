@@ -1,6 +1,4 @@
-import {
-  HotRegister
-} from '../renderer/hot.js'
+import {HotRegister, insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight} from '../renderer/hot.js'
 import {loadDataIntoHot, saveDataToFile} from '../renderer/data-actions.js'
 import {fixRaggedRows, matchColumnHeadersToMaxRowLength} from '../renderer/ragged-rows.js'
 var ipc = require('electron').ipcRenderer
@@ -148,19 +146,19 @@ ipc.on('editSelectAll', function() {
 })
 
 ipc.on('insertRowAbove', function() {
-  hotController.insertRowAbove(false)
+  insertRowAbove(false)
 })
 
 ipc.on('insertRowBelow', function() {
-  hotController.insertRowBelow(false)
+  insertRowBelow(false)
 })
 
 ipc.on('insertColumnLeft', function() {
-  hotController.insertColumnLeft(false)
+  insertColumnLeft(false)
 })
 
 ipc.on('insertColumnRight', function() {
-  hotController.insertColumnRight(false)
+  insertColumnRight(false)
 })
 
 ipc.on('removeRows', function() {
