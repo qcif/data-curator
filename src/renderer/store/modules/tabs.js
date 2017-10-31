@@ -15,7 +15,12 @@ function extractNameFromFile(fullPath) {
 
 function getAllFilenames() {
   let tabObjects = state.tabObjects
-  return _.values(_.mapValues(tabObjects, function(o) { return o.filename }))
+  let filtered = []
+  _.forEach(tabObjects, (value, key) => {
+    if (value.filename) { filtered.push(value.filename) }
+  })
+  console.log(filtered)
+  return filtered
 }
 
 const state = {
@@ -97,6 +102,7 @@ const mutations = {
 }
 
 export default {
+  getAllFilenames,
   state,
   getters,
   mutations

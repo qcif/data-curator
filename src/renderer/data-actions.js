@@ -43,4 +43,6 @@ export function saveDataToFile(hot, format, filename, callback) {
   } else {
     fs.writeFile(filename, data, callback)
   }
+  console.log('store tab objects...')
+  console.log(tabStore.state.tabObjects)
 }
