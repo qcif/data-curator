@@ -40,9 +40,10 @@ function openCustom() {
 }
 
 function filenameExists(filename) {
-  let threshold = global.tab.activeFilename ? 1 : 0
+  let threshold = global.tab.activeFilename === filename ? 1 : 0
   let length = global.tab.filenames.length
   let filtered = _.without(global.tab.filenames, filename)
+  console.log(global.tab)
   return length - filtered.length > threshold
 }
 
@@ -59,7 +60,6 @@ function saveFileAs(format, window) {
       return
     }
     if (filenameExists(filename)) {
-      // console.log('returning as filename exists...')
       Dialog.showMessageBox(window, {
         type: 'warning',
         // title is not displayed on screen on macOS
