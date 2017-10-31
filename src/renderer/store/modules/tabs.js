@@ -30,6 +30,9 @@ const getters = {
   getTabs: state => {
     return state.tabs
   },
+  getTabObjects: state => {
+    return state.tabObjects
+  },
   getActiveTab: state => {
     return state.activeTab
   },
