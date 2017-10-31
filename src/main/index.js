@@ -38,7 +38,6 @@ global.schema = require('./schema')
 global.excel = require('./excel')
 // global.fileActions = require('./file')
 global.tools = require('./tools')
-global.validate = require('./validate')
 global.help = require('./help')
 
 // var mainWindow = null

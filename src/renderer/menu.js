@@ -72,15 +72,15 @@ menu.append(new MenuItem({type: 'separator'}))
 menu.append(removeRow)
 menu.append(removeCol)
 
-module.exports = {
-  menu: menu,
-  remote: remote,
-  rowAbove: rowAbove,
+export {
+  menu,
+  remote,
+  rowAbove,
   // rowBelow: rowBelow,
-  columnLeft: columnLeft
+  columnLeft
   // ,
-  // columnRight: columnRight,
-  // removeRow: removeRow,
+  // columnRight,
+  // removeRow,
   // removeCol: removeCol,
   // freezeRow: freezeRow,
   // unfreezeRow: unfreezeRow
