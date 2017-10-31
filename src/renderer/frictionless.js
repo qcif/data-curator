@@ -1,13 +1,6 @@
 import {Table} from 'tableschema'
-import {Resource, Package} from 'datapackage'
 import {HotRegister} from '../renderer/hot.js'
 import store from '../renderer/store/modules/hots.js'
-
-async function initPackage(data) {
-  const dataPackage = await Package.load()
-  await dataPackage.infer(data)
-  return dataPackage
-}
 
 async function initDataAndInferSchema(data) {
   const table = await Table.load(data)

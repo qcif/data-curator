@@ -18,6 +18,9 @@ function getHotColumnPropertiesFromPropertyObject(property) {
 }
 
 const getters = {
+  getHotTabs: state => {
+    return state.hotTabs
+  },
   getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].columnProperties || []
   },
@@ -140,8 +143,8 @@ const mutations = {
   destroyHotTab(state, hotId) {
     _.unset(state.hotTabs, hotId)
   },
-  destroyHotTabFromTabId(state, tabId) {
-    let hotId = getters.getHotIdFromTabId(tabId)
+  async destroyHotTabFromTabId(state, tabId) {
+    let hotId = await getters.getHotIdFromTabId(tabId)
     _.unset(state.hotTabs, hotId)
   },
   resetAllColumnPropertiesForHotId(state, hotId) {
