@@ -169,7 +169,7 @@
     "style-loader": "^0.18.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
-    "url-loader": "^0.5.7",
+    "url-loader": "^0.6.2",
     "vue-html-loader": "^1.2.2",
     "vue-loader": "^12.2.1",
     "vue-style-loader": "^3.0.1",
