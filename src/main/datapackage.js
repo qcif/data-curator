@@ -1,7 +1,4 @@
-global.electron = require('electron')
-
-global.BrowserWindow = electron.BrowserWindow
-global.Dialog = electron.dialog
+import {BrowserWindow, Dialog} from 'electron'
 
 var Fs = require('fs')
 var ipc = require('electron').ipcMain

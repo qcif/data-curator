@@ -223,7 +223,7 @@ export function insertColumnRight(deselect) {
   }
 }
 
-const removeRows = () => {
+export function removeRows() {
   let hot = HotRegister.getActiveInstance()
   const range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
@@ -242,7 +242,7 @@ const removeRows = () => {
   hot.deselectCell()
 }
 
-const removeColumns = () => {
+export function removeColumns() {
   let hot = HotRegister.getActiveInstance()
   const range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
@@ -261,20 +261,6 @@ const removeColumns = () => {
   hot.deselectCell()
 }
 
-const unfreezeHeaderRow = () => {
-  let hot = HotRegister.getActiveInstance()
-  hot.updateSettings({fixedRowsTop: 0, colHeaders: true})
-}
-
-const freezeHeaderRow = () => {
-  let hot = HotRegister.getActiveInstance()
-  hot.updateSettings({fixedRowsTop: 1})
-}
-
 export {
-  removeRows,
-  removeColumns,
-  freezeHeaderRow as freeze,
-  unfreezeHeaderRow as unfreeze,
   HotRegister
 }

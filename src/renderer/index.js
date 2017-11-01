@@ -1,21 +1,11 @@
-import {HotRegister, insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight} from '@/hot.js'
+import {HotRegister, insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight, removeRows, removeColumns} from '@/hot.js'
 import {loadDataIntoHot, saveDataToFile} from '@/data-actions.js'
+import {remote} from 'electron'
+const BrowserWindow = remote.BrowserWindow
 var ipc = require('electron').ipcRenderer
 var fs = require('fs')
 
-var hotController = require('../renderer/hot.js')
-var schemawizard = require('../renderer/schemawizard.js')
-var rows = require('../renderer/ragged-rows.js')
 var menu = require('../renderer/menu.js').menu
-var remote = require('../renderer/menu.js').remote
-var rowAbove = require('../renderer/menu.js').rowAbove
-// var rowBelow = require('../renderer/menu.js').rowBelow
-var columnLeft = require('../renderer/menu.js').columnLeft
-// var columnRight = require('../renderer/menu.js').columnRight
-// var removeRow = require('../renderer/menu.js').removeRow
-// var removeCol = require('../renderer/menu.js').removeCol
-// var freezeRow = require('../renderer/menu.js').freezeRow
-// var unfreezeRow = require('../renderer/menu.js').unfreezeRow
 
 export function addHotContainerListeners(container) {
   container.ondragover = function() {
@@ -38,9 +28,9 @@ export function addHotContainerListeners(container) {
 
   container.addEventListener('contextmenu', function(e) {
     e.preventDefault()
-    menu.popup(remote.getCurrentWindow())
-    rowAbove.enabled = true
-    columnLeft.enabled = true
+    menu.popup(BrowserWindow.getFocusedWindow())
+    // rowAbove.enabled = true
+    // columnLeft.enabled = true
   }, false)
 }
 
@@ -64,40 +54,6 @@ ipc.on('getCSV', function(e, format) {
     data = $.csv.fromArrays(hot.getData(), format.options)
   }
   ipc.send('sendCSV', data)
-})
-
-ipc.on('validate', function() {
-  let hot = HotRegister.getActiveInstance()
-  var data = $.csv.fromArrays(hot.getData(), file.formats.csv)
-  validation.validate(data)
-})
-
-ipc.on('schemaFromHeaders', function() {
-  try {
-    let hot = HotRegister.getActiveInstance()
-    var assumedHeader = hot.getData()[0]
-    var header = schemawizard.returnHeaderRow(assumedHeader)
-    ipc.send('jsonHeaders', schemawizard.createSchema(header))
-    schemawizard.createSchema(header)
-  } catch (err) {
-    console.log('attempting to get the first row has failed')
-    console.log(err)
-  }
-})
-
-ipc.on('fetchData', function() {
-  let hot = HotRegister.getActiveInstance()
-  var csv = $.csv.fromArrays(hot.getData(), file.formats.csv)
-  ipc.send('dataSent', csv)
-})
-
-ipc.on('validationStarted', function() {
-  loader.showLoader('Loading validation results...')
-})
-
-ipc.on('validationResults', function(e, results) {
-  let hot = HotRegister.getActiveInstance()
-  validation.displayResults(hot, results)
 })
 
 ipc.on('editUndo', function() {
@@ -152,16 +108,9 @@ ipc.on('insertColumnRight', function() {
 })
 
 ipc.on('removeRows', function() {
-  hotController.removeRows()
+  removeRows()
 })
 
 ipc.on('removeColumns', function() {
-  hotController.removeColumns()
-})
-
-ipc.on('freeze', function() {
-  hotController.freeze()
-})
-ipc.on('unfreeze', function() {
-  hotController.unfreeze()
+  removeColumns()
 })
