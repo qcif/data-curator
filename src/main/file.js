@@ -1,4 +1,4 @@
-import {enableSave, createWindowTabWithFormattedDataFile} from './utils'
+import {enableSave, createWindowTabWithFormattedData} from './utils'
 let path = require('path')
 const _ = require('lodash')
 function makeCustomFormat(separator, delimiter) {
@@ -25,7 +25,7 @@ function openFile(format) {
 
 function openCustom() {
   // var window = BrowserWindow.getFocusedWindow()
-  var dialog = new BrowserWindow({width: 200, height: 400})
+  let dialog = new BrowserWindow({width: 200, height: 400})
   dialog.setMenu(null)
   dialog.once('closed', function() {
     ipc.removeAllListeners('formatSelected')
@@ -43,24 +43,21 @@ function filenameExists(filename) {
   let threshold = global.tab.activeFilename === filename ? 1 : 0
   let length = global.tab.filenames.length
   let filtered = _.without(global.tab.filenames, filename)
-  console.log(global.tab)
   return length - filtered.length > threshold
 }
 
-function showFeedbackIfFilenameExists(filename) {
-  if (filenameExists(filename)) {
-    Dialog.showMessageBox(window, {
-      type: 'warning',
-      // title is not displayed on screen on macOS
-      title: 'Data not saved',
-      message: 'The data was not saved to the file.\n\nYou selected a file name that is already used in this Data Package.\n\nTo save the data, choose a unique file name.'
-    })
-  }
+function showExistingFileFeedback(currentWindow) {
+  Dialog.showMessageBox(currentWindow, {
+    type: 'warning',
+    // title is not displayed on screen on macOS
+    title: 'Data not saved',
+    message: 'The data was not saved to the file.\n\nYou selected a file name that is already used in this Data Package.\n\nTo save the data, choose a unique file name.'
+  })
 }
 
-function saveFileAs(format, window) {
-  if (!window) {
-    window = BrowserWindow.getFocusedWindow()
+function saveFileAs(format, currentWindow) {
+  if (!currentWindow) {
+    currentWindow = BrowserWindow.getFocusedWindow()
   }
   Dialog.showSaveDialog({
     filters: format.filters,
@@ -70,17 +67,20 @@ function saveFileAs(format, window) {
       // console.log('returning as no filename was entered...')
       return
     }
-    showFeedbackIfFilenameExists(filename)
+    if (filenameExists(filename)) {
+      showExistingFileFeedback(currentWindow)
+      return
+    }
     // enableSave()
-    window.webContents.send('saveData', format, filename)
-    window.format = format
-    window.webContents.send('saveDataSuccess')
+    currentWindow.webContents.send('saveData', format, filename)
+    currentWindow.format = format
+    currentWindow.webContents.send('saveDataSuccess')
   })
 }
 
 function saveAsCustom() {
-  var window = BrowserWindow.getFocusedWindow()
-  var dialog = new BrowserWindow({width: 200, height: 400})
+  let currentWindow = BrowserWindow.getFocusedWindow()
+  let dialog = new BrowserWindow({width: 200, height: 400})
   dialog.setMenu(null)
   dialog.once('closed', function() {
     ipc.removeAllListeners('formatSelected')
@@ -88,15 +88,15 @@ function saveAsCustom() {
   })
   ipc.once('formatSelected', function(event, data) {
     dialog.close()
-    var format = makeCustomFormat(data.separator, data.delimiter)
-    saveFileAs(format, window)
+    let format = makeCustomFormat(data.separator, data.delimiter)
+    saveFileAs(format, currentWindow)
   })
   dialog.loadURL(`http://localhost:9080/#/customformat`)
 }
 
 function saveFile() {
-  var window = BrowserWindow.getFocusedWindow()
-  window.webContents.send('saveData', window.format)
+  let currentWindow = BrowserWindow.getFocusedWindow()
+  currentWindow.webContents.send('saveData', currentWindow.format, global.tab.activeFilename)
 }
 
 function readFile(filenames, format) {

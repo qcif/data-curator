@@ -367,16 +367,10 @@ export default {
       return allEditors[allEditors.length - 1]
     },
     addTabWithFormattedDataFile: function(data, format, filename) {
-      console.log('inside home add tab with data and file...')
       this.initTab()
-      console.log('completed init tab')
       this.$nextTick(function() {
         this.loadFormattedDataIntoContainer(this.latestHotContainer(), data, format)
-        let tabId = this.activeTab
-        console.log(`active tab is ${tabId}`)
-        if (typeof filename === 'string') {
-          this.pushTabObject({id: tabId, filename: filename})
-        }
+        this.pushTabObject({id: this.activeTab, filename: filename})
       })
     },
     addTabWithData: function(data) {
