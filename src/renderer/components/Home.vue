@@ -346,13 +346,16 @@ export default {
         console.log(err)
       }
     },
-    packageCallback(message) {
-      console.log('entered data package callback')
-      console.log(message)
+    exportPackageFeedback: function(messages) {
+      this.messagesTitle = 'Export package error'
+      this.messages = messages
+      this.messagesType = 'feedback'
+      this.reportFeedback()
     },
     async createPackage() {
       try {
-        await createDataPackage(this.packageCallback)
+        let messages = await createDataPackage()
+        this.exportPackageFeedback(messages)
       } catch (err) {
         console.log('There was an error(s) creating a data package.')
         console.log(err)
