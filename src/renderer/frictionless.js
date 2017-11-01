@@ -8,16 +8,6 @@ async function initDataAndInferSchema(data) {
   return table
 }
 
-async function initData(data) {
-  const table = await Table.load(data)
-  return table
-}
-
-async function initStrictData(data) {
-  const table = await Table.load(data, {strict: true})
-  return table
-}
-
 async function initDataAgainstSchema(data, schema) {
   // provide schema rather than infer
   let table = await Table.load(data, {schema: schema})
@@ -34,6 +24,7 @@ function updateDataForHeaders(hot) {
 }
 
 function storeData(hotId, table) {
+  console.log('setting store data...')
   return store.mutations.pushTableSchema(store.state, {
     hotId: hotId,
     tableSchema: table
@@ -51,33 +42,6 @@ export async function guessColumnProperties() {
   return message
 }
 
-// function checkRowCells(row, schema) {
-//   try {
-//     console.log('checking each cell of row:')
-//     console.log(row)
-//     let indexCount = -1
-//
-//     for (const [index, cell] of row.entries()) {
-//       console.log(`index is ${index}`)
-//       console.log(`cell value is ${cell}`)
-//       const field = schema.fields[index]
-//       console.log('logging field...')
-//       console.log(field)
-//       field.castValue(cell, false)
-//     }
-//   } catch (err) {
-//     console.log('got cell error')
-//     console.log(err)
-//     // if (err.multiple) {
-//     //   for (const error of err.errors) {
-//     //     console.log(error)
-//     //   }
-//     // } else {
-//     //   console.log(err)
-//     // }
-//   }
-// }
-
 function checkRow(rowNumber, row, schema, errorCollector) {
   try {
     schema.castRow(row)
@@ -92,22 +56,6 @@ function checkRow(rowNumber, row, schema, errorCollector) {
     }
   }
 }
-
-// export async function validateActiveDataWithNoSchema() {
-//   let activeHotObject = HotRegister.getActiveHotIdData()
-//   try {
-//     let table = await initStrictData(activeHotObject.data)
-//     let result = await table.read({keyed: true})
-//   } catch (err) {
-//     if (err.multiple) {
-//       for (const error of err.errors) {
-//         console.log(error)
-//       }
-//     } else {
-//       console.log(err)
-//     }
-//   }
-// }
 
 async function checkForSchema(data, id) {
   let tableSchema = _.get(store.state.hotTabs, `${id}.tableSchema`)

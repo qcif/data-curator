@@ -22,7 +22,7 @@ export function saveDataToFile(hot, format, filename, callback) {
   let data
   let tabId = tabStore.state.activeTab
   if (typeof filename === 'string') {
-    tabStore.mutations.pushTabObject(tabStore.state, {id: tabId, filename})
+    tabStore.mutations.pushTabObject(tabStore.state, {id: tabId, filename: filename})
   } else {
     filename = _.get(tabStore.state.tabObjects, `${tabId}.filename`)
   }
@@ -44,6 +44,4 @@ export function saveDataToFile(hot, format, filename, callback) {
   } else {
     fs.writeFile(filename, data, callback)
   }
-  console.log('store tab objects...')
-  console.log(tabStore.state.tabObjects)
 }

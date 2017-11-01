@@ -129,7 +129,7 @@ const mutations = {
     if (!hotTab.columnProperties) {
       hotTab.columnProperties = []
     }
-    return _.merge(hotTab.columnProperties, tableSchemaProperties)
+    return _.merge(state.hotTabs[hotId].columnProperties, tableSchemaProperties)
   },
   mergeCurrentColumnPropertiesOverTableSchema(state, hotId) {
     let hotTab = state.hotTabs[hotId]

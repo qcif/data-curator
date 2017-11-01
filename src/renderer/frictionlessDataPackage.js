@@ -17,8 +17,11 @@ async function initPackage(hots) {
   return dataPackage
 }
 
-async function createResource(hot) {
-  const resource = await Resource.load({path: 'data.csv'})
+async function createResource(filename) {
+  const resource = await Resource.load({path: filename})
+  console.log(resource.headers)
+  let object = await resource.read({keyed: true})
+  console.log(object)
 }
 
 export function haveAllTabsGotFilenames() {
@@ -41,7 +44,11 @@ export async function createDataPackage() {
     console.log(`tab is`)
     console.log(value.tabId)
     console.log('filename is')
-    console.log(allTabObjects[value.tabId].filename)
+    console.log()
+    let filename = allTabObjects[value.tabId].filename
+    if (filename) {
+      createResource(filename)
+    }
   })
 
   // }

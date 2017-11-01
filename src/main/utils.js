@@ -59,12 +59,12 @@ export function createWindowTabWithData(data) {
   }
 }
 
-export function createWindowTabWithFormattedData(data, format) {
+export function createWindowTabWithFormattedDataFile(data, format, filename) {
   var window = BrowserWindow.getFocusedWindow()
   if (window == null) {
     window = createWindow()
   } else {
-    window.webContents.send('addTabWithFormattedData', data, format)
+    window.webContents.send('addTabWithFormattedDataFile', data, format, filename)
   }
 }
 

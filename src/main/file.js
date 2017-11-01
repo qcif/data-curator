@@ -1,4 +1,4 @@
-import {enableSave, createWindowTabWithFormattedData} from './utils'
+import {enableSave, createWindowTabWithFormattedDataFile} from './utils'
 let path = require('path')
 const _ = require('lodash')
 function makeCustomFormat(separator, delimiter) {
@@ -47,6 +47,17 @@ function filenameExists(filename) {
   return length - filtered.length > threshold
 }
 
+function showFeedbackIfFilenameExists(filename) {
+  if (filenameExists(filename)) {
+    Dialog.showMessageBox(window, {
+      type: 'warning',
+      // title is not displayed on screen on macOS
+      title: 'Data not saved',
+      message: 'The data was not saved to the file.\n\nYou selected a file name that is already used in this Data Package.\n\nTo save the data, choose a unique file name.'
+    })
+  }
+}
+
 function saveFileAs(format, window) {
   if (!window) {
     window = BrowserWindow.getFocusedWindow()
@@ -59,16 +70,7 @@ function saveFileAs(format, window) {
       // console.log('returning as no filename was entered...')
       return
     }
-    if (filenameExists(filename)) {
-      Dialog.showMessageBox(window, {
-        type: 'warning',
-        // title is not displayed on screen on macOS
-        title: 'Data not saved',
-        message: 'The data was not saved to the file.\n\nYou selected a file name that is already used in this Data Package.\n\nTo save the data, choose a unique file name.'
-      })
-      return
-    }
-
+    showFeedbackIfFilenameExists(filename)
     // enableSave()
     window.webContents.send('saveData', format, filename)
     window.format = format
@@ -98,16 +100,15 @@ function saveFile() {
 }
 
 function readFile(filenames, format) {
-  if (filenames === undefined) {
-
-  } else {
-    var filename = filenames[0]
+  if (filenames !== undefined) {
+    let filename = filenames[0]
     Fs.readFile(filename, 'utf-8', function(err, data) {
       if (err) {
         console.log(err.stack)
+      } else {
+        createWindowTabWithFormattedDataFile(data, format, filename)
+        // enableSave()
       }
-      createWindowTabWithFormattedData(data, format)
-      // enableSave()
     })
   }
 }

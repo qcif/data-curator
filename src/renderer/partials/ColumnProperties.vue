@@ -292,7 +292,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty', 'getAllHotColumnPropertiesFromHotId'
+      'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty', 'getAllHotColumnPropertiesFromHotId'
     ]),
     storeObject() {
       const hotId = HotRegister.getActiveInstance().guid
