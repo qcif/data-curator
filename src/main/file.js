@@ -1,4 +1,4 @@
-import {enableSave, createWindowTabWithFormattedData} from './utils'
+import {enableSave, createWindowTabWithFormattedDataFile} from './utils'
 let path = require('path')
 const _ = require('lodash')
 function makeCustomFormat(separator, delimiter) {
@@ -46,15 +46,6 @@ function filenameExists(filename) {
   return length - filtered.length > threshold
 }
 
-function showExistingFileFeedback(currentWindow) {
-  Dialog.showMessageBox(currentWindow, {
-    type: 'warning',
-    // title is not displayed on screen on macOS
-    title: 'Data not saved',
-    message: 'The data was not saved to the file.\n\nYou selected a file name that is already used in this Data Package.\n\nTo save the data, choose a unique file name.'
-  })
-}
-
 function saveFileAs(format, currentWindow) {
   if (!currentWindow) {
     currentWindow = BrowserWindow.getFocusedWindow()
@@ -68,7 +59,15 @@ function saveFileAs(format, currentWindow) {
       return
     }
     if (filenameExists(filename)) {
-      showExistingFileFeedback(currentWindow)
+      Dialog.showMessageBox(currentWindow, {
+        type: 'warning',
+        // title is not displayed on screen on macOS
+        title: 'Data not saved',
+        message:
+`The data was not saved to the file.
+You selected a file name that is already used in this Data Package.
+To save the data, choose a unique file name.`
+      })
       return
     }
     // enableSave()
@@ -102,6 +101,17 @@ function saveFile() {
 function readFile(filenames, format) {
   if (filenames !== undefined) {
     let filename = filenames[0]
+    if (filenameExists(filename)) {
+      Dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
+        type: 'warning',
+        // title is not displayed on screen on macOS
+        title: 'File not opened',
+        message: `The file was not opened.
+You selected a file name that is already used in this Data Package.
+A file may only be opened once.`
+      })
+      return
+    }
     Fs.readFile(filename, 'utf-8', function(err, data) {
       if (err) {
         console.log(err.stack)
