@@ -1,6 +1,5 @@
-import {HotRegister, insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight} from '../renderer/hot.js'
-import {loadDataIntoHot, saveDataToFile} from '../renderer/data-actions.js'
-import {fixRaggedRows, matchColumnHeadersToMaxRowLength} from '../renderer/ragged-rows.js'
+import {HotRegister, insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight} from '@/hot.js'
+import {loadDataIntoHot, saveDataToFile} from '@/data-actions.js'
 var ipc = require('electron').ipcRenderer
 var fs = require('fs')
 
@@ -33,8 +32,7 @@ export function addHotContainerListeners(container) {
         console.log(err.stack)
       }
       // if we're dragging a file in, default the format to comma-separated
-      var arrays = loadData(hot, data, file.formats.csv.options)
-      fixRaggedRows(hot, arrays)
+      loadData(hot, data, file.formats.csv.options)
     })
   }
 
@@ -48,9 +46,7 @@ export function addHotContainerListeners(container) {
 
 export function loadData(key, data, format) {
   let hot = HotRegister.getInstance(key)
-  var arrays = loadDataIntoHot(hot, data, format)
-  // matchColumnHeadersToMaxRowLength(hot, arrays)
-  fixRaggedRows(hot, arrays)
+  loadDataIntoHot(hot, data, format)
 }
 
 ipc.on('saveData', function(e, format, fileName) {
@@ -87,12 +83,6 @@ ipc.on('schemaFromHeaders', function() {
     console.log('attempting to get the first row has failed')
     console.log(err)
   }
-})
-
-ipc.on('ragged_rows', function() {
-  let hot = HotRegister.getActiveInstance()
-  var csv = hot.getData()
-  fixRaggedRows(hot, csv)
 })
 
 ipc.on('fetchData', function() {
