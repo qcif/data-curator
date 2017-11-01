@@ -68,7 +68,7 @@ const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) 
 })
 
 if (isSecondInstance) {
-  console.log('second app detected. Quitting this.')
+  console.log('Data curator is already open. Quitting this application.')
   app.quit()
 }
 
