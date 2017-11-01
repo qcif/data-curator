@@ -25,7 +25,7 @@ async function createResource(filename) {
 }
 
 export function haveAllTabsGotFilenames() {
-  return tabStore.getAllFilenames().length === tabStore.state.tabs.length
+  return tabStore.getTabFilenames().length === tabStore.state.tabs.length
 }
 
 export async function createDataPackage() {
