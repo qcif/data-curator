@@ -38,62 +38,62 @@ export default {
   },
   data() {
     return {
-      formprops: [{
-        label: 'title'
-      },
-      {
-        label: 'name'
-      },
-      {
-        label: 'primary key(s)',
-        type: 'array'
-      },
-      // {
-      //   label: 'foreign key(s)',
-      //   type: 'array'
-      // },
-      {
-        label: 'profile',
-        type: 'hidden',
-        value: 'tabular-data-resource'
-      },
-      {
-        label: 'description'
-      },
-      // do we need sources for a table?
-      // so add this as a row model with a plus/minus and leave each entry as text boxes for people to edit
-      {
-        label: 'sources',
-        type: 'dropdown'
-      },
-      {
-        label: 'licenses'
-      },
-      {
-        label: 'format',
-        type: 'hidden',
-        value: 'csv'
-      },
-      // value is set at datapackage creation when it also prompts if filenames not saved yet
-      {
-        label: 'path',
-        type: 'hidden',
-        value: ''
-      },
-      {
-        label: 'mediatype',
-        type: 'hidden',
-        value: 'text/csv'
-      },
-      {
-        label: 'encoding',
-        type: 'hidden',
-        value: 'UTF-8'
-      },
-      {
-        label: 'missing values',
-        type: 'array'
-      }
+      formprops: [
+        {
+          label: 'name'
+        }, {
+          label: 'title'
+        },
+        {
+          label: 'primary key(s)',
+          type: 'array'
+        },
+        // {
+        //   label: 'foreign key(s)',
+        //   type: 'array'
+        // },
+        {
+          label: 'profile',
+          type: 'hidden',
+          value: 'tabular-data-resource'
+        },
+        {
+          label: 'description'
+        },
+        // do we need sources for a table?
+        // so add this as a row model with a plus/minus and leave each entry as text boxes for people to edit
+        {
+          label: 'sources',
+          type: 'dropdown'
+        },
+        {
+          label: 'licenses'
+        },
+        {
+          label: 'format',
+          type: 'hidden',
+          value: 'csv'
+        },
+        // value is set at datapackage creation when it also prompts if filenames not saved yet
+        {
+          label: 'path',
+          type: 'hidden',
+          value: ''
+        },
+        {
+          label: 'mediatype',
+          type: 'hidden',
+          value: 'text/csv'
+        },
+        {
+          label: 'encoding',
+          type: 'hidden',
+          value: 'UTF-8'
+        },
+        {
+          label: 'missing values',
+          type: 'array'
+        }
       ]
     }
   },

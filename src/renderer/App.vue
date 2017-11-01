@@ -7,11 +7,7 @@
 <script>
   export default {
     name: 'data-curator',
-    props: ['routerName'],
-    mounted: function () {
-      console.log('mounted root')
-      console.log(`router name is ${this.routerName}`)
-    }
+    props: ['routerName']
   }
 </script>
 <style lang="styl" scoped>

@@ -260,6 +260,7 @@ export default {
       'decrementTabIndex',
       'pushHotColumns',
       'pushTabTitle',
+      'pushTabObject',
       'destroyHotTab',
       'destroyTabObject'
     ]),
@@ -365,10 +366,17 @@ export default {
       let allEditors = document.querySelectorAll('#csvContent .editor')
       return allEditors[allEditors.length - 1]
     },
-    addTabWithFormattedData: function(data, format) {
+    addTabWithFormattedDataFile: function(data, format, filename) {
+      console.log('inside home add tab with data and file...')
       this.initTab()
+      console.log('completed init tab')
       this.$nextTick(function() {
         this.loadFormattedDataIntoContainer(this.latestHotContainer(), data, format)
+        let tabId = this.activeTab
+        console.log(`active tab is ${tabId}`)
+        if (typeof filename === 'string') {
+          this.pushTabObject({id: tabId, filename: filename})
+        }
       })
     },
     addTabWithData: function(data) {
@@ -613,9 +621,9 @@ export default {
     ipc.on('addTabWithData', function(e, data) {
       vueAddTabWithData(data)
     })
-    const vueAddTabWithFormattedData = this.addTabWithFormattedData
-    ipc.on('addTabWithFormattedData', function(e, data, format) {
-      vueAddTabWithFormattedData(data, format)
+    const vueAddTabWithFormattedDataFile = this.addTabWithFormattedDataFile
+    ipc.on('addTabWithFormattedDataFile', function(e, data, format, filename) {
+      vueAddTabWithFormattedDataFile(data, format, filename)
     })
     const vueAddTab = this.addTab
     ipc.on('addTab', function() {

@@ -19,7 +19,6 @@ function getAllFilenames() {
   _.forEach(tabObjects, (value, key) => {
     if (value.filename) { filtered.push(value.filename) }
   })
-  console.log(filtered)
   return filtered
 }
 
@@ -75,6 +74,8 @@ const mutations = {
       setGlobal(tab.filename, title)
       ipc.send('toggleSaveMenu')
     }
+    console.log('logging state tab objects')
+    console.log(state.tabObjects)
   },
   removeTab (state, tabId) {
     // keep check for index in this function to ensure tabid still exists
@@ -85,10 +86,13 @@ const mutations = {
   },
   setActiveTab (state, tabId) {
     state.activeTab = `${tabId}`
+    console.log(`setting active tab to ${tabId}`)
     // TODO : now that we use activeTitle as global and we can access with activeTab and tabObjects, keeping it in store is redundant - remove.
     state.activeTitle = state.tabObjects[tabId].title
     setGlobal(state.tabObjects[state.activeTab].filename, state.activeTitle)
     ipc.send('toggleSaveMenu')
+    console.log(state.activeTab)
+    console.log(remote.getGlobal('tab'))
   },
   setTabsOrder (state, tabIdOrder) {
     state.tabs = tabIdOrder
