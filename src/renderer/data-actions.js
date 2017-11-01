@@ -1,5 +1,4 @@
 import tabStore from '../renderer/store/modules/tabs.js'
-import {remote} from 'electron'
 import fs from 'fs'
 import {fixRaggedRows} from '@/ragged-rows.js'
 const $ = global.jQuery = require('jquery/dist/jquery.js')

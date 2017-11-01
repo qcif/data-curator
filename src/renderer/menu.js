@@ -1,6 +1,7 @@
-import {insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight} from '@/hot.js'
-const {remote} = require('electron')
-const {Menu, MenuItem} = remote
+import {insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight, removeRows, removeColumns} from '@/hot.js'
+import {remote} from 'electron'
+const Menu = remote.Menu
+const MenuItem = remote.MenuItem
 
 var menu = new Menu()
 
@@ -35,33 +36,17 @@ var columnRight = new MenuItem({
 var removeRow = new MenuItem({
   label: 'Remove row(s)',
   click: function() {
-    hotController.removeRows()
+    removeRows()
   }
 })
 
 var removeCol = new MenuItem({
   label: 'Remove column(s)',
   click: function() {
-    hotController.removeColumns()
+    removeColumns()
   }
 })
 
-// var freezeRow = new MenuItem({
-//  label: 'Freeze header row',
-//  click: function() {
-//    hotController.freeze()
-//  }
-// })
-
-// var unfreezeRow = new MenuItem({
-//   label: 'Unfreeze header row',
-//  click: function() {
-//    hotController.unfreeze()
-//  }
-// })
-
-// menu.append(freezeRow)
-// menu.append(unfreezeRow)
 menu.append(new MenuItem({type: 'separator'}))
 menu.append(rowAbove)
 menu.append(rowBelow)
@@ -73,11 +58,10 @@ menu.append(removeRow)
 menu.append(removeCol)
 
 export {
-  menu,
-  remote,
-  rowAbove,
+  menu
+  // rowAbove
   // rowBelow: rowBelow,
-  columnLeft
+  // columnLeft
   // ,
   // columnRight,
   // removeRow,
