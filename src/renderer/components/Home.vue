@@ -429,6 +429,14 @@ export default {
         'tabId': activeTabId
       })
     },
+    closeTab: async function(event) {
+      // do not allow single tab to be closed
+      if (this.tabs.length > 1) {
+        let targetTabId = event.currentTarget.closest('.tab-header').id
+        this.removeTab(targetTabId)
+        await this.cleanUpTabDependencies(targetTabId)
+      }
+    },
     cleanUpTabDependencies: async function(tabId) {
       // update active tab
       if (tabId === this.activeTab) {
@@ -440,14 +448,6 @@ export default {
       let hotId = await this.getHotIdFromTabId(tabId)
       this.destroyHotTab(hotId)
       HotRegister.destroyHot(hotId)
-    },
-    closeTab: async function(event) {
-      // do not allow single tab to be closed
-      if (this.tabs.length > 1) {
-        let targetTabId = event.currentTarget.closest('.tab-header').id
-        this.removeTab(targetTabId)
-        await this.cleanUpTabDependencies(targetTabId)
-      }
     },
     closeSideNav: function() {
       this.enableTransition = false

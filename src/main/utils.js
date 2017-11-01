@@ -21,7 +21,6 @@ export function createWindow() {
       clearTimeout(global.resizeTimerId)
     }
     let timerId = setTimeout(function() {
-      console.log('sending resize event')
       mainWindow.webContents.send('resized')
     }, 250)
     global.resizeTimerId = timerId

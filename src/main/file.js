@@ -15,16 +15,8 @@ function makeCustomFormat(separator, delimiter) {
   }
 }
 
-function openFile(format) {
-  Dialog.showOpenDialog({
-    filters: format.filters
-  }, function(filenames) {
-    readFile(filenames, format)
-  })
-}
-
-function openCustom() {
-  // var window = BrowserWindow.getFocusedWindow()
+function saveAsCustom() {
+  let currentWindow = BrowserWindow.getFocusedWindow()
   let dialog = new BrowserWindow({width: 200, height: 400})
   dialog.setMenu(null)
   dialog.once('closed', function() {
@@ -33,17 +25,10 @@ function openCustom() {
   })
   ipc.once('formatSelected', function(event, data) {
     dialog.close()
-    var format = makeCustomFormat(data.separator, data.delimiter)
-    openFile(format)
+    let format = makeCustomFormat(data.separator, data.delimiter)
+    saveFileAs(format, currentWindow)
   })
   dialog.loadURL(`http://localhost:9080/#/customformat`)
-}
-
-function filenameExists(filename) {
-  let threshold = global.tab.activeFilename === filename ? 1 : 0
-  let length = global.tab.filenames.length
-  let filtered = _.without(global.tab.filenames, filename)
-  return length - filtered.length > threshold
 }
 
 function saveFileAs(format, currentWindow) {
@@ -58,7 +43,7 @@ function saveFileAs(format, currentWindow) {
       // console.log('returning as no filename was entered...')
       return
     }
-    if (filenameExists(filename)) {
+    if (savedFilenameExists(filename)) {
       Dialog.showMessageBox(currentWindow, {
         type: 'warning',
         // title is not displayed on screen on macOS
@@ -77,8 +62,20 @@ To save the data, choose a unique file name.`
   })
 }
 
-function saveAsCustom() {
+function savedFilenameExists(filename) {
+  let threshold = global.tab.activeFilename === filename ? 1 : 0
+  let length = global.tab.filenames.length
+  let filtered = _.without(global.tab.filenames, filename)
+  return length - filtered.length > threshold
+}
+
+function saveFile() {
   let currentWindow = BrowserWindow.getFocusedWindow()
+  currentWindow.webContents.send('saveData', currentWindow.format, global.tab.activeFilename)
+}
+
+function openCustom() {
+  // var window = BrowserWindow.getFocusedWindow()
   let dialog = new BrowserWindow({width: 200, height: 400})
   dialog.setMenu(null)
   dialog.once('closed', function() {
@@ -87,21 +84,28 @@ function saveAsCustom() {
   })
   ipc.once('formatSelected', function(event, data) {
     dialog.close()
-    let format = makeCustomFormat(data.separator, data.delimiter)
-    saveFileAs(format, currentWindow)
+    var format = makeCustomFormat(data.separator, data.delimiter)
+    openFile(format)
   })
   dialog.loadURL(`http://localhost:9080/#/customformat`)
 }
 
-function saveFile() {
-  let currentWindow = BrowserWindow.getFocusedWindow()
-  currentWindow.webContents.send('saveData', currentWindow.format, global.tab.activeFilename)
+function openFile(format) {
+  Dialog.showOpenDialog({
+    filters: format.filters
+  }, function(filenames) {
+    readFile(filenames, format)
+  })
+}
+
+function openedFilenameExists(filename) {
+  return _.indexOf(global.tab.filenames, filename) > -1
 }
 
 function readFile(filenames, format) {
   if (filenames !== undefined) {
     let filename = filenames[0]
-    if (filenameExists(filename)) {
+    if (openedFilenameExists(filename)) {
       Dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
         type: 'warning',
         // title is not displayed on screen on macOS
