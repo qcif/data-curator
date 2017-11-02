@@ -1,44 +1,54 @@
-import {Resource, Package} from 'datapackage'
+import {Resource, Package, validate} from 'datapackage'
 import {HotRegister} from '@/hot.js'
 import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
 import path from 'path'
+import {includeHeadersInData} from '@/frictionlessUtils.js'
 
-async function initPackage(hots) {
-  const dataPackage = await Package.load({
-    name: 'package',
-    resources: [
-      {
-        name: 'resource',
-        data: ['data']
-      }
-    ]
-  })
-  await dataPackage.infer(data)
-  return dataPackage
+function hotToDescriptor(hot) {
+  // let descriptor = {}
+  // descriptor.data = []
+  // descriptor.encoding = ''
+  // descriptor.name = ''
+  // descriptor.format = ''
+  // descriptor.mediatype = ''
+  // descriptor.path = ''
+  // descriptor.profile = ''
+  // descriptor.schema = {}
+  let descriptor = {}
+  descriptor.data = includeHeadersInData(hot)
+  let tableProperties = hotStore.state.hotTabs[hot.guid].tableProperties
+  let tableSchema = hotStore.state.hotTabs[hot.guid].tableSchema
+  _.merge(descriptor, tableProperties)
+  descriptor.schema = tableSchema.schema
+  console.log(`descriptor is...`)
+  console.log(descriptor)
+  return descriptor
 }
 
-// async function createResource(filename) {
-//   let basename = path.basename(filename)
-//   console.log(`basename is ${basename}`)
-//   let dirname = path.dirname(filename)
-//   console.log(`dirname is ${dirname}`)
-//   const resource = await Resource.load({basepath: dirname, path: basename})
-//   console.log(resource)
-//   // let object = await resource.read({keyed: true})
-//   // console.log(object)
-//   return resource
-// }
-async function createResource(id) {
-  // let basename = path.basename(filename)
-  // console.log(`basename is ${basename}`)
-  // let dirname = path.dirname(filename)
-  // console.log(`dirname is ${dirname}`)
-  const resource = await Resource.load({data: HotRegister.getInstance(id)})
-  console.log(resource)
-  // let object = await resource.read({keyed: true})
-  // console.log(object)
-  return resource
+async function validateDescriptor(descriptor, resources) {
+  const {valid, errors} = await validate(descriptor)
+  if (errors) {
+    for (const error of errors) {
+      console.log(error)
+      // TODO: report errors or fix
+    }
+  } else {
+    resources.push(valid)
+  }
+}
+
+function packageDescriptor(resources) {
+  const descriptor = {
+    resources: resources
+  }
+  return descriptor
+}
+
+async function initPackage(resources) {
+  const dataPackage = await Package.load(packageDescriptor)
+  // await dataPackage.infer(data)
+  return dataPackage
 }
 
 export function haveAllTabsGotFilenames() {
@@ -52,19 +62,14 @@ export async function createDataPackage() {
   if (!haveAllTabsGotFilenames()) {
     return 'All tabs must be saved before exporting.'
   }
-  console.log(hotStore.state.hotTabs)
-  console.log(allTabObjects)
-  // get tab Id and use this to get filename
-  await _.forEach(hotStore.state.hotTabs, async function (value, key) {
-    console.log('hot id is: ')
-    console.log(key)
-    console.log(`tab is`)
-    console.log(value.tabId)
-    console.log('filename is')
+  let resources = []
+  await _.forEach(hotStore.state.hotTabs, async function(value, key) {
     let filename = allTabObjects[value.tabId].filename
     try {
-      // let resource = await createResource(filename)
-      let resource = await createResource(key)
+      let hot = HotRegister.getInstance(key)
+      let descriptor = hotToDescriptor(hot)
+      await validateDescriptor(descriptor, resources)
+      // TODO: push valid resources to array and then create data package with descriptor object
     } catch (err) {
       if (err) {
         console.log('There was an error creating resource.')

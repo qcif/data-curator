@@ -1,7 +1,9 @@
 import {openFile, saveFileAs, saveFile} from './file.js'
-// import {fileFormats} from '../renderer/file-formats.js'
+import {guessColumnProperties, createWindowTab, validateTable, showSidePanel} from './utils.js'
+import {importExcel} from './excel.js'
+import {showKeyboardHelp} from './help.js'
 import {fileFormats} from '../renderer/file-formats.js'
-import {shell} from 'electron'
+import {shell, BrowserWindow} from 'electron'
 // fileActions = require('./file')
 
 // build 'Open...' and 'Save As...' submenus
@@ -53,7 +55,7 @@ const template = [
         label: 'New',
         accelerator: 'CmdOrCtrl+N',
         click() {
-          utils.createWindowTab()
+          createWindowTab()
         }
       }, {
         type: 'separator'
@@ -64,7 +66,7 @@ const template = [
         label: 'Open Excel Sheet...',
         enabled: true,
         click() {
-          excel.importExcel()
+          importExcel()
         }
         // Placeholder for future feature
         //      }, {
@@ -286,7 +288,7 @@ const template = [
         // }, {
         label: 'Guess Column Properties',
         click: function() {
-          utils.guessColumnProperties()
+          guessColumnProperties()
         }
       }, {
         type: 'separator'
@@ -294,7 +296,7 @@ const template = [
         label: 'Validate Table',
         accelerator: 'Shift+CmdOrCtrl+V',
         click() {
-          utils.validateTable()
+          validateTable()
         }
       }, {
         type: 'separator'
@@ -396,7 +398,7 @@ const template = [
         accelerator: 'CmdOrCtrl+/',
         enabled: true,
         click() {
-          help.showKeyboardHelp()
+          showKeyboardHelp()
         }
       }, {
         type: 'separator'
@@ -429,7 +431,7 @@ if (process.platform !== 'darwin') {
   }, {
     label: 'About Data Curator',
     click: function() {
-      utils.showSidePanel('about')
+      showSidePanel('about')
     }
   })
 }
@@ -442,7 +444,7 @@ if (process.platform === 'darwin') {
       {
         label: 'About Data Curator',
         click: function() {
-          utils.showSidePanel('about')
+          showSidePanel('about')
         }
         // Placeholder for future feature
         //      }, {
@@ -451,7 +453,7 @@ if (process.platform === 'darwin') {
         //        label: 'Preferences'
         //        accelerator: 'CmdOrCtrl+,',
         //        click: function() {
-        //          utils.showSidePanel('preferences')
+        //          showSidePanel('preferences')
         //        }
       }, {
         type: 'separator'

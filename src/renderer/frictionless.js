@@ -1,6 +1,7 @@
 import {Table} from 'tableschema'
 import {HotRegister} from '../renderer/hot.js'
 import store from '../renderer/store/modules/hots.js'
+import {includeHeadersInData} from '@/frictionlessUtils.js'
 
 async function initDataAndInferSchema(data) {
   const table = await Table.load(data)
@@ -14,17 +15,7 @@ async function initDataAgainstSchema(data, schema) {
   return table
 }
 
-function updateDataForHeaders(hot) {
-  let allData = hot.getData()
-  if (hot.hasColHeaders()) {
-    let headers = hot.getColHeader()
-    allData = _.concat([headers], allData)
-  }
-  return allData
-}
-
 function storeData(hotId, table) {
-  console.log('setting store data...')
   return store.mutations.pushTableSchema(store.state, {
     hotId: hotId,
     tableSchema: table
@@ -34,7 +25,7 @@ function storeData(hotId, table) {
 export async function guessColumnProperties() {
   let hot = HotRegister.getActiveInstance()
   let id = hot.guid
-  let data = updateDataForHeaders(hot)
+  let data = includeHeadersInData(hot)
   // let activeHot = HotRegister.getActiveHotIdData()
   let table = await initDataAndInferSchema(data)
   let isStored = storeData(id, table)
@@ -53,6 +44,7 @@ function checkRow(rowNumber, row, schema, errorCollector) {
       }
     } else {
       console.log(err)
+      errorCollector.push({rowNumber: rowNumber, message: err.message, name: err.name})
     }
   }
 }
@@ -101,7 +93,7 @@ function checkHeaderErrors(headers, errorCollector, hasColHeaders) {
 export async function validateActiveDataAgainstSchema(callback) {
   let hot = HotRegister.getActiveInstance()
   let id = hot.guid
-  let data = updateDataForHeaders(hot)
+  let data = includeHeadersInData(hot)
   // let activeHotObject = HotRegister.getActiveHotIdData()
   const errorCollector = []
   checkHeaderErrors(data[0], errorCollector, hot.hasColHeaders())
