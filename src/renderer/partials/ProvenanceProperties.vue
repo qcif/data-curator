@@ -2,7 +2,8 @@
 <form class="navbar-form form-horizontal" id="provenanceProperties">
   <div class="form-group-sm row container-fluid">
     <div>
-      <label class="control-label col-sm-3">description:</label>
+      <label v-tooltip.left="tooltip('tooltip-provenance-description')" class="control-label col-sm-3">description:</label>
+      <component :is="'tooltipProvenanceDescription'"/>
       <span>
         <button type="button" class="btn btn-primary btn-sm" @click="togglePreview()">
             <span class="provenance-preview-icon glyphicon" :class="buttonIconClass"/>{{buttonText}}
@@ -18,10 +19,12 @@
 import SideNav from './SideNav'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import markdown from 'markdown-it/dist/markdown-it.min.js'
+import ProvenanceTooltip from '../mixins/ProvenanceTooltip'
 const md = markdown()
 export default {
   extends: SideNav,
   name: 'provenance',
+  mixins: [ProvenanceTooltip],
   computed: {
     markText() {
       return md.render(this.provenance)

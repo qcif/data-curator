@@ -8,7 +8,7 @@ export default {
     'tooltipProvenanceDescription': {
       components: {externalLink},
       template: `<div id="tooltip-provenance-description">Use text or markdown to provide a
-      <externalLink text="Readme" url="http://frictionlessdata.io/guides/publish/faq/#readme"/>for the Data Package</div>`
+      <externalLink text="Readme" url="http://frictionlessdata.io/guides/publish/faq/#readme"/> for the Data Package.</div>`
     }
   }
 }

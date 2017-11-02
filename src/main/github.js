@@ -1,8 +1,4 @@
 import {fileFormats} from '../renderer/file-formats.js'
-global.electron = require('electron')
-
-global.BrowserWindow = electron.BrowserWindow
-global.Dialog = electron.dialog
 
 var Fs = require('fs')
 var ipc = require('electron').ipcMain

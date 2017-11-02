@@ -3,7 +3,8 @@
   <div class="form-group-sm row container-fluid">
     <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
       <template v-if="formprop.type !== 'hidden'">
-        <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
+        <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
+        <component :is="formprop.tooltipView"/>
         <input v-if="formprop.label === 'missing values'" :value="missingValues" @input="setMissingValues($event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
         <input v-else-if="formprop.type === 'primary key(s)'" :value="primaryKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
         <!-- <input v-else-if="formprop.type === 'foreign key(s)'" :value="foreignKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" /> -->
@@ -28,10 +29,12 @@ import sources from '../partials/Sources'
 import {
   HotRegister
 } from '../hot.js'
+import TableTooltip from '../mixins/TableTooltip'
 Vue.use(AsyncComputed)
 export default {
   extends: SideNav,
   name: 'tabular',
+  mixins: [TableTooltip],
   components: {
     licenses,
     sources
@@ -40,9 +43,13 @@ export default {
     return {
       formprops: [
         {
-          label: 'name'
+          label: 'name',
+          tooltipId: 'tooltip-table-name',
+          tooltipView: 'tooltipTableName'
         }, {
-          label: 'title'
+          label: 'title',
+          tooltipId: 'tooltip-table-title',
+          tooltipView: 'tooltipTableTitle'
         },
         {
           label: 'primary key(s)',
@@ -58,16 +65,22 @@ export default {
           value: 'tabular-data-resource'
         },
         {
-          label: 'description'
+          label: 'description',
+          tooltipId: 'tooltip-table-description',
+          tooltipView: 'tooltipTableDescription'
         },
         // do we need sources for a table?
         // so add this as a row model with a plus/minus and leave each entry as text boxes for people to edit
         {
           label: 'sources',
-          type: 'dropdown'
+          type: 'dropdown',
+          tooltipId: 'tooltip-table-sources',
+          tooltipView: 'tooltipTableSources'
         },
         {
-          label: 'licenses'
+          label: 'licenses',
+          tooltipId: 'tooltip-table-licences',
+          tooltipView: 'tooltipTableLicences'
         },
         {
           label: 'format',
@@ -92,7 +105,9 @@ export default {
         },
         {
           label: 'missing values',
-          type: 'array'
+          type: 'array',
+          tooltipId: 'tooltip-table-missing-values',
+          tooltipView: 'tooltipTableMissingValues'
         }
       ]
     }

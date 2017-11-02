@@ -1,3 +1,5 @@
+import {dialog as Dialog, BrowserWindow} from 'electron'
+import Fs from 'fs'
 import {enableSave, createWindowTabWithFormattedDataFile} from './utils'
 let path = require('path')
 const _ = require('lodash')

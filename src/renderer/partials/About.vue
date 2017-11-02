@@ -12,17 +12,6 @@
         </template>
       </li>
     </ul>
-<!--
-    <ul :style="listStyle">We acknowledge the great work of others. We are:
-      <li :style="listItemStyle">inspired by the <a href="https://theodi.org/">ODI</a> experiment, <a href="https://comma-chameleon.io/">Comma Chameleon</a></li>
-      <li :style="listItemStyle">using the <a href="https://okfn.org/">Open Knowledge International</a> Frictionless Data <a href="http://frictionlessdata.io/">specification</a> and <a href="http://frictionlessdata.io/tools/#javascript">code libraries</a></li>
-      <li :style="listItemStyle">adopting <a href="https://www.w3.org/TR/dwbp/#bp-summary">W3C Data on the Web Best Practices</a></li>
-      <li :style="listItemStyle">proudly using <a href="https://github.com/ODIQueensland/data-curator/blob/master/README.md">open source software</a></li>
-    </ul>
-    <div>
-      Learn how you can <a href="https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md">contribute to Data Curator</a>
-    </div>
--->
   </div>
 </template>
 <script>

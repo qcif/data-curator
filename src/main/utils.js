@@ -1,4 +1,4 @@
-import {dialog, ipcMain as ipc} from 'electron'
+import {dialog, ipcMain as ipc, BrowserWindow, Menu} from 'electron'
 import {fileFormats} from '../renderer/file-formats.js'
 let path = require('path')
 
