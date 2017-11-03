@@ -20,21 +20,26 @@ function hotToDescriptor(hot) {
   let tableProperties = hotStore.state.hotTabs[hot.guid].tableProperties
   let tableSchema = hotStore.state.hotTabs[hot.guid].tableSchema
   _.merge(descriptor, tableProperties)
-  descriptor.schema = tableSchema.schema
+  // descriptor.schema = tableSchema.schema
   console.log(`descriptor is...`)
   console.log(descriptor)
   return descriptor
 }
 
-async function validateDescriptor(descriptor, resources) {
-  const {valid, errors} = await validate(descriptor)
+async function validateDescriptor(descriptor) {
+  let d = [descriptor]
+  let resources = packageDescriptor(d)
+  console.log(resources)
+  console.log('sending resources...')
+  const {valid, errors} = await validate(resources)
   if (errors) {
     for (const error of errors) {
       console.log(error)
       // TODO: report errors or fix
     }
   } else {
-    resources.push(valid)
+    console.log('valid')
+    console.log(valid)
   }
 }
 
@@ -42,11 +47,13 @@ function packageDescriptor(resources) {
   const descriptor = {
     resources: resources
   }
+  console.log('got descriptor')
+  console.log(descriptor)
   return descriptor
 }
 
 async function initPackage(resources) {
-  const dataPackage = await Package.load(packageDescriptor)
+  const dataPackage = await Package.load()
   // await dataPackage.infer(data)
   return dataPackage
 }
@@ -68,7 +75,7 @@ export async function createDataPackage() {
     try {
       let hot = HotRegister.getInstance(key)
       let descriptor = hotToDescriptor(hot)
-      await validateDescriptor(descriptor, resources)
+      await validateDescriptor(descriptor)
       // TODO: push valid resources to array and then create data package with descriptor object
     } catch (err) {
       if (err) {

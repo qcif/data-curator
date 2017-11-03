@@ -24,6 +24,7 @@ const getters = {
   getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].columnProperties || []
   },
+  // TODO : atm just chucking in entire frictionless table - probabaly only need schema and headers
   getHotTableSchema: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].tableSchema
   },
@@ -91,6 +92,8 @@ const mutations = {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
     console.log(state.hotTabs)
   },
+  // TODO : tidy up these schema methods so that:
+  // - once we have a schema guess, always point the properties to the schema fields and then update these
   pushTableSchemaProperty(state, property) {
     mutations.pushTableProperty(state, property)
     let hotTab = state.hotTabs[property.hotId]
@@ -116,28 +119,39 @@ const mutations = {
       mutations.overwriteTableSchemaDescriptorProperty(state, hotId, 'missingValues')
     }
   },
+  // TODO : atm just chucking in entire table - probabaly only need schema and headers
   pushTableSchema(state, hotTable) {
     console.log('pushing table schema')
     let hotId = hotTable.hotId
     let tableSchema = _.set(state.hotTabs, `${hotId}.tableSchema`, hotTable.tableSchema)
     let columnProperties = mutations.mergeTableSchemaOverCurrentColumnProperties(state, hotId)
+    console.log(state.hotTabs)
     return tableSchema && columnProperties
   },
+  // TODO : once this behaviour is ensured (ie: we always overwrite) tidy up these 'merge' methods so that:
+  // - once we have a schema guess, always point the columnProperties to the schema fields and then update these
   mergeTableSchemaOverCurrentColumnProperties(state, hotId) {
     let hotTab = state.hotTabs[hotId]
     let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.fields
     if (!hotTab.columnProperties) {
       hotTab.columnProperties = []
     }
-    return _.merge(state.hotTabs[hotId].columnProperties, tableSchemaProperties)
+    // we cannot mutate the vuex state itself (in lodash call) - we can only assign a new value
+    let columnProperties = [...hotTab.columnProperties]
+    let isMerged = _.merge(columnProperties, tableSchemaProperties)
+    state.hotTabs[hotId].columnProperties = columnProperties
+    return isMerged
   },
+  // TODO : once this behaviour is ensured (ie: we always overwrite) tidy up these 'merge' methods so that:
+  // - once we have a schema guess, always point the columnProperties to the schema fields and then update these
   mergeCurrentColumnPropertiesOverTableSchema(state, hotId) {
     let hotTab = state.hotTabs[hotId]
     let tableSchema = hotTab.tableSchema
     if (tableSchema) {
-      let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.fields
+      let tableSchemaProperties = [...hotTab.tableSchema.schema.descriptor.fields]
       let columnProperties = hotTab.columnProperties || []
-      _.merge(tableSchemaProperties, columnProperties)
+      let isMerged = _.merge(tableSchemaProperties, columnProperties)
+      state.hotTabs[hotId].tableSchema.schema.descriptor.fields = tableSchemaProperties
     }
   },
   destroyHotTab(state, hotId) {
