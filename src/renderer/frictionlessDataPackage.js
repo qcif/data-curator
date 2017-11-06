@@ -41,10 +41,14 @@ function addPackageProperties(dataPackage) {
 }
 
 export function haveAllTabsGotFilenames() {
+  console.log('checking filenames...')
+  console.log(`files: ${tabStore.getters.getTabFilenames(tabStore.state).length}`)
+  console.log(`tabs: ${tabStore.state.tabs.length}`)
   return tabStore.getters.getTabFilenames(tabStore.state).length === tabStore.state.tabs.length
 }
 
 function hasAllRequirements(hot, requiredMessages) {
+  console.log('checking requirements...')
   if (!hotStore.state.hotTabs[hot.guid].tableProperties) {
     requiredMessages.push(`Table properties must be set.`)
   } else {
@@ -108,6 +112,29 @@ function createZipFile() {
   })
 }
 
+async function buildResourceForPackage(hotId, errorMessages) {
+  console.log(`key is ${hotId}`)
+  let hotTab = hotStore.state.hotTabs[hotId]
+  console.log(hotTab)
+  // _.forEach(hotStore.state.hotTabs, async function(hotTab, key) {
+  console.log('next iteration...')
+  let hot = HotRegister.getInstance(hotId)
+  console.log(hot)
+  console.log('checking requirements...')
+  if (!hasAllRequirements(hot, errorMessages)) {
+    return false
+  }
+  console.log('checking is valid...')
+  let resource = await createValidResource(hotTab.tabId, hot.guid)
+  console.log('returned from resource is valid')
+  if (!resource.valid) {
+    console.log(resource.errors)
+    errorMessages.push('There is a required table or column property that is missing. Please check that all required properties are entered.')
+    return false
+  }
+  return resource
+}
+
 export async function createDataPackage() {
   let dataPackage = await initPackage()
   let errorMessages = []
@@ -115,26 +142,13 @@ export async function createDataPackage() {
     errorMessages.push('All tabs must be saved before exporting.')
   }
   for (let hotId in hotStore.state.hotTabs) {
-    console.log(`key is ${hotId}`)
-    let value = hotStore.state.hotTabs[hotId]
-    console.log(value)
-    // _.forEach(hotStore.state.hotTabs, async function(hotTab, key) {
-    console.log('next iteration...')
     try {
-      let hot = HotRegister.getInstance(key)
-      console.log('checking requirements...')
-      if (!hasAllRequirements(hot, errorMessages)) {
-        return false
+      let resource = await buildResourceForPackage(hotId, errorMessages)
+      if (resource) {
+        dataPackage.addResource(resource.descriptor)
+      } else {
+        break
       }
-      console.log('checking is valid...')
-      let resource = await createValidResource(hotTab.tabId, hot.guid)
-      console.log('returned from resource is valid')
-      if (!resource.valid) {
-        console.log(resource.errors)
-        errorMessages.push('There is a required table or column property that is missing. Please check that all required properties are entered.')
-        return false
-      }
-      dataPackage.addResource(resource.descriptor)
     } catch (err) {
       if (err) {
         console.log('There was an error creating a resource.')
