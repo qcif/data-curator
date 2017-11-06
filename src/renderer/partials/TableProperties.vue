@@ -9,8 +9,11 @@
         <input v-else-if="formprop.type === 'primary key(s)'" :value="primaryKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
         <!-- <input v-else-if="formprop.type === 'foreign key(s)'" :value="foreignKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" /> -->
         <component v-else-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
-        <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)"/>
+        <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
       </template>
+      <div v-show="errors.has(formprop.label)" class="row help validate-danger">
+        {{ errors.first(formprop.label)}}
+      </div>
     </div>
   </div>
 </form>
@@ -133,6 +136,12 @@ export default {
     ...mapMutations([
       'pushTableSchemaDescriptorProperty', 'pushTableProperty'
     ]),
+    validationRules: function(label) {
+      if (label === 'name') {
+        return 'required'
+      }
+      return ''
+    },
     getArrayValues: async function(key) {
       let tabId = this.getActiveTab
       let values = await this.getArrayValuesFromTabId(key, tabId)
@@ -194,3 +203,6 @@ export default {
   }
 }
 </script>
+<style lang="styl" scoped>
+@import '~static/css/validationrules'
+</style>

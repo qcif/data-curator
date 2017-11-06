@@ -18,3 +18,4 @@ yarn-error.log
 test/temp/
 test/unit/coverage/
 .eslintrc
+src/renderer/data
