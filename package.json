@@ -72,6 +72,7 @@
     }
   },
   "dependencies": {
+    "archiver": "^2.1.0",
     "bootstrap": "^3.3.7",
     "bootstrap-tagsinput": "^0.7.1",
     "bootstrap-webpack": "^0.0.6",
@@ -91,7 +92,7 @@
     "lodash": "^4.17.4",
     "markdown-it": "^8.4.0",
     "moment": "^2.19.1",
-    "node-zip": "^1.1.1",
+    "node-fs-extra": "^0.8.2",
     "pikaday": "^1.6.1",
     "pouchdb-adapter-idb": "^6.3.4",
     "request": "^2.81.0",

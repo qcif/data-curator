@@ -240,6 +240,19 @@ archiver-utils@^1.3.0:
     normalize-path "^2.0.0"
     readable-stream "^2.0.0"
 
+archiver@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/archiver/-/archiver-2.1.0.tgz#d2df2e8d5773a82c1dcce925ccc41450ea999afd"
+  dependencies:
+    archiver-utils "^1.3.0"
+    async "^2.0.0"
+    buffer-crc32 "^0.2.1"
+    glob "^7.0.0"
+    lodash "^4.8.0"
+    readable-stream "^2.0.0"
+    tar-stream "^1.5.0"
+    zip-stream "^1.2.0"
+
 archiver@~1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/archiver/-/archiver-1.3.0.tgz#4f2194d6d8f99df3f531e6881f14f15d55faaf22"
@@ -1497,11 +1510,7 @@ bluebird-lst@^1.0.2, bluebird-lst@^1.0.3:
   dependencies:
     bluebird "^3.5.0"
 
-bluebird@^3.0.5, bluebird@^3.1.1, bluebird@^3.3.0, bluebird@^3.4.7, bluebird@^3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
-
-bluebird@^3.5.1:
+bluebird@^3.0.5, bluebird@^3.1.1, bluebird@^3.3.0, bluebird@^3.4.7, bluebird@^3.5.0, bluebird@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
 
@@ -5266,6 +5275,10 @@ jsonfile@^4.0.0:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
+jsonfile@~1.1.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-1.1.1.tgz#da4fd6ad77f1a255203ea63c7bc32dc31ef64433"
+
 jsonify@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
@@ -5297,12 +5310,6 @@ jstransformer@0.0.2:
   dependencies:
     is-promise "^2.0.0"
     promise "^6.0.1"
-
-jszip@2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/jszip/-/jszip-2.5.0.tgz#7444fd8551ddf3e5da7198fea0c91bc8308cc274"
-  dependencies:
-    pako "~0.2.5"
 
 just-extend@^1.1.26:
   version "1.1.27"
@@ -5988,6 +5995,10 @@ minstache@~1.2.0:
   dependencies:
     commander "1.0.4"
 
+mkdirp@0.3.x:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.3.5.tgz#de3e5f8961c88c787ee1368df849ac4413eca8d7"
+
 mkdirp@0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.0.tgz#1d73076a6df986cd9344e15e71fcc05a4c9abf12"
@@ -6098,6 +6109,10 @@ ncname@1.0.x:
   dependencies:
     xml-char-classes "^1.0.0"
 
+ncp@~0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/ncp/-/ncp-0.4.2.tgz#abcc6cbd3ec2ed2a729ff6e7c1fa8f01784a8574"
+
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
@@ -6146,6 +6161,15 @@ node-fetch@^1.0.1:
 node-forge@0.6.33:
   version "0.6.33"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.6.33.tgz#463811879f573d45155ad6a9f43dc296e8e85ebc"
+
+node-fs-extra@^0.8.2:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/node-fs-extra/-/node-fs-extra-0.8.2.tgz#09fb2b60d30f7d703e361ecb626a91404f17097a"
+  dependencies:
+    jsonfile "~1.1.0"
+    mkdirp "0.3.x"
+    ncp "~0.4.2"
+    rimraf "~2.2.0"
 
 node-gyp@^3.6.2:
   version "3.6.2"
@@ -6217,12 +6241,6 @@ node-source-walk@^3.2.0:
   resolved "https://registry.yarnpkg.com/node-source-walk/-/node-source-walk-3.3.0.tgz#ad18e35bfdb3d0b6f7e0e4aff1e78f846a3b8873"
   dependencies:
     babylon "^6.17.0"
-
-node-zip@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/node-zip/-/node-zip-1.1.1.tgz#94d1ad674a3cd46a1588dd736f4a9a78c757eb62"
-  dependencies:
-    jszip "2.5.0"
 
 nodent-runtime@^3.0.3:
   version "3.0.4"
@@ -6526,7 +6544,7 @@ package-json@^4.0.0:
     registry-url "^3.0.3"
     semver "^5.1.0"
 
-pako@~0.2.0, pako@~0.2.5:
+pako@~0.2.0:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/pako/-/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"
 
@@ -7671,7 +7689,7 @@ rimraf@2, rimraf@^2.5.1, rimraf@^2.5.2, rimraf@^2.5.4, rimraf@^2.6.0, rimraf@^2.
   dependencies:
     glob "^7.0.5"
 
-rimraf@^2.2.8, rimraf@~2.2.6:
+rimraf@^2.2.8, rimraf@~2.2.0, rimraf@~2.2.6:
   version "2.2.8"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.2.8.tgz#e439be2aaee327321952730f99a8929e4fc50582"
 
@@ -9581,7 +9599,7 @@ zeroclipboard@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/zeroclipboard/-/zeroclipboard-2.3.0.tgz#592ebd833a4308688b0739697d3dbf989002c9af"
 
-zip-stream@^1.1.0:
+zip-stream@^1.1.0, zip-stream@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/zip-stream/-/zip-stream-1.2.0.tgz#a8bc45f4c1b49699c6b90198baacaacdbcd4ba04"
   dependencies:

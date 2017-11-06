@@ -97,7 +97,7 @@
               <h3>{{messagesTitle}}</h3>
               <template  v-if="messagesType === 'error'">
                 <div v-for="errorMessage in messages">
-                  <span>row no.{{errorMessage.rowNumber}}</span><span>: {{errorMessage.message}}</span>
+                  <span v-show="errorMessage.rowNumber">row no.{{errorMessage.rowNumber}}: </span><span>{{errorMessage.message}}</span>
                 </div>
               </template>
               <div v-else>
@@ -347,18 +347,30 @@ export default {
         console.log(err)
       }
     },
-    exportPackageFeedback: function(messages) {
-      this.messagesTitle = 'Export package error'
-      this.messages = messages
+    exportPackageFeedback: function() {
+      this.messagesTitle = 'Export package success'
+      this.messages = 'Data package created.'
       this.messagesType = 'feedback'
+      this.reportFeedback()
+    },
+    exportPackageErrors: function(errorMessages) {
+      this.messagesTitle = 'Export package error'
+      this.messages = errorMessages
+      this.messagesType = 'error'
       this.reportFeedback()
     },
     async createPackage() {
       try {
         let messages = await createDataPackage()
-        this.exportPackageFeedback(messages)
+        if (messages.length > 0) {
+          this.exportPackageErrors(messages.map(x => {
+            return {message: x}
+          }))
+        } else {
+          this.exportPackageFeedback()
+        }
       } catch (err) {
-        console.log('There was an error(s) creating a data package.')
+        console.log('There was an error creating a data package.')
         console.log(err)
       }
     },
