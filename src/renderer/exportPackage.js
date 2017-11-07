@@ -23,3 +23,7 @@ export function createZipFile() {
 function generateDataPackage(filename) {
   console.log('ok')
 }
+
+function addProvenanceProperties() {
+  let provenance = hotStore.state.provenanceProperties.markdown
+}
