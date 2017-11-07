@@ -210,7 +210,7 @@ export default {
       en: {
         custom: {
           name: {
-            regex: () => 'The name field format is invalid. It MUST consist only of lowercase alphanumeric characters plus ".", "-" and "_".'
+            regex: () => 'The name field format is invalid. It must consist only of lowercase alphanumeric characters plus ".", "-" and "_".'
           }
         }
       }
