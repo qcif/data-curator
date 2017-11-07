@@ -9,9 +9,9 @@
         <input v-else-if="formprop.type === 'primary key(s)'" :value="primaryKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
         <!-- <input v-else-if="formprop.type === 'foreign key(s)'" :value="foreignKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" /> -->
         <component v-else-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
-        <input v-else :disabled="formprop.isDisabled" type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
+        <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
       </template>
-      <div v-show="errors.has(formprop.label)" class="row help validate-danger">
+      <div v-show="errors.has(formprop.label) && removeValue(formprop.label)" class="row help validate-danger">
         {{ errors.first(formprop.label)}}
       </div>
     </div>
@@ -33,7 +33,9 @@ import {
   HotRegister
 } from '../hot.js'
 import TableTooltip from '../mixins/TableTooltip'
-import {remote} from 'electron'
+import {
+  Validator
+} from 'vee-validate'
 Vue.use(AsyncComputed)
 export default {
   extends: SideNav,
@@ -48,9 +50,7 @@ export default {
       formprops: [{
         label: 'name',
         tooltipId: 'tooltip-table-name',
-        tooltipView: 'tooltipTableName',
-        isDisabled: true
-
+        tooltipView: 'tooltipTableName'
       }, {
         label: 'title',
         tooltipId: 'tooltip-table-title',
@@ -123,19 +123,19 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getMissingValuesFromHot', 'getActiveTab', 'getTableProperty'])
+    ...mapGetters(['getMissingValuesFromHot', 'getActiveTab', 'getTableProperty', 'getHotTabs'])
   },
   methods: {
     ...mapMutations([
       'pushTableSchemaDescriptorProperty', 'pushTableProperty'
     ]),
-    getNameProperty: function() {
-      let name = remote.getGlobal('tab').activeTitle
-      return name || ''
-    },
     validationRules: function(label) {
       if (label === 'name') {
-        return 'required'
+        return {
+          required: true,
+          regex: /^([-a-z0-9._/])+$/,
+          verify_coupon: true
+        }
       }
       return ''
     },
@@ -147,6 +147,7 @@ export default {
       return values
     },
     setArrayValues: function(key, value) {
+      // TODO : hotId could be cached for all methods using it.
       let hot = HotRegister.getActiveInstance()
       if (hot) {
         let array = Array.from(new Set(value.split(',')))
@@ -180,17 +181,17 @@ export default {
       }
     },
     getProperty: function(key) {
-      if (key === 'name') {
-        return this.getNameProperty()
-      } else {
-        return this.getTableProperty(this.propertyGetObject(key))
-      }
+      return this.getTableProperty(this.propertyGetObject(key))
     },
     getPropertyGivenHotId: function(key, hotId) {
       return this.getTableProperty(this.propertyGetObjectGivenHotId(key, hotId))
     },
     setProperty: function(key, value) {
       this.pushTableProperty(this.propertySetObject(key, value))
+    },
+    removeValue: function(key) {
+      this.pushTableProperty(this.propertySetObject(key, ''))
+      return true
     }
   },
   watch: {},
@@ -201,6 +202,30 @@ export default {
         if (x.type === 'hidden') {
           this.setProperty(x.label, x.value)
         }
+      })
+    })
+  },
+  created: function() {
+    const dictionary = {
+      en: {
+        custom: {
+          name: {
+            regex: () => 'The name field format is invalid. It MUST consist only of lowercase alphanumeric characters plus ".", "-" and "_".'
+          }
+        }
+      }
+    }
+    Validator.updateDictionary(dictionary)
+    Validator.extend('verify_coupon', {
+      getMessage: field => `There is already another tab with this ${field}.`,
+      validate: value => new Promise((resolve) => {
+        let currentNames = _.values(_.mapValues(this.getHotTabs, function(hotTab) {
+          return hotTab.tableProperties.name
+        }))
+        let otherNames = _.without(currentNames, value)
+        resolve({
+          valid: currentNames.length - otherNames.length <= 1
+        })
       })
     })
   }
