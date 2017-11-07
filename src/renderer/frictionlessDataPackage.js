@@ -4,14 +4,12 @@ import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
 import path from 'path'
 import {includeHeadersInData} from '@/frictionlessUtils.js'
+import {createZipFile} from '@/exportPackage.js'
 import fs from 'fs-extra'
 
 async function initResourceAndInfer() {
-  console.log('trying to init blank resource...')
   const resource = await Resource.load()
-  console.log('trying to infer blank resource...')
   await resource.infer()
-  console.log('returning resource')
   return resource
 }
 
@@ -23,32 +21,22 @@ function addColumnProperties(resource, hotId) {
 
 function addTableProperties(resource, hotId) {
   let tableProperties = hotStore.state.hotTabs[hotId].tableProperties
-  console.log('got table properties...')
-  console.log(tableProperties)
   _.merge(resource.descriptor, tableProperties)
   if (resource.descriptor.licenses && resource.descriptor.licenses.length === 0) {
-    // console.log('removing licenses')
     _.unset(resource.descriptor, 'licenses')
   }
 }
 
 function addPackageProperties(dataPackage) {
   let packageProperties = hotStore.state.hotTabs.packageProperties
-  console.log('package properties...')
-  console.log(dataPackage)
   _.merge(dataPackage.descriptor, packageProperties)
-  console.log(dataPackage)
 }
 
 export function haveAllTabsGotFilenames() {
-  console.log('checking filenames...')
-  console.log(`files: ${tabStore.getters.getTabFilenames(tabStore.state).length}`)
-  console.log(`tabs: ${tabStore.state.tabs.length}`)
   return tabStore.getters.getTabFilenames(tabStore.state).length === tabStore.state.tabs.length
 }
 
-function hasAllRequirements(hot, requiredMessages) {
-  console.log('checking requirements...')
+function hasAllResourceRequirements(hot, requiredMessages) {
   if (!hotStore.state.hotTabs[hot.guid].tableProperties) {
     requiredMessages.push(`Table properties must be set.`)
   } else {
@@ -60,6 +48,10 @@ function hasAllRequirements(hot, requiredMessages) {
   if (!hotStore.state.hotTabs[hot.guid].columnProperties) {
     requiredMessages.push(`Column properties must be set.`)
   }
+  return requiredMessages.length === 0
+}
+
+function hasAllPackageRequirements(requiredMessages) {
   if (!hotStore.state.provenanceProperties || !hotStore.state.provenanceProperties.markdown) {
     requiredMessages.push(`Provenance properties must be set.`)
   }
@@ -79,74 +71,42 @@ function addPath(resource, tabId) {
   // copyAbsoluteToRelative(filename, resource.descriptor.path)
 }
 
-async function createValidResource(tabId, hotId) {
-  console.log('entered create valid resource...')
+async function buildResource(tabId, hotId) {
   let resource = await initResourceAndInfer()
-  console.log('add column properties...')
   addColumnProperties(resource, hotId)
-  console.log('add table properties...')
   addTableProperties(resource, hotId)
-  console.log('add path...')
   addPath(resource, tabId)
   resource.commit()
-  console.log('returning resource...')
-  console.log(resource)
   return resource
 }
 
 async function initPackage() {
   const dataPackage = await Package.load()
-  // await dataPackage.infer(data)
-  console.log('returning init package...')
   return dataPackage
 }
 
-function createZipFile() {
-  dialog.showSaveDialog({}, function(filename) {
-    if (filename === undefined) {
-      return
-    }
-    saveAndExit(callback, filename)
-  })
-}
-
-async function buildResourceForPackage(hotId, errorMessages) {
-  console.log(`key is ${hotId}`)
+async function createValidResource(hotId, errorMessages) {
   let hotTab = hotStore.state.hotTabs[hotId]
-  console.log(hotTab)
-  // _.forEach(hotStore.state.hotTabs, async function(hotTab, key) {
-  console.log('next iteration...')
   let hot = HotRegister.getInstance(hotId)
-  console.log(hot)
-  console.log('checking requirements...')
-  if (!hasAllRequirements(hot, errorMessages)) {
+  if (!hasAllResourceRequirements(hot, errorMessages)) {
     return false
   }
-  console.log('checking is valid...')
-  let resource = await createValidResource(hotTab.tabId, hot.guid)
-  console.log('returned from resource is valid')
+  let resource = await buildResource(hotTab.tabId, hot.guid)
   if (!resource.valid) {
-    console.log(resource.errors)
     errorMessages.push('There is a required table or column property that is missing. Please check that all required properties are entered.')
     return false
   }
   return resource
 }
 
-export async function createDataPackage() {
-  let dataPackage = await initPackage()
-  let errorMessages = []
-  if (!haveAllTabsGotFilenames()) {
-    errorMessages.push('All tabs must be saved before exporting.')
-  }
+async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
   for (let hotId in hotStore.state.hotTabs) {
     try {
-      let resource = await buildResourceForPackage(hotId, errorMessages)
-      if (resource) {
-        dataPackage.addResource(resource.descriptor)
-      } else {
+      let resource = await createValidResource(hotId, errorMessages)
+      if (!resource) {
         break
       }
+      dataPackage.addResource(resource.descriptor)
     } catch (err) {
       if (err) {
         console.log('There was an error creating a resource.')
@@ -155,51 +115,39 @@ export async function createDataPackage() {
       }
     }
   }
-  console.log('error messages...')
-  console.log(errorMessages)
+}
+
+async function buildDataPackage(errorMessages) {
+  if (!hasAllPackageRequirements(errorMessages)) {
+    return false
+  }
+  let dataPackage = await initPackage()
+  addPackageProperties(dataPackage)
+  await buildAllResourcesForDataPackage(dataPackage, errorMessages)
+}
+
+export async function createDataPackage() {
+  let errorMessages = []
+  if (!haveAllTabsGotFilenames()) {
+    errorMessages.push('All tabs must be saved before exporting.')
+  }
+  let dataPackage = await buildDataPackage(errorMessages)
   if (errorMessages.length > 0) {
     return errorMessages
   }
-  console.log('adding package properties...')
-  addPackageProperties(dataPackage)
   console.log('package now...')
   console.log(dataPackage)
+  createZipFile()
   return errorMessages
 }
 
-function copyAbsoluteToRelative(source, destination) {
-  try {
-    let absoluteDestination = path.resolve(__dirname, destination)
-    fs.ensureDirSync(path.dirname(absoluteDestination))
-    fs.copySync(source, absoluteDestination)
-  } catch (err) {
-    console.log(`There was a problem creating files`)
-    console.error(err)
-  }
-
-// try {
-//   await fs.ensureDir(dir, err => {
-//     if (err) {
-//       console.log(err) // => null
-//     } else {
-//       console.log('Directory created.')
-//     }
-//     // dir has now been created, including the directory it is to be placed in
-//   })
-// } catch (error) {
-//   console.log('There was a problem writing dir')
-//   console.log(error)
+// function copyAbsoluteToRelative(source, destination) {
+//   try {
+//     let absoluteDestination = path.resolve(__dirname, destination)
+//     fs.ensureDirSync(path.dirname(absoluteDestination))
+//     fs.copySync(source, absoluteDestination)
+//   } catch (err) {
+//     console.log(`There was a problem creating files`)
+//     console.error(err)
+//   }
 // }
-// if (!fs.existsSync(dir)) {
-//   let fileStatus = fs.mkdir(dir, function(err) {
-//     if (err) {
-//       console.log('There was a problem creating directories.')
-//       console.log(err)
-//     } else {
-//       console.log('Directory created.')
-//     }
-//   })
-// } else {
-//   console.log(`Directory, ${dir}, already exists.`)
-// }
-}
