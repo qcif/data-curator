@@ -21,11 +21,14 @@ export async function createDataPackage() {
     }
     dataPackage.commit()
     console.log('checking data package is valid...')
-    console.log(dataPackage.valid)
-    console.log(dataPackage.errors)
+    if (!dataPackage.valid) {
+      errorMessages.push('There is a problem with at least 1 package property. Please check and try again.')
+      console.log(dataPackage.errors)
+      return errorMessages
+    }
     console.log('package now...')
     console.log(dataPackage)
-    createZipFile(hotStore.state.provenanceProperties.markdown)
+    createZipFile(JSON.stringify(dataPackage.descriptor))
   } catch (err) {
     if (err) {
       console.log('There was an error creating the data package.')
@@ -52,10 +55,12 @@ async function buildDataPackage(errorMessages) {
 }
 
 function hasAllPackageRequirements(requiredMessages) {
+  console.log(hotStore.state)
+  console.log('checking all package requirements...')
   if (!hotStore.state.provenanceProperties || !hotStore.state.provenanceProperties.markdown) {
     requiredMessages.push(`Provenance properties must be set.`)
   }
-  if (!hotStore.state.packageProperties) {
+  if (!hotStore.state.packageProperties || _.isEmpty(hotStore.state.packageProperties)) {
     requiredMessages.push(`Package properties must be set.`)
   }
   return requiredMessages.length === 0
@@ -67,7 +72,8 @@ async function initPackage() {
 }
 
 function addPackageProperties(dataPackage) {
-  let packageProperties = hotStore.state.hotTabs.packageProperties
+  let packageProperties = hotStore.state.packageProperties
+  console.log(`packageProperties: ${packageProperties}`)
   _.merge(dataPackage.descriptor, packageProperties)
 }
 

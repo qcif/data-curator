@@ -6,7 +6,7 @@ import hotStore from '@/store/modules/hots.js'
 import {extractNameFromFile} from '@/store/tabStoreUtilities.js'
 const Dialog = remote.dialog
 
-export function createZipFile() {
+export function createZipFile(json) {
   Dialog.showSaveDialog({
     filters: [
       {
@@ -18,11 +18,21 @@ export function createZipFile() {
     if (filename === undefined) {
       return
     }
-    generateDataPackage(filename)
+    console.log('json is:')
+    let object = JSON.parse(json)
+    addPackageProperties(object)
+    console.log(object)
+    generateDataPackage(filename, JSON.stringify(object))
   })
 }
 
-function generateDataPackage(filename) {
+function addPackageProperties(object) {
+  let packageProperties = hotStore.state.packageProperties
+  console.log(`packageProperties: ${packageProperties}`)
+  _.merge(object, packageProperties)
+}
+
+function generateDataPackage(filename, json) {
   let output = fs.createWriteStream(filename)
   let archive = archiver('zip', {
     zlib: {
@@ -46,10 +56,15 @@ function generateDataPackage(filename) {
     throw err
   })
   archive.pipe(output)
+  zipJson(archive, json)
   zipResources(archive)
   zipProvenanceProperties(archive)
   archive.finalize()
   console.log('ok')
+}
+
+function zipJson(archive, json) {
+  archive.append(json, { name: 'datapackage.json' })
 }
 
 function zipResources(archive) {
