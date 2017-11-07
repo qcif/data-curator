@@ -11,7 +11,7 @@
         <component v-else-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
         <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
       </template>
-      <div v-show="errors.has(formprop.label)" class="row help validate-danger">
+      <div v-show="errors.has(formprop.label) && removeValue(formprop.label)" class="row help validate-danger">
         {{ errors.first(formprop.label)}}
       </div>
     </div>
@@ -33,6 +33,9 @@ import {
   HotRegister
 } from '../hot.js'
 import TableTooltip from '../mixins/TableTooltip'
+import {
+  Validator
+} from 'vee-validate'
 Vue.use(AsyncComputed)
 export default {
   extends: SideNav,
@@ -44,69 +47,65 @@ export default {
   },
   data() {
     return {
-      formprops: [
-        {
-          label: 'name',
-          tooltipId: 'tooltip-table-name',
-          tooltipView: 'tooltipTableName'
-        }, {
-          label: 'title',
-          tooltipId: 'tooltip-table-title',
-          tooltipView: 'tooltipTableTitle'
-        },
-        {
-          label: 'primary key(s)',
-          type: 'array'
-        },
-        // {
-        //   label: 'foreign key(s)',
-        //   type: 'array'
-        // },
-        {
-          label: 'profile',
-          type: 'hidden',
-          value: 'tabular-data-resource'
-        },
-        {
-          label: 'description',
-          tooltipId: 'tooltip-table-description',
-          tooltipView: 'tooltipTableDescription'
-        },
-        // do we need sources for a table?
-        // so add this as a row model with a plus/minus and leave each entry as text boxes for people to edit
-        {
-          label: 'sources',
-          type: 'dropdown',
-          tooltipId: 'tooltip-table-sources',
-          tooltipView: 'tooltipTableSources'
-        },
-        {
-          label: 'licenses',
-          tooltipId: 'tooltip-table-licences',
-          tooltipView: 'tooltipTableLicences'
-        },
-        {
-          label: 'format',
-          type: 'hidden',
-          value: 'csv'
-        },
-        {
-          label: 'mediatype',
-          type: 'hidden',
-          value: 'text/csv'
-        },
-        {
-          label: 'encoding',
-          type: 'hidden',
-          value: 'UTF-8'
-        },
-        {
-          label: 'missing values',
-          type: 'array',
-          tooltipId: 'tooltip-table-missing-values',
-          tooltipView: 'tooltipTableMissingValues'
-        }
-      ]
+      formprops: [{
+        label: 'name',
+        tooltipId: 'tooltip-table-name',
+        tooltipView: 'tooltipTableName'
+      }, {
+        label: 'title',
+        tooltipId: 'tooltip-table-title',
+        tooltipView: 'tooltipTableTitle'
+      },
+      {
+        label: 'primary key(s)',
+        type: 'array'
+      },
+      // {
+      //   label: 'foreign key(s)',
+      //   type: 'array'
+      // },
+      {
+        label: 'profile',
+        type: 'hidden',
+        value: 'tabular-data-resource'
+      },
+      {
+        label: 'description',
+        tooltipId: 'tooltip-table-description',
+        tooltipView: 'tooltipTableDescription'
+      },
+      {
+        label: 'sources',
+        type: 'dropdown',
+        tooltipId: 'tooltip-table-sources',
+        tooltipView: 'tooltipTableSources'
+      },
+      {
+        label: 'licenses',
+        tooltipId: 'tooltip-table-licences',
+        tooltipView: 'tooltipTableLicences'
+      },
+      {
+        label: 'format',
+        type: 'hidden',
+        value: 'csv'
+      },
+      {
+        label: 'mediatype',
+        type: 'hidden',
+        value: 'text/csv'
+      },
+      {
+        label: 'encoding',
+        type: 'hidden',
+        value: 'UTF-8'
+      },
+      {
+        label: 'missing values',
+        type: 'array',
+        tooltipId: 'tooltip-table-missing-values',
+        tooltipView: 'tooltipTableMissingValues'
+      }]
     }
   },
   asyncComputed: {
@@ -124,7 +123,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getMissingValuesFromHot', 'getActiveTab', 'getTableProperty'])
+    ...mapGetters(['getMissingValuesFromHot', 'getActiveTab', 'getTableProperty', 'getHotTabs'])
   },
   methods: {
     ...mapMutations([
@@ -132,7 +131,11 @@ export default {
     ]),
     validationRules: function(label) {
       if (label === 'name') {
-        return 'required'
+        return {
+          required: true,
+          regex: /^([-a-z0-9._/])+$/,
+          unique_name: true
+        }
       }
       return ''
     },
@@ -144,6 +147,7 @@ export default {
       return values
     },
     setArrayValues: function(key, value) {
+      // TODO : hotId could be cached for all methods using it.
       let hot = HotRegister.getActiveInstance()
       if (hot) {
         let array = Array.from(new Set(value.split(',')))
@@ -157,7 +161,10 @@ export default {
     getArrayValuesFromTabId: async function(key, tabId) {
       let hotId = await this.waitForHotIdFromTabId(tabId)
       if (hotId) {
-        let array = this.getTableProperty({hotId: hotId, key: key}) || ['']
+        let array = this.getTableProperty({
+          hotId: hotId,
+          key: key
+        }) || ['']
         let string = array.join()
         return string
       }
@@ -181,17 +188,44 @@ export default {
     },
     setProperty: function(key, value) {
       this.pushTableProperty(this.propertySetObject(key, value))
+    },
+    removeValue: function(key) {
+      this.pushTableProperty(this.propertySetObject(key, ''))
+      return true
     }
   },
-  watch: {
-  },
+  watch: {},
   beforeCreate: function() {
     this.$nextTick(function() {
       // set hidden inputs
       let found = this.formprops.forEach(x => {
-        if (x.type ==='hidden') {
+        if (x.type === 'hidden') {
           this.setProperty(x.label, x.value)
         }
+      })
+    })
+  },
+  created: function() {
+    const dictionary = {
+      en: {
+        custom: {
+          name: {
+            regex: () => 'The name field format is invalid. It must consist only of lowercase alphanumeric characters plus ".", "-" and "_".'
+          }
+        }
+      }
+    }
+    Validator.updateDictionary(dictionary)
+    Validator.extend('unique_name', {
+      getMessage: field => `There is already another tab with this ${field}.`,
+      validate: value => new Promise((resolve) => {
+        let currentNames = _.values(_.mapValues(this.getHotTabs, function(hotTab) {
+          return hotTab.tableProperties ? hotTab.tableProperties.name : ''
+        }))
+        let otherNames = _.without(currentNames, value)
+        resolve({
+          valid: currentNames.length - otherNames.length <= 1
+        })
       })
     })
   }
