@@ -72,24 +72,22 @@ function hasAllRequirements(hot, requiredMessages) {
 function addPath(resource, tabId) {
   let parent = 'data'
   let filename = tabStore.state.tabObjects[tabId].filename
-  console.log(`filename is ${filename}`)
   let basename = path.basename(filename)
-  console.log(`basename is ${basename}`)
   let resourcePath = `${parent}/${basename}`
-  console.log(resourcePath)
   resource.descriptor.path = resourcePath
-  copyAbsoluteToRelative(filename, resource.descriptor.path)
+  // resource.descriptor.path = basename
+  // copyAbsoluteToRelative(filename, resource.descriptor.path)
 }
 
 async function createValidResource(tabId, hotId) {
   console.log('entered create valid resource...')
   let resource = await initResourceAndInfer()
-  console.log('add path...')
-  addPath(resource, tabId)
   console.log('add column properties...')
   addColumnProperties(resource, hotId)
   console.log('add table properties...')
   addTableProperties(resource, hotId)
+  console.log('add path...')
+  addPath(resource, tabId)
   resource.commit()
   console.log('returning resource...')
   console.log(resource)
