@@ -40,9 +40,6 @@
 </form>
 </template>
 <script>
-import {
-  remote
-} from 'electron'
 import SideNav from './SideNav'
 import {
   mapMutations,
@@ -54,7 +51,6 @@ import {
   reselectCurrentCellOrMin
 } from '../hot.js'
 import ColumnTooltip from '../mixins/ColumnTooltip'
-const Dialog = remote.dialog
 export default {
   extends: SideNav,
   name: 'column',
