@@ -19,16 +19,21 @@ export function createZipFile(json) {
       return
     }
     console.log('json is:')
-    let object = JSON.parse(json)
-    addPackageProperties(object)
-    console.log(object)
-    generateDataPackage(filename, JSON.stringify(object))
+
+    // add package properties back in to json
+    let updatedJson = addAdditionalProperties(json)
+    generateDataPackage(filename, updatedJson)
   })
+}
+
+function addAdditionalProperties(json) {
+  let object = JSON.parse(json)
+  addPackageProperties(object)
+  return JSON.stringify(object)
 }
 
 function addPackageProperties(object) {
   let packageProperties = hotStore.state.packageProperties
-  console.log(`packageProperties: ${packageProperties}`)
   _.merge(object, packageProperties)
 }
 

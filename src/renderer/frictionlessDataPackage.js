@@ -26,8 +26,10 @@ export async function createDataPackage() {
       console.log(dataPackage.errors)
       return errorMessages
     }
+    console.log(dataPackage.valid)
     console.log('package now...')
     console.log(dataPackage)
+    // only stringify descriptor here so no circular refs
     createZipFile(JSON.stringify(dataPackage.descriptor))
   } catch (err) {
     if (err) {
@@ -47,6 +49,7 @@ async function buildDataPackage(errorMessages) {
     return false
   }
   let dataPackage = await initPackage()
+  // adding package properties for validation only
   addPackageProperties(dataPackage)
   await buildAllResourcesForDataPackage(dataPackage, errorMessages)
   console.log('data package so far...')
@@ -74,7 +77,7 @@ async function initPackage() {
 function addPackageProperties(dataPackage) {
   let packageProperties = hotStore.state.packageProperties
   console.log(`packageProperties: ${packageProperties}`)
-  _.merge(dataPackage.descriptor, packageProperties)
+  _.merge(dataPackage, packageProperties)
 }
 
 async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
