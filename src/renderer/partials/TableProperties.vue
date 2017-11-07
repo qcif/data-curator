@@ -90,12 +90,6 @@ export default {
           type: 'hidden',
           value: 'csv'
         },
-        // value is set at datapackage creation when it also prompts if filenames not saved yet
-        {
-          label: 'path',
-          type: 'hidden',
-          value: ''
-        },
         {
           label: 'mediatype',
           type: 'hidden',
