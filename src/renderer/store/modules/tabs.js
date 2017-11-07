@@ -29,8 +29,8 @@ const getters = {
   tabTitle: (state, getters) => (tabId) => {
     return _.get(state.tabObjects, `${tabId}.title`)
   },
+  // TODO: revise hot filenames are kept as it is here, but reset in global
   getTabFilenames: state => {
-    console.log('entered get tab filenames function...')
     let filtered = []
     _.forEach(state.tabObjects, (value, key) => {
       if (value.filename) { filtered.push(value.filename) }
