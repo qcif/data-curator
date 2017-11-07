@@ -134,7 +134,7 @@ export default {
         return {
           required: true,
           regex: /^([-a-z0-9._/])+$/,
-          verify_coupon: true
+          unique_name: true
         }
       }
       return ''
@@ -216,11 +216,11 @@ export default {
       }
     }
     Validator.updateDictionary(dictionary)
-    Validator.extend('verify_coupon', {
+    Validator.extend('unique_name', {
       getMessage: field => `There is already another tab with this ${field}.`,
       validate: value => new Promise((resolve) => {
         let currentNames = _.values(_.mapValues(this.getHotTabs, function(hotTab) {
-          return hotTab.tableProperties.name
+          return hotTab.tableProperties ? hotTab.tableProperties.name : ''
         }))
         let otherNames = _.without(currentNames, value)
         resolve({
