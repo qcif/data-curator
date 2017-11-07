@@ -185,6 +185,7 @@ export default {
       if (headers) {
         // each column header may be set to false
         value = headers[this.cIndex] ? headers[this.cIndex] : ''
+        this.setProperty('name', value)
       }
       // console.log(`got column property key value: ${key}: ${value}`)
       return value
