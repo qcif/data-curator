@@ -32,7 +32,8 @@
             </div>
           </div>
         </div>
-        <input :disabled="formprop.isDisabled" v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
+        <input v-else-if="formprop.label === 'name'" :disabled="formprop.isDisabled" :value="getNameProperty()" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
+        <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
       </div>
     </div>
   </div>
@@ -176,6 +177,17 @@ export default {
         'value': value
       }
       this.pushColumnProperty(object)
+    },
+    getNameProperty: function() {
+      const headers = HotRegister.getActiveInstance().getColHeader()
+      console.log(headers)
+      let value = ''
+      if (headers) {
+        // each column header may be set to false
+        value = headers[this.cIndex] ? headers[this.cIndex] : ''
+      }
+      // console.log(`got column property key value: ${key}: ${value}`)
+      return value
     },
     getProperty: function(key) {
       let columnProperties = this.activeTabColumnProperties[this.cIndex] || {}
