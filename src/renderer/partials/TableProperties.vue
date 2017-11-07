@@ -9,7 +9,7 @@
         <input v-else-if="formprop.type === 'primary key(s)'" :value="primaryKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
         <!-- <input v-else-if="formprop.type === 'foreign key(s)'" :value="foreignKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" /> -->
         <component v-else-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
-        <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
+        <input v-else :disabled="formprop.isDisabled" type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
       </template>
       <div v-show="errors.has(formprop.label)" class="row help validate-danger">
         {{ errors.first(formprop.label)}}
@@ -33,6 +33,7 @@ import {
   HotRegister
 } from '../hot.js'
 import TableTooltip from '../mixins/TableTooltip'
+import {remote} from 'electron'
 Vue.use(AsyncComputed)
 export default {
   extends: SideNav,
@@ -44,69 +45,67 @@ export default {
   },
   data() {
     return {
-      formprops: [
-        {
-          label: 'name',
-          tooltipId: 'tooltip-table-name',
-          tooltipView: 'tooltipTableName'
-        }, {
-          label: 'title',
-          tooltipId: 'tooltip-table-title',
-          tooltipView: 'tooltipTableTitle'
-        },
-        {
-          label: 'primary key(s)',
-          type: 'array'
-        },
-        // {
-        //   label: 'foreign key(s)',
-        //   type: 'array'
-        // },
-        {
-          label: 'profile',
-          type: 'hidden',
-          value: 'tabular-data-resource'
-        },
-        {
-          label: 'description',
-          tooltipId: 'tooltip-table-description',
-          tooltipView: 'tooltipTableDescription'
-        },
-        // do we need sources for a table?
-        // so add this as a row model with a plus/minus and leave each entry as text boxes for people to edit
-        {
-          label: 'sources',
-          type: 'dropdown',
-          tooltipId: 'tooltip-table-sources',
-          tooltipView: 'tooltipTableSources'
-        },
-        {
-          label: 'licenses',
-          tooltipId: 'tooltip-table-licences',
-          tooltipView: 'tooltipTableLicences'
-        },
-        {
-          label: 'format',
-          type: 'hidden',
-          value: 'csv'
-        },
-        {
-          label: 'mediatype',
-          type: 'hidden',
-          value: 'text/csv'
-        },
-        {
-          label: 'encoding',
-          type: 'hidden',
-          value: 'UTF-8'
-        },
-        {
-          label: 'missing values',
-          type: 'array',
-          tooltipId: 'tooltip-table-missing-values',
-          tooltipView: 'tooltipTableMissingValues'
-        }
-      ]
+      formprops: [{
+        label: 'name',
+        tooltipId: 'tooltip-table-name',
+        tooltipView: 'tooltipTableName',
+        isDisabled: true
+
+      }, {
+        label: 'title',
+        tooltipId: 'tooltip-table-title',
+        tooltipView: 'tooltipTableTitle'
+      },
+      {
+        label: 'primary key(s)',
+        type: 'array'
+      },
+      // {
+      //   label: 'foreign key(s)',
+      //   type: 'array'
+      // },
+      {
+        label: 'profile',
+        type: 'hidden',
+        value: 'tabular-data-resource'
+      },
+      {
+        label: 'description',
+        tooltipId: 'tooltip-table-description',
+        tooltipView: 'tooltipTableDescription'
+      },
+      {
+        label: 'sources',
+        type: 'dropdown',
+        tooltipId: 'tooltip-table-sources',
+        tooltipView: 'tooltipTableSources'
+      },
+      {
+        label: 'licenses',
+        tooltipId: 'tooltip-table-licences',
+        tooltipView: 'tooltipTableLicences'
+      },
+      {
+        label: 'format',
+        type: 'hidden',
+        value: 'csv'
+      },
+      {
+        label: 'mediatype',
+        type: 'hidden',
+        value: 'text/csv'
+      },
+      {
+        label: 'encoding',
+        type: 'hidden',
+        value: 'UTF-8'
+      },
+      {
+        label: 'missing values',
+        type: 'array',
+        tooltipId: 'tooltip-table-missing-values',
+        tooltipView: 'tooltipTableMissingValues'
+      }]
     }
   },
   asyncComputed: {
@@ -130,6 +129,10 @@ export default {
     ...mapMutations([
       'pushTableSchemaDescriptorProperty', 'pushTableProperty'
     ]),
+    getNameProperty: function() {
+      let name = remote.getGlobal('tab').activeTitle
+      return name || ''
+    },
     validationRules: function(label) {
       if (label === 'name') {
         return 'required'
@@ -157,7 +160,10 @@ export default {
     getArrayValuesFromTabId: async function(key, tabId) {
       let hotId = await this.waitForHotIdFromTabId(tabId)
       if (hotId) {
-        let array = this.getTableProperty({hotId: hotId, key: key}) || ['']
+        let array = this.getTableProperty({
+          hotId: hotId,
+          key: key
+        }) || ['']
         let string = array.join()
         return string
       }
@@ -174,7 +180,11 @@ export default {
       }
     },
     getProperty: function(key) {
-      return this.getTableProperty(this.propertyGetObject(key))
+      if (key === 'name') {
+        return this.getNameProperty()
+      } else {
+        return this.getTableProperty(this.propertyGetObject(key))
+      }
     },
     getPropertyGivenHotId: function(key, hotId) {
       return this.getTableProperty(this.propertyGetObjectGivenHotId(key, hotId))
@@ -183,13 +193,12 @@ export default {
       this.pushTableProperty(this.propertySetObject(key, value))
     }
   },
-  watch: {
-  },
+  watch: {},
   beforeCreate: function() {
     this.$nextTick(function() {
       // set hidden inputs
       let found = this.formprops.forEach(x => {
-        if (x.type ==='hidden') {
+        if (x.type === 'hidden') {
           this.setProperty(x.label, x.value)
         }
       })
