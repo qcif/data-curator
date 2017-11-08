@@ -16,17 +16,18 @@ export async function createDataPackage() {
       console.log(dataPackage.errors)
       return errorMessages
     }
-    dataPackage.commit()
-    if (!dataPackage.valid) {
-      errorMessages.push('There is a problem with at least 1 package property. Please check and try again.')
-      console.log(dataPackage.errors)
-      return errorMessages
+    if (dataPackage) {
+      dataPackage.commit()
+      if (!dataPackage.valid) {
+        errorMessages.push('There is a problem with at least 1 package property. Please check and try again.')
+        console.log(dataPackage.errors)
+        return errorMessages
+      }
+      console.log('checking that package is valid...')
+      console.log(dataPackage.valid)
+      console.log(dataPackage)
+      createZipFile(JSON.stringify(dataPackage.descriptor))
     }
-    console.log('checking that package is valid...')
-    console.log(dataPackage.valid)
-    console.log(dataPackage)
-    // only stringify descriptor here so no circular refs
-    createZipFile(JSON.stringify(dataPackage.descriptor))
   } catch (err) {
     if (err) {
       console.log('There was an error creating the data package.')
@@ -68,16 +69,8 @@ async function initPackage() {
 
 function addPackageProperties(dataPackage) {
   let packageProperties = hotStore.state.packageProperties
-  console.log(`packageProperties:`)
-  console.log(packageProperties)
   _.merge(dataPackage.descriptor, packageProperties)
-  if (dataPackage.descriptor.licenses && dataPackage.descriptor.licenses.length === 0) {
-    _.unset(dataPackage.descriptor, 'licenses')
-  }
-  console.log('data package so far...')
-  console.log(dataPackage)
-  dataPackage.descriptor.foo = 'bar'
-  dataPackage.descriptor.version = 'foobar'
+  removeEmptyLicenses(dataPackage.descriptor)
 }
 
 async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
@@ -160,8 +153,12 @@ function addColumnProperties(resource, hotId) {
 function addTableProperties(resource, hotId) {
   let tableProperties = hotStore.state.hotTabs[hotId].tableProperties
   _.merge(resource.descriptor, tableProperties)
-  if (resource.descriptor.licenses && resource.descriptor.licenses.length === 0) {
-    _.unset(resource.descriptor, 'licenses')
+  removeEmptyLicenses(resource.descriptor)
+}
+
+function removeEmptyLicenses(descriptor) {
+  if (descriptor.licenses && descriptor.licenses.length === 0) {
+    _.unset(descriptor, 'licenses')
   }
 }
 

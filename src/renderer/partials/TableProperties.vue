@@ -98,7 +98,7 @@ export default {
       {
         label: 'encoding',
         type: 'hidden',
-        value: 'UTF-8'
+        value: 'utf-8'
       },
       {
         label: 'missing values',

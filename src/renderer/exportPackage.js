@@ -18,23 +18,9 @@ export function createZipFile(json) {
     if (filename === undefined) {
       return
     }
-
-    // add package properties back in to json
-    // let updatedJson = addAdditionalProperties(json)
-    generateDataPackage(filename, updatedJson)
+    generateDataPackage(filename, json)
   })
 }
-
-// function addAdditionalProperties(json) {
-//   let object = JSON.parse(json)
-//   addPackageProperties(object)
-//   return JSON.stringify(object)
-// }
-
-// function addPackageProperties(object) {
-//   let packageProperties = hotStore.state.packageProperties
-//   _.merge(object, packageProperties)
-// }
 
 function generateDataPackage(filename, json) {
   let output = fs.createWriteStream(filename)
