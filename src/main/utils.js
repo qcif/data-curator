@@ -41,7 +41,7 @@ function closeWindowNoPrompt(result) {
 }
 
 export function createWindowTab() {
-  var window = BrowserWindow.getFocusedWindow()
+  let window = BrowserWindow.getFocusedWindow()
   if (window == null) {
     window = createWindow()
   } else {
@@ -50,7 +50,7 @@ export function createWindowTab() {
 }
 
 export function createWindowTabWithData(data) {
-  var window = BrowserWindow.getFocusedWindow()
+  let window = BrowserWindow.getFocusedWindow()
   if (window == null) {
     window = createWindow()
   } else {
@@ -59,7 +59,7 @@ export function createWindowTabWithData(data) {
 }
 
 export function createWindowTabWithFormattedDataFile(data, format, filename) {
-  var window = BrowserWindow.getFocusedWindow()
+  let window = BrowserWindow.getFocusedWindow()
   if (window == null) {
     window = createWindow()
   } else {
@@ -68,17 +68,17 @@ export function createWindowTabWithFormattedDataFile(data, format, filename) {
 }
 
 export function showSidePanel(name) {
-  var window = BrowserWindow.getFocusedWindow()
+  let window = BrowserWindow.getFocusedWindow()
   window.webContents.send('showSidePanel', name)
 }
 
 export function guessColumnProperties() {
-  var window = BrowserWindow.getFocusedWindow()
+  let window = BrowserWindow.getFocusedWindow()
   window.webContents.send('guessColumnProperties')
 }
 
 export function validateTable() {
-  var window = BrowserWindow.getFocusedWindow()
+  let window = BrowserWindow.getFocusedWindow()
   window.webContents.send('validateTable')
 }
 

@@ -161,6 +161,7 @@ import {ipcRenderer as ipc} from 'electron'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'lodash/lodash.min.js'
 import '../menu.js'
+import {unzipFile} from '@/importPackage.js'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
@@ -346,6 +347,9 @@ export default {
         console.log('There was an error(s) validating table.')
         console.log(err)
       }
+    },
+    importDataPackage: function(filename) {
+      unzipFile(filename)
     },
     exportPackageFeedback: function() {
       this.messagesTitle = 'Export package success'
@@ -672,6 +676,10 @@ export default {
     const vueGuessProperties = this.updateColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
+    })
+    const vueImportDataPackage = this.importDataPackage
+    ipc.on('importDataPackage', function(event, filename) {
+      vueImportDataPackage(filename)
     })
     const vueValidateTable = this.validateTable
     ipc.on('validateTable', function(event, arg) {
