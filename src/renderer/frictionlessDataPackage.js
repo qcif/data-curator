@@ -6,28 +6,25 @@ import path from 'path'
 import {createZipFile} from '@/exportPackage.js'
 
 export async function createDataPackage() {
-  console.log('entered create data package method...')
   let errorMessages = []
   if (!haveAllTabsGotFilenames()) {
     errorMessages.push('All tabs must be saved before exporting.')
   }
   try {
-    console.log('building package...')
     let dataPackage = await buildDataPackage(errorMessages)
-    console.log(errorMessages)
-    console.log(dataPackage.errors)
     if (errorMessages.length > 0) {
+      console.log(dataPackage.errors)
       return errorMessages
     }
+    dataPackage.foo = 'bar'
     dataPackage.commit()
-    console.log('checking data package is valid...')
     if (!dataPackage.valid) {
       errorMessages.push('There is a problem with at least 1 package property. Please check and try again.')
       console.log(dataPackage.errors)
       return errorMessages
     }
+    console.log('checking that package is valid...')
     console.log(dataPackage.valid)
-    console.log('package now...')
     console.log(dataPackage)
     // only stringify descriptor here so no circular refs
     createZipFile(JSON.stringify(dataPackage.descriptor))
@@ -52,14 +49,10 @@ async function buildDataPackage(errorMessages) {
   // adding package properties for validation only
   addPackageProperties(dataPackage)
   await buildAllResourcesForDataPackage(dataPackage, errorMessages)
-  console.log('data package so far...')
-  console.log(dataPackage)
   return dataPackage
 }
 
 function hasAllPackageRequirements(requiredMessages) {
-  console.log(hotStore.state)
-  console.log('checking all package requirements...')
   if (!hotStore.state.provenanceProperties || !hotStore.state.provenanceProperties.markdown) {
     requiredMessages.push(`Provenance properties must be set.`)
   }
@@ -77,7 +70,7 @@ async function initPackage() {
 function addPackageProperties(dataPackage) {
   let packageProperties = hotStore.state.packageProperties
   console.log(`packageProperties: ${packageProperties}`)
-  _.merge(dataPackage, packageProperties)
+  _.merge(dataPackage.descriptor, packageProperties)
 }
 
 async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
@@ -95,8 +88,6 @@ async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
       }
       resourcePaths.push(resource.descriptor.path)
       dataPackage.addResource(resource.descriptor)
-      console.log('adding resource to data package...')
-      console.log(dataPackage)
     } catch (err) {
       if (err) {
         console.log('There was an error creating a resource.')
@@ -113,10 +104,9 @@ async function createValidResource(hotId, errorMessages) {
   if (!hasAllResourceRequirements(hot, errorMessages)) {
     return false
   }
-  console.log(`${hotId} has requirements`)
   let resource = await buildResource(hotTab.tabId, hot.guid)
   if (!resource.valid) {
-    console.log('resource if not valid')
+    console.log('resource is not valid')
     console.log(resource.errors)
     errorMessages.push('There is a required table or column property that is missing. Please check that all required properties are entered.')
     return false
@@ -141,15 +131,10 @@ function hasAllResourceRequirements(hot, requiredMessages) {
 
 async function buildResource(tabId, hotId) {
   let resource = await initResourceAndInfer()
-  console.log('adding column properties...')
   addColumnProperties(resource, hotId)
-  console.log('adding table properties...')
   addTableProperties(resource, hotId)
-  console.log('adding path...')
   addPath(resource, tabId)
   resource.commit()
-  console.log('resource after basic build...')
-  console.log(resource)
   return resource
 }
 

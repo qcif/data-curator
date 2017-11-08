@@ -18,7 +18,6 @@ export function createZipFile(json) {
     if (filename === undefined) {
       return
     }
-    console.log('json is:')
 
     // add package properties back in to json
     let updatedJson = addAdditionalProperties(json)
@@ -65,7 +64,6 @@ function generateDataPackage(filename, json) {
   zipResources(archive)
   zipProvenanceProperties(archive)
   archive.finalize()
-  console.log('ok')
 }
 
 function zipJson(archive, json) {
