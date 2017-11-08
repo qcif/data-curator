@@ -75,7 +75,7 @@ const template = [
       }, {
         label: 'Open Data Package...',
         // turned off for Beta release
-        enabled: true,
+        enabled: false,
         click() {
           importDataPackage()
         }
