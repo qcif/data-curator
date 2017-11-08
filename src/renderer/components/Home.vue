@@ -678,8 +678,8 @@ export default {
       vueGuessProperties()
     })
     const vueImportDataPackage = this.importDataPackage
-    ipc.on('importDataPackage', function(event, filename) {
-      vueImportDataPackage(filename)
+    ipc.on('importDataPackage', function(event, arg) {
+      vueImportDataPackage(arg[0])
     })
     const vueValidateTable = this.validateTable
     ipc.on('validateTable', function(event, arg) {
