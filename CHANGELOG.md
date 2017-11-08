@@ -6,8 +6,28 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/). 
 
 To see what's planned in our [milestones](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open) or unreleased changes.
 
-[Unreleased]:  https://github.com/ODIQueensland/data-curator/compare/v0.3.6...HEAD
+[Unreleased]:  https://github.com/ODIQueensland/data-curator/compare/v0.4.0...HEAD
 ## [Unreleased]
+
+
+[0.4.0]: https://github.com/ODIQueensland/data-curator/compare/v0.3.6...v0.4.0
+## [0.4.0] - 2017-10-25
+
+### Added
+- Set Table Properties
+- Set Provenance Information #16
+- Set Data Package Properties
+
+### Fixed
+
+- #60 Display Keyboard Shortcuts
+- #78 Open Excel File
+- #91, #144 Next/Previous Arrows in Column Properties panel
+- #102 Tooltip display
+- #106 Validate Field Constraint Values
+- #114 Guess Column Properties
+- #139 Validation Message
+- #143 Property Panel Resizing
 
 [0.3.6]: https://github.com/ODIQueensland/data-curator/compare/v0.3.5...v0.3.6
 ## [0.3.6] - 2017-10-11

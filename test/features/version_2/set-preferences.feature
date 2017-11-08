@@ -11,6 +11,11 @@ Feature: Set Preferences
   - open (shortcut adjusted to default CSV Dialect)
   - save (shortcut adjusted to default CSV Dialect)
 
+  Unresolved:
+  - allow check for update on launch?
+
+  Don't support CSV Dialect until fully implemented across the application
+
   Preferences that can be set include:
 
   - Default Data Package properties

@@ -1,6 +1,6 @@
 import tabStore from '../renderer/store/modules/tabs.js'
-import {remote} from 'electron'
 import fs from 'fs'
+import {fixRaggedRows} from '@/ragged-rows.js'
 const $ = global.jQuery = require('jquery/dist/jquery.js')
 require('jquery-csv/src/jquery.csv.js')
 
@@ -12,16 +12,16 @@ export function loadDataIntoHot(hot, data, format) {
   } else {
     arrays = $.csv.toArrays(data, format.options)
   }
+  fixRaggedRows(arrays)
   hot.loadData(arrays)
   hot.render()
-  return arrays
 }
 
 export function saveDataToFile(hot, format, filename, callback) {
   let data
   let tabId = tabStore.state.activeTab
   if (typeof filename === 'string') {
-    tabStore.mutations.pushTabObject(tabStore.state, {id: tabId, filename})
+    tabStore.mutations.pushTabObject(tabStore.state, {id: tabId, filename: filename})
   } else {
     filename = _.get(tabStore.state.tabObjects, `${tabId}.filename`)
   }

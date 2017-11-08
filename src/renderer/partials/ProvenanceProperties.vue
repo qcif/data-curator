@@ -2,14 +2,15 @@
 <form class="navbar-form form-horizontal" id="provenanceProperties">
   <div class="form-group-sm row container-fluid">
     <div>
-      <label class="control-label col-sm-3">description:</label>
+      <label v-tooltip.left="tooltip('tooltip-provenance-description')" class="control-label col-sm-3">description:</label>
+      <component :is="'tooltipProvenanceDescription'" />
       <span>
         <button type="button" class="btn btn-primary btn-sm" @click="togglePreview()">
             <span class="provenance-preview-icon glyphicon" :class="buttonIconClass"/>{{buttonText}}
         </button>
       </span>
       <div v-if="isPreview" v-html="markText" class="col-sm-9" id="preview" />
-      <textarea v-else v-model="provenance" :placeholder = "placeholder" rows="25" cols="55" class="form-control input-sm col-sm-9" id="description" />
+      <textarea v-else v-model="provenance" :placeholder="placeholder" rows="25" cols="55" class="form-control input-sm col-sm-9" id="description" />
     </div>
   </div>
 </form>
@@ -18,13 +19,22 @@
 import SideNav from './SideNav'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import markdown from 'markdown-it/dist/markdown-it.min.js'
-const md = markdown()
+import ProvenanceTooltip from '../mixins/ProvenanceTooltip'
+import {
+  mapMutations,
+  mapState,
+  mapGetters
+} from 'vuex'
 export default {
   extends: SideNav,
   name: 'provenance',
+  mixins: [ProvenanceTooltip],
   computed: {
+    ...mapGetters([
+      'getProvenance'
+    ]),
     markText() {
-      return md.render(this.provenance)
+      return markdown().render(this.provenance)
     },
     buttonIconClass() {
       return this.isPreview ? 'glyphicon-pencil' : 'glyphicon-search'
@@ -34,9 +44,20 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'pushProvenance'
+    ]),
     togglePreview: function() {
       this.isPreview = !this.isPreview
     }
+  },
+  watch: {
+    provenance: function(value) {
+      this.pushProvenance(value)
+    }
+  },
+  mounted: function() {
+    this.provenance = this.getProvenance.markdown
   },
   data() {
     return {
@@ -46,8 +67,7 @@ export default {
         type: 'markdown'
       }],
       provenance: '',
-      placeholder:
-`### Introduction
+      placeholder: `### Introduction
 
 ### Why was the dataset created? (reference legislation if relevant)
 

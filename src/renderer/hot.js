@@ -75,13 +75,12 @@ let HotRegister = {
     return hot.guid
   },
   getInstance(id) {
+    let hot = _.get(this.hots, id)
     return _.get(this.hots, id)
   },
   // TODO: consider cache (vue computed) of method, and moving to Home.vue to use with props, as used a lot
   getActiveInstance() {
     let activeHot = document.querySelectorAll('#csvContent .active .editor')[0]
-    //    console.log('getting active hot')
-    //    console.log(activeHot.id)
     return this.getInstance(activeHot.id)
   },
   getActiveHotIdData() {
@@ -168,7 +167,7 @@ export function getColumnCount() {
   return colCount
 }
 
-const insertRowAbove = deselect => {
+export function insertRowAbove(deselect) {
   let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
   const range = hot.getSelectedRange()
@@ -182,7 +181,7 @@ const insertRowAbove = deselect => {
   }
 }
 
-const insertRowBelow = deselect => {
+export function insertRowBelow(deselect) {
   let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
   const range = hot.getSelectedRange()
@@ -196,7 +195,7 @@ const insertRowBelow = deselect => {
   }
 }
 
-const insertColumnLeft = deselect => {
+export function insertColumnLeft(deselect) {
   let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
   const range = hot.getSelectedRange()
@@ -210,7 +209,7 @@ const insertColumnLeft = deselect => {
   }
 }
 
-const insertColumnRight = deselect => {
+export function insertColumnRight(deselect) {
   let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
   const range = hot.getSelectedRange()
@@ -224,7 +223,7 @@ const insertColumnRight = deselect => {
   }
 }
 
-const removeRows = () => {
+export function removeRows() {
   let hot = HotRegister.getActiveInstance()
   const range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
@@ -243,7 +242,7 @@ const removeRows = () => {
   hot.deselectCell()
 }
 
-const removeColumns = () => {
+export function removeColumns() {
   let hot = HotRegister.getActiveInstance()
   const range = hot.getSelectedRange()
   if (typeof range === 'undefined') {
@@ -262,24 +261,6 @@ const removeColumns = () => {
   hot.deselectCell()
 }
 
-const unfreezeHeaderRow = () => {
-  let hot = HotRegister.getActiveInstance()
-  hot.updateSettings({fixedRowsTop: 0, colHeaders: true})
-}
-
-const freezeHeaderRow = () => {
-  let hot = HotRegister.getActiveInstance()
-  hot.updateSettings({fixedRowsTop: 1})
-}
-
 export {
-  insertRowAbove,
-  insertRowBelow,
-  insertColumnLeft,
-  insertColumnRight,
-  removeRows,
-  removeColumns,
-  freezeHeaderRow as freeze,
-  unfreezeHeaderRow as unfreeze,
   HotRegister
 }

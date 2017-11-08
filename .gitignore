@@ -17,3 +17,5 @@ yarn-error.log
 !help-tags.csv
 test/temp/
 test/unit/coverage/
+.eslintrc
+src/renderer/data
