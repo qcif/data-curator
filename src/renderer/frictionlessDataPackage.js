@@ -16,7 +16,6 @@ export async function createDataPackage() {
       console.log(dataPackage.errors)
       return errorMessages
     }
-    dataPackage.foo = 'bar'
     dataPackage.commit()
     if (!dataPackage.valid) {
       errorMessages.push('There is a problem with at least 1 package property. Please check and try again.')
