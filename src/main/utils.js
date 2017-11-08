@@ -1,4 +1,4 @@
-import {dialog, ipcMain as ipc} from 'electron'
+import {dialog, ipcMain as ipc, BrowserWindow, Menu} from 'electron'
 import {fileFormats} from '../renderer/file-formats.js'
 let path = require('path')
 
@@ -21,7 +21,6 @@ export function createWindow() {
       clearTimeout(global.resizeTimerId)
     }
     let timerId = setTimeout(function() {
-      console.log('sending resize event')
       mainWindow.webContents.send('resized')
     }, 250)
     global.resizeTimerId = timerId
@@ -42,7 +41,7 @@ function closeWindowNoPrompt(result) {
 }
 
 export function createWindowTab() {
-  var window = BrowserWindow.getFocusedWindow()
+  let window = BrowserWindow.getFocusedWindow()
   if (window == null) {
     window = createWindow()
   } else {
@@ -51,7 +50,7 @@ export function createWindowTab() {
 }
 
 export function createWindowTabWithData(data) {
-  var window = BrowserWindow.getFocusedWindow()
+  let window = BrowserWindow.getFocusedWindow()
   if (window == null) {
     window = createWindow()
   } else {
@@ -59,27 +58,27 @@ export function createWindowTabWithData(data) {
   }
 }
 
-export function createWindowTabWithFormattedData(data, format) {
-  var window = BrowserWindow.getFocusedWindow()
+export function createWindowTabWithFormattedDataFile(data, format, filename) {
+  let window = BrowserWindow.getFocusedWindow()
   if (window == null) {
     window = createWindow()
   } else {
-    window.webContents.send('addTabWithFormattedData', data, format)
+    window.webContents.send('addTabWithFormattedDataFile', data, format, filename)
   }
 }
 
 export function showSidePanel(name) {
-  var window = BrowserWindow.getFocusedWindow()
+  let window = BrowserWindow.getFocusedWindow()
   window.webContents.send('showSidePanel', name)
 }
 
 export function guessColumnProperties() {
-  var window = BrowserWindow.getFocusedWindow()
+  let window = BrowserWindow.getFocusedWindow()
   window.webContents.send('guessColumnProperties')
 }
 
 export function validateTable() {
-  var window = BrowserWindow.getFocusedWindow()
+  let window = BrowserWindow.getFocusedWindow()
   window.webContents.send('validateTable')
 }
 

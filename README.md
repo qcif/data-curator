@@ -171,10 +171,11 @@ We may link acceptance tests to lower level tests ([cucumber-js](https://github.
 
 We're considering:
 
-- [Spectron](https://electron.atom.io/spectron/) is a purpose built Electron testing framework
+- End-to-end tests: [Spectron](https://electron.atom.io/spectron/), a purpose built Electron testing framework
+- Unit tests: [Karma](https://karma-runner.github.io/1.0/index.html), a browser test runner, designed for low-level/unit testing
 - [Comma Chameleon](https://github.com/theodi/comma-chameleon#tests) currently uses [Electron-Mocha](https://github.com/jprichardson/electron-mocha), [Chai](http://chaijs.com) and [Sinon](http://sinonjs.org) for unit tests
-- Spectron can be used with any testing library, including [Mocha](https://mochajs.org), [Chai](http://chaijs.com), [Jasmine](http://jasmine.github.io), and [AVA](https://github.com/sindresorhus/ava)
-- [Travis](https://travis-ci.org) for continuous integration
+- Spectron and Karma can be used with any testing library, including [Mocha](https://mochajs.org), [Chai](http://chaijs.com) and [Jasmine](http://jasmine.github.io)
+- [Travis](https://travis-ci.org) and [Appveyor](https://www.appveyor.com) for continuous integration
 
 To run tests and launch Data Curator:
 

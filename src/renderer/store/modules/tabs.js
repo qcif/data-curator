@@ -1,22 +1,5 @@
-import path from 'path'
-import {remote, ipcRenderer as ipc} from 'electron'
-
-function setGlobal(filename, title) {
-  remote.getGlobal('tab').activeFilename = filename
-  remote.getGlobal('tab').activeTitle = title
-  remote.getGlobal('tab').filenames = getAllFilenames()
-}
-
-function extractNameFromFile(fullPath) {
-  let basename = path.basename(fullPath)
-  let extension = path.extname(basename)
-  return basename.substring(0, basename.lastIndexOf(extension))
-}
-
-function getAllFilenames() {
-  let tabObjects = state.tabObjects
-  return _.values(_.mapValues(tabObjects, function(o) { return o.filename }))
-}
+import {ipcRenderer as ipc} from 'electron'
+import {setActiveGlobal, extractNameFromFile, resetGlobalFilenames} from '@/store/tabStoreUtilities'
 
 const state = {
   tabs: [],
@@ -30,6 +13,9 @@ const getters = {
   getTabs: state => {
     return state.tabs
   },
+  getTabObjects: state => {
+    return state.tabObjects
+  },
   getActiveTab: state => {
     return state.activeTab
   },
@@ -42,6 +28,14 @@ const getters = {
   },
   tabTitle: (state, getters) => (tabId) => {
     return _.get(state.tabObjects, `${tabId}.title`)
+  },
+  // TODO: revise hot filenames are kept as it is here, but reset in global
+  getTabFilenames: state => {
+    let filtered = []
+    _.forEach(state.tabObjects, (value, key) => {
+      if (value.filename) { filtered.push(value.filename) }
+    })
+    return filtered
   }
 }
 
@@ -64,7 +58,8 @@ const mutations = {
       let title = extractNameFromFile(tab.filename)
       _.set(state.tabObjects, `${tab.id}.title`, title)
       // update global active references for electron-main
-      setGlobal(tab.filename, title)
+      setActiveGlobal(tab.filename, title)
+      resetGlobalFilenames(getters.getTabFilenames(state))
       ipc.send('toggleSaveMenu')
     }
   },
@@ -79,7 +74,8 @@ const mutations = {
     state.activeTab = `${tabId}`
     // TODO : now that we use activeTitle as global and we can access with activeTab and tabObjects, keeping it in store is redundant - remove.
     state.activeTitle = state.tabObjects[tabId].title
-    setGlobal(state.tabObjects[state.activeTab].filename, state.activeTitle)
+    setActiveGlobal(state.tabObjects[state.activeTab].filename, state.activeTitle)
+    resetGlobalFilenames(getters.getTabFilenames(state))
     ipc.send('toggleSaveMenu')
   },
   setTabsOrder (state, tabIdOrder) {
@@ -90,6 +86,7 @@ const mutations = {
   },
   destroyTabObject(state, tabId) {
     _.unset(state.tabObjects, tabId)
+    resetGlobalFilenames(getters.getTabFilenames(state))
   }
 }
 

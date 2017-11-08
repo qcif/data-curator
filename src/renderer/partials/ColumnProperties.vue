@@ -32,16 +32,14 @@
             </div>
           </div>
         </div>
-        <input :disabled="formprop.isDisabled" v-else :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
+        <input v-else-if="formprop.label === 'name'" :disabled="formprop.isDisabled" :value="getNameProperty()" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
+        <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
       </div>
     </div>
   </div>
 </form>
 </template>
 <script>
-import {
-  remote
-} from 'electron'
 import SideNav from './SideNav'
 import {
   mapMutations,
@@ -53,7 +51,6 @@ import {
   reselectCurrentCellOrMin
 } from '../hot.js'
 import ColumnTooltip from '../mixins/ColumnTooltip'
-const Dialog = remote.dialog
 export default {
   extends: SideNav,
   name: 'column',
@@ -177,6 +174,18 @@ export default {
       }
       this.pushColumnProperty(object)
     },
+    getNameProperty: function() {
+      const headers = HotRegister.getActiveInstance().getColHeader()
+      console.log(headers)
+      let value = ''
+      if (headers) {
+        // each column header may be set to false
+        value = headers[this.cIndex] ? headers[this.cIndex] : ''
+        this.setProperty('name', value)
+      }
+      // console.log(`got column property key value: ${key}: ${value}`)
+      return value
+    },
     getProperty: function(key) {
       let columnProperties = this.activeTabColumnProperties[this.cIndex] || {}
       let value = columnProperties[key]
@@ -292,7 +301,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty', 'getAllHotColumnPropertiesFromHotId'
+      'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty', 'getAllHotColumnPropertiesFromHotId'
     ]),
     storeObject() {
       const hotId = HotRegister.getActiveInstance().guid

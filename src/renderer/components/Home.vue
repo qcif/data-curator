@@ -97,7 +97,7 @@
               <h3>{{messagesTitle}}</h3>
               <template  v-if="messagesType === 'error'">
                 <div v-for="errorMessage in messages">
-                  <span>row no.{{errorMessage.rowNumber}}</span><span>: {{errorMessage.message}}</span>
+                  <span v-show="errorMessage.rowNumber">row no.{{errorMessage.rowNumber}}: </span><span>{{errorMessage.message}}</span>
                 </div>
               </template>
               <div v-else>
@@ -152,6 +152,7 @@ import {
   guessColumnProperties,
   validateActiveDataAgainstSchema
 } from '../frictionless.js'
+import {createDataPackage} from '@/frictionlessDataPackage.js'
 import HomeTooltip from '../mixins/HomeTooltip'
 import {
   fileFormats
@@ -160,6 +161,7 @@ import {ipcRenderer as ipc} from 'electron'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'lodash/lodash.min.js'
 import '../menu.js'
+import {unzipFile} from '@/importPackage.js'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
@@ -234,7 +236,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'getAllHotColumnPropertiesFromHotId', 'tabTitle', 'getHotIdFromTabId']),
+    ...mapGetters(['getPreviousTabId', 'getAllHotColumnPropertiesFromHotId', 'tabTitle', 'getHotIdFromTabId', 'getHotTabs', 'getTabs', 'getTabObjects']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -259,6 +261,7 @@ export default {
       'decrementTabIndex',
       'pushHotColumns',
       'pushTabTitle',
+      'pushTabObject',
       'destroyHotTab',
       'destroyTabObject'
     ]),
@@ -345,14 +348,45 @@ export default {
         console.log(err)
       }
     },
+    importDataPackage: function(filename) {
+      unzipFile(filename)
+    },
+    exportPackageFeedback: function() {
+      this.messagesTitle = 'Export package success'
+      this.messages = 'Data package created.'
+      this.messagesType = 'feedback'
+      this.reportFeedback()
+    },
+    exportPackageErrors: function(errorMessages) {
+      this.messagesTitle = 'Export package error'
+      this.messages = errorMessages
+      this.messagesType = 'error'
+      this.reportFeedback()
+    },
+    async createPackage() {
+      try {
+        let messages = await createDataPackage()
+        if (messages.length > 0) {
+          this.exportPackageErrors(messages.map(x => {
+            return {message: x}
+          }))
+        } else {
+          this.exportPackageFeedback()
+        }
+      } catch (err) {
+        console.log('There was an error creating a data package.')
+        console.log(err)
+      }
+    },
     latestHotContainer: function() {
       let allEditors = document.querySelectorAll('#csvContent .editor')
       return allEditors[allEditors.length - 1]
     },
-    addTabWithFormattedData: function(data, format) {
+    addTabWithFormattedDataFile: function(data, format, filename) {
       this.initTab()
       this.$nextTick(function() {
         this.loadFormattedDataIntoContainer(this.latestHotContainer(), data, format)
+        this.pushTabObject({id: this.activeTab, filename: filename})
       })
     },
     addTabWithData: function(data) {
@@ -411,7 +445,15 @@ export default {
         'tabId': activeTabId
       })
     },
-    cleanUpTabDependencies: function(tabId) {
+    closeTab: async function(event) {
+      // do not allow single tab to be closed
+      if (this.tabs.length > 1) {
+        let targetTabId = event.currentTarget.closest('.tab-header').id
+        this.removeTab(targetTabId)
+        await this.cleanUpTabDependencies(targetTabId)
+      }
+    },
+    cleanUpTabDependencies: async function(tabId) {
       // update active tab
       if (tabId === this.activeTab) {
         let targetTabIndex = _.indexOf(this.tabs, tabId)
@@ -419,17 +461,9 @@ export default {
         this.setActiveTab(previousTabId)
       }
       this.destroyTabObject(tabId)
-      let hotId = this.getHotIdFromTabId(tabId)
+      let hotId = await this.getHotIdFromTabId(tabId)
       this.destroyHotTab(hotId)
       HotRegister.destroyHot(hotId)
-    },
-    closeTab: function(event) {
-      // do not allow single tab to be closed
-      if (this.tabs.length > 1) {
-        let targetTabId = event.currentTarget.closest('.tab-header').id
-        this.removeTab(targetTabId)
-        this.cleanUpTabDependencies(targetTabId)
-      }
     },
     closeSideNav: function() {
       this.enableTransition = false
@@ -509,15 +543,25 @@ export default {
       }
       this.resetSideNavArrows()
     },
+    updateToolbarMenuForButton: function(index) {
+      this.toolbarIndex = index
+      this.closeSideNav()
+      switch (this.toolbarMenus[index].name) {
+        case 'Validate':
+          this.validateTable()
+          break
+        case 'Export':
+          this.createPackage()
+          break
+        default:
+          console.log(`Error: No case exists for menu index: ${index}`)
+      }
+    },
     updateToolbarMenu: function(index) {
       if (this.isSideNavToolbarMenu(index)) {
         this.updateToolbarMenuForSideNav(index)
       } else {
-        this.toolbarIndex = index
-        this.closeSideNav()
-        if (index === 0) {
-          this.validateTable()
-        }
+        this.updateToolbarMenuForButton(index)
       }
     },
     updateToolbarMenuFromArrows: function(index) {
@@ -587,9 +631,9 @@ export default {
     ipc.on('addTabWithData', function(e, data) {
       vueAddTabWithData(data)
     })
-    const vueAddTabWithFormattedData = this.addTabWithFormattedData
-    ipc.on('addTabWithFormattedData', function(e, data, format) {
-      vueAddTabWithFormattedData(data, format)
+    const vueAddTabWithFormattedDataFile = this.addTabWithFormattedDataFile
+    ipc.on('addTabWithFormattedDataFile', function(e, data, format, filename) {
+      vueAddTabWithFormattedDataFile(data, format, filename)
     })
     const vueAddTab = this.addTab
     ipc.on('addTab', function() {
@@ -632,6 +676,10 @@ export default {
     const vueGuessProperties = this.updateColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
+    })
+    const vueImportDataPackage = this.importDataPackage
+    ipc.on('importDataPackage', function(event, filename) {
+      vueImportDataPackage(filename)
     })
     const vueValidateTable = this.validateTable
     ipc.on('validateTable', function(event, arg) {

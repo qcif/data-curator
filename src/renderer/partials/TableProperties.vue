@@ -3,13 +3,17 @@
   <div class="form-group-sm row container-fluid">
     <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
       <template v-if="formprop.type !== 'hidden'">
-        <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
+        <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
+        <component :is="formprop.tooltipView"/>
         <input v-if="formprop.label === 'missing values'" :value="missingValues" @input="setMissingValues($event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
         <input v-else-if="formprop.type === 'primary key(s)'" :value="primaryKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
         <!-- <input v-else-if="formprop.type === 'foreign key(s)'" :value="foreignKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" /> -->
         <component v-else-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
-        <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)"/>
+        <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
       </template>
+      <div v-show="errors.has(formprop.label) && removeValue(formprop.label)" class="row help validate-danger">
+        {{ errors.first(formprop.label)}}
+      </div>
     </div>
   </div>
 </form>
@@ -28,10 +32,15 @@ import sources from '../partials/Sources'
 import {
   HotRegister
 } from '../hot.js'
+import TableTooltip from '../mixins/TableTooltip'
+import {
+  Validator
+} from 'vee-validate'
 Vue.use(AsyncComputed)
 export default {
   extends: SideNav,
   name: 'tabular',
+  mixins: [TableTooltip],
   components: {
     licenses,
     sources
@@ -39,10 +48,13 @@ export default {
   data() {
     return {
       formprops: [{
-        label: 'title'
-      },
-      {
-        label: 'name'
+        label: 'name',
+        tooltipId: 'tooltip-table-name',
+        tooltipView: 'tooltipTableName'
+      }, {
+        label: 'title',
+        tooltipId: 'tooltip-table-title',
+        tooltipView: 'tooltipTableTitle'
       },
       {
         label: 'primary key(s)',
@@ -58,27 +70,25 @@ export default {
         value: 'tabular-data-resource'
       },
       {
-        label: 'description'
+        label: 'description',
+        tooltipId: 'tooltip-table-description',
+        tooltipView: 'tooltipTableDescription'
       },
-      // do we need sources for a table?
-      // so add this as a row model with a plus/minus and leave each entry as text boxes for people to edit
       {
         label: 'sources',
-        type: 'dropdown'
+        type: 'dropdown',
+        tooltipId: 'tooltip-table-sources',
+        tooltipView: 'tooltipTableSources'
       },
       {
-        label: 'licenses'
+        label: 'licenses',
+        tooltipId: 'tooltip-table-licences',
+        tooltipView: 'tooltipTableLicences'
       },
       {
         label: 'format',
         type: 'hidden',
         value: 'csv'
-      },
-      // value is set at datapackage creation when it also prompts if filenames not saved yet
-      {
-        label: 'path',
-        type: 'hidden',
-        value: ''
       },
       {
         label: 'mediatype',
@@ -88,13 +98,14 @@ export default {
       {
         label: 'encoding',
         type: 'hidden',
-        value: 'UTF-8'
+        value: 'utf-8'
       },
       {
         label: 'missing values',
-        type: 'array'
-      }
-      ]
+        type: 'array',
+        tooltipId: 'tooltip-table-missing-values',
+        tooltipView: 'tooltipTableMissingValues'
+      }]
     }
   },
   asyncComputed: {
@@ -112,12 +123,22 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getMissingValuesFromHot', 'getActiveTab', 'getTableProperty'])
+    ...mapGetters(['getMissingValuesFromHot', 'getActiveTab', 'getTableProperty', 'getHotTabs'])
   },
   methods: {
     ...mapMutations([
       'pushTableSchemaDescriptorProperty', 'pushTableProperty'
     ]),
+    validationRules: function(label) {
+      if (label === 'name') {
+        return {
+          required: true,
+          regex: /^([-a-z0-9._/])+$/,
+          unique_name: true
+        }
+      }
+      return ''
+    },
     getArrayValues: async function(key) {
       let tabId = this.getActiveTab
       let values = await this.getArrayValuesFromTabId(key, tabId)
@@ -126,6 +147,7 @@ export default {
       return values
     },
     setArrayValues: function(key, value) {
+      // TODO : hotId could be cached for all methods using it.
       let hot = HotRegister.getActiveInstance()
       if (hot) {
         let array = Array.from(new Set(value.split(',')))
@@ -139,7 +161,10 @@ export default {
     getArrayValuesFromTabId: async function(key, tabId) {
       let hotId = await this.waitForHotIdFromTabId(tabId)
       if (hotId) {
-        let array = this.getTableProperty({hotId: hotId, key: key}) || ['']
+        let array = this.getTableProperty({
+          hotId: hotId,
+          key: key
+        }) || ['']
         let string = array.join()
         return string
       }
@@ -163,19 +188,49 @@ export default {
     },
     setProperty: function(key, value) {
       this.pushTableProperty(this.propertySetObject(key, value))
+    },
+    removeValue: function(key) {
+      this.pushTableProperty(this.propertySetObject(key, ''))
+      return true
     }
   },
-  watch: {
-  },
+  watch: {},
   beforeCreate: function() {
     this.$nextTick(function() {
       // set hidden inputs
       let found = this.formprops.forEach(x => {
-        if (x.type ==='hidden') {
+        if (x.type === 'hidden') {
           this.setProperty(x.label, x.value)
         }
+      })
+    })
+  },
+  created: function() {
+    const dictionary = {
+      en: {
+        custom: {
+          name: {
+            regex: () => 'The name field format is invalid. It must consist only of lowercase alphanumeric characters plus ".", "-" and "_".'
+          }
+        }
+      }
+    }
+    Validator.updateDictionary(dictionary)
+    Validator.extend('unique_name', {
+      getMessage: field => `There is already another tab with this ${field}.`,
+      validate: value => new Promise((resolve) => {
+        let currentNames = _.values(_.mapValues(this.getHotTabs, function(hotTab) {
+          return hotTab.tableProperties ? hotTab.tableProperties.name : ''
+        }))
+        let otherNames = _.without(currentNames, value)
+        resolve({
+          valid: currentNames.length - otherNames.length <= 1
+        })
       })
     })
   }
 }
 </script>
+<style lang="styl" scoped>
+@import '~static/css/validationrules'
+</style>

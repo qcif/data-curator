@@ -1,67 +1,52 @@
-var hotController = require('../renderer/hot.js')
-const {remote} = require('electron')
-const {Menu, MenuItem} = remote
+import {insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight, removeRows, removeColumns} from '@/hot.js'
+import {remote} from 'electron'
+const Menu = remote.Menu
+const MenuItem = remote.MenuItem
 
 var menu = new Menu()
 
 var rowAbove = new MenuItem({
   label: 'Insert row above',
   click: function() {
-    hotController.insertRowAbove(true)
+    insertRowAbove(true)
   }
 })
 
 var rowBelow = new MenuItem({
   label: 'Insert row below',
   click: function() {
-    hotController.insertRowBelow(true)
+    insertRowBelow(true)
   }
 })
 
 var columnLeft = new MenuItem({
   label: 'Insert column before',
   click: function() {
-    hotController.insertColumnLeft(true)
+    insertColumnLeft(true)
   }
 })
 
 var columnRight = new MenuItem({
   label: 'Insert column after',
   click: function() {
-    hotController.insertColumnRight(true)
+    insertColumnRight(true)
   }
 })
 
 var removeRow = new MenuItem({
   label: 'Remove row(s)',
   click: function() {
-    hotController.removeRows()
+    removeRows()
   }
 })
 
 var removeCol = new MenuItem({
   label: 'Remove column(s)',
   click: function() {
-    hotController.removeColumns()
+    removeColumns()
   }
 })
 
-// var freezeRow = new MenuItem({
-//  label: 'Freeze header row',
-//  click: function() {
-//    hotController.freeze()
-//  }
-// })
-
-// var unfreezeRow = new MenuItem({
-//   label: 'Unfreeze header row',
-//  click: function() {
-//    hotController.unfreeze()
-//  }
-// })
-
-// menu.append(freezeRow)
-// menu.append(unfreezeRow)
 menu.append(new MenuItem({type: 'separator'}))
 menu.append(rowAbove)
 menu.append(rowBelow)
@@ -72,15 +57,14 @@ menu.append(new MenuItem({type: 'separator'}))
 menu.append(removeRow)
 menu.append(removeCol)
 
-module.exports = {
-  menu: menu,
-  remote: remote,
-  rowAbove: rowAbove,
+export {
+  menu
+  // rowAbove
   // rowBelow: rowBelow,
-  columnLeft: columnLeft
+  // columnLeft
   // ,
-  // columnRight: columnRight,
-  // removeRow: removeRow,
+  // columnRight,
+  // removeRow,
   // removeCol: removeCol,
   // freezeRow: freezeRow,
   // unfreezeRow: unfreezeRow
