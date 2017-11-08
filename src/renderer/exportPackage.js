@@ -20,21 +20,21 @@ export function createZipFile(json) {
     }
 
     // add package properties back in to json
-    let updatedJson = addAdditionalProperties(json)
+    // let updatedJson = addAdditionalProperties(json)
     generateDataPackage(filename, updatedJson)
   })
 }
 
-function addAdditionalProperties(json) {
-  let object = JSON.parse(json)
-  addPackageProperties(object)
-  return JSON.stringify(object)
-}
+// function addAdditionalProperties(json) {
+//   let object = JSON.parse(json)
+//   addPackageProperties(object)
+//   return JSON.stringify(object)
+// }
 
-function addPackageProperties(object) {
-  let packageProperties = hotStore.state.packageProperties
-  _.merge(object, packageProperties)
-}
+// function addPackageProperties(object) {
+//   let packageProperties = hotStore.state.packageProperties
+//   _.merge(object, packageProperties)
+// }
 
 function generateDataPackage(filename, json) {
   let output = fs.createWriteStream(filename)
