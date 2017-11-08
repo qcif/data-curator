@@ -45,9 +45,9 @@ async function buildDataPackage(errorMessages) {
     return false
   }
   let dataPackage = await initPackage()
+  await buildAllResourcesForDataPackage(dataPackage, errorMessages)
   // adding package properties for validation only
   addPackageProperties(dataPackage)
-  await buildAllResourcesForDataPackage(dataPackage, errorMessages)
   return dataPackage
 }
 
@@ -68,8 +68,16 @@ async function initPackage() {
 
 function addPackageProperties(dataPackage) {
   let packageProperties = hotStore.state.packageProperties
-  console.log(`packageProperties: ${packageProperties}`)
+  console.log(`packageProperties:`)
+  console.log(packageProperties)
   _.merge(dataPackage.descriptor, packageProperties)
+  if (dataPackage.descriptor.licenses && dataPackage.descriptor.licenses.length === 0) {
+    _.unset(dataPackage.descriptor, 'licenses')
+  }
+  console.log('data package so far...')
+  console.log(dataPackage)
+  dataPackage.descriptor.foo = 'bar'
+  dataPackage.descriptor.version = 'foobar'
 }
 
 async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
