@@ -1,7 +1,7 @@
 import {Table, Schema} from 'tableschema'
 import {HotRegister} from '../renderer/hot.js'
 import store from '../renderer/store/modules/hots.js'
-import {includeHeadersInData} from '@/frictionlessUtils.js'
+import {includeHeadersInData} from '@/frictionlessUtilities.js'
 
 // async function initDataAndInferTableSchema(data) {
 //   const table = await Table.load(data)

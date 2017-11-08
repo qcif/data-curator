@@ -1,4 +1,4 @@
-import {openFile, saveFileAs, saveFile} from './file.js'
+import {openFile, saveFileAs, saveFile, importDataPackage} from './file.js'
 import {guessColumnProperties, createWindowTab, validateTable, showSidePanel} from './utils.js'
 import {importExcel} from './excel.js'
 import {showKeyboardHelp} from './help.js'
@@ -75,7 +75,10 @@ const template = [
       }, {
         label: 'Open Data Package...',
         // turned off for Beta release
-        enabled: false
+        enabled: true,
+        click() {
+          importDataPackage()
+        }
         // Placeholder for future feature
         //      }, {
         //        label: 'Open Recent',

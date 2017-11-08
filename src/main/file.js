@@ -92,6 +92,24 @@ function openCustom() {
   dialog.loadURL(`http://localhost:9080/#/customformat`)
 }
 
+export function importDataPackage() {
+  Dialog.showOpenDialog({
+    filters: [
+      {
+        name: '*',
+        extensions: ['zip']
+      }
+    ],
+    properties: ['openFile']
+  }, function(filename) {
+    if (filename === undefined) {
+      return
+    }
+    let window = BrowserWindow.getFocusedWindow()
+    window.webContents.send('importDataPackage', filename)
+  })
+}
+
 function openFile(format) {
   Dialog.showOpenDialog({
     filters: format.filters
