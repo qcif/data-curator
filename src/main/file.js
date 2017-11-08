@@ -93,6 +93,7 @@ function openCustom() {
 }
 
 export function importDataPackage() {
+  let window = BrowserWindow.getFocusedWindow()
   Dialog.showOpenDialog({
     filters: [
       {
@@ -105,7 +106,6 @@ export function importDataPackage() {
     if (filename === undefined) {
       return
     }
-    let window = BrowserWindow.getFocusedWindow()
     window.webContents.send('importDataPackage', filename)
   })
 }
