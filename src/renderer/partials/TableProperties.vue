@@ -58,7 +58,9 @@ export default {
       },
       {
         label: 'primary key(s)',
-        type: 'array'
+        type: 'array',
+        tooltipId: 'tooltip-table-primary-keys',
+        tooltipView: 'tooltipTablePrimaryKeys'
       },
       // {
       //   label: 'foreign key(s)',
