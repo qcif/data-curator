@@ -22,13 +22,18 @@ export default {
     },
     'tooltipTableSources': {
       components: {externalLink},
-      template: `<div id="tooltip-table-sources">The
-      <externalLink text="Sources" url="http://frictionlessdata.io/specs/data-resource/#optional-properties"/> for the data in this Table. Each Source MUST have a title and MAY have path and/or email address.</div>`
+      template: `<div id="tooltip-table-sources">Each 
+      <externalLink text="Source" url="http://frictionlessdata.io/specs/data-resource/#optional-properties"/> MUST have a title and MAY have path and/or email address.</div>`
     },
     'tooltipTableLicences': {
       components: {externalLink},
       template: `<div id="tooltip-table-licences">The Open
       <externalLink text="License" url="http://frictionlessdata.io/specs/data-resource/#optional-properties"/> under which the Table is provided.</div>`
+    },
+    'tooltipTablePrimaryKeys': {
+      components: {externalLink},
+      template: `<div id="tooltip-table-primary-keys">The
+      <externalLink text="Primary Key" url="http://frictionlessdata.io/specs/table-schema/#primary-key"/> is the field(s) that uniquely identifies each row in the table. Separate values with a comma.</div>`
     },
     'tooltipTableMissingValues': {
       components: {externalLink},
