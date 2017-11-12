@@ -4,8 +4,8 @@ Feature: Set Data Package Properties
   So that Data Consumers can understand the data inside the package and how it can be used
 
   Specifications:
-  - The Data Package properties are defined at http://specs.frictionlessdata.io/data-package/
-  - The application only works with Tabular Data Packages, defined at http://specs.frictionlessdata.io/tabular-data-package/
+  - The Data Package properties are defined at http://frictionlessdata.io/specs/data-package/
+  - The application only works with Tabular Data Packages, defined at http://frictionlessdata.io/specs/tabular-data-package/
 
   Rules:
   - Despite 'name' being only recommended in the specification, it must be entered

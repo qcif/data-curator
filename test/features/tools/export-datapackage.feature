@@ -4,8 +4,8 @@ Feature: Export Data Package
   So that Data Consumers can access usuable open data and associated metadata in a single file
 
   Specification:
-  - The Data Package properties are defined at http://specs.frictionlessdata.io/data-package/
-  - The application only works with Tabular Data Packages, defined at http://specs.frictionlessdata.io/tabular-data-package/
+  - The Data Package properties are defined at http://frictionlessdata.io/specs/data-package/
+  - The application only works with Tabular Data Packages, defined at http://frictionlessdata.io/specs/tabular-data-package/
 
   Export data package creates a datapackage.zip file that includes:
   - readme.md (containing the provenance information)
@@ -19,8 +19,8 @@ Feature: Export Data Package
   Defaults:
   - Default the file save location from the Preferences/Settings (when implemented)
   - Default the filename to datapackage name property
-  - Set Created to Now - see http://specs.frictionlessdata.io/data-package/#created
-  - Set Profile to `tabular-data-package` - see http://specs.frictionlessdata.io/tabular-data-package/#specification
+  - Set Created to Now - see http://frictionlessdata.io/specs/data-package/#created
+  - Set Profile to `tabular-data-package` - see http://frictionlessdata.io/specs/tabular-data-package/#specification
 
   Export Data Package can be invoked by a menu item or the toolbar
 
