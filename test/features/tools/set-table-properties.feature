@@ -4,10 +4,10 @@ Feature: Set Table Properties
   So that it can be validated and Data Consumers can understand and use it
 
   Table properties are defined in:
-  - http://specs.frictionlessdata.io/data-resource/
-  - http://specs.frictionlessdata.io/tabular-data-resource/
-  - http://specs.frictionlessdata.io/csv-dialect/
-  - http://specs.frictionlessdata.io/table-schema/#other-properties
+  - http://frictionlessdata.io/specs/data-resource/
+  - http://frictionlessdata.io/specs/tabular-data-resource/
+  - http://frictionlessdata.io/specs/csv-dialect/
+  - http://frictionlessdata.io/specs/table-schema/#other-properties
 
   The 'name':
   - is required and must be unique
