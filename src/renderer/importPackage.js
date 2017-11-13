@@ -5,12 +5,12 @@ import unzipper from 'unzipper'
 import etl from 'etl'
 import {ipcRenderer as ipc} from 'electron'
 
-export function unzipFile(zipSource) {
+export function unzipFile(zipSource, storeCallback) {
   console.log('trying to unzip...')
-  unzipFileToDir(zipSource, path.dirname(zipSource))
+  unzipFileToDir(zipSource, path.dirname(zipSource), storeCallback)
 }
 
-function unzipFileToDir(zipSource, unzipDestination) {
+function unzipFileToDir(zipSource, unzipDestination, storeCallback) {
   console.log(`zip source is ${zipSource}`)
   console.log(`unzip destination is ${unzipDestination}`)
   fs.createReadStream(zipSource).pipe(unzipper.Parse()).pipe(etl.map(async entry => {
@@ -30,7 +30,7 @@ function unzipFileToDir(zipSource, unzipDestination) {
           await fs.ensureFile(fileDestination)
           await unzippedEntryToFile(entry, fileDestination)
           let textJson = await stringify(fileDestination)
-          processJson(textJson)
+          processJson(textJson, storeCallback)
           break
         case '.md':
           console.log('getting md')
@@ -79,7 +79,7 @@ async function setProvenance(value) {
   hotStore.mutations.pushProvenance(hotStore.state, JSON.parse(value).text)
 }
 
-function processJson(value) {
+function processJson(value, storeCallback) {
   if (_.isEmpty(value)) {
     return
   }
@@ -99,9 +99,14 @@ function processJson(value) {
     _.unset(tableProperties, 'schema')
   })
   _.unset(datapackageProperties, 'resources')
+  console.log('package properties')
   console.log(datapackageProperties)
-  hotStore.mutations.resetPackagePropertiesToObject(hotStore.state, datapackageProperties)
+  // hotStore.mutations.resetPackagePropertiesToObject(hotStore.state, datapackageProperties)
+  storeCallback('package', datapackageProperties)
+  console.log('table properties')
   console.log(allTableProperties)
+  // hotStore.mutations.resetTablePropertiesToObject(hotStore.state, allTableProperties)
+  console.log('column properties')
   console.log(allColumnProperties)
 }
 //

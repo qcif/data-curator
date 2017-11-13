@@ -263,7 +263,8 @@ export default {
       'pushTabTitle',
       'pushTabObject',
       'destroyHotTab',
-      'destroyTabObject'
+      'destroyTabObject',
+      'resetPackagePropertiesToObject'
     ]),
     closeMessages: function() {
       for (let el of ['main-bottom-panel', 'main-middle-panel']) {
@@ -348,8 +349,24 @@ export default {
         console.log(err)
       }
     },
+    storeResetCallback(method, value) {
+      switch (method) {
+        case 'package':
+          this.resetPackagePropertiesToObject(value)
+          break
+        case 'tables':
+          this.resetTablePropertiesToObject(value)
+          break
+        case 'columns':
+          this.resetTablePropertiesToObject(value)
+          break
+        default:
+          console.log(`No case found for ${method}. Ignoring...`)
+          break
+      }
+    },
     importDataPackage: function(filename) {
-      unzipFile(filename)
+      unzipFile(filename, this.storeResetCallback)
     },
     exportPackageFeedback: function() {
       this.messagesTitle = 'Export package success'

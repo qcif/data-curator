@@ -191,7 +191,7 @@ const mutations = {
     state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}
   },
   resetPackagePropertiesToObject(state, properties) {
-    _.set(state.packageProperties, properties)
+    _.set(state, 'packageProperties', properties)
   },
   resetTablePropertiesToObject(state, table) {
     _.set(state.hotTabs[table.hotId], table.properties)
