@@ -5,9 +5,9 @@
       <template v-if="formprop.type !== 'hidden'">
         <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
         <component :is="formprop.tooltipView"/>
-        <input v-if="formprop.label === 'missing values'" :value="missingValues" @input="setMissingValues($event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
-        <input v-else-if="formprop.type === 'primary key(s)'" :value="primaryKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
-        <!-- <input v-else-if="formprop.type === 'foreign key(s)'" :value="foreignKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.label" /> -->
+        <input v-if="formprop.key === 'missingValue'" :value="missingValues" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
+        <input v-if="formprop.key === 'primaryKeys'" :value="primaryKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
+        <!-- <input v-if="formprop.key === 'foreignKeys'" :value="foreignKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" /> -->
         <component v-else-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
         <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
       </template>
@@ -58,7 +58,8 @@ export default {
       },
       {
         label: 'primary key(s)',
-        type: 'array'
+        type: 'array',
+        key: 'primaryKeys'
       },
       // {
       //   label: 'foreign key(s)',
@@ -103,6 +104,7 @@ export default {
       {
         label: 'missing values',
         type: 'array',
+        key: 'missingValues',
         tooltipId: 'tooltip-table-missing-values',
         tooltipView: 'tooltipTableMissingValues'
       }]
@@ -147,11 +149,12 @@ export default {
       return values
     },
     setArrayValues: function(key, value) {
+      console.log(`setting ${key}: ${value}`)
       // TODO : hotId could be cached for all methods using it.
       let hot = HotRegister.getActiveInstance()
       if (hot) {
         let array = Array.from(new Set(value.split(',')))
-        this.pushTableSchemaProperty({
+        this.pushTableProperty({
           hotId: hot.guid,
           key: key,
           value: array
@@ -192,6 +195,9 @@ export default {
     removeValue: function(key) {
       this.pushTableProperty(this.propertySetObject(key, ''))
       return true
+    },
+    callback(methodName) {
+      return this.$emit(methodName)
     }
   },
   watch: {},
