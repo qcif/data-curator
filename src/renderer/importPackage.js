@@ -100,13 +100,19 @@ function processJson(value) {
   })
   _.unset(datapackageProperties, 'resources')
   console.log(datapackageProperties)
-  setPackageProperties(datapackageProperties)
+  hotStore.mutations.resetPackagePropertiesToObject(hotStore.state, datapackageProperties)
   console.log(allTableProperties)
   console.log(allColumnProperties)
 }
+//
+// function setPackageProperties(datapackageProperties) {
+//   for (let property in datapackageProperties) {
+//     hotStore.mutations.pushPackageProperty(hotStore.state, {key: property, value: datapackageProperties[property]})
+//   }
+// }
 
-function setPackageProperties(datapackageProperties) {
-  for (let property in datapackageProperties) {
-    hotStore.mutations.pushPackageProperty(hotStore.state, {key: property, value: datapackageProperties[property]})
-  }
-}
+// function setTableProperties(datapackageProperties) {
+//   for (let table of tableProperties) {
+//
+//   }
+// }

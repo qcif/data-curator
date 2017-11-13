@@ -4,6 +4,8 @@ const state = {
   provenanceProperties: {}
 }
 
+const tableFields = ['name', 'title', 'primaryKeys']
+
 function getHotColumnPropertiesFromPropertyObject(property) {
   let allHotColumnProperties = state.hotTabs[property.hotId].columnProperties
   if (!allHotColumnProperties) {
@@ -187,6 +189,12 @@ const mutations = {
   },
   resetColumnPropertiesForHotId(state, property) {
     state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}
+  },
+  resetPackagePropertiesToObject(state, properties) {
+    _.set(state.packageProperties, properties)
+  },
+  resetTablePropertiesToObject(state, table) {
+    _.set(state.hotTabs[table.hotId], table.properties)
   }
 }
 
