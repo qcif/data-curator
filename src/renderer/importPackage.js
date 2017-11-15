@@ -1,60 +1,65 @@
 import fs from 'fs-extra'
 import path from 'path'
 import hotStore from '@/store/modules/hots.js'
+import tabStore from '@/store/modules/tabs.js'
 import unzipper from 'unzipper'
 import etl from 'etl'
 import {ipcRenderer as ipc} from 'electron'
 
-export function unzipFile(zipSource, storeCallback) {
-  console.log('trying to unzip...')
-  unzipFileToDir(zipSource, path.dirname(zipSource), storeCallback)
+export async function unzipFile(zipSource, storeCallback) {
+  try {
+    let processedProperties = await unzipFileToDir(zipSource, path.dirname(zipSource))
+    storeCallback(processedProperties)
+  } catch (err) {
+    console.log(`Error processing zip source: ${zipSource}`, err)
+    return err.message
+  }
 }
 
-function unzipFileToDir(zipSource, unzipDestination, storeCallback) {
-  console.log(`zip source is ${zipSource}`)
-  console.log(`unzip destination is ${unzipDestination}`)
-  fs.createReadStream(zipSource).pipe(unzipper.Parse()).pipe(etl.map(async entry => {
-    try {
-      console.log(`entry path is ${entry.path}`)
-      let fileDestination = `${unzipDestination}/${entry.path}`
-      console.log(`file destination: ${fileDestination}`)
-      switch (path.extname(entry.path)) {
-        case '.csv':
-          console.log('getting csv')
-          await fs.ensureFile(fileDestination)
-          await unzippedEntryToFile(entry, fileDestination)
-          ipc.send('openFileIntoTab', fileDestination)
-          break
-        case '.json':
-          console.log('getting json')
-          await fs.ensureFile(fileDestination)
-          await unzippedEntryToFile(entry, fileDestination)
-          let textJson = await stringify(fileDestination)
-          processJson(textJson, storeCallback)
-          break
-        case '.md':
-          console.log('getting md')
-          await fs.ensureFile(fileDestination)
-          await unzippedEntryToFile(entry, fileDestination)
-          let textMd = await stringify(fileDestination)
-          await setProvenance(textMd)
-          break
-        default:
-          entry.autodrain()
-          break
-      }
-    } catch (err) {
-      console.log(`Error processing unzipped entry: ${entry.path}`)
-      console.log(err)
-    }
-  }))
+async function unzipFileToDir(zipSource, unzipDestination) {
+  let processed = {json: [], csv: [], md: []}
+  await fs.createReadStream(zipSource).pipe(unzipper.Parse()).pipe(etl.map(async entry => {
+    let fileDestination = `${unzipDestination}/${entry.path}`
+    await processStream(entry, processed, fileDestination)
+  })).promise()
+  validateMdFile(processed)
+  // wait until all tabs opened before processing data package json
+  let processedProperties = await processJsonFile(processed, unzipDestination)
+  return processedProperties
 }
 
-// function isUnzippedTempDir(zipSource, fileDestination) {
-//   let sourceExtension = path.extname(zipSource)
-//   let sourceNoExt = zipSource.substring(0, zipSource.lastIndexOf(sourceExtension))
-//   return !_.startsWith(fileDestination, sourceNoExt)
-// }
+async function processStream(entry, processed, fileDestination) {
+  switch (path.extname(entry.path)) {
+    case '.csv':
+      await fs.ensureFile(fileDestination)
+      await unzippedEntryToFile(entry, fileDestination)
+      await ipc.send('openFileIntoTab', fileDestination)
+      processed.csv.push(entry.path)
+      break
+    case '.json':
+      await fs.ensureFile(fileDestination)
+      await unzippedEntryToFile(entry, fileDestination)
+      processed.json.push(fileDestination)
+      processed.parentFolders = path.dirname(entry.path)
+      break
+    case '.md':
+      await fs.ensureFile(fileDestination)
+      await unzippedEntryToFile(entry, fileDestination)
+      let textMd = await stringify(fileDestination)
+      await setProvenance(textMd)
+      processed.md.push(fileDestination)
+      break
+    default:
+      entry.autodrain()
+      break
+  }
+}
+
+function validateMdFile(processed) {
+  if (processed.md.length > 1) {
+    throw new Error('Only 1 markdown file is allowed.')
+  }
+}
 
 async function unzippedEntryToFile(entry, fileDestination) {
   let returned = await entry.pipe(etl.toFile(fileDestination)).promise()
@@ -65,59 +70,97 @@ async function stringify(filename) {
   let value = await etl.file(filename)
     .pipe(etl.stringify())
     .promise()
-  // console.log('value is...')
-  // console.log(value)
-  // console.log(JSON.parse(value))
-  return value
-}
-
-async function setProvenance(value) {
   // etl always returns an array
   if (_.isEmpty(value)) {
-    return
-  }
-  hotStore.mutations.pushProvenance(hotStore.state, JSON.parse(value).text)
-}
-
-function processJson(value, storeCallback) {
-  if (_.isEmpty(value)) {
-    return
+    throw new Error(`Unable to find text in filename: ${filename}`)
   }
   let text = JSON.parse(value).text
-  let datapackageProperties = JSON.parse(text)
-  let allTableProperties = datapackageProperties.resources
-  let allColumnProperties = []
-  allTableProperties.map(function(tableProperties) {
-    allColumnProperties.push(tableProperties.schema.fields)
+  return text
+}
+
+async function setProvenance(text) {
+  hotStore.mutations.pushProvenance(hotStore.state, text)
+}
+
+async function processJsonFile(processed, unzipDestination) {
+  if (processed.json.length !== 1) {
+    throw new Error('There must be 1, and only 1, json file.')
+  }
+  let csvPathHotIds = await getHotIdsFromFilenames(processed, unzipDestination)
+  let filename = processed.json[0]
+  let text = await stringify(filename)
+  let datapackageJson = JSON.parse(text)
+  validateResourcesAndDataFiles(getAllResourcePaths(datapackageJson), _.keys(csvPathHotIds))
+  let processedProperties = processJson(datapackageJson, csvPathHotIds)
+  return processedProperties
+}
+
+function validateResourcesAndDataFiles(resourcePaths, csvPaths) {
+  // every processed csv should match entry in resource of datapackage.json
+  let diff = _.difference(resourcePaths, csvPaths)
+  if (diff.length !== 0) {
+    throw new Error('The resource paths and the csv files do not match.')
+  }
+}
+
+async function getHotIdsFromFilenames(processed, unzipDestination) {
+  let dataPackageJson = processed.json[0]
+  let csvTabs = {}
+  for (let pathname of processed.csv) {
+    let fileDestination = `${unzipDestination}/${pathname}`
+    let tabId = await getTabIdFromFilename(fileDestination)
+    // every processed csv should have a matching tab
+    if (!tabId) {
+      throw new Error(`There was a problem matching ${fileDestination} with an opened tab.`)
+    }
+    let hotId = _.findKey(hotStore.state.hotTabs, {tabId: tabId})
+    // ensure csv path accounts for parent folders zipped up
+    let re = new RegExp('^' + processed.parentFolders + '/')
+    let resourcePathname = _.replace(pathname, re, '')
+    csvTabs[`${resourcePathname}`] = hotId
+  }
+  return csvTabs
+}
+
+async function getTabIdFromFilename(filename) {
+  return new Promise((resolve, reject) => {
+    let tabId = _.findKey(tabStore.state.tabObjects, {filename: filename})
+    if (!tabId) {
+      // wait for tabs to be ready
+      _.delay(function(filename) {
+        resolve(_.findKey(tabStore.state.tabObjects, {filename: filename}))
+      }, 10, filename)
+    } else {
+      resolve(tabId)
+    }
   })
-  allTableProperties.map(function(tableProperties) {
+}
+
+function getAllResourcePaths(datapackageJson) {
+  let resourcePaths = datapackageJson.resources.map(function(dataResource) {
+    return dataResource.path
+  })
+  return resourcePaths
+}
+
+function processJson(datapackageJson, csvPathHotIds) {
+  let allTableProperties = datapackageJson.resources
+  let allColumnPropertiesByHotId = {}
+  let allTablePropertiesByHotId = {}
+  for (let tableProperties of allTableProperties) {
+    allColumnPropertiesByHotId[csvPathHotIds[tableProperties.path]] = tableProperties.schema.fields
     _.unset(tableProperties, 'schema.fields')
     for (let property in tableProperties.schema) {
       tableProperties[property] = tableProperties.schema[property]
       _.unset(tableProperties, `schema.${property}`)
     }
     _.unset(tableProperties, 'schema')
-  })
-  _.unset(datapackageProperties, 'resources')
-  console.log('package properties')
-  console.log(datapackageProperties)
-  // hotStore.mutations.resetPackagePropertiesToObject(hotStore.state, datapackageProperties)
-  storeCallback('package', datapackageProperties)
-  console.log('table properties')
-  console.log(allTableProperties)
-  // hotStore.mutations.resetTablePropertiesToObject(hotStore.state, allTableProperties)
-  console.log('column properties')
-  console.log(allColumnProperties)
+    allTablePropertiesByHotId[csvPathHotIds[tableProperties.path]] = tableProperties
+  }
+  _.unset(datapackageJson, 'resources')
+  return {
+    package: datapackageJson,
+    tables: allTablePropertiesByHotId,
+    columns: allColumnPropertiesByHotId
+  }
 }
-//
-// function setPackageProperties(datapackageProperties) {
-//   for (let property in datapackageProperties) {
-//     hotStore.mutations.pushPackageProperty(hotStore.state, {key: property, value: datapackageProperties[property]})
-//   }
-// }
-
-// function setTableProperties(datapackageProperties) {
-//   for (let table of tableProperties) {
-//
-//   }
-// }

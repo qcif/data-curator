@@ -264,7 +264,9 @@ export default {
       'pushTabObject',
       'destroyHotTab',
       'destroyTabObject',
-      'resetPackagePropertiesToObject'
+      'resetPackagePropertiesToObject',
+      'resetTablePropertiesToObject',
+      'resetColumnPropertiesToObject'
     ]),
     closeMessages: function() {
       for (let el of ['main-bottom-panel', 'main-middle-panel']) {
@@ -349,24 +351,21 @@ export default {
         console.log(err)
       }
     },
-    storeResetCallback(method, value) {
-      switch (method) {
-        case 'package':
-          this.resetPackagePropertiesToObject(value)
-          break
-        case 'tables':
-          this.resetTablePropertiesToObject(value)
-          break
-        case 'columns':
-          this.resetTablePropertiesToObject(value)
-          break
-        default:
-          console.log(`No case found for ${method}. Ignoring...`)
-          break
-      }
+    storeResetCallback(allProperties) {
+      console.log('all properties are:')
+      console.log(allProperties)
+      this.resetPackagePropertiesToObject(allProperties.package)
+      this.resetTablePropertiesToObject(allProperties.tables)
+      this.resetColumnPropertiesToObject(allProperties.columns)
     },
-    importDataPackage: function(filename) {
-      unzipFile(filename, this.storeResetCallback)
+    importDataPackage: async function(filename) {
+      let message = await unzipFile(filename, this.storeResetCallback)
+      console.log(`message is...`)
+      console.log(message)
+      this.messagesTitle = message ? 'Import Data Package Error' : 'Import Data Package Success'
+      this.messages = message || 'All Properties have been imported.'
+      this.messagesType = 'feedback'
+      this.reportFeedback()
     },
     exportPackageFeedback: function() {
       this.messagesTitle = 'Export package success'
