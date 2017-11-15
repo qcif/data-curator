@@ -54,7 +54,7 @@ export default {
         label: 'description',
         type: 'markdown'
       },
-        // lead user through with http://specs.frictionlessdata.io/patterns/#data-package-version
+        // lead user through with http://frictionlessdata.io/specs/patterns/#data-package-version
       {
         label: 'version',
         type: 'input'

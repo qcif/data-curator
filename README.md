@@ -35,10 +35,10 @@ Using Data Curator open data producers can:
 
 Using data from any of these sources, you can:
 
-- automatically create a [schema](http://specs.frictionlessdata.io/table-schema/) that describes the data fields
-- refine the schema to include extra [data validation rules](http://specs.frictionlessdata.io/table-schema/#constraints)
+- automatically create a [schema](http://frictionlessdata.io/specs/table-schema/) that describes the data fields
+- refine the schema to include extra [data validation rules](http://frictionlessdata.io/specs/table-schema/#constraints)
 - describe the [provenance](https://relishapp.com/odi-australia/data-curator/docs/tools/set-provenance-information) of your data
-- save data as a valid CSV file in various [CSV dialects](http://specs.frictionlessdata.io/csv-dialect/)
+- save data as a valid CSV file in various [CSV dialects](http://frictionlessdata.io/specs/csv-dialect/)
 
 The schema enables you to:
 
