@@ -1,4 +1,4 @@
-import {dialog as Dialog, BrowserWindow} from 'electron'
+import {dialog as Dialog, BrowserWindow, ipcMain as ipc} from 'electron'
 import Fs from 'fs'
 import {enableSave, createWindowTabWithFormattedDataFile} from './utils'
 let path = require('path')
@@ -114,37 +114,47 @@ function openFile(format) {
   Dialog.showOpenDialog({
     filters: format.filters
   }, function(filenames) {
-    readFile(filenames, format)
+    if (filenames === undefined || filenames.length === 0) {
+      return
+    }
+    readFile(filenames[0], format)
+  })
+}
+
+ipc.on('openFileIntoTab', (event, arg) => {
+  readFile(arg)
+})
+
+function readFile(filename, format) {
+  if (openedFilenameExists(filename)) {
+    showAlreadyOpenedFileDialog()
+    return
+  }
+  Fs.readFile(filename, 'utf-8', function(err, data) {
+    if (err) {
+      console.log(err.stack)
+    } else {
+      createWindowTabWithFormattedDataFile(data, format, filename)
+      // enableSave()
+    }
+  })
+}
+
+// TODO: consider toggle global var and use with debounce to check when last dialog triggered so don't get too many dialogs for multiple file opens
+function showAlreadyOpenedFileDialog() {
+  console.log('showing dialog...')
+  Dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
+    type: 'warning',
+    // title is not displayed on screen on macOS
+    title: 'File not opened',
+    message: `The file was not opened.
+  You selected a file name that is already used in this Data Package.
+  A file may only be opened once.`
   })
 }
 
 function openedFilenameExists(filename) {
   return _.indexOf(global.tab.filenames, filename) > -1
-}
-
-function readFile(filenames, format) {
-  if (filenames !== undefined) {
-    let filename = filenames[0]
-    if (openedFilenameExists(filename)) {
-      Dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
-        type: 'warning',
-        // title is not displayed on screen on macOS
-        title: 'File not opened',
-        message: `The file was not opened.
-You selected a file name that is already used in this Data Package.
-A file may only be opened once.`
-      })
-      return
-    }
-    Fs.readFile(filename, 'utf-8', function(err, data) {
-      if (err) {
-        console.log(err.stack)
-      } else {
-        createWindowTabWithFormattedDataFile(data, format, filename)
-        // enableSave()
-      }
-    })
-  }
 }
 
 export {

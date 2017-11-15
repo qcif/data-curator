@@ -1,4 +1,5 @@
 import fs from 'fs-extra'
+import path from 'path'
 import archiver from 'archiver'
 import {remote} from 'electron'
 import tabStore from '@/store/modules/tabs.js'
@@ -58,7 +59,7 @@ function zipJson(archive, json) {
 
 function zipResources(archive) {
   for (let filename of tabStore.getters.getTabFilenames(tabStore.state)) {
-    let name = extractNameFromFile(filename)
+    let name = path.basename(filename)
     archive.append(fs.createReadStream(filename), { name: name, prefix: 'data' })
   }
 }
