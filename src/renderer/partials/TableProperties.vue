@@ -59,7 +59,9 @@ export default {
       {
         label: 'primary key(s)',
         type: 'array',
-        key: 'primaryKeys'
+         key: 'primaryKeys',
+        tooltipId: 'tooltip-table-primary-keys',
+        tooltipView: 'tooltipTablePrimaryKeys'
       },
       // {
       //   label: 'foreign key(s)',
@@ -149,7 +151,6 @@ export default {
       return values
     },
     setArrayValues: function(key, value) {
-      console.log(`setting ${key}: ${value}`)
       // TODO : hotId could be cached for all methods using it.
       let hot = HotRegister.getActiveInstance()
       if (hot) {
@@ -195,9 +196,6 @@ export default {
     removeValue: function(key) {
       this.pushTableProperty(this.propertySetObject(key, ''))
       return true
-    },
-    callback(methodName) {
-      return this.$emit(methodName)
     }
   },
   watch: {},

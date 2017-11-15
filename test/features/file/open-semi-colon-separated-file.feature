@@ -5,7 +5,7 @@ Feature: Open a Semi-colon separated value file
 
   The data may be stored in a ".csv" file
 
-  Use the default values in the [CSV Dialect specification](http://specs.frictionlessdata.io/csv-dialect/#specification) but with 'delimiter' = ';' to open the file and separate the values into the correct columns.
+  Use the default values in the [CSV Dialect specification](http://frictionlessdata.io/specs/csv-dialect/#specification) but with 'delimiter' = ';' to open the file and separate the values into the correct columns.
 
   (A desirable feature would be, If the active tab is empty, when the file is opened, insert the file contents into the empty table.)
 

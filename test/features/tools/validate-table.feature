@@ -22,7 +22,7 @@ Feature: Validate Table
 
   See
   - [Validation code](https://github.com/frictionlessdata/tableschema-js)
-  - [Foreign key spec](http://specs.frictionlessdata.io/table-schema/#foreign-keys)
+  - [Foreign key spec](http://frictionlessdata.io/specs/table-schema/#foreign-keys)
   - [Validation errors messages](https://github.com/frictionlessdata/data-quality-spec)
   - [GoodTables.py](https://github.com/frictionlessdata/goodtables-py) implementation
 

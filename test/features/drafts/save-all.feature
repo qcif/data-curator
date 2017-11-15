@@ -9,7 +9,7 @@ Feature: Save all
 
   If these are unavailable, then use the CSV dialect specified in Preferences.
 
-  By default the CSV dialect will be a comma separated file with defaults settings as documented in http://specs.frictionlessdata.io/csv-dialect/#specification
+  By default the CSV dialect will be a comma separated file with defaults settings as documented in http://frictionlessdata.io/specs/csv-dialect/#specification
 
   The CSV dialect selected may change the file extension e.g. tab separated values files use .tsv
 

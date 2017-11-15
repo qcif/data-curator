@@ -6,7 +6,7 @@ Feature: Set View Properties
   So that the chart or map can be displayed when the data package is presented on a open data portal
 
   References:
-  - View Specification http://specs.frictionlessdata.io/views/
+  - View Specification http://frictionlessdata.io/specs/views/
   - Examples of published views:
     - https://datahub.io/examples/simple-graph-spec
     - https://datahub.io/examples/vega-views-tutorial-lines
