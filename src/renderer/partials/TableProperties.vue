@@ -59,7 +59,7 @@ export default {
       {
         label: 'primary key(s)',
         type: 'array',
-         key: 'primaryKeys',
+        key: 'primaryKeys',
         tooltipId: 'tooltip-table-primary-keys',
         tooltipView: 'tooltipTablePrimaryKeys'
       },
