@@ -7,7 +7,7 @@ require('jquery-csv/src/jquery.csv.js')
 export function loadDataIntoHot(hot, data, format) {
   let arrays
   // if no format specified, default to csv
-  if (typeof format === 'undefined') {
+  if (typeof format === 'undefined' || !format) {
     arrays = $.csv.toArrays(data)
   } else {
     arrays = $.csv.toArrays(data, format.options)
