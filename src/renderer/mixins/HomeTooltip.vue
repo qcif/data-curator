@@ -25,10 +25,10 @@ export default {
       template: '<div id="tooltip-add-tab">Add Data Tab</div>'
     },
     'tooltipPrevious': {
-      template: '<div id="tooltip-previous">Previous Property Panel</div>'
+      template: '<div id="tooltip-previous">Previous Column Property</div>'
     },
     'tooltipNext': {
-      template: '<div id="tooltip-next">Next Property Panel</div>'
+      template: '<div id="tooltip-next">Next Column Property</div>'
     }
   }
 }
