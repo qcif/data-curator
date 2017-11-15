@@ -4,6 +4,10 @@ const state = {
   provenanceProperties: {}
 }
 
+const tableFields = ['encoding', 'format', 'mediatype', 'missingValues', 'name', 'path', 'profile', 'sources', 'title', 'primaryKeys', 'description', 'licenses']
+const packageFields = ['description', 'id', 'licenses', 'name', 'profile', 'sources', 'title', 'version']
+const columnFields = ['constraints', 'format', 'name', 'type', 'title', 'description', 'rdfType']
+
 function getHotColumnPropertiesFromPropertyObject(property) {
   let allHotColumnProperties = state.hotTabs[property.hotId].columnProperties
   if (!allHotColumnProperties) {
@@ -90,6 +94,7 @@ const mutations = {
   pushColumnProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
     // mutations.mergeCurrentColumnPropertiesOverTableSchema(state, property.hotId)
+    console.log(state.hotTabs)
   },
   pushTableProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
@@ -187,6 +192,25 @@ const mutations = {
   },
   resetColumnPropertiesForHotId(state, property) {
     state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}
+  },
+  resetPackagePropertiesToObject(state, properties) {
+    _.set(state, 'packageProperties', properties)
+  },
+  resetTablePropertiesToObject(state, hotIdTables) {
+    for (let hotId in hotIdTables) {
+      if (!state.hotTabs[hotId]) {
+        throw new Error(`Unable to find tab with hot id: ${hotId}`)
+      }
+      _.set(state.hotTabs[hotId], 'tableProperties', hotIdTables[hotId])
+    }
+  },
+  resetColumnPropertiesToObject(state, hotIdColumns) {
+    for (let hotId in hotIdColumns) {
+      if (!state.hotTabs[hotId]) {
+        throw new Error(`Unable to find tab with hot id: ${hotId}`)
+      }
+      _.set(state.hotTabs[hotId], 'columnProperties', hotIdColumns[hotId])
+    }
   }
 }
 

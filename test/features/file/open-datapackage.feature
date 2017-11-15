@@ -23,8 +23,8 @@ Feature: Open a Data Package
   - The current CKAN data package extension only exports a data package with data resources available at a URL i.e. the data is not inside the package
 
   Frictionless Data specification:
-  - http://specs.frictionlessdata.io/data-package/
-  - http://specs.frictionlessdata.io/tabular-data-package/
+  - http://frictionlessdata.io/specs/data-package/
+  - http://frictionlessdata.io/specs/tabular-data-package/
 
   Scenario: Open a data package
     Given I have opened Data Curator

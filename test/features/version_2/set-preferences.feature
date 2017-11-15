@@ -19,14 +19,14 @@ Feature: Set Preferences
   Preferences that can be set include:
 
   - Default Data Package properties
-    - "license name" - pick from list of valid open licences or supply another. See http://opendefinition.org/licenses/ and http://specs.frictionlessdata.io/data-package/#licenses
+    - "license name" - pick from list of valid open licences or supply another. See http://opendefinition.org/licenses/ and http://frictionlessdata.io/specs/data-package/#licenses
     - "license path" - default from licence name, or supply another
     - "license title"  - default from licence name, or supply another
     - Sources
       - "title"
       - "path"
       - "email"
-    - Contributors - see http://specs.frictionlessdata.io/data-package/#contributors
+    - Contributors - see http://frictionlessdata.io/specs/data-package/#contributors
       - "organization" -
       - "title" -
       - "email" -

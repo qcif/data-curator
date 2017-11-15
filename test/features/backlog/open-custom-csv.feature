@@ -8,7 +8,7 @@ Feature: Open an Custom CSV Dialect file
   The data may be stored in a ".tsv", ".csv" or ".txt" file
 
   Custom separated value file formats can be described using a CSV Dialect
-  CSV dialect specification - http://specs.frictionlessdata.io/csv-dialect/#specification
+  CSV dialect specification - http://frictionlessdata.io/specs/csv-dialect/#specification
 
   Use the CSV dialect specified in Table Properties to determine how to open the file and seperate values into the correct columns
 
