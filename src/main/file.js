@@ -122,20 +122,12 @@ function openFile(format) {
 }
 
 ipc.on('openFileIntoTab', (event, arg) => {
-  console.log('received...')
   readFile(arg)
 })
 
 function readFile(filename, format) {
   if (openedFilenameExists(filename)) {
-    Dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
-      type: 'warning',
-      // title is not displayed on screen on macOS
-      title: 'File not opened',
-      message: `The file was not opened.
-You selected a file name that is already used in this Data Package.
-A file may only be opened once.`
-    })
+    showAlreadyOpenedFileDialog()
     return
   }
   Fs.readFile(filename, 'utf-8', function(err, data) {
@@ -145,6 +137,19 @@ A file may only be opened once.`
       createWindowTabWithFormattedDataFile(data, format, filename)
       // enableSave()
     }
+  })
+}
+
+// TODO: consider toggle global var and use with debounce to check when last dialog triggered so don't get too many dialogs for multiple file opens
+function showAlreadyOpenedFileDialog() {
+  console.log('showing dialog...')
+  Dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
+    type: 'warning',
+    // title is not displayed on screen on macOS
+    title: 'File not opened',
+    message: `The file was not opened.
+  You selected a file name that is already used in this Data Package.
+  A file may only be opened once.`
   })
 }
 

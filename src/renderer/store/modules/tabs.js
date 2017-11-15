@@ -72,9 +72,12 @@ const mutations = {
   },
   setActiveTab (state, tabId) {
     state.activeTab = `${tabId}`
+    console.log('state is...')
+    console.log(state)
     // TODO : now that we use activeTitle as global and we can access with activeTab and tabObjects, keeping it in store is redundant - remove.
     state.activeTitle = state.tabObjects[tabId].title
     setActiveGlobal(state.tabObjects[state.activeTab].filename, state.activeTitle)
+    console.log('setting global filenames...')
     resetGlobalFilenames(getters.getTabFilenames(state))
     ipc.send('toggleSaveMenu')
   },

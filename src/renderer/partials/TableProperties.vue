@@ -228,7 +228,7 @@ export default {
         let currentNames = _.values(_.mapValues(this.getHotTabs, function(hotTab) {
           return hotTab.tableProperties ? hotTab.tableProperties.name : ''
         }))
-        let otherNames = _.without(currentNames, value)
+        let otherNames = _.without(currentNames, ...value)
         resolve({
           valid: currentNames.length - otherNames.length <= 1
         })
