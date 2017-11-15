@@ -9,7 +9,7 @@ A short description of the dataset. The first sentence and the first paragraph s
 ### When was the data collected?
 
 - on what day or over what duration was the data collected?
-- consider [adding a temporal extent](http://specs.frictionlessdata.io/data-package/#descriptor) to the tabular data resource
+- consider [adding a temporal extent](http://frictionlessdata.io/specs/data-package/#descriptor) to the tabular data resource
 - how often will the data be updated?
 
 ### Where was the data collected?
