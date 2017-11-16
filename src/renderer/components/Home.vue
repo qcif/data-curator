@@ -127,6 +127,7 @@ import {
   mapGetters
 } from 'vuex'
 import * as Sortable from 'sortablejs/Sortable.js'
+import * as testr from '@/testrxjs.js'
 import {
   addHotContainerListeners,
   loadData
@@ -342,6 +343,7 @@ export default {
       hot.loadData(data)
       hot.updateSettings({colHeaders: headers})
       hot.render()
+      testr.test1.act()
     },
     async validateTable() {
       try {
@@ -574,6 +576,7 @@ export default {
       }
     },
     updateToolbarMenu: function(index) {
+      testr.test1.act()
       if (this.isSideNavToolbarMenu(index)) {
         this.updateToolbarMenuForSideNav(index)
       } else {

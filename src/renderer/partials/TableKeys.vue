@@ -30,9 +30,10 @@ export default {
   },
   asyncComputed: {
     async getAllHotColumnNamesFromActiveHotId() {
-      let tab = this.getActiveTab
-      let hotId = await this.waitForHotIdFromTabId(tab)
-      let activeHotColumns = this.getAllHotColumnNamesFromHotId(hotId)
+      // let tab = this.getActiveTab
+      // let hotId = await this.waitForHotIdFromTabId(tab)
+      // let activeHotColumns = this.getAllHotColumnNamesFromHotId(hotId)
+      let activeHotColumns = []
       return activeHotColumns
     }
   },
