@@ -266,7 +266,8 @@ export default {
       'destroyTabObject',
       'resetPackagePropertiesToObject',
       'resetTablePropertiesToObject',
-      'resetColumnPropertiesToObject'
+      'resetColumnPropertiesToObject',
+      'pushAllColumnsProperty'
     ]),
     closeMessages: function() {
       for (let el of ['main-bottom-panel', 'main-middle-panel']) {
@@ -342,6 +343,16 @@ export default {
       hot.loadData(data)
       hot.updateSettings({colHeaders: headers})
       hot.render()
+      this.updateAllColumnsProperty('name', hot.getColHeader())
+      reselectCurrentCellOrMin()
+    },
+    updateAllColumnsProperty(property, values) {
+      let hotId = HotRegister.getActiveInstance().guid
+      this.pushAllColumnsProperty({
+        hotId: hotId,
+        key: property,
+        values: values
+      })
     },
     async validateTable() {
       try {
