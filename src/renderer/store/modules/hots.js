@@ -96,6 +96,17 @@ const mutations = {
       _.set(state.hotTabs, `${hotId}.tabId`, hotTab.tabId)
     }
   },
+  pushAllColumnsProperty(state, properties) {
+    for (const [index, value] of properties.values.entries()) {
+      let property = {
+        hotId: properties.hotId,
+        columnIndex: index,
+        key: properties.key,
+        value: value
+      }
+      mutations.pushColumnProperty(state, property)
+    }
+  },
   pushColumnProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
     console.log(state.hotTabs)
