@@ -6,11 +6,11 @@
 > Use this section for new feature requests. If you're reporting a problem, delete this section.
 > if relevant include images or hyperlinks to other resources that clarify the feature you're seeking
 
-### Expected Behaviour (for problems)
-> When reporting a problem, describe what should happen
-
-### Current Behaviour
+### Current Behaviour (for problems)
 > When reporting a problem, describe what happens that isn't expected behaviour?
+
+### Expected Behaviour
+> When reporting a problem, describe what should happen
 
 ### Steps to Reproduce
 > When reporting a problem, provide a set of steps so others can reproduce the problem.
@@ -22,5 +22,5 @@
 ### Your Environment
 > Include details about the environment you experienced the problem - this will help us fix the bug quicker.
 
-* Data Curator version 0.Y.Z
-* Operating System and version e.g. macOS High Sierra 10.13.1 or Windows 7
+* Data Curator version: 0.Y.Z
+* Operating System and version: e.g. macOS High Sierra 10.13.1
