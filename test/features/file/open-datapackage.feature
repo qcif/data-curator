@@ -1,9 +1,9 @@
-Feature: Open a Data Package
+Feature: Open a Data Package Zip
   As a User
   I want to open a tabular data package
   So that I can view or edit the data and metadata in the data package
 
-  A Data package is typically stored in a file called datapackage.zip
+  A [Data package](http://frictionlessdata.io/specs/data-package/) is typically stored in a file called datapackage.zip
   The data resources in the package can be stored:
   - at a URL
   - locally within the package
@@ -17,14 +17,9 @@ Feature: Open a Data Package
 
   Open Data Package can be invoked from the Menu
 
-  Data Curator sets 'header' in the CSV Dialect to 'true' and doesn't allow this to be changed. The data package being opened may have 'header' set to 'false'. This would create an inconsistently and would force the user to add a header row to resolve them.
-
   Notes on opening data packages from CKAN:
   - The current CKAN data package extension only exports a data package with data resources available at a URL i.e. the data is not inside the package
-
-  Frictionless Data specification:
-  - http://frictionlessdata.io/specs/data-package/
-  - http://frictionlessdata.io/specs/tabular-data-package/
+  - Data Packages may be provided as .json not .zip files depending on implementation
 
   Scenario: Open a data package
     Given I have opened Data Curator
