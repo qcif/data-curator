@@ -29,13 +29,40 @@ const getters = {
   getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].columnProperties || []
   },
-  getAllHotColumnNamesFromHotId: (state, getters) => (hotId) => {
-    if (!state.hotTabs[hotId].columnProperties) {
-      return
+  // ensure getter fires each time by passing in function
+  getAllHotTablesColumnNames: (state, getters) => () => {
+    console.log('entered get all hot table column names function...')
+    let hotIdColumnNames = {}
+    for (let hotId in state.hotTabs) {
+      console.log(`next hot id is ${hotId}`)
+      let columnProps = state.hotTabs[hotId].columnProperties || []
+      let columnNames = columnProps.map(column => {
+        return column.name
+      })
+      console.log(`names are`)
+      console.log(columnNames)
+      hotIdColumnNames[hotId] = columnNames
     }
-    return state.hotTabs[hotId].columnProperties.map(function(column) {
+    console.log(`hot id column names are...`)
+    console.log(hotIdColumnNames)
+    return hotIdColumnNames
+  },
+  getAllHotColumnNamesFromHotId: (state, getters) => (hotId) => {
+    console.log('triggered get all hot column names...')
+    console.log(`hot id is: ${hotId}`)
+    if (!state.hotTabs[hotId].columnProperties) {
+      state.hotTabs[hotId].columnProperties = []
+      // console.log('not hot columns set. aborting...')
+      // return
+    }
+    let names = state.hotTabs[hotId].columnProperties.map(column => {
+      let name = column.name
+      console.log(`returning column name: ${name}`)
       return column.name
     })
+    console.log(`returning active hot all column names`)
+    console.log(names)
+    return names
   },
   getHotIdFromTabId: (state, getters) => (tabId) => {
     return new Promise((resolve, reject) => {
@@ -106,9 +133,12 @@ const mutations = {
       }
       mutations.pushColumnProperty(state, property)
     }
+    console.log('all push complete')
+    console.log(state.hotTabs)
   },
   pushColumnProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
+    console.log('pushed column property complete')
     console.log(state.hotTabs)
   },
   pushTableProperty(state, property) {
