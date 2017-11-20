@@ -162,6 +162,7 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import 'lodash/lodash.min.js'
 import '../menu.js'
 import {unzipFile} from '@/importPackage.js'
+import {activeHotAllColumnNames} from '@/rxSubject.js'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
@@ -236,7 +237,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId', 'getHotTabs', 'getTabs', 'getTabObjects']),
+    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId', 'getAllHotTablesColumnNames']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -343,8 +344,17 @@ export default {
       hot.loadData(data)
       hot.updateSettings({colHeaders: headers})
       hot.render()
-      this.updateAllColumnsProperty('name', hot.getColHeader())
+      let updatedHeaders = hot.getColHeader()
+      if (!headers) {
+        updatedHeaders = updatedHeaders.map(header => {
+          return ''
+        })
+      }
+      this.updateAllColumnsProperty('name', updatedHeaders)
       reselectCurrentCellOrMin()
+      // do not allow getter to cache as does not seem to pick up change
+      let allHotTablesColumnNames = this.getAllHotTablesColumnNames()
+      activeHotAllColumnNames.next(allHotTablesColumnNames)
     },
     updateAllColumnsProperty(property, values) {
       let hotId = HotRegister.getActiveInstance().guid
@@ -363,16 +373,12 @@ export default {
       }
     },
     storeResetCallback(allProperties) {
-      console.log('all properties are:')
-      console.log(allProperties)
       this.resetPackagePropertiesToObject(allProperties.package)
       this.resetTablePropertiesToObject(allProperties.tables)
       this.resetColumnPropertiesToObject(allProperties.columns)
     },
     importDataPackage: async function(filename) {
       let message = await unzipFile(filename, this.storeResetCallback)
-      console.log(`message is...`)
-      console.log(message)
       this.messagesTitle = message ? 'Import Data Package Error' : 'Import Data Package Success'
       this.messages = message || 'All Properties have been imported.'
       this.messagesType = 'feedback'
