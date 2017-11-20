@@ -5410,9 +5410,9 @@ karma-coverage@^1.1.1:
     minimatch "^3.0.0"
     source-map "^0.5.1"
 
-karma-electron@^5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/karma-electron/-/karma-electron-5.2.1.tgz#7656d9b5574c1444e800968bf02fb341f23e9ab1"
+karma-electron@^5.2.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/karma-electron/-/karma-electron-5.2.2.tgz#bdab1b2ce142fba7d12156d0add6061816b38258"
   dependencies:
     commander "~2.9.0"
     convert-source-map "~1.2.0"
