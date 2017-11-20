@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       formprops: [{
-        label: 'name',
+        label: 'name*',
         tooltipId: 'tooltip-table-name',
         tooltipView: 'tooltipTableName'
       }, {

@@ -66,7 +66,7 @@ export default {
       constraintInputKeys: [],
       activeTabColumnProperties: [],
       formprops: [{
-        label: 'name',
+        label: 'name*',
         tooltipId: 'tooltip-column-name',
         tooltipView: 'tooltipColumnName',
         isDisabled: true
