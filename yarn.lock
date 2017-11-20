@@ -9280,9 +9280,9 @@ vue-template-compiler@^2.0.0-alpha.8:
     de-indent "^1.0.2"
     he "^1.1.0"
 
-vue-template-compiler@^2.5.2:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.5.2.tgz#6f198ebc677b8f804315cd33b91e849315ae7177"
+vue-template-compiler@^2.5.6:
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.5.6.tgz#93f062a230a4437ef16064f1eef9cf3797d34bb4"
   dependencies:
     de-indent "^1.0.2"
     he "^1.1.0"
