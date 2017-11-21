@@ -1,15 +1,15 @@
 <template>
 <div>
   <div id="primaryKeys">
-    <component is="tablekeys" :waitForHotIdFromTabId="waitForHotIdFromTabId" :propertyName="propertyName" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty"/>
+    <component is="tableheaderkeys" :waitForHotIdFromTabId="waitForHotIdFromTabId" :propertyName="propertyName" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty"/>
   </div>
 </div>
 </template>
 <script>
-import tablekeys from '../partials/TableKeys'
+import tableheaderkeys from '../partials/TableHeaderKeys'
 export default {
   components: {
-    tablekeys
+    tableheaderkeys
   },
   name: 'primarykeys',
   props: ['waitForHotIdFromTabId', 'setProperty', 'getProperty', 'getPropertyGivenHotId', 'propertyName']
