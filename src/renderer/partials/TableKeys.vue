@@ -32,7 +32,7 @@ Vue.use(VueRx, {
 })
 export default {
   name: 'licenses',
-  props: ['waitForHotIdFromTabId', 'setProperty', 'getProperty', 'getPropertyGivenHotId'],
+  props: ['waitForHotIdFromTabId', 'setProperty', 'getProperty', 'getPropertyGivenHotId', 'propertyName'],
   data() {
     return {
       selectedKeys: [],
@@ -41,7 +41,7 @@ export default {
   },
   watch: {
     selectedKeys: function(values) {
-      this.setProperty('primaryKeys', values)
+      this.setProperty(this.propertyName, values)
     },
     getActiveTab: function() {
       this.initTableKeys()
@@ -65,7 +65,7 @@ export default {
       this.activeNames = _.without(names, '')
     },
     updateSelectedKeys: function(hotId) {
-      let value = this.getPropertyGivenHotId('primaryKeys', hotId) || []
+      let value = this.getPropertyGivenHotId(this.propertyName, hotId) || []
       this.selectedKeys = value
     }
   },
