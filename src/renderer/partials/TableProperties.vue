@@ -7,7 +7,7 @@
         <component :is="formprop.tooltipView"/>
         <input v-if="formprop.key === 'missingValue'" :value="missingValues" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
         <!-- <input v-if="formprop.key === 'primaryKeys'" :value="primaryKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" /> -->
-          <component v-if="formprop.key === 'primaryKeys'" is="tablekeys" :waitForHotIdFromTabId="waitForHotIdFromTabId" propertyName="primaryKeys" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty"/>
+          <component v-if="formprop.key === 'primaryKeys'" is="primarykeys" :waitForHotIdFromTabId="waitForHotIdFromTabId" propertyName="primaryKeys" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty"/>
         <!-- <input v-if="formprop.key === 'foreignKeys'" :value="foreignKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" /> -->
         <component v-else-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
         <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
@@ -30,7 +30,7 @@ import Vue from 'vue'
 import AsyncComputed from 'vue-async-computed'
 import licenses from '../partials/Licenses'
 import sources from '../partials/Sources'
-import tablekeys from '../partials/TableKeys'
+import primarykeys from '../partials/PrimaryKeys'
 import {
   HotRegister
 } from '../hot.js'
@@ -46,7 +46,7 @@ export default {
   components: {
     licenses,
     sources,
-    tablekeys
+    primarykeys
   },
   data() {
     return {

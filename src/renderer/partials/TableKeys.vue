@@ -1,11 +1,7 @@
 <template>
-<div>
-  <div id="tableKeys">
-    <select v-model="selectedKeys" class="form-control input-sm col-sm-9" multiple>
-      <option v-for="columnName in activeNames" :value="columnName">{{columnName}}</option>
-    </select>
-  </div>
-</div>
+  <select v-model="selectedKeys" class="form-control input-sm col-sm-9" multiple>
+    <option v-for="columnName in activeNames" :value="columnName">{{columnName}}</option>
+  </select>
 </template>
 <script>
 import {
@@ -83,6 +79,3 @@ export default {
   }
 }
 </script>
-<style lang="styl" scoped>
-@import '~static/css/licenses'
-</style>
