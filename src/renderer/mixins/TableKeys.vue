@@ -1,33 +1,20 @@
-<template>
-  <select v-model="selectedKeys" class="form-control input-sm col-sm-9" multiple>
-    <option v-for="columnName in activeNames" :value="columnName">{{columnName}}</option>
-  </select>
-</template>
 <script>
 import {
   mapMutations,
   mapState,
   mapGetters
 } from 'vuex'
-// import {
-//   HotRegister
-// } from '../hot.js'
-// import AsyncComputed from 'vue-async-computed'
 import { Subscription } from 'rxjs/Subscription'
 import { Subject } from 'rxjs/Subject'
-// import { startWith } from 'rxjs/add/operator/startWith'
-// import { pluck } from 'rxjs/add/operator/pluck'
-// import Rx from 'rxjs/Rx'
 import VueRx from 'vue-rx'
 import Vue from 'vue'
 import {activeHotAllColumnNames} from '@/rxSubject.js'
-// Vue.use(AsyncComputed)
 Vue.use(VueRx, {
   Subscription,
   Subject
 })
 export default {
-  name: 'licenses',
+  name: 'tablekeys',
   props: ['waitForHotIdFromTabId', 'setProperty', 'getProperty', 'getPropertyGivenHotId', 'propertyName'],
   data() {
     return {
@@ -40,7 +27,7 @@ export default {
       this.setProperty(this.propertyName, values)
     },
     getActiveTab: function() {
-      this.initTableKeys()
+      this.initTableHeaderKeys()
     }
   },
   computed: {
@@ -53,7 +40,7 @@ export default {
       let activeId = await this.waitForHotIdFromTabId(tab)
       return activeId
     },
-    initTableKeys: function() {
+    initTableHeaderKeys: function() {
       let allHotTablesColumnNames = this.getAllHotTablesColumnNames()
       activeHotAllColumnNames.next(allHotTablesColumnNames)
     },
@@ -75,7 +62,7 @@ export default {
       vueUpdateActiveNames(values)
       vueUpdateSelectedKeys(id)
     })
-    this.initTableKeys()
+    this.initTableHeaderKeys()
   }
 }
 </script>
