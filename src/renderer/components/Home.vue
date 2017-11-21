@@ -334,6 +334,8 @@ export default {
         if (data.length > 1) {
           headers = data[0]
           data = _.drop(data)
+          this.messages = false
+          this.reportFeedback()
         } else {
           this.messagesTitle = 'Headers Error'
           this.messages = 'At least 2 rows are required before a header row can be set.'
