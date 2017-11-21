@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div id="tablekeys">
+  <div id="tableKeys">
     <select v-model="selectedKeys" class="form-control input-sm col-sm-9" multiple>
       <option v-for="columnName in activeNames" :value="columnName">{{columnName}}</option>
     </select>
@@ -32,7 +32,7 @@ Vue.use(VueRx, {
 })
 export default {
   name: 'licenses',
-  props: ['waitForHotIdFromTabId', 'setProperty', 'getProperty'],
+  props: ['waitForHotIdFromTabId', 'setProperty', 'getProperty', 'getPropertyGivenHotId'],
   data() {
     return {
       selectedKeys: [],
@@ -63,16 +63,21 @@ export default {
     },
     updateActiveNames: function(names) {
       this.activeNames = _.without(names, '')
+    },
+    updateSelectedKeys: function(hotId) {
+      let value = this.getPropertyGivenHotId('primaryKeys', hotId) || []
+      this.selectedKeys = value
     }
   },
   mounted: function() {
-    this.selectedKeys = this.getProperty('primaryKeys') || []
     let vueActiveId = this.initActiveId
     let vueUpdateActiveNames = this.updateActiveNames
+    let vueUpdateSelectedKeys = this.updateSelectedKeys
     this.$subscribeTo(activeHotAllColumnNames, async function(allValues) {
       let id = await vueActiveId()
       let values = allValues[id]
       vueUpdateActiveNames(values)
+      vueUpdateSelectedKeys(id)
     })
     this.initTableKeys()
   }
