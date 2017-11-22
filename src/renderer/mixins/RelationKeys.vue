@@ -21,16 +21,7 @@ Vue.use(VueRx, {
 export default {
   name: 'relationkeys',
   props: ['waitForHotIdFromTabId', 'setProperty', 'getProperty', 'getPropertyGivenHotId', 'propertyName'],
-  // data() {
-  //   return {
-  //     selectedKeys: [],
-  //     activeNames: []
-  //   }
-  // },
   watch: {
-    // selectedKeys: function(values) {
-    //   this.setProperty(this.propertyName, values)
-    // },
     getActiveTab: function() {
       this.initTableHeaderKeys()
     }
@@ -40,11 +31,11 @@ export default {
   },
   methods: {
     ...mapMutations(['pushAllColumnsProperty']),
-    // initActiveId: async function() {
-    //   let tab = this.getActiveTab
-    //   let activeId = this.waitForHotIdFromTabId(tab)
-    //   return activeId
-    // },
+    initActiveId: async function() {
+      let tab = this.getActiveTab
+      let activeId = this.waitForHotIdFromTabId(tab)
+      return activeId
+    },
     initTableHeaderKeys: function() {
       let allHotTablesColumnNames = this.getAllHotTablesColumnNames()
       activeHotAllColumnNames.next(allHotTablesColumnNames)
@@ -58,21 +49,20 @@ export default {
     // }
     updateSubscriptions: function(names, id) {}
   },
-  subscriptions() {
-    return {
-      vueActiveId: this.waitForHotIdFromTabId()
-      // .startWith(HotRegister.getActiveInstance().guid)
-    }
-  },
+  // subscriptions() {
+  //   return {
+  //     vueActiveId: this.waitForHotIdFromTabId()
+  //   }
+  // },
   mounted: function() {
     // let vueActiveId
-    // let vueActiveId = this.initActiveId
+    let vueActiveId = this.initActiveId
     // let vueUpdateActiveNames = this.updateActiveNames
     // let vueUpdateSelectedKeys = this.updateSelectedKeys
     let vueUpdateSubscriptions = this.updateSubscriptions
     this.$subscribeTo(activeHotAllColumnNames, async function(allNames) {
-      // let id = await vueActiveId()
-      let id = this.vueActiveId
+      let id = await vueActiveId()
+      // let id = this.vueActiveId
       console.log('id is:')
       console.log(id)
       let names = allNames[id]
