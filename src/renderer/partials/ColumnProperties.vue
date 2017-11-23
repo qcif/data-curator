@@ -187,26 +187,25 @@ export default {
       this.pushColumnProperty(object)
     },
     getProperty: function(key) {
-      console.log(`getting key ${key}`)
-      console.log(`cindex is ${this.cIndex}`)
+      // console.log(`getting key ${key}`)
+      // console.log(`cindex is ${this.cIndex}`)
       let columnProperties = this.activeTabColumnProperties[this.cIndex] || {}
-      console.log('column properties are:')
-      console.log(columnProperties)
+      // console.log('column properties are:')
+      // console.log(columnProperties)
       let value = columnProperties[key]
-      console.log(`value of ${key} is:`)
-      console.log(value)
-      console.log(`got column property key value: ${key}: ${value}`)
-      // reselectCurrentCellOrMin()
+      // console.log(`value of ${key} is:`)
+      // console.log(value)
+      // console.log(`got column property key value: ${key}: ${value}`)
       return value
     },
     // must not cache to ensure view always updates on selection
     getPropertyType() {
-      console.log('getting property type')
+      // console.log('getting property type')
       let type = this.getProperty('type')
-      console.log(`type is ${type}`)
+      // console.log(`type is ${type}`)
       if (!type) {
         type = 'any'
-        console.log('setting property type')
+        // console.log('setting property type')
         // this.setPropertyType(type)
       }
       this.updateTypeDependentProperties(type)
@@ -214,7 +213,7 @@ export default {
     },
     setPropertyType: function(value) {
       this.setProperty('type', value)
-      // this.updateTypeDependentProperties(value)
+      this.updateTypeDependentProperties(value)
     },
     updateTypeDependentProperties: function(value) {
       this.formatValues = this.formats[value]
@@ -296,36 +295,7 @@ export default {
       }
       return ''
     },
-    // getAllColumnsProperties: async function(tab) {
-    //   console.log('firing get all column properties method...')
-    //   console.log(`tab is ${tab}`)
-    //   let hotId = await this.waitForHotIdFromTabId(tab)
-    //   console.log(`hot id in all column properties is ${hotId}`)
-    //   let result = this.getAllHotColumnPropertiesFromHotId(hotId)
-    //   return result
-    // },
-    // getAllColumnsPropertiesRx: async function() {
-    //   console.log('firing get all column properties method...')
-    //   // console.log(`tab is ${tab}`)
-    //   let hotId = await this.waitForHotIdSubject()
-    //   console.log(`hot id in all column properties is ${hotId}`)
-    //   let result = this.getAllHotColumnPropertiesFromHotId(hotId)
-    //   return result
-    // },
-    // initColumnProperties: async function(tab) {
-    //   let columnProperties = await this.getAllColumnsProperties(tab)
-    //   console.log('received all column properties...')
-    //   console.log(columnProperties)
-    //   this.activeTabColumnProperties = columnProperties
-    // }
-    // initColumnPropertiesRx: async function() {
-    //   let columnProperties = await this.getAllColumnsPropertiesRx(tab)
-    //   console.log('received all column properties...')
-    //   console.log(columnProperties)
-    //   this.activeTabColumnProperties = columnProperties
-    // }
     updateActiveTabColumnProperties: function(columnProperties) {
-      // reselectCurrentCellOrMin()
       this.activeTabColumnProperties = columnProperties
     }
   },
@@ -373,25 +343,12 @@ export default {
       }
     }
   },
-  watch: {
-    getActiveTab: function(tab) {
-      console.log('watched next tab tick...')
-      // console.log('watch received active tab change')
-      // // this.initSources(tab)
-      // this.initColumnProperties(tab)
-      this.$nextTick(function() {
-        console.log('next tab tick...')
-      })
-    }
-  },
   mounted: function() {
     let vueUpdateActiveTabColumnProperties = this.updateActiveTabColumnProperties
     let vueGetAllHotColumnPropertiesFromHotId = this.getAllHotColumnPropertiesFromHotId
-    let vueReselectCurrentCellOrMin = reselectCurrentCellOrMin
     this.$subscribeTo(hotIdRxFromTab, function(nextHotId) {
       let columnProperties = vueGetAllHotColumnPropertiesFromHotId(nextHotId)
       vueUpdateActiveTabColumnProperties(columnProperties)
-      // reselectCurrentCellOrMin()
     })
     onNextHotIdRx(this.getHotIdFromTabId)
   }
