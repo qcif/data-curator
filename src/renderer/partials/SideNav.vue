@@ -18,7 +18,6 @@ import {
   HotRegister
 } from '../hot.js'
 import ColumnToolTip from '../mixins/ColumnTooltip'
-import {onNextHotIdRx} from '@/rxSubject.js'
 export default {
   name: 'sidenav',
   props: ['sideNavFormHeight', 'adjustSidenavFormHeight'],
@@ -59,9 +58,6 @@ export default {
       }
     },
     // convenience method
-    // waitForHotIdSubject: function() {
-    //   onNextHotIdRx(this.getHotIdFromTabId)
-    // },
     waitForHotIdFromTabId: async function(tabId) {
       try {
         let hotId = await this.getHotIdFromTabId(tabId)
