@@ -18,7 +18,7 @@ import {
   HotRegister
 } from '../hot.js'
 import ColumnToolTip from '../mixins/ColumnTooltip'
-// import {activeRxTab} from '@/rxSubject.js'
+import {onNextHotIdRx} from '@/rxSubject.js'
 export default {
   name: 'sidenav',
   props: ['sideNavFormHeight', 'adjustSidenavFormHeight'],
@@ -60,18 +60,7 @@ export default {
     },
     // convenience method
     // waitForHotIdSubject: function() {
-    //   try {
-    //     return activeRxTab.subscribe(function(activeTab) {
-    //       let promise = this.getHotIdFromTabId(activeTab)
-    //       let subject = Rx.Subject.fromPromise(promise)
-    //       return subject
-    //     })
-    //   } catch (err) {
-    //     if (err) {
-    //       console.log('Problem with promise of hot id')
-    //       console.log(err)
-    //     }
-    //   }
+    //   onNextHotIdRx(this.getHotIdFromTabId)
     // },
     waitForHotIdFromTabId: async function(tabId) {
       try {

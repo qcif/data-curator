@@ -353,7 +353,7 @@ export default {
         })
       }
       this.updateAllColumnsProperty('name', updatedHeaders)
-      reselectCurrentCellOrMin()
+      // reselectCurrentCellOrMin()
       // do not allow getter to cache as does not seem to pick up change
       let allHotTablesColumnNames = this.getAllHotTablesColumnNames()
       activeHotAllColumnNames.next(allHotTablesColumnNames)

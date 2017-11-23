@@ -32,7 +32,7 @@
             </div>
           </div>
         </div>
-        <input v-else-if="formprop.label === 'name'" :disabled="formprop.isDisabled" :value="getNameProperty()" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
+        <input v-else-if="formprop.label === 'name'" :disabled="formprop.isDisabled" :value="getNameProperty" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
         <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
       </div>
     </div>
@@ -46,11 +46,22 @@ import {
   mapState,
   mapGetters
 } from 'vuex'
+import { Subscription } from 'rxjs/Subscription'
+import { Subject } from 'rxjs/Subject'
+// import {startWith} from 'rxjs/add/operator/startWith.js'
+import {onNextHotIdRx, hotIdRxFromTab, activeRxTab} from '@/rxSubject.js'
+import VueRx from 'vue-rx'
+import Vue from 'vue'
 import {
   HotRegister,
   reselectCurrentCellOrMin
-} from '../hot.js'
+} from '@/hot.js'
 import ColumnTooltip from '../mixins/ColumnTooltip'
+Vue.use(VueRx, {
+  Subscription,
+  Subject
+  // startWith
+})
 export default {
   extends: SideNav,
   name: 'column',
@@ -65,46 +76,47 @@ export default {
       constraintInputKeyValues: {},
       constraintInputKeys: [],
       activeTabColumnProperties: [],
-      formprops: [{
-        label: 'name',
-        tooltipId: 'tooltip-column-name',
-        tooltipView: 'tooltipColumnName',
-        isDisabled: true
-      },
-      {
-        label: 'title',
-        tooltipId: 'tooltip-column-title',
-        tooltipView: 'tooltipColumnTitle'
-      },
-      {
-        label: 'description',
-        tooltipId: 'tooltip-column-description',
-        tooltipView: 'tooltipColumnDescription'
-      },
-      {
-        label: 'type',
-        tooltipId: 'tooltip-column-type',
-        tooltipView: 'tooltipColumnType',
-        type: 'dropdown'
-      },
-      {
-        label: 'format',
-        tooltipId: 'tooltip-column-format',
-        tooltipView: 'tooltipColumnFormat',
-        type: 'dropdown'
-      },
-      {
-        label: 'constraints',
-        tooltipId: 'tooltip-column-constraints',
-        tooltipView: 'tooltipColumnConstraints',
-        type: 'checkbox'
-      },
-      {
-        label: 'rdfType',
-        tooltipId: 'tooltip-column-rdfType',
-        tooltipView: 'tooltipColumnRdfType',
-        type: 'url'
-      }
+      formprops: [
+      //   {
+      //   label: 'name',
+      //   tooltipId: 'tooltip-column-name',
+      //   tooltipView: 'tooltipColumnName',
+      //   isDisabled: true
+      // },
+      // {
+      //   label: 'title',
+      //   tooltipId: 'tooltip-column-title',
+      //   tooltipView: 'tooltipColumnTitle'
+      // },
+      // {
+      //   label: 'description',
+      //   tooltipId: 'tooltip-column-description',
+      //   tooltipView: 'tooltipColumnDescription'
+      // },
+        {
+          label: 'type',
+          tooltipId: 'tooltip-column-type',
+          tooltipView: 'tooltipColumnType',
+          type: 'dropdown'
+        },
+        // {
+        //   label: 'format',
+        //   tooltipId: 'tooltip-column-format',
+        //   tooltipView: 'tooltipColumnFormat',
+        //   type: 'dropdown'
+        // }
+        {
+          label: 'constraints',
+          tooltipId: 'tooltip-column-constraints',
+          tooltipView: 'tooltipColumnConstraints',
+          type: 'checkbox'
+        }
+      // {
+      //   label: 'rdfType',
+      //   tooltipId: 'tooltip-column-rdfType',
+      //   tooltipView: 'tooltipColumnRdfType',
+      //   type: 'url'
+      // }
       ],
       formats: {
         'string': ['email', 'uri', 'binary', 'uuid', 'default'],
@@ -164,8 +176,8 @@ export default {
       // object.key = key
       // object.value = value
       // TODO: change to use method once tested object refs ok
-      const hotId = HotRegister.getActiveInstance().guid
-      const currentColumnIndex = this.cIndex
+      let hotId = HotRegister.getActiveInstance().guid
+      let currentColumnIndex = this.cIndex
       let object = {
         'hotId': hotId,
         'columnIndex': currentColumnIndex,
@@ -174,37 +186,35 @@ export default {
       }
       this.pushColumnProperty(object)
     },
-    getNameProperty: function() {
-      const headers = HotRegister.getActiveInstance().getColHeader()
-      console.log(headers)
-      let value = ''
-      if (headers) {
-        // each column header may be set to false
-        value = headers[this.cIndex] ? headers[this.cIndex] : ''
-        this.setProperty('name', value)
-      }
-      // console.log(`got column property key value: ${key}: ${value}`)
-      return value
-    },
     getProperty: function(key) {
+      console.log(`getting key ${key}`)
+      console.log(`cindex is ${this.cIndex}`)
       let columnProperties = this.activeTabColumnProperties[this.cIndex] || {}
+      console.log('column properties are:')
+      console.log(columnProperties)
       let value = columnProperties[key]
-      // console.log(`got column property key value: ${key}: ${value}`)
+      console.log(`value of ${key} is:`)
+      console.log(value)
+      console.log(`got column property key value: ${key}: ${value}`)
+      // reselectCurrentCellOrMin()
       return value
     },
     // must not cache to ensure view always updates on selection
     getPropertyType() {
+      console.log('getting property type')
       let type = this.getProperty('type')
+      console.log(`type is ${type}`)
       if (!type) {
         type = 'any'
-        this.setPropertyType(type)
+        console.log('setting property type')
+        // this.setPropertyType(type)
       }
       this.updateTypeDependentProperties(type)
       return type
     },
     setPropertyType: function(value) {
       this.setProperty('type', value)
-      this.updateTypeDependentProperties(value)
+      // this.updateTypeDependentProperties(value)
     },
     updateTypeDependentProperties: function(value) {
       this.formatValues = this.formats[value]
@@ -252,9 +262,10 @@ export default {
       this.$forceUpdate()
     },
     getConstraintValue: function(key) {
+      console.log('getting property constraint value')
       let property = this.getProperty('constraints')
       if (!property) {
-        this.setProperty('constraints', {})
+        // this.setProperty('constraints', {})
         property = {}
       }
       return property[key]
@@ -285,17 +296,36 @@ export default {
       }
       return ''
     },
-    getAllColumnsProperties: async function(tab) {
-      console.log('firing get all column properties method...')
-      console.log(`tab is ${tab}`)
-      let hotId = await this.waitForHotIdFromTabId(tab)
-      console.log(`hot id in all column properties is ${hotId}`)
-      return this.getAllHotColumnPropertiesFromHotId(hotId)
-    },
-    initColumnProperties: async function(tab) {
-      let columnProperties = await this.getAllColumnsProperties(tab)
-      console.log('received all column properties...')
-      console.log(columnProperties)
+    // getAllColumnsProperties: async function(tab) {
+    //   console.log('firing get all column properties method...')
+    //   console.log(`tab is ${tab}`)
+    //   let hotId = await this.waitForHotIdFromTabId(tab)
+    //   console.log(`hot id in all column properties is ${hotId}`)
+    //   let result = this.getAllHotColumnPropertiesFromHotId(hotId)
+    //   return result
+    // },
+    // getAllColumnsPropertiesRx: async function() {
+    //   console.log('firing get all column properties method...')
+    //   // console.log(`tab is ${tab}`)
+    //   let hotId = await this.waitForHotIdSubject()
+    //   console.log(`hot id in all column properties is ${hotId}`)
+    //   let result = this.getAllHotColumnPropertiesFromHotId(hotId)
+    //   return result
+    // },
+    // initColumnProperties: async function(tab) {
+    //   let columnProperties = await this.getAllColumnsProperties(tab)
+    //   console.log('received all column properties...')
+    //   console.log(columnProperties)
+    //   this.activeTabColumnProperties = columnProperties
+    // }
+    // initColumnPropertiesRx: async function() {
+    //   let columnProperties = await this.getAllColumnsPropertiesRx(tab)
+    //   console.log('received all column properties...')
+    //   console.log(columnProperties)
+    //   this.activeTabColumnProperties = columnProperties
+    // }
+    updateActiveTabColumnProperties: function(columnProperties) {
+      // reselectCurrentCellOrMin()
       this.activeTabColumnProperties = columnProperties
     }
   },
@@ -311,6 +341,20 @@ export default {
         'columnIndex': currentColumnIndex
       }
       return object
+    },
+    getNameProperty() {
+      // console.log('entered get name property...')
+      // let value = ''
+      const headers = HotRegister.getActiveInstance().getColHeader()
+      // console.log(headers)
+      let value = ''
+      if (headers) {
+        // each column header may be set to false
+        value = headers[this.cIndex] ? headers[this.cIndex] : ''
+        this.setProperty('name', value)
+      }
+      // console.log(`got column property key value: ${key}: ${value}`)
+      return value
     },
     isDropdownFormatDisabled() {
       return this.formatValues.length < 2
@@ -331,20 +375,25 @@ export default {
   },
   watch: {
     getActiveTab: function(tab) {
-      console.log('watch received active tab change')
-      // this.initSources(tab)
-      this.initColumnProperties(tab)
+      console.log('watched next tab tick...')
+      // console.log('watch received active tab change')
+      // // this.initSources(tab)
+      // this.initColumnProperties(tab)
       this.$nextTick(function() {
-        reselectCurrentCellOrMin()
+        console.log('next tab tick...')
       })
     }
   },
   mounted: function() {
-    let tab = this.getActiveTab
-    this.initColumnProperties(tab)
-    this.$nextTick(function() {
-      reselectCurrentCellOrMin()
+    let vueUpdateActiveTabColumnProperties = this.updateActiveTabColumnProperties
+    let vueGetAllHotColumnPropertiesFromHotId = this.getAllHotColumnPropertiesFromHotId
+    let vueReselectCurrentCellOrMin = reselectCurrentCellOrMin
+    this.$subscribeTo(hotIdRxFromTab, function(nextHotId) {
+      let columnProperties = vueGetAllHotColumnPropertiesFromHotId(nextHotId)
+      vueUpdateActiveTabColumnProperties(columnProperties)
+      // reselectCurrentCellOrMin()
     })
+    onNextHotIdRx(this.getHotIdFromTabId)
   }
 }
 </script>
