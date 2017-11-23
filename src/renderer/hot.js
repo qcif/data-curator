@@ -130,14 +130,19 @@ export function getCurrentColumnIndexOrMax() {
 }
 
 export function reselectCurrentCellOrMin() {
+  console.log('entered reselect current cell or min')
   let activeHot = HotRegister.getActiveInstance()
+  console.log(`active hot is ${activeHot.guid}`)
   let currentCell = activeHot.getSelected()
+  console.log(activeHot.getSelected())
   if (!currentCell) {
     activeHot.selectCell(0, 0)
-    currentCell = activeHot.getSelected()
+    // currentCell = activeHot.getSelected()
   } else {
     activeHot.selectCell(currentCell[0], currentCell[1])
   }
+  console.log(activeHot.getSelected())
+  activeHot.render()
 }
 
 export function reselectCurrentCellOrMax() {
