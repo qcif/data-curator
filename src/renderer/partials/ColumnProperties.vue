@@ -48,7 +48,6 @@ import {
 } from 'vuex'
 import { Subscription } from 'rxjs/Subscription'
 import { Subject } from 'rxjs/Subject'
-// import {startWith} from 'rxjs/add/operator/startWith.js'
 import {onNextHotIdRx, hotIdRxFromTab, activeRxTab} from '@/rxSubject.js'
 import VueRx from 'vue-rx'
 import Vue from 'vue'
@@ -60,7 +59,6 @@ import ColumnTooltip from '../mixins/ColumnTooltip'
 Vue.use(VueRx, {
   Subscription,
   Subject
-  // startWith
 })
 export default {
   extends: SideNav,
@@ -76,47 +74,46 @@ export default {
       constraintInputKeyValues: {},
       constraintInputKeys: [],
       activeTabColumnProperties: [],
-      formprops: [
-      //   {
-      //   label: 'name',
-      //   tooltipId: 'tooltip-column-name',
-      //   tooltipView: 'tooltipColumnName',
-      //   isDisabled: true
-      // },
-      // {
-      //   label: 'title',
-      //   tooltipId: 'tooltip-column-title',
-      //   tooltipView: 'tooltipColumnTitle'
-      // },
-      // {
-      //   label: 'description',
-      //   tooltipId: 'tooltip-column-description',
-      //   tooltipView: 'tooltipColumnDescription'
-      // },
-        {
-          label: 'type',
-          tooltipId: 'tooltip-column-type',
-          tooltipView: 'tooltipColumnType',
-          type: 'dropdown'
-        },
-        // {
-        //   label: 'format',
-        //   tooltipId: 'tooltip-column-format',
-        //   tooltipView: 'tooltipColumnFormat',
-        //   type: 'dropdown'
-        // }
-        {
-          label: 'constraints',
-          tooltipId: 'tooltip-column-constraints',
-          tooltipView: 'tooltipColumnConstraints',
-          type: 'checkbox'
-        }
-      // {
-      //   label: 'rdfType',
-      //   tooltipId: 'tooltip-column-rdfType',
-      //   tooltipView: 'tooltipColumnRdfType',
-      //   type: 'url'
-      // }
+      formprops: [{
+        label: 'name',
+        tooltipId: 'tooltip-column-name',
+        tooltipView: 'tooltipColumnName',
+        isDisabled: true
+      },
+      {
+        label: 'title',
+        tooltipId: 'tooltip-column-title',
+        tooltipView: 'tooltipColumnTitle'
+      },
+      {
+        label: 'description',
+        tooltipId: 'tooltip-column-description',
+        tooltipView: 'tooltipColumnDescription'
+      },
+      {
+        label: 'type',
+        tooltipId: 'tooltip-column-type',
+        tooltipView: 'tooltipColumnType',
+        type: 'dropdown'
+      },
+      {
+        label: 'format',
+        tooltipId: 'tooltip-column-format',
+        tooltipView: 'tooltipColumnFormat',
+        type: 'dropdown'
+      },
+      {
+        label: 'constraints',
+        tooltipId: 'tooltip-column-constraints',
+        tooltipView: 'tooltipColumnConstraints',
+        type: 'checkbox'
+      },
+      {
+        label: 'rdfType',
+        tooltipId: 'tooltip-column-rdfType',
+        tooltipView: 'tooltipColumnRdfType',
+        type: 'url'
+      }
       ],
       formats: {
         'string': ['email', 'uri', 'binary', 'uuid', 'default'],
@@ -187,26 +184,16 @@ export default {
       this.pushColumnProperty(object)
     },
     getProperty: function(key) {
-      // console.log(`getting key ${key}`)
-      // console.log(`cindex is ${this.cIndex}`)
       let columnProperties = this.activeTabColumnProperties[this.cIndex] || {}
-      // console.log('column properties are:')
-      // console.log(columnProperties)
       let value = columnProperties[key]
-      // console.log(`value of ${key} is:`)
-      // console.log(value)
       // console.log(`got column property key value: ${key}: ${value}`)
       return value
     },
     // must not cache to ensure view always updates on selection
     getPropertyType() {
-      // console.log('getting property type')
       let type = this.getProperty('type')
-      // console.log(`type is ${type}`)
       if (!type) {
         type = 'any'
-        // console.log('setting property type')
-        // this.setPropertyType(type)
       }
       this.updateTypeDependentProperties(type)
       return type
@@ -261,10 +248,8 @@ export default {
       this.$forceUpdate()
     },
     getConstraintValue: function(key) {
-      console.log('getting property constraint value')
       let property = this.getProperty('constraints')
       if (!property) {
-        // this.setProperty('constraints', {})
         property = {}
       }
       return property[key]

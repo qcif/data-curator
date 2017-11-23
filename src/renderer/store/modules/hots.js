@@ -1,5 +1,3 @@
-import {onNextHotIdRx} from '@/rxSubject.js'
-
 const state = {
   hotTabs: {},
   packageProperties: {},
@@ -29,15 +27,8 @@ const getters = {
     return state.hotTabs
   },
   getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
-    console.log(`returning all hot column properties for ${hotId}`)
     return state.hotTabs[hotId].columnProperties || []
   },
-  // getAllHotColumnPropertiesFromHotIdRx: state => {
-  //   return onNextHotIdRx.subscribe(function(hotId) {
-  //     console.log(`returning all hot column properties for ${hotId}`)
-  //     return Observable.from(state.hotTabs[hotId].columnProperties || [])
-  //   })
-  // },
   // ensure getter fires each time by passing in function
   getAllHotTablesColumnNames: (state, getters) => () => {
     console.log('entered get all hot table column names function...')
@@ -76,17 +67,12 @@ const getters = {
   getHotIdFromTabId: (state, getters) => (tabId) => {
     return new Promise((resolve, reject) => {
       let hotId = _.findKey(state.hotTabs, {tabId: tabId})
-      console.log('promise of hot id...')
-      console.log(hotId)
       if (!hotId) {
-        console.log('there is no hot id...')
         // There is a short render wait in home page, so if hotId not first returned, just wait and try again
         _.delay(function(tabId) {
-          console.log('resolving hot id...')
           resolve(_.findKey(state.hotTabs, {tabId: tabId}))
         }, 10, tabId)
       } else {
-        console.log('resolving hot id for first time')
         resolve(hotId)
       }
     })
@@ -151,8 +137,6 @@ const mutations = {
     console.log(state.hotTabs)
   },
   pushColumnProperty(state, property) {
-    console.log(`pushing column property`)
-    console.log(property)
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
     console.log('pushed column property complete')
     console.log(state.hotTabs)
