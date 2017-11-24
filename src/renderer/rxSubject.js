@@ -3,8 +3,11 @@
 import Rx from 'rxjs/Rx'
 
 let activeHotAllColumnNames = new Rx.Subject()
+let activeTabColumnProperties = new Rx.Subject()
 let activeRxTab = new Rx.Subject()
+// let activeRxHotId = new Rx.Subject()
 let hotIdRxFromTab = new Rx.Subject()
+let propertyType = new Rx.Subject()
 
 export function onNextHotIdRx(hotIdFunction) {
   activeRxTab.subscribe(function(activeTab) {
@@ -23,5 +26,7 @@ export function onNextSubjectFromPromise(subject, promise) {
 export {
   activeHotAllColumnNames,
   activeRxTab,
-  hotIdRxFromTab
+  hotIdRxFromTab,
+  propertyType,
+  activeTabColumnProperties
 }
