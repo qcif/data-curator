@@ -8,7 +8,7 @@ const tableFields = ['encoding', 'format', 'mediatype', 'missingValues', 'name',
 const packageFields = ['description', 'id', 'licenses', 'name', 'profile', 'sources', 'title', 'version']
 const columnFields = ['constraints', 'format', 'name', 'type', 'title', 'description', 'rdfType']
 
-function getHotColumnPropertiesFromPropertyObject(property) {
+export function getHotColumnPropertiesFromPropertyObject(property) {
   let allHotColumnProperties = state.hotTabs[property.hotId].columnProperties
   if (!allHotColumnProperties) {
     mutations.resetAllColumnPropertiesForHotId(state, property.hotId)
@@ -26,7 +26,16 @@ const getters = {
   getHotTabs: state => {
     return state.hotTabs
   },
+  // getColumnTypePropertiesFromHotId: (state, getters) => (hotId) => {
+  //   let allColumnProperties = state.hotTabs[hotId].columnProperties || []
+  //   let typeProperties = allColumnProperties.map(function(nextColumnProperties) {
+  //     return nextColumnProperties.type
+  //   })
+  //   return typeProperties
+  // },
   getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
+    console.log('entered getAllHotColumnPropertiesFromHotId')
+    console.log(state.hotTabs)
     return state.hotTabs[hotId].columnProperties || []
   },
   // ensure getter fires each time by passing in function
@@ -138,8 +147,8 @@ const mutations = {
   },
   pushColumnProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
-    console.log('pushed column property complete')
-    console.log(state.hotTabs)
+    // console.log('pushed column property complete')
+    // console.log(state.hotTabs)
   },
   pushTableProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
