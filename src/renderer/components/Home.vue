@@ -163,6 +163,7 @@ import 'lodash/lodash.min.js'
 import '../menu.js'
 import {unzipFile} from '@/importPackage.js'
 import {activeHotAllColumnNames} from '@/rxSubject.js'
+// import {activeRxTab} from '@/rxSubject.js'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
@@ -445,6 +446,7 @@ export default {
         id: nextTabId,
         index: this.tabIndex
       })
+      // activeRxTab.next(tabId)
       this.setActiveTab(nextTabId)
       this.pushTab(nextTabId)
     },

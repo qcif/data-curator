@@ -53,7 +53,9 @@ import { Observable } from 'rxjs/Observable'
 import 'rxjs/add/observable/from'
 import 'rxjs/add/operator/elementAt'
 import 'rxjs/add/operator/map'
-import { onNextHotIdRx, hotIdRxFromTab, activeRxTab, propertyType, activeTabColumnProperties } from '@/rxSubject.js'
+import 'rxjs/add/operator/debounce'
+import 'rxjs/add/observable/timer'
+import { onNextHotIdRx, activeRxTab, propertyType } from '@/rxSubject.js'
 import {getHotColumnPropertiesFromPropertyObject} from '@/store/modules/hots.js'
 import VueRx from 'vue-rx'
 import Vue from 'vue'
@@ -74,7 +76,9 @@ export default {
   props: ['cIndex'],
   data() {
     return {
-      typeProperty: [],
+      // hotIdRxFromTab: null,
+      // activeTabColumnProperties: null,
+      // currentColumnType: '',
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       formatValues: [],
       // formatXValues: [],
@@ -82,7 +86,7 @@ export default {
       // selectConstraints: [],
       // constraintInputKeyValues: {},
       // constraintInputKeys: [],
-      activeTabColumnProperties: [],
+      // activeTabColumnProperties: [],
       formprops: [
       //   {
       //   label: 'name',
@@ -171,11 +175,11 @@ export default {
       }
     }
   },
-  subscriptions () {
-    let vueFormats = this.formats
-    return {
-    }
-  },
+  // subscriptions () {
+  //   let vueFormats = this.formats
+  //   return {
+  //   }
+  // },
   methods: {
     ...mapMutations([
       'pushColumnProperty'
@@ -185,17 +189,27 @@ export default {
     },
     getTypeProperty: function() {
       let property = this.getProperty('type')
+      if (!property) {
+        // console.log('about to set default property for selectFormat...')
+        this.setProperty('type', 'any')
+        property = 'any'
+      }
       console.log(`got typeProperty property: ${property}`)
       return property
     },
     setTypeProperty: function(value) {
       console.log('about to set type...')
       this.setProperty('type', value)
+      // this.currentColumnType = value
     },
     getProperty: function(key) {
-      console.log(`getProperty got property ${key}`)
-      console.log(`current hot id is ${this.currentHotId}`)
-      console.log(`current column index: ${this.cIndex}`)
+      // console.log(`getProperty got property ${key}`)
+      // console.log(`current hot id is ${this.currentHotId}`)
+      // console.log(`current column index: ${this.cIndex}`)
+      // this.currentHotId = HotRegister.getActiveInstance().guid
+      if (!this.currentHotId) {
+        this.currentHotId = HotRegister.getActiveInstance().guid
+      }
       let columnProperties = this.currentHotId ? getHotColumnPropertiesFromPropertyObject({hotId: this.currentHotId, columnIndex: this.cIndex}) : {}
       let value = columnProperties[key]
       console.log(`got column property key value: ${key}: ${value}`)
@@ -207,9 +221,9 @@ export default {
       // object.value = value
       // TODO: change to use method once tested object refs ok
       console.log(`current hot id is: ${this.currentHotId}`)
-      let hotId = HotRegister.getActiveInstance().guid
+      // let hotId = HotRegister.getActiveInstance().guid
       let currentColumnIndex = this.cIndex
-      console.log(`current index is ${currentColumnIndex}`)
+      // console.log(`current index is ${currentColumnIndex}`)
       let object = {
         'hotId': hotId,
         'columnIndex': currentColumnIndex,
@@ -217,11 +231,11 @@ export default {
         'value': value
       }
       this.pushColumnProperty(object)
-      console.log('setproperty committed')
-      console.log(`current hot id is ${this.currentHotId}`)
-      if (this.currentHotId) {
-        activeTabColumnProperties.next(this.getAllHotColumnPropertiesFromHotId(this.currentHotId))
-      }
+      console.log(`setproperty committed for ${key}`)
+      // console.log(`current hot id is ${this.currentHotId}`)
+      // if (this.currentHotId) {
+      //   this.activeTabColumnProperties.next(this.getAllHotColumnPropertiesFromHotId(this.currentHotId))
+      // }
     },
     // // must not cache to ensure view always updates on selection
     // setPropertyType: function(value) {
@@ -318,32 +332,38 @@ export default {
     updateDepdendencies: function(nextHotId) {
       console.log(`next hot id for update depens is ${nextHotId}`)
       this.currentHotId = nextHotId
-      activeTabColumnProperties.next(this.getAllHotColumnPropertiesFromHotId(nextHotId))
+      this.activeTabColumnProperties.next(this.getAllHotColumnPropertiesFromHotId(nextHotId))
     },
     updateFormatValues: function(columnProperties) {
       console.log('updated columnProperties for format values:')
-      console.log(columnProperties)
+      // console.log(columnProperties)
       if (columnProperties) {
         let typeValue = columnProperties.type
-        console.log(`type value is: ${typeValue}`)
+        // console.log(`type value is: ${typeValue}`)
         let updatedFormatValues = this.formats[typeValue]
-        console.log(`format values updated is: ${updatedFormatValues}`)
+        // console.log(`format values updated is: ${updatedFormatValues}`)
         if (updatedFormatValues) {
           this.formatValues = updatedFormatValues
         }
       }
     }
   },
-  // watch: {
-  //   typeProperty: function(updateType) {
-  //     console.log('updated type...')
-  //     console.log(updateType)
-  //   }
-  // },
+  watch: {
+    setTypeProperty: function(updateType) {
+      console.log('updated type...')
+      console.log(updateType)
+    }
+  },
   computed: {
     ...mapGetters([
       'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty', 'getAllHotColumnPropertiesFromHotId'
     ]),
+    // formatValues() {
+    //   let seed = this.currentColumnType
+    //   console.log(`seed is ${seed}`)
+    //   let value = this.formats[seed]
+    //   return value
+    // },
     // storeObject() {
     //   const hotId = HotRegister.getActiveInstance().guid
     //   const currentColumnIndex = this.cIndex
@@ -373,15 +393,15 @@ export default {
     },
     selectFormat: {
       get: function() {
-        console.log('about to get select format...')
+        // console.log('about to get select format...')
         let property = this.getProperty('format')
         if (!property) {
-          console.log('about to set default property for selectFormat...')
+          // console.log('about to set default property for selectFormat...')
           this.setProperty('format', 'default')
           property = 'default'
         }
         console.log('got selectFormat property')
-        return []
+        return property
       },
       set: function(value) {
         console.log('about to set format...')
@@ -393,22 +413,43 @@ export default {
     console.log('created...')
   },
   mounted: function() {
+    // let vueUpdateDepdendencies = this.updateDepdendencies
+    // let vueUpdateFormatValues = this.updateFormatValues
+    // if (!this.activeTabColumnProperties) {
+    //   this.activeTabColumnProperties = new Subject()
+    //   this.$subscribeTo(this.activeTabColumnProperties, function(columnProperties) {
+    //     console.log('received subscription to active tab column properties.')
+    //     console.log(columnProperties)
+    //     vueUpdateFormatValues(columnProperties[0])
+    //   })
+    // }
+    // if (!this.hotIdRxFromTab) {
+    //   this.hotIdRxFromTab = new Subject()
+    //   this.$subscribeTo(this.hotIdRxFromTab, function(nextHotId) {
+    //     console.log('received subscription')
+    //     vueUpdateDepdendencies(nextHotId)
+    //   })
+    // }
+
+    //  new Observable.create(observer => {
+    //   // Yield a single value and complete
+    //   observer.onNext(42)
+    //   observer.onCompleted()
+    //
+    //   // Any cleanup logic might go here
+    //   return () => console.log('disposed')
+    // })
+
     console.log('triggered mount')
-    let vueUpdateDepdendencies = this.updateDepdendencies
-    let vueUpdateFormatValues = this.updateFormatValues
-    this.$subscribeTo(activeTabColumnProperties, function(columnProperties) {
-      console.log('received subscription to active tab column properties.')
-      console.log(columnProperties)
-      vueUpdateFormatValues(columnProperties[0])
-    })
-    this.$subscribeTo(hotIdRxFromTab, function(nextHotId) {
-      console.log('received subscription')
-      vueUpdateDepdendencies(nextHotId)
-    })
-    onNextHotIdRx(this.getHotIdFromTabId, this.getActiveTab)
-    // set initial property
-    let tabId = this.getActiveTab
-    activeRxTab.next(tabId)
+
+    onNextHotIdRx(this.hotIdRxFromTab, this.getHotIdFromTabId)
+    // // set initial property
+    activeRxTab.next(this.getActiveTab)
+  },
+  destroyed: function() {
+    console.log('panel destroyed')
+    // this.activeTabColumnProperties.unsubscribe()
+    // this.hotIdRxFromTab.unsubscribe()
   }
 }
 </script>
