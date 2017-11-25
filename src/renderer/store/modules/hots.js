@@ -97,7 +97,6 @@ const getters = {
   getHotColumnProperty: (state, getters) => (property) => {
     let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
     console.log('get returning is...')
-    console.log(hotColumnProperties)
     return hotColumnProperties[property.key]
   },
   getTableProperty: (state, getters) => (property) => {
@@ -106,10 +105,6 @@ const getters = {
   },
   getPackageProperty: (state, getters) => (property) => {
     return state.packageProperties[property.key]
-  },
-  getHotColumnConstraints: (state, getters) => (property) => {
-    let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
-    return hotColumnProperties['constraints']
   },
   getConstraint: (state, getters) => (property) => {
     let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
