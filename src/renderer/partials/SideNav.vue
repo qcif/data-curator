@@ -24,8 +24,8 @@ export default {
   mixins: [ColumnToolTip],
   data() {
     return {
-      formprops: [],
-      currentHotId: false
+      formprops: []
+      // currentHotId: false
     }
   },
   computed: {

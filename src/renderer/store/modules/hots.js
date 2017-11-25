@@ -96,6 +96,8 @@ const getters = {
   },
   getHotColumnProperty: (state, getters) => (property) => {
     let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
+    console.log('get returning is...')
+    console.log(hotColumnProperties)
     return hotColumnProperties[property.key]
   },
   getTableProperty: (state, getters) => (property) => {
@@ -146,9 +148,11 @@ const mutations = {
     console.log(state.hotTabs)
   },
   pushColumnProperty(state, property) {
+    console.log(`incoming property is...`)
+    console.log(property)
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
-    // console.log('pushed column property complete')
-    // console.log(state.hotTabs)
+    console.log('pushed column property complete')
+    console.log(state.hotTabs)
   },
   pushTableProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
