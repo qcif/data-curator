@@ -7,11 +7,11 @@ export function setActiveGlobal(filename, title) {
 }
 
 export function resetGlobalFilenames(filenames) {
-  console.log('have current tab filenames...')
-  console.log(filenames)
+  // console.log('have current tab filenames...')
+  // console.log(filenames)
   remote.getGlobal('tab').filenames = filenames
-  console.log('remote global is...')
-  console.log(remote.getGlobal('tab'))
+  // console.log('remote global is...')
+  // console.log(remote.getGlobal('tab'))
 }
 
 export function extractNameFromFile(fullPath) {

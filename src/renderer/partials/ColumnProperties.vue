@@ -9,12 +9,12 @@
         <component :is="formprop.tooltipView"/>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
           <!-- <select v-if="formprop.label==='type'" v-model="typeProperty" :id="formprop.label" class="form-control input-sm col-sm-9"> -->
-          <select v-if="formprop.label==='type'" :value="getTypeProperty()" @input="setTypeProperty($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-9">
+          <select v-if="formprop.label==='type'" :value="getTypeProperty" @input="setTypeProperty($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-9">
             <option v-for="option1 in typeValues" :key="option1" v-bind:value="option1">
               {{ option1}}
             </option>
           </select>
-          <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
+          <select v-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
             <option v-for="option2 in formatValues" :key="option2" v-bind:value="option2">
               {{ option2}}
             </option>
@@ -47,16 +47,29 @@ import {
   mapState,
   mapGetters
 } from 'vuex'
-import { Subscription } from 'rxjs/Subscription'
-import { Subject } from 'rxjs/Subject'
-import { Observable } from 'rxjs/Observable'
+import {
+  Subscription
+} from 'rxjs/Subscription'
+import {
+  Subject
+} from 'rxjs/Subject'
+import {
+  Observable
+} from 'rxjs/Observable'
 import 'rxjs/add/observable/from'
 import 'rxjs/add/operator/elementAt'
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/debounce'
 import 'rxjs/add/observable/timer'
-import { onNextHotIdRx, activeRxTab, propertyType } from '@/rxSubject.js'
-import {getHotColumnPropertiesFromPropertyObject} from '@/store/modules/hots.js'
+import {
+  onNextHotIdRx,
+  activeRxTab,
+  propertyType
+} from '@/rxSubject.js'
+import AsyncComputed from 'vue-async-computed'
+import {
+  getHotColumnPropertiesFromPropertyObject
+} from '@/store/modules/hots.js'
 import VueRx from 'vue-rx'
 import Vue from 'vue'
 import {
@@ -69,6 +82,7 @@ Vue.use(VueRx, {
   Subject,
   Observable
 })
+Vue.use(AsyncComputed)
 export default {
   extends: SideNav,
   name: 'column',
@@ -76,11 +90,13 @@ export default {
   props: ['cIndex'],
   data() {
     return {
-      // hotIdRxFromTab: null,
+      hotIdRxFromTab: null,
+      activeCurrentHotId: null,
       // activeTabColumnProperties: null,
       // currentColumnType: '',
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       formatValues: [],
+      selectFormat: [],
       // formatXValues: [],
       // constraintValues: [],
       // selectConstraints: [],
@@ -88,22 +104,22 @@ export default {
       // constraintInputKeys: [],
       // activeTabColumnProperties: [],
       formprops: [
-      //   {
-      //   label: 'name',
-      //   tooltipId: 'tooltip-column-name',
-      //   tooltipView: 'tooltipColumnName',
-      //   isDisabled: true
-      // },
-      // {
-      //   label: 'title',
-      //   tooltipId: 'tooltip-column-title',
-      //   tooltipView: 'tooltipColumnTitle'
-      // },
-      // {
-      //   label: 'description',
-      //   tooltipId: 'tooltip-column-description',
-      //   tooltipView: 'tooltipColumnDescription'
-      // },
+        //   {
+        //   label: 'name',
+        //   tooltipId: 'tooltip-column-name',
+        //   tooltipView: 'tooltipColumnName',
+        //   isDisabled: true
+        // },
+        // {
+        //   label: 'title',
+        //   tooltipId: 'tooltip-column-title',
+        //   tooltipView: 'tooltipColumnTitle'
+        // },
+        // {
+        //   label: 'description',
+        //   tooltipId: 'tooltip-column-description',
+        //   tooltipView: 'tooltipColumnDescription'
+        // },
         {
           label: 'type',
           tooltipId: 'tooltip-column-type',
@@ -116,18 +132,18 @@ export default {
           tooltipView: 'tooltipColumnFormat',
           type: 'dropdown'
         }
-      // {
-      //   label: 'constraints',
-      //   tooltipId: 'tooltip-column-constraints',
-      //   tooltipView: 'tooltipColumnConstraints',
-      //   type: 'checkbox'
-      // },
-      // {
-      //   label: 'rdfType',
-      //   tooltipId: 'tooltip-column-rdfType',
-      //   tooltipView: 'tooltipColumnRdfType',
-      //   type: 'url'
-      // }
+        // {
+        //   label: 'constraints',
+        //   tooltipId: 'tooltip-column-constraints',
+        //   tooltipView: 'tooltipColumnConstraints',
+        //   type: 'checkbox'
+        // },
+        // {
+        //   label: 'rdfType',
+        //   tooltipId: 'tooltip-column-rdfType',
+        //   tooltipView: 'tooltipColumnRdfType',
+        //   type: 'url'
+        // }
       ],
       formats: {
         'string': ['email', 'uri', 'binary', 'uuid', 'default'],
@@ -180,63 +196,128 @@ export default {
   //   return {
   //   }
   // },
+  asyncComputed: {
+    // selectFormat: {
+    //   get: function() {
+    //     // console.log('about to get select format...')
+    //     let property = this.getProperty('format')
+    //     if (!property) {
+    //       // console.log('about to set default property for selectFormat...')
+    //       this.setProperty('format', 'default')
+    //       property = 'default'
+    //     }
+    //     console.log('got selectFormat property')
+    //     return property
+    //   },
+    //   set: function(value) {
+    getTypeProperty: {
+      async get() {
+        console.log('getting type')
+        // async getTypeProperty() {
+        // let hotId = _.findKey(this.hotTabs, {tabId: this.getActiveTab})
+        // console.log(`inside type property, hot id is: ${hotId}`)
+        let hotId = await this.currentHotId()
+        let getter = this.getter(hotId, 'type')
+        let property = this.getHotColumnProperty(getter)
+        if (!property) {
+          console.log(`no get type, so setting default`)
+          this.pushColumnProperty(this.setter('type', 'any'))
+          property = 'any'
+        }
+        // console.log(this.hotTabs)
+        console.log('returning get')
+        console.log(property)
+        // view doesn't always re-render
+        this.$forceUpdate()
+        return property
+      },
+      watch() {
+        // ensure getter changes for tabs and columns
+        let temp = this.getActiveTab
+        let temp2 = this.cIndex
+      }
+    }
+  },
   methods: {
     ...mapMutations([
       'pushColumnProperty'
     ]),
+    currentHotId: async function() {
+      let hotId
+      let hot = HotRegister.getActiveInstance()
+      if (hot) {
+        hotId = hot.guid
+      } else {
+        // wait for hotid if new tab opened
+        hotId = await this.getHotIdFromTabId(this.getActiveTab)
+      }
+      // enable faster access for setters
+      this.activeCurrentHotId = hotId
+      return hotId
+    },
     isBooleanConstraint: function(option) {
       return this.constraintBooleanBindings.indexOf(option) > -1
     },
-    getTypeProperty: function() {
-      let property = this.getProperty('type')
-      if (!property) {
-        // console.log('about to set default property for selectFormat...')
-        this.setProperty('type', 'any')
-        property = 'any'
-      }
-      console.log(`got typeProperty property: ${property}`)
-      return property
-    },
     setTypeProperty: function(value) {
-      console.log('about to set type...')
-      this.setProperty('type', value)
+      this.pushColumnProperty(this.setter('type', value))
       // this.currentColumnType = value
+      // console.log(this.hotTabs)
     },
-    getProperty: function(key) {
-      // console.log(`getProperty got property ${key}`)
-      // console.log(`current hot id is ${this.currentHotId}`)
-      // console.log(`current column index: ${this.cIndex}`)
-      // this.currentHotId = HotRegister.getActiveInstance().guid
-      if (!this.currentHotId) {
-        this.currentHotId = HotRegister.getActiveInstance().guid
-      }
-      let columnProperties = this.currentHotId ? getHotColumnPropertiesFromPropertyObject({hotId: this.currentHotId, columnIndex: this.cIndex}) : {}
-      let value = columnProperties[key]
-      console.log(`got column property key value: ${key}: ${value}`)
-      return value
-    },
-    setProperty: function(key, value) {
-      // let object = this.storeObject
-      // object.key = key
-      // object.value = value
-      // TODO: change to use method once tested object refs ok
-      console.log(`current hot id is: ${this.currentHotId}`)
-      // let hotId = HotRegister.getActiveInstance().guid
-      let currentColumnIndex = this.cIndex
-      // console.log(`current index is ${currentColumnIndex}`)
+    getter: function(hotId, key) {
       let object = {
-        'hotId': hotId,
-        'columnIndex': currentColumnIndex,
-        'key': key,
-        'value': value
+        hotId: hotId,
+        columnIndex: this.cIndex,
+        key: key
       }
-      this.pushColumnProperty(object)
-      console.log(`setproperty committed for ${key}`)
-      // console.log(`current hot id is ${this.currentHotId}`)
-      // if (this.currentHotId) {
-      //   this.activeTabColumnProperties.next(this.getAllHotColumnPropertiesFromHotId(this.currentHotId))
-      // }
+      console.log('getter to use is:')
+      console.log(object)
+      return object
     },
+    setter: function(key, value) {
+      let object = {
+        hotId: this.activeCurrentHotId,
+        columnIndex: this.cIndex,
+        key: key,
+        value: value
+      }
+      return object
+    },
+
+    // getProperty: function(key) {
+    //   // console.log(`getProperty got property ${key}`)
+    //   // console.log(`current hot id is ${this.currentHotId}`)
+    //   // console.log(`current column index: ${this.cIndex}`)
+    //   // this.currentHotId = HotRegister.getActiveInstance().guid
+    //   if (!this.currentHotId) {
+    //     this.currentHotId = HotRegister.getActiveInstance().guid
+    //   }
+    //   let columnProperties = this.currentHotId ? getHotColumnPropertiesFromPropertyObject({hotId: this.currentHotId, columnIndex: this.cIndex}) : {}
+    //   let value = columnProperties[key]
+    //   console.log(`got column property key value: ${key}: ${value}`)
+    //   return value
+    // },
+    // setProperty: function(key, value) {
+    //   // let object = this.storeObject
+    //   // object.key = key
+    //   // object.value = value
+    //   // TODO: change to use method once tested object refs ok
+    //   console.log(`current hot id is: ${this.currentHotId}`)
+    //   // let hotId = HotRegister.getActiveInstance().guid
+    //   let currentColumnIndex = this.cIndex
+    //   // console.log(`current index is ${currentColumnIndex}`)
+    //   let object = {
+    //     'hotId': hotId,
+    //     'columnIndex': currentColumnIndex,
+    //     'key': key,
+    //     'value': value
+    //   }
+    //   this.pushColumnProperty(object)
+    //   console.log(`setproperty committed for ${key}`)
+    //   // console.log(`current hot id is ${this.currentHotId}`)
+    //   // if (this.currentHotId) {
+    //   //   this.activeTabColumnProperties.next(this.getAllHotColumnPropertiesFromHotId(this.currentHotId))
+    //   // }
+    // },
     // // must not cache to ensure view always updates on selection
     // setPropertyType: function(value) {
     //   console.log('setting property type...')
@@ -331,32 +412,38 @@ export default {
     // },
     updateDepdendencies: function(nextHotId) {
       console.log(`next hot id for update depens is ${nextHotId}`)
-      this.currentHotId = nextHotId
-      this.activeTabColumnProperties.next(this.getAllHotColumnPropertiesFromHotId(nextHotId))
-    },
-    updateFormatValues: function(columnProperties) {
-      console.log('updated columnProperties for format values:')
-      // console.log(columnProperties)
-      if (columnProperties) {
-        let typeValue = columnProperties.type
-        // console.log(`type value is: ${typeValue}`)
-        let updatedFormatValues = this.formats[typeValue]
-        // console.log(`format values updated is: ${updatedFormatValues}`)
-        if (updatedFormatValues) {
-          this.formatValues = updatedFormatValues
-        }
-      }
+      // this.currentHotId = nextHotId
+      // this.activeTabColumnProperties.next(this.getAllHotColumnPropertiesFromHotId(nextHotId))
     }
+    // updateFormatValues: function(columnProperties) {
+    //   console.log('updated columnProperties for format values:')
+    //   // console.log(columnProperties)
+    //   if (columnProperties) {
+    //     let typeValue = columnProperties.type
+    //     // console.log(`type value is: ${typeValue}`)
+    //     let updatedFormatValues = this.formats[typeValue]
+    //     // console.log(`format values updated is: ${updatedFormatValues}`)
+    //     if (updatedFormatValues) {
+    //       this.formatValues = updatedFormatValues
+    //     }
+    //   }
+    // }
   },
   watch: {
-    setTypeProperty: function(updateType) {
-      console.log('updated type...')
-      console.log(updateType)
-    }
+    // getActiveTab: function(nextTab) {
+    //   console.log(`next tab is ${nextTab}`)
+    // }
+    // setTypeProperty: function(updateType) {
+    //   console.log('updated type...')
+    //   console.log(updateType)
+    // }
   },
   computed: {
     ...mapGetters([
       'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty', 'getAllHotColumnPropertiesFromHotId'
+    ]),
+    ...mapState([
+      'hotTabs'
     ]),
     // formatValues() {
     //   let seed = this.currentColumnType
@@ -390,30 +477,31 @@ export default {
     isDropdownFormatDisabled() {
       return false
       // return this.formatValues.length < 2
-    },
-    selectFormat: {
-      get: function() {
-        // console.log('about to get select format...')
-        let property = this.getProperty('format')
-        if (!property) {
-          // console.log('about to set default property for selectFormat...')
-          this.setProperty('format', 'default')
-          property = 'default'
-        }
-        console.log('got selectFormat property')
-        return property
-      },
-      set: function(value) {
-        console.log('about to set format...')
-        this.setProperty('format', value)
-      }
     }
+    // selectFormat: {
+    //   get: function() {
+    //     // console.log('about to get select format...')
+    //     let property = this.getProperty('format')
+    //     if (!property) {
+    //       // console.log('about to set default property for selectFormat...')
+    //       this.setProperty('format', 'default')
+    //       property = 'default'
+    //     }
+    //     console.log('got selectFormat property')
+    //     return property
+    //   },
+    //   set: function(value) {
+    //     console.log('about to set format...')
+    //     this.setProperty('format', value)
+    //   }
+    // }
   },
   created: function() {
     console.log('created...')
   },
   mounted: function() {
-    // let vueUpdateDepdendencies = this.updateDepdendencies
+    console.log('mounted...')
+    let vueUpdateDepdendencies = this.updateDepdendencies
     // let vueUpdateFormatValues = this.updateFormatValues
     // if (!this.activeTabColumnProperties) {
     //   this.activeTabColumnProperties = new Subject()
@@ -440,11 +528,11 @@ export default {
     //   return () => console.log('disposed')
     // })
 
-    console.log('triggered mount')
+    // console.log('triggered mount')
 
-    onNextHotIdRx(this.hotIdRxFromTab, this.getHotIdFromTabId)
-    // // set initial property
-    activeRxTab.next(this.getActiveTab)
+    // onNextHotIdRx(this.hotIdRxFromTab, this.getHotIdFromTabId)
+    // // // set initial property
+    // activeRxTab.next(this.getActiveTab)
   },
   destroyed: function() {
     console.log('panel destroyed')
