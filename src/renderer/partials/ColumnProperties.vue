@@ -9,7 +9,7 @@
         <component :is="formprop.tooltipView"/>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
           <!-- <select v-if="formprop.label==='type'" v-model="typeProperty" :id="formprop.label" class="form-control input-sm col-sm-9"> -->
-          <select v-if="formprop.label==='type'" :value="getTypeProperty" @input="setTypeProperty($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-9">
+          <select v-if="formprop.label==='type'" :value="getTypeProperty" v-model="typeProperty" @input="setTypeProperty($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-9">
             <option v-for="option1 in typeValues" :key="option1" v-bind:value="option1">
               {{ option1}}
             </option>
@@ -62,7 +62,6 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/debounce'
 import 'rxjs/add/observable/timer'
 import {
-  onNextHotIdRx,
   activeRxTab,
   propertyType
 } from '@/rxSubject.js'
@@ -90,19 +89,10 @@ export default {
   props: ['cIndex'],
   data() {
     return {
-      hotIdRxFromTab: null,
       activeCurrentHotId: null,
-      // activeTabColumnProperties: null,
-      // currentColumnType: '',
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
-      formatValues: [],
-      selectFormat: [],
-      // formatXValues: [],
-      // constraintValues: [],
-      // selectConstraints: [],
-      // constraintInputKeyValues: {},
-      // constraintInputKeys: [],
-      // activeTabColumnProperties: [],
+      typeProperty: '',
+      constraintInputKeyValues: {},
       formprops: [
         //   {
         //   label: 'name',
@@ -110,16 +100,16 @@ export default {
         //   tooltipView: 'tooltipColumnName',
         //   isDisabled: true
         // },
-        // {
-        //   label: 'title',
-        //   tooltipId: 'tooltip-column-title',
-        //   tooltipView: 'tooltipColumnTitle'
-        // },
-        // {
-        //   label: 'description',
-        //   tooltipId: 'tooltip-column-description',
-        //   tooltipView: 'tooltipColumnDescription'
-        // },
+        {
+          label: 'title',
+          tooltipId: 'tooltip-column-title',
+          tooltipView: 'tooltipColumnTitle'
+        },
+        {
+          label: 'description',
+          tooltipId: 'tooltip-column-description',
+          tooltipView: 'tooltipColumnDescription'
+        },
         {
           label: 'type',
           tooltipId: 'tooltip-column-type',
@@ -131,19 +121,19 @@ export default {
           tooltipId: 'tooltip-column-format',
           tooltipView: 'tooltipColumnFormat',
           type: 'dropdown'
+        },
+        {
+          label: 'constraints',
+          tooltipId: 'tooltip-column-constraints',
+          tooltipView: 'tooltipColumnConstraints',
+          type: 'checkbox'
+        },
+        {
+          label: 'rdfType',
+          tooltipId: 'tooltip-column-rdfType',
+          tooltipView: 'tooltipColumnRdfType',
+          type: 'url'
         }
-        // {
-        //   label: 'constraints',
-        //   tooltipId: 'tooltip-column-constraints',
-        //   tooltipView: 'tooltipColumnConstraints',
-        //   type: 'checkbox'
-        // },
-        // {
-        //   label: 'rdfType',
-        //   tooltipId: 'tooltip-column-rdfType',
-        //   tooltipView: 'tooltipColumnRdfType',
-        //   type: 'url'
-        // }
       ],
       formats: {
         'string': ['email', 'uri', 'binary', 'uuid', 'default'],
@@ -191,43 +181,20 @@ export default {
       }
     }
   },
-  // subscriptions () {
-  //   let vueFormats = this.formats
-  //   return {
-  //   }
-  // },
   asyncComputed: {
-    // selectFormat: {
-    //   get: function() {
-    //     // console.log('about to get select format...')
-    //     let property = this.getProperty('format')
-    //     if (!property) {
-    //       // console.log('about to set default property for selectFormat...')
-    //       this.setProperty('format', 'default')
-    //       property = 'default'
-    //     }
-    //     console.log('got selectFormat property')
-    //     return property
-    //   },
-    //   set: function(value) {
     getTypeProperty: {
       async get() {
         console.log('getting type')
-        // async getTypeProperty() {
-        // let hotId = _.findKey(this.hotTabs, {tabId: this.getActiveTab})
-        // console.log(`inside type property, hot id is: ${hotId}`)
         let hotId = await this.currentHotId()
         let getter = this.getter(hotId, 'type')
         let property = this.getHotColumnProperty(getter)
         if (!property) {
           console.log(`no get type, so setting default`)
-          this.pushColumnProperty(this.setter('type', 'any'))
+          this.pushColumnProperty(this.setter(hotId, 'type', 'any'))
           property = 'any'
         }
-        // console.log(this.hotTabs)
-        console.log('returning get')
-        console.log(property)
         // view doesn't always re-render
+        this.typeProperty = property
         this.$forceUpdate()
         return property
       },
@@ -258,10 +225,22 @@ export default {
     isBooleanConstraint: function(option) {
       return this.constraintBooleanBindings.indexOf(option) > -1
     },
-    setTypeProperty: function(value) {
-      this.pushColumnProperty(this.setter('type', value))
-      // this.currentColumnType = value
-      // console.log(this.hotTabs)
+    setTypeProperty: async function(value) {
+      console.log('setting type...')
+      this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), 'type', value))
+      this.typeProperty = value
+      return value
+    },
+    getProperty(key) {
+      let hotId = this.activeCurrentHotId || this.currentHotId()
+      console.log(`getting for ${key} and hot ${hotId}`)
+      let getter = this.getter(hotId, key)
+      let property = this.getHotColumnProperty(getter)
+      return property
+    },
+    setProperty(key, value) {
+      console.log(`setting for key ${key}...`)
+      this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), key, value))
     },
     getter: function(hotId, key) {
       let object = {
@@ -269,174 +248,90 @@ export default {
         columnIndex: this.cIndex,
         key: key
       }
-      console.log('getter to use is:')
-      console.log(object)
       return object
     },
-    setter: function(key, value) {
+    setter: function(hotId, key, value) {
       let object = {
-        hotId: this.activeCurrentHotId,
+        hotId: hotId,
         columnIndex: this.cIndex,
         key: key,
         value: value
       }
       return object
     },
-
-    // getProperty: function(key) {
-    //   // console.log(`getProperty got property ${key}`)
-    //   // console.log(`current hot id is ${this.currentHotId}`)
-    //   // console.log(`current column index: ${this.cIndex}`)
-    //   // this.currentHotId = HotRegister.getActiveInstance().guid
-    //   if (!this.currentHotId) {
-    //     this.currentHotId = HotRegister.getActiveInstance().guid
-    //   }
-    //   let columnProperties = this.currentHotId ? getHotColumnPropertiesFromPropertyObject({hotId: this.currentHotId, columnIndex: this.cIndex}) : {}
-    //   let value = columnProperties[key]
-    //   console.log(`got column property key value: ${key}: ${value}`)
-    //   return value
-    // },
-    // setProperty: function(key, value) {
-    //   // let object = this.storeObject
-    //   // object.key = key
-    //   // object.value = value
-    //   // TODO: change to use method once tested object refs ok
-    //   console.log(`current hot id is: ${this.currentHotId}`)
-    //   // let hotId = HotRegister.getActiveInstance().guid
-    //   let currentColumnIndex = this.cIndex
-    //   // console.log(`current index is ${currentColumnIndex}`)
-    //   let object = {
-    //     'hotId': hotId,
-    //     'columnIndex': currentColumnIndex,
-    //     'key': key,
-    //     'value': value
-    //   }
-    //   this.pushColumnProperty(object)
-    //   console.log(`setproperty committed for ${key}`)
-    //   // console.log(`current hot id is ${this.currentHotId}`)
-    //   // if (this.currentHotId) {
-    //   //   this.activeTabColumnProperties.next(this.getAllHotColumnPropertiesFromHotId(this.currentHotId))
-    //   // }
-    // },
-    // // must not cache to ensure view always updates on selection
-    // setPropertyType: function(value) {
-    //   console.log('setting property type...')
-    //   this.setProperty('type', value)
-    //   // this.updateTypeDependentProperties(value)
-    // },
-    // updateTypeDependentProperties: function(value) {
-    //   console.log(`value is ${value}`)
-    //   // this.formatXValues = this.formats[value]
-    //   let formatValues = this.formats[value]
-    //   this.formatValues = formatValues
-    //   console.log(`format values is`)
-    //   console.log(formatValues)
-    //   // this.constraintValues = this.constraints[value]
-    // },
-    // getConstraintCheck: function(key) {
-    //   // let object = this.storeObject
-    //   const hotId = HotRegister.getActiveInstance().guid
-    //   const currentColumnIndex = this.cIndex
-    //   let object = {
-    //     'hotId': hotId,
-    //     'columnIndex': currentColumnIndex
-    //   }
-    //   let constraints = this.getHotColumnConstraints(object)
-    //   this.constraintInputKeyValues = constraints || {}
-    //   return _.has(constraints, key)
-    // },
-    // toggleTextNode: function(checkedInput) {
-    //   let textNode = checkedInput.parentNode.querySelector('.constraint-text')
-    //   if (textNode) {
-    //     textNode.style.display = checkedInput.checked ? 'inline-block' : 'none'
-    //   }
-    // },
-    // setConstraintCheck: function(key, target) {
-    //   let isChecked = target.checked
-    //   this.toggleTextNode(target)
-    //   if (!isChecked) {
-    //     _.unset(this.constraintInputKeyValues, key)
-    //   } else if (this.constraintBooleanBindings.indexOf(key) > -1) {
-    //     this.constraintInputKeyValues[key] = isChecked
-    //   } else {
-    //     // let object = this.storeObject()
-    //     // object.key = key
-    //     const hotId = HotRegister.getActiveInstance().guid
-    //     const currentColumnIndex = this.cIndex
-    //     let object = {
-    //       'hotId': hotId,
-    //       'columnIndex': currentColumnIndex,
-    //       'key': key
-    //     }
-    //     let currentValue = this.getConstraint(object) || ''
-    //     this.constraintInputKeyValues[key] = currentValue
-    //   }
-    //   this.setProperty('constraints', this.constraintInputKeyValues)
-    //   this.$forceUpdate()
-    // },
-    // getConstraintValue: function(key) {
-    //   let property = this.getProperty('constraints')
-    //   if (!property) {
-    //     property = {}
-    //   }
-    //   return property[key]
-    // },
-    // removeConstraint: function(key) {
-    //   this.constraintInputKeyValues[key] = ''
-    //   this.setProperty('constraints', this.constraintInputKeyValues)
-    //   return true
-    // },
-    // setConstraintValue: function(key, value) {
-    //   this.constraintInputKeyValues[key] = value
-    //   this.setProperty('constraints', this.constraintInputKeyValues)
-    // },
-    // constraintValidationRules: function(option) {
-    //   if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
-    //     return 'numeric'
-    //   } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
-    //     let type = this.getProperty('type')
-    //     if (type === 'integer') {
-    //       return 'numeric'
-    //     } else if (type === 'number') {
-    //       return 'decimal'
-    //     } else {
-    //       // console.log('No validation rules to apply this type for constraints: min/max')
-    //     }
-    //   } else {
-    //     // console.log('No validation rules to apply this constraint')
-    //   }
-    //   return ''
-    // },
-    // updateActiveTabColumnProperties: function(columnProperties) {
-    //   this.activeTabColumnProperties = columnProperties
-    // },
-    updateDepdendencies: function(nextHotId) {
-      console.log(`next hot id for update depens is ${nextHotId}`)
-      // this.currentHotId = nextHotId
-      // this.activeTabColumnProperties.next(this.getAllHotColumnPropertiesFromHotId(nextHotId))
+    getConstraintCheck: function(key) {
+      console.log(`checking constraint: ${key}`)
+      return _.has(this.constraintInputKeyValues, key)
+    },
+    toggleTextNode: function(checkedInput) {
+      let textNode = checkedInput.parentNode.querySelector('.constraint-text')
+      if (textNode) {
+        textNode.style.display = checkedInput.checked ? 'inline-block' : 'none'
+      }
+    },
+    setConstraintCheck: function(key, target) {
+      let isChecked = target.checked
+      this.toggleTextNode(target)
+      if (!isChecked) {
+        _.unset(this.constraintInputKeyValues, key)
+      } else if (this.constraintBooleanBindings.indexOf(key) > -1) {
+        this.constraintInputKeyValues[key] = isChecked
+      } else {
+        let getter = this.getter(this.activeCurrentHotId, key)
+        let currentValue = this.getConstraint(getter) || ''
+        this.constraintInputKeyValues[key] = currentValue
+      }
+      this.pushConstraintInputKeyValues()
+      // this.$forceUpdate()
+    },
+    getConstraintValue: function(key) {
+      let property = this.constraintInputKeyValues[key]
+      return property
+    },
+    removeConstraint: function(key) {
+      this.constraintInputKeyValues[key] = ''
+      this.pushConstraintInputKeyValues()
+      return true
+    },
+    setConstraintValue: function(key, value) {
+      this.constraintInputKeyValues[key] = value
+      this.pushConstraintInputKeyValues()
+    },
+    pushConstraintInputKeyValues: function() {
+      console.log('pushing contraint input key values...')
+      _.debounce(function() {
+        this.pushColumnProperty(this.setter(this.activeCurrentHotId, 'constraints', this.constraintInputKeyValues))
+      }, 300, {
+        'leading': true,
+        'trailing': true
+      })
+    },
+    constraintValidationRules: function(option) {
+      if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
+        return 'numeric'
+      } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
+        let type = this.typeProperty
+        if (type === 'integer') {
+          return 'numeric'
+        } else if (type === 'number') {
+          return 'decimal'
+        } else {
+          // console.log('No validation rules to apply this type for constraints: min/max')
+        }
+      } else {
+        // console.log('No validation rules to apply this constraint')
+      }
+      return ''
+    },
+    updateConstraintInputKeyValues: function() {
+      console.log('update constraint checked....')
+      let hotId = this.activeCurrentHotId
+      let getter = this.getter(hotId, 'constraints')
+      let constraints = this.getHotColumnProperty(getter)
+      this.constraintInputKeyValues = constraints || {}
     }
-    // updateFormatValues: function(columnProperties) {
-    //   console.log('updated columnProperties for format values:')
-    //   // console.log(columnProperties)
-    //   if (columnProperties) {
-    //     let typeValue = columnProperties.type
-    //     // console.log(`type value is: ${typeValue}`)
-    //     let updatedFormatValues = this.formats[typeValue]
-    //     // console.log(`format values updated is: ${updatedFormatValues}`)
-    //     if (updatedFormatValues) {
-    //       this.formatValues = updatedFormatValues
-    //     }
-    //   }
-    // }
   },
   watch: {
-    // getActiveTab: function(nextTab) {
-    //   console.log(`next tab is ${nextTab}`)
-    // }
-    // setTypeProperty: function(updateType) {
-    //   console.log('updated type...')
-    //   console.log(updateType)
-    // }
   },
   computed: {
     ...mapGetters([
@@ -445,21 +340,17 @@ export default {
     ...mapState([
       'hotTabs'
     ]),
-    // formatValues() {
-    //   let seed = this.currentColumnType
-    //   console.log(`seed is ${seed}`)
-    //   let value = this.formats[seed]
-    //   return value
-    // },
-    // storeObject() {
-    //   const hotId = HotRegister.getActiveInstance().guid
-    //   const currentColumnIndex = this.cIndex
-    //   let object = {
-    //     'hotId': hotId,
-    //     'columnIndex': currentColumnIndex
-    //   }
-    //   return object
-    // },
+    formatValues() {
+      // console.log('updating format values for type')
+      let property = this.typeProperty
+      return this.formats[property]
+    },
+    constraintValues() {
+      // console.log('updating constraint values for type')
+      let property = this.typeProperty
+      this.updateConstraintInputKeyValues()
+      return this.constraints[property]
+    },
     // getNameProperty() {
     //   // console.log('entered get name property...')
     //   // let value = ''
@@ -475,69 +366,36 @@ export default {
     //   return value
     // },
     isDropdownFormatDisabled() {
-      return false
-      // return this.formatValues.length < 2
+      return !this.formatValues ? false : this.formatValues.length < 2
+    },
+    selectFormat: {
+      get: function() {
+        // console.log('about to get select format...')
+        let hotId = this.activeCurrentHotId
+        let getter = this.getter(hotId, 'format')
+        let property = this.getHotColumnProperty(getter)
+        if (!property) {
+          property = 'default'
+          this.pushColumnProperty(this.setter(hotId, 'format', property))
+        }
+        console.log('got selectFormat property')
+        return property
+      },
+      set: function(value) {
+        console.log('about to set format...')
+        let hotId = this.activeCurrentHotId
+        this.pushColumnProperty(this.setter(hotId, 'format', value))
+      }
     }
-    // selectFormat: {
-    //   get: function() {
-    //     // console.log('about to get select format...')
-    //     let property = this.getProperty('format')
-    //     if (!property) {
-    //       // console.log('about to set default property for selectFormat...')
-    //       this.setProperty('format', 'default')
-    //       property = 'default'
-    //     }
-    //     console.log('got selectFormat property')
-    //     return property
-    //   },
-    //   set: function(value) {
-    //     console.log('about to set format...')
-    //     this.setProperty('format', value)
-    //   }
-    // }
   },
   created: function() {
-    console.log('created...')
+    // console.log('created...')
   },
   mounted: function() {
-    console.log('mounted...')
-    let vueUpdateDepdendencies = this.updateDepdendencies
-    // let vueUpdateFormatValues = this.updateFormatValues
-    // if (!this.activeTabColumnProperties) {
-    //   this.activeTabColumnProperties = new Subject()
-    //   this.$subscribeTo(this.activeTabColumnProperties, function(columnProperties) {
-    //     console.log('received subscription to active tab column properties.')
-    //     console.log(columnProperties)
-    //     vueUpdateFormatValues(columnProperties[0])
-    //   })
-    // }
-    // if (!this.hotIdRxFromTab) {
-    //   this.hotIdRxFromTab = new Subject()
-    //   this.$subscribeTo(this.hotIdRxFromTab, function(nextHotId) {
-    //     console.log('received subscription')
-    //     vueUpdateDepdendencies(nextHotId)
-    //   })
-    // }
-
-    //  new Observable.create(observer => {
-    //   // Yield a single value and complete
-    //   observer.onNext(42)
-    //   observer.onCompleted()
-    //
-    //   // Any cleanup logic might go here
-    //   return () => console.log('disposed')
-    // })
-
-    // console.log('triggered mount')
-
-    // onNextHotIdRx(this.hotIdRxFromTab, this.getHotIdFromTabId)
-    // // // set initial property
-    // activeRxTab.next(this.getActiveTab)
+    // console.log('mounted...')
   },
   destroyed: function() {
-    console.log('panel destroyed')
-    // this.activeTabColumnProperties.unsubscribe()
-    // this.hotIdRxFromTab.unsubscribe()
+    // console.log('panel destroyed')
   }
 }
 </script>

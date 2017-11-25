@@ -5,15 +5,13 @@ import Rx from 'rxjs/Rx'
 let activeHotAllColumnNames = new Rx.Subject()
 // let activeTabColumnProperties
 let activeRxTab = new Rx.Subject()
-// let hotIdRxFromTab
+let hotIdRxFromTab = new Rx.Subject()
 let propertyType = new Rx.Subject()
 
-let activeRxTabSubscription
-
-export function onNextHotIdRx(observable, hotIdFunction) {
+export function onNextTabRx(subject, tabFunction) {
   activeRxTab.subscribe(function(activeTab) {
     console.log(`subscribed to next tab: ${activeTab}`)
-    onNextSubjectFromPromise(observable, hotIdFunction(activeTab))
+    onNextSubjectFromPromise(subject, tabFunction(activeTab))
   })
 }
 

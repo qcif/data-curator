@@ -140,7 +140,8 @@ import {
   reselectCurrentCellOrMax,
   incrementActiveColumn,
   decrementActiveColumn,
-  getActiveSelected
+  getActiveSelected,
+  reselectCellOrMin
 } from '../hot.js'
 import about from '../partials/About'
 import preferences from '../partials/Preferences'
@@ -163,6 +164,13 @@ import 'lodash/lodash.min.js'
 import '../menu.js'
 import {unzipFile} from '@/importPackage.js'
 import {activeHotAllColumnNames} from '@/rxSubject.js'
+// import { Subject } from 'rxjs/Subject'
+// import VueRx from 'vue-rx'
+// import Vue from 'vue'
+// Vue.use(VueRx, {
+//   Subscription,
+//   Subject
+// })
 // import {activeRxTab} from '@/rxSubject.js'
 export default {
   name: 'home',
@@ -657,6 +665,14 @@ export default {
     provenance
   },
   watch: {
+    activeTab: async function(tabId) {
+      try {
+        let hotId = await this.getHotIdFromTabId(tabId)
+        reselectCellOrMin(hotId)
+      } catch (err) {
+        console.log('Problem with getting hot id from watched tab', err)
+      }
+    }
   },
   mounted: function() {
     const vueToggleHeaders = this.toggleHeaders
