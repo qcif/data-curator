@@ -1,5 +1,5 @@
 <template>
-  <div id="aboutProperties" class="panel-group">
+  <form id="aboutProperties" class="panel-group">
     <ul class="list-group" v-for="(list, index) in aboutProps" :key="index">
       <li :style="aboutListStyle" class="list-group-item" v-for="(item, index) in list.items" :key="index">
         <template v-if="item.image">
@@ -12,11 +12,13 @@
         </template>
       </li>
     </ul>
-  </div>
+  </form>
 </template>
 <script>
+import SideNav from '@/partials/SideNav'
 import {remote} from 'electron'
 export default {
+  extends: SideNav,
   name: 'about',
   data() {
     return {
