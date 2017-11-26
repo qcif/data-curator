@@ -16,7 +16,7 @@ export default {
   },
   mixins: [RelationKeys],
   name: 'foreignkeys',
-  props: ['waitForHotIdFromTabId', 'setProperty', 'getProperty', 'getPropertyGivenHotId', 'propertyName'],
+  props: ['setProperty', 'getPropertyGivenHotId', 'propertyName'],
   data() {
     return {
       enableLocalHeaders: true,

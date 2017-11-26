@@ -1,6 +1,6 @@
 <template>
   <div id="primaryKeys">
-    <component is="tableheaderkeys" :waitForHotIdFromTabId="waitForHotIdFromTabId" :activeNames="activeNames" :selectedKeys="selectedKeys"/>
+    <component is="tableheaderkeys" :activeNames="activeNames" :selectedKeys="selectedKeys"/>
   </div>
 </template>
 <script>
@@ -12,7 +12,7 @@ export default {
   },
   mixins: [RelationKeys],
   name: 'primarykeys',
-  props: ['waitForHotIdFromTabId', 'setProperty', 'getProperty', 'getPropertyGivenHotId', 'propertyName', 'currentHotId'],
+  props: ['setProperty', 'getPropertyGivenHotId', 'propertyName', 'currentHotId'],
   data() {
     return {
       selectedKeys: [],
