@@ -90,6 +90,10 @@ export default {
       let sidenav = document.querySelector('#sidenav')
       let form = sidenav.querySelector('form')
       form.style.height = this.sideNavFormHeight
+    },
+    // convenience method for inside functions
+    getCurrentHotId: function() {
+      return this.activeCurrentHotId
     }
   },
   mounted: function() {

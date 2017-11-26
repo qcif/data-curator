@@ -26,13 +26,6 @@ const getters = {
   getHotTabs: state => {
     return state.hotTabs
   },
-  // getColumnTypePropertiesFromHotId: (state, getters) => (hotId) => {
-  //   let allColumnProperties = state.hotTabs[hotId].columnProperties || []
-  //   let typeProperties = allColumnProperties.map(function(nextColumnProperties) {
-  //     return nextColumnProperties.type
-  //   })
-  //   return typeProperties
-  // },
   getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
     console.log('entered getAllHotColumnPropertiesFromHotId')
     console.log(state.hotTabs)

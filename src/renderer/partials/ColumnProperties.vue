@@ -48,25 +48,21 @@ import {
   mapGetters
 } from 'vuex'
 import AsyncComputed from 'vue-async-computed'
+import VueRx from 'vue-rx'
+// import Rx from 'rxjs/Rx'
 import Vue from 'vue'
+import { Subscription } from 'rxjs/Subscription'
+import { Observable } from 'rxjs/Observable'
+import 'rxjs/add/operator/elementAt'
+import 'rxjs/add/operator/map'
+import {activeHotAllColumnNames} from '@/rxSubject.js'
 import {
   HotRegister
 } from '@/hot.js'
 import ColumnTooltip from '../mixins/ColumnTooltip'
-// let debounceFunction = _.debounce(function(key, vueGetter, vueHotColumnProperty) {
-//   // let hotId = this.activeCurrentHotId
-//   // console.log(`home hot id is: ${this.activeCurrentHotId}`)
-//   console.log(`getting for ${key} and hot ${hotId}`)
-//   // _.debounce(function() {
-//   let getter = vueGetter(hotId, key)
-//   console.log('getter is')
-//   console.log(getter)
-//   let property = vueHotColumnProperty(getter)
-//   return property
-// }, 1000, {
-//   'leading': true,
-//   'trailing': true
-// })
+Vue.use(VueRx, {
+  Subscription
+})
 Vue.use(AsyncComputed)
 export default {
   extends: SideNav,
@@ -78,6 +74,7 @@ export default {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       typeProperty: '',
       constraintInputKeyValues: {},
+      allTablesAllColumnsNames: {},
       // debounceOptions: {
       //   'leading': true,
       //   'trailing': true
@@ -88,12 +85,12 @@ export default {
       // debounceDescriptionFunction: _.debounce(this.getDescriptionPropertyFunction, this.debounceTime, this.debounceOptions),
       // debounceRdfTypeFunction: _.debounce(this.getRdfTypePropertyFunction, this.debounceTime, this.debounceOptions),
       formprops: [
-        //   {
-        //   label: 'name',
-        //   tooltipId: 'tooltip-column-name',
-        //   tooltipView: 'tooltipColumnName',
-        //   isDisabled: true
-        // },
+        {
+          label: 'name',
+          tooltipId: 'tooltip-column-name',
+          tooltipView: 'tooltipColumnName',
+          isDisabled: true
+        },
         {
           label: 'title',
           tooltipId: 'tooltip-column-title',
@@ -356,9 +353,22 @@ export default {
       let getter = this.getter(hotId, 'constraints')
       let constraints = this.getHotColumnProperty(getter)
       this.constraintInputKeyValues = constraints || {}
+    },
+    updateAllTablesAllColumnsNames: function(update) {
+      this.allTablesAllColumnsNames = update || {}
     }
   },
   watch: {
+  },
+  subscriptions() {
+    return {
+      // getNameProperty: activeHotAllColumnNames.map(function (x) {
+      //   console.log('x is')
+      //   console.log(x)
+      //   console.log(`${x[this.activeCurrentHotId]}`)
+      //   return x[this.activeCurrentHotId]
+      // }).elementAt(this.cIndex)
+    }
   },
   computed: {
     ...mapGetters([
@@ -367,6 +377,12 @@ export default {
     ...mapState([
       'hotTabs'
     ]),
+    getNameProperty() {
+      let allColumns = this.allTablesAllColumnsNames[this.activeCurrentHotId] || []
+      console.log('all columns for this tab are:')
+      console.log(allColumns)
+      return allColumns[this.cIndex] || ''
+    },
     formatValues() {
       // console.log('updating format values for type')
       let property = this.typeProperty
@@ -396,6 +412,7 @@ export default {
     //     this.setProperty('name', value)
     //   }
     //   // console.log(`got column property key value: ${key}: ${value}`)
+    //   // this.$forceUpdate
     //   return value
     // },
     isDropdownFormatDisabled() {
@@ -425,7 +442,11 @@ export default {
     // console.log('created...')
   },
   mounted: function() {
-    // console.log('mounted...')
+    let vueUpdateAllTablesAllColumnsNames = this.updateAllTablesAllColumnsNames
+    this.$subscribeTo(activeHotAllColumnNames, function(result) {
+      console.log(`names in subscription are`)
+      vueUpdateAllTablesAllColumnsNames(result)
+    })
   },
   destroyed: function() {
     // console.log('panel destroyed')
