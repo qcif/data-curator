@@ -8,7 +8,7 @@ const tableFields = ['encoding', 'format', 'mediatype', 'missingValues', 'name',
 const packageFields = ['description', 'id', 'licenses', 'name', 'profile', 'sources', 'title', 'version']
 const columnFields = ['constraints', 'format', 'name', 'type', 'title', 'description', 'rdfType']
 
-function getHotColumnPropertiesFromPropertyObject(property) {
+export function getHotColumnPropertiesFromPropertyObject(property) {
   let allHotColumnProperties = state.hotTabs[property.hotId].columnProperties
   if (!allHotColumnProperties) {
     mutations.resetAllColumnPropertiesForHotId(state, property.hotId)
@@ -27,7 +27,44 @@ const getters = {
     return state.hotTabs
   },
   getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
+    console.log('entered getAllHotColumnPropertiesFromHotId')
+    console.log(state.hotTabs)
     return state.hotTabs[hotId].columnProperties || []
+  },
+  // ensure getter fires each time by passing in function
+  getAllHotTablesColumnNames: (state, getters) => () => {
+    console.log('entered get all hot table column names function...')
+    let hotIdColumnNames = {}
+    for (let hotId in state.hotTabs) {
+      console.log(`next hot id is ${hotId}`)
+      let columnProps = state.hotTabs[hotId].columnProperties || []
+      let columnNames = columnProps.map(column => {
+        return column.name
+      })
+      console.log(`names are`)
+      console.log(columnNames)
+      hotIdColumnNames[hotId] = columnNames
+    }
+    console.log(`hot id column names are...`)
+    console.log(hotIdColumnNames)
+    return hotIdColumnNames
+  },
+  getAllHotColumnNamesFromHotId: (state, getters) => (hotId) => {
+    console.log('triggered get all hot column names...')
+    console.log(`hot id is: ${hotId}`)
+    if (!state.hotTabs[hotId].columnProperties) {
+      state.hotTabs[hotId].columnProperties = []
+      // console.log('not hot columns set. aborting...')
+      // return
+    }
+    let names = state.hotTabs[hotId].columnProperties.map(column => {
+      let name = column.name
+      console.log(`returning column name: ${name}`)
+      return column.name
+    })
+    console.log(`returning active hot all column names`)
+    console.log(names)
+    return names
   },
   getHotIdFromTabId: (state, getters) => (tabId) => {
     return new Promise((resolve, reject) => {
@@ -52,6 +89,8 @@ const getters = {
   },
   getHotColumnProperty: (state, getters) => (property) => {
     let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
+    console.log(hotColumnProperties)
+    console.log('get returning is...')
     return hotColumnProperties[property.key]
   },
   getTableProperty: (state, getters) => (property) => {
@@ -59,14 +98,7 @@ const getters = {
     return tableProperties[property.key]
   },
   getPackageProperty: (state, getters) => (property) => {
-    console.log(`property key is `)
-    console.log(property)
-    console.log(state.packageProperties)
     return state.packageProperties[property.key]
-  },
-  getHotColumnConstraints: (state, getters) => (property) => {
-    let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
-    return hotColumnProperties['constraints']
   },
   getConstraint: (state, getters) => (property) => {
     let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
@@ -91,30 +123,37 @@ const mutations = {
       _.set(state.hotTabs, `${hotId}.tabId`, hotTab.tabId)
     }
   },
+  pushAllColumnsProperty(state, properties) {
+    for (const [index, value] of properties.values.entries()) {
+      let property = {
+        hotId: properties.hotId,
+        columnIndex: index,
+        key: properties.key,
+        value: value
+      }
+      mutations.pushColumnProperty(state, property)
+    }
+    console.log('all push complete')
+    console.log(state.hotTabs)
+  },
   pushColumnProperty(state, property) {
+    console.log(`incoming property is...`)
+    console.log(property)
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
-    // mutations.mergeCurrentColumnPropertiesOverTableSchema(state, property.hotId)
+    console.log('pushed column property complete')
     console.log(state.hotTabs)
   },
   pushTableProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
     console.log(state.hotTabs)
   },
-  // TODO : tidy up these schema methods so that:
-  // - once we have a schema guess, always point the properties to the schema fields and then update these
+  // TODO : schema fields has simply been incorporated into overwriting column properties - remove legacy methods
   pushTableSchemaProperty(state, property) {
     mutations.pushTableProperty(state, property)
-    // let hotTab = state.hotTabs[property.hotId]
-    // if (hotTab.tableSchema) {
-    //   hotTab.tableSchema.schema[property.key] = property.value
-    // }
   },
+  // deprecated
   pushTableSchemaDescriptorProperty(state, property) {
     mutations.pushTableProperty(state, property)
-    // let hotTab = state.hotTabs[property.hotId]
-    // if (hotTab.tableSchema) {
-    //   hotTab.tableSchema.schema.descriptor[property.key] = property.value
-    // }
   },
   pushPackageProperty(state, property) {
     _.set(state.packageProperties, property.key, property.value)
@@ -123,63 +162,24 @@ const mutations = {
   pushMissingValues(state, hotMissingValues) {
     let hotId = hotMissingValues.hotId
     _.set(state.hotTabs, `${hotId}.tableProperties.missingValues`, hotMissingValues.missingValues)
-    // if (state.hotTabs[hotId].tableSchema) {
-    //   mutations.overwriteTableSchemaDescriptorProperty(state, hotId, 'missingValues')
-    // }
   },
-  // TODO : atm just chucking in entire table - probabaly only need schema and headers
   pushTableSchema(state, hotTable) {
-    console.log('pushing table schema')
-    // let hotId = hotTable.hotId
-    // let tableSchema = _.set(state.hotTabs, `${hotId}.tableSchema`, hotTable.tableSchema)
     let isColumnPropertiesMerged = mutations.mergeTableSchemaOverCurrentColumnProperties(state, hotTable)
-    console.log(state.hotTabs)
-    // return tableSchema && isColumnPropertiesMerged
     return isColumnPropertiesMerged
   },
 
-  // TODO : once this behaviour is ensured (ie: we always overwrite) tidy up these 'merge' methods so that:
-  // - once we have a schema guess, always point the columnProperties to the schema fields and then update these
   mergeTableSchemaOverCurrentColumnProperties(state, hotIdSchema) {
     let hotId = hotIdSchema.hotId
     let hotTab = state.hotTabs[hotId]
-    //    let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.fields
-    // let schemaFields = hotIdSchema.schema.descriptor.fields
     if (!hotTab.columnProperties) {
       hotTab.columnProperties = []
     }
-    console.log('examining table schema descriptor...')
-    console.log(hotIdSchema.schema.descriptor)
     // we cannot mutate the vuex state itself (in lodash call) - we can only assign a new value
     let columnProperties = [...hotTab.columnProperties]
     let isMerged = _.merge(columnProperties, hotIdSchema.schema.descriptor.fields)
     state.hotTabs[hotId].columnProperties = columnProperties
     return isMerged
   },
-  // mergeTableSchemaOverCurrentColumnProperties(state, hotId) {
-  //   let hotTab = state.hotTabs[hotId]
-  //   let tableSchemaProperties = hotTab.tableSchema.schema.descriptor.fields
-  //   if (!hotTab.columnProperties) {
-  //     hotTab.columnProperties = []
-  //   }
-  //   // we cannot mutate the vuex state itself (in lodash call) - we can only assign a new value
-  //   let columnProperties = [...hotTab.columnProperties]
-  //   let isMerged = _.merge(columnProperties, tableSchemaProperties)
-  //   state.hotTabs[hotId].columnProperties = columnProperties
-  //   return isMerged
-  // },
-  // TODO : once this behaviour is ensured (ie: we always overwrite) tidy up these 'merge' methods so that:
-  // - once we have a schema guess, always point the columnProperties to the schema fields and then update these
-  // mergeCurrentColumnPropertiesOverTableSchema(state, hotId) {
-  //   let hotTab = state.hotTabs[hotId]
-  //   let tableSchema = hotTab.tableSchema
-  //   if (tableSchema) {
-  //     let tableSchemaProperties = [...hotTab.tableSchema.schema.descriptor.fields]
-  //     let columnProperties = hotTab.columnProperties || []
-  //     let isMerged = _.merge(tableSchemaProperties, columnProperties)
-  //     state.hotTabs[hotId].tableSchema.schema.descriptor.fields = tableSchemaProperties
-  //   }
-  // },
   destroyHotTab(state, hotId) {
     _.unset(state.hotTabs, hotId)
   },

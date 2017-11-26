@@ -45,7 +45,7 @@ let HotRegister = {
       },
       afterUpdateSettings() {
         hot.render()
-        hot.deselectCell()
+        // hot.deselectCell()
       },
       afterSelection(r, c, r2, c2, preventScrolling) {
         // preventScrolling.value = true
@@ -80,8 +80,11 @@ let HotRegister = {
   },
   // TODO: consider cache (vue computed) of method, and moving to Home.vue to use with props, as used a lot
   getActiveInstance() {
-    let activeHot = document.querySelectorAll('#csvContent .active .editor')[0]
+    let activeHot = this.activeQuery()
     return this.getInstance(activeHot.id)
+  },
+  activeQuery() {
+    return document.querySelectorAll('#csvContent .active .editor')[0]
   },
   getActiveHotIdData() {
     let activeHot = this.getActiveInstance()
@@ -135,6 +138,17 @@ export function reselectCurrentCellOrMin() {
   if (!currentCell) {
     activeHot.selectCell(0, 0)
     currentCell = activeHot.getSelected()
+  } else {
+    activeHot.selectCell(currentCell[0], currentCell[1])
+  }
+}
+
+export function reselectCellOrMin(hotId) {
+  let activeHot = HotRegister.getInstance(hotId)
+  let currentCell = activeHot.getSelected()
+  if (!currentCell) {
+    activeHot.selectCell(0, 0)
+    // currentCell = activeHot.getSelected()
   } else {
     activeHot.selectCell(currentCell[0], currentCell[1])
   }
