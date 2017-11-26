@@ -49,8 +49,15 @@ export default {
       if (hot) {
         hotId = hot.guid
       } else {
+        try {
         // wait for hotid if new tab opened
-        hotId = await this.getHotIdFromTabId(this.getActiveTab)
+          hotId = await this.getHotIdFromTabId(this.getActiveTab)
+        } catch (err) {
+          if (err) {
+            console.log('Problem with promise of hot id')
+            console.log(err)
+          }
+        }
       }
       // enable faster access for setters
       this.activeCurrentHotId = hotId

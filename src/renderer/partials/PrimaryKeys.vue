@@ -12,7 +12,7 @@ export default {
   },
   mixins: [RelationKeys],
   name: 'primarykeys',
-  props: ['waitForHotIdFromTabId', 'setProperty', 'getProperty', 'getPropertyGivenHotId', 'propertyName'],
+  props: ['waitForHotIdFromTabId', 'setProperty', 'getProperty', 'getPropertyGivenHotId', 'propertyName', 'currentHotId'],
   data() {
     return {
       selectedKeys: [],
@@ -26,6 +26,7 @@ export default {
   },
   methods: {
     updateSubscriptions: function(names, hotId) {
+      console.log('updated primary key subscriptions')
       this.updateActiveNames(names)
       this.updateSelectedKeys(hotId)
     },

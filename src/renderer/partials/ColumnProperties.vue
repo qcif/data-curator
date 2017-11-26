@@ -3,12 +3,10 @@
     <div class="form-group-sm row container-fluid">
       <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
         <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
-        <!-- <label class="control-label col-sm-3" :for="formprop.label"> -->
           {{formprop.label}}:
         </label>
         <component :is="formprop.tooltipView"/>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
-          <!-- <select v-if="formprop.label==='type'" v-model="typeProperty" :id="formprop.label" class="form-control input-sm col-sm-9"> -->
           <select v-if="formprop.label==='type'" :value="getTypeProperty" v-model="typeProperty" @input="setTypeProperty($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-9">
             <option v-for="option1 in typeValues" :key="option1" v-bind:value="option1">
               {{ option1}}
@@ -26,7 +24,6 @@
             <label :for="option" class="form-control-static">{{option}}</label>
             <template v-if="!isBooleanConstraint(option)">
               <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate="constraintValidationRules(option)" :name="option"/>
-              <!-- <input type="text" :class="{ 'form-group-sm constraint-text': true }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" :name="option"/> -->
             </template>
             <div v-show="errors.has(option) && removeConstraint(option)" class="row help validate-danger">
               {{ errors.first(option)}}
@@ -44,7 +41,6 @@
 import SideNav from './SideNav'
 import {
   mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
 import AsyncComputed from 'vue-async-computed'
@@ -52,9 +48,6 @@ import VueRx from 'vue-rx'
 // import Rx from 'rxjs/Rx'
 import Vue from 'vue'
 import { Subscription } from 'rxjs/Subscription'
-import { Observable } from 'rxjs/Observable'
-import 'rxjs/add/operator/elementAt'
-import 'rxjs/add/operator/map'
 import {activeHotAllColumnNames} from '@/rxSubject.js'
 import {
   HotRegister
@@ -75,15 +68,6 @@ export default {
       typeProperty: '',
       constraintInputKeyValues: {},
       allTablesAllColumnsNames: {},
-      // debounceOptions: {
-      //   'leading': true,
-      //   'trailing': true
-      // },
-      // debounceTime: 10,
-      // debounceNameFunction: _.debounce(this.getNamePropertyFunction, this.debounceTime, this.debounceOptions),
-      // debounceTitleFunction: _.debounce(this.getTitlePropertyFunction, this.debounceTime, this.debounceOptions),
-      // debounceDescriptionFunction: _.debounce(this.getDescriptionPropertyFunction, this.debounceTime, this.debounceOptions),
-      // debounceRdfTypeFunction: _.debounce(this.getRdfTypePropertyFunction, this.debounceTime, this.debounceOptions),
       formprops: [
         {
           label: 'name',
@@ -175,14 +159,14 @@ export default {
   asyncComputed: {
     getTypeProperty: {
       async get() {
-        console.log('getting type')
+        // console.log('getting type')
         let hotId = await this.currentHotId()
         // let hotId = this.activeCurrentHotId
-        console.log(`hot id in getType is ${hotId}`)
+        // console.log(`hot id in getType is ${hotId}`)
         let getter = this.getter(hotId, 'type')
         let property = this.getHotColumnProperty(getter)
         if (!property) {
-          console.log(`no get type, so setting default`)
+          // console.log(`no get type, so setting default`)
           this.pushColumnProperty(this.setter(hotId, 'type', 'any'))
           property = 'any'
         }
@@ -202,27 +186,6 @@ export default {
     ...mapMutations([
       'pushColumnProperty'
     ]),
-    // getNamePropertyFunction: function() {
-    //   return this.getPropertyFunction('name')
-    // },
-    // getTitlePropertyFunction: function() {
-    //   return this.getPropertyFunction('title')
-    // },
-    // getDescriptionPropertyFunction: function() {
-    //   return this.getPropertyFunction('description')
-    // },
-    // getRdfTypePropertyFunction: function() {
-    //   return this.getPropertyFunction('rdfType')
-    // },
-    getPropertyFunction: function(key) {
-      let hotId = this.activeCurrentHotId
-      console.log(`getting for ${key} and hot ${hotId}`)
-      let getter = this.getter(hotId, key)
-      console.log('getter is')
-      console.log(getter)
-      let property = this.getHotColumnProperty(getter)
-      return property
-    },
     isBooleanConstraint: function(option) {
       return this.constraintBooleanBindings.indexOf(option) > -1
     },
@@ -235,35 +198,15 @@ export default {
     },
     getProperty: function(key) {
       let hotId = this.activeCurrentHotId
-      console.log(`getting for ${key} and hot ${hotId}`)
+      // console.log(`getting for ${key} and hot ${hotId}`)
       let getter = this.getter(hotId, key)
-      console.log('getter is')
-      console.log(getter)
+      // console.log('getter is')
+      // console.log(getter)
       let property = this.getHotColumnProperty(getter)
       return property
-      // let result = ''
-      // switch (key) {
-      //   case 'name':
-      //     result = this.debounceNameFunction()
-      //     break
-      //   case 'title':
-      //     result = this.debounceTitleFunction()
-      //     break
-      //   case 'description':
-      //     result = this.debounceDescriptionFunction()
-      //     break
-      //   case 'rdfType':
-      //     result = this.debounceRdfTypeFunction()
-      //     break
-      //   default:
-      //     console.log(`Error: no property function found for: ${key}`)
-      //     break
-      // }
-      // console.log(`result is: ${result}`)
-      // return result
     },
     setProperty: function(key, value) {
-      console.log(`setting for key ${key}...`)
+      // console.log(`setting for key ${key}...`)
       this.pushColumnProperty(this.setter(this.activeCurrentHotId, key, value))
     },
     getter: function(hotId, key) {
@@ -284,7 +227,7 @@ export default {
       return object
     },
     getConstraintCheck: function(key) {
-      console.log(`checking constraint: ${key}`)
+      // console.log(`checking constraint: ${key}`)
       return _.has(this.constraintInputKeyValues, key)
     },
     toggleTextNode: function(checkedInput) {
@@ -348,7 +291,7 @@ export default {
       return ''
     },
     updateConstraintInputKeyValues: function() {
-      console.log('update constraint checked....')
+      // console.log('update constraint checked....')
       let hotId = this.activeCurrentHotId
       let getter = this.getter(hotId, 'constraints')
       let constraints = this.getHotColumnProperty(getter)
@@ -360,22 +303,9 @@ export default {
   },
   watch: {
   },
-  subscriptions() {
-    return {
-      // getNameProperty: activeHotAllColumnNames.map(function (x) {
-      //   console.log('x is')
-      //   console.log(x)
-      //   console.log(`${x[this.activeCurrentHotId]}`)
-      //   return x[this.activeCurrentHotId]
-      // }).elementAt(this.cIndex)
-    }
-  },
   computed: {
     ...mapGetters([
-      'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty', 'getAllHotColumnPropertiesFromHotId'
-    ]),
-    ...mapState([
-      'hotTabs'
+      'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getAllHotTablesColumnNames'
     ]),
     getNameProperty() {
       let allColumns = this.allTablesAllColumnsNames[this.activeCurrentHotId] || []
@@ -394,27 +324,6 @@ export default {
       this.updateConstraintInputKeyValues()
       return this.constraints[property]
     },
-    getDescriptionProperty() {
-      let dfunction = this.debounceFunction
-      let returned = dfunction('description')
-      console.log(`description is ${returned}`)
-      return returned
-    },
-    // getNameProperty() {
-    //   // console.log('entered get name property...')
-    //   // let value = ''
-    //   const headers = HotRegister.getActiveInstance().getColHeader()
-    //   // console.log(headers)
-    //   let value = ''
-    //   if (headers) {
-    //     // each column header may be set to false
-    //     value = headers[this.cIndex] ? headers[this.cIndex] : ''
-    //     this.setProperty('name', value)
-    //   }
-    //   // console.log(`got column property key value: ${key}: ${value}`)
-    //   // this.$forceUpdate
-    //   return value
-    // },
     isDropdownFormatDisabled() {
       return !this.formatValues ? false : this.formatValues.length < 2
     },
@@ -428,11 +337,11 @@ export default {
           property = 'default'
           this.pushColumnProperty(this.setter(hotId, 'format', property))
         }
-        console.log('got selectFormat property')
+        // console.log('got selectFormat property')
         return property
       },
       set: function(value) {
-        console.log('about to set format...')
+        // console.log('about to set format...')
         let hotId = this.activeCurrentHotId
         this.pushColumnProperty(this.setter(hotId, 'format', value))
       }
@@ -444,9 +353,10 @@ export default {
   mounted: function() {
     let vueUpdateAllTablesAllColumnsNames = this.updateAllTablesAllColumnsNames
     this.$subscribeTo(activeHotAllColumnNames, function(result) {
-      console.log(`names in subscription are`)
+      console.log(`names in subscription`)
       vueUpdateAllTablesAllColumnsNames(result)
     })
+    activeHotAllColumnNames.next(this.getAllHotTablesColumnNames())
   },
   destroyed: function() {
     // console.log('panel destroyed')
