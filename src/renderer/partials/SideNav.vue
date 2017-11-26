@@ -24,8 +24,8 @@ export default {
   mixins: [ColumnToolTip],
   data() {
     return {
-      formprops: []
-      // currentHotId: false
+      formprops: [],
+      activeCurrentHotId: null
     }
   },
   computed: {
@@ -41,6 +41,22 @@ export default {
         'hotId': hotId,
         'key': key
       }
+    },
+    currentHotId: async function() {
+      console.log(`home hot id is: ${this.activeCurrentHotHomeId}`)
+      let hotId
+      let hot = HotRegister.getActiveInstance()
+      if (hot) {
+        hotId = hot.guid
+      } else {
+        // wait for hotid if new tab opened
+        hotId = await this.getHotIdFromTabId(this.getActiveTab)
+      }
+      // enable faster access for setters
+      this.activeCurrentHotId = hotId
+      console.log('set hot id in sidenav')
+      console.log(hotId)
+      return hotId
     },
     propertyGetObject: function(key) {
       const hotId = HotRegister.getActiveInstance().guid

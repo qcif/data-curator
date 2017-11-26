@@ -96,6 +96,7 @@ const getters = {
   },
   getHotColumnProperty: (state, getters) => (property) => {
     let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
+    console.log(hotColumnProperties)
     console.log('get returning is...')
     return hotColumnProperties[property.key]
   },
