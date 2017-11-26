@@ -3,17 +3,16 @@
     <div class="form-group-sm row container-fluid">
       <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
         <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
-        <!-- <label class="control-label col-sm-3" :for="formprop.label"> -->
           {{formprop.label}}:
         </label>
         <component :is="formprop.tooltipView"/>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
-          <select v-if="formprop.label==='type'" :value="getPropertyType()" @input="setPropertyType($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-9">
+          <select v-if="formprop.label==='type'" :value="getTypeProperty" v-model="typeProperty" @input="setTypeProperty($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-9">
             <option v-for="option1 in typeValues" :key="option1" v-bind:value="option1">
               {{ option1}}
             </option>
           </select>
-          <select v-else-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
+          <select v-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
             <option v-for="option2 in formatValues" :key="option2" v-bind:value="option2">
               {{ option2}}
             </option>
@@ -25,14 +24,13 @@
             <label :for="option" class="form-control-static">{{option}}</label>
             <template v-if="!isBooleanConstraint(option)">
               <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate="constraintValidationRules(option)" :name="option"/>
-              <!-- <input type="text" :class="{ 'form-group-sm constraint-text': true }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" :name="option"/> -->
             </template>
             <div v-show="errors.has(option) && removeConstraint(option)" class="row help validate-danger">
               {{ errors.first(option)}}
             </div>
           </div>
         </div>
-        <input v-else-if="formprop.label === 'name'" :disabled="formprop.isDisabled" :value="getNameProperty()" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
+        <input v-else-if="formprop.label === 'name'" :disabled="formprop.isDisabled" :value="getNameProperty" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
         <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
       </div>
     </div>
@@ -43,14 +41,22 @@
 import SideNav from './SideNav'
 import {
   mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
+import AsyncComputed from 'vue-async-computed'
+import VueRx from 'vue-rx'
+// import Rx from 'rxjs/Rx'
+import Vue from 'vue'
+import { Subscription } from 'rxjs/Subscription'
+import {activeHotAllColumnNames} from '@/rxSubject.js'
 import {
-  HotRegister,
-  reselectCurrentCellOrMin
-} from '../hot.js'
+  HotRegister
+} from '@/hot.js'
 import ColumnTooltip from '../mixins/ColumnTooltip'
+Vue.use(VueRx, {
+  Subscription
+})
+Vue.use(AsyncComputed)
 export default {
   extends: SideNav,
   name: 'column',
@@ -59,52 +65,50 @@ export default {
   data() {
     return {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
-      formatValues: [],
-      constraintValues: [],
-      selectConstraints: [],
+      typeProperty: '',
       constraintInputKeyValues: {},
-      constraintInputKeys: [],
-      activeTabColumnProperties: [],
-      formprops: [{
-        label: 'name',
-        tooltipId: 'tooltip-column-name',
-        tooltipView: 'tooltipColumnName',
-        isDisabled: true
-      },
-      {
-        label: 'title',
-        tooltipId: 'tooltip-column-title',
-        tooltipView: 'tooltipColumnTitle'
-      },
-      {
-        label: 'description',
-        tooltipId: 'tooltip-column-description',
-        tooltipView: 'tooltipColumnDescription'
-      },
-      {
-        label: 'type',
-        tooltipId: 'tooltip-column-type',
-        tooltipView: 'tooltipColumnType',
-        type: 'dropdown'
-      },
-      {
-        label: 'format',
-        tooltipId: 'tooltip-column-format',
-        tooltipView: 'tooltipColumnFormat',
-        type: 'dropdown'
-      },
-      {
-        label: 'constraints',
-        tooltipId: 'tooltip-column-constraints',
-        tooltipView: 'tooltipColumnConstraints',
-        type: 'checkbox'
-      },
-      {
-        label: 'rdfType',
-        tooltipId: 'tooltip-column-rdfType',
-        tooltipView: 'tooltipColumnRdfType',
-        type: 'url'
-      }
+      allTablesAllColumnsNames: {},
+      formprops: [
+        {
+          label: 'name',
+          tooltipId: 'tooltip-column-name',
+          tooltipView: 'tooltipColumnName',
+          isDisabled: true
+        },
+        {
+          label: 'title',
+          tooltipId: 'tooltip-column-title',
+          tooltipView: 'tooltipColumnTitle'
+        },
+        {
+          label: 'description',
+          tooltipId: 'tooltip-column-description',
+          tooltipView: 'tooltipColumnDescription'
+        },
+        {
+          label: 'type',
+          tooltipId: 'tooltip-column-type',
+          tooltipView: 'tooltipColumnType',
+          type: 'dropdown'
+        },
+        {
+          label: 'format',
+          tooltipId: 'tooltip-column-format',
+          tooltipView: 'tooltipColumnFormat',
+          type: 'dropdown'
+        },
+        {
+          label: 'constraints',
+          tooltipId: 'tooltip-column-constraints',
+          tooltipView: 'tooltipColumnConstraints',
+          type: 'checkbox'
+        },
+        {
+          label: 'rdfType',
+          tooltipId: 'tooltip-column-rdfType',
+          tooltipView: 'tooltipColumnRdfType',
+          type: 'url'
+        }
       ],
       formats: {
         'string': ['email', 'uri', 'binary', 'uuid', 'default'],
@@ -152,6 +156,32 @@ export default {
       }
     }
   },
+  asyncComputed: {
+    getTypeProperty: {
+      async get() {
+        // console.log('getting type')
+        let hotId = await this.currentHotId()
+        // let hotId = this.activeCurrentHotId
+        // console.log(`hot id in getType is ${hotId}`)
+        let getter = this.getter(hotId, 'type')
+        let property = this.getHotColumnProperty(getter)
+        if (!property) {
+          // console.log(`no get type, so setting default`)
+          this.pushColumnProperty(this.setter(hotId, 'type', 'any'))
+          property = 'any'
+        }
+        // view doesn't always re-render
+        this.typeProperty = property
+        this.$forceUpdate()
+        return property
+      },
+      watch() {
+        // ensure getter changes for tabs and columns
+        let temp = this.getActiveTab
+        let temp2 = this.cIndex
+      }
+    }
+  },
   methods: {
     ...mapMutations([
       'pushColumnProperty'
@@ -159,68 +189,46 @@ export default {
     isBooleanConstraint: function(option) {
       return this.constraintBooleanBindings.indexOf(option) > -1
     },
-    setProperty: function(key, value) {
-      // let object = this.storeObject
-      // object.key = key
-      // object.value = value
-      // TODO: change to use method once tested object refs ok
-      const hotId = HotRegister.getActiveInstance().guid
-      const currentColumnIndex = this.cIndex
-      let object = {
-        'hotId': hotId,
-        'columnIndex': currentColumnIndex,
-        'key': key,
-        'value': value
-      }
-      this.pushColumnProperty(object)
-    },
-    getNameProperty: function() {
-      const headers = HotRegister.getActiveInstance().getColHeader()
-      console.log(headers)
-      let value = ''
-      if (headers) {
-        // each column header may be set to false
-        value = headers[this.cIndex] ? headers[this.cIndex] : ''
-        this.setProperty('name', value)
-      }
-      // console.log(`got column property key value: ${key}: ${value}`)
+    setTypeProperty: async function(value) {
+      // console.log('setting type...')
+      // this.pushColumnProperty(this.setter(this.activeCurrentHotId, 'type', value))
+      this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), 'type', value))
+      this.typeProperty = value
       return value
     },
     getProperty: function(key) {
-      let columnProperties = this.activeTabColumnProperties[this.cIndex] || {}
-      let value = columnProperties[key]
-      // console.log(`got column property key value: ${key}: ${value}`)
-      return value
+      let hotId = this.activeCurrentHotId
+      // console.log(`getting for ${key} and hot ${hotId}`)
+      let getter = this.getter(hotId, key)
+      // console.log('getter is')
+      // console.log(getter)
+      let property = this.getHotColumnProperty(getter)
+      return property
     },
-    // must not cache to ensure view always updates on selection
-    getPropertyType() {
-      let type = this.getProperty('type')
-      if (!type) {
-        type = 'any'
-        this.setPropertyType(type)
+    setProperty: function(key, value) {
+      // console.log(`setting for key ${key}...`)
+      this.pushColumnProperty(this.setter(this.activeCurrentHotId, key, value))
+    },
+    getter: function(hotId, key) {
+      let object = {
+        hotId: hotId,
+        columnIndex: this.cIndex,
+        key: key
       }
-      this.updateTypeDependentProperties(type)
-      return type
+      return object
     },
-    setPropertyType: function(value) {
-      this.setProperty('type', value)
-      this.updateTypeDependentProperties(value)
-    },
-    updateTypeDependentProperties: function(value) {
-      this.formatValues = this.formats[value]
-      this.constraintValues = this.constraints[value]
+    setter: function(hotId, key, value) {
+      let object = {
+        hotId: hotId,
+        columnIndex: this.cIndex,
+        key: key,
+        value: value
+      }
+      return object
     },
     getConstraintCheck: function(key) {
-      // let object = this.storeObject
-      const hotId = HotRegister.getActiveInstance().guid
-      const currentColumnIndex = this.cIndex
-      let object = {
-        'hotId': hotId,
-        'columnIndex': currentColumnIndex
-      }
-      let constraints = this.getHotColumnConstraints(object)
-      this.constraintInputKeyValues = constraints || {}
-      return _.has(constraints, key)
+      // console.log(`checking constraint: ${key}`)
+      return _.has(this.constraintInputKeyValues, key)
     },
     toggleTextNode: function(checkedInput) {
       let textNode = checkedInput.parentNode.querySelector('.constraint-text')
@@ -236,43 +244,40 @@ export default {
       } else if (this.constraintBooleanBindings.indexOf(key) > -1) {
         this.constraintInputKeyValues[key] = isChecked
       } else {
-        // let object = this.storeObject()
-        // object.key = key
-        const hotId = HotRegister.getActiveInstance().guid
-        const currentColumnIndex = this.cIndex
-        let object = {
-          'hotId': hotId,
-          'columnIndex': currentColumnIndex,
-          'key': key
-        }
-        let currentValue = this.getConstraint(object) || ''
+        let getter = this.getter(this.activeCurrentHotId, key)
+        let currentValue = this.getConstraint(getter) || ''
         this.constraintInputKeyValues[key] = currentValue
       }
-      this.setProperty('constraints', this.constraintInputKeyValues)
-      this.$forceUpdate()
+      this.pushConstraintInputKeyValues()
+      // this.$forceUpdate()
     },
     getConstraintValue: function(key) {
-      let property = this.getProperty('constraints')
-      if (!property) {
-        this.setProperty('constraints', {})
-        property = {}
-      }
-      return property[key]
+      let property = this.constraintInputKeyValues[key]
+      return property
     },
     removeConstraint: function(key) {
       this.constraintInputKeyValues[key] = ''
-      this.setProperty('constraints', this.constraintInputKeyValues)
+      this.pushConstraintInputKeyValues()
       return true
     },
     setConstraintValue: function(key, value) {
       this.constraintInputKeyValues[key] = value
-      this.setProperty('constraints', this.constraintInputKeyValues)
+      this.pushConstraintInputKeyValues()
+    },
+    pushConstraintInputKeyValues: function() {
+      console.log('pushing contraint input key values...')
+      _.debounce(function() {
+        this.pushColumnProperty(this.setter(this.activeCurrentHotId, 'constraints', this.constraintInputKeyValues))
+      }, 300, {
+        'leading': true,
+        'trailing': true
+      })
     },
     constraintValidationRules: function(option) {
       if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
         return 'numeric'
       } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
-        let type = this.getProperty('type')
+        let type = this.typeProperty
         if (type === 'integer') {
           return 'numeric'
         } else if (type === 'number') {
@@ -285,66 +290,76 @@ export default {
       }
       return ''
     },
-    getAllColumnsProperties: async function(tab) {
-      console.log('firing get all column properties method...')
-      console.log(`tab is ${tab}`)
-      let hotId = await this.waitForHotIdFromTabId(tab)
-      console.log(`hot id in all column properties is ${hotId}`)
-      return this.getAllHotColumnPropertiesFromHotId(hotId)
+    updateConstraintInputKeyValues: function() {
+      // console.log('update constraint checked....')
+      let hotId = this.activeCurrentHotId
+      let getter = this.getter(hotId, 'constraints')
+      let constraints = this.getHotColumnProperty(getter)
+      this.constraintInputKeyValues = constraints || {}
     },
-    initColumnProperties: async function(tab) {
-      let columnProperties = await this.getAllColumnsProperties(tab)
-      console.log('received all column properties...')
-      console.log(columnProperties)
-      this.activeTabColumnProperties = columnProperties
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getHotColumnConstraints', 'getTableProperty', 'getAllHotColumnPropertiesFromHotId'
-    ]),
-    storeObject() {
-      const hotId = HotRegister.getActiveInstance().guid
-      const currentColumnIndex = this.cIndex
-      let object = {
-        'hotId': hotId,
-        'columnIndex': currentColumnIndex
-      }
-      return object
-    },
-    isDropdownFormatDisabled() {
-      return this.formatValues.length < 2
-    },
-    selectFormat: {
-      get: function() {
-        let property = this.getProperty('format')
-        if (!property) {
-          this.setProperty('format', 'default')
-          property = 'default'
-        }
-        return property
-      },
-      set: function(value) {
-        this.setProperty('format', value)
-      }
+    updateAllTablesAllColumnsNames: function(update) {
+      this.allTablesAllColumnsNames = update || {}
     }
   },
   watch: {
-    getActiveTab: function(tab) {
-      console.log('watch received active tab change')
-      // this.initSources(tab)
-      this.initColumnProperties(tab)
-      this.$nextTick(function() {
-        reselectCurrentCellOrMin()
-      })
+  },
+  computed: {
+    ...mapGetters([
+      'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getAllHotTablesColumnNames'
+    ]),
+    getNameProperty() {
+      let allColumns = this.allTablesAllColumnsNames[this.activeCurrentHotId] || []
+      console.log('all columns for this tab are:')
+      console.log(allColumns)
+      return allColumns[this.cIndex] || ''
+    },
+    formatValues() {
+      // console.log('updating format values for type')
+      let property = this.typeProperty
+      return this.formats[property]
+    },
+    constraintValues() {
+      // console.log('updating constraint values for type')
+      let property = this.typeProperty
+      this.updateConstraintInputKeyValues()
+      return this.constraints[property]
+    },
+    isDropdownFormatDisabled() {
+      return !this.formatValues ? false : this.formatValues.length < 2
+    },
+    selectFormat: {
+      get: function() {
+        // console.log('about to get select format...')
+        let hotId = this.activeCurrentHotId
+        let getter = this.getter(hotId, 'format')
+        let property = this.getHotColumnProperty(getter)
+        if (!property) {
+          property = 'default'
+          this.pushColumnProperty(this.setter(hotId, 'format', property))
+        }
+        // console.log('got selectFormat property')
+        return property
+      },
+      set: function(value) {
+        // console.log('about to set format...')
+        let hotId = this.activeCurrentHotId
+        this.pushColumnProperty(this.setter(hotId, 'format', value))
+      }
     }
   },
+  created: function() {
+    // console.log('created...')
+  },
   mounted: function() {
-    let tab = this.getActiveTab
-    this.initColumnProperties(tab)
-    this.$nextTick(function() {
-      reselectCurrentCellOrMin()
+    let vueUpdateAllTablesAllColumnsNames = this.updateAllTablesAllColumnsNames
+    this.$subscribeTo(activeHotAllColumnNames, function(result) {
+      console.log(`names in subscription`)
+      vueUpdateAllTablesAllColumnsNames(result)
     })
+    activeHotAllColumnNames.next(this.getAllHotTablesColumnNames())
+  },
+  destroyed: function() {
+    // console.log('panel destroyed')
   }
 }
 </script>

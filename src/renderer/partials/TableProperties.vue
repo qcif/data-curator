@@ -6,9 +6,7 @@
         <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
         <component :is="formprop.tooltipView"/>
         <input v-if="formprop.key === 'missingValue'" :value="missingValues" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
-        <input v-if="formprop.key === 'primaryKeys'" :value="primaryKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
-        <!-- <input v-if="formprop.key === 'foreignKeys'" :value="foreignKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" /> -->
-        <component v-else-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
+        <component v-else-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
         <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
       </template>
       <div v-show="errors.has(formprop.label) && removeValue(formprop.label)" class="row help validate-danger">
@@ -29,6 +27,8 @@ import Vue from 'vue'
 import AsyncComputed from 'vue-async-computed'
 import licenses from '../partials/Licenses'
 import sources from '../partials/Sources'
+import primaryKeys from '../partials/PrimaryKeys'
+import foreignKeys from '../partials/ForeignKeys'
 import {
   HotRegister
 } from '../hot.js'
@@ -43,7 +43,9 @@ export default {
   mixins: [TableTooltip],
   components: {
     licenses,
-    sources
+    sources,
+    primaryKeys,
+    foreignKeys
   },
   data() {
     return {
@@ -58,14 +60,15 @@ export default {
       },
       {
         label: 'primary key(s)',
-        type: 'array',
+        // type: 'tableKeys',
         key: 'primaryKeys',
         tooltipId: 'tooltip-table-primary-keys',
         tooltipView: 'tooltipTablePrimaryKeys'
       },
       // {
       //   label: 'foreign key(s)',
-      //   type: 'array'
+      //   // type: 'tableKeys',
+      //   key: 'foreignKeys'
       // },
       {
         label: 'profile',
@@ -79,12 +82,14 @@ export default {
       },
       {
         label: 'sources',
+        key: 'sources',
         type: 'dropdown',
         tooltipId: 'tooltip-table-sources',
         tooltipView: 'tooltipTableSources'
       },
       {
         label: 'licenses',
+        key: 'licenses',
         tooltipId: 'tooltip-table-licences',
         tooltipView: 'tooltipTableLicences'
       },
@@ -115,14 +120,6 @@ export default {
   asyncComputed: {
     async missingValues() {
       let values = await this.getArrayValues('missingValues')
-      return values
-    },
-    async primaryKeys() {
-      let values = await this.getArrayValues('primaryKeys')
-      return values
-    },
-    async foreignKeys() {
-      let values = await this.getArrayValues('foreignKeys')
       return values
     }
   },
