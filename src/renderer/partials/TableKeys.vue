@@ -4,19 +4,8 @@
   </select>
 </template>
 <script>
-import RelationKeys from '../mixins/RelationKeys'
 export default {
   name: 'tablekeys',
-  mixins: [RelationKeys],
-  data() {
-    return {
-      selectedTableKeys: [],
-      activeTableNames: []
-    }
-  },
-  watch: {},
-  methods: {
-
-  }
+  props: ['activeTableNames', 'selectedTableKeys']
 }
 </script>

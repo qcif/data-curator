@@ -198,7 +198,6 @@ export default {
   },
   watch: {},
   beforeCreate: function() {
-    console.log('before create')
     this.$nextTick(function() {
       // set hidden inputs
       let found = this.formprops.forEach(x => {

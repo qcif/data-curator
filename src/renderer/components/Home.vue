@@ -177,6 +177,7 @@ export default {
   mixins: [HomeTooltip],
   data() {
     return {
+      currentHotId: '',
       currentColumnIndex: 0,
       toolbarIndex: -1,
       sideNavPosition: 'right',
@@ -362,10 +363,10 @@ export default {
         })
       }
       this.updateAllColumnsProperty('name', updatedHeaders)
-      reselectCurrentCellOrMin()
+      // reselectCurrentCellOrMin()
       // do not allow getter to cache as does not seem to pick up change
-      let allHotTablesColumnNames = this.getAllHotTablesColumnNames()
-      activeHotAllColumnNames.next(allHotTablesColumnNames)
+      let allHotTablesColumsnNames = this.getAllHotTablesColumnNames()
+      activeHotAllColumnNames.next(allHotTablesColumsnNames)
     },
     updateAllColumnsProperty(property, values) {
       let hotId = HotRegister.getActiveInstance().guid
@@ -668,6 +669,7 @@ export default {
     activeTab: async function(tabId) {
       try {
         let hotId = await this.getHotIdFromTabId(tabId)
+        this.currentHotId = hotId
         reselectCellOrMin(hotId)
       } catch (err) {
         console.log('Problem with getting hot id from watched tab', err)
