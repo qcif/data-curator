@@ -362,6 +362,7 @@ export default {
           return ''
         })
       }
+      ipc.send('hasHeadersRow', !!headers)
       this.updateAllColumnsProperty('name', updatedHeaders)
       // reselectCurrentCellOrMin()
       // do not allow getter to cache as does not seem to pick up change

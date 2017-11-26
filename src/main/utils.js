@@ -82,15 +82,32 @@ export function validateTable() {
   window.webContents.send('validateTable')
 }
 
+function getSubMenuFromMenu(menuLabel, subMenuLabel) {
+  let menu = Menu.getApplicationMenu().items.find(x => x.label === menuLabel)
+  let subMenu = menu.submenu.items.find(x => x.label === subMenuLabel)
+  return subMenu
+}
+
 function getSaveSubMenu() {
-  let fileMenu = Menu.getApplicationMenu().items.find(x => x.label === 'File')
-  let saveSubMenu = fileMenu.submenu.items.find(x => x.label === 'Save')
-  return saveSubMenu
+  return getSubMenuFromMenu('File', 'Save')
+}
+
+function getHeadersRowMenu() {
+  return getSubMenuFromMenu('Tools', 'Header Row')
 }
 
 ipc.on('toggleSaveMenu', (event, arg) => {
   toggleSaveMenu()
 })
+
+ipc.on('hasHeadersRow', (event, arg) => {
+  toggleHeaderRowMenu(arg)
+})
+
+export function toggleHeaderRowMenu(isHeadersRowEnabled) {
+  let subMenu = getHeadersRowMenu()
+  subMenu.checked = isHeadersRowEnabled
+}
 
 export function toggleSaveMenu() {
   let saveSubMenu = getSaveSubMenu()
