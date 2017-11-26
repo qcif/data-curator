@@ -6,6 +6,16 @@
 <script>
 export default {
   name: 'tableheaderkeys',
-  props: ['activeNames', 'selectedKeys']
+  props: ['activeNames', 'getSelectedKeys', 'pushSelectedKeys'],
+  computed: {
+    selectedKeys: {
+      get: function() {
+        return this.getSelectedKeys()
+      },
+      set: function(values) {
+        this.pushSelectedKeys(values)
+      }
+    }
+  }
 }
 </script>

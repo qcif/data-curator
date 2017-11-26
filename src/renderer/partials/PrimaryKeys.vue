@@ -1,6 +1,6 @@
 <template>
   <div id="primaryKeys">
-    <component is="tableheaderkeys" :activeNames="activeNames" :selectedKeys="selectedKeys"/>
+    <component is="tableheaderkeys" :activeNames="activeNames" :getSelectedKeys="getSelectedKeys" :pushSelectedKeys="pushSelectedKeys"/>
   </div>
 </template>
 <script>
@@ -15,26 +15,34 @@ export default {
   props: ['setProperty', 'getPropertyGivenHotId', 'propertyName', 'currentHotId'],
   data() {
     return {
-      selectedKeys: [],
-      activeNames: []
-    }
-  },
-  watch: {
-    selectedKeys: function(values) {
-      this.setProperty(this.propertyName, values)
+      activeNames: [],
+      hotId: false
     }
   },
   methods: {
     updateSubscriptions: function(names, hotId) {
       console.log('updated primary key subscriptions')
       this.updateActiveNames(names)
-      this.updateSelectedKeys(hotId)
+      this.hotId = hotId
+      let values = this.getPropertyGivenHotId(this.propertyName, hotId)
+      this.pushSelectedKeys(values)
     },
     updateActiveNames: function(names) {
       this.activeNames = _.without(names, '')
     },
-    updateSelectedKeys: function(hotId) {
-      this.selectedKeys = this.getPropertyGivenHotId(this.propertyName, hotId) || []
+    getSelectedKeys: function() {
+      console.log('before in primary keys')
+      console.log(`hot id is ${this.hotId}`)
+      if (this.hotId) {
+        return this.getPropertyGivenHotId(this.propertyName, this.hotId) || []
+      } else {
+        return []
+      }
+    },
+    pushSelectedKeys: function(values) {
+      console.log(`property name before push is ${this.propertyName}`)
+      console.log(values)
+      this.setProperty(this.propertyName, values)
     }
   }
 }
