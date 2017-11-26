@@ -47,40 +47,26 @@ import {
   mapState,
   mapGetters
 } from 'vuex'
-import {
-  Subscription
-} from 'rxjs/Subscription'
-import {
-  Subject
-} from 'rxjs/Subject'
-import {
-  Observable
-} from 'rxjs/Observable'
-import 'rxjs/add/observable/from'
-import 'rxjs/add/operator/elementAt'
-import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/debounce'
-import 'rxjs/add/observable/timer'
-import {
-  activeRxTab,
-  propertyType
-} from '@/rxSubject.js'
 import AsyncComputed from 'vue-async-computed'
-import {
-  getHotColumnPropertiesFromPropertyObject
-} from '@/store/modules/hots.js'
-import VueRx from 'vue-rx'
 import Vue from 'vue'
 import {
-  HotRegister,
-  reselectCurrentCellOrMin
+  HotRegister
 } from '@/hot.js'
 import ColumnTooltip from '../mixins/ColumnTooltip'
-Vue.use(VueRx, {
-  Subscription,
-  Subject,
-  Observable
-})
+// let debounceFunction = _.debounce(function(key, vueGetter, vueHotColumnProperty) {
+//   // let hotId = this.activeCurrentHotId
+//   // console.log(`home hot id is: ${this.activeCurrentHotId}`)
+//   console.log(`getting for ${key} and hot ${hotId}`)
+//   // _.debounce(function() {
+//   let getter = vueGetter(hotId, key)
+//   console.log('getter is')
+//   console.log(getter)
+//   let property = vueHotColumnProperty(getter)
+//   return property
+// }, 1000, {
+//   'leading': true,
+//   'trailing': true
+// })
 Vue.use(AsyncComputed)
 export default {
   extends: SideNav,
@@ -89,10 +75,18 @@ export default {
   props: ['cIndex'],
   data() {
     return {
-      activeCurrentHotId: null,
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       typeProperty: '',
       constraintInputKeyValues: {},
+      // debounceOptions: {
+      //   'leading': true,
+      //   'trailing': true
+      // },
+      // debounceTime: 10,
+      // debounceNameFunction: _.debounce(this.getNamePropertyFunction, this.debounceTime, this.debounceOptions),
+      // debounceTitleFunction: _.debounce(this.getTitlePropertyFunction, this.debounceTime, this.debounceOptions),
+      // debounceDescriptionFunction: _.debounce(this.getDescriptionPropertyFunction, this.debounceTime, this.debounceOptions),
+      // debounceRdfTypeFunction: _.debounce(this.getRdfTypePropertyFunction, this.debounceTime, this.debounceOptions),
       formprops: [
         //   {
         //   label: 'name',
@@ -186,6 +180,8 @@ export default {
       async get() {
         console.log('getting type')
         let hotId = await this.currentHotId()
+        // let hotId = this.activeCurrentHotId
+        console.log(`hot id in getType is ${hotId}`)
         let getter = this.getter(hotId, 'type')
         let property = this.getHotColumnProperty(getter)
         if (!property) {
@@ -209,38 +205,69 @@ export default {
     ...mapMutations([
       'pushColumnProperty'
     ]),
-    currentHotId: async function() {
-      let hotId
-      let hot = HotRegister.getActiveInstance()
-      if (hot) {
-        hotId = hot.guid
-      } else {
-        // wait for hotid if new tab opened
-        hotId = await this.getHotIdFromTabId(this.getActiveTab)
-      }
-      // enable faster access for setters
-      this.activeCurrentHotId = hotId
-      return hotId
+    // getNamePropertyFunction: function() {
+    //   return this.getPropertyFunction('name')
+    // },
+    // getTitlePropertyFunction: function() {
+    //   return this.getPropertyFunction('title')
+    // },
+    // getDescriptionPropertyFunction: function() {
+    //   return this.getPropertyFunction('description')
+    // },
+    // getRdfTypePropertyFunction: function() {
+    //   return this.getPropertyFunction('rdfType')
+    // },
+    getPropertyFunction: function(key) {
+      let hotId = this.activeCurrentHotId
+      console.log(`getting for ${key} and hot ${hotId}`)
+      let getter = this.getter(hotId, key)
+      console.log('getter is')
+      console.log(getter)
+      let property = this.getHotColumnProperty(getter)
+      return property
     },
     isBooleanConstraint: function(option) {
       return this.constraintBooleanBindings.indexOf(option) > -1
     },
     setTypeProperty: async function(value) {
-      console.log('setting type...')
+      // console.log('setting type...')
+      // this.pushColumnProperty(this.setter(this.activeCurrentHotId, 'type', value))
       this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), 'type', value))
       this.typeProperty = value
       return value
     },
-    getProperty(key) {
-      let hotId = this.activeCurrentHotId || this.currentHotId()
+    getProperty: function(key) {
+      let hotId = this.activeCurrentHotId
       console.log(`getting for ${key} and hot ${hotId}`)
       let getter = this.getter(hotId, key)
+      console.log('getter is')
+      console.log(getter)
       let property = this.getHotColumnProperty(getter)
       return property
+      // let result = ''
+      // switch (key) {
+      //   case 'name':
+      //     result = this.debounceNameFunction()
+      //     break
+      //   case 'title':
+      //     result = this.debounceTitleFunction()
+      //     break
+      //   case 'description':
+      //     result = this.debounceDescriptionFunction()
+      //     break
+      //   case 'rdfType':
+      //     result = this.debounceRdfTypeFunction()
+      //     break
+      //   default:
+      //     console.log(`Error: no property function found for: ${key}`)
+      //     break
+      // }
+      // console.log(`result is: ${result}`)
+      // return result
     },
-    setProperty(key, value) {
+    setProperty: function(key, value) {
       console.log(`setting for key ${key}...`)
-      this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), key, value))
+      this.pushColumnProperty(this.setter(this.activeCurrentHotId, key, value))
     },
     getter: function(hotId, key) {
       let object = {
@@ -350,6 +377,12 @@ export default {
       let property = this.typeProperty
       this.updateConstraintInputKeyValues()
       return this.constraints[property]
+    },
+    getDescriptionProperty() {
+      let dfunction = this.debounceFunction
+      let returned = dfunction('description')
+      console.log(`description is ${returned}`)
+      return returned
     },
     // getNameProperty() {
     //   // console.log('entered get name property...')
