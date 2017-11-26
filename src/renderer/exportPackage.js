@@ -66,5 +66,5 @@ function zipResources(archive) {
 
 function zipProvenanceProperties(archive) {
   let provenance = hotStore.state.provenanceProperties.markdown
-  archive.append(provenance, { name: 'Readme.md' })
+  archive.append(provenance, { name: 'README.md' })
 }

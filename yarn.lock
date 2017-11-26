@@ -7820,7 +7820,7 @@ rx@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/rx/-/rx-4.1.0.tgz#a5f13ff79ef3b740fe30aa803fb09f98805d4782"
 
-rxjs@^5.1.1:
+rxjs@^5.1.1, rxjs@^5.5.2:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.2.tgz#28d403f0071121967f18ad665563255d54236ac3"
   dependencies:
@@ -9265,6 +9265,10 @@ vue-loader@^12.2.1:
 vue-router@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
+
+vue-rx@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/vue-rx/-/vue-rx-5.0.0.tgz#71ed02e68c5e04db9d3cb765f4454b619a75c32d"
 
 vue-style-loader@^3.0.0, vue-style-loader@^3.0.1:
   version "3.0.3"

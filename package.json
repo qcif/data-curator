@@ -1,6 +1,6 @@
 {
   "name": "DataCurator",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": " <matt@redboxresearchdata.com.au>",
   "description": "Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data",
   "license": "MIT",
@@ -96,6 +96,7 @@
     "pikaday": "^1.6.1",
     "pouchdb-adapter-idb": "^6.3.4",
     "request": "^2.81.0",
+    "rxjs": "^5.5.2",
     "slug": "^0.9.1",
     "sortablejs": "^1.6.0",
     "svgo": "^1.0.0",
@@ -108,6 +109,7 @@
     "vue-directive-tooltip": "^1.4.1",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",
+    "vue-rx": "^5.0.0",
     "vue-template-compiler": "^2.5.2",
     "vuex": "^3.0.0",
     "webpack-fix-default-import-plugin": "^1.0.3",
