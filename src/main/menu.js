@@ -176,11 +176,6 @@ const template = [
       }, {
         type: 'separator'
       }, {
-        label: 'Toggle Headers',
-        click() {
-          BrowserWindow.getFocusedWindow().webContents.send('toggleHeaders')
-        }
-      }, {
         label: 'Insert Row Above',
         accelerator: 'CmdOrCtrl+I',
         click() {
@@ -271,6 +266,14 @@ const template = [
     //  }, {
     label: 'Tools',
     submenu: [
+      {
+        label: 'Header Row',
+        type: 'checkbox',
+        checked: false,
+        click() {
+          BrowserWindow.getFocusedWindow().webContents.send('toggleHeaders')
+        }
+      },
       {
         // Placeholder for future features
         //      }, {

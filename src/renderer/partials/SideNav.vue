@@ -24,7 +24,8 @@ export default {
   mixins: [ColumnToolTip],
   data() {
     return {
-      formprops: []
+      formprops: [],
+      activeCurrentHotId: null
     }
   },
   computed: {
@@ -32,7 +33,7 @@ export default {
   },
   methods: {
     isSharedComponent: function(label) {
-      let isShared = ['sources', 'licenses'].indexOf(label) !== -1
+      let isShared = ['sources', 'licenses', 'primaryKeys', 'foreignKeys'].indexOf(label) !== -1
       return isShared
     },
     propertyGetObjectGivenHotId: function(key, hotId) {
@@ -40,6 +41,29 @@ export default {
         'hotId': hotId,
         'key': key
       }
+    },
+    currentHotId: async function() {
+      console.log(`home hot id is: ${this.activeCurrentHotHomeId}`)
+      let hotId
+      let hot = HotRegister.getActiveInstance()
+      if (hot) {
+        hotId = hot.guid
+      } else {
+        try {
+        // wait for hotid if new tab opened
+          hotId = await this.getHotIdFromTabId(this.getActiveTab)
+        } catch (err) {
+          if (err) {
+            console.log('Problem with promise of hot id')
+            console.log(err)
+          }
+        }
+      }
+      // enable faster access for setters
+      this.activeCurrentHotId = hotId
+      console.log('set hot id in sidenav')
+      console.log(hotId)
+      return hotId
     },
     propertyGetObject: function(key) {
       const hotId = HotRegister.getActiveInstance().guid
@@ -73,6 +97,10 @@ export default {
       let sidenav = document.querySelector('#sidenav')
       let form = sidenav.querySelector('form')
       form.style.height = this.sideNavFormHeight
+    },
+    // convenience method for inside functions
+    getCurrentHotId: function() {
+      return this.activeCurrentHotId
     }
   },
   mounted: function() {

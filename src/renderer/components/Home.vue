@@ -140,7 +140,8 @@ import {
   reselectCurrentCellOrMax,
   incrementActiveColumn,
   decrementActiveColumn,
-  getActiveSelected
+  getActiveSelected,
+  reselectCellOrMin
 } from '../hot.js'
 import about from '../partials/About'
 import preferences from '../partials/Preferences'
@@ -162,11 +163,21 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import 'lodash/lodash.min.js'
 import '../menu.js'
 import {unzipFile} from '@/importPackage.js'
+import {activeHotAllColumnNames} from '@/rxSubject.js'
+// import { Subject } from 'rxjs/Subject'
+// import VueRx from 'vue-rx'
+// import Vue from 'vue'
+// Vue.use(VueRx, {
+//   Subscription,
+//   Subject
+// })
+// import {activeRxTab} from '@/rxSubject.js'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
   data() {
     return {
+      currentHotId: '',
       currentColumnIndex: 0,
       toolbarIndex: -1,
       sideNavPosition: 'right',
@@ -236,7 +247,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'getAllHotColumnPropertiesFromHotId', 'tabTitle', 'getHotIdFromTabId', 'getHotTabs', 'getTabs', 'getTabObjects']),
+    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId', 'getAllHotTablesColumnNames']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -266,7 +277,8 @@ export default {
       'destroyTabObject',
       'resetPackagePropertiesToObject',
       'resetTablePropertiesToObject',
-      'resetColumnPropertiesToObject'
+      'resetColumnPropertiesToObject',
+      'pushAllColumnsProperty'
     ]),
     closeMessages: function() {
       for (let el of ['main-bottom-panel', 'main-middle-panel']) {
@@ -332,6 +344,8 @@ export default {
         if (data.length > 1) {
           headers = data[0]
           data = _.drop(data)
+          this.messages = false
+          this.reportFeedback()
         } else {
           this.messagesTitle = 'Headers Error'
           this.messages = 'At least 2 rows are required before a header row can be set.'
@@ -342,6 +356,26 @@ export default {
       hot.loadData(data)
       hot.updateSettings({colHeaders: headers})
       hot.render()
+      let updatedHeaders = hot.getColHeader()
+      if (!headers) {
+        updatedHeaders = updatedHeaders.map(header => {
+          return ''
+        })
+      }
+      ipc.send('hasHeadersRow', !!headers)
+      this.updateAllColumnsProperty('name', updatedHeaders)
+      // reselectCurrentCellOrMin()
+      // do not allow getter to cache as does not seem to pick up change
+      let allHotTablesColumsnNames = this.getAllHotTablesColumnNames()
+      activeHotAllColumnNames.next(allHotTablesColumsnNames)
+    },
+    updateAllColumnsProperty(property, values) {
+      let hotId = HotRegister.getActiveInstance().guid
+      this.pushAllColumnsProperty({
+        hotId: hotId,
+        key: property,
+        values: values
+      })
     },
     async validateTable() {
       try {
@@ -352,16 +386,12 @@ export default {
       }
     },
     storeResetCallback(allProperties) {
-      console.log('all properties are:')
-      console.log(allProperties)
       this.resetPackagePropertiesToObject(allProperties.package)
       this.resetTablePropertiesToObject(allProperties.tables)
       this.resetColumnPropertiesToObject(allProperties.columns)
     },
     importDataPackage: async function(filename) {
       let message = await unzipFile(filename, this.storeResetCallback)
-      console.log(`message is...`)
-      console.log(message)
       this.messagesTitle = message ? 'Import Data Package Error' : 'Import Data Package Success'
       this.messages = message || 'All Properties have been imported.'
       this.messagesType = 'feedback'
@@ -426,6 +456,7 @@ export default {
         id: nextTabId,
         index: this.tabIndex
       })
+      // activeRxTab.next(tabId)
       this.setActiveTab(nextTabId)
       this.pushTab(nextTabId)
     },
@@ -636,6 +667,15 @@ export default {
     provenance
   },
   watch: {
+    activeTab: async function(tabId) {
+      try {
+        let hotId = await this.getHotIdFromTabId(tabId)
+        this.currentHotId = hotId
+        reselectCellOrMin(hotId)
+      } catch (err) {
+        console.log('Problem with getting hot id from watched tab', err)
+      }
+    }
   },
   mounted: function() {
     const vueToggleHeaders = this.toggleHeaders
