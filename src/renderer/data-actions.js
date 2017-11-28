@@ -2,6 +2,7 @@ import tabStore from '../renderer/store/modules/tabs.js'
 import fs from 'fs'
 import {fixRaggedRows} from '@/ragged-rows.js'
 import {includeHeadersInData} from '@/frictionlessUtilities.js'
+import {toggleHeaderOn} from '@/headerRow.js'
 // import parse from 'csv-parse/lib/sync'
 // import stringify from 'csv-stringify'
 const $ = global.jQuery = require('jquery/dist/jquery.js')
@@ -18,6 +19,8 @@ export function loadDataIntoHot(hot, data, format) {
   fixRaggedRows(arrays)
   hot.loadData(arrays)
   hot.render()
+  // frictionless csv header default = true
+  toggleHeaderOn(hot)
 }
 
 export function saveDataToFile(hot, format, filename, callback) {

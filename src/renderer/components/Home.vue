@@ -429,7 +429,8 @@ export default {
         loadingFinishListener: this.closeLoadingScreen
       })
       addHotContainerListeners(container)
-      let activeHotId = HotRegister.getActiveInstance().guid
+      let hot = HotRegister.getActiveInstance()
+      let activeHotId = hot.guid
       let activeTabId = this.activeTab
       // hack! - force data to wait for latest render e.g, for loader message
       window.setTimeout(function() {
@@ -605,7 +606,7 @@ export default {
         form.style.height = this.sideNavFormHeight
       }
     },
-    toggleActiveHeader: function(hot) {
+    toggleHeaderWithFeedback: function(hot) {
       this.messages = false
       if (hot.hasColHeaders()) {
         toggleHeaderOff(hot)
@@ -640,7 +641,7 @@ export default {
     }
   },
   mounted: function() {
-    const vueToggleHeader = this.toggleActiveHeader
+    const vueToggleHeader = this.toggleHeaderWithFeedback
     ipc.on('toggleActiveHeaderRow', function() {
       let hot = HotRegister.getActiveInstance()
       vueToggleHeader(hot)
