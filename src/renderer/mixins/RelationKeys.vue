@@ -6,7 +6,7 @@ import {
 import { Subscription } from 'rxjs/Subscription'
 import VueRx from 'vue-rx'
 import Vue from 'vue'
-import {activeHotAllColumnNames} from '@/rxSubject.js'
+import {activeHotAllColumnNames$} from '@/rxSubject.js'
 import {
   HotRegister
 } from '@/hot.js'
@@ -26,13 +26,13 @@ export default {
   methods: {
     ...mapMutations(['pushAllColumnsProperty']),
     initTableHeaderKeys: function() {
-      activeHotAllColumnNames.next(this.getAllHotTablesColumnNames())
+      activeHotAllColumnNames$.next(this.getAllHotTablesColumnNames())
     }
   },
   mounted: function() {
     let vueCurrentHotId = this.currentHotId
     let vueUpdateSubscriptions = this.updateSubscriptions
-    this.$subscribeTo(activeHotAllColumnNames, async function(allNames) {
+    this.$subscribeTo(activeHotAllColumnNames$, async function(allNames) {
       let id = await vueCurrentHotId()
       console.log('subscription id is:')
       console.log(id)

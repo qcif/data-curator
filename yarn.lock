@@ -2669,9 +2669,17 @@ csv-generate@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/csv-generate/-/csv-generate-1.0.0.tgz#bd52886859d0c925f3e51f60f3abed262fa15caf"
 
+csv-generate@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/csv-generate/-/csv-generate-2.0.0.tgz#ab4fdc30db5ce678b07d53884c69fa545618b25c"
+
 csv-parse@^1.1.0, csv-parse@^1.2.0:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-1.2.3.tgz#466206b51eaf77ccb50c3fadebd098cdeb2c69e7"
+
+csv-parse@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-2.0.0.tgz#4ea22c973233987f07688c601a2d460234ff56d1"
 
 csv-parser@~1.8.0:
   version "1.8.1"
@@ -2689,6 +2697,12 @@ csv-stringify@^1.0.0:
   dependencies:
     lodash.get "^4.0.0"
 
+csv-stringify@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-2.0.0.tgz#927bb55fd1408205ce444d2880184627b24b64f1"
+  dependencies:
+    lodash.get "~4.4.2"
+
 csv@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/csv/-/csv-1.1.1.tgz#d9952d59b1f964a7afbcdd804d6818a73199a477"
@@ -2697,6 +2711,15 @@ csv@^1.1.1:
     csv-parse "^1.2.0"
     csv-stringify "^1.0.0"
     stream-transform "^0.1.0"
+
+csv@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/csv/-/csv-2.0.0.tgz#0d51d8fa3ece278b5409f795717fcfcd5ace9b3e"
+  dependencies:
+    csv-generate "^2.0.0"
+    csv-parse "^2.0.0"
+    csv-stringify "^2.0.0"
+    stream-transform "^1.0.0"
 
 cuint@^0.2.2:
   version "0.2.2"
@@ -5721,7 +5744,7 @@ lodash.create@3.1.1:
     lodash._basecreate "^3.0.0"
     lodash._isiterateecall "^3.0.0"
 
-lodash.get@^4.0.0, lodash.get@^4.4.2:
+lodash.get@^4.0.0, lodash.get@^4.4.2, lodash.get@~4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
 
@@ -8333,6 +8356,10 @@ stream-to-async-iterator@^0.2.0:
 stream-transform@^0.1.0, stream-transform@^0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/stream-transform/-/stream-transform-0.1.2.tgz#7d8e6b4e03ac4781778f8c79517501bfb0762a9f"
+
+stream-transform@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/stream-transform/-/stream-transform-1.0.0.tgz#d4ef386913d6ec102052bc75fc0516947a961f10"
 
 streamz@~1.8.4:
   version "1.8.5"

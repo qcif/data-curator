@@ -6,9 +6,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/). 
 
 To see what's planned in our [milestones](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open) or unreleased changes.
 
-[Unreleased]:  https://github.com/ODIQueensland/data-curator/compare/v0.4.0...HEAD
+[Unreleased]:  https://github.com/ODIQueensland/data-curator/compare/v0.5.1...HEAD
 ## [Unreleased]
 
+
+[0.5.1]: https://github.com/ODIQueensland/data-curator/compare/v0.5.0...v0.5.1
+## [0.5.1] - 2017-11-15
+
+### Added
+- Open Data Package
+
+[0.5.0]: https://github.com/ODIQueensland/data-curator/compare/v0.4.0...v0.5.0
+## [0.5.0] - 2017-11-08
+
+### Added
+
+- Export Data Package
 
 [0.4.0]: https://github.com/ODIQueensland/data-curator/compare/v0.3.6...v0.4.0
 ## [0.4.0] - 2017-10-25
