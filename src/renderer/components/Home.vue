@@ -163,15 +163,7 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import 'lodash/lodash.min.js'
 import '../menu.js'
 import {unzipFile} from '@/importPackage.js'
-import {activeHotAllColumnNames} from '@/rxSubject.js'
-// import { Subject } from 'rxjs/Subject'
-// import VueRx from 'vue-rx'
-// import Vue from 'vue'
-// Vue.use(VueRx, {
-//   Subscription,
-//   Subject
-// })
-// import {activeRxTab} from '@/rxSubject.js'
+import {toggleHeaderOff, toggleHeaderOn} from '@/headerRow.js'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
@@ -332,58 +324,6 @@ export default {
       let cssUpdateFunction = this.messages
         ? this.openMessagesOnIds(ids)
         : this.closeMessagesOnIds(ids)
-    },
-    // TODO : extract out logic into methods to make clearer
-    toggleActiveHeader: function(hot) {
-      if (hot.hasColHeaders()) {
-        this.toggleHeaderOff(hot)
-      } else {
-        // ensure at least 2 rows before setting header
-        if (hot.getData().length < 2) {
-          ipc.send('hasHeaderRow', false)
-          this.messagesTitle = 'Header Error'
-          this.messages = 'At least 2 rows are required before a header row can be set.'
-          this.messagesType = 'feedback'
-          this.reportFeedback()
-        } else {
-          this.toggleHeaderOn(hot)
-        }
-      }
-    },
-    toggleHeaderOff: function(hot) {
-      let header = hot.getColHeader()
-      let data = _.concat([header], hot.getData())
-      let updatedHeader = header.map(x => {
-        return ''
-      })
-      this.postToggleHeader(hot, data, false, updatedHeader)
-    },
-    toggleHeaderOn: function(hot) {
-      let data = hot.getData()
-      let header = data[0]
-      data = _.drop(data)
-      let updatedHeader = hot.getColHeader()
-      this.postToggleHeader(hot, data, header, updatedHeader)
-    },
-    postToggleHeader: function(hot, data, header, updatedHeader) {
-      hot.loadData(data)
-      hot.updateSettings({colHeaders: header})
-      hot.render()
-      ipc.send('hasHeaderRow', !!header)
-      this.updateAllColumnsProperty('name', updatedHeader)
-      // reselectCurrentCellOrMin()
-      // do not allow getter to cache as does not seem to pick up change
-      activeHotAllColumnNames.next(this.getAllHotTablesColumnNames())
-      this.messages = false
-      this.reportFeedback()
-    },
-    updateAllColumnsProperty: function(property, values) {
-      let hotId = HotRegister.getActiveInstance().guid
-      this.pushAllColumnsProperty({
-        hotId: hotId,
-        key: property,
-        values: values
-      })
     },
     validateTable: async function() {
       try {
@@ -664,6 +604,20 @@ export default {
       if (form) {
         form.style.height = this.sideNavFormHeight
       }
+    },
+    toggleActiveHeader: function(hot) {
+      this.messages = false
+      if (hot.hasColHeaders()) {
+        toggleHeaderOff(hot)
+      } else {
+        toggleHeaderOn(hot, this.toggleHeaderErrorMessage)
+      }
+      this.reportFeedback()
+    },
+    toggleHeaderErrorMessage: function() {
+      this.messagesTitle = 'Header Error'
+      this.messages = 'At least 2 rows are required before a header row can be set.'
+      this.messagesType = 'feedback'
     }
   },
   components: {
