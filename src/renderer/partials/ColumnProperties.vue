@@ -48,7 +48,7 @@ import VueRx from 'vue-rx'
 // import Rx from 'rxjs/Rx'
 import Vue from 'vue'
 import { Subscription } from 'rxjs/Subscription'
-import {activeHotAllColumnNames} from '@/rxSubject.js'
+import {activeHotAllColumnNames$} from '@/rxSubject.js'
 import {
   HotRegister
 } from '@/hot.js'
@@ -352,11 +352,11 @@ export default {
   },
   mounted: function() {
     let vueUpdateAllTablesAllColumnsNames = this.updateAllTablesAllColumnsNames
-    this.$subscribeTo(activeHotAllColumnNames, function(result) {
+    this.$subscribeTo(activeHotAllColumnNames$, function(result) {
       console.log(`names in subscription`)
       vueUpdateAllTablesAllColumnsNames(result)
     })
-    activeHotAllColumnNames.next(this.getAllHotTablesColumnNames())
+    activeHotAllColumnNames$.next(this.getAllHotTablesColumnNames())
   },
   destroyed: function() {
     // console.log('panel destroyed')

@@ -96,9 +96,3 @@ export default {
 <style scoped>
 @import '~bootstrap/dist/css/bootstrap.min.css'
 </style>
-<style scoped>
-@import '~static/css/panels'
-</style>
-<style lang="styl" scoped>
-@import '~static/css/panel'
-</style>
