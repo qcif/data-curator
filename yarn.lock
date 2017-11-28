@@ -8531,9 +8531,9 @@ svgo@^0.7.0:
     sax "~1.2.1"
     whet.extend "~0.9.9"
 
-svgo@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/svgo/-/svgo-1.0.0.tgz#38035feac99a235db4219ae0f80b626db11ab664"
+svgo@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/svgo/-/svgo-1.0.3.tgz#c93be52d98ffa2a7273c7a0ac5bf34f470973dad"
   dependencies:
     coa "~2.0.0"
     colors "~1.1.2"
