@@ -90,15 +90,15 @@ export default {
   },
   methods: {
     initLicenses: async function() {
-      let licenseIds = await this.getLicenseIdsFromTab()
-      this.selectedLicenses = licenseIds
+      let licenseTitles = await this.getLicenseTitlesFromTab()
+      this.selectedLicenses = licenseTitles
     },
-    getLicenseIdsFromTab: async function() {
+    getLicenseTitlesFromTab: async function() {
       let licenses = await this.getLicensesFromTab()
-      let licenseIds = licenses ? licenses.map(x => {
+      let licenseTitles = licenses ? licenses.map(x => {
         return x.title
       }) : []
-      return licenseIds
+      return licenseTitles
     },
     getLicensesFromTab: async function() {
       let tab = this.getActiveTab
