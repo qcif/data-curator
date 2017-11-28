@@ -8,12 +8,17 @@ import {ipcRenderer as ipc} from 'electron'
 
 export async function unzipFile(zipSource, storeCallback) {
   try {
-    let processedProperties = await unzipFileToDir(zipSource, path.dirname(zipSource))
+    let processedProperties = await unzipFileToDir(zipSource, createUnzipDestination(zipSource))
     storeCallback(processedProperties)
   } catch (err) {
     console.log(`Error processing zip source: ${zipSource}`, err)
     return err.message
   }
+}
+
+function createUnzipDestination(zipSource) {
+  let parentDirectory = path.basename(zipSource, '.zip')
+  return path.join(path.dirname(zipSource), path.basename(zipSource, '.zip'))
 }
 
 async function unzipFileToDir(zipSource, unzipDestination) {
@@ -129,7 +134,7 @@ async function getTabIdFromFilename(filename) {
       // wait for tabs to be ready
       _.delay(function(filename) {
         resolve(_.findKey(tabStore.state.tabObjects, {filename: filename}))
-      }, 10, filename)
+      }, 500, filename)
     } else {
       resolve(tabId)
     }
