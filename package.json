@@ -99,7 +99,7 @@
     "request": "^2.81.0",
     "rxjs": "^5.5.2",
     "slug": "^0.9.1",
-    "sortablejs": "^1.6.0",
+    "sortablejs": "^1.7.0",
     "svgo": "^1.0.0",
     "tableschema": "^1.4.1",
     "temp": "^0.8.3",
