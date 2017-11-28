@@ -1,5 +1,5 @@
 import {openFile, saveFileAs, saveFile, importDataPackage} from './file.js'
-import {guessColumnProperties, createWindowTab, validateTable, showSidePanel} from './utils.js'
+import {guessColumnProperties, createWindowTab, validateTable, showSidePanel, toggleActiveHeaderRow} from './utils.js'
 import {importExcel} from './excel.js'
 import {showKeyboardHelp} from './help.js'
 import {fileFormats} from '../renderer/file-formats.js'
@@ -270,8 +270,10 @@ const template = [
         label: 'Header Row',
         type: 'checkbox',
         checked: false,
-        click() {
-          BrowserWindow.getFocusedWindow().webContents.send('toggleHeaders')
+        click(menuItem) {
+          // revert 'checked' toggle so only controlled by header row event
+          menuItem.checked = !menuItem.checked
+          toggleActiveHeaderRow()
         }
       },
       {

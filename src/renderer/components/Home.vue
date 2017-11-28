@@ -163,15 +163,7 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import 'lodash/lodash.min.js'
 import '../menu.js'
 import {unzipFile} from '@/importPackage.js'
-import {activeHotAllColumnNames} from '@/rxSubject.js'
-// import { Subject } from 'rxjs/Subject'
-// import VueRx from 'vue-rx'
-// import Vue from 'vue'
-// Vue.use(VueRx, {
-//   Subscription,
-//   Subject
-// })
-// import {activeRxTab} from '@/rxSubject.js'
+import {toggleHeaderOff, toggleHeaderOn} from '@/headerRow.js'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
@@ -292,7 +284,7 @@ export default {
       this.updateActiveColumn()
       this.resetSideNavArrows()
     },
-    async updateColumnProperties() {
+    updateColumnProperties: async function() {
       try {
         let feedback = await guessColumnProperties()
         this.messages = feedback
@@ -333,51 +325,7 @@ export default {
         ? this.openMessagesOnIds(ids)
         : this.closeMessagesOnIds(ids)
     },
-    // TODO : extract out logic into methods to make clearer
-    toggleHeaders: function(hot) {
-      let data = hot.getData()
-      let headers = false
-      if (hot.hasColHeaders()) {
-        data = _.concat([hot.getColHeader()], data)
-      } else {
-        // ensure at least 2 rows before setting header
-        if (data.length > 1) {
-          headers = data[0]
-          data = _.drop(data)
-          this.messages = false
-          this.reportFeedback()
-        } else {
-          this.messagesTitle = 'Headers Error'
-          this.messages = 'At least 2 rows are required before a header row can be set.'
-          this.messagesType = 'feedback'
-          this.reportFeedback()
-        }
-      }
-      hot.loadData(data)
-      hot.updateSettings({colHeaders: headers})
-      hot.render()
-      let updatedHeaders = hot.getColHeader()
-      if (!headers) {
-        updatedHeaders = updatedHeaders.map(header => {
-          return ''
-        })
-      }
-      ipc.send('hasHeadersRow', !!headers)
-      this.updateAllColumnsProperty('name', updatedHeaders)
-      // reselectCurrentCellOrMin()
-      // do not allow getter to cache as does not seem to pick up change
-      let allHotTablesColumsnNames = this.getAllHotTablesColumnNames()
-      activeHotAllColumnNames.next(allHotTablesColumsnNames)
-    },
-    updateAllColumnsProperty(property, values) {
-      let hotId = HotRegister.getActiveInstance().guid
-      this.pushAllColumnsProperty({
-        hotId: hotId,
-        key: property,
-        values: values
-      })
-    },
-    async validateTable() {
+    validateTable: async function() {
       try {
         await validateActiveDataAgainstSchema(this.reportValidationRowErrors)
       } catch (err) {
@@ -385,7 +333,7 @@ export default {
         console.log(err)
       }
     },
-    storeResetCallback(allProperties) {
+    storeResetCallback: function(allProperties) {
       this.resetPackagePropertiesToObject(allProperties.package)
       this.resetTablePropertiesToObject(allProperties.tables)
       this.resetColumnPropertiesToObject(allProperties.columns)
@@ -409,7 +357,7 @@ export default {
       this.messagesType = 'error'
       this.reportFeedback()
     },
-    async createPackage() {
+    createPackage: async function() {
       try {
         let messages = await createDataPackage()
         if (messages.length > 0) {
@@ -468,10 +416,10 @@ export default {
       let defaultFormat = fileFormats.csv
       this.loadFormattedDataIntoContainer(container, data, defaultFormat)
     },
-    showLoadingScreen(message) {
+    showLoadingScreen: function(message) {
       this.loadingDataMessage = message
     },
-    closeLoadingScreen() {
+    closeLoadingScreen: function() {
       this.loadingDataMessage = false
     },
     loadFormattedDataIntoContainer: function(container, data, format) {
@@ -481,7 +429,8 @@ export default {
         loadingFinishListener: this.closeLoadingScreen
       })
       addHotContainerListeners(container)
-      let activeHotId = HotRegister.getActiveInstance().guid
+      let hot = HotRegister.getActiveInstance()
+      let activeHotId = hot.guid
       let activeTabId = this.activeTab
       // hack! - force data to wait for latest render e.g, for loader message
       window.setTimeout(function() {
@@ -533,11 +482,11 @@ export default {
         // console.log('same toolbar selection...')
       }
     },
-    isSideNavToolbarMenu(index) {
+    isSideNavToolbarMenu: function(index) {
       let toolbarMenu = this.toolbarMenus[index]
       return toolbarMenu.sideNavPosition && toolbarMenu.sideNavView
     },
-    resetSideNavArrows() {
+    resetSideNavArrows: function() {
       this.enableSideNavLeftArrow = false
       this.enableSideNavRightArrow = false
       if (this.sideNavView === 'column') {
@@ -546,7 +495,7 @@ export default {
         this.enableSideNavRightArrow = this.currentColumnIndex < this.maxColAllowed
       }
     },
-    updateSideNavState() {
+    updateSideNavState: function() {
       let toolbarMenu = this.toolbarMenus[this.toolbarIndex]
       this.sideNavPosition = toolbarMenu.sideNavPosition
       this.sideNavView = toolbarMenu.sideNavView
@@ -635,7 +584,7 @@ export default {
     createTabId: function(tabId) {
       return `tab${tabId}`
     },
-    triggerSideNav(properties) {
+    triggerSideNav: function(properties) {
       this.toolbarIndex = -1
       this.sideNavPosition = properties.sideNavPosition || 'left'
       this.sideNavTransition = properties.sideNavTransition || 'left'
@@ -656,6 +605,20 @@ export default {
       if (form) {
         form.style.height = this.sideNavFormHeight
       }
+    },
+    toggleHeaderWithFeedback: function(hot) {
+      this.messages = false
+      if (hot.hasColHeaders()) {
+        toggleHeaderOff(hot)
+      } else {
+        toggleHeaderOn(hot, this.toggleHeaderErrorMessage)
+      }
+      this.reportFeedback()
+    },
+    toggleHeaderErrorMessage: function() {
+      this.messagesTitle = 'Header Error'
+      this.messages = 'At least 2 rows are required before a header row can be set.'
+      this.messagesType = 'feedback'
     }
   },
   components: {
@@ -678,10 +641,10 @@ export default {
     }
   },
   mounted: function() {
-    const vueToggleHeaders = this.toggleHeaders
-    ipc.on('toggleHeaders', function() {
+    const vueToggleHeader = this.toggleHeaderWithFeedback
+    ipc.on('toggleActiveHeaderRow', function() {
       let hot = HotRegister.getActiveInstance()
-      vueToggleHeaders(hot)
+      vueToggleHeader(hot)
     })
     const vueAddTabWithData = this.addTabWithData
     ipc.on('addTabWithData', function(e, data) {
