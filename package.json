@@ -79,7 +79,7 @@
     "bootstrap.native": "^2.0.17",
     "components-font-awesome": "^4.7.0",
     "csv": "^2.0.0",
-    "datapackage": "^1.0.5",
+    "datapackage": "^1.0.6",
     "escape-regexp": "^0.0.1",
     "etl": "^0.5.8",
     "exports-loader": "^0.6.4",
