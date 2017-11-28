@@ -34,8 +34,6 @@ async function processStream(entry, processed, fileDestination) {
       await fs.ensureFile(fileDestination)
       await unzippedEntryToFile(entry, fileDestination)
       await ipc.send('openFileIntoTab', fileDestination)
-      // frictionless default is headers exist
-
       processed.csv.push(entry.path)
       break
     case '.json':
