@@ -82,37 +82,41 @@ export function validateTable() {
   window.webContents.send('validateTable')
 }
 
-function getSubMenuFromMenu(menuLabel, subMenuLabel) {
-  let menu = Menu.getApplicationMenu().items.find(x => x.label === menuLabel)
-  let subMenu = menu.submenu.items.find(x => x.label === subMenuLabel)
-  return subMenu
+ipc.on('toggleSaveMenu', (event, arg) => {
+  toggleSaveMenu()
+})
+
+export function toggleSaveMenu() {
+  let saveSubMenu = getSaveSubMenu()
+  let activeFilename = global.tab.activeFilename
+  saveSubMenu.enabled = (typeof activeFilename !== 'undefined' && activeFilename.length > 0)
 }
 
 function getSaveSubMenu() {
   return getSubMenuFromMenu('File', 'Save')
 }
 
-function getHeadersRowMenu() {
+export function toggleActiveHeaderRow() {
+  BrowserWindow.getFocusedWindow().webContents.send('toggleActiveHeaderRow')
+}
+
+ipc.on('hasHeaderRow', (event, arg) => {
+  toggleMenuItemHeaderRowCheck(arg)
+})
+
+export function toggleMenuItemHeaderRowCheck(isActiveHeaderRowEnabled) {
+  let subMenu = getHeaderRowMenu()
+  subMenu.checked = isActiveHeaderRowEnabled
+}
+
+function getHeaderRowMenu() {
   return getSubMenuFromMenu('Tools', 'Header Row')
 }
 
-ipc.on('toggleSaveMenu', (event, arg) => {
-  toggleSaveMenu()
-})
-
-ipc.on('hasHeadersRow', (event, arg) => {
-  toggleHeaderRowMenu(arg)
-})
-
-export function toggleHeaderRowMenu(isHeadersRowEnabled) {
-  let subMenu = getHeadersRowMenu()
-  subMenu.checked = isHeadersRowEnabled
-}
-
-export function toggleSaveMenu() {
-  let saveSubMenu = getSaveSubMenu()
-  let activeFilename = global.tab.activeFilename
-  saveSubMenu.enabled = (typeof activeFilename !== 'undefined' && activeFilename.length > 0)
+function getSubMenuFromMenu(menuLabel, subMenuLabel) {
+  let menu = Menu.getApplicationMenu().items.find(x => x.label === menuLabel)
+  let subMenu = menu.submenu.items.find(x => x.label === subMenuLabel)
+  return subMenu
 }
 
 async function saveAndExit(callback, filename) {
