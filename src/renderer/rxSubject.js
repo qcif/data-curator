@@ -2,7 +2,7 @@
 // import { Observable } from 'rxjs/Observable'
 import Rx from 'rxjs/Rx'
 
-let activeHotAllColumnNames = new Rx.Subject()
+let activeHotAllColumnNames$ = new Rx.Subject()
 // let activeTabColumnProperties
 // let activeRxTab = new Rx.Subject()
 // let hotIdRxFromTab = new Rx.Subject()
@@ -27,5 +27,5 @@ export {
   // hotIdRxFromTab,
   // propertyType,
   // activeTabColumnProperties,
-  activeHotAllColumnNames
+  activeHotAllColumnNames$
 }
