@@ -105,7 +105,7 @@
     "temp": "^0.8.3",
     "unzipper": "^0.8.11",
     "vee-validate": "^2.0.0-rc.18",
-    "vue": "^2.5.2",
+    "vue": "^2.5.9",
     "vue-async-computed": "^3.3.1",
     "vue-directive-tooltip": "^1.4.1",
     "vue-electron": "^1.0.6",
