@@ -67,52 +67,51 @@ export default {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       typeProperty: '',
       constraintInputKeyValues: {},
-      allTablesAllColumnsNames: {},
-      debounceSetConstraints: _.debounce(this.pushColumnProperty, 300, {
-        'leading': true,
-        'trailing': false
-      }),
-      formprops: [
-        {
-          label: 'name',
-          tooltipId: 'tooltip-column-name',
-          tooltipView: 'tooltipColumnName'
-          // isDisabled: true
-        },
-        {
-          label: 'title',
-          tooltipId: 'tooltip-column-title',
-          tooltipView: 'tooltipColumnTitle'
-        },
-        {
-          label: 'description',
-          tooltipId: 'tooltip-column-description',
-          tooltipView: 'tooltipColumnDescription'
-        },
-        {
-          label: 'type',
-          tooltipId: 'tooltip-column-type',
-          tooltipView: 'tooltipColumnType',
-          type: 'dropdown'
-        },
-        {
-          label: 'format',
-          tooltipId: 'tooltip-column-format',
-          tooltipView: 'tooltipColumnFormat',
-          type: 'dropdown'
-        },
-        {
-          label: 'constraints',
-          tooltipId: 'tooltip-column-constraints',
-          tooltipView: 'tooltipColumnConstraints',
-          type: 'checkbox'
-        },
-        {
-          label: 'rdfType',
-          tooltipId: 'tooltip-column-rdfType',
-          tooltipView: 'tooltipColumnRdfType',
-          type: 'url'
-        }
+       allTablesAllColumnsNames: {},
+        debounceSetConstraints: _.debounce(this.pushColumnProperty, 300, {
+          'leading': true,
+          'trailing': false
+        }),
+      formprops: [{
+        label: 'name*',
+        tooltipId: 'tooltip-column-name',
+        tooltipView: 'tooltipColumnName',
+        isDisabled: true
+      },
+      {
+        label: 'title',
+        tooltipId: 'tooltip-column-title',
+        tooltipView: 'tooltipColumnTitle'
+      },
+      {
+        label: 'description',
+        tooltipId: 'tooltip-column-description',
+        tooltipView: 'tooltipColumnDescription'
+      },
+      {
+        label: 'type',
+        tooltipId: 'tooltip-column-type',
+        tooltipView: 'tooltipColumnType',
+        type: 'dropdown'
+      },
+      {
+        label: 'format',
+        tooltipId: 'tooltip-column-format',
+        tooltipView: 'tooltipColumnFormat',
+        type: 'dropdown'
+      },
+      {
+        label: 'constraints',
+        tooltipId: 'tooltip-column-constraints',
+        tooltipView: 'tooltipColumnConstraints',
+        type: 'checkbox'
+      },
+      {
+        label: 'rdfType',
+        tooltipId: 'tooltip-column-rdfType',
+        tooltipView: 'tooltipColumnRdfType',
+        type: 'url'
+      }
       ],
       formats: {
         'string': ['email', 'uri', 'binary', 'uuid', 'default'],
