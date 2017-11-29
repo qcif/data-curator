@@ -12,5 +12,5 @@ export function includeHeadersInData(hot) {
 export function hasAllColumnNames(hotId, columnProperties) {
   let names = store.getters.getAllHotColumnNamesFromHotId(store.state, store.getters)(hotId)
   let validNames = _.without(names, undefined, null, '')
-  return (validNames.length !== columnProperties.length)
+  return validNames.length === columnProperties.length
 }
