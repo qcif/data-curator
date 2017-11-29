@@ -4,6 +4,7 @@ import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
 import path from 'path'
 import {createZipFile} from '@/exportPackage.js'
+import {hasAllColumnNames} from '@/frictionlessUtilities.js'
 
 export async function createDataPackage() {
   let errorMessages = []
@@ -123,9 +124,15 @@ function hasAllResourceRequirements(hot, requiredMessages) {
       requiredMessages.push(`Table property, 'name', must not be empty.`)
     }
   }
-  if (!hotStore.state.hotTabs[hot.guid].columnProperties) {
+  let columnProperties = hotStore.state.hotTabs[hot.guid].columnProperties
+  if (!columnProperties) {
     requiredMessages.push(`Column properties must be set.`)
+  } else {
+    if (hasAllColumnNames(hot.guid, columnProperties)) {
+      requiredMessages.push(`All column property 'name's must not be empty..`)
+    }
   }
+
   return requiredMessages.length === 0
 }
 
