@@ -68,12 +68,16 @@ export default {
       typeProperty: '',
       constraintInputKeyValues: {},
       allTablesAllColumnsNames: {},
+      debounceSetConstraints: _.debounce(this.pushColumnProperty, 300, {
+        'leading': true,
+        'trailing': false
+      }),
       formprops: [
         {
           label: 'name',
           tooltipId: 'tooltip-column-name',
-          tooltipView: 'tooltipColumnName',
-          isDisabled: true
+          tooltipView: 'tooltipColumnName'
+          // isDisabled: true
         },
         {
           label: 'title',
@@ -238,6 +242,7 @@ export default {
     },
     setConstraintCheck: function(key, target) {
       let isChecked = target.checked
+      console.log(`is target checked: ${target.checked}`)
       this.toggleTextNode(target)
       if (!isChecked) {
         _.unset(this.constraintInputKeyValues, key)
@@ -266,12 +271,7 @@ export default {
     },
     pushConstraintInputKeyValues: function() {
       console.log('pushing contraint input key values...')
-      _.debounce(function() {
-        this.pushColumnProperty(this.setter(this.activeCurrentHotId, 'constraints', this.constraintInputKeyValues))
-      }, 300, {
-        'leading': true,
-        'trailing': true
-      })
+      this.debounceSetConstraints(this.setter(this.activeCurrentHotId, 'constraints', this.constraintInputKeyValues))
     },
     constraintValidationRules: function(option) {
       if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
