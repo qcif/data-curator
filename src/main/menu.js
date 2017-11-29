@@ -1,5 +1,12 @@
 import {openFile, saveFileAs, saveFile, importDataPackage} from './file.js'
-import {guessColumnProperties, createWindowTab, validateTable, showSidePanel, toggleActiveHeaderRow, triggerMenuButton} from './utils.js'
+import {
+  guessColumnProperties,
+  createWindowTab,
+  validateTable,
+  showSidePanel,
+  toggleActiveHeaderRow,
+  triggerMenuButton
+} from './utils.js'
 import {importExcel} from './excel.js'
 import {showKeyboardHelp} from './help.js'
 import {fileFormats} from '../renderer/file-formats.js'
@@ -128,45 +135,50 @@ const template = [
     label: 'Edit',
     submenu: [
       {
-        // role: 'undo',
-        // turned off for Beta release
         label: 'Undo',
-        enabled: false,
-        accelerator: 'CmdOrCtrl+Z'
+        accelerator: 'CmdOrCtrl+Z',
+        click() {
+          BrowserWindow.getFocusedWindow().webContents.send('editUndo')
+        }
       }, {
-        // role: 'redo',
-        // turned off for Beta release
         label: 'Redo',
-        enabled: false,
         accelerator: process.platform === 'darwin'
           ? 'Shift+CmdOrCtrl+Z'
-          : 'CmdOrCtrl+Y'
-      }, {
+          : 'CmdOrCtrl+Y',
+        click() {
+          BrowserWindow.getFocusedWindow().webContents.send('editRedo')
+        }
+      },
+      {
         type: 'separator'
-      }, {
+      },
+      // electron roles for copy/cut/paste seem to be more reliable than equivalent for hot
+      {
         role: 'cut',
-        click() {
-          BrowserWindow.getFocusedWindow().webContents.send('editCut')
-        }
-      }, {
+        label: 'Cut',
+        accelerator: 'CmdOrCtrl+X'
+      },
+      {
         role: 'copy',
-        click() {
-          BrowserWindow.getFocusedWindow().webContents.send('editCopy')
-        }
-      }, {
+        label: 'Copy',
+        accelerator: 'CmdOrCtrl+C'
+      },
+      {
         role: 'paste',
-        click() {
-          BrowserWindow.getFocusedWindow().webContents.send('editPaste')
-        }
-      }, {
-        // turned off for Beta release
-        // role: 'selectall',
-        label: 'Select All',
-        enabled: false,
-        accelerator: 'CmdOrCtrl+A'
-      }, {
+        label: 'Paste',
+        accelerator: 'CmdOrCtrl+V'
+      },
+      // {
+      //   // turned off for Beta release
+      //   // role: 'selectall',
+      //   label: 'Select All',
+      //   enabled: false,
+      //   accelerator: 'CmdOrCtrl+A'
+      // },
+      {
         type: 'separator'
-      }, {
+      },
+      {
         label: 'Insert Row Above',
         accelerator: 'CmdOrCtrl+I',
         click() {
@@ -266,8 +278,7 @@ const template = [
           menuItem.checked = !menuItem.checked
           toggleActiveHeaderRow()
         }
-      },
-      {
+      }, {
         // Placeholder for future features
         //      }, {
         //        type: 'separator'
@@ -428,17 +439,15 @@ const template = [
   }
 ]
 
-// Tailor menu for Windows - add About to Help menu
-if (process.platform !== 'darwin') {
-  template[4].submenu.push({
-    type: 'separator'
-  }, {
-    label: 'About Data Curator',
-    click: function() {
-      showSidePanel('about')
-    }
-  })
-}
+// Tailor menu for Windows - add About to Help menu if (process.platform !== 'darwin') {
+template[4].submenu.push({
+  type: 'separator'
+}, {
+  label: 'About Data Curator',
+  click: function() {
+    showSidePanel('about')
+  }
+})
 
 // Tailor menu for macOS
 if (process.platform === 'darwin') {
@@ -450,15 +459,15 @@ if (process.platform === 'darwin') {
         click: function() {
           showSidePanel('about')
         }
-        // Placeholder for future feature
-        //      }, {
-        //        type: 'separator'
-        //      }, {
-        //        label: 'Preferences'
-        //        accelerator: 'CmdOrCtrl+,',
-        //        click: function() {
-        //          showSidePanel('preferences')
-        //        }
+      // Placeholder for future feature
+      //      }, {
+      //        type: 'separator'
+      //      }, {
+      //        label: 'Preferences'
+      //        accelerator: 'CmdOrCtrl+,',
+      //        click: function() {
+      //          showSidePanel('preferences')
+      //        }
       }, {
         type: 'separator'
       }, {
@@ -522,4 +531,6 @@ if (process.env.NODE_ENV !== 'production') {
   })
 }
 
-export {template as menu}
+export {
+  template as menu
+}

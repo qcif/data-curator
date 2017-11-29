@@ -23,6 +23,7 @@ let HotRegister = {
       enterBeginsEditing: false,
       persistentState: true,
       outsideClickDeselects: false,
+      undo: true,
       tabMoves({shiftKey}) {
         if (!shiftKey) {
           const selection = hot.getSelected()
