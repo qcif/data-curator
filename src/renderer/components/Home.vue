@@ -301,7 +301,7 @@ export default {
         console.log(err)
       }
     },
-    // TODO: tidy up error view handling
+    // TODO: tidy up error view handling and consistency in dependent usages
     openMessagesOnIds: function(ids) {
       for (let el of ids) {
         document.getElementById(el).classList += ' opened'
