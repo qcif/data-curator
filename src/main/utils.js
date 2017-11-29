@@ -77,6 +77,11 @@ export function guessColumnProperties() {
   window.webContents.send('guessColumnProperties')
 }
 
+export function triggerMenuButton(name) {
+  let window = BrowserWindow.getFocusedWindow()
+  window.webContents.send('triggerMenuButton', name)
+}
+
 export function validateTable() {
   let window = BrowserWindow.getFocusedWindow()
   window.webContents.send('validateTable')

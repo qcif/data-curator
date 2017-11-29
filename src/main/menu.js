@@ -1,5 +1,5 @@
 import {openFile, saveFileAs, saveFile, importDataPackage} from './file.js'
-import {guessColumnProperties, createWindowTab, validateTable, showSidePanel, toggleActiveHeaderRow} from './utils.js'
+import {guessColumnProperties, createWindowTab, validateTable, showSidePanel, toggleActiveHeaderRow, triggerMenuButton} from './utils.js'
 import {importExcel} from './excel.js'
 import {showKeyboardHelp} from './help.js'
 import {fileFormats} from '../renderer/file-formats.js'
@@ -310,10 +310,14 @@ const template = [
         type: 'separator'
       }, {
         label: 'Set Column Properties',
-        enabled: false
+        click() {
+          triggerMenuButton('Column')
+        }
       }, {
         label: 'Set Table Properties',
-        enabled: false
+        click() {
+          triggerMenuButton('Table')
+        }
       }, {
         // Placeholder for future features
         //        label: 'Set View Properties',
@@ -321,7 +325,9 @@ const template = [
         //       , icon: '/static/img/locked.svg'
         //      }, {
         label: 'Set Provenance Information',
-        enabled: false
+        click() {
+          triggerMenuButton('Provenance')
+        }
       }, {
         // Placeholder for future features
         //        label: 'Generate Data Quality Information',
@@ -329,18 +335,17 @@ const template = [
         //       , icon: '/static/img/locked.svg'
         //      }, {
         label: 'Set Data Package Properties',
-        enabled: false
+        click() {
+          triggerMenuButton('Package')
+        }
       }, {
         type: 'separator'
       }, {
-        // TO DO: Conditionally enabled based on required properties being set and no changes since last successful validation
         label: 'Export Data Package...',
         accelerator: 'CmdOrCtrl+D',
-        // turned off for Beta release
-        enabled: false
-        //        click: function() {
-        //          datapackage.exportdata()
-        //        }
+        click() {
+          triggerMenuButton('Export')
+        }
       }
       // Placeholder for future features
       //      , {

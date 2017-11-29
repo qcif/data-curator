@@ -593,6 +593,12 @@ export default {
       this.enableTransition = properties.enableTransition || false
       this.sideNavStatus = 'open'
     },
+    triggerMenuButton: function(menuName) {
+      let index = _.findIndex(this.toolbarMenus, function(o) {
+        return o.name.toLowerCase() === menuName.toLowerCase()
+      })
+      this.updateToolbarMenu(index)
+    },
     forceWrapper: function() {
       this.$forceUpdate()
     },
@@ -641,6 +647,10 @@ export default {
     }
   },
   mounted: function() {
+    const vueTriggerMenuButton = this.triggerMenuButton
+    ipc.on('triggerMenuButton', function(event, arg) {
+      vueTriggerMenuButton(arg)
+    })
     const vueToggleHeader = this.toggleHeaderWithFeedback
     ipc.on('toggleActiveHeaderRow', function() {
       let hot = HotRegister.getActiveInstance()
