@@ -186,10 +186,10 @@ export default {
       loadingDataMessage: false,
       sideNavFormHeight: '300px',
       toolbarMenus: [{
-        name: 'Validate',
-        image: 'static/img/validate.svg',
-        tooltipId: 'tooltip-validate',
-        tooltipView: 'tooltipValidate'
+        name: 'Guess',
+        image: 'static/img/guess-column-properties.svg',
+        tooltipId: 'tooltip-guess',
+        tooltipView: 'tooltipGuess'
       },
       {
         name: 'Column',
@@ -222,6 +222,12 @@ export default {
         tooltipView: 'tooltipPackage',
         sideNavPosition: 'right',
         sideNavView: 'packager'
+      },
+      {
+        name: 'Validate',
+        image: 'static/img/validate.svg',
+        tooltipId: 'tooltip-validate',
+        tooltipView: 'tooltipValidate'
       },
       {
         name: 'Export',
@@ -284,7 +290,7 @@ export default {
       this.updateActiveColumn()
       this.resetSideNavArrows()
     },
-    updateColumnProperties: async function() {
+    inferColumnProperties: async function() {
       try {
         let feedback = await guessColumnProperties()
         this.messages = feedback
@@ -320,6 +326,7 @@ export default {
       this.reportFeedback()
     },
     reportFeedback: function() {
+      // console.log('updating feedback...')
       let ids = ['main-bottom-panel', 'main-middle-panel']
       let cssUpdateFunction = this.messages
         ? this.openMessagesOnIds(ids)
@@ -549,6 +556,9 @@ export default {
         case 'Export':
           this.createPackage()
           break
+        case 'Guess':
+          this.inferColumnProperties()
+          break
         default:
           console.log(`Error: No case exists for menu index: ${index}`)
       }
@@ -702,7 +712,7 @@ export default {
     })
   },
   created: function() {
-    const vueGuessProperties = this.updateColumnProperties
+    const vueGuessProperties = this.inferColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
     })

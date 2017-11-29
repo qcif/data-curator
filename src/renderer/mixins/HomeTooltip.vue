@@ -12,6 +12,9 @@ export default {
     'tooltipTable': {
       template: '<div id="tooltip-table">Set Table Properties</div>'
     },
+    'tooltipGuess': {
+      template: '<div id="tooltip-guess">Guess Column Properties</div>'
+    },
     'tooltipProvenance': {
       template: '<div id="tooltip-provenance">Set Provenance Information</div>'
     },
