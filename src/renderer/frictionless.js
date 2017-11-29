@@ -12,26 +12,24 @@ import {includeHeadersInData, hasAllColumnNames} from '@/frictionlessUtilities.j
 async function initDataAndInferSchema(data) {
   const schema = await Schema.load({})
   await schema.infer(data)
-  // console.log('returning from infer')
   return schema
 }
 
 async function initDataAgainstSchema(data, schema) {
   // provide schema rather than infer
-  let table = await Table.load(data, {schema: schema})
+  // frictionless default for csv dialect is that tables DO have headers
+  let table = await Table.load(data, {schema: schema, headers: 0})
   return table
 }
 
 function storeData(hotId, schema) {
   return store.mutations.pushTableSchema(store.state, {
     hotId: hotId,
-    // tableSchema: table.schema,
     schema: schema
   })
 }
 
 export async function guessColumnProperties() {
-  // console.log('guessing...')
   let hot = HotRegister.getActiveInstance()
   let id = hot.guid
   let data = includeHeadersInData(hot)
@@ -41,7 +39,7 @@ export async function guessColumnProperties() {
   let message = isStored
     ? 'Success: Guess column properties succeeded.'
     : 'Failed: Guess column properties failed.'
-  console.log('returning from guess column properties...')
+  // console.log('returning from guess column properties...')
   return message
 }
 
@@ -51,12 +49,12 @@ function checkRow(rowNumber, row, schema, errorCollector) {
   } catch (err) {
     if (err.multiple) {
       for (const error of err.errors) {
-        console.log('got next error')
+        // console.log('got next error')
         console.log(error)
         errorCollector.push({rowNumber: rowNumber, message: error.message, name: error.name})
       }
     } else {
-      console.log('got next error')
+      // console.log('got next error')
       console.log(err)
       errorCollector.push({rowNumber: rowNumber, message: err.message, name: err.name})
     }
@@ -65,13 +63,8 @@ function checkRow(rowNumber, row, schema, errorCollector) {
 
 async function checkForSchema(data, hotId) {
   let columnProperties = store.state.hotTabs[hotId].columnProperties
-  // let schema = loadSchema(data, columnProperties)
-  // const schema = await Schema.load({})
-  // await schema.infer(data)
   let schema = await initDataAndInferSchema(data)
-  // tableSchema.schema.descriptor.fields = columnProperties
   schema.descriptor.fields = columnProperties
-  // let table = await initDataAgainstSchema(data, tableSchema.schema)
   let table = await initDataAgainstSchema(data, schema)
   table.schema.commit()
   console.log(table.schema.valid)
@@ -94,9 +87,7 @@ function duplicatesCount(row) {
 }
 
 function checkHeaderErrors(headers, errorCollector, hasColHeaders) {
-  console.log('checking header errors')
-  console.log(headers)
-  console.log(hasColHeaders)
+  // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
   let rowNumber = hasColHeaders
     ? 0
     : 1
@@ -152,11 +143,10 @@ export async function validateActiveDataAgainstSchema(callback) {
   // don't cast at stream, wait until row to cast otherwise not all errors will be reported.
   const stream = await table.iter({extended: true, stream: true, cast: false})
   stream.on('data', (row) => {
-    console.log('getting next row')
-    console.log(row)
+    // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
     let rowNumber = hot.hasColHeaders()
-      ? row[0] - 1
-      : row[0]
+      ? row[0]
+      : row[0] + 1
     if (isRowBlank(row[2])) {
       errorCollector.push({rowNumber: rowNumber, message: `Row ${rowNumber} is completely blank`, name: 'Blank Row'})
     }
