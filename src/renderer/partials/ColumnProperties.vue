@@ -3,7 +3,7 @@
     <div class="form-group-sm row container-fluid">
       <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
         <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
-          {{formprop.label}}:
+          {{formprop.label}}{{formprop.isMandatory ? '*' : ''}}:
         </label>
         <component :is="formprop.tooltipView"/>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
@@ -47,8 +47,12 @@ import AsyncComputed from 'vue-async-computed'
 import VueRx from 'vue-rx'
 // import Rx from 'rxjs/Rx'
 import Vue from 'vue'
-import { Subscription } from 'rxjs/Subscription'
-import {activeHotAllColumnNames$} from '@/rxSubject.js'
+import {
+  Subscription
+} from 'rxjs/Subscription'
+import {
+  activeHotAllColumnNames$
+} from '@/rxSubject.js'
 import {
   HotRegister
 } from '@/hot.js'
@@ -68,51 +72,52 @@ export default {
       typeProperty: '',
       constraintInputKeyValues: {},
       allTablesAllColumnsNames: {},
+      // TODO: setup args so clear for constaints only
       debounceSetConstraints: _.debounce(this.pushColumnProperty, 300, {
         'leading': true,
         'trailing': false
       }),
-      formprops: [
-        {
-          label: 'name',
-          tooltipId: 'tooltip-column-name',
-          tooltipView: 'tooltipColumnName'
-          // isDisabled: true
-        },
-        {
-          label: 'title',
-          tooltipId: 'tooltip-column-title',
-          tooltipView: 'tooltipColumnTitle'
-        },
-        {
-          label: 'description',
-          tooltipId: 'tooltip-column-description',
-          tooltipView: 'tooltipColumnDescription'
-        },
-        {
-          label: 'type',
-          tooltipId: 'tooltip-column-type',
-          tooltipView: 'tooltipColumnType',
-          type: 'dropdown'
-        },
-        {
-          label: 'format',
-          tooltipId: 'tooltip-column-format',
-          tooltipView: 'tooltipColumnFormat',
-          type: 'dropdown'
-        },
-        {
-          label: 'constraints',
-          tooltipId: 'tooltip-column-constraints',
-          tooltipView: 'tooltipColumnConstraints',
-          type: 'checkbox'
-        },
-        {
-          label: 'rdfType',
-          tooltipId: 'tooltip-column-rdfType',
-          tooltipView: 'tooltipColumnRdfType',
-          type: 'url'
-        }
+      formprops: [{
+        label: 'name',
+        tooltipId: 'tooltip-column-name',
+        tooltipView: 'tooltipColumnName',
+        isDisabled: true,
+        isMandatory: true
+      },
+      {
+        label: 'title',
+        tooltipId: 'tooltip-column-title',
+        tooltipView: 'tooltipColumnTitle'
+      },
+      {
+        label: 'description',
+        tooltipId: 'tooltip-column-description',
+        tooltipView: 'tooltipColumnDescription'
+      },
+      {
+        label: 'type',
+        tooltipId: 'tooltip-column-type',
+        tooltipView: 'tooltipColumnType',
+        type: 'dropdown'
+      },
+      {
+        label: 'format',
+        tooltipId: 'tooltip-column-format',
+        tooltipView: 'tooltipColumnFormat',
+        type: 'dropdown'
+      },
+      {
+        label: 'constraints',
+        tooltipId: 'tooltip-column-constraints',
+        tooltipView: 'tooltipColumnConstraints',
+        type: 'checkbox'
+      },
+      {
+        label: 'rdfType',
+        tooltipId: 'tooltip-column-rdfType',
+        tooltipView: 'tooltipColumnRdfType',
+        type: 'url'
+      }
       ],
       formats: {
         'string': ['email', 'uri', 'binary', 'uuid', 'default'],
@@ -301,8 +306,7 @@ export default {
       this.allTablesAllColumnsNames = update || {}
     }
   },
-  watch: {
-  },
+  watch: {},
   computed: {
     ...mapGetters([
       'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getAllHotTablesColumnNames'

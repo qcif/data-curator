@@ -186,10 +186,10 @@ export default {
       loadingDataMessage: false,
       sideNavFormHeight: '300px',
       toolbarMenus: [{
-        name: 'Validate',
-        image: 'static/img/validate.svg',
-        tooltipId: 'tooltip-validate',
-        tooltipView: 'tooltipValidate'
+        name: 'Guess',
+        image: 'static/img/guess-column-properties.svg',
+        tooltipId: 'tooltip-guess',
+        tooltipView: 'tooltipGuess'
       },
       {
         name: 'Column',
@@ -224,6 +224,12 @@ export default {
         sideNavView: 'packager'
       },
       {
+        name: 'Validate',
+        image: 'static/img/validate.svg',
+        tooltipId: 'tooltip-validate',
+        tooltipView: 'tooltipValidate'
+      },
+      {
         name: 'Export',
         image: 'static/img/export.svg',
         tooltipId: 'tooltip-export',
@@ -239,7 +245,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId', 'getAllHotTablesColumnNames']),
+    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -284,7 +290,7 @@ export default {
       this.updateActiveColumn()
       this.resetSideNavArrows()
     },
-    updateColumnProperties: async function() {
+    inferColumnProperties: async function() {
       try {
         let feedback = await guessColumnProperties()
         this.messages = feedback
@@ -320,6 +326,7 @@ export default {
       this.reportFeedback()
     },
     reportFeedback: function() {
+      // console.log('updating feedback...')
       let ids = ['main-bottom-panel', 'main-middle-panel']
       let cssUpdateFunction = this.messages
         ? this.openMessagesOnIds(ids)
@@ -549,6 +556,9 @@ export default {
         case 'Export':
           this.createPackage()
           break
+        case 'Guess':
+          this.inferColumnProperties()
+          break
         default:
           console.log(`Error: No case exists for menu index: ${index}`)
       }
@@ -592,6 +602,12 @@ export default {
       this.sideNavViewTitle = properties.name || properties.sideNavView
       this.enableTransition = properties.enableTransition || false
       this.sideNavStatus = 'open'
+    },
+    triggerMenuButton: function(menuName) {
+      let index = _.findIndex(this.toolbarMenus, function(o) {
+        return o.name.toLowerCase() === menuName.toLowerCase()
+      })
+      this.updateToolbarMenu(index)
     },
     forceWrapper: function() {
       this.$forceUpdate()
@@ -641,6 +657,10 @@ export default {
     }
   },
   mounted: function() {
+    const vueTriggerMenuButton = this.triggerMenuButton
+    ipc.on('triggerMenuButton', function(event, arg) {
+      vueTriggerMenuButton(arg)
+    })
     const vueToggleHeader = this.toggleHeaderWithFeedback
     ipc.on('toggleActiveHeaderRow', function() {
       let hot = HotRegister.getActiveInstance()
@@ -692,7 +712,7 @@ export default {
     })
   },
   created: function() {
-    const vueGuessProperties = this.updateColumnProperties
+    const vueGuessProperties = this.inferColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
     })

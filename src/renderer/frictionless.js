@@ -12,6 +12,7 @@ import {includeHeadersInData} from '@/frictionlessUtilities.js'
 async function initDataAndInferSchema(data) {
   const schema = await Schema.load({})
   await schema.infer(data)
+  // console.log('returning from infer')
   return schema
 }
 
@@ -30,6 +31,7 @@ function storeData(hotId, schema) {
 }
 
 export async function guessColumnProperties() {
+  // console.log('guessing...')
   let hot = HotRegister.getActiveInstance()
   let id = hot.guid
   let data = includeHeadersInData(hot)
@@ -39,6 +41,7 @@ export async function guessColumnProperties() {
   let message = isStored
     ? 'Success: Guess column properties succeeded.'
     : 'Failed: Guess column properties failed.'
+  console.log('returning from guess column properties...')
   return message
 }
 
