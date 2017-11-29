@@ -1,7 +1,7 @@
 import {Table, Schema} from 'tableschema'
 import {HotRegister} from '../renderer/hot.js'
 import store from '../renderer/store/modules/hots.js'
-import {includeHeadersInData} from '@/frictionlessUtilities.js'
+import {includeHeadersInData, hasAllColumnNames} from '@/frictionlessUtilities.js'
 
 // async function initDataAndInferTableSchema(data) {
 //   const table = await Table.load(data)
@@ -95,6 +95,8 @@ function duplicatesCount(row) {
 
 function checkHeaderErrors(headers, errorCollector, hasColHeaders) {
   console.log('checking header errors')
+  console.log(headers)
+  console.log(hasColHeaders)
   let rowNumber = hasColHeaders
     ? 0
     : 1
@@ -120,6 +122,16 @@ function hasColumnProperties(hotId, callb) {
         rowNumber: 0,
         message: `Column properties must be set.`,
         name: 'No Column Properties'
+      }
+    ])
+    return false
+  }
+  if (!hasAllColumnNames(hotId, columnProperties)) {
+    callb([
+      {
+        rowNumber: 0,
+        message: `Every Column property must have a 'name'.`,
+        name: 'Missing Column Property names'
       }
     ])
     return false
