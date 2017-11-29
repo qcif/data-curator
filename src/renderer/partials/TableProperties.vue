@@ -65,11 +65,11 @@ export default {
         tooltipId: 'tooltip-table-primary-keys',
         tooltipView: 'tooltipTablePrimaryKeys'
       },
-      // {
-      //   label: 'foreign key(s)',
-      //   // type: 'tableKeys',
-      //   key: 'foreignKeys'
-      // },
+        // {
+        //   label: 'foreign key(s)',
+        //   // type: 'tableKeys',
+        //   key: 'foreignKeys'
+        // },
       {
         label: 'profile',
         type: 'hidden',
@@ -114,7 +114,8 @@ export default {
         key: 'missingValues',
         tooltipId: 'tooltip-table-missing-values',
         tooltipView: 'tooltipTableMissingValues'
-      }]
+      }
+      ]
     }
   },
   asyncComputed: {
