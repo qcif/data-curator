@@ -47,8 +47,12 @@ import AsyncComputed from 'vue-async-computed'
 import VueRx from 'vue-rx'
 // import Rx from 'rxjs/Rx'
 import Vue from 'vue'
-import { Subscription } from 'rxjs/Subscription'
-import {activeHotAllColumnNames$} from '@/rxSubject.js'
+import {
+  Subscription
+} from 'rxjs/Subscription'
+import {
+  activeHotAllColumnNames$
+} from '@/rxSubject.js'
 import {
   HotRegister
 } from '@/hot.js'
@@ -67,11 +71,11 @@ export default {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       typeProperty: '',
       constraintInputKeyValues: {},
-       allTablesAllColumnsNames: {},
-        debounceSetConstraints: _.debounce(this.pushColumnProperty, 300, {
-          'leading': true,
-          'trailing': false
-        }),
+      allTablesAllColumnsNames: {},
+      debounceSetConstraints: _.debounce(this.pushColumnProperty, 300, {
+        'leading': true,
+        'trailing': false
+      }),
       formprops: [{
         label: 'name*',
         tooltipId: 'tooltip-column-name',
@@ -300,8 +304,7 @@ export default {
       this.allTablesAllColumnsNames = update || {}
     }
   },
-  watch: {
-  },
+  watch: {},
   computed: {
     ...mapGetters([
       'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getAllHotTablesColumnNames'

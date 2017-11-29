@@ -86,7 +86,10 @@ export default {
       return this.getProperty(key)
     },
     setProperty: function(key, value) {
-      this.pushPackageProperty({key: key, value: value})
+      this.pushPackageProperty({
+        key: key,
+        value: value
+      })
     },
     removeProperty: function(key) {
       let value = ''
@@ -108,14 +111,13 @@ export default {
     this.$nextTick(function() {
       // set hidden inputs
       let found = this.formprops.forEach(x => {
-        if (x.type ==='hidden') {
+        if (x.type === 'hidden') {
           this.setProperty(x.label, x.value)
         }
       })
     })
   },
-  watch: {
-  },
+  watch: {},
   mounted: function() {
     const dict = {
       en: {
