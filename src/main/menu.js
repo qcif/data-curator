@@ -144,26 +144,17 @@ const template = [
       }, {
         type: 'separator'
       }, {
-        // role: 'cut',
-        // turned off for Beta release
-        label: 'Cut',
-        enabled: false,
-        accelerator: 'CmdOrCtrl+X'
+        role: 'cut',
+        click() {
+          BrowserWindow.getFocusedWindow().webContents.send('editCut')
+        }
       }, {
         role: 'copy',
-        // turned off for Beta release
-        // label: 'Copy',
-        // enabled: true,
-        // accelerator: 'CmdOrCtrl+C',
         click() {
           BrowserWindow.getFocusedWindow().webContents.send('editCopy')
         }
       }, {
         role: 'paste',
-        // turned off for Beta release
-        // label: 'Paste',
-        // enabled: true,
-        // accelerator: 'CmdOrCtrl+V',
         click() {
           BrowserWindow.getFocusedWindow().webContents.send('editPaste')
         }
