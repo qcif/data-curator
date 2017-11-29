@@ -3,7 +3,7 @@
   <div class="form-group-sm row container-fluid">
     <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
       <template v-if="formprop.type !== 'hidden'">
-        <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
+        <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}{{formprop.isMandatory ? '*' : ''}}:</label>
         <component :is="formprop.tooltipView"/>
         <input v-if="formprop.key === 'missingValue'" :value="missingValues" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
         <component v-else-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
@@ -50,9 +50,10 @@ export default {
   data() {
     return {
       formprops: [{
-        label: 'name*',
+        label: 'name',
         tooltipId: 'tooltip-table-name',
-        tooltipView: 'tooltipTableName'
+        tooltipView: 'tooltipTableName',
+        isMandatory: true
       }, {
         label: 'title',
         tooltipId: 'tooltip-table-title',
