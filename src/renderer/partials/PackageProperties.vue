@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       formprops: [{
-        label: 'name',
+        label: 'name*',
         type: 'input'
       },
       {
