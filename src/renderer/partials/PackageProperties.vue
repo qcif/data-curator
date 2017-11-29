@@ -3,7 +3,7 @@
   <div class="form-group-sm row container-fluid">
     <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
       <template v-if="formprop.type !== 'hidden'">
-        <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
+        <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}{{formprop.isMandatory ? '*' : ''}}:</label>
         <component v-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
         <!-- <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)"/> -->
         <input v-else type="text" class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
@@ -35,7 +35,8 @@ export default {
     return {
       formprops: [{
         label: 'name',
-        type: 'input'
+        type: 'input',
+        isMandatory: true
       },
       {
         label: 'id',
@@ -86,7 +87,10 @@ export default {
       return this.getProperty(key)
     },
     setProperty: function(key, value) {
-      this.pushPackageProperty({key: key, value: value})
+      this.pushPackageProperty({
+        key: key,
+        value: value
+      })
     },
     removeProperty: function(key) {
       let value = ''
@@ -108,14 +112,13 @@ export default {
     this.$nextTick(function() {
       // set hidden inputs
       let found = this.formprops.forEach(x => {
-        if (x.type ==='hidden') {
+        if (x.type === 'hidden') {
           this.setProperty(x.label, x.value)
         }
       })
     })
   },
-  watch: {
-  },
+  watch: {},
   mounted: function() {
     const dict = {
       en: {
