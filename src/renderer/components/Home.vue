@@ -245,7 +245,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId', 'getAllHotTablesColumnNames']),
+    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },

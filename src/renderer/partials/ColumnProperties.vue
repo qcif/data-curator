@@ -3,7 +3,7 @@
     <div class="form-group-sm row container-fluid">
       <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
         <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
-          {{formprop.label}}:
+          {{formprop.label}}{{formprop.isMandatory ? '*' : ''}}:
         </label>
         <component :is="formprop.tooltipView"/>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
@@ -72,15 +72,17 @@ export default {
       typeProperty: '',
       constraintInputKeyValues: {},
       allTablesAllColumnsNames: {},
+      // TODO: setup args so clear for constaints only
       debounceSetConstraints: _.debounce(this.pushColumnProperty, 300, {
         'leading': true,
         'trailing': false
       }),
       formprops: [{
-        label: 'name*',
+        label: 'name',
         tooltipId: 'tooltip-column-name',
         tooltipView: 'tooltipColumnName',
-        isDisabled: true
+        isDisabled: true,
+        isMandatory: true
       },
       {
         label: 'title',
