@@ -31,31 +31,31 @@ const getters = {
     return state.hotTabs
   },
   getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
-    console.log('entered getAllHotColumnPropertiesFromHotId')
-    console.log(state.hotTabs)
+    // console.log('entered getAllHotColumnPropertiesFromHotId')
+    // console.log(state.hotTabs)
     return state.hotTabs[hotId].columnProperties || []
   },
   // ensure getter fires each time by passing in function
   getAllHotTablesColumnNames: (state, getters) => () => {
-    console.log('entered get all hot table column names function...')
+    // console.log('entered get all hot table column names function...')
     let hotIdColumnNames = {}
     for (let hotId in state.hotTabs) {
-      console.log(`next hot id is ${hotId}`)
+      // console.log(`next hot id is ${hotId}`)
       let columnProps = state.hotTabs[hotId].columnProperties || []
       let columnNames = columnProps.map(column => {
         return column.name
       })
-      console.log(`names are`)
-      console.log(columnNames)
+      // console.log(`names are`)
+      // console.log(columnNames)
       hotIdColumnNames[hotId] = columnNames
     }
-    console.log(`hot id column names are...`)
-    console.log(hotIdColumnNames)
+    // console.log(`hot id column names are...`)
+    // console.log(hotIdColumnNames)
     return hotIdColumnNames
   },
   getAllHotColumnNamesFromHotId: (state, getters) => (hotId) => {
-    console.log('triggered get all hot column names...')
-    console.log(`hot id is: ${hotId}`)
+    // console.log('triggered get all hot column names...')
+    // console.log(`hot id is: ${hotId}`)
     if (!state.hotTabs[hotId].columnProperties) {
       state.hotTabs[hotId].columnProperties = []
       // console.log('not hot columns set. aborting...')
@@ -63,11 +63,11 @@ const getters = {
     }
     let names = state.hotTabs[hotId].columnProperties.map(column => {
       let name = column.name
-      console.log(`returning column name: ${name}`)
+      // console.log(`returning column name: ${name}`)
       return column.name
     })
-    console.log(`returning active hot all column names`)
-    console.log(names)
+    // console.log(`returning active hot all column names`)
+    // console.log(names)
     return names
   },
   getHotIdFromTabId: (state, getters) => (tabId) => {
@@ -135,12 +135,12 @@ const mutations = {
       }
       mutations.pushColumnProperty(state, property)
     }
-    console.log('all push complete')
-    console.log(state.hotTabs)
+    // console.log('all push complete')
+    // console.log(state.hotTabs)
   },
   pushColumnProperty(state, property) {
-    console.log(`incoming property is...`)
-    console.log(property)
+    // console.log(`incoming property is...`)
+    // console.log(property)
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
     console.log('pushed column property complete')
     console.log(state.hotTabs)
