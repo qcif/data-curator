@@ -45,7 +45,6 @@ import {
 } from 'vuex'
 import AsyncComputed from 'vue-async-computed'
 import VueRx from 'vue-rx'
-// import Rx from 'rxjs/Rx'
 import Vue from 'vue'
 import {
   Subscription

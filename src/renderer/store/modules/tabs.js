@@ -1,6 +1,6 @@
 import {ipcRenderer as ipc} from 'electron'
 import {setActiveGlobal, extractNameFromFile, resetGlobalFilenames} from '@/store/tabStoreUtilities'
-// import {activeRxTab} from '@/rxSubject.js'
+import {activeTab$} from '@/rxSubject.js'
 
 const state = {
   tabs: [],
@@ -77,9 +77,10 @@ const mutations = {
     // TODO : now that we use activeTitle as global and we can access with activeTab and tabObjects, keeping it in store is redundant - remove.
     state.activeTitle = state.tabObjects[tabId].title
     setActiveGlobal(state.tabObjects[state.activeTab].filename, state.activeTitle)
-    // console.log('setting global filenames...')
+    console.log('setting global filenames...')
     resetGlobalFilenames(getters.getTabFilenames(state))
     ipc.send('toggleSaveMenu')
+    activeTab$.next(tabId)
   },
   setTabsOrder (state, tabIdOrder) {
     state.tabs = tabIdOrder
