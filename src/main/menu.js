@@ -1,5 +1,12 @@
 import {openFile, saveFileAs, saveFile, importDataPackage} from './file.js'
-import {guessColumnProperties, createWindowTab, validateTable, showSidePanel} from './utils.js'
+import {
+  guessColumnProperties,
+  createWindowTab,
+  validateTable,
+  showSidePanel,
+  toggleActiveHeaderRow,
+  triggerMenuButton
+} from './utils.js'
 import {importExcel} from './excel.js'
 import {showKeyboardHelp} from './help.js'
 import {fileFormats} from '../renderer/file-formats.js'
@@ -128,59 +135,50 @@ const template = [
     label: 'Edit',
     submenu: [
       {
-        // role: 'undo',
-        // turned off for Beta release
         label: 'Undo',
-        enabled: false,
-        accelerator: 'CmdOrCtrl+Z'
+        accelerator: 'CmdOrCtrl+Z',
+        click() {
+          BrowserWindow.getFocusedWindow().webContents.send('editUndo')
+        }
       }, {
-        // role: 'redo',
-        // turned off for Beta release
         label: 'Redo',
-        enabled: false,
         accelerator: process.platform === 'darwin'
           ? 'Shift+CmdOrCtrl+Z'
-          : 'CmdOrCtrl+Y'
-      }, {
+          : 'CmdOrCtrl+Y',
+        click() {
+          BrowserWindow.getFocusedWindow().webContents.send('editRedo')
+        }
+      },
+      {
         type: 'separator'
-      }, {
-        // role: 'cut',
-        // turned off for Beta release
+      },
+      // electron roles for copy/cut/paste seem to be more reliable than equivalent for hot
+      {
+        role: 'cut',
         label: 'Cut',
-        enabled: false,
         accelerator: 'CmdOrCtrl+X'
-      }, {
+      },
+      {
         role: 'copy',
-        // turned off for Beta release
-        // label: 'Copy',
-        // enabled: true,
-        // accelerator: 'CmdOrCtrl+C',
-        click() {
-          BrowserWindow.getFocusedWindow().webContents.send('editCopy')
-        }
-      }, {
+        label: 'Copy',
+        accelerator: 'CmdOrCtrl+C'
+      },
+      {
         role: 'paste',
-        // turned off for Beta release
-        // label: 'Paste',
-        // enabled: true,
-        // accelerator: 'CmdOrCtrl+V',
-        click() {
-          BrowserWindow.getFocusedWindow().webContents.send('editPaste')
-        }
-      }, {
-        // turned off for Beta release
-        // role: 'selectall',
-        label: 'Select All',
-        enabled: false,
-        accelerator: 'CmdOrCtrl+A'
-      }, {
+        label: 'Paste',
+        accelerator: 'CmdOrCtrl+V'
+      },
+      // {
+      //   // turned off for Beta release
+      //   // role: 'selectall',
+      //   label: 'Select All',
+      //   enabled: false,
+      //   accelerator: 'CmdOrCtrl+A'
+      // },
+      {
         type: 'separator'
-      }, {
-        label: 'Toggle Headers',
-        click() {
-          BrowserWindow.getFocusedWindow().webContents.send('toggleHeaders')
-        }
-      }, {
+      },
+      {
         label: 'Insert Row Above',
         accelerator: 'CmdOrCtrl+I',
         click() {
@@ -272,6 +270,15 @@ const template = [
     label: 'Tools',
     submenu: [
       {
+        label: 'Header Row',
+        type: 'checkbox',
+        checked: false,
+        click(menuItem) {
+          // revert 'checked' toggle so only controlled by header row event
+          menuItem.checked = !menuItem.checked
+          toggleActiveHeaderRow()
+        }
+      }, {
         // Placeholder for future features
         //      }, {
         //        type: 'separator'
@@ -305,10 +312,14 @@ const template = [
         type: 'separator'
       }, {
         label: 'Set Column Properties',
-        enabled: false
+        click() {
+          triggerMenuButton('Column')
+        }
       }, {
         label: 'Set Table Properties',
-        enabled: false
+        click() {
+          triggerMenuButton('Table')
+        }
       }, {
         // Placeholder for future features
         //        label: 'Set View Properties',
@@ -316,7 +327,9 @@ const template = [
         //       , icon: '/static/img/locked.svg'
         //      }, {
         label: 'Set Provenance Information',
-        enabled: false
+        click() {
+          triggerMenuButton('Provenance')
+        }
       }, {
         // Placeholder for future features
         //        label: 'Generate Data Quality Information',
@@ -324,18 +337,17 @@ const template = [
         //       , icon: '/static/img/locked.svg'
         //      }, {
         label: 'Set Data Package Properties',
-        enabled: false
+        click() {
+          triggerMenuButton('Package')
+        }
       }, {
         type: 'separator'
       }, {
-        // TO DO: Conditionally enabled based on required properties being set and no changes since last successful validation
         label: 'Export Data Package...',
         accelerator: 'CmdOrCtrl+D',
-        // turned off for Beta release
-        enabled: false
-        //        click: function() {
-        //          datapackage.exportdata()
-        //        }
+        click() {
+          triggerMenuButton('Export')
+        }
       }
       // Placeholder for future features
       //      , {
@@ -427,17 +439,15 @@ const template = [
   }
 ]
 
-// Tailor menu for Windows - add About to Help menu
-if (process.platform !== 'darwin') {
-  template[4].submenu.push({
-    type: 'separator'
-  }, {
-    label: 'About Data Curator',
-    click: function() {
-      showSidePanel('about')
-    }
-  })
-}
+// Tailor menu for Windows - add About to Help menu if (process.platform !== 'darwin') {
+template[4].submenu.push({
+  type: 'separator'
+}, {
+  label: 'About Data Curator',
+  click: function() {
+    showSidePanel('about')
+  }
+})
 
 // Tailor menu for macOS
 if (process.platform === 'darwin') {
@@ -449,15 +459,15 @@ if (process.platform === 'darwin') {
         click: function() {
           showSidePanel('about')
         }
-        // Placeholder for future feature
-        //      }, {
-        //        type: 'separator'
-        //      }, {
-        //        label: 'Preferences'
-        //        accelerator: 'CmdOrCtrl+,',
-        //        click: function() {
-        //          showSidePanel('preferences')
-        //        }
+      // Placeholder for future feature
+      //      }, {
+      //        type: 'separator'
+      //      }, {
+      //        label: 'Preferences'
+      //        accelerator: 'CmdOrCtrl+,',
+      //        click: function() {
+      //          showSidePanel('preferences')
+      //        }
       }, {
         type: 'separator'
       }, {
@@ -521,4 +531,6 @@ if (process.env.NODE_ENV !== 'production') {
   })
 }
 
-export {template as menu}
+export {
+  template as menu
+}

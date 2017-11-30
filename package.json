@@ -1,6 +1,6 @@
 {
   "name": "DataCurator",
-  "version": "0.5.1",
+  "version": "0.5.4",
   "author": " <matt@redboxresearchdata.com.au>",
   "description": "Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data",
   "license": "MIT",
@@ -78,6 +78,7 @@
     "bootstrap-webpack": "^0.0.6",
     "bootstrap.native": "^2.0.17",
     "components-font-awesome": "^4.7.0",
+    "csv": "^2.0.0",
     "datapackage": "^1.0.5",
     "escape-regexp": "^0.0.1",
     "etl": "^0.5.8",

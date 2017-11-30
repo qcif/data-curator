@@ -3,9 +3,8 @@ Feature: Save As Comma separated value file
   I want to save the data changes in the active data tab as a comma separated value file
   In order to save the data to a different filename, location or CSV dialect.
 
-  The file extension of the saved file must be .csv
-
-  The Save As Comma separated command can be invoked by a menu item or keyboard shortcut
+  - The file extension of the saved file must be .csv
+  - The Save As Comma separated command can be invoked by a menu item or keyboard shortcut
 
   Scenario: Save As Comma separated value file
     Given I have opened Data Curator

@@ -2,17 +2,11 @@
 <form class="navbar-form form-horizontal" id="tableProperties">
   <div class="form-group-sm row container-fluid">
     <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
-      <template v-if="formprop.type !== 'hidden'">
-        <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
-        <component :is="formprop.tooltipView"/>
-        <input v-if="formprop.key === 'missingValue'" :value="missingValue" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
-        <!-- <input v-if="formprop.key === 'primaryKeys'" :value="primaryKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" /> -->
-          <component v-if="formprop.key === 'primaryKeys'" is="tablekeys" :waitForHotIdFromTabId="waitForHotIdFromTabId" />
-        <!-- <input v-if="formprop.key === 'foreignKeys'" :value="foreignKeys" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" /> -->
-        <component v-else-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
-        <input v-else-if="formprop.label === 'dummy'" type="text" :class="{ 'form-control input-sm col-sm-9': true}" :id="formprop.label" :value="testdummy" />
-        <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
-      </template>
+      <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}{{formprop.isMandatory ? '*' : ''}}:</label>
+      <component :is="formprop.tooltipView"/>
+      <input v-if="formprop.key === 'missingValue'" :value="missingValues" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
+      <component v-else-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
+      <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
       <div v-show="errors.has(formprop.label) && removeValue(formprop.label)" class="row help validate-danger">
         {{ errors.first(formprop.label)}}
       </div>
@@ -31,7 +25,8 @@ import Vue from 'vue'
 import AsyncComputed from 'vue-async-computed'
 import licenses from '../partials/Licenses'
 import sources from '../partials/Sources'
-import tablekeys from '../partials/TableKeys'
+import primaryKeys from '../partials/PrimaryKeys'
+import foreignKeys from '../partials/ForeignKeys'
 import {
   HotRegister
 } from '../hot.js'
@@ -39,11 +34,7 @@ import TableTooltip from '../mixins/TableTooltip'
 import {
   Validator
 } from 'vee-validate'
-import Rx from 'rxjs/Rx'
-import VueRx from 'vue-rx'
-import * as testr from '@/testrxjs.js'
 Vue.use(AsyncComputed)
-Vue.use(VueRx, Rx)
 export default {
   extends: SideNav,
   name: 'tabular',
@@ -51,99 +42,70 @@ export default {
   components: {
     licenses,
     sources,
-    tablekeys
+    primaryKeys,
+    foreignKeys
   },
   data() {
     return {
-      testA2: ['cats'],
-      formprops: [
-        {
-          label: 'dummy'
-        }, {
-          label: 'name',
-          tooltipId: 'tooltip-table-name',
-          tooltipView: 'tooltipTableName'
-        }, {
-          label: 'title',
-          tooltipId: 'tooltip-table-title',
-          tooltipView: 'tooltipTableTitle'
-        },
-        {
-          label: 'primary key(s)',
-          type: 'array',
-          key: 'primaryKeys',
-          tooltipId: 'tooltip-table-primary-keys',
-          tooltipView: 'tooltipTablePrimaryKeys'
-        },
+      formprops: [{
+        label: 'name',
+        tooltipId: 'tooltip-table-name',
+        tooltipView: 'tooltipTableName',
+        isMandatory: true
+      }, {
+        label: 'title',
+        tooltipId: 'tooltip-table-title',
+        tooltipView: 'tooltipTableTitle'
+      },
+      {
+        label: 'primary key(s)',
+        // type: 'tableKeys',
+        key: 'primaryKeys',
+        tooltipId: 'tooltip-table-primary-keys',
+        tooltipView: 'tooltipTablePrimaryKeys'
+      },
         // {
         //   label: 'foreign key(s)',
-        //   type: 'array'
+        //   // type: 'tableKeys',
+        //   key: 'foreignKeys'
         // },
-        {
-          label: 'profile',
-          type: 'hidden',
-          value: 'tabular-data-resource'
-        },
-        {
-          label: 'description',
-          tooltipId: 'tooltip-table-description',
-          tooltipView: 'tooltipTableDescription'
-        },
-        {
-          label: 'sources',
-          type: 'dropdown',
-          tooltipId: 'tooltip-table-sources',
-          tooltipView: 'tooltipTableSources'
-        },
-        {
-          label: 'licenses',
-          tooltipId: 'tooltip-table-licences',
-          tooltipView: 'tooltipTableLicences'
-        },
-        {
-          label: 'format',
-          type: 'hidden',
-          value: 'csv'
-        },
-        {
-          label: 'mediatype',
-          type: 'hidden',
-          value: 'text/csv'
-        },
-        {
-          label: 'encoding',
-          type: 'hidden',
-          value: 'utf-8'
-        },
-        {
-          label: 'missing values',
-          type: 'array',
-          key: 'missingValues',
-          tooltipId: 'tooltip-table-missing-values',
-          tooltipView: 'tooltipTableMissingValues'
-        }]
+
+      {
+        label: 'description',
+        tooltipId: 'tooltip-table-description',
+        tooltipView: 'tooltipTableDescription'
+      },
+      {
+        label: 'sources',
+        key: 'sources',
+        type: 'dropdown',
+        tooltipId: 'tooltip-table-sources',
+        tooltipView: 'tooltipTableSources'
+      },
+      {
+        label: 'licenses',
+        key: 'licenses',
+        tooltipId: 'tooltip-table-licences',
+        tooltipView: 'tooltipTableLicences'
+      },
+      {
+        label: 'missing values',
+        type: 'array',
+        key: 'missingValues',
+        tooltipId: 'tooltip-table-missing-values',
+        tooltipView: 'tooltipTableMissingValues'
+      }
+      ]
     }
   },
   asyncComputed: {
     async missingValues() {
-      // let values = await this.getArrayValues('missingValues')
-      // return values
-      return this.testA1
-    },
-    async primaryKeys() {
-      let values = await this.getArrayValues('primaryKeys')
-      return values
-    },
-    async foreignKeys() {
-      let values = await this.getArrayValues('foreignKeys')
+      let values = await this.getArrayValues('missingValues')
       return values
     }
   },
   computed: {
-    ...mapGetters(['getMissingValuesFromHot', 'getActiveTab', 'getTableProperty', 'getHotTabs']),
-    testdummy() {
-      return this.testdummy1
-    }
+    ...mapGetters(['getMissingValuesFromHot', 'getActiveTab', 'getTableProperty', 'getHotTabs'])
   },
   methods: {
     ...mapMutations([
@@ -213,37 +175,6 @@ export default {
       this.pushTableProperty(this.propertySetObject(key, ''))
       return true
     }
-  },
-  watch: {},
-  beforeCreate: function() {
-    this.$nextTick(function() {
-      // set hidden inputs
-      let found = this.formprops.forEach(x => {
-        if (x.type === 'hidden') {
-          this.setProperty(x.label, x.value)
-        }
-      })
-    })
-  },
-  subscriptions () {
-    // return testr.test1.act().subscribe(function(value) {
-    //   console.log('subscription received...')
-    //   console.log(value)
-    // })
-    return {
-      testdummy1: testr.testOb.startWith(testr.counter)
-      // this.$subscribeTo(testr.testOb, function(nextOne) {
-      //   console.log('next one is...')
-      //   console.log(nextOne)
-      // })
-    }
-  },
-  mounted: function () {
-    this.$subscribeTo(testr.testOb, function(value) {
-      console.log('subscription received...')
-      console.log(value)
-      // return value
-    })
   },
   created: function() {
     const dictionary = {
