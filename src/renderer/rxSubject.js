@@ -1,31 +1,35 @@
-// import { Subject } from 'rxjs/Subject'
-// import { Observable } from 'rxjs/Observable'
-import Rx from 'rxjs/Rx'
+import { Subject } from 'rxjs/Subject'
+import { Observable } from 'rxjs/Observable'
+import { Subscription } from 'rxjs/Subscription'
+import 'rxjs/add/observable/fromPromise'
+// import Rx from 'rxjs/Rx'
 
-let activeHotAllColumnNames$ = new Rx.Subject()
-// let activeTabColumnProperties
-// let activeRxTab = new Rx.Subject()
-// let hotIdRxFromTab = new Rx.Subject()
-// let propertyType = new Rx.Subject()
+let activeHotAllColumnNames$ = new Subject()
+let activeTab$ = new Subject()
+let hotIdFromTab$ = new Subject()
 
-// export function onNextTabRx(subject, tabFunction) {
-//   activeRxTab.subscribe(function(activeTab) {
-//     console.log(`subscribed to next tab: ${activeTab}`)
-//     onNextSubjectFromPromise(subject, tabFunction(activeTab))
-//   })
-// }
+export function onNextHotIdFromTabRx(asyncFunction) {
+  let subject = hotIdFromTab$
+  console.log(`subject is ${subject}`)
+  onNextTabRx(subject, asyncFunction)
+}
 
-// export function onNextSubjectFromPromise(subject, promise) {
-//   Rx.Observable.fromPromise(promise).subscribe(function(value) {
-//     console.log(`observed promised value: ${value}`)
-//     subject.next(value)
-//   })
-// }
+export function onNextTabRx(subject, asyncFunction) {
+  activeTab$.subscribe(function(activeTab) {
+    console.log(`subscribed to next tab: ${activeTab}`)
+    onNextSubjectFromPromise(subject, asyncFunction(activeTab))
+  })
+}
+
+export function onNextSubjectFromPromise(subject, promise) {
+  Observable.fromPromise(promise).subscribe(function(value) {
+    console.log(`observed promised value: ${value}`)
+    subject.next(value)
+  })
+}
 
 export {
-  // activeRxTab,
-  // hotIdRxFromTab,
-  // propertyType,
-  // activeTabColumnProperties,
+  hotIdFromTab$,
+  activeTab$,
   activeHotAllColumnNames$
 }
