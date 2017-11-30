@@ -164,6 +164,7 @@ import 'lodash/lodash.min.js'
 import '../menu.js'
 import {unzipFile} from '@/importPackage.js'
 import {toggleHeaderOff, toggleHeaderOn} from '@/headerRow.js'
+import {onNextHotIdFromTabRx} from '@rxSubject.js'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
@@ -735,6 +736,10 @@ export default {
       this.closeSideNav()
       this.addTab()
     })
+  },
+  beforeCreate: function() {
+    // do something before creating vue instance
+    onNextHotIdFromTabRx(this.getHotIdFromTabId)
   },
   created: function() {
     const vueGuessProperties = this.inferColumnProperties
