@@ -164,6 +164,8 @@ import 'lodash/lodash.min.js'
 import '../menu.js'
 import {unzipFile} from '@/importPackage.js'
 import {toggleHeaderOff, toggleHeaderOn} from '@/headerRow.js'
+import {onNextHotIdFromTabRx, hotIdFromTab$} from '@/rxSubject.js'
+import {getHotIdFromTabIdFunction} from '@/store/modules/hots.js'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
@@ -236,7 +238,23 @@ export default {
         tooltipView: 'tooltipExport',
         sideNavView: 'export'
       }
-      ]
+      ],
+      defaultTableProperties: [{
+        label: 'profile',
+        value: 'tabular-data-resource'
+      },
+      {
+        label: 'format',
+        value: 'csv'
+      },
+      {
+        label: 'mediatype',
+        value: 'text/csv'
+      },
+      {
+        label: 'encoding',
+        value: 'utf-8'
+      }]
     }
   },
   computed: {
@@ -276,7 +294,8 @@ export default {
       'resetPackagePropertiesToObject',
       'resetTablePropertiesToObject',
       'resetColumnPropertiesToObject',
-      'pushAllColumnsProperty'
+      'pushAllColumnsProperty',
+      'pushTableProperty'
     ]),
     closeMessages: function() {
       for (let el of ['main-bottom-panel', 'main-middle-panel']) {
@@ -301,7 +320,7 @@ export default {
         console.log(err)
       }
     },
-    // TODO: tidy up error view handling
+    // TODO: tidy up error view handling and consistency in dependent usages
     openMessagesOnIds: function(ids) {
       for (let el of ids) {
         document.getElementById(el).classList += ' opened'
@@ -385,15 +404,17 @@ export default {
     },
     addTabWithFormattedDataFile: function(data, format, filename) {
       this.initTab()
+      let vueLatestHotContainer = this.latestHotContainer
       this.$nextTick(function() {
-        this.loadFormattedDataIntoContainer(this.latestHotContainer(), data, format)
+        this.loadFormattedDataIntoContainer(vueLatestHotContainer(), data, format)
         this.pushTabObject({id: this.activeTab, filename: filename})
       })
     },
     addTabWithData: function(data) {
       this.initTab()
+      let vueLatestHotContainer = this.latestHotContainer
       this.$nextTick(function() {
-        this.loadDataIntoContainer(this.latestHotContainer(), data)
+        this.loadDataIntoContainer(vueLatestHotContainer(), data)
       })
     },
     addTab: function() {
@@ -446,6 +467,12 @@ export default {
       this.pushHotTab({
         'hotId': activeHotId,
         'tabId': activeTabId
+      })
+      this.pushDefaultTableProperties(hot.guid)
+    },
+    pushDefaultTableProperties: function(hotId) {
+      this.defaultTableProperties.forEach(x => {
+        this.pushTableProperty({hotId: hotId, key: x.label, value: x.value})
       })
     },
     closeTab: async function(event) {
@@ -710,6 +737,14 @@ export default {
       this.closeSideNav()
       this.addTab()
     })
+  },
+  beforeCreate: function() {
+    this.$subscribeTo(hotIdFromTab$, function(hotId) {
+      let hot = HotRegister.getInstance(hotId)
+      // console.log(`sending ${hot.hasColHeaders()}`)
+      ipc.send('hasHeaderRow', hot.hasColHeaders())
+    })
+    onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
   },
   created: function() {
     const vueGuessProperties = this.inferColumnProperties

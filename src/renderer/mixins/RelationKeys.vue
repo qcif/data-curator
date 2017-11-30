@@ -32,6 +32,7 @@ export default {
   mounted: function() {
     let vueCurrentHotId = this.currentHotId
     let vueUpdateSubscriptions = this.updateSubscriptions
+    // TODO: need to manage subscription here...
     this.$subscribeTo(activeHotAllColumnNames$, async function(allNames) {
       let id = await vueCurrentHotId()
       console.log('subscription id is:')
