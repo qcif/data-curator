@@ -1,6 +1,6 @@
 import {ipcRenderer as ipc} from 'electron'
 import {setActiveGlobal, extractNameFromFile, resetGlobalFilenames} from '@/store/tabStoreUtilities'
-// import {activeRxTab} from '@/rxSubject.js'
+import {activeTab$} from '@/rxSubject.js'
 
 const state = {
   tabs: [],
@@ -80,6 +80,7 @@ const mutations = {
     // console.log('setting global filenames...')
     resetGlobalFilenames(getters.getTabFilenames(state))
     ipc.send('toggleSaveMenu')
+    activeTab$.next(tabId)
   },
   setTabsOrder (state, tabIdOrder) {
     state.tabs = tabIdOrder
