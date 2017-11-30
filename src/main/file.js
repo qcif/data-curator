@@ -142,7 +142,7 @@ function readFile(filename, format) {
 
 // TODO: consider toggle global var and use with debounce to check when last dialog triggered so don't get too many dialogs for multiple file opens
 function showAlreadyOpenedFileDialog() {
-  console.log('showing dialog...')
+  // console.log('showing dialog...')
   Dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
     type: 'warning',
     // title is not displayed on screen on macOS

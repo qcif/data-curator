@@ -139,8 +139,8 @@ const mutations = {
     console.log(state.hotTabs)
   },
   pushColumnProperty(state, property) {
-    console.log(`incoming property is...`)
-    console.log(property)
+    // console.log(`incoming property is...`)
+    // console.log(property)
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
     console.log('pushed column property complete')
     console.log(state.hotTabs)
