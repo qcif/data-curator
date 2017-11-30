@@ -10,7 +10,9 @@ let hotIdFromTab$ = new Subject()
 
 export function onNextHotIdFromTabRx(asyncFunction) {
   let subject = hotIdFromTab$
-  console.log(`subject is ${subject}`)
+  // console.log(`subject is ${subject}`)
+  // console.log(`asyncfunction is...`)
+  // console.log(asyncFunction)
   onNextTabRx(subject, asyncFunction)
 }
 
@@ -23,7 +25,7 @@ export function onNextTabRx(subject, asyncFunction) {
 
 export function onNextSubjectFromPromise(subject, promise) {
   Observable.fromPromise(promise).subscribe(function(value) {
-    console.log(`observed promised value: ${value}`)
+    // console.log(`observed promised value: ${value}`)
     subject.next(value)
   })
 }
