@@ -1585,9 +1585,9 @@ bootstrap-webpack@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/bootstrap-webpack/-/bootstrap-webpack-0.0.6.tgz#77c2c20cc287d06a5dc7af68947aec3374627d28"
 
-bootstrap.native@^2.0.17:
-  version "2.0.17"
-  resolved "https://registry.yarnpkg.com/bootstrap.native/-/bootstrap.native-2.0.17.tgz#b91d836f505f8dc9a1340ff3049476cbfdfba37e"
+bootstrap.native@^2.0.19:
+  version "2.0.19"
+  resolved "https://registry.yarnpkg.com/bootstrap.native/-/bootstrap.native-2.0.19.tgz#9c08fb628fef40c0bfc97ac04df57d1d05b6c4de"
 
 bootstrap@^3.3.7:
   version "3.3.7"
