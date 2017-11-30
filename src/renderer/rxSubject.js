@@ -18,7 +18,7 @@ export function onNextHotIdFromTabRx(asyncFunction) {
 
 export function onNextTabRx(subject, asyncFunction) {
   activeTab$.subscribe(function(activeTab) {
-    console.log(`subscribed to next tab: ${activeTab}`)
+    // console.log(`subscribed to next tab: ${activeTab}`)
     onNextSubjectFromPromise(subject, asyncFunction(activeTab))
   })
 }
