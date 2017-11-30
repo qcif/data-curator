@@ -128,8 +128,8 @@ function hasAllResourceRequirements(hot, requiredMessages) {
   if (!columnProperties) {
     requiredMessages.push(`Column properties must be set.`)
   } else {
-    if (hasAllColumnNames(hot.guid, columnProperties)) {
-      requiredMessages.push(`All column property 'name's must not be empty..`)
+    if (!hasAllColumnNames(hot.guid, columnProperties)) {
+      requiredMessages.push(`All column property 'name's must not be empty.`)
     }
   }
 
