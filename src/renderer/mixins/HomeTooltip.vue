@@ -12,6 +12,9 @@ export default {
     'tooltipTable': {
       template: '<div id="tooltip-table">Set Table Properties</div>'
     },
+    'tooltipGuess': {
+      template: '<div id="tooltip-guess">Guess Column Properties</div>'
+    },
     'tooltipProvenance': {
       template: '<div id="tooltip-provenance">Set Provenance Information</div>'
     },
@@ -25,10 +28,10 @@ export default {
       template: '<div id="tooltip-add-tab">Add Data Tab</div>'
     },
     'tooltipPrevious': {
-      template: '<div id="tooltip-previous">Previous Property Panel</div>'
+      template: '<div id="tooltip-previous">Previous Column Property</div>'
     },
     'tooltipNext': {
-      template: '<div id="tooltip-next">Next Property Panel</div>'
+      template: '<div id="tooltip-next">Next Column Property</div>'
     }
   }
 }

@@ -24,54 +24,54 @@ export default {
   data() {
     return {
       licenses: [{
-        'id': 'CC-BY-4.0',
+        'name': 'CC-BY-4.0',
         'title': 'Creative Commons Attribution 4.0',
-        'url': 'https://creativecommons.org/licenses/by/4.0/'
+        'path': 'https://creativecommons.org/licenses/by/4.0/'
       },
       {
-        'id': 'CC-BY-SA-4.0',
+        'name': 'CC-BY-SA-4.0',
         'title': 'Creative Commons Attribution Share-Alike 4.0',
-        'url': 'https://creativecommons.org/licenses/by-sa/4.0/'
+        'path': 'https://creativecommons.org/licenses/by-sa/4.0/'
       },
       {
-        'id': 'CC0-1.0',
+        'name': 'CC0-1.0',
         'title': 'Creative Commons CCZero 1.0',
-        'url': 'https://creativecommons.org/publicdomain/zero/1.0/'
+        'path': 'https://creativecommons.org/publicdomain/zero/1.0/'
       },
       {
-        'id': 'ODC-BY-1.0',
+        'name': 'ODC-BY-1.0',
         'title': 'Open Data Commons Attribution License 1.0',
-        'url': 'http://www.opendefinition.org/licenses/odc-by'
+        'path': 'http://www.opendefinition.org/licenses/odc-by'
       },
       {
-        'id': 'ODbL-1.0',
+        'name': 'ODbL-1.0',
         'title': 'Open Data Commons Open Database License 1.0',
-        'url': 'http://www.opendefinition.org/licenses/odc-odbl'
+        'path': 'http://www.opendefinition.org/licenses/odc-odbl'
       },
       {
-        'id': 'ODC-PDDL-1.0',
+        'name': 'ODC-PDDL-1.0',
         'title': 'Open Data Commons Public Domain Dedication and Licence 1.0',
-        'url': 'http://www.opendefinition.org/licenses/odc-pddl'
+        'path': 'http://www.opendefinition.org/licenses/odc-pddl'
       },
       {
-        'id': 'OGL-Canada-2.0',
+        'name': 'OGL-Canada-2.0',
         'title': 'Open Government License 2.0 (Canada)',
-        'url': 'http://data.gc.ca/eng/open-government-licence-canada'
+        'path': 'http://data.gc.ca/eng/open-government-licence-canada'
       },
       {
-        'id': 'OGL-UK-3.0',
+        'name': 'OGL-UK-3.0',
         'title': 'Open Government Licence 3.0 (United Kingdom)',
-        'url': 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/'
+        'path': 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/'
       },
       {
-        'id': 'OGDL-TW-1.0',
+        'name': 'OGDL-TW-1.0',
         'title': 'Open Government Data License Taiwan 1.0',
-        'url': 'https://data.gov.tw/license/'
+        'path': 'https://data.gov.tw/license/'
       },
       {
-        'id': 'pdm',
+        'name': 'pdm',
         'title': 'Public Domain Mark',
-        'url': 'http://creativecommons.org/publicdomain/mark/1.0/'
+        'path': 'http://creativecommons.org/publicdomain/mark/1.0/'
       }],
       selectedLicenses: []
     }
@@ -90,15 +90,15 @@ export default {
   },
   methods: {
     initLicenses: async function() {
-      let licenseIds = await this.getLicenseIdsFromTab()
-      this.selectedLicenses = licenseIds
+      let licenseTitles = await this.getLicenseTitlesFromTab()
+      this.selectedLicenses = licenseTitles
     },
-    getLicenseIdsFromTab: async function() {
+    getLicenseTitlesFromTab: async function() {
       let licenses = await this.getLicensesFromTab()
-      let licenseIds = licenses ? licenses.map(x => {
+      let licenseTitles = licenses ? licenses.map(x => {
         return x.title
       }) : []
-      return licenseIds
+      return licenseTitles
     },
     getLicensesFromTab: async function() {
       let tab = this.getActiveTab

@@ -127,7 +127,6 @@ import {
   mapGetters
 } from 'vuex'
 import * as Sortable from 'sortablejs/Sortable.js'
-import * as testr from '@/testrxjs.js'
 import {
   addHotContainerListeners,
   loadData
@@ -141,7 +140,8 @@ import {
   reselectCurrentCellOrMax,
   incrementActiveColumn,
   decrementActiveColumn,
-  getActiveSelected
+  getActiveSelected,
+  reselectCellOrMin
 } from '../hot.js'
 import about from '../partials/About'
 import preferences from '../partials/Preferences'
@@ -163,11 +163,14 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import 'lodash/lodash.min.js'
 import '../menu.js'
 import {unzipFile} from '@/importPackage.js'
+import {toggleHeaderOff, toggleHeaderOn} from '@/headerRow.js'
+import {onNextHotIdFromTabRx} from '@rxSubject.js'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
   data() {
     return {
+      currentHotId: '',
       currentColumnIndex: 0,
       toolbarIndex: -1,
       sideNavPosition: 'right',
@@ -184,10 +187,10 @@ export default {
       loadingDataMessage: false,
       sideNavFormHeight: '300px',
       toolbarMenus: [{
-        name: 'Validate',
-        image: 'static/img/validate.svg',
-        tooltipId: 'tooltip-validate',
-        tooltipView: 'tooltipValidate'
+        name: 'Guess',
+        image: 'static/img/guess-column-properties.svg',
+        tooltipId: 'tooltip-guess',
+        tooltipView: 'tooltipGuess'
       },
       {
         name: 'Column',
@@ -222,13 +225,35 @@ export default {
         sideNavView: 'packager'
       },
       {
+        name: 'Validate',
+        image: 'static/img/validate.svg',
+        tooltipId: 'tooltip-validate',
+        tooltipView: 'tooltipValidate'
+      },
+      {
         name: 'Export',
         image: 'static/img/export.svg',
         tooltipId: 'tooltip-export',
         tooltipView: 'tooltipExport',
         sideNavView: 'export'
       }
-      ]
+      ],
+      defaultTableProperties: [{
+        label: 'profile',
+        value: 'tabular-data-resource'
+      },
+      {
+        label: 'format',
+        value: 'csv'
+      },
+      {
+        label: 'mediatype',
+        value: 'text/csv'
+      },
+      {
+        label: 'encoding',
+        value: 'utf-8'
+      }]
     }
   },
   computed: {
@@ -237,7 +262,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId', 'getHotTabs', 'getTabs', 'getTabObjects']),
+    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -267,7 +292,9 @@ export default {
       'destroyTabObject',
       'resetPackagePropertiesToObject',
       'resetTablePropertiesToObject',
-      'resetColumnPropertiesToObject'
+      'resetColumnPropertiesToObject',
+      'pushAllColumnsProperty',
+      'pushTableProperty'
     ]),
     closeMessages: function() {
       for (let el of ['main-bottom-panel', 'main-middle-panel']) {
@@ -281,7 +308,7 @@ export default {
       this.updateActiveColumn()
       this.resetSideNavArrows()
     },
-    async updateColumnProperties() {
+    inferColumnProperties: async function() {
       try {
         let feedback = await guessColumnProperties()
         this.messages = feedback
@@ -292,7 +319,7 @@ export default {
         console.log(err)
       }
     },
-    // TODO: tidy up error view handling
+    // TODO: tidy up error view handling and consistency in dependent usages
     openMessagesOnIds: function(ids) {
       for (let el of ids) {
         document.getElementById(el).classList += ' opened'
@@ -317,35 +344,13 @@ export default {
       this.reportFeedback()
     },
     reportFeedback: function() {
+      // console.log('updating feedback...')
       let ids = ['main-bottom-panel', 'main-middle-panel']
       let cssUpdateFunction = this.messages
         ? this.openMessagesOnIds(ids)
         : this.closeMessagesOnIds(ids)
     },
-    // TODO : extract out logic into methods to make clearer
-    toggleHeaders: function(hot) {
-      let data = hot.getData()
-      let headers = false
-      if (hot.hasColHeaders()) {
-        data = _.concat([hot.getColHeader()], data)
-      } else {
-        // ensure at least 2 rows before setting header
-        if (data.length > 1) {
-          headers = data[0]
-          data = _.drop(data)
-        } else {
-          this.messagesTitle = 'Headers Error'
-          this.messages = 'At least 2 rows are required before a header row can be set.'
-          this.messagesType = 'feedback'
-          this.reportFeedback()
-        }
-      }
-      hot.loadData(data)
-      hot.updateSettings({colHeaders: headers})
-      hot.render()
-      testr.test1.act()
-    },
-    async validateTable() {
+    validateTable: async function() {
       try {
         await validateActiveDataAgainstSchema(this.reportValidationRowErrors)
       } catch (err) {
@@ -353,17 +358,13 @@ export default {
         console.log(err)
       }
     },
-    storeResetCallback(allProperties) {
-      console.log('all properties are:')
-      console.log(allProperties)
+    storeResetCallback: function(allProperties) {
       this.resetPackagePropertiesToObject(allProperties.package)
       this.resetTablePropertiesToObject(allProperties.tables)
       this.resetColumnPropertiesToObject(allProperties.columns)
     },
     importDataPackage: async function(filename) {
       let message = await unzipFile(filename, this.storeResetCallback)
-      console.log(`message is...`)
-      console.log(message)
       this.messagesTitle = message ? 'Import Data Package Error' : 'Import Data Package Success'
       this.messages = message || 'All Properties have been imported.'
       this.messagesType = 'feedback'
@@ -381,7 +382,7 @@ export default {
       this.messagesType = 'error'
       this.reportFeedback()
     },
-    async createPackage() {
+    createPackage: async function() {
       try {
         let messages = await createDataPackage()
         if (messages.length > 0) {
@@ -402,15 +403,17 @@ export default {
     },
     addTabWithFormattedDataFile: function(data, format, filename) {
       this.initTab()
+      let vueLatestHotContainer = this.latestHotContainer
       this.$nextTick(function() {
-        this.loadFormattedDataIntoContainer(this.latestHotContainer(), data, format)
+        this.loadFormattedDataIntoContainer(vueLatestHotContainer(), data, format)
         this.pushTabObject({id: this.activeTab, filename: filename})
       })
     },
     addTabWithData: function(data) {
       this.initTab()
+      let vueLatestHotContainer = this.latestHotContainer
       this.$nextTick(function() {
-        this.loadDataIntoContainer(this.latestHotContainer(), data)
+        this.loadDataIntoContainer(vueLatestHotContainer(), data)
       })
     },
     addTab: function() {
@@ -428,6 +431,7 @@ export default {
         id: nextTabId,
         index: this.tabIndex
       })
+      // activeRxTab.next(tabId)
       this.setActiveTab(nextTabId)
       this.pushTab(nextTabId)
     },
@@ -439,10 +443,10 @@ export default {
       let defaultFormat = fileFormats.csv
       this.loadFormattedDataIntoContainer(container, data, defaultFormat)
     },
-    showLoadingScreen(message) {
+    showLoadingScreen: function(message) {
       this.loadingDataMessage = message
     },
-    closeLoadingScreen() {
+    closeLoadingScreen: function() {
       this.loadingDataMessage = false
     },
     loadFormattedDataIntoContainer: function(container, data, format) {
@@ -452,7 +456,8 @@ export default {
         loadingFinishListener: this.closeLoadingScreen
       })
       addHotContainerListeners(container)
-      let activeHotId = HotRegister.getActiveInstance().guid
+      let hot = HotRegister.getActiveInstance()
+      let activeHotId = hot.guid
       let activeTabId = this.activeTab
       // hack! - force data to wait for latest render e.g, for loader message
       window.setTimeout(function() {
@@ -461,6 +466,12 @@ export default {
       this.pushHotTab({
         'hotId': activeHotId,
         'tabId': activeTabId
+      })
+      this.pushDefaultTableProperties(hot.guid)
+    },
+    pushDefaultTableProperties: function(hotId) {
+      this.defaultTableProperties.forEach(x => {
+        this.pushTableProperty({hotId: hotId, key: x.label, value: x.value})
       })
     },
     closeTab: async function(event) {
@@ -504,11 +515,11 @@ export default {
         // console.log('same toolbar selection...')
       }
     },
-    isSideNavToolbarMenu(index) {
+    isSideNavToolbarMenu: function(index) {
       let toolbarMenu = this.toolbarMenus[index]
       return toolbarMenu.sideNavPosition && toolbarMenu.sideNavView
     },
-    resetSideNavArrows() {
+    resetSideNavArrows: function() {
       this.enableSideNavLeftArrow = false
       this.enableSideNavRightArrow = false
       if (this.sideNavView === 'column') {
@@ -517,7 +528,7 @@ export default {
         this.enableSideNavRightArrow = this.currentColumnIndex < this.maxColAllowed
       }
     },
-    updateSideNavState() {
+    updateSideNavState: function() {
       let toolbarMenu = this.toolbarMenus[this.toolbarIndex]
       this.sideNavPosition = toolbarMenu.sideNavPosition
       this.sideNavView = toolbarMenu.sideNavView
@@ -571,12 +582,14 @@ export default {
         case 'Export':
           this.createPackage()
           break
+        case 'Guess':
+          this.inferColumnProperties()
+          break
         default:
           console.log(`Error: No case exists for menu index: ${index}`)
       }
     },
     updateToolbarMenu: function(index) {
-      testr.test1.act()
       if (this.isSideNavToolbarMenu(index)) {
         this.updateToolbarMenuForSideNav(index)
       } else {
@@ -607,7 +620,7 @@ export default {
     createTabId: function(tabId) {
       return `tab${tabId}`
     },
-    triggerSideNav(properties) {
+    triggerSideNav: function(properties) {
       this.toolbarIndex = -1
       this.sideNavPosition = properties.sideNavPosition || 'left'
       this.sideNavTransition = properties.sideNavTransition || 'left'
@@ -615,6 +628,12 @@ export default {
       this.sideNavViewTitle = properties.name || properties.sideNavView
       this.enableTransition = properties.enableTransition || false
       this.sideNavStatus = 'open'
+    },
+    triggerMenuButton: function(menuName) {
+      let index = _.findIndex(this.toolbarMenus, function(o) {
+        return o.name.toLowerCase() === menuName.toLowerCase()
+      })
+      this.updateToolbarMenu(index)
     },
     forceWrapper: function() {
       this.$forceUpdate()
@@ -628,6 +647,20 @@ export default {
       if (form) {
         form.style.height = this.sideNavFormHeight
       }
+    },
+    toggleHeaderWithFeedback: function(hot) {
+      this.messages = false
+      if (hot.hasColHeaders()) {
+        toggleHeaderOff(hot)
+      } else {
+        toggleHeaderOn(hot, this.toggleHeaderErrorMessage)
+      }
+      this.reportFeedback()
+    },
+    toggleHeaderErrorMessage: function() {
+      this.messagesTitle = 'Header Error'
+      this.messages = 'At least 2 rows are required before a header row can be set.'
+      this.messagesType = 'feedback'
     }
   },
   components: {
@@ -639,12 +672,25 @@ export default {
     provenance
   },
   watch: {
+    activeTab: async function(tabId) {
+      try {
+        let hotId = await this.getHotIdFromTabId(tabId)
+        this.currentHotId = hotId
+        reselectCellOrMin(hotId)
+      } catch (err) {
+        console.log('Problem with getting hot id from watched tab', err)
+      }
+    }
   },
   mounted: function() {
-    const vueToggleHeaders = this.toggleHeaders
-    ipc.on('toggleHeaders', function() {
+    const vueTriggerMenuButton = this.triggerMenuButton
+    ipc.on('triggerMenuButton', function(event, arg) {
+      vueTriggerMenuButton(arg)
+    })
+    const vueToggleHeader = this.toggleHeaderWithFeedback
+    ipc.on('toggleActiveHeaderRow', function() {
       let hot = HotRegister.getActiveInstance()
-      vueToggleHeaders(hot)
+      vueToggleHeader(hot)
     })
     const vueAddTabWithData = this.addTabWithData
     ipc.on('addTabWithData', function(e, data) {
@@ -691,8 +737,12 @@ export default {
       this.addTab()
     })
   },
+  beforeCreate: function() {
+    // do something before creating vue instance
+    onNextHotIdFromTabRx(this.getHotIdFromTabId)
+  },
   created: function() {
-    const vueGuessProperties = this.updateColumnProperties
+    const vueGuessProperties = this.inferColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
     })
