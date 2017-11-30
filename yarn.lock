@@ -1863,9 +1863,9 @@ center-align@^0.1.1:
     align-text "^0.1.3"
     lazy-cache "^1.0.3"
 
-cfb@~0.13.2:
-  version "0.13.2"
-  resolved "https://registry.yarnpkg.com/cfb/-/cfb-0.13.2.tgz#5c2cbf5a54d8561c14c34c9537730ec62bbafadf"
+cfb@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/cfb/-/cfb-1.0.0.tgz#ab8be69563ce2cc1cb70819026d0c7c9b76d5c73"
   dependencies:
     commander "~2.11.0"
     printj "~1.1.0"
@@ -9643,12 +9643,12 @@ xdg-basedir@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz#496b2cc109eca8dbacfe2dc72b603c17c5870ad4"
 
-xlsx@^0.11.7:
-  version "0.11.7"
-  resolved "https://registry.yarnpkg.com/xlsx/-/xlsx-0.11.7.tgz#fb1ceb77154093c8719d2dc56c3a2de47634bbaf"
+xlsx@^0.11.10:
+  version "0.11.10"
+  resolved "https://registry.yarnpkg.com/xlsx/-/xlsx-0.11.10.tgz#fc1fe4729c0fc011ab10427c8967b91863344643"
   dependencies:
     adler-32 "~1.1.0"
-    cfb "~0.13.2"
+    cfb "~1.0.0"
     codepage "~1.11.0"
     commander "~2.11.0"
     crc-32 "~1.1.1"
