@@ -22,6 +22,10 @@ export function getHotColumnPropertiesFromPropertyObject(property) {
   return hotColumnProperties
 }
 
+export function getHotIdFromTabIdFunction() {
+  return getters.getHotIdFromTabId(state, getters)
+}
+
 const getters = {
   getHotTabs: state => {
     return state.hotTabs
