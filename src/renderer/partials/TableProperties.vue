@@ -2,13 +2,11 @@
 <form class="navbar-form form-horizontal" id="tableProperties">
   <div class="form-group-sm row container-fluid">
     <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
-      <template v-if="formprop.type !== 'hidden'">
-        <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}{{formprop.isMandatory ? '*' : ''}}:</label>
-        <component :is="formprop.tooltipView"/>
-        <input v-if="formprop.key === 'missingValue'" :value="missingValues" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
-        <component v-else-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
-        <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
-      </template>
+      <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}{{formprop.isMandatory ? '*' : ''}}:</label>
+      <component :is="formprop.tooltipView"/>
+      <input v-if="formprop.key === 'missingValue'" :value="missingValues" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
+      <component v-else-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
+      <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
       <div v-show="errors.has(formprop.label) && removeValue(formprop.label)" class="row help validate-danger">
         {{ errors.first(formprop.label)}}
       </div>
@@ -71,11 +69,7 @@ export default {
         //   // type: 'tableKeys',
         //   key: 'foreignKeys'
         // },
-      {
-        label: 'profile',
-        type: 'hidden',
-        value: 'tabular-data-resource'
-      },
+
       {
         label: 'description',
         tooltipId: 'tooltip-table-description',
@@ -93,21 +87,6 @@ export default {
         key: 'licenses',
         tooltipId: 'tooltip-table-licences',
         tooltipView: 'tooltipTableLicences'
-      },
-      {
-        label: 'format',
-        type: 'hidden',
-        value: 'csv'
-      },
-      {
-        label: 'mediatype',
-        type: 'hidden',
-        value: 'text/csv'
-      },
-      {
-        label: 'encoding',
-        type: 'hidden',
-        value: 'utf-8'
       },
       {
         label: 'missing values',
@@ -196,17 +175,6 @@ export default {
       this.pushTableProperty(this.propertySetObject(key, ''))
       return true
     }
-  },
-  watch: {},
-  beforeCreate: function() {
-    this.$nextTick(function() {
-      // set hidden inputs
-      let found = this.formprops.forEach(x => {
-        if (x.type === 'hidden') {
-          this.setProperty(x.label, x.value)
-        }
-      })
-    })
   },
   created: function() {
     const dictionary = {
