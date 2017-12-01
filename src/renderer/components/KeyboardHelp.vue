@@ -281,9 +281,9 @@
         <td><kbd>Command &#8984;</kbd> <kbd>Z</kbd></td>
       </tr>
       <tr>
-        <td><b>Redo</b> - repeat the last data entry or edit command</td>
+        <td><b>Redo</b> - Undo the last Undo command</td>
         <td><kbd>Ctrl</kbd> <kbd>Y</kbd></td>
-        <td><kbd>Command &#8984;</kbd> <kbd>Y</kbd></td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>Z</kbd></td>
       </tr>
       <tr>
         <td><b>Cut</b> - move the selected data to the clipboard</td>
