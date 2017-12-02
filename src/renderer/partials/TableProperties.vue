@@ -31,6 +31,7 @@ import {
   HotRegister
 } from '../hot.js'
 import TableTooltip from '../mixins/TableTooltip'
+import ValidationRules from '../mixins/ValidationRules'
 import {
   Validator
 } from 'vee-validate'
@@ -38,7 +39,7 @@ Vue.use(AsyncComputed)
 export default {
   extends: SideNav,
   name: 'tabular',
-  mixins: [TableTooltip],
+  mixins: [TableTooltip, ValidationRules],
   components: {
     licenses,
     sources,
@@ -111,16 +112,6 @@ export default {
     ...mapMutations([
       'pushTableSchemaDescriptorProperty', 'pushTableProperty'
     ]),
-    validationRules: function(label) {
-      if (label === 'name') {
-        return {
-          required: true,
-          regex: /^([-a-z0-9._/])+$/,
-          unique_name: true
-        }
-      }
-      return ''
-    },
     getArrayValues: async function(key) {
       let tabId = this.getActiveTab
       let values = await this.getArrayValuesFromTabId(key, tabId)

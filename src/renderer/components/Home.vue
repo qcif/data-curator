@@ -254,7 +254,12 @@ export default {
       {
         label: 'encoding',
         value: 'utf-8'
-      }]
+      }],
+      defaultPackageProperties: [{
+        label: 'profile',
+        value: 'tabular-data-package'
+      }
+      ]
     }
   },
   computed: {
@@ -295,7 +300,8 @@ export default {
       'resetTablePropertiesToObject',
       'resetColumnPropertiesToObject',
       'pushAllColumnsProperty',
-      'pushTableProperty'
+      'pushTableProperty',
+      'pushPackageProperty'
     ]),
     closeMessages: function() {
       for (let el of ['main-bottom-panel', 'main-middle-panel']) {
@@ -475,6 +481,11 @@ export default {
         this.pushTableProperty({hotId: hotId, key: x.label, value: x.value})
       })
     },
+    pushDefaultPackageProperties: function() {
+      this.defaultPackageProperties.forEach(x => {
+        this.pushPackageProperty({key: x.label, value: x.value})
+      })
+    },
     closeTab: async function(event) {
       // do not allow single tab to be closed
       if (this.tabs.length > 1) {
@@ -498,6 +509,7 @@ export default {
     closeSideNav: function() {
       this.enableTransition = false
       this.sideNavStatus = 'closed'
+      this.sideNavView = ''
     },
     openSideNav: function() {
       this.sideNavStatus = 'open'
@@ -747,6 +759,7 @@ export default {
     onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
   },
   created: function() {
+    console.log('home vue created.')
     const vueGuessProperties = this.inferColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()
@@ -759,6 +772,7 @@ export default {
     ipc.on('validateTable', function(event, arg) {
       vueValidateTable()
     })
+    this.pushDefaultPackageProperties()
   },
   updated: function() {
     if (this.loadingDataMessage && this.loadingDataMessage.length > 0) {
