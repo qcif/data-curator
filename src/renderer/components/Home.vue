@@ -83,7 +83,7 @@
           </div>
         </div>
       </div>
-      <div id="main-bottom-panel" class="panel-footer" :class="messageStatus">
+      <div id="main-bottom-panel" class="panel-footer" :class="mainBottomPanelStatus">
         <div id="message-panel" class="panel-default">
           <!-- tidy up messages view with components -->
           <div v-show="messages">
@@ -283,6 +283,9 @@ export default {
     },
     messageStatus() {
       return this.messages ? 'messages-opened' : 'messages-closed'
+    },
+    mainBottomPanelStatus() {
+      return `${this.messageStatus} ${this.sideNavPropertiesForMain}`
     }
   },
   methods: {
@@ -564,7 +567,7 @@ export default {
     },
     updateToolbarMenuForButton: function(index) {
       this.toolbarIndex = index
-      this.closeSideNav()
+      // this.closeSideNav()
       switch (this.toolbarMenus[index].name) {
         case 'Validate':
           this.validateTable()
