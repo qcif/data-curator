@@ -58,19 +58,6 @@ export default {
         tooltipView: 'tooltipTableTitle'
       },
       {
-        label: 'primary key(s)',
-        // type: 'tableKeys',
-        key: 'primaryKeys',
-        tooltipId: 'tooltip-table-primary-keys',
-        tooltipView: 'tooltipTablePrimaryKeys'
-      },
-        // {
-        //   label: 'foreign key(s)',
-        //   // type: 'tableKeys',
-        //   key: 'foreignKeys'
-        // },
-
-      {
         label: 'description',
         tooltipId: 'tooltip-table-description',
         tooltipView: 'tooltipTableDescription'
@@ -94,7 +81,19 @@ export default {
         key: 'missingValues',
         tooltipId: 'tooltip-table-missing-values',
         tooltipView: 'tooltipTableMissingValues'
+      },
+      {
+        label: 'primary key(s)',
+        // type: 'tableKeys',
+        key: 'primaryKeys',
+        tooltipId: 'tooltip-table-primary-keys',
+        tooltipView: 'tooltipTablePrimaryKeys'
       }
+        // ,{
+        //   label: 'foreign key(s)',
+        //   // type: 'tableKeys',
+        //   key: 'foreignKeys'
+        // }
       ]
     }
   },
