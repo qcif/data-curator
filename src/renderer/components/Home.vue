@@ -56,7 +56,7 @@
     </nav>
     <div id="main-panel" class="panel panel-default" :class="sideNavPropertiesForMain">
       <!-- <div id="main-top-panel" class="panel panel-heading"></div> -->
-      <div id="main-middle-panel" class="panel panel-body">
+      <div id="main-middle-panel" class="panel panel-body" :class="messageStatus">
         <div id='csvEditor'>
           <ul class="nav nav-tabs">
             <li>
@@ -83,7 +83,7 @@
           </div>
         </div>
       </div>
-      <div id="main-bottom-panel" class="panel-footer">
+      <div id="main-bottom-panel" class="panel-footer" :class="messageStatus">
         <div id="message-panel" class="panel-default">
           <!-- tidy up messages view with components -->
           <div v-show="messages">
@@ -258,8 +258,8 @@ export default {
       defaultPackageProperties: [{
         label: 'profile',
         value: 'tabular-data-package'
-      }
-      ]
+      }],
+      reportSiblingClasses: ['main-bottom-panel', 'main-middle-panel']
     }
   },
   computed: {
@@ -280,6 +280,9 @@ export default {
     },
     maxColAllowed() {
       return getColumnCount() - 1
+    },
+    messageStatus() {
+      return this.messages ? 'messages-opened' : 'messages-closed'
     }
   },
   methods: {
@@ -303,39 +306,24 @@ export default {
       'pushTableProperty',
       'pushPackageProperty'
     ]),
-    closeMessages: function() {
-      for (let el of ['main-bottom-panel', 'main-middle-panel']) {
-        document.getElementById(el).classList.remove('opened')
-      }
-      this.messages = false
-      this.messagesType = ''
-      this.messageTitle = ''
-    },
     selectionListener: function() {
       this.updateActiveColumn()
       this.resetSideNavArrows()
     },
     inferColumnProperties: async function() {
       try {
-        let feedback = await guessColumnProperties()
-        this.messages = feedback
+        this.messages = await guessColumnProperties()
         this.messagesType = 'feedback'
         this.messagesTitle = 'Guess column properties'
-        this.reportFeedback()
       } catch (err) {
         console.log(err)
       }
     },
     // TODO: tidy up error view handling and consistency in dependent usages
-    openMessagesOnIds: function(ids) {
-      for (let el of ids) {
-        document.getElementById(el).classList += ' opened'
-      }
-    },
-    closeMessagesOnIds: function(ids) {
-      for (let el of ids) {
-        document.getElementById(el).classList.remove('opened')
-      }
+    closeMessages: function() {
+      this.messages = false
+      this.messagesType = ''
+      this.messageTitle = ''
     },
     // TODO: tidy up message objects
     reportValidationRowErrors: function(errorCollection) {
@@ -348,14 +336,6 @@ export default {
         this.messages = 'No validation errors reported.'
         this.messagesType = 'feedback'
       }
-      this.reportFeedback()
-    },
-    reportFeedback: function() {
-      // console.log('updating feedback...')
-      let ids = ['main-bottom-panel', 'main-middle-panel']
-      let cssUpdateFunction = this.messages
-        ? this.openMessagesOnIds(ids)
-        : this.closeMessagesOnIds(ids)
     },
     validateTable: async function() {
       try {
@@ -375,19 +355,16 @@ export default {
       this.messagesTitle = message ? 'Import Data Package Error' : 'Import Data Package Success'
       this.messages = message || 'All Properties have been imported.'
       this.messagesType = 'feedback'
-      this.reportFeedback()
     },
     exportPackageFeedback: function() {
       this.messagesTitle = 'Export package success'
       this.messages = 'Data package created.'
       this.messagesType = 'feedback'
-      this.reportFeedback()
     },
     exportPackageErrors: function(errorMessages) {
       this.messagesTitle = 'Export package error'
       this.messages = errorMessages
       this.messagesType = 'error'
-      this.reportFeedback()
     },
     createPackage: async function() {
       try {
@@ -640,7 +617,7 @@ export default {
       this.sideNavView = properties.sideNavView
       this.sideNavViewTitle = properties.name || properties.sideNavView
       this.enableTransition = properties.enableTransition || false
-      this.sideNavStatus = 'open'
+      this.openSideNav()
     },
     triggerMenuButton: function(menuName) {
       let index = _.findIndex(this.toolbarMenus, function(o) {
@@ -662,13 +639,12 @@ export default {
       }
     },
     toggleHeaderWithFeedback: function(hot) {
-      this.messages = false
       if (hot.hasColHeaders()) {
         toggleHeaderOff(hot)
       } else {
         toggleHeaderOn(hot, this.toggleHeaderErrorMessage)
       }
-      this.reportFeedback()
+      this.closeMessages()
     },
     toggleHeaderErrorMessage: function() {
       this.messagesTitle = 'Header Error'
