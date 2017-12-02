@@ -147,6 +147,9 @@ const mutations = {
   },
   pushTableProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
+    console.log(`table property:`)
+    console.log(property)
+    console.log('pushed...')
     console.log(state.hotTabs)
   },
   // TODO : schema fields has simply been incorporated into overwriting column properties - remove legacy methods
@@ -159,7 +162,8 @@ const mutations = {
   },
   pushPackageProperty(state, property) {
     _.set(state.packageProperties, property.key, property.value)
-    console.log(state.packageProperties)
+    console.log('package properties pushed...')
+    console.log(state)
   },
   pushMissingValues(state, hotMissingValues) {
     let hotId = hotMissingValues.hotId
@@ -190,7 +194,11 @@ const mutations = {
     _.unset(state.hotTabs, hotId)
   },
   resetAllColumnPropertiesForHotId(state, hotId) {
-    state.hotTabs[hotId].columnProperties = []
+    if (state.hotTabs[hotId].columnProperties) {
+      state.hotTabs[hotId].columnProperties.length = 0
+    } else {
+      state.hotTabs[hotId].columnProperties = []
+    }
   },
   resetColumnPropertiesForHotId(state, property) {
     state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}

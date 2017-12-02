@@ -83,7 +83,10 @@ const mutations = {
     activeTab$.next(tabId)
   },
   setTabsOrder (state, tabIdOrder) {
-    state.tabs = tabIdOrder
+    console.log('resetting tabs...')
+    state.tabs.length = 0
+    state.tabs.push(...tabIdOrder)
+    console.log(state.tabs)
   },
   incrementTabIndex(state) {
     state.tabIndex++
