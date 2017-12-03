@@ -1863,11 +1863,11 @@ center-align@^0.1.1:
     align-text "^0.1.3"
     lazy-cache "^1.0.3"
 
-cfb@~0.13.2:
-  version "0.13.2"
-  resolved "https://registry.yarnpkg.com/cfb/-/cfb-0.13.2.tgz#5c2cbf5a54d8561c14c34c9537730ec62bbafadf"
+cfb@~1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/cfb/-/cfb-1.0.1.tgz#557bb24f67dae78803785a1595d365bc82c5fab4"
   dependencies:
-    commander "~2.11.0"
+    commander "^2.12.1"
     printj "~1.1.0"
 
 cfonts@^1.1.3:
@@ -2181,6 +2181,10 @@ commander@2.9.0, commander@2.9.x, commander@~2.9.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
   dependencies:
     graceful-readlink ">= 1.0.0"
+
+commander@^2.12.1:
+  version "2.12.2"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.12.2.tgz#0f5946c427ed9ec0d91a46bb9def53e54650e555"
 
 commander@~2.6.0:
   version "2.6.0"
@@ -9643,12 +9647,12 @@ xdg-basedir@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz#496b2cc109eca8dbacfe2dc72b603c17c5870ad4"
 
-xlsx@^0.11.7:
-  version "0.11.7"
-  resolved "https://registry.yarnpkg.com/xlsx/-/xlsx-0.11.7.tgz#fb1ceb77154093c8719d2dc56c3a2de47634bbaf"
+xlsx@^0.11.11:
+  version "0.11.11"
+  resolved "https://registry.yarnpkg.com/xlsx/-/xlsx-0.11.11.tgz#af8c7b448d156e2709ef9d59cf6f2f0811f297a9"
   dependencies:
     adler-32 "~1.1.0"
-    cfb "~0.13.2"
+    cfb "~1.0.1"
     codepage "~1.11.0"
     commander "~2.11.0"
     crc-32 "~1.1.1"
