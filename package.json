@@ -92,7 +92,7 @@
     "jsontableschema": "^0.2.3",
     "lodash": "^4.17.4",
     "markdown-it": "^8.4.0",
-    "moment": "^2.19.1",
+    "moment": "^2.19.3",
     "node-fs-extra": "^0.8.2",
     "pikaday": "^1.6.1",
     "pouchdb-adapter-idb": "^6.3.4",
