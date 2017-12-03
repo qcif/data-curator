@@ -32,14 +32,14 @@ import {
 } from '../hot.js'
 import TableTooltip from '../mixins/TableTooltip'
 import ValidationRules from '../mixins/ValidationRules'
-import {
-  Validator
-} from 'vee-validate'
+// import {
+//   Validator
+// } from 'vee-validate'
 Vue.use(AsyncComputed)
 export default {
   extends: SideNav,
   name: 'tabular',
-  mixins: [TableTooltip, ValidationRules],
+  mixins: [ValidationRules, TableTooltip],
   components: {
     licenses,
     sources,
@@ -65,12 +65,11 @@ export default {
         tooltipId: 'tooltip-table-primary-keys',
         tooltipView: 'tooltipTablePrimaryKeys'
       },
-        // {
-        //   label: 'foreign key(s)',
-        //   // type: 'tableKeys',
-        //   key: 'foreignKeys'
-        // },
-
+      // {
+      //   label: 'foreign key(s)',
+      //   // type: 'tableKeys',
+      //   key: 'foreignKeys'
+      // },
       {
         label: 'description',
         tooltipId: 'tooltip-table-description',
@@ -167,18 +166,8 @@ export default {
       return true
     }
   },
-  created: function() {
-    const dictionary = {
-      en: {
-        custom: {
-          name: {
-            regex: () => 'The name field format is invalid. It must consist only of lowercase alphanumeric characters plus ".", "-" and "_".'
-          }
-        }
-      }
-    }
-    Validator.updateDictionary(dictionary)
-    Validator.extend('unique_name', {
+  mounted: function() {
+    this.$validator.extend('unique_name', {
       getMessage: field => `There is already another tab with this ${field}.`,
       validate: value => new Promise((resolve) => {
         let currentNames = _.values(_.mapValues(this.getHotTabs, function(hotTab) {
