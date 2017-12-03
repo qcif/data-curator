@@ -22,16 +22,16 @@ export default {
           return 'numeric'
         case 'number':
           return 'decimal'
-        case 'date':
-          return 'date_format:DD/MM/YYYY'
-        case 'time':
-          return 'date_format:HH:mm'
-        case 'datetime':
-          return 'date_format:DD/MM/YYYY HH:mm Z'
-        case 'year':
-          return 'date_format:YYYY'
-        case 'yearmonth':
-          return 'date_format:MM/YYYY'
+        // case 'date':
+        //   return 'date_format:YYYY-MM-DD'
+        // case 'time':
+        //   return 'date_format:HH:mm:ss'
+        // case 'datetime':
+        //   return 'date_format:YYYY-MM-DD HH:mm:ssZ'
+        // case 'year':
+        //   return 'date_format:YYYY'
+        // case 'yearmonth':
+        //   return 'date_format:YYYY-MM'
         default:
           return ''
       }
