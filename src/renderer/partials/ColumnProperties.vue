@@ -22,7 +22,7 @@
           <div class="input-group row" v-for="option in constraintValues" :key="option">
             <input type="checkbox" :id="option" :checked="getConstraintCheck(option)" @click="setConstraintCheck(option, $event.target)"></input>
             <label :for="option" class="form-control-static">{{option}}</label>
-            <template v-if="!isBooleanConstraint(option)">
+            <template v-if="!isBooleanConstraint(option) && getConstraintCheck(option)">
               <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate="constraintValidationRules(option)" :name="option"/>
             </template>
             <div v-show="errors.has(option) && removeConstraint(option)" class="row help validate-danger">
@@ -227,19 +227,23 @@ export default {
       return object
     },
     getConstraintCheck: function(key) {
-      // console.log(`checking constraint: ${key}`)
+      console.log(`checking constraint: ${key}`)
       return _.has(this.constraintInputKeyValues, key)
     },
-    toggleTextNode: function(checkedInput) {
-      let textNode = checkedInput.parentNode.querySelector('.constraint-text')
-      if (textNode) {
-        textNode.style.display = checkedInput.checked ? 'inline-block' : 'none'
-      }
-    },
+    // constraintText(option) {
+    //   console.log(`constraint text option is: ${option}`)
+    //   console.log(option)
+    //   return _.has(this.constraintInputKeyValues, option)
+    // },
+    // toggleTextNode: function(checkedInput) {
+    //   let textNode = checkedInput.parentNode.querySelector('.constraint-text')
+    //   if (textNode) {
+    //     textNode.style.display = checkedInput.checked ? 'inline-block' : 'none'
+    //   }
+    // },
     setConstraintCheck: function(key, target) {
       let isChecked = target.checked
       console.log(`is target checked: ${target.checked}`)
-      this.toggleTextNode(target)
       if (!isChecked) {
         _.unset(this.constraintInputKeyValues, key)
       } else if (this.constraintBooleanBindings.indexOf(key) > -1) {
@@ -250,7 +254,7 @@ export default {
         this.constraintInputKeyValues[key] = currentValue
       }
       this.pushConstraintInputKeyValues()
-      // this.$forceUpdate()
+      this.$forceUpdate()
     },
     getConstraintValue: function(key) {
       let property = this.constraintInputKeyValues[key]
