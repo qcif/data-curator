@@ -56,6 +56,7 @@ import {
   HotRegister
 } from '@/hot.js'
 import ColumnTooltip from '../mixins/ColumnTooltip'
+import ValidationRules from '../mixins/ValidationRules'
 Vue.use(VueRx, {
   Subscription
 })
@@ -63,7 +64,7 @@ Vue.use(AsyncComputed)
 export default {
   extends: SideNav,
   name: 'column',
-  mixins: [ColumnTooltip],
+  mixins: [ValidationRules, ColumnTooltip],
   props: ['cIndex'],
   data() {
     return {
@@ -152,16 +153,7 @@ export default {
         'geojson': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
         'any': ['required', 'unique', 'enum']
       },
-      constraintBooleanBindings: ['required', 'unique'],
-      validationRulesByType: {
-        'integer': 'numeric',
-        'number': 'decimal',
-        'date': 'date_format',
-        'time': 'date_format',
-        'datetime': 'date_format',
-        'year': 'date_format',
-        'yearmonth': 'date_format'
-      }
+      constraintBooleanBindings: ['required', 'unique']
     }
   },
   asyncComputed: {
@@ -281,18 +273,11 @@ export default {
       if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
         return 'numeric'
       } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
-        let type = this.typeProperty
-        if (type === 'integer') {
-          return 'numeric'
-        } else if (type === 'number') {
-          return 'decimal'
-        } else {
-          // console.log('No validation rules to apply this type for constraints: min/max')
-        }
+        return this.validationRules(this.typeProperty)
       } else {
         // console.log('No validation rules to apply this constraint')
+        return ''
       }
-      return ''
     },
     updateConstraintInputKeyValues: function() {
       // console.log('update constraint checked....')

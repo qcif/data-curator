@@ -163,7 +163,7 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import 'lodash/lodash.min.js'
 import '../menu.js'
 import {unzipFile} from '@/importPackage.js'
-import {toggleHeaderOff, toggleHeaderOn} from '@/headerRow.js'
+import {toggleHeaderWithFeedback} from '@/headerRow.js'
 import {onNextHotIdFromTabRx, hotIdFromTab$} from '@/rxSubject.js'
 import {getHotIdFromTabIdFunction} from '@/store/modules/hots.js'
 export default {
@@ -641,13 +641,9 @@ export default {
         form.style.height = this.sideNavFormHeight
       }
     },
-    toggleHeaderWithFeedback: function(hot) {
-      if (hot.hasColHeaders()) {
-        toggleHeaderOff(hot)
-      } else {
-        toggleHeaderOn(hot, this.toggleHeaderErrorMessage)
-      }
-      this.closeMessages()
+    toggleHeader: function() {
+      let hot = HotRegister.getActiveInstance()
+      toggleHeaderWithFeedback(hot, this.toggleHeaderErrorMessage, this.closeMessages)
     },
     toggleHeaderErrorMessage: function() {
       this.messagesTitle = 'Header Error'
@@ -679,10 +675,9 @@ export default {
     ipc.on('triggerMenuButton', function(event, arg) {
       vueTriggerMenuButton(arg)
     })
-    const vueToggleHeader = this.toggleHeaderWithFeedback
+    const vueToggleHeader = this.toggleHeader
     ipc.on('toggleActiveHeaderRow', function() {
-      let hot = HotRegister.getActiveInstance()
-      vueToggleHeader(hot)
+      vueToggleHeader()
     })
     const vueAddTabWithData = this.addTabWithData
     ipc.on('addTabWithData', function(e, data) {

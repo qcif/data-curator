@@ -17,6 +17,7 @@
 import SideNav from './SideNav'
 import licenses from '../partials/Licenses'
 import sources from '../partials/Sources'
+import PackageTooltip from '../mixins/PackageTooltip'
 import ValidationRules from '../mixins/ValidationRules'
 import {
   mapMutations,
@@ -26,7 +27,7 @@ import {
 export default {
   extends: SideNav,
   name: 'packager',
-  mixins: [ValidationRules],
+  mixins: [ValidationRules, PackageTooltip],
   components: {
     licenses,
     sources
@@ -36,31 +37,45 @@ export default {
       formprops: [{
         label: 'name',
         type: 'input',
-        isMandatory: true
+        isMandatory: true,
+        tooltipId: 'tooltip-package-name',
+        tooltipView: 'tooltipPackageName'
       },
       {
         label: 'id',
-        type: 'input'
+        type: 'input',
+        tooltipId: 'tooltip-package-id',
+        tooltipView: 'tooltipPackageId'
       },
       {
         label: 'title',
-        type: 'input'
+        type: 'input',
+        tooltipId: 'tooltip-package-title',
+        tooltipView: 'tooltipPackageTitle'
       },
       {
         label: 'description',
-        type: 'markdown'
+        type: 'markdown',
+        tooltipId: 'tooltip-package-description',
+        tooltipView: 'tooltipPackageDescription'
       },
         // lead user through with http://frictionlessdata.io/specs/patterns/#data-package-version
       {
         label: 'version',
-        type: 'input'
+        type: 'input',
+        tooltipId: 'tooltip-package-version',
+        tooltipView: 'tooltipPackageVersion'
       },
       {
         label: 'sources',
-        type: 'dropdown'
+        type: 'dropdown',
+        tooltipId: 'tooltip-package-sources',
+        tooltipView: 'tooltipPackageSources'
       },
       {
-        label: 'licenses'
+        label: 'licenses',
+        tooltipId: 'tooltip-package-licenses',
+        tooltipView: 'tooltipPackageLicenses'
       }
       ]
     }
@@ -94,18 +109,6 @@ export default {
       this.setProperty(key, value)
       return true
     }
-  },
-  mounted: function() {
-    const dict = {
-      en: {
-        custom: {
-          version: {
-            regex: 'The version field must comply with semantic versioning.'
-          }
-        }
-      }
-    }
-    this.$validator.updateDictionary(dict)
   }
 }
 </script>
