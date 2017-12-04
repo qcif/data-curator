@@ -10,7 +10,7 @@ export default {
   computed: {
     selectedKeys: {
       get: function() {
-        return this.getSelectedKeys()
+        return this.getSelectedKeys || []
       },
       set: function(values) {
         this.pushSelectedKeys(values)

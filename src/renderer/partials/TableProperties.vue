@@ -65,11 +65,11 @@ export default {
         tooltipId: 'tooltip-table-primary-keys',
         tooltipView: 'tooltipTablePrimaryKeys'
       },
-      // {
-      //   label: 'foreign key(s)',
-      //   // type: 'tableKeys',
-      //   key: 'foreignKeys'
-      // },
+      {
+        label: 'foreign key(s)',
+        // type: 'tableKeys',
+        key: 'foreignKeys'
+      },
       {
         label: 'description',
         tooltipId: 'tooltip-table-description',

@@ -19,18 +19,8 @@ export default {
       hotId: false
     }
   },
-  methods: {
-    updateSubscriptions: function(names, hotId) {
-      console.log('updated primary key subscriptions')
-      this.updateActiveNames(names)
-      this.hotId = hotId
-      let values = this.getPropertyGivenHotId(this.propertyName, hotId)
-      this.pushSelectedKeys(values)
-    },
-    updateActiveNames: function(names) {
-      this.activeNames = _.without(names, '')
-    },
-    getSelectedKeys: function() {
+  computed: {
+    getSelectedKeys() {
       console.log('before in primary keys')
       console.log(`hot id is ${this.hotId}`)
       if (this.hotId) {
@@ -38,6 +28,18 @@ export default {
       } else {
         return []
       }
+    }
+  },
+  methods: {
+    updateSubscriptions: function(names, hotId) {
+      console.log('updated primary key subscriptions')
+      this.updateActiveNames(names)
+      this.hotId = hotId
+      let values = this.getPropertyGivenHotId(this.propertyName, hotId)
+      this.selectedKeys = values
+    },
+    updateActiveNames: function(names) {
+      this.activeNames = _.without(names, '')
     },
     pushSelectedKeys: function(values) {
       console.log(`property name before push is ${this.propertyName}`)

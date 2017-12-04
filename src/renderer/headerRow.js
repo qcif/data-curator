@@ -1,5 +1,5 @@
 import {ipcRenderer as ipc} from 'electron'
-import {activeHotAllColumnNames$} from '@/rxSubject.js'
+import {allTablesAllColumnNames$} from '@/rxSubject.js'
 import store from '@/store/modules/hots.js'
 import {HotRegister} from '@/hot.js'
 
@@ -61,5 +61,5 @@ function updateAllColumnsName(values) {
     values: values
   })
   // do not allow getter to cache as does not seem to pick up change
-  activeHotAllColumnNames$.next(store.getters.getAllHotTablesColumnNames(store.state, store.getters)())
+  allTablesAllColumnNames$.next(store.getters.getAllHotTablesColumnNames(store.state, store.getters)())
 }
