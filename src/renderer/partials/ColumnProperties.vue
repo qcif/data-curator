@@ -50,7 +50,7 @@ import {
   Subscription
 } from 'rxjs/Subscription'
 import {
-  activeHotAllColumnNames$
+  allTablesAllColumnNames$
 } from '@/rxSubject.js'
 import {
   HotRegister
@@ -344,11 +344,11 @@ export default {
   },
   mounted: function() {
     let vueUpdateAllTablesAllColumnsNames = this.updateAllTablesAllColumnsNames
-    this.$subscribeTo(activeHotAllColumnNames$, function(result) {
+    this.$subscribeTo(allTablesAllColumnNames$, function(result) {
       console.log(`names in subscription`)
       vueUpdateAllTablesAllColumnsNames(result)
     })
-    activeHotAllColumnNames$.next(this.getAllHotTablesColumnNames())
+    allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
   },
   destroyed: function() {
     // console.log('panel destroyed')

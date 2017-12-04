@@ -4,9 +4,10 @@ import { Subscription } from 'rxjs/Subscription'
 import 'rxjs/add/observable/fromPromise'
 // import Rx from 'rxjs/Rx'
 
-let activeHotAllColumnNames$ = new Subject()
+let allTablesAllColumnNames$ = new Subject()
 let activeTab$ = new Subject()
 let hotIdFromTab$ = new Subject()
+// let getSelectedLocalKeys$ = new Subject()
 
 export function onNextHotIdFromTabRx(asyncFunction) {
   let subject = hotIdFromTab$
@@ -33,5 +34,6 @@ export function onNextSubjectFromPromise(subject, promise) {
 export {
   hotIdFromTab$,
   activeTab$,
-  activeHotAllColumnNames$
+  allTablesAllColumnNames$
+  // getSelectedLocalKeys$
 }
