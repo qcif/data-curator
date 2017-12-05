@@ -37,7 +37,9 @@ export function createWindow() {
 
 function closeWindowNoPrompt(result) {
   let browserWindow = BrowserWindow.getAllWindows()[0]
-  browserWindow.destroy()
+  if (browserWindow) {
+    browserWindow.destroy()
+  }
 }
 
 export function createWindowTab() {
