@@ -194,7 +194,8 @@ To automate deployment, we are using:
 - [Appveyor](https://www.appveyor.com) for Windows deployment
 - [Travis](https://travis-ci.org) for macOS and Linux
 
-`instructions to build and release on the master branch will go here`
+To trigger the automated build and draft release, create and push a git tag, following the versioning pattern used in current releases.
+Ensure that any changes in this tag are also released back to develop and master branches.
 
 Changes are recorded in the [Change Log][changelog].
 
