@@ -96,6 +96,11 @@ const getters = {
     return hotColumnProperties[property.key]
   },
   getTableProperty: (state, getters) => (property) => {
+    // console.log('incoming table property for table property get...')
+    // console.log(property)
+    console.log('attempting to fetch table properties...')
+    console.log(property)
+    console.log(state.hotTabs[property.hotId])
     let tableProperties = state.hotTabs[property.hotId].tableProperties || {}
     return tableProperties[property.key]
   },
@@ -147,10 +152,10 @@ const mutations = {
   },
   pushTableProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
-    console.log(`table property:`)
-    console.log(property)
-    console.log('pushed...')
-    console.log(state.hotTabs)
+    // console.log(`table property:`)
+    // console.log(property)
+    // console.log('pushed...')
+    // console.log(state.hotTabs)
   },
   // TODO : schema fields has simply been incorporated into overwriting column properties - remove legacy methods
   pushTableSchemaProperty(state, property) {

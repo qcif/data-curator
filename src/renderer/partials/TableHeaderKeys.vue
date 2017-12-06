@@ -12,8 +12,10 @@ export default {
       get: function() {
         return this.getSelectedKeys || []
       },
-      set: function(values) {
-        this.pushSelectedKeys(values)
+      set: function(value) {
+        if (value !== '') {
+          this.pushSelectedKeys(value)
+        }
       }
     }
   }

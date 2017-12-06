@@ -1,6 +1,10 @@
 import {ipcRenderer as ipc} from 'electron'
 import {setActiveGlobal, extractNameFromFile, resetGlobalFilenames} from '@/store/tabStoreUtilities'
-import {activeTab$} from '@/rxSubject.js'
+import {activeTab$, allTabsTitles$} from '@/rxSubject.js'
+
+export function pushAllTabTitlesSubscription() {
+  allTabsTitles$.next(getters.getAllTabTitles(state))
+}
 
 const state = {
   tabs: [],
@@ -37,6 +41,17 @@ const getters = {
       if (value.filename) { filtered.push(value.filename) }
     })
     return filtered
+  },
+  getAllTabTitles: state => {
+    let allTabTitles = {}
+    console.log('tab titles are before...')
+    console.log(state.tabObjects)
+    _.forEach(state.tabObjects, function(object, tabId) {
+      allTabTitles[tabId] = object.title
+    })
+    console.log(`tab titles are:`)
+    console.log(allTabTitles)
+    return allTabTitles
   }
 }
 
@@ -52,8 +67,11 @@ const mutations = {
       title = `Untitled${tab.index}`
     }
     _.set(state.tabObjects, `${tab.id}.title`, title)
+    // allTabsTitles$.next(getters.getAllTabTitles(state))
+    pushAllTabTitlesSubscription()
   },
   pushTabObject(state, tab) {
+    console.log('pushing tab object...')
     if (tab.filename) {
       _.set(state.tabObjects, `${tab.id}.filename`, tab.filename)
       let title = extractNameFromFile(tab.filename)
@@ -62,6 +80,8 @@ const mutations = {
       setActiveGlobal(tab.filename, title)
       resetGlobalFilenames(getters.getTabFilenames(state))
       ipc.send('toggleSaveMenu')
+      // allTabsTitles$.next(getters.getAllTabTitles(state))
+      pushAllTabTitlesSubscription()
     }
   },
   removeTab (state, tabId) {
@@ -81,6 +101,8 @@ const mutations = {
     resetGlobalFilenames(getters.getTabFilenames(state))
     ipc.send('toggleSaveMenu')
     activeTab$.next(tabId)
+    console.log(state.tabs)
+    console.log(state.tabObjects)
   },
   setTabsOrder (state, tabIdOrder) {
     console.log('resetting tabs...')
@@ -94,6 +116,8 @@ const mutations = {
   destroyTabObject(state, tabId) {
     _.unset(state.tabObjects, tabId)
     resetGlobalFilenames(getters.getTabFilenames(state))
+    pushAllTabTitlesSubscription()
+    // allTabsTitles$.next(getters.getAllTabTitles(state))
   }
 }
 

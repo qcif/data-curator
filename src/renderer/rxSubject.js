@@ -7,6 +7,8 @@ import 'rxjs/add/observable/fromPromise'
 let allTablesAllColumnNames$ = new Subject()
 let activeTab$ = new Subject()
 let hotIdFromTab$ = new Subject()
+let allTabsTitles$ = new Subject()
+let selectedForeignTable$ = new Subject()
 // let getSelectedLocalKeys$ = new Subject()
 
 export function onNextHotIdFromTabRx(asyncFunction) {
@@ -34,6 +36,8 @@ export function onNextSubjectFromPromise(subject, promise) {
 export {
   hotIdFromTab$,
   activeTab$,
-  allTablesAllColumnNames$
+  allTablesAllColumnNames$,
+  allTabsTitles$,
+  selectedForeignTable$
   // getSelectedLocalKeys$
 }
