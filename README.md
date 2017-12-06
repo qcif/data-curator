@@ -23,15 +23,14 @@ Open data is more likely to be used if data consumers can:
 - access the data in an open machine-readable format
 - know how the data is licensed and how it can be reused
 
-## Planned features
+## Features
 
 Using Data Curator open data producers can:
 
-- create new tabular data from scratch or from a template
+- create and edit tabular data from scratch or from a template
 - open data from a CSV or Microsoft Excel file
 - open multiple related data tables from a [Data Package](http://frictionlessdata.io/data-packages/)
 - automatically correct common problems found in CSV and Excel files
-- edit data
 
 Using data from any of these sources, you can:
 
@@ -43,7 +42,7 @@ Using data from any of these sources, you can:
 The schema enables you to:
 
 - validate the whole table at once
-- validate a column at a time
+- validate a column at a time (planned)
 
 Once the data is described and validated, you can share the data and its description by exporting a [Data Package](http://frictionlessdata.io/data-packages/) to:
 
@@ -194,7 +193,8 @@ To automate deployment, we are using:
 - [Appveyor](https://www.appveyor.com) for Windows deployment
 - [Travis](https://travis-ci.org) for macOS and Linux
 
-`instructions to build and release on the master branch will go here`
+To trigger the automated build and draft release, create and push a git tag, following the versioning pattern used in current releases.
+Ensure that any changes in this tag are also released back to develop and master branches.
 
 Changes are recorded in the [Change Log][changelog].
 

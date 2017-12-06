@@ -51,12 +51,14 @@ function checkRow(rowNumber, row, schema, errorCollector) {
       for (const error of err.errors) {
         // console.log('got next error')
         console.log(error)
-        errorCollector.push({rowNumber: rowNumber, message: error.message, name: error.name})
+        let columnNumber = error.columnNumber || 'N/A'
+        errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: error.message, name: error.name})
       }
     } else {
       // console.log('got next error')
       console.log(err)
-      errorCollector.push({rowNumber: rowNumber, message: err.message, name: err.name})
+      let columnNumber = err.columnNumber || 'N/A'
+      errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: err.message, name: err.name})
     }
   }
 }

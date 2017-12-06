@@ -1,6 +1,6 @@
 <template>
   <div id="primaryKeys">
-    <component is="tableheaderkeys" :activeNames="activeNames" :getSelectedKeys="getSelectedKeys" :pushSelectedKeys="pushSelectedKeys"/>
+    <component is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="getSelectedKeys" :pushSelectedKeys="pushSelectedKeys"/>
   </div>
 </template>
 <script>
@@ -12,33 +12,28 @@ export default {
   },
   mixins: [RelationKeys],
   name: 'primarykeys',
-  props: ['setProperty', 'getPropertyGivenHotId', 'propertyName', 'currentHotId'],
   data() {
     return {
-      activeNames: [],
-      hotId: false
+      localHeaderNames: [],
+      selectedLocalKeys: []
+    }
+  },
+  props: ['setProperty', 'getPropertyGivenHotId', 'propertyName', 'currentHotId'],
+  computed: {
+    getSelectedKeys() {
+      return this.selectedLocalKeys
     }
   },
   methods: {
-    updateSubscriptions: function(names, hotId) {
-      console.log('updated primary key subscriptions')
-      this.updateActiveNames(names)
-      this.hotId = hotId
-      let values = this.getPropertyGivenHotId(this.propertyName, hotId)
-      this.pushSelectedKeys(values)
+    updateSubscriptions: async function(allTablesAllColumns) {
+      let localHotId = await this.currentHotId()
+      this.localHeaderNames.length = 0
+      this.localHeaderNames.push(...this.getHotIdHeaderNames(allTablesAllColumns, localHotId))
+      this.selectedLocalKeys.length = 0
+      let values = this.getPropertyGivenHotId(this.propertyName, localHotId) || []
+      this.selectedLocalKeys.push(...values)
     },
-    updateActiveNames: function(names) {
-      this.activeNames = _.without(names, '')
-    },
-    getSelectedKeys: function() {
-      console.log('before in primary keys')
-      console.log(`hot id is ${this.hotId}`)
-      if (this.hotId) {
-        return this.getPropertyGivenHotId(this.propertyName, this.hotId) || []
-      } else {
-        return []
-      }
-    },
+
     pushSelectedKeys: function(values) {
       console.log(`property name before push is ${this.propertyName}`)
       console.log(values)
