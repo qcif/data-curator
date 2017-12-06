@@ -97,7 +97,9 @@
               <h3>{{messagesTitle}}</h3>
               <template  v-if="messagesType === 'error'">
                 <div v-for="errorMessage in messages">
-                  <span v-show="errorMessage.rowNumber">row no.{{errorMessage.rowNumber}}: </span><span>{{errorMessage.message}}</span>
+                  <span v-show="errorMessage.rowNumber">(row:{{errorMessage.rowNumber}})</span>
+                  <span v-show="errorMessage.columnNumber">(column:{{errorMessage.columnNumber}})</span>
+                  <span>{{errorMessage.message}}</span>
                 </div>
               </template>
               <div v-else>
