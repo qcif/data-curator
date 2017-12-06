@@ -34,7 +34,7 @@ export default {
       return _.without(allTablesAllNames[hotId], '', null, undefined)
     }
   },
-  mounted: function() {
+  mounted: async function() {
     // let vueCurrentHotId = this.currentHotId
     let vueUpdateSubscriptions = this.updateSubscriptions
     // TODO: need to manage subscription here...
