@@ -28,6 +28,7 @@
   - delete-columns.feature
   - data-entry.feature
 - tools:
+  - freeze-header-row.feature
   - guess-column-properties.feature
   - set-column-properties.feature
   - set-table-properties.feature
