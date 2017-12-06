@@ -2,7 +2,7 @@
 <div id="foreignKeyFields">
   <template v-for="(foreignKey,index) in hotIdAllForeignKeys" >
     <component v-show="enableLocalHeaders" is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="foreignKey.fields" :pushSelectedKeys="pushSelectedLocalKeys(index)" />
-    <component v-show="enableForeignTable" is="tablekeys" :allTableNames="allTableNames" :pushSelectedTable="pushSelectedForeignTable(index)" />
+    <component v-show="enableForeignTable" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="foreignKey.reference.resource" :pushSelectedTable="pushSelectedForeignTable(index)" />
     <!-- <component v-show="enableForeignHeaders" is="tableheaderkeys" :activeNames="activeForeignNames" :selectedKeys="selectedForeignKeys"/>  -->
     <button v-show="hotIdAllForeignKeys.length > 1" type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)">
       <span class="glyphicon glyphicon-minus"/>
@@ -94,6 +94,7 @@ export default {
       console.log(localHotId)
       let foreignKeys = this.getPropertyGivenHotId(this.propertyName, localHotId)
       if (!foreignKeys) {
+        console.log('have to reset foreign keys...')
         foreignKeys = [{
           fields: [],
           reference: {
@@ -180,12 +181,16 @@ export default {
     },
     // TODO: add more specific push method for foreign keys rather than clobbering all
     pushSelectedForeignTable: function(index) {
-      let vueHotIdAllForeignKeys = this.hotIdAllForeignKeys
+      let vueHotIdAllForeignKeysFn = this.getHotIdAllForeignKeys
       let vueSetProperty = this.setProperty
       let vuePropertyName = this.propertyName
       return function(value) {
+        console.log('pushing selected foreign table...')
+        let vueHotIdAllForeignKeys = vueHotIdAllForeignKeysFn()
+        console.log(vueHotIdAllForeignKeys)
         vueHotIdAllForeignKeys[index].reference.resource = value
         console.log(value)
+        console.log(vueHotIdAllForeignKeys)
         vueSetProperty(vuePropertyName, vueHotIdAllForeignKeys)
       }
     }

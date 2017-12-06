@@ -1,5 +1,5 @@
 <template>
-  <select class="form-control input-sm col-sm-9" :value="selectedForeignTable" @input="pushSelectedTable($event.target.value)">
+  <select class="form-control input-sm col-sm-9" :value="getSelectedTable" @input="pushSelectedTable($event.target.value)">
     <option v-for="tableName in allTables" :key="tableName" :id="tableName" :value="tableName">{{tableName}}</option>
   </select>
 </template>
@@ -13,7 +13,7 @@ Vue.use(VueRx, {
 })
 export default {
   name: 'tablekeys',
-  props: ['allTableNames', 'pushSelectedTable'],
+  props: ['allTableNames', 'pushSelectedTable', 'getSelectedTable'],
   data() {
     return {
       selectedForeignTable: ''
@@ -38,6 +38,7 @@ export default {
   mounted: function() {
     let vueSelectedForeignTable = this.updateSelectedForeignTable
     this.$subscribeTo(selectedForeignTable$, function(selectedForeignTable) {
+      console.log('received subscription to selected foreign table...')
       vueSelectedForeignTable(selectedForeignTable)
     })
   }
