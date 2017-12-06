@@ -2,8 +2,9 @@ import Handsontable from 'handsontable/dist/handsontable.full.js'
 import {remote} from 'electron'
 const Dialog = remote.dialog
 
-let HotRegister = {
-  hots: {},
+const _hots = {}
+
+const HotRegister = {
   register(container, listeners={}) {
     let hot = new Handsontable(container, {
       // do not allow headers on initialisation - no default headers unless toggled
@@ -72,12 +73,12 @@ let HotRegister = {
         }
       }
     })
-    _.set(this.hots, hot.guid, hot)
+    _.set(_hots, hot.guid, hot)
     return hot.guid
   },
   getInstance(id) {
-    let hot = _.get(this.hots, id)
-    return _.get(this.hots, id)
+    let hot = _.get(_hots, id)
+    return _.get(_hots, id)
   },
   // TODO: consider cache (vue computed) of method, and moving to Home.vue to use with props, as used a lot
   getActiveInstance() {
@@ -92,19 +93,19 @@ let HotRegister = {
     return {'id': activeHot.guid, 'data': activeHot.getData()}
   },
   destroyAllHots() {
-    _.forIn(this.hots, (hot, id) => {
+    console.log('destroying all hots...')
+    _.forIn(_hots, (hot, id) => {
       hot.destroy()
-      _.unset(this.hots, id)
+      _.unset(_hots, id)
     })
-    // just a safeguard
-    this.hots = {}
+    console.log(_hots)
   },
   destroyHot(id) {
     let hot = this.getInstance(id)
     if (hot) {
       hot.destroy()
     }
-    _.unset(this.hots, id)
+    _.unset(_hots, id)
   }
 }
 

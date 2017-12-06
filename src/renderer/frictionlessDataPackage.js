@@ -7,7 +7,7 @@ import {createZipFile} from '@/exportPackage.js'
 import {hasAllColumnNames} from '@/frictionlessUtilities.js'
 
 export async function createDataPackage() {
-  let errorMessages = []
+  const errorMessages = []
   if (!haveAllTabsGotFilenames()) {
     errorMessages.push('All tabs must be saved before exporting.')
   }
@@ -57,8 +57,14 @@ function hasAllPackageRequirements(requiredMessages) {
   if (!hotStore.state.provenanceProperties || !hotStore.state.provenanceProperties.markdown) {
     requiredMessages.push(`Provenance properties must be set.`)
   }
-  if (!hotStore.state.packageProperties || _.isEmpty(hotStore.state.packageProperties)) {
+  let packageProperties = hotStore.state.packageProperties
+  if (!packageProperties || _.isEmpty(packageProperties)) {
     requiredMessages.push(`Package properties must be set.`)
+  } else {
+    let name = packageProperties.name
+    if (!name || name.trim() === '') {
+      requiredMessages.push(`Package property, 'name' must be set.`)
+    }
   }
   return requiredMessages.length === 0
 }
@@ -75,7 +81,7 @@ function addPackageProperties(dataPackage) {
 }
 
 async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
-  let resourcePaths = []
+  const resourcePaths = []
   for (let hotId in hotStore.state.hotTabs) {
     try {
       let resource = await createValidResource(hotId, errorMessages)
@@ -132,7 +138,6 @@ function hasAllResourceRequirements(hot, requiredMessages) {
       requiredMessages.push(`All column property 'name's must not be empty.`)
     }
   }
-
   return requiredMessages.length === 0
 }
 
