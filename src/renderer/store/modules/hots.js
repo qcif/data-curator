@@ -98,9 +98,9 @@ const getters = {
   getTableProperty: (state, getters) => (property) => {
     // console.log('incoming table property for table property get...')
     // console.log(property)
-    console.log('attempting to fetch table properties...')
-    console.log(property)
-    console.log(state.hotTabs[property.hotId])
+    // console.log('attempting to fetch table properties...')
+    // console.log(property)
+    // console.log(state.hotTabs[property.hotId])
     let tableProperties = state.hotTabs[property.hotId].tableProperties || {}
     return tableProperties[property.key]
   },
@@ -147,15 +147,30 @@ const mutations = {
     // console.log(`incoming property is...`)
     // console.log(property)
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
-    console.log('pushed column property complete')
-    console.log(state.hotTabs)
+    // console.log('pushed column property complete')
+    // console.log(state.hotTabs)
   },
   pushTableProperty(state, property) {
-    _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
+    if (property.key === 'foreignKeys') {
+      mutations.pushForeignKeys(state, property)
+    } else {
+      _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
+      // console.log(`table property:`)
+      // console.log(property)
+      console.log('pushed...')
+      console.log(state.hotTabs)
+    }
+  },
+  pushForeignKeys(state, property) {
+    if (!state.hotTabs[property.hotId].tableProperties.foreignKeys) {
+      state.hotTabs[property.hotId].tableProperties.foreignKeys = []
+    }
+    state.hotTabs[property.hotId].tableProperties.foreignKeys.length = 0
+    state.hotTabs[property.hotId].tableProperties.foreignKeys.push(...property.value)
     // console.log(`table property:`)
     // console.log(property)
-    // console.log('pushed...')
-    // console.log(state.hotTabs)
+    console.log('pushed foreign keys...')
+    console.log(state.hotTabs)
   },
   // TODO : schema fields has simply been incorporated into overwriting column properties - remove legacy methods
   pushTableSchemaProperty(state, property) {
