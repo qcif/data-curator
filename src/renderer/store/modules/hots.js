@@ -83,6 +83,10 @@ const getters = {
       }
     })
   },
+  getTabId: (state, getters) => (tabId) => {
+    let hotId = _.findKey(state.hotTabs, {tabId: tabId})
+    return hotId
+  },
   getProvenance: state => {
     return state.provenanceProperties
   },
@@ -151,25 +155,10 @@ const mutations = {
     // console.log(state.hotTabs)
   },
   pushTableProperty(state, property) {
-    if (property.key === 'foreignKeys') {
-      mutations.pushForeignKeys(state, property)
-    } else {
-      _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
-      // console.log(`table property:`)
-      // console.log(property)
-      console.log('pushed...')
-      console.log(state.hotTabs)
-    }
-  },
-  pushForeignKeys(state, property) {
-    if (!state.hotTabs[property.hotId].tableProperties.foreignKeys) {
-      state.hotTabs[property.hotId].tableProperties.foreignKeys = []
-    }
-    state.hotTabs[property.hotId].tableProperties.foreignKeys.length = 0
-    state.hotTabs[property.hotId].tableProperties.foreignKeys.push(...property.value)
+    _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
     // console.log(`table property:`)
     // console.log(property)
-    console.log('pushed foreign keys...')
+    console.log('pushed...')
     console.log(state.hotTabs)
   },
   // TODO : schema fields has simply been incorporated into overwriting column properties - remove legacy methods

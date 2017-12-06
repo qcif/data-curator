@@ -22,7 +22,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getActiveTab', 'getAllHotTablesColumnNames', 'getAllTabTitles', 'getTabObjects'])
+    ...mapGetters(['getActiveTab', 'getAllHotTablesColumnNames', 'getAllTabTitles', 'getTabObjects', 'getHotIdFromTabId', 'getTabId'])
   },
   methods: {
     ...mapMutations(['pushAllColumnsProperty']),
@@ -38,9 +38,9 @@ export default {
     // let vueCurrentHotId = this.currentHotId
     let vueUpdateSubscriptions = this.updateSubscriptions
     // TODO: need to manage subscription here...
-    this.$subscribeTo(allTablesAllColumnNames$, async function(allTablesAllColumns) {
+    this.$subscribeTo(allTablesAllColumnNames$, async function(allTablesAllColumnNames) {
       console.log('subscribed to all tables all columns...')
-      await vueUpdateSubscriptions(allTablesAllColumns)
+      await vueUpdateSubscriptions(allTablesAllColumnNames)
     })
     this.initTableHeaderKeys()
   }
