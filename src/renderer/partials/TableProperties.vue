@@ -68,7 +68,9 @@ export default {
       {
         label: 'foreign key(s)',
         // type: 'tableKeys',
-        key: 'foreignKeys'
+        key: 'foreignKeys',
+        tooltipId: 'tooltip-table-foreign-keys',
+        tooltipView: 'tooltipTableForeignKeys'
       },
       {
         label: 'description',
