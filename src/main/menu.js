@@ -342,18 +342,18 @@ const template = [
     submenu: [
       {
         role: 'minimize'
+      // hide until implemented
+      // }, {
+      //   type: 'separator'
+      // }, {
+      //   label: 'Next Tab',
+      //   accelerator: 'CmdOrCtrl+Right'
+      // }, {
+      //   label: 'Previous Tab',
+      //   accelerator: 'CmdOrCtrl+Left'
       }, {
         type: 'separator'
       }, {
-      // hide until implemented
-      //  label: 'Next Tab',
-      //  accelerator: 'CmdOrCtrl+Right',
-      // }, {
-      //   label: 'Previous Tab',
-      //  accelerator: 'CmdOrCtrl+Left',
-      // }, {
-      //  type: 'separator'
-      // }, {
         role: 'quit'
       }
     ]
@@ -460,18 +460,15 @@ if (process.platform === 'darwin') {
       role: 'minimize'
     }, {
       role: 'zoom'
-    }, {
-      type: 'separator'
-    }, {
-      label: 'Next Tab',
-      accelerator: 'CmdOrCtrl+Right',
-      // turned off for Beta release
-      enabled: false
-    }, {
-      label: 'Previous Tab',
-      accelerator: 'CmdOrCtrl+Left',
-      // turned off for Beta release
-      enabled: false
+    // hide until implemented
+    // }, {
+    //   type: 'separator'
+    // }, {
+    //   label: 'Next Tab',
+    //   accelerator: 'CmdOrCtrl+Right'
+    // }, {
+    //   label: 'Previous Tab',
+    //   accelerator: 'CmdOrCtrl+Left'
     }, {
       type: 'separator'
     }, {
