@@ -9,7 +9,8 @@ export function setActiveGlobal(filename, title) {
 export function resetGlobalFilenames(filenames) {
   // console.log('have current tab filenames...')
   // console.log(filenames)
-  remote.getGlobal('tab').filenames = filenames
+  remote.getGlobal('tab').filenames.length = 0
+  remote.getGlobal('tab').filenames.push(...filenames)
   // console.log('remote global is...')
   // console.log(remote.getGlobal('tab'))
 }

@@ -7,9 +7,9 @@
           <input class="form-control input-sm" :value="source[prop]" @input="setSourceProp(index, prop, $event.target.value)" type="text" />
         </div>
       </div>
-        <button v-show="getSources.length > 1" type="button" class="btn btn-danger btn-sm" @click="removeSource(index)">
-          <span class="glyphicon glyphicon-minus"/>
-        </button>
+      <button v-show="getSources.length > 1" type="button" class="btn btn-danger btn-sm" @click="removeSource(index)">
+        <span class="glyphicon glyphicon-minus"/>
+      </button>
     </div>
     <div class="button-container">
       <button type="button" class="add-source btn btn-primary btn-sm" @click="addSource()">

@@ -58,7 +58,9 @@ sideNavColor = #337ab7
   height 85% !important
   width 100%
   margin-bottom 0
-  &.opened
+  &.messages-closed
+    margin-bottom 0
+  &.messages-opened
     margin-bottom 150px !important
 #csvEditor
   height 90%
@@ -75,7 +77,7 @@ sideNavColor = #337ab7
   height 100%
   width 100%
   .editor
-    overflow: scroll
+    overflow: hidden
     height: 100%
     width 100%
 
@@ -209,9 +211,20 @@ sideNavFooterHeight = 70px
   left 0
   z-index 200 !important
   transition: 0.5s
-  &.opened
+  &.messages-closed
+    height 0
+  &.messages-opened
     height 150px !important
     overflow-y scroll
+  &.closed
+    margin-left 0
+    padding-right 5px
+  &.left
+    margin-left sideNavMargin
+    padding-right sideNavMargin
+  &.right
+    padding-right sideNavMargin
+    margin-left 0
 
 #sidenav-footer
   z-index 100
