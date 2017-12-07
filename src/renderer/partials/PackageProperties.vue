@@ -2,12 +2,10 @@
 <form class="navbar-form form-horizontal" id="packageProperties">
   <div class="form-group-sm row container-fluid">
     <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
-      <template v-if="formprop.type !== 'hidden'">
-        <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}{{formprop.isMandatory ? '*' : ''}}:</label>
-        <component v-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
-        <!-- <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)"/> -->
-        <input v-else type="text" class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
-      </template>
+      <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}{{formprop.isMandatory ? '*' : ''}}:</label>
+      <component v-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
+      <!-- <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)"/> -->
+      <input v-else type="text" class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
       <div v-show="errors.has(formprop.label) && removeProperty(formprop.label)" class="row help validate-danger">
         {{ errors.first(formprop.label)}}
       </div>
@@ -19,6 +17,8 @@
 import SideNav from './SideNav'
 import licenses from '../partials/Licenses'
 import sources from '../partials/Sources'
+import PackageTooltip from '../mixins/PackageTooltip'
+import ValidationRules from '../mixins/ValidationRules'
 import {
   mapMutations,
   mapState,
@@ -27,6 +27,7 @@ import {
 export default {
   extends: SideNav,
   name: 'packager',
+  mixins: [ValidationRules, PackageTooltip],
   components: {
     licenses,
     sources
@@ -36,36 +37,45 @@ export default {
       formprops: [{
         label: 'name',
         type: 'input',
-        isMandatory: true
+        isMandatory: true,
+        tooltipId: 'tooltip-package-name',
+        tooltipView: 'tooltipPackageName'
       },
       {
         label: 'id',
-        type: 'input'
-      },
-      {
-        label: 'profile',
-        type: 'hidden',
-        value: 'tabular-data-package'
+        type: 'input',
+        tooltipId: 'tooltip-package-id',
+        tooltipView: 'tooltipPackageId'
       },
       {
         label: 'title',
-        type: 'input'
+        type: 'input',
+        tooltipId: 'tooltip-package-title',
+        tooltipView: 'tooltipPackageTitle'
       },
       {
         label: 'description',
-        type: 'markdown'
+        type: 'markdown',
+        tooltipId: 'tooltip-package-description',
+        tooltipView: 'tooltipPackageDescription'
       },
         // lead user through with http://frictionlessdata.io/specs/patterns/#data-package-version
       {
         label: 'version',
-        type: 'input'
+        type: 'input',
+        tooltipId: 'tooltip-package-version',
+        tooltipView: 'tooltipPackageVersion'
       },
       {
         label: 'sources',
-        type: 'dropdown'
+        type: 'dropdown',
+        tooltipId: 'tooltip-package-sources',
+        tooltipView: 'tooltipPackageSources'
       },
       {
-        label: 'licenses'
+        label: 'licenses',
+        tooltipId: 'tooltip-package-licenses',
+        tooltipView: 'tooltipPackageLicenses'
       }
       ]
     }
@@ -87,6 +97,8 @@ export default {
       return this.getProperty(key)
     },
     setProperty: function(key, value) {
+      console.log(`setting property for package...`)
+      console.log(`key ${key} , value: ${value}`)
       this.pushPackageProperty({
         key: key,
         value: value
@@ -96,40 +108,7 @@ export default {
       let value = ''
       this.setProperty(key, value)
       return true
-    },
-    validationRules: function(name) {
-      if (name === 'version') {
-        return {
-          rules: {
-            regex: /[\d]+\.[\d+]+\.[\d]/
-          }
-        }
-      }
-      return ''
     }
-  },
-  beforeCreate: function() {
-    this.$nextTick(function() {
-      // set hidden inputs
-      let found = this.formprops.forEach(x => {
-        if (x.type === 'hidden') {
-          this.setProperty(x.label, x.value)
-        }
-      })
-    })
-  },
-  watch: {},
-  mounted: function() {
-    const dict = {
-      en: {
-        custom: {
-          version: {
-            regex: 'The version field must comply with semantic versioning.'
-          }
-        }
-      }
-    }
-    this.$validator.updateDictionary(dict)
   }
 }
 </script>

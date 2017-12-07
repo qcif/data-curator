@@ -83,6 +83,10 @@ const getters = {
       }
     })
   },
+  getTabId: (state, getters) => (tabId) => {
+    let hotId = _.findKey(state.hotTabs, {tabId: tabId})
+    return hotId
+  },
   getProvenance: state => {
     return state.provenanceProperties
   },
@@ -96,6 +100,11 @@ const getters = {
     return hotColumnProperties[property.key]
   },
   getTableProperty: (state, getters) => (property) => {
+    // console.log('incoming table property for table property get...')
+    // console.log(property)
+    // console.log('attempting to fetch table properties...')
+    // console.log(property)
+    // console.log(state.hotTabs[property.hotId])
     let tableProperties = state.hotTabs[property.hotId].tableProperties || {}
     return tableProperties[property.key]
   },
@@ -142,11 +151,14 @@ const mutations = {
     // console.log(`incoming property is...`)
     // console.log(property)
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
-    console.log('pushed column property complete')
-    console.log(state.hotTabs)
+    // console.log('pushed column property complete')
+    // console.log(state.hotTabs)
   },
   pushTableProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
+    // console.log(`table property:`)
+    // console.log(property)
+    console.log('pushed...')
     console.log(state.hotTabs)
   },
   // TODO : schema fields has simply been incorporated into overwriting column properties - remove legacy methods
@@ -159,7 +171,8 @@ const mutations = {
   },
   pushPackageProperty(state, property) {
     _.set(state.packageProperties, property.key, property.value)
-    console.log(state.packageProperties)
+    console.log('package properties pushed...')
+    console.log(state)
   },
   pushMissingValues(state, hotMissingValues) {
     let hotId = hotMissingValues.hotId
@@ -190,7 +203,11 @@ const mutations = {
     _.unset(state.hotTabs, hotId)
   },
   resetAllColumnPropertiesForHotId(state, hotId) {
-    state.hotTabs[hotId].columnProperties = []
+    if (state.hotTabs[hotId].columnProperties) {
+      state.hotTabs[hotId].columnProperties.length = 0
+    } else {
+      state.hotTabs[hotId].columnProperties = []
+    }
   },
   resetColumnPropertiesForHotId(state, property) {
     state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}

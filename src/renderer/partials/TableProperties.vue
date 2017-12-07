@@ -31,14 +31,15 @@ import {
   HotRegister
 } from '../hot.js'
 import TableTooltip from '../mixins/TableTooltip'
-import {
-  Validator
-} from 'vee-validate'
+import ValidationRules from '../mixins/ValidationRules'
+// import {
+//   Validator
+// } from 'vee-validate'
 Vue.use(AsyncComputed)
 export default {
   extends: SideNav,
   name: 'tabular',
-  mixins: [TableTooltip],
+  mixins: [ValidationRules, TableTooltip],
   components: {
     licenses,
     sources,
@@ -64,12 +65,11 @@ export default {
         tooltipId: 'tooltip-table-primary-keys',
         tooltipView: 'tooltipTablePrimaryKeys'
       },
-        // {
-        //   label: 'foreign key(s)',
-        //   // type: 'tableKeys',
-        //   key: 'foreignKeys'
-        // },
-
+      {
+        label: 'foreign key(s)',
+        // type: 'tableKeys',
+        key: 'foreignKeys'
+      },
       {
         label: 'description',
         tooltipId: 'tooltip-table-description',
@@ -111,16 +111,6 @@ export default {
     ...mapMutations([
       'pushTableSchemaDescriptorProperty', 'pushTableProperty'
     ]),
-    validationRules: function(label) {
-      if (label === 'name') {
-        return {
-          required: true,
-          regex: /^([-a-z0-9._/])+$/,
-          unique_name: true
-        }
-      }
-      return ''
-    },
     getArrayValues: async function(key) {
       let tabId = this.getActiveTab
       let values = await this.getArrayValuesFromTabId(key, tabId)
@@ -176,18 +166,8 @@ export default {
       return true
     }
   },
-  created: function() {
-    const dictionary = {
-      en: {
-        custom: {
-          name: {
-            regex: () => 'The name field format is invalid. It must consist only of lowercase alphanumeric characters plus ".", "-" and "_".'
-          }
-        }
-      }
-    }
-    Validator.updateDictionary(dictionary)
-    Validator.extend('unique_name', {
+  mounted: function() {
+    this.$validator.extend('unique_name', {
       getMessage: field => `There is already another tab with this ${field}.`,
       validate: value => new Promise((resolve) => {
         let currentNames = _.values(_.mapValues(this.getHotTabs, function(hotTab) {
