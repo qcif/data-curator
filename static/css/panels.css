@@ -111,6 +111,9 @@
   .col-sm-9 {
     float: left;
   }*/
+  .col-sm-9 {
+    width: 100%;
+  }
   .toolbar-text {
     visibility: visible;
   }
@@ -123,9 +126,10 @@
     padding-left: 0 !important;
     padding-right: 0 !important;
     text-align: left !important;
+    float:left;
   }
   #sidenav select, #sidenav input {
-    width: 75%;
+    width: 100%;
   }
 }
 

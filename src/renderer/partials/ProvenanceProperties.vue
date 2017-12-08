@@ -2,7 +2,7 @@
 <form class="navbar-form form-horizontal" id="provenanceProperties">
   <div class="form-group-sm row container-fluid">
     <div>
-      <label v-tooltip.left="tooltip('tooltip-provenance-description')" class="control-label col-sm-3">description*:</label>
+      <label v-tooltip.left="tooltip('tooltip-provenance-description')" class="control-label col-sm-3">Description*</label>
       <component :is="'tooltipProvenanceDescription'" />
       <span>
         <button type="button" class="btn btn-primary btn-sm" @click="togglePreview()">
