@@ -123,8 +123,8 @@
     display: inline-block;
     /*margin: 0 !important;*/
     border-top: 0;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
     text-align: left !important;
     float:left;
   }
