@@ -5,10 +5,10 @@
       <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}{{formprop.isMandatory ? '*' : ''}}</label>
       <component :is="formprop.tooltipView"/>
       <component v-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
-      <!-- <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)"/> -->
-      <input v-else type="text" class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
-      <div v-show="errors.has(formprop.label) && removeProperty(formprop.label)" class="row help validate-danger">
-        {{ errors.first(formprop.label)}}
+      <!-- <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)"/> -->
+      <input v-else type="text" class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" v-validate="validationRules(formprop.key)" :name="formprop.key"/>
+      <div v-show="errors.has(formprop.key) && removeProperty(formprop.key)" class="row help validate-danger">
+        {{ errors.first(formprop.key)}}
       </div>
     </div>
   </div>
@@ -37,6 +37,7 @@ export default {
     return {
       formprops: [{
         label: 'Name',
+        key: 'name',
         type: 'input',
         isMandatory: true,
         tooltipId: 'tooltip-package-name',
@@ -44,18 +45,21 @@ export default {
       },
       {
         label: 'Id',
+        key: 'id',
         type: 'input',
         tooltipId: 'tooltip-package-id',
         tooltipView: 'tooltipPackageId'
       },
       {
         label: 'Title',
+        key: 'title',
         type: 'input',
         tooltipId: 'tooltip-package-title',
         tooltipView: 'tooltipPackageTitle'
       },
       {
         label: 'Description',
+        key: 'description',
         type: 'markdown',
         tooltipId: 'tooltip-package-description',
         tooltipView: 'tooltipPackageDescription'
@@ -63,6 +67,7 @@ export default {
         // lead user through with http://frictionlessdata.io/specs/patterns/#data-package-version
       {
         label: 'Version',
+        key: 'version',
         type: 'input',
         tooltipId: 'tooltip-package-version',
         tooltipView: 'tooltipPackageVersion'

@@ -7,18 +7,18 @@
         </label>
         <component :is="formprop.tooltipView"/>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
-          <select v-if="formprop.label==='Type'" :value="getTypeProperty" v-model="typeProperty" @input="setTypeProperty($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-9">
+          <select v-if="formprop.key==='type'" :value="getTypeProperty" v-model="typeProperty" @input="setTypeProperty($event.target.value)" :id="formprop.key" class="form-control input-sm col-sm-9">
             <option v-for="option1 in typeValues" :key="option1" v-bind:value="option1">
               {{ option1}}
             </option>
           </select>
-          <select v-if="formprop.label==='Format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
+          <select v-if="formprop.key==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
             <option v-for="option2 in formatValues" :key="option2" v-bind:value="option2">
               {{ option2}}
             </option>
           </select>
         </template>
-        <div v-else-if="formprop.label === 'Constraints'" id="constraints" class="col-sm-9"><br>
+        <div v-else-if="formprop.key === 'constraints'" id="constraints" class="col-sm-9"><br>
           <div class="input-group row" v-for="option in constraintValues" :key="option">
             <input type="checkbox" :id="option" :checked="getConstraintCheck(option)" @click="setConstraintCheck(option, $event.target)"></input>
             <label :for="option" class="form-control-static">{{option}}</label>
@@ -30,8 +30,8 @@
             </div>
           </div>
         </div>
-        <input v-else-if="formprop.label === 'Name'" :disabled="formprop.isDisabled" :value="getNameProperty" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
-        <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
+        <input v-else-if="formprop.key === 'name'" :disabled="formprop.isDisabled" :value="getNameProperty" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
+        <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
       </div>
     </div>
   </div>
@@ -79,6 +79,7 @@ export default {
       }),
       formprops: [{
         label: 'Name',
+        key: 'name',
         tooltipId: 'tooltip-column-name',
         tooltipView: 'tooltipColumnName',
         isDisabled: true,
@@ -86,34 +87,40 @@ export default {
       },
       {
         label: 'Title',
+        key: 'title',
         tooltipId: 'tooltip-column-title',
         tooltipView: 'tooltipColumnTitle'
       },
       {
         label: 'Description',
+        key: 'description',
         tooltipId: 'tooltip-column-description',
         tooltipView: 'tooltipColumnDescription'
       },
       {
         label: 'Type',
+        key: 'type',
         tooltipId: 'tooltip-column-type',
         tooltipView: 'tooltipColumnType',
         type: 'dropdown'
       },
       {
         label: 'Format',
+        key: 'format',
         tooltipId: 'tooltip-column-format',
         tooltipView: 'tooltipColumnFormat',
         type: 'dropdown'
       },
       {
         label: 'Constraints',
+        key: 'constraints',
         tooltipId: 'tooltip-column-constraints',
         tooltipView: 'tooltipColumnConstraints',
         type: 'checkbox'
       },
       {
         label: 'RDF Type',
+        key: 'rdfType',
         tooltipId: 'tooltip-column-rdfType',
         tooltipView: 'tooltipColumnRdfType',
         type: 'url'
