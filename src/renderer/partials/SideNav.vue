@@ -2,7 +2,7 @@
 <form class="navbar-form form-horizontal" id="sidenavProperties">
   <div class="form-group-sm row container-fluid">
     <div v-for="(formprop, index) in formprops" :key="index">
-      <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
+      <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}</label>
       <input type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
     </div>
   </div>

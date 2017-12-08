@@ -2,7 +2,7 @@
 <form class="navbar-form form-horizontal" id="tableProperties">
   <div class="form-group-sm row container-fluid">
     <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
-      <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}{{formprop.isMandatory ? '*' : ''}}:</label>
+      <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}{{formprop.isMandatory ? '*' : ''}}</label>
       <component :is="formprop.tooltipView"/>
       <input v-if="formprop.key === 'missingValue'" :value="missingValues" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
       <component v-else-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
@@ -49,47 +49,49 @@ export default {
   data() {
     return {
       formprops: [{
-        label: 'name',
+        label: 'Name',
         tooltipId: 'tooltip-table-name',
         tooltipView: 'tooltipTableName',
         isMandatory: true
       }, {
-        label: 'title',
+        label: 'Title',
         tooltipId: 'tooltip-table-title',
         tooltipView: 'tooltipTableTitle'
       },
       {
-        label: 'primary key(s)',
-        // type: 'tableKeys',
-        key: 'primaryKeys',
-        tooltipId: 'tooltip-table-primary-keys',
-        tooltipView: 'tooltipTablePrimaryKeys'
-      },
-      {
-        label: 'foreign key(s)',
-        // type: 'tableKeys',
-        key: 'foreignKeys'
-      },
-      {
-        label: 'description',
+        label: 'Description',
         tooltipId: 'tooltip-table-description',
         tooltipView: 'tooltipTableDescription'
       },
       {
-        label: 'sources',
+        label: 'Source(s)',
         key: 'sources',
         type: 'dropdown',
         tooltipId: 'tooltip-table-sources',
         tooltipView: 'tooltipTableSources'
       },
       {
-        label: 'licenses',
+        label: 'License(s)',
         key: 'licenses',
         tooltipId: 'tooltip-table-licences',
         tooltipView: 'tooltipTableLicences'
       },
       {
-        label: 'missing values',
+        label: 'Primary key(s)',
+        // type: 'tableKeys',
+        key: 'primaryKeys',
+        tooltipId: 'tooltip-table-primary-keys',
+        tooltipView: 'tooltipTablePrimaryKeys'
+      },
+      {
+        label: 'Foreign key(s)',
+        // type: 'tableKeys',
+        key: 'foreignKeys',
+        tooltipId: 'tooltip-table-foreign-keys',
+        tooltipView: 'tooltipTableForeignKeys'
+      },
+      {
+        label: 'Missing value(s)',
         type: 'array',
         key: 'missingValues',
         tooltipId: 'tooltip-table-missing-values',

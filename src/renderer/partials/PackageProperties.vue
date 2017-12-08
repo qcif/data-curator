@@ -2,8 +2,9 @@
 <form class="navbar-form form-horizontal" id="packageProperties">
   <div class="form-group-sm row container-fluid">
     <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
-      <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}{{formprop.isMandatory ? '*' : ''}}:</label>
-      <component v-if="isSharedComponent(formprop.label)" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :is="formprop.label"/>
+      <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}{{formprop.isMandatory ? '*' : ''}}</label>
+      <component :is="formprop.tooltipView"/>
+      <component v-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
       <!-- <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)"/> -->
       <input v-else type="text" class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.label) }" :id="formprop.label" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" v-validate="validationRules(formprop.label)" :name="formprop.label"/>
       <div v-show="errors.has(formprop.label) && removeProperty(formprop.label)" class="row help validate-danger">
@@ -35,45 +36,47 @@ export default {
   data() {
     return {
       formprops: [{
-        label: 'name',
+        label: 'Name',
         type: 'input',
         isMandatory: true,
         tooltipId: 'tooltip-package-name',
         tooltipView: 'tooltipPackageName'
       },
       {
-        label: 'id',
+        label: 'Id',
         type: 'input',
         tooltipId: 'tooltip-package-id',
         tooltipView: 'tooltipPackageId'
       },
       {
-        label: 'title',
+        label: 'Title',
         type: 'input',
         tooltipId: 'tooltip-package-title',
         tooltipView: 'tooltipPackageTitle'
       },
       {
-        label: 'description',
+        label: 'Description',
         type: 'markdown',
         tooltipId: 'tooltip-package-description',
         tooltipView: 'tooltipPackageDescription'
       },
         // lead user through with http://frictionlessdata.io/specs/patterns/#data-package-version
       {
-        label: 'version',
+        label: 'Version',
         type: 'input',
         tooltipId: 'tooltip-package-version',
         tooltipView: 'tooltipPackageVersion'
       },
       {
-        label: 'sources',
+        label: 'Source(s)',
+        key: 'sources',
         type: 'dropdown',
         tooltipId: 'tooltip-package-sources',
         tooltipView: 'tooltipPackageSources'
       },
       {
-        label: 'licenses',
+        label: 'License(s)',
+        key: 'licenses',
         tooltipId: 'tooltip-package-licenses',
         tooltipView: 'tooltipPackageLicenses'
       }

@@ -3,22 +3,22 @@
     <div class="form-group-sm row container-fluid">
       <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
         <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
-          {{formprop.label}}{{formprop.isMandatory ? '*' : ''}}:
+          {{formprop.label}}{{formprop.isMandatory ? '*' : ''}}
         </label>
         <component :is="formprop.tooltipView"/>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
-          <select v-if="formprop.label==='type'" :value="getTypeProperty" v-model="typeProperty" @input="setTypeProperty($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-9">
+          <select v-if="formprop.label==='Type'" :value="getTypeProperty" v-model="typeProperty" @input="setTypeProperty($event.target.value)" :id="formprop.label" class="form-control input-sm col-sm-9">
             <option v-for="option1 in typeValues" :key="option1" v-bind:value="option1">
               {{ option1}}
             </option>
           </select>
-          <select v-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
+          <select v-if="formprop.label==='Format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
             <option v-for="option2 in formatValues" :key="option2" v-bind:value="option2">
               {{ option2}}
             </option>
           </select>
         </template>
-        <div v-else-if="formprop.label === 'constraints'" id="constraints" class="col-sm-9">
+        <div v-else-if="formprop.label === 'Constraints'" id="constraints" class="col-sm-9"><br>
           <div class="input-group row" v-for="option in constraintValues" :key="option">
             <input type="checkbox" :id="option" :checked="getConstraintCheck(option)" @click="setConstraintCheck(option, $event.target)"></input>
             <label :for="option" class="form-control-static">{{option}}</label>
@@ -30,7 +30,7 @@
             </div>
           </div>
         </div>
-        <input v-else-if="formprop.label === 'name'" :disabled="formprop.isDisabled" :value="getNameProperty" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
+        <input v-else-if="formprop.label === 'Name'" :disabled="formprop.isDisabled" :value="getNameProperty" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
         <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.label)" @input="setProperty(formprop.label, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.label" />
       </div>
     </div>
@@ -72,48 +72,48 @@ export default {
       typeProperty: '',
       constraintInputKeyValues: {},
       allTablesAllColumnsNames: {},
-      // TODO: setup args so clear for constaints only
+      // TODO: setup args so clear for constraints only
       debounceSetConstraints: _.debounce(this.pushColumnProperty, 300, {
         'leading': true,
         'trailing': false
       }),
       formprops: [{
-        label: 'name',
+        label: 'Name',
         tooltipId: 'tooltip-column-name',
         tooltipView: 'tooltipColumnName',
         isDisabled: true,
         isMandatory: true
       },
       {
-        label: 'title',
+        label: 'Title',
         tooltipId: 'tooltip-column-title',
         tooltipView: 'tooltipColumnTitle'
       },
       {
-        label: 'description',
+        label: 'Description',
         tooltipId: 'tooltip-column-description',
         tooltipView: 'tooltipColumnDescription'
       },
       {
-        label: 'type',
+        label: 'Type',
         tooltipId: 'tooltip-column-type',
         tooltipView: 'tooltipColumnType',
         type: 'dropdown'
       },
       {
-        label: 'format',
+        label: 'Format',
         tooltipId: 'tooltip-column-format',
         tooltipView: 'tooltipColumnFormat',
         type: 'dropdown'
       },
       {
-        label: 'constraints',
+        label: 'Constraints',
         tooltipId: 'tooltip-column-constraints',
         tooltipView: 'tooltipColumnConstraints',
         type: 'checkbox'
       },
       {
-        label: 'rdfType',
+        label: 'RDF Type',
         tooltipId: 'tooltip-column-rdfType',
         tooltipView: 'tooltipColumnRdfType',
         type: 'url'

@@ -12,7 +12,7 @@
   </div>
   <div class="button-container">
     <button type="button" class="add-foreign btn btn-primary btn-sm" @click="addForeignKey()">
-      <span class="glyphicon glyphicon-plus"/>Add Foreign Key
+      <span class="glyphicon glyphicon-plus"/>Add Column
     </button>
   </div>
 </div>
