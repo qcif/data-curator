@@ -4,7 +4,7 @@
     <div class="inputs-container">
       <component is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="foreignKey.fields" :pushSelectedKeys="pushSelectedLocalKeys(index)" />
       <component v-show="enableComponent(foreignKey.fields)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="foreignKey.reference.resource" :pushSelectedTable="pushSelectedForeignTable(index)" />
-      <component v-show="enableComponent(foreignKey.reference.resource)" is="tableheaderkeys" :activeNames="getForeignHeaderNames(foreignKey.reference.resource)" :getSelectedKeys="foreignKey.reference.fields" :pushSelectedKeys="pushSelectedForeignKeys(index)"/>
+      <component v-show="enableComponent(foreignKey.fields)" is="tableheaderkeys" :activeNames="getForeignHeaderNames(foreignKey.reference.resource)" :getSelectedKeys="foreignKey.reference.fields" :pushSelectedKeys="pushSelectedForeignKeys(index)"/>
     </div>
     <button v-show="hotIdAllForeignKeys.length > 1" type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)">
       <span class="glyphicon glyphicon-minus"/>
@@ -70,7 +70,7 @@ export default {
       return {
         fields: [],
         reference: {
-          resource: '',
+          resource: this.allTableNames[0],
           fields: []
         }
       }
@@ -100,13 +100,7 @@ export default {
       let foreignKeys = this.getPropertyGivenHotId(this.propertyName, localHotId)
       if (!foreignKeys) {
         console.log('have to reset foreign keys...')
-        foreignKeys = [{
-          fields: [],
-          reference: {
-            resource: '',
-            fields: []
-          }
-        }]
+        foreignKeys = [this.emptyForeignKey]
         this.setProperty(this.propertyName, foreignKeys)
       }
       console.log('now all foreign key values...')
