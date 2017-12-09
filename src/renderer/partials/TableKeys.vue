@@ -4,13 +4,6 @@
   </select>
 </template>
 <script>
-import { Subscription } from 'rxjs/Subscription'
-import {selectedForeignTable$} from '@/rxSubject.js'
-import VueRx from 'vue-rx'
-import Vue from 'vue'
-Vue.use(VueRx, {
-  Subscription
-})
 export default {
   name: 'tablekeys',
   props: ['allTableNames', 'pushSelectedTable', 'getSelectedTable'],
