@@ -118,6 +118,27 @@ const getters = {
       constraints = state.hotTabs[property.hotId].columnProperties[property.columnIndex].constraints = {}
     }
     return constraints[property.key]
+  },
+  // ensure no caching
+  getAllForeignKeys: (state, getters) => () => {
+    let allForeignKeys = {}
+    for (let hotId in state.hotTabs) {
+      console.log(`hot id in get all foreign keys is ${hotId}`)
+      let hotIdForeignKeys = _.assign({}, state.hotTabs[hotId].tableProperties.foreignKeys)
+      if (_.isEmpty(hotIdForeignKeys)) {
+        hotIdForeignKeys = [{
+          fields: [],
+          reference: {
+            resource: '',
+            fields: []
+          }
+        }]
+      }
+      allForeignKeys[hotId] = hotIdForeignKeys
+    }
+    console.log('completed get all foreign keys')
+    console.log(allForeignKeys)
+    return allForeignKeys
   }
 }
 
@@ -158,8 +179,30 @@ const mutations = {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
     // console.log(`table property:`)
     // console.log(property)
-    console.log('pushed...')
+    //    console.log('pushed...')
+    //    console.log(state.hotTabs)
+  },
+  pushForeignKeysForTable(state, property) {
+    _.set(state.hotTabs, `${property.hotId}.tableProperties.foreignKeys`, property.foreignKeys)
+  },
+  pushForeignKeysLocalFieldsForTable(state, property) {
+    let foreignKeys = state.hotTabs[property.hotId].tableProperties.foreignKeys || []
+    if (!foreignKeys[property.index]) {
+      foreignKeys[property.index] = {
+        fields: [],
+        reference: {
+          resource: '',
+          fields: []
+        }
+      }
+    }
+    console.log(`so far foreign keys are:`)
+    console.log(foreignKeys)
+    foreignKeys[property.index].fields = property.fields
+    console.log(`completed 'hots.js': pushForeignKeysLocalFieldsForTable`)
+    state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
     console.log(state.hotTabs)
+    // _.set(state.hotTabs, `${property.hotId}.tableProperties.foreignKeys`, property.foreignKeys)
   },
   // TODO : schema fields has simply been incorporated into overwriting column properties - remove legacy methods
   pushTableSchemaProperty(state, property) {
@@ -171,8 +214,8 @@ const mutations = {
   },
   pushPackageProperty(state, property) {
     _.set(state.packageProperties, property.key, property.value)
-    console.log('package properties pushed...')
-    console.log(state)
+    //    console.log('package properties pushed...')
+    //    console.log(state)
   },
   pushMissingValues(state, hotMissingValues) {
     let hotId = hotMissingValues.hotId
