@@ -43,7 +43,7 @@ export default {
       }
     },
     currentHotId: async function() {
-      console.log(`home hot id is: ${this.activeCurrentHotHomeId}`)
+      // console.log(`home hot id is: ${this.activeCurrentHotHomeId}`)
       let hotId
       let hot = HotRegister.getActiveInstance()
       if (hot) {

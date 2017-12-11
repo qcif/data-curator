@@ -17,15 +17,15 @@ export default {
   name: 'relationkeys',
   watch: {
     getActiveTab: function() {
-      console.log('got active tab in relation keys')
+      //      console.log('got active tab in relation keys')
       this.initTableHeaderKeys()
     }
   },
   computed: {
-    ...mapGetters(['getActiveTab', 'getAllHotTablesColumnNames', 'getAllTabTitles', 'getTabObjects', 'getHotIdFromTabId', 'getTabId'])
+    ...mapGetters(['getActiveTab', 'getAllHotTablesColumnNames', 'getAllTabTitles', 'getTabObjects', 'getHotIdFromTabId', 'getTabId', 'getAllForeignKeys'])
   },
   methods: {
-    ...mapMutations(['pushAllColumnsProperty']),
+    ...mapMutations(['pushAllColumnsProperty', 'pushForeignKeysLocalFieldsForTable']),
     // ...mapGetters(['getAllTabTitles']),
     initTableHeaderKeys: function() {
       allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
