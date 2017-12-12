@@ -279,14 +279,6 @@ const template = [
       }, {
         type: 'separator'
       }, {
-        label: 'Validate Table',
-        accelerator: 'Shift+CmdOrCtrl+V',
-        click() {
-          validateTable()
-        }
-      }, {
-        type: 'separator'
-      }, {
         label: 'Set Column Properties',
         click() {
           triggerMenuButton('Column')
@@ -305,6 +297,14 @@ const template = [
         label: 'Set Data Package Properties',
         click() {
           triggerMenuButton('Package')
+        }
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Validate Table',
+        accelerator: 'Shift+CmdOrCtrl+V',
+        click() {
+          validateTable()
         }
       }, {
         type: 'separator'
