@@ -1,5 +1,5 @@
 <template>
-  <select class="form-control input-sm col-sm-9" :value="getSelectedTable()" @input="pushSelectedTable($event.target.value)">
+  <select class="form-control input-sm col-sm-9" :value="getSelectedTable()" @input="setSelectedTable($event.target.value)">
     <option v-for="tableName in allTables" :key="tableName" :id="tableName" :value="tableName">{{tableName}}</option>
   </select>
 </template>
@@ -10,6 +10,12 @@ export default {
   computed: {
     allTables() {
       return this.allTableNames || []
+    }
+  },
+  methods: {
+    setSelectedTable(value) {
+      console.log('pushing from table keys vue...')
+      this.pushSelectedTable(value)
     }
   }
 }
