@@ -6,7 +6,7 @@ import {
 import { Subscription } from 'rxjs/Subscription'
 import VueRx from 'vue-rx'
 import Vue from 'vue'
-import {allTablesAllColumnNames$, activeTab$} from '@/rxSubject.js'
+import {allTablesAllColumnNames$, activeTab$, pushEmptyForeignKey$} from '@/rxSubject.js'
 import {
   HotRegister
 } from '@/hot.js'
@@ -18,6 +18,7 @@ export default {
   watch: {
     getActiveTab: function() {
       //      console.log('got active tab in relation keys')
+      // selectedForeignLocalHeaders$.next(false)
       this.initTableHeaderKeys()
     }
   },
@@ -25,7 +26,7 @@ export default {
     ...mapGetters(['getActiveTab', 'getAllHotTablesColumnNames', 'getAllTabTitles', 'getTabObjects', 'getHotIdFromTabId', 'getTabId', 'getAllForeignKeys'])
   },
   methods: {
-    ...mapMutations(['pushAllColumnsProperty', 'pushForeignKeysLocalFieldsForTable']),
+    ...mapMutations(['pushAllColumnsProperty', 'pushForeignKeysLocalFieldsForTable', 'pushEmptyForeignKey', 'pushForeignKeysForeignFieldsForTable', 'pushForeignKeysForeignTableForTable']),
     // ...mapGetters(['getAllTabTitles']),
     initTableHeaderKeys: function() {
       allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
