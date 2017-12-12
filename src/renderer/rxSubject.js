@@ -11,6 +11,7 @@ let allTabsTitles$ = new Subject()
 let selectedForeignTable$ = new Subject()
 let selectedForeignLocalHeaders$ = new Subject()
 let pushEmptyForeignKey$ = new Subject()
+let currentForeignHeaders$ = new Subject()
 // let getSelectedLocalKeys$ = new Subject()
 
 export function onNextHotIdFromTabRx(asyncFunction) {
@@ -42,6 +43,7 @@ export {
   allTabsTitles$,
   selectedForeignTable$,
   pushEmptyForeignKey$,
-  selectedForeignLocalHeaders$
+  selectedForeignLocalHeaders$,
+  currentForeignHeaders$
   // getSelectedLocalKeys$
 }
