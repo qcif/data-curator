@@ -6,15 +6,15 @@
       <component v-show="isHeadersSelected" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="getSelectedTable(index)" :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)" />
       <component v-show="isHeadersSelected" is="tableheaderkeys" :activeNames="foreignHeaderNames" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)"/>
     </div>
-    <!-- <button v-show="hotIdAllForeignKeys.length > 1" type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)">
+    <button v-show="getAllForeignKeysFromCurrentHotId.length > 1" type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)">
       <span class="glyphicon glyphicon-minus"/>
-    </button> -->
+    </button>
   </div>
-  <!-- <div class="button-container">
+  <div class="button-container">
     <button type="button" class="add-foreign btn btn-primary btn-sm" @click="addForeignKey()">
       <span class="glyphicon glyphicon-plus"/>Add Foreign Key
     </button>
-  </div> -->
+  </div>
 </div>
 </template>
 <script>
@@ -154,14 +154,16 @@ export default {
     }
   },
   methods: {
-    // removeForeignKey: function(index) {
-    //   this.hotIdAllForeignKeys.splice(index, 1)
-    //   this.setProperty(this.propertyName, this.hotIdAllForeignKeys)
-    //   //      console.log(this.hotIdAllForeignKeys)
-    //   this.$forceUpdate()
-    // },
+    removeForeignKey: function(index) {
+      let foreignKeys = this.getAllForeignKeysFromCurrentHotId
+      foreignKeys.splice(index, 1)
+      this.setProperty(this.propertyName, foreignKeys)
+      //      console.log(this.hotIdAllForeignKeys)
+      // this.$forceUpdate()
+    },
     addForeignKey: function() {
-      let foreignKeys = [...this.allForeignKeys[this.currentLocalHotId]]
+      // this.getAllForeignKeysFromCurrentHotId[index]
+      let foreignKeys = this.getAllForeignKeysFromCurrentHotId
       foreignKeys.push(this.emptyForeignKey)
       this.setProperty(this.propertyName, foreignKeys)
       // pushEmptyForeignKey$.next(this.currentLocalHotId)
@@ -335,6 +337,9 @@ export default {
       console.log(this.foreignHeaderNames)
     },
     pushSelectedForeignTable: function(index, hotId) {
+      console.log('entering push selected foreign table...')
+      console.log(`index is ${index}`)
+      console.log(`hot id is ${hotId}`)
       // let vueSetProperty = this.setProperty
       // let vuePropertyName = this.propertyName
       // let vueUpdateForeignHeaderNames = this.updateForeignHeaderNames
