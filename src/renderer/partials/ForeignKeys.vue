@@ -232,6 +232,8 @@ export default {
         allTableNamesHeaderNames[tabTitle] = foreignHeaderNames
       })
       this.allTableNamesHeaderNames = _.assign({}, allTableNamesHeaderNames)
+      console.log('all tables names header names:')
+      console.log(this.allTableNamesHeaderNames)
     },
     enableComponent: function(value) {
       console.log('checking enable component...')
@@ -265,6 +267,8 @@ export default {
     getSelectedForeignKeys: function(index) {
       // let foreignKeys = this.allForeignKeys[this.currentLocalHotId]
       let foreignKey = this.getAllForeignKeysFromCurrentHotId[index]
+      console.log('foreign key is:')
+      console.log(foreignKey)
       // let foreignKey = foreignKeys[index]
       // let foreignKeys = this.getAllForeignKeys()[hotId]
       // let foreignKey = foreignKeys[index]
@@ -286,6 +290,7 @@ export default {
       }
       console.log('table is:')
       console.log(table)
+      selectedForeignTable$.next(table)
       // this.updateForeignHeaderNames(table)
 
       // ensure no caching
@@ -293,7 +298,6 @@ export default {
       // console.log('updated foreign header names are now:')
       // console.log(this.foreignHeaderNames)
       return function() {
-        selectedForeignTable$.next(table)
         return table
       }
     },

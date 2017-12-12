@@ -2,6 +2,7 @@ import {ipcRenderer as ipc} from 'electron'
 import {allTablesAllColumnNames$} from '@/rxSubject.js'
 import store from '@/store/modules/hots.js'
 import {HotRegister} from '@/hot.js'
+import {pushAllTabTitlesSubscription} from '@/store/modules/tabs.js'
 
 export function toggleHeaderWithFeedback(hot, errorFunction, successFunction) {
   if (hot.hasColHeaders()) {
@@ -62,4 +63,5 @@ function updateAllColumnsName(values) {
   })
   // do not allow getter to cache as does not seem to pick up change
   allTablesAllColumnNames$.next(store.getters.getAllHotTablesColumnNames(store.state, store.getters)())
+  pushAllTabTitlesSubscription()
 }
