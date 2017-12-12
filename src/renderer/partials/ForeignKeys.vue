@@ -121,6 +121,9 @@ export default {
         }
       }
     },
+    isHeadersSelected() {
+      return this.localHeaderNames.length > 0
+    },
     getAllForeignKeysFromCurrentHotId() {
       return this.allForeignKeys[this.currentLocalHotId]
     }
@@ -146,8 +149,8 @@ export default {
   },
   subscriptions() {
     return {
-      allColumns: allTablesAllColumnNames$,
-      isHeadersSelected: selectedForeignLocalHeaders$
+      allColumns: allTablesAllColumnNames$
+      // isHeadersSelected: selectedForeignLocalHeaders$
     }
   },
   methods: {
