@@ -9,6 +9,8 @@ let activeTab$ = new Subject()
 let hotIdFromTab$ = new Subject()
 let allTabsTitles$ = new Subject()
 let selectedForeignTable$ = new Subject()
+let selectedForeignLocalHeaders$ = new Subject()
+let pushEmptyForeignKey$ = new Subject()
 // let getSelectedLocalKeys$ = new Subject()
 
 export function onNextHotIdFromTabRx(asyncFunction) {
@@ -38,6 +40,8 @@ export {
   activeTab$,
   allTablesAllColumnNames$,
   allTabsTitles$,
-  selectedForeignTable$
+  selectedForeignTable$,
+  pushEmptyForeignKey$,
+  selectedForeignLocalHeaders$
   // getSelectedLocalKeys$
 }

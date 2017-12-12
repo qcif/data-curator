@@ -1,6 +1,5 @@
 <template>
   <select v-model="selectedKeys" class="form-control input-sm col-sm-9" multiple>
-    <!-- <select v-model="selectedKeys" :value="chooseSelectedKeys" @input="setSelectedKeys($event.target.value)" class="form-control input-sm col-sm-9" multiple> -->
     <option v-for="columnName in activeNames" :value="columnName">{{columnName}}</option>
   </select>
 </template>
@@ -19,6 +18,8 @@ export default {
         return this.getSelectedKeys
       },
       set: function(value) {
+        console.log('about to send value:')
+        console.log(value)
         this.pushSelectedKeys(value)
       }
     }
