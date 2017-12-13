@@ -12,7 +12,7 @@
               {{ option1}}
             </option>
           </select>
-          <select v-if="formprop.label==='format'" v-model="selectFormat" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
+          <select v-if="formprop.label==='format'" :value="getFormatProperty" v-model="formatProperty" @input="setFormatProperty($event.target.value)" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
             <option v-for="option2 in formatValues" :key="option2" v-bind:value="option2">
               {{ option2}}
             </option>
@@ -70,6 +70,7 @@ export default {
     return {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       typeProperty: '',
+      formatProperty: '',
       constraintInputKeyValues: {},
       allTablesAllColumnsNames: {},
       // TODO: setup args so clear for constaints only
@@ -159,7 +160,7 @@ export default {
   asyncComputed: {
     getTypeProperty: {
       async get() {
-        // console.log('getting type')
+        console.log('getting type')
         let hotId = await this.currentHotId()
         // let hotId = this.activeCurrentHotId
         // console.log(`hot id in getType is ${hotId}`)
@@ -180,6 +181,26 @@ export default {
         let temp = this.getActiveTab
         let temp2 = this.cIndex
       }
+    },
+    getFormatProperty: {
+      async get() {
+        console.log('getting format')
+        let hotId = this.activeCurrentHotId
+        let getter = this.getter(hotId, 'format')
+        let property = this.getHotColumnProperty(getter)
+        if (!property) {
+          this.pushColumnProperty(this.setter(hotId, 'format', property))
+          property = 'default'
+        }
+        // console.log('got selectFormat property')
+        this.formatProperty = property
+        this.$forceUpdate()
+        return property
+      },
+      watch() {
+        let temp = this.getActiveTab
+        let temp2 = this.cIndex
+      }
     }
   },
   methods: {
@@ -187,6 +208,7 @@ export default {
       'pushColumnProperty'
     ]),
     isBooleanConstraint: function(option) {
+      console.log('checking is boolean constraint...')
       return this.constraintBooleanBindings.indexOf(option) > -1
     },
     setTypeProperty: async function(value) {
@@ -196,7 +218,14 @@ export default {
       this.typeProperty = value
       return value
     },
+    setFormatProperty: function(value) {
+      // console.log('about to set format...')
+      let hotId = this.activeCurrentHotId
+      this.pushColumnProperty(this.setter(hotId, 'format', value))
+      this.formatValue = value
+    },
     getProperty: function(key) {
+      console.log(`checking property: ${key}`)
       let hotId = this.activeCurrentHotId
       // console.log(`getting for ${key} and hot ${hotId}`)
       let getter = this.getter(hotId, key)
@@ -318,26 +347,26 @@ export default {
     },
     isDropdownFormatDisabled() {
       return !this.formatValues ? false : this.formatValues.length < 2
-    },
-    selectFormat: {
-      get: function() {
-        // console.log('about to get select format...')
-        let hotId = this.activeCurrentHotId
-        let getter = this.getter(hotId, 'format')
-        let property = this.getHotColumnProperty(getter)
-        if (!property) {
-          property = 'default'
-          this.pushColumnProperty(this.setter(hotId, 'format', property))
-        }
-        // console.log('got selectFormat property')
-        return property
-      },
-      set: function(value) {
-        // console.log('about to set format...')
-        let hotId = this.activeCurrentHotId
-        this.pushColumnProperty(this.setter(hotId, 'format', value))
-      }
     }
+    // selectFormat: {
+    //   get: function() {
+    //     console.log('about to get select format...')
+    //     let hotId = this.activeCurrentHotId
+    //     let getter = this.getter(hotId, 'format')
+    //     let property = this.getHotColumnProperty(getter)
+    //     if (!property) {
+    //       property = 'default'
+    //       this.pushColumnProperty(this.setter(hotId, 'format', property))
+    //     }
+    //     // console.log('got selectFormat property')
+    //     return property
+    //   },
+    //   set: function(value) {
+    //     // console.log('about to set format...')
+    //     let hotId = this.activeCurrentHotId
+    //     this.pushColumnProperty(this.setter(hotId, 'format', value))
+    //   }
+    // },
   },
   created: function() {
     // console.log('created...')
