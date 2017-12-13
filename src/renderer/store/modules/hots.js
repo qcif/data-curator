@@ -128,25 +128,23 @@ const getters = {
       console.log('table properties')
       console.log(typeof tableProperties)
       let foreignKeys = tableProperties.foreignKeys || []
-      console.log(foreignKeys)
-      console.log('foreign properties')
-      console.log(typeof foreignKeys)
-      let hotIdForeignKeys = foreignKeys
-      if (_.isEmpty(hotIdForeignKeys)) {
-        hotIdForeignKeys.push({
-          fields: [],
-          reference: {
-            resource: '',
-            fields: []
-          }
-        })
-      }
-      console.log(typeof hotIdForeignKeys)
-      allForeignKeys[hotId] = hotIdForeignKeys
+      // console.log(foreignKeys)
+      // console.log('foreign properties')
+      // console.log(typeof foreignKeys)
+      // let hotIdForeignKeys = foreignKeys
+      // if (_.isEmpty(hotIdForeignKeys)) {
+      //   hotIdForeignKeys.push({
+      //     fields: [],
+      //     reference: {
+      //       resource: '',
+      //       fields: []
+      //     }
+      //   })
+      // }
+      // console.log(typeof hotIdForeignKeys)
+      allForeignKeys[hotId] = foreignKeys
     }
     console.log('completed get all foreign keys')
-    console.log(allForeignKeys)
-    console.log(typeof allForeignKeys)
     return allForeignKeys
   }
 }
@@ -251,19 +249,19 @@ const mutations = {
     console.log(state.hotTabs)
     // _.set(state.hotTabs, `${property.hotId}.tableProperties.foreignKeys`, property.foreignKeys)
   },
-  pushEmptyForeignKey(state, hotId) {
-    if (!state.hotTabs[hotId].tableProperties.foreignKeys) {
-      state.hotTabs[hotId].tableProperties.foreignKeys = []
-    }
-    state.hotTabs[hotId].tableProperties.foreignKeys.push({
-      fields: [],
-      reference: {
-        resource: '',
-        fields: []
-      }
-    })
-    console.log(state.hotTabs)
-  },
+  // pushEmptyForeignKey(state, hotId) {
+  //   if (!state.hotTabs[hotId].tableProperties.foreignKeys) {
+  //     state.hotTabs[hotId].tableProperties.foreignKeys = []
+  //   }
+  //   state.hotTabs[hotId].tableProperties.foreignKeys.push({
+  //     fields: [],
+  //     reference: {
+  //       resource: '',
+  //       fields: []
+  //     }
+  //   })
+  //   console.log(state.hotTabs)
+  // },
   // TODO : schema fields has simply been incorporated into overwriting column properties - remove legacy methods
   pushTableSchemaProperty(state, property) {
     mutations.pushTableProperty(state, property)

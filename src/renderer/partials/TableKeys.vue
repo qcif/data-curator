@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="input-group">
-      <label v-show="labelName" class="control-label" v-tooltip.left="tooltip(tooltipId)">{{labelName}}</label>
+      <label class="control-label" v-tooltip.left="tooltip(tooltipId)">{{labelName}}</label>
+      <component :is="tooltipView"/>
       <select class="form-control input-sm" :value="getSelectedTable()" @input="setSelectedTable($event.target.value)">
         <option v-for="tableName in allTables" :key="tableName" :id="tableName" :value="tableName">{{tableName}}</option>
       </select>
     </div>
-    <component :is="tooltipView"/>
   </div>
 </template>
 <script>
