@@ -120,8 +120,5 @@ export default {
 }
 </script>
 <style lang="styl" scoped>
-@import '~static/css/packageprops'
-</style>
-<style lang="styl" scoped>
 @import '~static/css/validationrules'
 </style>
