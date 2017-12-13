@@ -39,5 +39,4 @@ export {
   allTablesAllColumnNames$,
   allTabsTitles$,
   selectedForeignTable$
-  // getSelectedLocalKeys$
 }

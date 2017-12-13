@@ -44,13 +44,13 @@ const getters = {
   },
   getAllTabTitles: state => {
     let allTabTitles = {}
-    console.log('tab titles are before...')
-    console.log(state.tabObjects)
+    //    console.log('tab titles are before...')
+    //    console.log(state.tabObjects)
     _.forEach(state.tabObjects, function(object, tabId) {
       allTabTitles[tabId] = object.title
     })
-    console.log(`tab titles are:`)
-    console.log(allTabTitles)
+    //    console.log(`tab titles are:`)
+    //    console.log(allTabTitles)
     return allTabTitles
   }
 }
@@ -71,7 +71,7 @@ const mutations = {
     pushAllTabTitlesSubscription()
   },
   pushTabObject(state, tab) {
-    console.log('pushing tab object...')
+    //    console.log('pushing tab object...')
     if (tab.filename) {
       _.set(state.tabObjects, `${tab.id}.filename`, tab.filename)
       let title = extractNameFromFile(tab.filename)
@@ -101,14 +101,14 @@ const mutations = {
     resetGlobalFilenames(getters.getTabFilenames(state))
     ipc.send('toggleSaveMenu')
     activeTab$.next(tabId)
-    console.log(state.tabs)
-    console.log(state.tabObjects)
+    //    console.log(state.tabs)
+    //    console.log(state.tabObjects)
   },
   setTabsOrder (state, tabIdOrder) {
-    console.log('resetting tabs...')
+    //    console.log('resetting tabs...')
     state.tabs.length = 0
     state.tabs.push(...tabIdOrder)
-    console.log(state.tabs)
+    //    console.log(state.tabs)
   },
   incrementTabIndex(state) {
     state.tabIndex++

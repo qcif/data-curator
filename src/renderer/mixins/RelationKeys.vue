@@ -17,16 +17,14 @@ export default {
   name: 'relationkeys',
   watch: {
     getActiveTab: function() {
-      console.log('got active tab in relation keys')
       this.initTableHeaderKeys()
     }
   },
   computed: {
-    ...mapGetters(['getActiveTab', 'getAllHotTablesColumnNames', 'getAllTabTitles', 'getTabObjects', 'getHotIdFromTabId', 'getTabId'])
+    ...mapGetters(['getActiveTab', 'getAllHotTablesColumnNames', 'getAllTabTitles', 'getTabObjects', 'getHotIdFromTabId', 'getTabId', 'getAllForeignKeys', 'tabTitle'])
   },
   methods: {
-    ...mapMutations(['pushAllColumnsProperty']),
-    // ...mapGetters(['getAllTabTitles']),
+    ...mapMutations(['pushAllColumnsProperty', 'pushForeignKeysLocalFieldsForTable', 'pushForeignKeysForeignFieldsForTable', 'pushForeignKeysForeignTableForTable']),
     initTableHeaderKeys: function() {
       allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
     },
@@ -35,9 +33,7 @@ export default {
     }
   },
   mounted: async function() {
-    // let vueCurrentHotId = this.currentHotId
     let vueUpdateSubscriptions = this.updateSubscriptions
-    // TODO: need to manage subscription here...
     this.$subscribeTo(allTablesAllColumnNames$, async function(allTablesAllColumnNames) {
       console.log('subscribed to all tables all columns...')
       await vueUpdateSubscriptions(allTablesAllColumnNames)

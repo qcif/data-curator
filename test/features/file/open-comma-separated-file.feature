@@ -11,11 +11,9 @@ Feature: Open a Comma separated value file
 
   The Open Comma Separated command can be invoked using the menu or a keyboard shortcut
 
-  (A desirable feature would be, If the active tab is empty, when the file is opened, insert the file contents into the empty table.)
-
-  If the CSV has an inconsistent number of columns, [fix ragged rows] (https://relishapp.com/odi-australia/data-curator/docs/other/fix-ragged-rows)
-
-  When the file is opened, invoke [Guess Column Properties](https://relishapp.com/odi-australia/data-curator/docs/tools/guess-column-properties)
+  Desirable features include:
+  - If the active tab is empty, when the file is opened, insert the file contents into the empty table
+  - "Guess Column Properties" on open
 
   Scenario: Open an existing comma separated value file
     Given I have opened Data Curator
@@ -26,5 +24,4 @@ Feature: Open a Comma separated value file
     And set the Tab name to the 'filename'
     And set the CSV Dialect in the Table Properties to "Comma Separated"
     And "Fix Ragged Rows"
-    And "Guess Column Properties"
     And "Freeze Header Row"
