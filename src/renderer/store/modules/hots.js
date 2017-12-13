@@ -121,25 +121,32 @@ const getters = {
   },
   // ensure no caching
   getAllForeignKeys: (state, getters) => () => {
-    let allForeignKeys = []
+    let allForeignKeys = {}
     for (let hotId in state.hotTabs) {
       console.log(`hot id in get all foreign keys is ${hotId}`)
       let tableProperties = state.hotTabs[hotId].tableProperties || {}
+      console.log('table properties')
+      console.log(typeof tableProperties)
       let foreignKeys = tableProperties.foreignKeys || []
-      let hotIdForeignKeys = [...foreignKeys]
+      console.log(foreignKeys)
+      console.log('foreign properties')
+      console.log(typeof foreignKeys)
+      let hotIdForeignKeys = foreignKeys
       if (_.isEmpty(hotIdForeignKeys)) {
-        hotIdForeignKeys = [{
+        hotIdForeignKeys.push({
           fields: [],
           reference: {
             resource: '',
             fields: []
           }
-        }]
+        })
       }
+      console.log(typeof hotIdForeignKeys)
       allForeignKeys[hotId] = hotIdForeignKeys
     }
     console.log('completed get all foreign keys')
     console.log(allForeignKeys)
+    console.log(typeof allForeignKeys)
     return allForeignKeys
   }
 }
