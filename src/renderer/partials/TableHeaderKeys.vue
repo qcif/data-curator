@@ -3,7 +3,7 @@
     <div class="input-group">
       <label v-show="labelName" class="control-label" v-tooltip.left="tooltip(tooltipId)">{{labelName}}</label>
       <select v-model="selectedKeys" class="form-control input-sm" multiple>
-        <option v-for="columnName in getActiveNames()" :value="columnName">{{columnName}}</option>
+        <option v-for="columnName in activeNames" :value="columnName">{{columnName}}</option>
       </select>
     </div>
     <component :is="tooltipView"/>
@@ -15,11 +15,6 @@ export default {
   name: 'tableheaderkeys',
   mixins: [ForeignKeysTooltip],
   props: ['activeNames', 'getSelectedKeys', 'pushSelectedKeys', 'labelName', 'tooltipId', 'tooltipView'],
-  data() {
-    return {
-      // selectedKeys: []
-    }
-  },
   computed: {
     selectedKeys: {
       get() {
@@ -31,20 +26,6 @@ export default {
         this.pushSelectedKeys(value)
       }
     }
-    // chooseSelectedKeys() {
-    //   return this.getSelectedKeys
-    // }
-  },
-  methods: {
-    getActiveNames: function() {
-      console.log('this active names is...')
-      console.log(this.activeNames)
-      return this.activeNames
-      // }
-    }
-    // setSelectedKeys: function(value) {
-    //   this.pushSelectedKeys(value)
-    // }
   }
 }
 </script>

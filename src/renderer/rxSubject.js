@@ -9,7 +9,6 @@ let activeTab$ = new Subject()
 let hotIdFromTab$ = new Subject()
 let allTabsTitles$ = new Subject()
 let selectedForeignTable$ = new Subject()
-let selectedForeignLocalHeaders$ = new Subject()
 let pushEmptyForeignKey$ = new Subject()
 let currentForeignHeaders$ = new Subject()
 // let getSelectedLocalKeys$ = new Subject()
@@ -42,8 +41,5 @@ export {
   allTablesAllColumnNames$,
   allTabsTitles$,
   selectedForeignTable$,
-  pushEmptyForeignKey$,
-  selectedForeignLocalHeaders$,
-  currentForeignHeaders$
-  // getSelectedLocalKeys$
+  pushEmptyForeignKey$
 }
