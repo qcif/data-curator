@@ -35,11 +35,6 @@ export default {
       template: `<div id="tooltip-table-primary-keys">The
       <externalLink text="Primary Key" url="http://frictionlessdata.io/specs/table-schema/#primary-key"/> is the field(s) that uniquely identifies each row in the table.</div>`
     },
-    'tooltipTableForeignKeys': {
-      components: {externalLink},
-      template: `<div id="tooltip-table-foreign-keys">A
-      <externalLink text="Foreign Key" url="http://frictionlessdata.io/specs/table-schema/#foreign-keys"/> must exist in the referenced table and column(s)</div>`
-    },
     'tooltipTableMissingValues': {
       components: {externalLink},
       template: `<div id="tooltip-table-missing-values">Value(s) that indicate a

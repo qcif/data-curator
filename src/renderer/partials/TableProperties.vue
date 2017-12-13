@@ -2,7 +2,7 @@
 <form class="navbar-form form-horizontal" id="tableProperties">
   <div class="form-group-sm row container-fluid">
     <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
-      <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}</label>
+      <label v-show="formprop.label" v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label" :for="formprop.label">{{formprop.label}}</label>
       <component :is="formprop.tooltipView"/>
       <input v-if="formprop.key === 'missingValue'" :value="missingValues" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
       <component v-else-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
@@ -80,17 +80,15 @@ export default {
       },
       {
         label: 'Primary key(s)',
-        // type: 'tableKeys',
         key: 'primaryKeys',
         tooltipId: 'tooltip-table-primary-keys',
         tooltipView: 'tooltipTablePrimaryKeys'
       },
       {
-        label: 'Foreign key(s)',
-        // type: 'tableKeys',
-        key: 'foreignKeys',
-        tooltipId: 'tooltip-table-foreign-keys',
-        tooltipView: 'tooltipTableForeignKeys'
+        // label: 'Foreign key(s)',
+        key: 'foreignKeys'
+        // tooltipId: 'tooltip-table-foreign-keys',
+        // tooltipView: 'tooltipTableForeignKeys'
       },
       {
         label: 'Missing value(s)',

@@ -2,9 +2,9 @@
 <div id="foreignKeyFields">
   <div v-for="(foreignKey,index) in hotForeignKeys"  class="foreign col-sm-12">
     <div class="inputs-container">
-      <component :key="getLocalComponentKey(index)" is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="getSelectedLocalKeys(index)" :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)" />
-      <component v-show="isHeadersSelected" :key="getTableComponentKey(index)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="getSelectedTable(index)" :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)" />
-      <component v-show="isHeadersSelected" :key="getForeignComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders[index]" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)"/>
+      <component :key="getLocalComponentKey(index)" is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="getSelectedLocalKeys(index)" :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)" labelName="Foreign key(s)" tooltipId="tooltip-foreignkey" tooltipView="tooltipForeignkey"/>
+      <component v-show="isHeadersSelected" :key="getTableComponentKey(index)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="getSelectedTable(index)" :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)" labelName="Reference Table" tooltipId="tooltip-foreignkey-table" tooltipView="tooltipForeignkeyTable"/>
+      <component v-show="isHeadersSelected" :key="getForeignComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders[index]" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" tooltipId="tooltip-foreignkey-tablekey" tooltipView="tooltipForeignkeyTablekey"/>
     </div>
     <button v-show="getAllForeignKeysFromCurrentHotId().length > 1" type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)">
       <span class="glyphicon glyphicon-minus"/>
@@ -12,7 +12,7 @@
   </div>
   <div class="button-container">
     <button type="button" class="add-foreign btn btn-primary btn-sm" @click="addForeignKey()">
-      <span class="glyphicon glyphicon-plus"/>Add Column
+      <span class="glyphicon glyphicon-plus"/>Add Foreign Key
     </button>
   </div>
 </div>
