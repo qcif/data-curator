@@ -3,7 +3,7 @@
     <div class="input-group">
       <label v-show="labelName" class="control-label" v-tooltip.left="tooltip(tooltipId)">{{labelName}}</label>
       <select v-model="selectedKeys" class="form-control input-sm" multiple>
-        <option v-for="columnName in activeNames" :value="columnName">{{columnName}}</option>
+        <option v-for="columnName in getActiveNames()" :value="columnName">{{columnName}}</option>
       </select>
     </div>
     <component :is="tooltipView"/>
@@ -36,6 +36,18 @@ export default {
     // }
   },
   methods: {
+    getActiveNames: function() {
+      console.log('this active names is...')
+      console.log(this.activeNames)
+      // console.log(`index is : ${this.indexTo}`)
+      // if (this.indexTo >= 0) {
+      //   console.log('returning with index...')
+      //   return this.activeNames[this.indexTo]
+      // } else {
+      // return this.indexTo ? this.activeNames[this.indexTo] : this.activeNames
+      return this.activeNames
+      // }
+    }
     // setSelectedKeys: function(value) {
     //   this.pushSelectedKeys(value)
     // }
