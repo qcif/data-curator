@@ -191,7 +191,7 @@ export default {
       let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
       let foreignKey = foreignKeys[index] || {}
       let reference = foreignKey.reference || {}
-      let table = reference.resource || this.tabTitle(this.getActiveTab)
+      let table = reference.resource || this.getCurrentTitle()
       console.log('table is:')
       console.log(table)
       return function() {
@@ -221,7 +221,12 @@ export default {
     },
     pushSelectedForeignTable: function(index, hotId) {
       let vueSetProperty = this.pushForeignKeysForeignTableForTable
+      let vueGetCurrentTitle = this.getCurrentTitle
       return function(table) {
+        let activeTitle = vueGetCurrentTitle()
+        if (activeTitle === table) {
+          table = ''
+        }
         let object = { hotId: hotId, index: index, resource: table }
         console.log('foreign table object to set is')
         console.log(object)
@@ -236,6 +241,9 @@ export default {
         console.log(object)
         vueSetProperty(object)
       }
+    },
+    getCurrentTitle: function() {
+      return this.tabTitle(this.getActiveTab)
     }
   },
   created: function() {
