@@ -4,7 +4,7 @@
     <div class="inputs-container">
       <component :key="getLocalComponentKey(index)" is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="getSelectedLocalKeys(index)" :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)" labelName="Foreign key(s)" tooltipId="tooltip-foreignkey" tooltipView="tooltipForeignkey" />
       <component v-show="isHeadersSelected" :key="getTableComponentKey(index)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="getSelectedTable(index)" :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)" labelName="Reference Table" tooltipId="tooltip-foreignkey-table" tooltipView="tooltipForeignkeyTable"/>
-      <component v-show="isHeadersSelected" :key="getForeignComponentKey" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" tooltipId="tooltip-foreignkey-tablekey" tooltipView="tooltipForeignkeyTablekey" :indexTo="index"/>
+      <component v-show="isHeadersSelected" :key="getForeignComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" tooltipId="tooltip-foreignkey-tablekey" tooltipView="tooltipForeignkeyTablekey" />
     </div>
     <button v-show="getAllForeignKeysFromCurrentHotId().length > 1" type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)">
       <span class="glyphicon glyphicon-minus"/>
@@ -88,7 +88,11 @@ export default {
       allForeignKeys: {},
       allTableNames: [],
       allTabTableNames: [],
-      allTableNamesHeaderNames: {}
+      allTableNamesHeaderNames: {},
+      debounceGetCurrentForeignHeaders: _.debounce(this.getCurrentForeignHeaders, 300, {
+        'leading': true,
+        'trailing': false
+      })
       // debounceGetSelectedForeignKeys: _.debounce(this.getSelectedForeignKeys, 200, {
       //   'leading': false,
       //   'trailing': true
@@ -292,12 +296,12 @@ export default {
       // }
       // this.updateForeignTableNames(index, table)
       // currentForeignHeaders$.next(this.allTableNamesHeaderNames[table])
-      let vueUpdateCurrentForeignHeaders = this.updateCurrentForeignHeaders
+      // let vueUpdateCurrentForeignHeaders = this.updateCurrentForeignHeaders
       return function() {
         console.log('updating for selected table')
         console.log(`index is ${index}`)
         console.log(`table is ${table}`)
-        vueUpdateCurrentForeignHeaders(index, table)
+        // vueUpdateCurrentForeignHeaders(index, table)
         return table
       }
     },
@@ -315,24 +319,24 @@ export default {
     //   this.foreignTableNames[index] = table
     //   // selectedForeignTable$.next(this.foreignTableNames)
     // },
-    updateCurrentForeignHeaders: function(index, table) {
-      console.log('updating current foreign headers...')
-      this.currentForeignHeaders[index] = this.allTableNamesHeaderNames[table]
-      console.log(this.currentForeignHeaders)
-      // this.initTableHeaderKeys()
-      currentForeignHeaders$.next(this.currentForeignHeaders)
-    },
+    // updateCurrentForeignHeaders: function(index, table) {
+    //   console.log('updating current foreign headers...')
+    //   this.currentForeignHeaders[index] = this.allTableNamesHeaderNames[table]
+    //   console.log(this.currentForeignHeaders)
+    //   // this.initTableHeaderKeys()
+    //   currentForeignHeaders$.next(this.currentForeignHeaders)
+    // },
     pushSelectedForeignTable: function(index, hotId) {
       let vueSetProperty = this.pushForeignKeysForeignTableForTable
       // let vueForceUpdate = this.forceUpdateWrapper
       // let vueUpdateForeignTableNames = this.updateForeignTableNames
-      let vueUpdateCurrentForeignHeaders = this.updateCurrentForeignHeaders
+      // let vueUpdateCurrentForeignHeaders = this.updateCurrentForeignHeaders
       return function(table) {
         let object = { hotId: hotId, index: index, resource: table }
         console.log('foreign table object to set is')
         console.log(object)
         vueSetProperty(object)
-        vueUpdateCurrentForeignHeaders(index, table)
+        // vueUpdateCurrentForeignHeaders(index, table)
       }
     },
     pushSelectedForeignKeys: function(index, hotId) {
