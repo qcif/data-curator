@@ -43,11 +43,7 @@ import 'rxjs/add/observable/fromPromise'
 import 'rxjs/add/observable/from'
 import {
   allTabsTitles$,
-  // selectedForeignTable$,
-  allTablesAllColumnNames$,
-  selectedForeignLocalHeaders$,
-  currentForeignHeaders$
-  // pushEmptyForeignKey$
+  allTablesAllColumnNames$
 } from '@/rxSubject.js'
 import VueRx from 'vue-rx'
 import Vue from 'vue'
@@ -81,27 +77,12 @@ export default {
   data() {
     return {
       localHeaderNames: [],
-      // foreignHeaderNames: [],
-      currentForeignHeaders: [],
       foreignTableNames: [],
       currentLocalHotId: '',
       allForeignKeys: {},
       allTableNames: [],
       allTabTableNames: [],
-      allTableNamesHeaderNames: {},
-      debounceGetCurrentForeignHeaders: _.debounce(this.getCurrentForeignHeaders, 300, {
-        'leading': true,
-        'trailing': false
-      })
-      // debounceGetSelectedForeignKeys: _.debounce(this.getSelectedForeignKeys, 200, {
-      //   'leading': false,
-      //   'trailing': true
-      // }),
-      // debounceUpdateCurrentForeignHeaders: _.debounce(this.updateCurrentForeignHeaders, 500, {
-      //   'leading': false,
-      //   'trailing': true
-      // })
-
+      allTableNamesHeaderNames: {}
     }
   },
   computed: {
@@ -111,25 +92,15 @@ export default {
     }
   },
   subscriptions() {
-    // let vueGetLatestForeignHeader = this.getPromisedForeignHeader
     return {
       allColumns: allTablesAllColumnNames$
-      // getCurrentForeignHeaders: currentForeignHeaders$.debounceTime(500)
     }
   },
   methods: {
     getAllForeignKeysFromCurrentHotId: function() {
-      // this.getAllForeignKeys()
       let currentHotId = this.currentLocalHotId
       let allForeignKeys = this.getAllForeignKeys()
-      console.log(typeof allForeignKeys)
       let foreignKeys = allForeignKeys[currentHotId]
-      console.log('foreign keys are now from get for hot id:')
-      console.log(foreignKeys)
-      console.log(typeof foreignKeys)
-      let temp = [...foreignKeys]
-      console.log('temp is')
-      console.log(temp)
       return foreignKeys
     },
     getCurrentForeignHeaders: function(index) {
@@ -137,32 +108,6 @@ export default {
       console.log('returning current foreign headers...')
       console.log(this.allTableNamesHeaderNames)
       return this.allTableNamesHeaderNames[currentTable()]
-    },
-    getPromisedForeignHeader: function() {
-      let vueGetLatestForeignHeader = this.getLatestForeignHeader
-      return new Promise((resolve, reject) => {
-        console.log('promise: starting promise...')
-        let foreignHeader = vueGetLatestForeignHeader()
-        console.log('foreign header in promise:')
-        console.log(foreignHeader)
-        if (!foreignHeader) {
-          console.log('promise: starting delay...')
-          // There is a short render wait in home page, so if hotId not first returned, just wait and try again
-          _.delay(function(foreignHeader) {
-            console.log('promise: completing delay')
-            resolve(vueGetLatestForeignHeader())
-          }, 1000, foreignHeader)
-        } else {
-          console.log('promise: completing promise...')
-          resolve(foreignHeader)
-        }
-      })
-    },
-    getLatestForeignHeader: function() {
-      let foreignHeader = _.last(this.currentForeignHeaders)
-      console.log('last foreign header')
-      console.log(foreignHeader)
-      return foreignHeader
     },
     getLocalComponentKey: function(index) {
       return `local${index}`
@@ -191,13 +136,7 @@ export default {
         }
       })
       this.setProperty(this.propertyName, foreignKeys)
-      // this.currentForeignHeaders.push([])
       this.initTableHeaderKeys()
-      // let vueInitTableHeaderKeys = this.initTableHeaderKeys
-      // this.$nextTick(function() {
-      //   vueInitTableHeaderKeys()
-      // })
-      // this.$forceUpdate()
     },
     getHotIdFromTabTitle: function(tableName) {
       let tabId = _.findKey(this.allTabTableNames, function(o) {
@@ -207,7 +146,6 @@ export default {
       return hotId
     },
     updateSubscriptions: async function(allTablesAllColumnNames) {
-      // this.currentForeignHeaders = []
       console.log('updated subscriptions in foreign keys...')
       console.log(allTablesAllColumnNames)
       try {
@@ -268,9 +206,6 @@ export default {
       console.log(headers)
       return headers
     },
-    // getSelectedForeignKeys2: function(index) {
-    //   return this.debounceGetSelectedForeignKeys(index)
-    // },
     getSelectedForeignKeys: function(index) {
       let foreignKey = this.getAllForeignKeysFromCurrentHotId()[index]
       console.log('foreign key got selected is:')
@@ -283,60 +218,31 @@ export default {
     getSelectedTable: function(index) {
       let foreignKey = this.getAllForeignKeysFromCurrentHotId()[index]
       let table = foreignKey.reference.resource || this.allTableNames[0]
-      // if (!table) {
-      //   table = this.allTableNames[0]
-      // console.log('resetting...')
-      //   this.pushSelectedForeignTable(index, this.currentLocalHotId)(table)
-      // }
       console.log('table is:')
       console.log(table)
-      // if (foreignTableNames[index] !=== table) {
-      //   console.log('checking in get...')
-      //   foreignTableNames[index] = table
-      // }
-      // this.updateForeignTableNames(index, table)
-      // currentForeignHeaders$.next(this.allTableNamesHeaderNames[table])
-      // let vueUpdateCurrentForeignHeaders = this.updateCurrentForeignHeaders
       return function() {
         console.log('updating for selected table')
         console.log(`index is ${index}`)
         console.log(`table is ${table}`)
-        // vueUpdateCurrentForeignHeaders(index, table)
         return table
       }
     },
     pushSelectedLocalKeys: function(index, hotId) {
       let vueSetProperty = this.pushForeignKeysLocalFieldsForTable
       return function(headers) {
-        selectedForeignLocalHeaders$.next(headers.length > 0)
         let object = { hotId: hotId, index: index, fields: headers }
         console.log('local object to set is')
         console.log(object)
         vueSetProperty(object)
       }
     },
-    // updateForeignTableNames: function(index) {
-    //   this.foreignTableNames[index] = table
-    //   // selectedForeignTable$.next(this.foreignTableNames)
-    // },
-    // updateCurrentForeignHeaders: function(index, table) {
-    //   console.log('updating current foreign headers...')
-    //   this.currentForeignHeaders[index] = this.allTableNamesHeaderNames[table]
-    //   console.log(this.currentForeignHeaders)
-    //   // this.initTableHeaderKeys()
-    //   currentForeignHeaders$.next(this.currentForeignHeaders)
-    // },
     pushSelectedForeignTable: function(index, hotId) {
       let vueSetProperty = this.pushForeignKeysForeignTableForTable
-      // let vueForceUpdate = this.forceUpdateWrapper
-      // let vueUpdateForeignTableNames = this.updateForeignTableNames
-      // let vueUpdateCurrentForeignHeaders = this.updateCurrentForeignHeaders
       return function(table) {
         let object = { hotId: hotId, index: index, resource: table }
         console.log('foreign table object to set is')
         console.log(object)
         vueSetProperty(object)
-        // vueUpdateCurrentForeignHeaders(index, table)
       }
     },
     pushSelectedForeignKeys: function(index, hotId) {
@@ -347,26 +253,13 @@ export default {
         console.log(object)
         vueSetProperty(object)
       }
-    },
-    // forceUpdateWrapper: function() {
-    //   this.$forceUpdate()
-    // },
-    getAllTableNamesHeaderNames: function(table) {
-      return this.allTableNamesHeaderNames[table]
     }
-
   },
   created: function() {
     let vueUpdateTableSubscriptions = this.updateTableSubscriptions
     this.$subscribeTo(allTabsTitles$, async function(allTabsTitles) {
       vueUpdateTableSubscriptions(allTabsTitles)
     })
-  },
-  watch: {
-    // currentForeignHeaders: function(foreignHeaders) {
-    //   console.log('got current foreign headers...')
-    //   currentForeignHeaders$.next(foreignHeaders)
-    // }
   },
   mounted: function() {
     pushAllTabTitlesSubscription()

@@ -17,8 +17,6 @@ export default {
   name: 'relationkeys',
   watch: {
     getActiveTab: function() {
-      //      console.log('got active tab in relation keys')
-      // selectedForeignLocalHeaders$.next(false)
       this.initTableHeaderKeys()
     }
   },
