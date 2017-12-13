@@ -1,12 +1,20 @@
 <template>
-  <select class="form-control input-sm col-sm-9" :value="getSelectedTable()" @input="setSelectedTable($event.target.value)">
-    <option v-for="tableName in allTables" :key="tableName" :id="tableName" :value="tableName">{{tableName}}</option>
-  </select>
+  <div>
+    <div class="input-group">
+      <label v-show="labelName" class="control-label" v-tooltip.left="tooltip(tooltipId)">{{labelName}}</label>
+      <select class="form-control input-sm" :value="getSelectedTable()" @input="setSelectedTable($event.target.value)">
+        <option v-for="tableName in allTables" :key="tableName" :id="tableName" :value="tableName">{{tableName}}</option>
+      </select>
+    </div>
+    <component :is="tooltipView"/>
+  </div>
 </template>
 <script>
+import ForeignKeysTooltip from '../mixins/ForeignKeysTooltip'
 export default {
   name: 'tablekeys',
-  props: ['allTableNames', 'getSelectedTable', 'pushSelectedTable'],
+  mixins: [ForeignKeysTooltip],
+  props: ['allTableNames', 'getSelectedTable', 'pushSelectedTable', 'labelName', 'tooltipId', 'tooltipView'],
   computed: {
     allTables() {
       return this.allTableNames || []
@@ -20,3 +28,6 @@ export default {
   }
 }
 </script>
+<style lang="styl" scoped>
+@import '~static/css/foreignkeyheaders'
+</style>
