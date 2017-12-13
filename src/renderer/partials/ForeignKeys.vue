@@ -21,6 +21,7 @@
 import tablekeys from '../partials/TableKeys'
 import tableheaderkeys from '../partials/TableHeaderKeys'
 import RelationKeys from '../mixins/RelationKeys'
+import ForeignKeysTooltip from '../mixins/ForeignKeysTooltip'
 import {
   pushAllTabTitlesSubscription
 } from '@/store/modules/tabs.js'
@@ -31,16 +32,6 @@ import {
 import {
   Subscription
 } from 'rxjs/Subscription'
-import {
-  Observable
-} from 'rxjs/Observable'
-import 'rxjs/add/operator/debounce'
-import 'rxjs/add/observable/timer'
-import 'rxjs/add/operator/startWith'
-import 'rxjs/add/operator/debounceTime'
-import 'rxjs/add/operator/delay'
-import 'rxjs/add/observable/fromPromise'
-import 'rxjs/add/observable/from'
 import {
   allTabsTitles$,
   allTablesAllColumnNames$
@@ -122,7 +113,6 @@ export default {
     removeForeignKey: function(index) {
       let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
       foreignKeys.splice(index, 1)
-      this.currentForeignHeaders.splice(index, 1)
       this.setProperty(this.propertyName, foreignKeys)
     },
     addForeignKey: function() {
@@ -212,10 +202,10 @@ export default {
       }
     },
     getSelectedForeignKeys: function(index) {
-      let foreignKey = this.getAllForeignKeysFromCurrentHotId()[index]
-      console.log('foreign key got selected is:')
-      console.log(foreignKey)
-      let headers = foreignKey.reference.fields
+      let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
+      let foreignKey = foreignKeys[index] || {}
+      let reference = foreignKey.reference || {}
+      let headers = reference.fields || []
       console.log('foreign fields are:')
       console.log(headers)
       return headers
