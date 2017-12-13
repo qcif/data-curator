@@ -117,8 +117,15 @@ export default {
       // this.getAllForeignKeys()
       let currentHotId = this.currentLocalHotId
       let allForeignKeys = this.getAllForeignKeys()
+      console.log(typeof allForeignKeys)
       let foreignKeys = allForeignKeys[currentHotId]
-      return [...foreignKeys]
+      console.log('foreign keys are now from get for hot id:')
+      console.log(foreignKeys)
+      console.log(typeof foreignKeys)
+      let temp = [...foreignKeys]
+      console.log('temp is')
+      console.log(temp)
+      return foreignKeys
     },
     getPromisedForeignHeader: function() {
       let vueGetLatestForeignHeader = this.getLatestForeignHeader
@@ -227,7 +234,15 @@ export default {
       console.log(this.allTableNamesHeaderNames)
     },
     getSelectedLocalKeys: function(index) {
-      let foreignKey = this.getAllForeignKeysFromCurrentHotId()[index]
+      let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
+      console.log(`received foreign keys in 'get selected local keys'`)
+      console.log(foreignKeys)
+      console.log(`index is ${index}`)
+      console.log(`length of foreign keys is ${foreignKeys.length}`)
+      console.log(typeof foreignKeys)
+      let temp = _.head(foreignKeys)
+      console.log(temp)
+      let foreignKey = foreignKeys[index]
       console.log(`foreign key is`)
       console.log(foreignKey)
       console.log(`index is ${index}`)
