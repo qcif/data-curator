@@ -118,6 +118,20 @@ const getters = {
       constraints = state.hotTabs[property.hotId].columnProperties[property.columnIndex].constraints = {}
     }
     return constraints[property.key]
+  },
+  // ensure no caching
+  getAllForeignKeys: (state, getters) => () => {
+    let allForeignKeys = {}
+    for (let hotId in state.hotTabs) {
+      console.log(`hot id in get all foreign keys is ${hotId}`)
+      let tableProperties = state.hotTabs[hotId].tableProperties || {}
+      console.log('table properties')
+      console.log(typeof tableProperties)
+      let foreignKeys = tableProperties.foreignKeys || []
+      allForeignKeys[hotId] = foreignKeys
+    }
+    console.log('completed get all foreign keys')
+    return allForeignKeys
   }
 }
 
@@ -156,9 +170,67 @@ const mutations = {
   },
   pushTableProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
-    // console.log(`table property:`)
-    // console.log(property)
+    console.log(`table property:`)
+    console.log(property)
     console.log('pushed...')
+    console.log(state.hotTabs)
+  },
+  pushForeignKeysLocalFieldsForTable(state, property) {
+    let tableProperties = _.assign({}, state.hotTabs[property.hotId].tableProperties) || {}
+    let foreignKeys = tableProperties.foreignKeys || []
+    if (!foreignKeys[property.index]) {
+      foreignKeys[property.index] = {
+        fields: [],
+        reference: {
+          resource: '',
+          fields: []
+        }
+      }
+    }
+    console.log(`so far foreign local keys are:`)
+    console.log(foreignKeys)
+    foreignKeys[property.index].fields = property.fields
+    console.log(`completed 'hots.js': pushForeignKeysLocalFieldsForTable`)
+    state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
+    console.log(state.hotTabs)
+  },
+  pushForeignKeysForeignTableForTable(state, property) {
+    let tableProperties = _.assign({}, state.hotTabs[property.hotId].tableProperties) || {}
+    console.log(`table properties is:`)
+    console.log(tableProperties)
+    let foreignKeys = tableProperties.foreignKeys || []
+    if (!foreignKeys[property.index]) {
+      foreignKeys[property.index] = {
+        fields: [],
+        reference: {
+          resource: '',
+          fields: []
+        }
+      }
+    }
+    console.log(`so far foreign keys tables are:`)
+    console.log(foreignKeys)
+    foreignKeys[property.index].reference.resource = property.resource
+    state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
+    console.log(state.hotTabs)
+    // _.set(state.hotTabs, `${property.hotId}.tableProperties.foreignKeys`, property.foreignKeys)
+  },
+  pushForeignKeysForeignFieldsForTable(state, property) {
+    let tableProperties = _.assign({}, state.hotTabs[property.hotId].tableProperties) || {}
+    let foreignKeys = tableProperties.foreignKeys || []
+    if (!foreignKeys[property.index]) {
+      foreignKeys[property.index] = {
+        fields: [],
+        reference: {
+          resource: '',
+          fields: []
+        }
+      }
+    }
+    console.log(`so far foreign keys are:`)
+    console.log(foreignKeys)
+    foreignKeys[property.index].reference.fields = property.fields
+    state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
     console.log(state.hotTabs)
   },
   // TODO : schema fields has simply been incorporated into overwriting column properties - remove legacy methods
@@ -171,8 +243,8 @@ const mutations = {
   },
   pushPackageProperty(state, property) {
     _.set(state.packageProperties, property.key, property.value)
-    console.log('package properties pushed...')
-    console.log(state)
+    //    console.log('package properties pushed...')
+    //    console.log(state)
   },
   pushMissingValues(state, hotMissingValues) {
     let hotId = hotMissingValues.hotId

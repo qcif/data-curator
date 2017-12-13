@@ -1,12 +1,12 @@
 <template>
 <div id="foreignKeyFields">
-  <div v-for="(foreignKey,index) in hotIdAllForeignKeys" class="foreign col-sm-12">
+  <div v-for="(foreignKey,index) in hotForeignKeys"  class="foreign col-sm-12">
     <div class="inputs-container">
-      <component is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="foreignKey.fields" :pushSelectedKeys="pushSelectedLocalKeys(index)" />
-      <component v-show="enableComponent(foreignKey.fields)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="foreignKey.reference.resource" :pushSelectedTable="pushSelectedForeignTable(index)" />
-      <component v-show="enableComponent(foreignKey.reference.resource)" is="tableheaderkeys" :activeNames="getForeignHeaderNames(foreignKey.reference.resource)" :getSelectedKeys="foreignKey.reference.fields" :pushSelectedKeys="pushSelectedForeignKeys(index)"/>
+      <component :key="getLocalComponentKey(index)" is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="getSelectedLocalKeys(index)" :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)" labelName="Foreign key(s)" tooltipId="tooltip-foreignkey" tooltipView="tooltipForeignkey" />
+      <component v-show="isHeadersSelected" :key="getTableComponentKey(index)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="getSelectedTable(index)" :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)" labelName="Reference Table" tooltipId="tooltip-foreignkey-table" tooltipView="tooltipForeignkeyTable"/>
+      <component v-show="isHeadersSelected" :key="getForeignComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" tooltipId="tooltip-foreignkey-tablekey" tooltipView="tooltipForeignkeyTablekey" />
     </div>
-    <button v-show="hotIdAllForeignKeys.length > 1" type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)">
+    <button type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)">
       <span class="glyphicon glyphicon-minus"/>
     </button>
   </div>
@@ -21,6 +21,7 @@
 import tablekeys from '../partials/TableKeys'
 import tableheaderkeys from '../partials/TableHeaderKeys'
 import RelationKeys from '../mixins/RelationKeys'
+import ForeignKeysTooltip from '../mixins/ForeignKeysTooltip'
 import {
   pushAllTabTitlesSubscription
 } from '@/store/modules/tabs.js'
@@ -33,7 +34,6 @@ import {
 } from 'rxjs/Subscription'
 import {
   allTabsTitles$,
-  selectedForeignTable$,
   allTablesAllColumnNames$
 } from '@/rxSubject.js'
 import VueRx from 'vue-rx'
@@ -49,102 +49,121 @@ export default {
   mixins: [RelationKeys],
   name: 'foreignkeys',
   props: ['setProperty', 'getPropertyGivenHotId', 'propertyName', 'currentHotId'],
+  asyncComputed: {
+    hotForeignKeys: {
+      async get() {
+        console.log('getting async hot foreign keys...')
+        let hotId = await this.currentHotId()
+        this.currentLocalHotId = hotId
+        this.allForeignKeys = this.getAllForeignKeys()
+        let foreignKeys = this.allForeignKeys[hotId]
+        return foreignKeys
+      },
+      watch() {
+        let dummy = this.localHeaderNames
+        let dummy2 = this.getActiveTab
+      }
+    }
+  },
   data() {
     return {
       localHeaderNames: [],
-      foreignHeaderNames: [],
-      hotIdAllForeignKeys: [],
-      // enableForeignTable: true,
+      foreignTableNames: [],
+      currentLocalHotId: '',
+      allForeignKeys: {},
       allTableNames: [],
-      // enableForeignHeaders: true,
-      selectedForeignKeys: [],
-      allTabTableNames: []
-      // debounceUpdateTableSelections: _.debounce(this.updateTableSelections, 100, {
-      //   'leading': false,
-      //   'trailing': true
-      // })
+      allTabTableNames: [],
+      allTableNamesHeaderNames: {}
     }
   },
   computed: {
-    emptyForeignKey() {
-      return {
+    isHeadersSelected() {
+      let isSelected = this.localHeaderNames.length > 0
+      return !!isSelected
+    }
+  },
+  subscriptions() {
+    return {
+      allColumns: allTablesAllColumnNames$
+    }
+  },
+  methods: {
+    getAllForeignKeysFromCurrentHotId: function() {
+      let currentHotId = this.currentLocalHotId
+      console.log(`current hot id in 'foreignKeys.vue' is ${currentHotId}`)
+      let allForeignKeys = this.getAllForeignKeys()
+      let foreignKeys = allForeignKeys[currentHotId]
+      return foreignKeys
+    },
+    getCurrentForeignHeaders: function(index) {
+      let currentTable = this.getSelectedTable(index)
+      console.log('returning current foreign headers...')
+      console.log(this.allTableNamesHeaderNames)
+      return this.allTableNamesHeaderNames[currentTable()]
+    },
+    getLocalComponentKey: function(index) {
+      return `local${index}`
+    },
+    getTableComponentKey: function(index) {
+      return `table${index}`
+    },
+    getForeignComponentKey: function(index) {
+      return `foreign${index}`
+    },
+    removeForeignKey: function(index) {
+      let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
+      foreignKeys.splice(index, 1)
+      this.setProperty(this.propertyName, foreignKeys)
+    },
+    addForeignKey: function() {
+      let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
+      console.log('adding foreign key. Current foreign keys...')
+      console.log(foreignKeys)
+      foreignKeys.push({
         fields: [],
         reference: {
           resource: '',
           fields: []
         }
-      }
-    }
-  },
-  subscriptions() {
-    return {
-      allTablesAllColumnNames: allTablesAllColumnNames$
-    }
-  },
-  methods: {
-    removeForeignKey: function(index) {
-      this.hotIdAllForeignKeys.splice(index, 1)
-      this.setProperty(this.propertyName, this.hotIdAllForeignKeys)
-      console.log(this.hotIdAllForeignKeys)
-      this.$forceUpdate()
-    },
-    addForeignKey: function() {
-      this.hotIdAllForeignKeys.push(this.emptyForeignKey)
-      this.setProperty(this.propertyName, this.hotIdAllForeignKeys)
-      console.log(this.hotIdAllForeignKeys)
-      this.$forceUpdate()
-    },
-    allForeignKeyValues: function(localHotId) {
-      console.log('before checking foreign key values...')
-      console.log(localHotId)
-      let foreignKeys = this.getPropertyGivenHotId(this.propertyName, localHotId)
-      if (!foreignKeys) {
-        console.log('have to reset foreign keys...')
-        foreignKeys = [{
-          fields: [],
-          reference: {
-            resource: '',
-            fields: []
-          }
-        }]
-        this.setProperty(this.propertyName, foreignKeys)
-      }
-      console.log('now all foreign key values...')
-      console.log(foreignKeys)
-      return foreignKeys
-    },
-    getHotIdFromTabTitle: function(tableName) {
-      let tabId = _.findKey(this.allTabTableNames, function(o) {
-        return o === tableName
       })
-      console.log(`tab id found is ${tabId}`)
-      let hotId = this.getTabId(tabId)
-      console.log(`hot id found is ${hotId}`)
-      return hotId
-    },
-    getForeignHeaderNames: function(value) {
-      let hotId = this.getHotIdFromTabTitle(value)
-      let foreignHeaderNames = this.getHotIdHeaderNames(this.allTablesAllColumnNames, hotId)
-      console.log(foreignHeaderNames)
-      return foreignHeaderNames
-    },
-    updateForeignHeaderNames: function(value) {
-      let hotId = this.getHotIdFromTabTitle(value)
-      this.foreignHeaderNames.length = 0
-      this.foreignHeaderNames.push(...this.getHotIdHeaderNames(this.allTablesAllColumnNames, hotId))
+      this.setProperty(this.propertyName, foreignKeys)
+      this.initTableHeaderKeys()
     },
     updateSubscriptions: async function(allTablesAllColumnNames) {
       console.log('updated subscriptions in foreign keys...')
+      console.log(allTablesAllColumnNames)
       try {
         let localHotId = await this.currentHotId()
+        console.log(`local hot id in update subscriptions is ${localHotId}`)
         this.localHeaderNames.length = 0
-        this.localHeaderNames.push(...this.getHotIdHeaderNames(allTablesAllColumnNames, localHotId))
-        this.hotIdAllForeignKeys.length = 0
-        let allForeignKeyValues = this.allForeignKeyValues(localHotId)
-        this.hotIdAllForeignKeys.push(...allForeignKeyValues)
+        let headerNames = this.getHotIdHeaderNames(allTablesAllColumnNames, localHotId)
+        console.log('header names are:')
+        console.log(headerNames)
+        this.localHeaderNames.push(...headerNames)
       } catch (err) {
         console.log('Problem with updating subscriptions', err)
       }
+    },
+    updateTableSubscriptions: function(allTabsTitles) {
+      this.allTableNames = this.getTabsTableNames(allTabsTitles)
+      this.allTabTableNames = allTabsTitles
+      console.log(`all table names are:`)
+      console.log(this.allTableNames)
+      console.log('all tab titles are:')
+      console.log(this.allTabTableNames)
+      let vueGetHotIdFromTabTitle = this.getHotIdFromTabTitle
+      let vueGetHotIdHeaderNames = this.getHotIdHeaderNames
+      let vueAllColumns = this.allColumns
+      let allTableNamesHeaderNames = {}
+      _.forEach(this.allTableNames, function(tabTitle) {
+        let hotId = vueGetHotIdFromTabTitle(tabTitle)
+        console.log(`hot id is ${hotId}`)
+        let foreignHeaderNames = vueGetHotIdHeaderNames(vueAllColumns, hotId)
+        allTableNamesHeaderNames[tabTitle] = foreignHeaderNames
+      })
+      this.allTableNamesHeaderNames = _.assign({}, allTableNamesHeaderNames)
+      console.log('all tables names header names:')
+      console.log(this.allTableNamesHeaderNames)
     },
     getTabsTableNames: function(allTabsTableNames) {
       let tableNames = []
@@ -153,59 +172,87 @@ export default {
       })
       return _.pull(tableNames, '', null, undefined)
     },
-    updateTableSubscriptions: function(allTabsTitles) {
-      console.log('received foreign tables subscription...')
-      this.allTableNames = this.getTabsTableNames(allTabsTitles)
-      this.allTabTableNames = allTabsTitles
+    getHotIdFromTabTitle: function(tableName) {
+      let tabId = _.findKey(this.allTabTableNames, function(o) {
+        return o === tableName
+      })
+      let hotId = this.getTabId(tabId)
+      return hotId
     },
-    enableComponent: function(value) {
-      let hasValue = false
-      if (value) {
-        if (typeof value === 'string') {
-          hasValue = value.trim() !== ''
-        } else {
-          hasValue = !_.isEmpty(value)
+    getSelectedLocalKeys: function(index) {
+      let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
+      console.log(`received foreign keys in 'get selected local keys'`)
+      console.log(foreignKeys)
+      let foreignKey = foreignKeys[index] || {}
+      let headers = foreignKey.fields || []
+      return headers
+    },
+    getSelectedTable: function(index) {
+      let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
+      let foreignKey = foreignKeys[index] || {}
+      let reference = foreignKey.reference || {}
+      let table = reference.resource || this.getCurrentTitle()
+      console.log('table is:')
+      console.log(table)
+      return function() {
+        console.log('updating for selected table')
+        console.log(`index is ${index}`)
+        console.log(`table is ${table}`)
+        return table
+      }
+    },
+    getSelectedForeignKeys: function(index) {
+      let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
+      let foreignKey = foreignKeys[index] || {}
+      let reference = foreignKey.reference || {}
+      let headers = reference.fields || []
+      console.log('foreign fields are:')
+      console.log(headers)
+      return headers
+    },
+    pushSelectedLocalKeys: function(index, hotId) {
+      let vueSetProperty = this.pushForeignKeysLocalFieldsForTable
+      return function(headers) {
+        let object = { hotId: hotId, index: index, fields: headers }
+        console.log('local object to set is')
+        console.log(object)
+        vueSetProperty(object)
+      }
+    },
+    pushSelectedForeignTable: function(index, hotId) {
+      let vueSetProperty = this.pushForeignKeysForeignTableForTable
+      let vueGetCurrentTitle = this.getCurrentTitle
+      return function(table) {
+        let activeTitle = vueGetCurrentTitle()
+        if (activeTitle === table) {
+          table = ''
         }
-      }
-      return hasValue
-    },
-    pushSelectedLocalKeys: function(index) {
-      let vueSetProperty = this.setProperty
-      let vuePropertyName = this.propertyName
-      return function(values) {
-        vueSetProperty(`${vuePropertyName}[${index}].fields`, values)
+        let object = { hotId: hotId, index: index, resource: table }
+        console.log('foreign table object to set is')
+        console.log(object)
+        vueSetProperty(object)
       }
     },
-    pushSelectedForeignKeys: function(index) {
-      let vueSetProperty = this.setProperty
-      let vuePropertyName = this.propertyName
-      return function(values) {
-        vueSetProperty(`${vuePropertyName}[${index}].reference.fields`, values)
+    pushSelectedForeignKeys: function(index, hotId) {
+      let vueSetProperty = this.pushForeignKeysForeignFieldsForTable
+      return function(headers) {
+        let object = { hotId: hotId, index: index, fields: headers }
+        console.log('foreign keys object to set is')
+        console.log(object)
+        vueSetProperty(object)
       }
     },
-    pushSelectedForeignTable: function(index) {
-      let vueSetProperty = this.setProperty
-      let vuePropertyName = this.propertyName
-      return function(value) {
-        vueSetProperty(`${vuePropertyName}[${index}].reference.resource`, value)
-      }
+    getCurrentTitle: function() {
+      return this.tabTitle(this.getActiveTab)
     }
   },
   created: function() {
     let vueUpdateTableSubscriptions = this.updateTableSubscriptions
-    this.$subscribeTo(allTabsTitles$, async function(allTabsTitles) {
-      console.log('received next tab subscription...')
-      console.log(allTabsTitles)
+    this.$subscribeTo(allTabsTitles$, function(allTabsTitles) {
       vueUpdateTableSubscriptions(allTabsTitles)
     })
   },
-  watch: {
-    getActiveTab: async function() {
-      console.log('got active tab in foreign relation keys')
-    }
-  },
   mounted: function() {
-    console.log('firing mount...')
     pushAllTabTitlesSubscription()
   }
 }

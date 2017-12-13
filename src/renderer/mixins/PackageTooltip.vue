@@ -8,37 +8,31 @@ export default {
     'tooltipPackageName': {
       components: {externalLink},
       template: `<div id="tooltip-package-name">The
-      <externalLink text="Name" url="http://frictionlessdata.io/specs/data-package/#name/> of the Package. Lower case, numbers, ".", "_", "-" characters only.</div>`
+      <externalLink text="Name" url="http://frictionlessdata.io/specs/data-package/#name"/> of this data package. Lower case, numbers, ".", "_", "-" characters only</div>`
     },
     'tooltipPackageId': {
       components: {externalLink},
-      template: `<div id="tooltip-package-id">A globally unique identifier (
-      <externalLink text="Id" url="http://frictionlessdata.io/specs/data-package/#id"/>)</div>`
+      template: `<div id="tooltip-package-id">A globally unique (<externalLink text="identifier" url="http://frictionlessdata.io/specs/data-package/#id"/>) for this data package</div>`
     },
     'tooltipPackageTitle': {
       components: {externalLink},
-      template: `<div id="tooltip-package-title">The
-      <externalLink text="Title" url="http://frictionlessdata.io/specs/data-package/#title"/> or one sentence description for this Package.</div>`
+      template: `<div id="tooltip-package-title">The <externalLink text="Title" url="http://frictionlessdata.io/specs/data-package/#title"/> a one sentence description for this  data package</div>`
     },
     'tooltipPackageDescription': {
       components: {externalLink},
-      template: `<div id="tooltip-package-description">A
-      <externalLink text="Description" url="http://frictionlessdata.io/specs/data-package/#description"/> for the Package.</div>`
+      template: `<div id="tooltip-package-description">A <externalLink text="Description" url="http://frictionlessdata.io/specs/data-package/#description"/> for this data package</div>`
     },
     'tooltipPackageVersion': {
       components: {externalLink},
-      template: `<div id="tooltip-package-version">A
-      <externalLink text="Data Package Version" url="http://frictionlessdata.io/specs/patterns/#data-package-version> follows the Semantic Versioning specification format.</div>`
+      template: `<div id="tooltip-package-version">A <externalLink text="Version" url="http://frictionlessdata.io/specs/patterns/#data-package-version"/> number e.g. 1.0.0</div>`
     },
     'tooltipPackageSources': {
       components: {externalLink},
-      template: `<div id="tooltip-package-sources">Each
-      <externalLink text="Source" url="http://frictionlessdata.io/specs/data-package/#sources"/> MUST have a title and MAY have path and/or email address.</div>`
+      template: `<div id="tooltip-package-sources">Each <externalLink text="Source" url="http://frictionlessdata.io/specs/data-package/#sources"/> must have a title and may have path and/or email</div>`
     },
-    'tooltipPackageLicences': {
+    'tooltipPackageLicenses': {
       components: {externalLink},
-      template: `<div id="tooltip-package-licences">The Open
-      <externalLink text="License" url="http://frictionlessdata.io/specs/data-package/#licenses"/> under which the Package is provided.</div>`
+      template: `<div id="tooltip-package-licenses">The <externalLink text="Open License" url="http://frictionlessdata.io/specs/data-package/#licenses"/> under which this data package is provided</div>`
     }
   }
 }

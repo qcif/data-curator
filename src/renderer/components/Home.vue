@@ -242,23 +242,23 @@ export default {
       }
       ],
       defaultTableProperties: [{
-        label: 'profile',
+        key: 'profile',
         value: 'tabular-data-resource'
       },
       {
-        label: 'format',
+        key: 'format',
         value: 'csv'
       },
       {
-        label: 'mediatype',
+        key: 'mediatype',
         value: 'text/csv'
       },
       {
-        label: 'encoding',
+        key: 'encoding',
         value: 'utf-8'
       }],
       defaultPackageProperties: [{
-        label: 'profile',
+        key: 'profile',
         value: 'tabular-data-package'
       }],
       reportSiblingClasses: ['main-bottom-panel', 'main-middle-panel']
@@ -460,12 +460,12 @@ export default {
     },
     pushDefaultTableProperties: function(hotId) {
       this.defaultTableProperties.forEach(x => {
-        this.pushTableProperty({hotId: hotId, key: x.label, value: x.value})
+        this.pushTableProperty({hotId: hotId, key: x.key, value: x.value})
       })
     },
     pushDefaultPackageProperties: function() {
       this.defaultPackageProperties.forEach(x => {
-        this.pushPackageProperty({key: x.label, value: x.value})
+        this.pushPackageProperty({key: x.key, value: x.value})
       })
     },
     closeTab: async function(event) {

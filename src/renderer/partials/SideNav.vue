@@ -2,8 +2,8 @@
 <form class="navbar-form form-horizontal" id="sidenavProperties">
   <div class="form-group-sm row container-fluid">
     <div v-for="(formprop, index) in formprops" :key="index">
-      <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}:</label>
-      <input type="text" class="form-control input-sm col-sm-9" :id="formprop.label" />
+      <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}</label>
+      <input type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
     </div>
   </div>
 </form>
@@ -32,8 +32,8 @@ export default {
     ...mapGetters(['getActiveTab', 'getHotIdFromTabId'])
   },
   methods: {
-    isSharedComponent: function(label) {
-      let isShared = ['sources', 'licenses', 'primaryKeys', 'foreignKeys'].indexOf(label) !== -1
+    isSharedComponent: function(key) {
+      let isShared = ['sources', 'licenses', 'primaryKeys', 'foreignKeys'].indexOf(key) !== -1
       return isShared
     },
     propertyGetObjectGivenHotId: function(key, hotId) {
@@ -43,7 +43,7 @@ export default {
       }
     },
     currentHotId: async function() {
-      console.log(`home hot id is: ${this.activeCurrentHotHomeId}`)
+      // console.log(`home hot id is: ${this.activeCurrentHotHomeId}`)
       let hotId
       let hot = HotRegister.getActiveInstance()
       if (hot) {
@@ -111,7 +111,7 @@ export default {
       // set hidden inputs
       let found = this.formprops.forEach(x => {
         if (x.type ==='hidden') {
-          this.setProperty(x.label, x.value)
+          this.setProperty(x.key, x.value)
         }
       })
     })

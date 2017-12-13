@@ -3,12 +3,6 @@ import {HotRegister} from '../renderer/hot.js'
 import store from '../renderer/store/modules/hots.js'
 import {includeHeadersInData, hasAllColumnNames} from '@/frictionlessUtilities.js'
 
-// async function initDataAndInferTableSchema(data) {
-//   const table = await Table.load(data)
-//   await table.infer()
-//   return table
-// }
-
 async function initDataAndInferSchema(data) {
   const schema = await Schema.load({})
   await schema.infer(data)
