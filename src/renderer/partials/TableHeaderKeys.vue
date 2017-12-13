@@ -39,12 +39,6 @@ export default {
     getActiveNames: function() {
       console.log('this active names is...')
       console.log(this.activeNames)
-      // console.log(`index is : ${this.indexTo}`)
-      // if (this.indexTo >= 0) {
-      //   console.log('returning with index...')
-      //   return this.activeNames[this.indexTo]
-      // } else {
-      // return this.indexTo ? this.activeNames[this.indexTo] : this.activeNames
       return this.activeNames
       // }
     }
