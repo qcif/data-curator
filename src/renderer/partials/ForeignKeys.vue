@@ -2,9 +2,9 @@
 <div id="foreignKeyFields">
   <div v-for="(foreignKey,index) in hotForeignKeys"  class="foreign col-sm-12">
     <div class="inputs-container">
-      <component :key="getLocalComponentKey(index)" is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="getSelectedLocalKeys(index)" :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)" labelName="Foreign key(s)" tooltipId="tooltip-foreignkey" tooltipView="tooltipForeignkey"/>
+      <component :key="getLocalComponentKey(index)" is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="getSelectedLocalKeys(index)" :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)" labelName="Foreign key(s)" tooltipId="tooltip-foreignkey" tooltipView="tooltipForeignkey" />
       <component v-show="isHeadersSelected" :key="getTableComponentKey(index)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="getSelectedTable(index)" :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)" labelName="Reference Table" tooltipId="tooltip-foreignkey-table" tooltipView="tooltipForeignkeyTable"/>
-      <component v-show="isHeadersSelected" :key="getForeignComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders[index]" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" tooltipId="tooltip-foreignkey-tablekey" tooltipView="tooltipForeignkeyTablekey"/>
+      <component v-show="isHeadersSelected" :key="getForeignComponentKey" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" tooltipId="tooltip-foreignkey-tablekey" tooltipView="tooltipForeignkeyTablekey" :indexTo="index"/>
     </div>
     <button v-show="getAllForeignKeysFromCurrentHotId().length > 1" type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)">
       <span class="glyphicon glyphicon-minus"/>
@@ -40,6 +40,7 @@ import 'rxjs/add/operator/startWith'
 import 'rxjs/add/operator/debounceTime'
 import 'rxjs/add/operator/delay'
 import 'rxjs/add/observable/fromPromise'
+import 'rxjs/add/observable/from'
 import {
   allTabsTitles$,
   // selectedForeignTable$,
@@ -106,10 +107,10 @@ export default {
     }
   },
   subscriptions() {
-    let vueGetLatestForeignHeader = this.getPromisedForeignHeader
+    // let vueGetLatestForeignHeader = this.getPromisedForeignHeader
     return {
-      allColumns: allTablesAllColumnNames$,
-      getCurrentForeignHeaders: currentForeignHeaders$.startWith(Observable.fromPromise(vueGetLatestForeignHeader()))
+      allColumns: allTablesAllColumnNames$
+      // getCurrentForeignHeaders: currentForeignHeaders$.debounceTime(500)
     }
   },
   methods: {
@@ -127,16 +128,28 @@ export default {
       console.log(temp)
       return foreignKeys
     },
+    getCurrentForeignHeaders: function(index) {
+      let currentTable = this.getSelectedTable(index)
+      console.log('returning current foreign headers...')
+      console.log(this.allTableNamesHeaderNames)
+      return this.allTableNamesHeaderNames[currentTable()]
+    },
     getPromisedForeignHeader: function() {
       let vueGetLatestForeignHeader = this.getLatestForeignHeader
       return new Promise((resolve, reject) => {
+        console.log('promise: starting promise...')
         let foreignHeader = vueGetLatestForeignHeader()
+        console.log('foreign header in promise:')
+        console.log(foreignHeader)
         if (!foreignHeader) {
+          console.log('promise: starting delay...')
           // There is a short render wait in home page, so if hotId not first returned, just wait and try again
           _.delay(function(foreignHeader) {
+            console.log('promise: completing delay')
             resolve(vueGetLatestForeignHeader())
-          }, 200, foreignHeader)
+          }, 1000, foreignHeader)
         } else {
+          console.log('promise: completing promise...')
           resolve(foreignHeader)
         }
       })
@@ -308,11 +321,6 @@ export default {
       console.log(this.currentForeignHeaders)
       // this.initTableHeaderKeys()
       currentForeignHeaders$.next(this.currentForeignHeaders)
-      // let currentForeignHeaders = this.currentForeignHeaders
-      // _.delay(function() {
-      //   console.log('triggered...')
-      //   currentForeignHeaders$.next(currentForeignHeaders)
-      // }, 1000)
     },
     pushSelectedForeignTable: function(index, hotId) {
       let vueSetProperty = this.pushForeignKeysForeignTableForTable
