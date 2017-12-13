@@ -81,7 +81,6 @@ const template = [
         //        enabled: false
       }, {
         label: 'Open Data Package...',
-        // turned off for Beta release
         enabled: true,
         click() {
           importDataPackage()
@@ -114,22 +113,16 @@ const template = [
       }, {
         label: 'Save As',
         submenu: save_submenu
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Close Tab',
-        accelerator: 'CmdOrCtrl+W',
-        // turned off for Beta release
-        enabled: false
       }
-      // Placeholder for future features
-      //,     {
-      //        type: 'separator'
-      //      }, {
-      //        label: 'Print',
-      //        accelerator: 'CmdOrCtrl+P',
-      //        enabled: false
-      //      }
+      // hide until needed
+      //, {
+      //  type: 'separator'
+      // }
+      // hide until implemened
+      //, {
+      //  label: 'Close Tab',
+      //  accelerator: 'CmdOrCtrl+W'
+      // }
     ]
   }, {
     label: 'Edit',
@@ -220,23 +213,6 @@ const template = [
     ]
   }, {
     // Placeholder for future features
-    //    label: 'View',
-    //    submenu: [
-    //      {
-    //        label: 'Read Only',
-    //        type: 'checkbox',
-    //        checked: true,
-    //        enabled: false
-    //      }, {
-    // TO DO: hide toggledevtools in production release and make a application shortcut
-    //        role: 'toggledevtools'
-    //      }, {
-    //        type: 'separator'
-    //      }, {
-    //        role: 'togglefullscreen'
-    //      }
-    //    ]
-    //  }, {
     //    label: 'Find',
     //    submenu: [
     //      {
@@ -291,7 +267,7 @@ const template = [
         //        label: 'Create Constraint from Column',
         //        enabled: false
         //      }, {
-        //        label: 'Create Look-up Table from Column',
+        //        label: 'Create Reference Table from Column',
         //        enabled: false
         // }, {
         //  type: 'separator'
@@ -299,14 +275,6 @@ const template = [
         label: 'Guess Column Properties',
         click: function() {
           guessColumnProperties()
-        }
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Validate Table',
-        accelerator: 'Shift+CmdOrCtrl+V',
-        click() {
-          validateTable()
         }
       }, {
         type: 'separator'
@@ -321,24 +289,22 @@ const template = [
           triggerMenuButton('Table')
         }
       }, {
-        // Placeholder for future features
-        //        label: 'Set View Properties',
-        //        enabled: false
-        //       , icon: '/static/img/locked.svg'
-        //      }, {
         label: 'Set Provenance Information',
         click() {
           triggerMenuButton('Provenance')
         }
       }, {
-        // Placeholder for future features
-        //        label: 'Generate Data Quality Information',
-        //        enabled: false
-        //       , icon: '/static/img/locked.svg'
-        //      }, {
         label: 'Set Data Package Properties',
         click() {
           triggerMenuButton('Package')
+        }
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Validate Table',
+        accelerator: 'Shift+CmdOrCtrl+V',
+        click() {
+          validateTable()
         }
       }, {
         type: 'separator'
@@ -376,18 +342,15 @@ const template = [
     submenu: [
       {
         role: 'minimize'
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Next Tab',
-        accelerator: 'CmdOrCtrl+Right',
-        // turned off for Beta release
-        enabled: false
-      }, {
-        label: 'Previous Tab',
-        accelerator: 'CmdOrCtrl+Left',
-        // turned off for Beta release
-        enabled: false
+      // hide until implemented
+      // }, {
+      //   type: 'separator'
+      // }, {
+      //   label: 'Next Tab',
+      //   accelerator: 'CmdOrCtrl+Right'
+      // }, {
+      //   label: 'Previous Tab',
+      //   accelerator: 'CmdOrCtrl+Left'
       }, {
         type: 'separator'
       }, {
@@ -497,18 +460,15 @@ if (process.platform === 'darwin') {
       role: 'minimize'
     }, {
       role: 'zoom'
-    }, {
-      type: 'separator'
-    }, {
-      label: 'Next Tab',
-      accelerator: 'CmdOrCtrl+Right',
-      // turned off for Beta release
-      enabled: false
-    }, {
-      label: 'Previous Tab',
-      accelerator: 'CmdOrCtrl+Left',
-      // turned off for Beta release
-      enabled: false
+    // hide until implemented
+    // }, {
+    //   type: 'separator'
+    // }, {
+    //   label: 'Next Tab',
+    //   accelerator: 'CmdOrCtrl+Right'
+    // }, {
+    //   label: 'Previous Tab',
+    //   accelerator: 'CmdOrCtrl+Left'
     }, {
       type: 'separator'
     }, {
