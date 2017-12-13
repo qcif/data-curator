@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="input-group">
-      <label v-show="labelName" class="control-label" v-tooltip.left="tooltip(tooltipId)">{{labelName}}</label>
+      <label class="control-label" v-tooltip.left="tooltip(tooltipId)">{{labelName}}</label>
+      <component :is="tooltipView"/>
       <select v-model="selectedKeys" class="form-control input-sm" multiple>
         <option v-for="columnName in activeNames" :value="columnName">{{columnName}}</option>
       </select>
     </div>
-    <component :is="tooltipView"/>
   </div>
 </template>
 <script>
