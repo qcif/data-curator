@@ -138,7 +138,7 @@
     "electron-builder": "^19.27.2",
     "electron-debug": "^1.1.0",
     "electron-devtools-installer": "^2.0.1",
-    "electron-prebuilt-compile": "^1.7.9",
+    "electron-prebuilt-compile": "^1.8.1",
     "eslint": "^4.10.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",
