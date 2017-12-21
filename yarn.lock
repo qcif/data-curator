@@ -6847,9 +6847,9 @@ pikaday@1.5.1:
   optionalDependencies:
     moment "2.x"
 
-pikaday@^1.6.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/pikaday/-/pikaday-1.6.1.tgz#b91bcb9b8539cedd8d6d08e4e7465e12095671b0"
+pikaday@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/pikaday/-/pikaday-1.7.0.tgz#78bf26e709f7c135b674762bbab79d75ac589ab6"
   optionalDependencies:
     moment "2.x"
 
