@@ -99,8 +99,13 @@ const template = [
         //            enabled: false
         //          }
         //        ]
-      }, {
         // Placeholder for non-macOS Settings for future feature
+        //      }, {
+        //        type: 'separator'
+        //      }, {
+        //        label: 'Settings',
+        //        enabled: false
+      }, {
         type: 'separator'
       }, {
         label: 'Save',
@@ -247,6 +252,7 @@ const template = [
     submenu: [
       {
         label: 'Header Row',
+        accelerator: 'Shift+CmdOrCtrl+H',
         type: 'checkbox',
         checked: false,
         click(menuItem) {
@@ -273,6 +279,7 @@ const template = [
         //  type: 'separator'
         // }, {
         label: 'Guess Column Properties',
+        accelerator: 'Shift+CmdOrCtrl+G',
         click: function() {
           guessColumnProperties()
         }
@@ -280,21 +287,25 @@ const template = [
         type: 'separator'
       }, {
         label: 'Set Column Properties',
+        accelerator: 'Shift+CmdOrCtrl+C',
         click() {
           triggerMenuButton('Column')
         }
       }, {
         label: 'Set Table Properties',
+        accelerator: 'Shift+CmdOrCtrl+T',
         click() {
           triggerMenuButton('Table')
         }
       }, {
         label: 'Set Provenance Information',
+        accelerator: 'Shift+CmdOrCtrl+P',
         click() {
           triggerMenuButton('Provenance')
         }
       }, {
         label: 'Set Data Package Properties',
+        accelerator: 'Shift+CmdOrCtrl+D',
         click() {
           triggerMenuButton('Package')
         }
@@ -310,7 +321,7 @@ const template = [
         type: 'separator'
       }, {
         label: 'Export Data Package...',
-        accelerator: 'CmdOrCtrl+D',
+        accelerator: 'Shift+CmdOrCtrl+X',
         click() {
           triggerMenuButton('Export')
         }
@@ -402,15 +413,17 @@ const template = [
   }
 ]
 
-// Tailor menu for Windows - add About to Help menu if (process.platform !== 'darwin') {
-template[4].submenu.push({
-  type: 'separator'
-}, {
-  label: 'About Data Curator',
-  click: function() {
-    showSidePanel('about')
-  }
-})
+// Tailor menu for Windows - add About to Help menu
+if (process.platform !== 'darwin') {
+  template[4].submenu.push({
+    type: 'separator'
+  }, {
+    label: 'About Data Curator',
+    click: function() {
+      showSidePanel('about')
+    }
+  })
+}
 
 // Tailor menu for macOS
 if (process.platform === 'darwin') {
