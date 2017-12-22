@@ -63,19 +63,22 @@ export default {
     return {
       isPreview: false,
       provenance: '',
-      placeholder: `### Introduction
+      placeholder: `Short description of the dataset (the first sentence and first paragraph should be extractable to provide short standalone descriptions)
 
-### Why was the dataset created? (reference legislation if relevant)
+### Why was the dataset created?
+reference legislation if relevant
 
-### How was it collected - what events lead up to its collection?
+### How was it collected
+what events lead up to its collection?
 
-### When was it collected? (Temporal extent)
+### When was it collected?
 
-### Where was it collected? (Spatial extent name, coordinate reference system, minimum bounding rectangle)
+### Where was it collected?
 
 ### Which instruments were used to collect it?
 
-### What does “null” mean? Unknown, missing or not applicable?
+### What does “null” mean?
+are null values unknown, missing or not applicable?
 
 ### Other comments
 
