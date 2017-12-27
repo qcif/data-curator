@@ -69,7 +69,6 @@ export default {
         'path': 'https://data.gov.tw/license/'
       },
       {
-        'name': 'pdm',
         'title': 'Public Domain Mark',
         'path': 'http://creativecommons.org/publicdomain/mark/1.0/'
       }],
