@@ -1,3 +1,5 @@
+@backlog
+
 Feature: Close tab
   As a Data Packager
   I want to close the active data tab and prompt if there are unsaved changes
