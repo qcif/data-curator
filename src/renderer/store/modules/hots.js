@@ -242,12 +242,7 @@ const mutations = {
     let hotId = hotMissingValues.hotId
     _.set(state.hotTabs, `${hotId}.tableProperties.missingValues`, hotMissingValues.missingValues)
   },
-  pushTableSchema(state, hotTable) {
-    let isColumnPropertiesMerged = mutations.mergeTableSchemaOverCurrentColumnProperties(state, hotTable)
-    return isColumnPropertiesMerged
-  },
-
-  mergeTableSchemaOverCurrentColumnProperties(state, hotIdSchema) {
+  pushTableSchema(state, hotIdSchema) {
     let hotId = hotIdSchema.hotId
     let hotTab = state.hotTabs[hotId]
     if (!hotTab.columnProperties) {
@@ -257,6 +252,8 @@ const mutations = {
     let columnProperties = [...hotTab.columnProperties]
     let isMerged = _.merge(columnProperties, hotIdSchema.schema.descriptor.fields)
     state.hotTabs[hotId].columnProperties = columnProperties
+    console.log('merged table schema over column properties...')
+    console.log(state)
     return isMerged
   },
   destroyHotTab(state, hotId) {
