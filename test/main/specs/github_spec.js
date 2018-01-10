@@ -1,6 +1,6 @@
 import path from 'path'
 import {assert, expect, should} from 'chai'
-import github from './../../../src/main/github'
+import * as github from '../../../src/main/github'
 import sinon from 'sinon'
 import Fs from 'fs'
 
