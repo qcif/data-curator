@@ -233,14 +233,6 @@ const mutations = {
     state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
     console.log(state.hotTabs)
   },
-  // TODO : schema fields has simply been incorporated into overwriting column properties - remove legacy methods
-  pushTableSchemaProperty(state, property) {
-    mutations.pushTableProperty(state, property)
-  },
-  // deprecated
-  pushTableSchemaDescriptorProperty(state, property) {
-    mutations.pushTableProperty(state, property)
-  },
   pushPackageProperty(state, property) {
     _.set(state.packageProperties, property.key, property.value)
     //    console.log('package properties pushed...')

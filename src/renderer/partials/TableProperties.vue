@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'pushTableSchemaDescriptorProperty', 'pushTableProperty'
+      'pushTableProperty'
     ]),
     getArrayValues: async function(key) {
       let tabId = this.getActiveTab
@@ -147,7 +147,7 @@ export default {
       let hot = HotRegister.getActiveInstance()
       if (hot) {
         let array = Array.from(new Set(value.split(',')))
-        this.pushTableSchemaDescriptorProperty({
+        this.pushTableProperty({
           hotId: hot.guid,
           key: 'missingValues',
           value: array
