@@ -346,8 +346,7 @@ export default {
       try {
         await validateActiveDataAgainstSchema(this.reportValidationRowErrors)
       } catch (err) {
-        console.log('There was an error(s) validating table.')
-        console.log(err)
+        console.log('There was an error(s) validating table.', err)
       }
     },
     storeResetCallback: function(allProperties) {
@@ -382,8 +381,7 @@ export default {
           this.exportPackageFeedback()
         }
       } catch (err) {
-        console.log('There was an error creating a data package.')
-        console.log(err)
+        console.log('There was an error creating a data package.', err)
       }
     },
     latestHotContainer: function() {
@@ -507,7 +505,7 @@ export default {
       } else if (index > this.toolbarIndex) {
         this.sideNavTransition = 'sideNav-right'
       } else {
-        // console.log('same toolbar selection...')
+        // ('same toolbar selection...')
       }
     },
     isSideNavToolbarMenu: function(index) {
@@ -545,10 +543,10 @@ export default {
     },
     updateActiveColumn: function() {
       let selected = getActiveSelected()
-      if (!selected) {
-        console.log('Cannot update active column without a column selected.')
-      } else {
+      if (selected) {
         this.currentColumnIndex = selected[1]
+      } else {
+        // ('Cannot update active column without a column selected.')
       }
     },
     updateToolbarMenuForColumn: function(index) {
@@ -636,7 +634,7 @@ export default {
     adjustSidenavFormHeight: function() {
       let sidenav = document.querySelector('#sidenav')
       let sidenavHeight = sidenav.clientHeight
-      // console.log(`height is ${sidenavHeight}`)
+      // (`height is ${sidenavHeight}`)
       let form = sidenav.querySelector('form')
       this.sideNavFormHeight = (sidenavHeight - 150) + 'px'
       if (form) {
@@ -729,13 +727,11 @@ export default {
   beforeCreate: function() {
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
       let hot = HotRegister.getInstance(hotId)
-      // console.log(`sending ${hot.hasColHeaders()}`)
       ipc.send('hasHeaderRow', hot.hasColHeaders())
     })
     onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
   },
   created: function() {
-    console.log('home vue created.')
     const vueGuessProperties = this.inferColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()

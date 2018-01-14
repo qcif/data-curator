@@ -33,7 +33,6 @@ export async function guessColumnProperties() {
   let message = isStored
     ? 'Success: Guess column properties succeeded.'
     : 'Failed: Guess column properties failed.'
-  // console.log('returning from guess column properties...')
   return message
 }
 
@@ -43,14 +42,10 @@ function checkRow(rowNumber, row, schema, errorCollector) {
   } catch (err) {
     if (err.multiple) {
       for (const error of err.errors) {
-        // console.log('got next error')
-        console.log(error)
         let columnNumber = error.columnNumber || 'N/A'
         errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: error.message, name: error.name})
       }
     } else {
-      // console.log('got next error')
-      console.log(err)
       let columnNumber = err.columnNumber || 'N/A'
       errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: err.message, name: err.name})
     }
@@ -63,8 +58,6 @@ async function checkForSchema(data, hotId) {
   schema.descriptor.fields = columnProperties
   let table = await initDataAgainstSchema(data, schema)
   table.schema.commit()
-  console.log(table.schema.valid)
-  console.log(table.schema.errors)
   return table
 }
 

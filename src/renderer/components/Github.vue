@@ -19,7 +19,6 @@ ipc.once('apiKey', function(event, akey) {
     e.preventDefault()
     $('#spinner').removeClass('hidden')
     github = $('#github').find(':input').serialize()
-    console.log(github)
     ipc.send('sendToGithub', github, key)
   })
 

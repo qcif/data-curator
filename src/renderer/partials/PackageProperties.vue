@@ -100,12 +100,9 @@ export default {
       })
     },
     getPropertyGivenHotId: function(key, hotId) {
-      console.log(`key is ${key}`)
       return this.getProperty(key)
     },
     setProperty: function(key, value) {
-      console.log(`setting property for package...`)
-      console.log(`key ${key} , value: ${value}`)
       this.pushPackageProperty({
         key: key,
         value: value

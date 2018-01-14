@@ -14,25 +14,19 @@ export async function createDataPackage() {
   try {
     let dataPackage = await buildDataPackage(errorMessages)
     if (errorMessages.length > 0) {
-      console.log(dataPackage.errors)
       return errorMessages
     }
     if (dataPackage) {
       dataPackage.commit()
       if (!dataPackage.valid) {
         errorMessages.push('There is a problem with at least 1 package property. Please check and try again.')
-        console.log(dataPackage.errors)
         return errorMessages
       }
-      console.log('checking that package is valid...')
-      console.log(dataPackage.valid)
-      console.log(dataPackage)
       createZipFile(JSON.stringify(dataPackage.descriptor))
     }
   } catch (err) {
     if (err) {
-      console.log('There was an error creating the data package.')
-      console.log(err)
+      console.log('There was an error creating the data package.', err)
     }
   }
   return errorMessages
@@ -97,8 +91,7 @@ async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
       dataPackage.addResource(resource.descriptor)
     } catch (err) {
       if (err) {
-        console.log('There was an error creating a resource.')
-        console.log(err)
+        console.log('There was an error creating a resource.', err)
         return false
       }
     }
@@ -113,8 +106,6 @@ async function createValidResource(hotId, errorMessages) {
   }
   let resource = await buildResource(hotTab.tabId, hot.guid)
   if (!resource.valid) {
-    console.log('resource is not valid')
-    console.log(resource.errors)
     errorMessages.push('There is a required table or column property that is missing. Please check that all required properties are entered.')
     return false
   }

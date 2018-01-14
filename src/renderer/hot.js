@@ -93,12 +93,10 @@ const HotRegister = {
     return {'id': activeHot.guid, 'data': activeHot.getData()}
   },
   destroyAllHots() {
-    console.log('destroying all hots...')
     _.forIn(_hots, (hot, id) => {
       hot.destroy()
       _.unset(_hots, id)
     })
-    console.log(_hots)
   },
   destroyHot(id) {
     let hot = this.getInstance(id)
