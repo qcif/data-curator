@@ -166,14 +166,11 @@ export default {
   asyncComputed: {
     getTypeProperty: {
       async get() {
-        // console.log('getting type')
         let hotId = await this.currentHotId()
         // let hotId = this.activeCurrentHotId
-        // console.log(`hot id in getType is ${hotId}`)
         let getter = this.getter(hotId, 'type')
         let property = this.getHotColumnProperty(getter)
         if (!property) {
-          // console.log(`no get type, so setting default`)
           this.pushColumnProperty(this.setter(hotId, 'type', 'any'))
           property = 'any'
         }
@@ -190,7 +187,6 @@ export default {
     },
     getFormatProperty: {
       async get() {
-        console.log('getting format')
         let hotId = this.activeCurrentHotId
         let getter = this.getter(hotId, 'format')
         let property = this.getHotColumnProperty(getter)
@@ -198,7 +194,6 @@ export default {
           this.pushColumnProperty(this.setter(hotId, 'format', property))
           property = 'default'
         }
-        // console.log('got selectFormat property')
         this.formatProperty = property
         this.$forceUpdate()
         return property
@@ -217,29 +212,22 @@ export default {
       return this.constraintBooleanBindings.indexOf(option) > -1
     },
     setTypeProperty: async function(value) {
-      // console.log('setting type...')
-      // this.pushColumnProperty(this.setter(this.activeCurrentHotId, 'type', value))
       this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), 'type', value))
       this.typeProperty = value
       return value
     },
     setFormatProperty: function(value) {
-      // console.log('about to set format...')
       let hotId = this.activeCurrentHotId
       this.pushColumnProperty(this.setter(hotId, 'format', value))
       this.formatValue = value
     },
     getProperty: function(key) {
       let hotId = this.activeCurrentHotId
-      // console.log(`getting for ${key} and hot ${hotId}`)
       let getter = this.getter(hotId, key)
-      // console.log('getter is')
-      // console.log(getter)
       let property = this.getHotColumnProperty(getter)
       return property
     },
     setProperty: function(key, value) {
-      // console.log(`setting for key ${key}...`)
       this.pushColumnProperty(this.setter(this.activeCurrentHotId, key, value))
     },
     getter: function(hotId, key) {
@@ -260,23 +248,10 @@ export default {
       return object
     },
     getConstraintCheck: function(key) {
-      console.log(`checking constraint: ${key}`)
       return _.has(this.constraintInputKeyValues, key)
     },
-    // constraintText(option) {
-    //   console.log(`constraint text option is: ${option}`)
-    //   console.log(option)
-    //   return _.has(this.constraintInputKeyValues, option)
-    // },
-    // toggleTextNode: function(checkedInput) {
-    //   let textNode = checkedInput.parentNode.querySelector('.constraint-text')
-    //   if (textNode) {
-    //     textNode.style.display = checkedInput.checked ? 'inline-block' : 'none'
-    //   }
-    // },
     setConstraintCheck: function(key, target) {
       let isChecked = target.checked
-      console.log(`is target checked: ${target.checked}`)
       if (!isChecked) {
         _.unset(this.constraintInputKeyValues, key)
       } else if (this.constraintBooleanBindings.indexOf(key) > -1) {
@@ -303,7 +278,6 @@ export default {
       this.pushConstraintInputKeyValues()
     },
     pushConstraintInputKeyValues: function() {
-      console.log('pushing contraint input key values...')
       this.debounceSetConstraints(this.setter(this.activeCurrentHotId, 'constraints', this.constraintInputKeyValues))
     },
     constraintValidationRules: function(option) {
@@ -312,12 +286,10 @@ export default {
       } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
         return this.validationRules(this.typeProperty)
       } else {
-        // console.log('No validation rules to apply this constraint')
         return ''
       }
     },
     updateConstraintInputKeyValues: function() {
-      // console.log('update constraint checked....')
       let hotId = this.activeCurrentHotId
       let getter = this.getter(hotId, 'constraints')
       let constraints = this.getHotColumnProperty(getter)
@@ -334,17 +306,13 @@ export default {
     ]),
     getNameProperty() {
       let allColumns = this.allTablesAllColumnsNames[this.activeCurrentHotId] || []
-      console.log('all columns for this tab are:')
-      console.log(allColumns)
       return allColumns[this.cIndex] || ''
     },
     formatValues() {
-      // console.log('updating format values for type')
       let property = this.typeProperty
       return this.formats[property]
     },
     constraintValues() {
-      // console.log('updating constraint values for type')
       let property = this.typeProperty
       this.updateConstraintInputKeyValues()
       return this.constraints[property]
@@ -352,39 +320,17 @@ export default {
     isDropdownFormatDisabled() {
       return !this.formatValues ? false : this.formatValues.length < 2
     }
-    // selectFormat: {
-    //   get: function() {
-    //     console.log('about to get select format...')
-    //     let hotId = this.activeCurrentHotId
-    //     let getter = this.getter(hotId, 'format')
-    //     let property = this.getHotColumnProperty(getter)
-    //     if (!property) {
-    //       property = 'default'
-    //       this.pushColumnProperty(this.setter(hotId, 'format', property))
-    //     }
-    //     // console.log('got selectFormat property')
-    //     return property
-    //   },
-    //   set: function(value) {
-    //     // console.log('about to set format...')
-    //     let hotId = this.activeCurrentHotId
-    //     this.pushColumnProperty(this.setter(hotId, 'format', value))
-    //   }
-    // },
   },
   created: function() {
-    // console.log('created...')
   },
   mounted: function() {
     let vueUpdateAllTablesAllColumnsNames = this.updateAllTablesAllColumnsNames
     this.$subscribeTo(allTablesAllColumnNames$, function(result) {
-      console.log(`names in subscription`)
       vueUpdateAllTablesAllColumnsNames(result)
     })
     allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
   },
   destroyed: function() {
-    // console.log('panel destroyed')
   }
 }
 </script>

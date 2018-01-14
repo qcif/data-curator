@@ -42,7 +42,6 @@ function saveFileAs(format, currentWindow) {
     defaultPath: global.tab.activeTitle
   }, function(filename) {
     if (filename === undefined) {
-      // console.log('returning as no filename was entered...')
       return
     }
     if (savedFilenameExists(filename)) {
@@ -142,7 +141,6 @@ function readFile(filename, format) {
 
 // TODO: consider toggle global var and use with debounce to check when last dialog triggered so don't get too many dialogs for multiple file opens
 function showAlreadyOpenedFileDialog() {
-  // console.log('showing dialog...')
   Dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
     type: 'warning',
     // title is not displayed on screen on macOS

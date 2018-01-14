@@ -44,13 +44,9 @@ const getters = {
   },
   getAllTabTitles: state => {
     let allTabTitles = {}
-    //    console.log('tab titles are before...')
-    //    console.log(state.tabObjects)
     _.forEach(state.tabObjects, function(object, tabId) {
       allTabTitles[tabId] = object.title
     })
-    //    console.log(`tab titles are:`)
-    //    console.log(allTabTitles)
     return allTabTitles
   }
 }
@@ -67,11 +63,9 @@ const mutations = {
       title = `Untitled${tab.index}`
     }
     _.set(state.tabObjects, `${tab.id}.title`, title)
-    // allTabsTitles$.next(getters.getAllTabTitles(state))
     pushAllTabTitlesSubscription()
   },
   pushTabObject(state, tab) {
-    //    console.log('pushing tab object...')
     if (tab.filename) {
       _.set(state.tabObjects, `${tab.id}.filename`, tab.filename)
       let title = extractNameFromFile(tab.filename)
@@ -80,7 +74,6 @@ const mutations = {
       setActiveGlobal(tab.filename, title)
       resetGlobalFilenames(getters.getTabFilenames(state))
       ipc.send('toggleSaveMenu')
-      // allTabsTitles$.next(getters.getAllTabTitles(state))
       pushAllTabTitlesSubscription()
     }
   },
@@ -93,22 +86,16 @@ const mutations = {
   },
   setActiveTab (state, tabId) {
     state.activeTab = `${tabId}`
-    // activeRxTab.next(tabId)
     // TODO : now that we use activeTitle as global and we can access with activeTab and tabObjects, keeping it in store is redundant - remove.
     state.activeTitle = state.tabObjects[tabId].title
     setActiveGlobal(state.tabObjects[state.activeTab].filename, state.activeTitle)
-    // console.log('setting global filenames...')
     resetGlobalFilenames(getters.getTabFilenames(state))
     ipc.send('toggleSaveMenu')
     activeTab$.next(tabId)
-    //    console.log(state.tabs)
-    //    console.log(state.tabObjects)
   },
   setTabsOrder (state, tabIdOrder) {
-    //    console.log('resetting tabs...')
     state.tabs.length = 0
     state.tabs.push(...tabIdOrder)
-    //    console.log(state.tabs)
   },
   incrementTabIndex(state) {
     state.tabIndex++
@@ -117,7 +104,6 @@ const mutations = {
     _.unset(state.tabObjects, tabId)
     resetGlobalFilenames(getters.getTabFilenames(state))
     pushAllTabTitlesSubscription()
-    // allTabsTitles$.next(getters.getAllTabTitles(state))
   }
 }
 
