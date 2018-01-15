@@ -1,4 +1,4 @@
-Feature: Move to Next / Previous Properties Panel
+Feature: Move to Next / Previous Column Properties Panel
   As a Data Packager
   I want to move sequentially through each column property panel
   So that I can efficiently set all the column properties
