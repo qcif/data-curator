@@ -109,7 +109,7 @@
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",
     "vue-rx": "^5.0.0",
-    "vue-template-compiler": "^2.5.2",
+    "vue-template-compiler": "^2.5.13",
     "vuex": "^3.0.0",
     "webpack-fix-default-import-plugin": "^1.0.3",
     "xlsx": "^0.11.7",
