@@ -33,7 +33,7 @@ export default {
     'tooltipTablePrimaryKeys': {
       components: {externalLink},
       template: `<div id="tooltip-table-primary-keys">The
-      <externalLink text="Primary Key" url="http://frictionlessdata.io/specs/table-schema/#primary-key"/> is the field(s) that uniquely identifies each row in the table.</div>`
+      <externalLink text="Primary Key" url="http://frictionlessdata.io/specs/table-schema/#primary-key"/> is the field(s) that uniquely identifies each row in the table. Use Ctrl/Command to select multiple or deselect fields</div>`
     },
     'tooltipTableMissingValues': {
       components: {externalLink},
