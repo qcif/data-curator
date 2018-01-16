@@ -231,6 +231,12 @@ const mutations = {
   resetColumnPropertiesForHotId(state, property) {
     state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}
   },
+  removeColumnIndexForHotId(state, property) {
+    if (state.hotTabs[property.hotId].columnProperties && state.hotTabs[property.hotId].columnProperties.length > property.columnIndex) {
+      state.hotTabs[property.hotId].columnProperties.splice(property.columnIndex, 1)
+    }
+    console.log(state)
+  },
   resetPackagePropertiesToObject(state, properties) {
     _.set(state, 'packageProperties', properties)
   },
