@@ -50,7 +50,7 @@ export default {
         }
       }
     }
-    this.$validator.updateDictionary(dict)
+    this.$validator.localize('en', dict)
   }
 }
 </script>
