@@ -45,6 +45,14 @@ const getters = {
     }
     return hotIdColumnNames
   },
+  // ensure getter fires each time by passing in function
+  getAllHotTablesColumnProperties: (state, getters) => () => {
+    let hotIdColumnNames = {}
+    for (let hotId in state.hotTabs) {
+      hotIdColumnNames[hotId] = state.hotTabs[hotId].columnProperties || []
+    }
+    return hotIdColumnNames
+  },
   getAllHotColumnNamesFromHotId: (state, getters) => (hotId) => {
     if (!state.hotTabs[hotId].columnProperties) {
       state.hotTabs[hotId].columnProperties = []
