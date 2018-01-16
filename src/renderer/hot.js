@@ -1,5 +1,6 @@
 import Handsontable from 'handsontable/dist/handsontable.full.js'
 import {remote} from 'electron'
+import store from '@/store/modules/hots.js'
 const Dialog = remote.dialog
 
 const _hots = {}
@@ -265,11 +266,15 @@ export function removeColumns() {
 
   const start = Math.min(range.from.col, range.to.col)
   const end = Math.max(range.from.col, range.to.col)
-
+  console.log(`start is ${start}`)
+  console.log(start)
+  console.log(`end is ${end}`)
+  console.log(end)
   for (let col = start; col <= end; col++) {
     // cols are re-indexed after each remove
     // so always remove 'start'
     hot.alter('remove_col', start)
+    store.mutations.removeColumnIndexForHotId(store.state, {hotId: hot.guid, columnIndex: start})
   }
 
   hot.deselectCell()
