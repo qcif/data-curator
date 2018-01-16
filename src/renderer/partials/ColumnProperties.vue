@@ -50,7 +50,8 @@ import {
   Subscription
 } from 'rxjs/Subscription'
 import {
-  allTablesAllColumnNames$
+  allTablesAllColumnNames$,
+  allTablesAllColumnsFromSchema$
 } from '@/rxSubject.js'
 import {
   HotRegister
@@ -163,6 +164,11 @@ export default {
       constraintBooleanBindings: ['required', 'unique']
     }
   },
+  subscriptions() {
+    return {
+      allTablesAllColumns: allTablesAllColumnsFromSchema$
+    }
+  },
   asyncComputed: {
     getTypeProperty: {
       async get() {
@@ -183,6 +189,7 @@ export default {
         // ensure getter changes for tabs and columns
         let temp = this.getActiveTab
         let temp2 = this.cIndex
+        let temp3 = this.allTablesAllColumns
       }
     },
     getFormatProperty: {

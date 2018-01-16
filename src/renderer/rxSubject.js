@@ -5,7 +5,7 @@ import 'rxjs/add/observable/fromPromise'
 // import Rx from 'rxjs/Rx'
 
 let allTablesAllColumnNames$ = new Subject()
-let allTablesAllColumns$ = new Subject()
+let allTablesAllColumnsFromSchema$ = new Subject()
 let activeTab$ = new Subject()
 let hotIdFromTab$ = new Subject()
 let allTabsTitles$ = new Subject()
@@ -33,7 +33,7 @@ export {
   hotIdFromTab$,
   activeTab$,
   allTablesAllColumnNames$,
-  allTablesAllColumns$,
+  allTablesAllColumnsFromSchema$,
   allTabsTitles$,
   selectedForeignTable$
 }

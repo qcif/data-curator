@@ -2,7 +2,7 @@ import {Table, Schema} from 'tableschema'
 import {HotRegister} from '@/hot.js'
 import store from '@/store/modules/hots.js'
 import {includeHeadersInData, hasAllColumnNames} from '@/frictionlessUtilities.js'
-import {allTablesAllColumns$} from '@/rxSubject.js'
+import {allTablesAllColumnsFromSchema$} from '@/rxSubject.js'
 
 async function initDataAndInferSchema(data) {
   const schema = await Schema.load({})
@@ -31,7 +31,7 @@ export async function guessColumnProperties() {
   // let activeHot = HotRegister.getActiveHotIdData()
   let schema = await initDataAndInferSchema(data)
   let isStored = storeData(id, schema)
-  allTablesAllColumns$.next(store.getters.getAllHotTablesColumnProperties(store.state, store.getters)())
+  allTablesAllColumnsFromSchema$.next(store.getters.getAllHotTablesColumnProperties(store.state, store.getters)())
   let message = isStored
     ? 'Success: Guess column properties succeeded.'
     : 'Failed: Guess column properties failed.'
