@@ -232,9 +232,18 @@ const mutations = {
     state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}
   },
   removeColumnIndexForHotId(state, property) {
-    if (state.hotTabs[property.hotId].columnProperties && state.hotTabs[property.hotId].columnProperties.length > property.columnIndex) {
+    let columnProperties = state.hotTabs[property.hotId].columnProperties
+    if (typeof columnProperties !== 'undefined' && columnProperties.length > property.columnIndex) {
       state.hotTabs[property.hotId].columnProperties.splice(property.columnIndex, 1)
     }
+    console.log(state)
+  },
+  pushColumnIndexForHotId(state, property) {
+    let columnProperties = state.hotTabs[property.hotId].columnProperties
+    if (typeof columnProperties == 'undefined') {
+      state.hotTabs[property.hotId].columnProperties = []
+    }
+    state.hotTabs[property.hotId].columnProperties.splice(property.columnIndex, 0, {})
     console.log(state)
   },
   resetPackagePropertiesToObject(state, properties) {
