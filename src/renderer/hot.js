@@ -222,6 +222,8 @@ export function insertColumnLeft(deselect) {
   if (deselect) {
     hot.deselectCell()
   }
+  store.mutations.pushColumnIndexForHotId(store.state, {hotId: hot.guid, columnIndex: start})
+  removeHeaderAtIndex(hot, start)
 }
 
 export function insertColumnRight(deselect) {
@@ -235,6 +237,19 @@ export function insertColumnRight(deselect) {
   hot.alter('insert_col', (end + 1))
   if (deselect) {
     hot.deselectCell()
+  }
+  store.mutations.pushColumnIndexForHotId(store.state, {hotId: hot.guid, columnIndex: (end + 1)})
+  removeHeaderAtIndex(hot, (end + 1))
+}
+
+export function removeHeaderAtIndex(hot, index) {
+  if (hot.hasColHeaders()) {
+    let header = hot.getColHeader()
+    console.log(header)
+    header[index] = ''
+    console.log(header)
+    hot.updateSettings({colHeaders: header})
+    store.mutations.pushColumnProperty(store.state, {hotId: hot.guid, columnIndex: index, key: 'name', value: ''})
   }
 }
 
@@ -266,10 +281,6 @@ export function removeColumns() {
 
   const start = Math.min(range.from.col, range.to.col)
   const end = Math.max(range.from.col, range.to.col)
-  console.log(`start is ${start}`)
-  console.log(start)
-  console.log(`end is ${end}`)
-  console.log(end)
   for (let col = start; col <= end; col++) {
     // cols are re-indexed after each remove
     // so always remove 'start'
