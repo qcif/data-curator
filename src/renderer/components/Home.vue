@@ -37,25 +37,18 @@
             {{sideNavViewTitle}}
           </a>
         </div>
-        <!-- <div class="row"> -->
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
           <component :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :cIndex="currentColumnIndex">
           </component>
         </transition>
-        <!-- </div> -->
-        <!-- <div class="row"/> -->
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
           <a v-if="enableSideNavLeftArrow" href="#" v-tooltip="tooltip('tooltip-previous')" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
-          <!-- <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span> -->
           <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" />
           <a v-if="enableSideNavRightArrow" href="#" v-tooltip="tooltip('tooltip-next')" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
-          <!-- <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span> -->
           <component v-if="enableSideNavRightArrow" is="tooltipNext" />
         </div>
-        <!-- </div> -->
     </nav>
     <div id="main-panel" class="panel panel-default" :class="sideNavPropertiesForMain">
-      <!-- <div id="main-top-panel" class="panel panel-heading"></div> -->
       <div id="main-middle-panel" class="panel panel-body" :class="messageStatus">
         <div id='csvEditor'>
           <ul class="nav nav-tabs">
@@ -70,7 +63,6 @@
               </ul>
             </li>
             <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')">
-            <!-- <li class="tab-add" @click="addTab"> -->
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
             <component is="tooltipAddTab" />
@@ -139,7 +131,6 @@ import {
   getCurrentColumnIndexOrMin,
   getCurrentColumnIndexOrMax,
   reselectCurrentCellOrMin,
-  reselectCurrentCellOrMax,
   incrementActiveColumn,
   decrementActiveColumn,
   getActiveSelected,
