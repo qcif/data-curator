@@ -15,8 +15,7 @@ export default {
         case 'name':
           return {
             required: true,
-            regex: /^([-a-z0-9._/])+$/,
-            unique_name: true
+            regex: /^([-a-z0-9._/])+$/
           }
         case 'integer':
           return 'numeric'
