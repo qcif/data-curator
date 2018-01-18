@@ -182,59 +182,57 @@ export function getColumnCount() {
   return colCount
 }
 
-export function insertRowAbove(deselect) {
-  let hot = HotRegister.getActiveInstance()
-  hot.getActiveEditor().finishEditing(true)
+export function insertRowAbove() {
+  insertRow(0, Math.min)
+}
+
+export function insertRowBelow() {
+  insertRow(1, Math.max)
+}
+
+export function insertRow(offset, mathFn) {
+  let hot = getHotToInsert()
   const range = hot.getSelectedRange()
-  if (typeof range === 'undefined') {
-    return
-  }
-  const start = Math.min(range.from.row, range.to.row)
-  hot.alter('insert_row', start)
-  if (deselect) {
-    hot.deselectCell()
+  if (typeof range !== 'undefined') {
+    const selection = mathFn(range.from.row, range.to.row) + offset
+    hot.alter('insert_row', selection)
+    reselectCurrentCellOrMin()
   }
 }
 
-export function insertRowBelow(deselect) {
-  let hot = HotRegister.getActiveInstance()
-  hot.getActiveEditor().finishEditing(true)
+export function insertColumnLeft() {
+  insertColumn(0, Math.min)
+}
+
+export function insertColumnRight() {
+  insertColumn(1, Math.max)
+}
+
+export function insertColumn(offset, mathFn) {
+  let hot = getHotToInsert()
   const range = hot.getSelectedRange()
-  if (typeof range === 'undefined') {
-    return
-  }
-  const end = Math.max(range.from.row, range.to.row)
-  hot.alter('insert_row', (end + 1))
-  if (deselect) {
-    hot.deselectCell()
+  if (typeof range !== 'undefined') {
+    const selection = mathFn(range.from.col, range.to.col) + offset
+    hot.alter('insert_col', selection)
+    store.mutations.pushColumnIndexForHotId(store.state, {hotId: hot.guid, columnIndex: selection})
+    removeHeaderAtIndex(hot, selection)
+    // needed for sidenav arrows reset
+    reselectCurrentCellOrMin()
   }
 }
 
-export function insertColumnLeft(deselect) {
+function getHotToInsert() {
   let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
-  const range = hot.getSelectedRange()
-  if (typeof range === 'undefined') {
-    return
-  }
-  const start = Math.min(range.from.col, range.to.col)
-  hot.alter('insert_col', start)
-  if (deselect) {
-    hot.deselectCell()
-  }
+  return hot
 }
 
-export function insertColumnRight(deselect) {
-  let hot = HotRegister.getActiveInstance()
-  hot.getActiveEditor().finishEditing(true)
-  const range = hot.getSelectedRange()
-  if (typeof range === 'undefined') {
-    return
-  }
-  const end = Math.max(range.from.col, range.to.col)
-  hot.alter('insert_col', (end + 1))
-  if (deselect) {
-    hot.deselectCell()
+export function removeHeaderAtIndex(hot, index) {
+  if (hot.hasColHeaders()) {
+    let header = hot.getColHeader()
+    header[index] = null
+    hot.updateSettings({colHeaders: header})
+    store.mutations.pushColumnProperty(store.state, {hotId: hot.guid, columnIndex: index, key: 'name', value: ''})
   }
 }
 
@@ -266,10 +264,6 @@ export function removeColumns() {
 
   const start = Math.min(range.from.col, range.to.col)
   const end = Math.max(range.from.col, range.to.col)
-  console.log(`start is ${start}`)
-  console.log(start)
-  console.log(`end is ${end}`)
-  console.log(end)
   for (let col = start; col <= end; col++) {
     // cols are re-indexed after each remove
     // so always remove 'start'
