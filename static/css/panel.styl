@@ -141,11 +141,7 @@ sideNavHeaderHeight = 55px
     right 0
     border-left solid 3px sideNavColor
   div.row
-    //   border 0
-    // height 250px
     position relative
-    //   padding 0
-    //   margin-top 0
   .navbar-header
     position relative
     top 0
@@ -193,9 +189,6 @@ sideNavHeaderHeight = 55px
       width auto
     select
       height auto
-  // .row
-  //   height 100px
-  //   position relative
 
 sideNavFooterHeight = 70px
 #aboutProperties
@@ -245,9 +238,6 @@ sideNavFooterHeight = 70px
   .right
     float right
     display inline-block
-    // &.disabled
-    //   pointer-events none
-    //   cursor default
 
 #tablePropertiesBtn
   float left
@@ -311,11 +301,32 @@ span.tabclose.btn-default:hover
 #toolbar li object
   max-width 13px
   max-height 13px
-  // &.down
-  //   margin-bottom -2px
 
 #tableProperties .form-control
   width auto !important
 
 #columnProperties option
   width auto
+
+.nav-tabs>li.tab-heading.active a {
+  position: relative;
+}
+
+.nav-tabs>li.tab-heading a {
+  margin: 0;
+}
+
+.tab-add a {
+  position: relative;
+}
+
+.tab-add a:hover {
+  background-color: initial !important;
+  border-color: transparent !important;
+  margin: 0;
+}
+
+.tab-add a button {
+  position: absolute;
+  bottom: 0;
+}
