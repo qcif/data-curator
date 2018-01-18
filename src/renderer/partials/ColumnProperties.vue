@@ -12,11 +12,14 @@
               {{ option1}}
             </option>
           </select>
-          <select v-if="formprop.key==='format'" :value="getFormatProperty" v-model="formatProperty" @input="setFormatProperty($event.target.value)" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
-            <option v-for="option2 in formatValues" :key="option2" v-bind:value="option2">
-              {{ option2}}
-            </option>
-          </select>
+          <div id="format-container" v-if="formprop.key==='format'" :class="{ 'format-pattern': formatValuesHasPattern }">
+            <select :value="getFormatProperty" v-model="formatProperty" @input="setFormatProperty($event.target.value)" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
+                <option v-for="option2 in formatValues" :key="option2" v-bind:value="option2">
+                  {{ option2}}
+                </option>
+            </select>
+            <input v-show="formatValuesHasPattern" type="text" class="form-control input-sm col-sm-9"/>
+          </div>
         </template>
         <div v-else-if="formprop.key === 'constraints'" id="constraints" class="col-sm-9">
           <div class="input-group row" v-for="option in constraintValues" :key="option">
@@ -172,17 +175,15 @@ export default {
   asyncComputed: {
     getTypeProperty: {
       async get() {
+        // type won't always have current hotid immediately available
         let hotId = await this.currentHotId()
-        // let hotId = this.activeCurrentHotId
         let getter = this.getter(hotId, 'type')
         let property = this.getHotColumnProperty(getter)
         if (!property) {
-          this.pushColumnProperty(this.setter(hotId, 'type', 'any'))
           property = 'any'
+          this.pushColumnProperty(this.setter(hotId, 'type', property))
         }
-        // view doesn't always re-render
         this.typeProperty = property
-        this.$forceUpdate()
         return property
       },
       watch() {
@@ -194,15 +195,15 @@ export default {
     },
     getFormatProperty: {
       async get() {
-        let hotId = this.activeCurrentHotId
+        // use promise for format's hotid to keep in sync with getTypeProperty
+        let hotId = await this.currentHotId()
         let getter = this.getter(hotId, 'format')
         let property = this.getHotColumnProperty(getter)
         if (!property) {
-          this.pushColumnProperty(this.setter(hotId, 'format', property))
           property = 'default'
+          this.pushColumnProperty(this.setter(hotId, 'format', property))
         }
         this.formatProperty = property
-        this.$forceUpdate()
         return property
       },
       watch() {
@@ -315,8 +316,11 @@ export default {
       let allColumns = this.allTablesAllColumnsNames[this.activeCurrentHotId] || []
       return allColumns[this.cIndex] || ''
     },
+    formatValuesHasPattern() {
+      return this.formatProperty === 'pattern' && _.indexOf(this.formatValues, 'pattern') > -1
+    },
     formatValues() {
-      let property = this.typeProperty
+      let property = this.typeProperty || 'any'
       return this.formats[property]
     },
     constraintValues() {
