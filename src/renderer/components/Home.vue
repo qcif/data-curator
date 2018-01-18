@@ -271,9 +271,6 @@ export default {
     toolbarMenuName() {
       return _.get(this.toolbarMenus[this.toolbarIndex], 'name')
     },
-    maxColAllowed() {
-      return getColumnCount() - 1
-    },
     messageStatus() {
       return this.messages ? 'messages-opened' : 'messages-closed'
     },
@@ -507,9 +504,8 @@ export default {
       this.enableSideNavLeftArrow = false
       this.enableSideNavRightArrow = false
       if (this.sideNavView === 'column') {
-        // this.currentColumnIndex = getCurrentColumnIndexOrMin()
         this.enableSideNavLeftArrow = this.currentColumnIndex > 0
-        this.enableSideNavRightArrow = this.currentColumnIndex < this.maxColAllowed
+        this.enableSideNavRightArrow = this.currentColumnIndex < getColumnCount() - 1
       }
     },
     updateSideNavState: function() {
@@ -541,13 +537,12 @@ export default {
       }
     },
     updateToolbarMenuForColumn: function(index) {
-      let maxColAllowed = this.maxColAllowed
       let currentColIndex = getCurrentColumnIndexOrMax()
       if (index < this.toolbarIndex && currentColIndex > 0) {
         decrementActiveColumn(currentColIndex)
         this.updateActiveColumn()
       } else if (index > this.toolbarIndex) {
-        if (currentColIndex < maxColAllowed) {
+        if (currentColIndex < getColumnCount()) {
           incrementActiveColumn(currentColIndex)
           this.updateActiveColumn()
         } else {
