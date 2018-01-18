@@ -8,28 +8,28 @@ var menu = new Menu()
 var rowAbove = new MenuItem({
   label: 'Insert row above',
   click: function() {
-    insertRowAbove(true)
+    insertRowAbove()
   }
 })
 
 var rowBelow = new MenuItem({
   label: 'Insert row below',
   click: function() {
-    insertRowBelow(true)
+    insertRowBelow()
   }
 })
 
 var columnLeft = new MenuItem({
   label: 'Insert column before',
   click: function() {
-    insertColumnLeft(true)
+    insertColumnLeft()
   }
 })
 
 var columnRight = new MenuItem({
   label: 'Insert column after',
   click: function() {
-    insertColumnRight(true)
+    insertColumnRight()
   }
 })
 
