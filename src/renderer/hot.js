@@ -211,14 +211,12 @@ export function insertColumnRight() {
 export function insertColumn(offset, mathFn) {
   let hot = getHotToInsert()
   const range = hot.getSelectedRange()
-  console.log('range')
-  console.log(range)
   if (typeof range !== 'undefined') {
     const selection = mathFn(range.from.col, range.to.col) + offset
-    console.log(selection)
     hot.alter('insert_col', selection)
     store.mutations.pushColumnIndexForHotId(store.state, {hotId: hot.guid, columnIndex: selection})
     removeHeaderAtIndex(hot, selection)
+    // needed for sidenav arrows reset
     reselectCurrentCellOrMin()
   }
 }
