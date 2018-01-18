@@ -59,6 +59,7 @@ function hasAllPackageRequirements(requiredMessages) {
     if (!name || name.trim() === '') {
       requiredMessages.push(`Package property, 'name' must be set.`)
     }
+    addSourcesRequirements(packageProperties.sources, requiredMessages, 'package')
   }
   return requiredMessages.length === 0
 }
@@ -113,13 +114,15 @@ async function createValidResource(hotId, errorMessages) {
 }
 
 function hasAllResourceRequirements(hot, requiredMessages) {
-  if (!hotStore.state.hotTabs[hot.guid].tableProperties) {
+  let tableProperties = hotStore.state.hotTabs[hot.guid].tableProperties
+  if (!tableProperties) {
     requiredMessages.push(`Table properties must be set.`)
   } else {
-    let name = hotStore.state.hotTabs[hot.guid].tableProperties.name
+    let name = tableProperties.name
     if (!name || name.trim() === '') {
       requiredMessages.push(`Table property, 'name', must not be empty.`)
     }
+    addSourcesRequirements(tableProperties.sources, requiredMessages, 'table')
   }
   let columnProperties = hotStore.state.hotTabs[hot.guid].columnProperties
   if (!columnProperties) {
@@ -130,6 +133,19 @@ function hasAllResourceRequirements(hot, requiredMessages) {
     }
   }
   return requiredMessages.length === 0
+}
+
+function addSourcesRequirements(sources, requiredMessages, entityName) {
+  if (!sources) {
+    requiredMessages.push(`At least 1 ${entityName} source must be set.`)
+  } else {
+    for (let source of sources) {
+      if (!source.title || source.title.trim() === '') {
+        requiredMessages.push(`At least 1 ${entityName} source does not have a title.`)
+        return false
+      }
+    }
+  }
 }
 
 async function buildResource(tabId, hotId) {
