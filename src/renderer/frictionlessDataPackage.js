@@ -123,6 +123,7 @@ function hasAllResourceRequirements(hot, requiredMessages) {
       requiredMessages.push(`Table property, 'name', must not be empty.`)
     }
     addSourcesRequirements(tableProperties.sources, requiredMessages, 'table')
+    addForeignKeyRequirements(tableProperties, requiredMessages)
   }
   let columnProperties = hotStore.state.hotTabs[hot.guid].columnProperties
   if (!columnProperties) {
@@ -144,6 +145,18 @@ function addSourcesRequirements(sources, requiredMessages, entityName) {
         requiredMessages.push(`At least 1 ${entityName} source does not have a title.`)
         return false
       }
+    }
+  }
+}
+
+function addForeignKeyRequirements(tableProperties, requiredMessages) {
+  if (typeof tableProperties.foreignKeys === 'undefined') {
+    return
+  }
+  for (let foreignKey of tableProperties.foreignKeys) {
+    if (_.isEmpty(foreignKey.fields) || _.isEmpty(foreignKey.reference.fields)) {
+      requiredMessages.push(`Foreign keys cannot be empty.`)
+      return false
     }
   }
 }
