@@ -21,16 +21,11 @@ export default {
           return 'numeric'
         case 'number':
           return 'decimal'
-        // case 'date':
-        //   return 'date_format:YYYY-MM-DD'
-        // case 'time':
-        //   return 'date_format:HH:mm:ss'
-        // case 'datetime':
-        //   return 'date_format:YYYY-MM-DD HH:mm:ssZ'
-        // case 'year':
-        //   return 'date_format:YYYY'
-        // case 'yearmonth':
-        //   return 'date_format:YYYY-MM'
+        case 'enum':
+        case 'pattern':
+          return {
+            required: true
+          }
         default:
           return ''
       }
@@ -45,11 +40,20 @@ export default {
           },
           name: {
             regex: 'The name field format is invalid. It must consist only of lowercase alphanumeric characters plus ".", "-" and "_".'
+          },
+          enum: {
+            required: 'There must be an array of values present.'
+          },
+          pattern: {
+            required: 'There must be a pattern present.'
+          },
+          formatValue: {
+            required: 'There must be a format value pattern present.'
           }
         }
       }
     }
-    this.$validator.localize('en', dict)
+    VeeValidate.Validator.localize(dict)
   }
 }
 </script>

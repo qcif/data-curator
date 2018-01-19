@@ -18,7 +18,10 @@
                   {{ option2}}
                 </option>
             </select>
-            <input v-show="formatValuesHasPattern" v-model="formatPropertyValue" type="text" class="form-control input-sm col-sm-9"/>
+            <input v-if="formatValuesHasPattern" v-model="formatPropertyValue" type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has('formatValue') }" v-validate.initial="'formatPattern|required'" name="formatValue"/>
+            <div v-show="formatValuesHasPattern && errors.has('formatValue')" class="row help validate-danger">
+              {{ errors.first('formatValue')}}
+            </div>
           </div>
         </template>
         <div v-else-if="formprop.key === 'constraints'" id="constraints" class="col-sm-9">
@@ -312,12 +315,15 @@ export default {
       this.debounceSetConstraints(this.setter(this.activeCurrentHotId, 'constraints', this.constraintInputKeyValues))
     },
     constraintValidationRules: function(option) {
-      if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
-        return 'numeric|required'
-      } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
-        return this.validationRules(this.typeProperty)
-      } else {
-        return ''
+      switch (option) {
+        case 'minLength':
+        case 'maxLength':
+          return 'numeric|required'
+        case 'minimum':
+        case 'maximum':
+          return `${this.validationRules(this.typeProperty)}|required`
+        default:
+          return this.validationRules(option)
       }
     },
     updateConstraintInputKeyValues: function() {
@@ -328,6 +334,12 @@ export default {
     },
     updateAllTablesAllColumnsNames: function(update) {
       this.allTablesAllColumnsNames = update || {}
+    },
+    typePropertyWrapper: function() {
+      return this.typeProperty
+    },
+    formatPropertyValueWrapper: function() {
+      return this.formatPropertyValue
     }
   },
   computed: {
@@ -373,6 +385,21 @@ export default {
       vueUpdateAllTablesAllColumnsNames(result)
     })
     allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
+  },
+  created: function() {
+    let vueType = this.typePropertyWrapper
+    let vueFormat = this.formatPropertyValueWrapper
+    this.$validator.extend('formatPattern', {
+      getMessage: function(field) { return `The format pattern is not supported.` },
+      validate: function(value) {
+        return new Promise((resolve) => {
+          let isValid = isValidPatternForType(vueFormat(), vueType())
+          resolve({
+            valid: isValid
+          })
+        })
+      }
+    })
   }
 }
 </script>
