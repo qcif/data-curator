@@ -205,7 +205,9 @@ export default {
           property = 'default'
           this.pushColumnProperty(this.setter(hotId, 'format', property))
         }
-        if (isValidPatternForType(property) && _.indexOf(this.formatPropertiesForType, 'pattern') > -1) {
+        // ensure format value model is updated if this is a pattern (important after vue destroy->create)
+        if (isValidPatternForType(property, this.typeProperty) && _.indexOf(this.formatPropertiesForType, 'pattern') > -1) {
+          this.formatPropertyValue = property
           property = 'pattern'
         }
         this.formatProperty = property
@@ -216,21 +218,6 @@ export default {
         let temp2 = this.cIndex
       }
     }
-    // getFormatValue: {
-    //   async get() {
-    //     let propertyValue = this.formatProperty
-    //     if (property === 'pattern') {
-    //       console.log('inspecting...')
-    //       console.log(timeFormat('%d/%m/%y')())
-    //     }
-    //
-    //     this.formatProperty = property
-    //     return property
-    //   },
-    //   watch() {
-    //     let temp = this.formatProperty
-    //   }
-    // }
   },
   methods: {
     ...mapMutations([
@@ -363,7 +350,6 @@ export default {
   },
   watch: {
     'formatProperty': function(nextFormat) {
-      console.log(`next format is ${nextFormat}`)
       if (nextFormat === 'pattern') {
         if (_.indexOf(this.formatPropertiesForType, 'pattern') > -1) {
           this.setFormatPropertyValueForPattern()
@@ -380,8 +366,6 @@ export default {
       vueUpdateAllTablesAllColumnsNames(result)
     })
     allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
-  },
-  destroyed: function() {
   }
 }
 </script>
