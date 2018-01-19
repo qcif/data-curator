@@ -216,6 +216,8 @@ export default {
       watch() {
         let temp = this.getActiveTab
         let temp2 = this.cIndex
+        // ensure format also updates after setting type
+        let temp3 = this.typeProperty
       }
     }
   },
@@ -229,6 +231,10 @@ export default {
     setTypeProperty: async function(value) {
       this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), 'type', value))
       this.typeProperty = value
+      // keep format up-to-date with type
+      if (_.indexOf(this.formatPropertiesForType, this.formatProperty) === -1) {
+        this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), 'format', 'default'))
+      }
       // return value
     },
     setFormatProperty: function(value) {
@@ -337,7 +343,8 @@ export default {
     },
     formatPropertiesForType() {
       let property = this.typeProperty || 'any'
-      return this.formats[property]
+      let choices = this.formats[property]
+      return choices
     },
     constraintValues() {
       let property = this.typeProperty
