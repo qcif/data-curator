@@ -26,7 +26,7 @@
             <input type="checkbox" :id="option" :checked="getConstraintCheck(option)" @click="setConstraintCheck(option, $event.target)"></input>
             <label :for="option" class="form-control-static">{{option}}</label>
             <template v-if="!isBooleanConstraint(option) && getConstraintCheck(option)">
-              <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate="constraintValidationRules(option)" :name="option"/>
+              <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate.initial="constraintValidationRules(option)" :name="option"/>
             </template>
             <div v-show="errors.has(option) && removeConstraint(option)" class="row help validate-danger">
               {{ errors.first(option)}}
@@ -300,7 +300,7 @@ export default {
       return property
     },
     removeConstraint: function(key) {
-      this.constraintInputKeyValues[key] = ''
+      _.unset(this.constraintInputKeyValues, key)
       this.pushConstraintInputKeyValues()
       return true
     },
@@ -313,7 +313,7 @@ export default {
     },
     constraintValidationRules: function(option) {
       if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
-        return 'numeric'
+        return 'numeric|required'
       } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
         return this.validationRules(this.typeProperty)
       } else {
