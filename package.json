@@ -102,7 +102,7 @@
     "tableschema": "^1.5.1",
     "temp": "^0.8.3",
     "unzipper": "^0.8.11",
-    "vee-validate": "^2.0.0-rc.18",
+    "vee-validate": "^2.0.3",
     "vue": "^2.5.2",
     "vue-async-computed": "^3.3.1",
     "vue-directive-tooltip": "^1.4.1",

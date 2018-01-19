@@ -145,7 +145,6 @@ const mutations = {
   },
   pushColumnProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
-    console.log(state)
   },
   pushTableProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
@@ -213,7 +212,6 @@ const mutations = {
     let columnProperties = [...hotTab.columnProperties]
     let isMerged = _.merge(columnProperties, hotIdSchema.schema.descriptor.fields)
     state.hotTabs[hotId].columnProperties = columnProperties
-    console.log(state)
     return isMerged
   },
   destroyHotTab(state, hotId) {
@@ -238,7 +236,6 @@ const mutations = {
     if (typeof columnProperties !== 'undefined' && columnProperties.length > property.columnIndex) {
       state.hotTabs[property.hotId].columnProperties.splice(property.columnIndex, 1)
     }
-    console.log(state)
   },
   pushColumnIndexForHotId(state, property) {
     let columnProperties = state.hotTabs[property.hotId].columnProperties
@@ -246,7 +243,6 @@ const mutations = {
       state.hotTabs[property.hotId].columnProperties = []
     }
     state.hotTabs[property.hotId].columnProperties.splice(property.columnIndex, 0, {})
-    console.log(state)
   },
   resetPackagePropertiesToObject(state, properties) {
     _.set(state, 'packageProperties', properties)
