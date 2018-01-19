@@ -14,11 +14,11 @@
           </select>
           <div id="format-container" v-if="formprop.key==='format'" :class="{ 'format-pattern': formatValuesHasPattern }">
             <select :value="getFormatProperty" v-model="formatProperty" @input="setFormatProperty($event.target.value)" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
-                <option v-for="option2 in formatValues" :key="option2" v-bind:value="option2">
+                <option v-for="option2 in formatPropertiesForType" :key="option2" v-bind:value="option2">
                   {{ option2}}
                 </option>
             </select>
-            <input v-show="formatValuesHasPattern" type="text" class="form-control input-sm col-sm-9"/>
+            <input v-show="formatValuesHasPattern" v-model="formatPropertyValue" type="text" class="form-control input-sm col-sm-9"/>
           </div>
         </template>
         <div v-else-if="formprop.key === 'constraints'" id="constraints" class="col-sm-9">
@@ -61,6 +61,7 @@ import {
 } from '@/hot.js'
 import ColumnTooltip from '../mixins/ColumnTooltip'
 import ValidationRules from '../mixins/ValidationRules'
+import {isValidPatternForType} from '@/dateFormats.js'
 Vue.use(VueRx, {
   Subscription
 })
@@ -75,6 +76,7 @@ export default {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       typeProperty: '',
       formatProperty: '',
+      formatPropertyValue: '',
       constraintInputKeyValues: {},
       allTablesAllColumnsNames: {},
       // TODO: setup args so clear for constraints only
@@ -203,6 +205,9 @@ export default {
           property = 'default'
           this.pushColumnProperty(this.setter(hotId, 'format', property))
         }
+        if (isValidPatternForType(property) && _.indexOf(this.formatPropertiesForType, 'pattern') > -1) {
+          property = 'pattern'
+        }
         this.formatProperty = property
         return property
       },
@@ -211,6 +216,21 @@ export default {
         let temp2 = this.cIndex
       }
     }
+    // getFormatValue: {
+    //   async get() {
+    //     let propertyValue = this.formatProperty
+    //     if (property === 'pattern') {
+    //       console.log('inspecting...')
+    //       console.log(timeFormat('%d/%m/%y')())
+    //     }
+    //
+    //     this.formatProperty = property
+    //     return property
+    //   },
+    //   watch() {
+    //     let temp = this.formatProperty
+    //   }
+    // }
   },
   methods: {
     ...mapMutations([
@@ -222,12 +242,22 @@ export default {
     setTypeProperty: async function(value) {
       this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), 'type', value))
       this.typeProperty = value
-      return value
+      // return value
     },
     setFormatProperty: function(value) {
-      let hotId = this.activeCurrentHotId
-      this.pushColumnProperty(this.setter(hotId, 'format', value))
-      this.formatValue = value
+      // if it's a pattern, watcher will trigger appropriate method when this.formatProperty is set
+      if (value !== 'pattern') {
+        let hotId = this.activeCurrentHotId
+        this.pushColumnProperty(this.setter(hotId, 'format', value))
+      }
+      this.formatProperty = value
+    },
+    setFormatPropertyValueForPattern: function() {
+      let pattern = this.formatPropertyValue
+      if (isValidPatternForType(pattern, this.typeProperty)) {
+        let hotId = this.activeCurrentHotId
+        this.pushColumnProperty(this.setter(hotId, 'format', pattern))
+      }
     },
     getProperty: function(key) {
       let hotId = this.activeCurrentHotId
@@ -307,7 +337,6 @@ export default {
       this.allTablesAllColumnsNames = update || {}
     }
   },
-  watch: {},
   computed: {
     ...mapGetters([
       'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getAllHotTablesColumnNames'
@@ -317,9 +346,9 @@ export default {
       return allColumns[this.cIndex] || ''
     },
     formatValuesHasPattern() {
-      return this.formatProperty === 'pattern' && _.indexOf(this.formatValues, 'pattern') > -1
+      return this.formatProperty === 'pattern' && _.indexOf(this.formatPropertiesForType, 'pattern') > -1
     },
-    formatValues() {
+    formatPropertiesForType() {
       let property = this.typeProperty || 'any'
       return this.formats[property]
     },
@@ -329,10 +358,21 @@ export default {
       return this.constraints[property]
     },
     isDropdownFormatDisabled() {
-      return !this.formatValues ? false : this.formatValues.length < 2
+      return !this.formatPropertiesForType ? false : this.formatPropertiesForType.length < 2
     }
   },
-  created: function() {
+  watch: {
+    'formatProperty': function(nextFormat) {
+      console.log(`next format is ${nextFormat}`)
+      if (nextFormat === 'pattern') {
+        if (_.indexOf(this.formatPropertiesForType, 'pattern') > -1) {
+          this.setFormatPropertyValueForPattern()
+        }
+      }
+    },
+    'formatPropertyValue': function() {
+      this.setFormatPropertyValueForPattern()
+    }
   },
   mounted: function() {
     let vueUpdateAllTablesAllColumnsNames = this.updateAllTablesAllColumnsNames

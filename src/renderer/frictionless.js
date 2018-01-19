@@ -25,6 +25,8 @@ function storeData(hotId, schema) {
 }
 
 export async function guessColumnProperties() {
+  console.log(`date choices...`)
+  console.log(Schema.INSPECT_VALUE_DATE_TIME_MAPPING)
   let hot = HotRegister.getActiveInstance()
   let id = hot.guid
   let data = includeHeadersInData(hot)
@@ -40,6 +42,7 @@ export async function guessColumnProperties() {
 
 function checkRow(rowNumber, row, schema, errorCollector) {
   try {
+    console.log(schema)
     schema.castRow(row)
   } catch (err) {
     if (err.multiple) {
