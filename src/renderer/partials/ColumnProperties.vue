@@ -37,6 +37,12 @@
           </div>
         </div>
         <input v-else-if="formprop.key === 'name'" :disabled="formprop.isDisabled" :value="getNameProperty" @input="setProperty(formprop.key, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
+        <template v-else-if="formprop.key === 'rdfType'" >
+          <input :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }" v-validate="{url:true}" :id="formprop.key" :name="formprop.key"/>
+          <div v-show="formprop.key === 'rdfType' && errors.has(formprop.key)" class="row help validate-danger">
+            {{ errors.first(formprop.key)}}
+          </div>
+        </template>
         <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
       </div>
     </div>
