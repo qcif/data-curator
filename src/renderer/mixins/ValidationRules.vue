@@ -14,7 +14,7 @@ export default {
           }
         case 'name':
           return {
-            required: true,
+            required: false,
             regex: /^([-a-z0-9._/])+$/
           }
         case 'integer':
@@ -24,7 +24,7 @@ export default {
         case 'enum':
         case 'pattern':
           return {
-            required: true
+            required: false
           }
         default:
           return ''
