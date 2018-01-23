@@ -171,7 +171,7 @@
     "sinon-chai": "^2.14.0",
     "sinon-test": "^2.1.2",
     "spectron": "^3.7.1",
-    "style-loader": "^0.18.1",
+    "style-loader": "^0.19.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "url-loader": "^0.6.2",
