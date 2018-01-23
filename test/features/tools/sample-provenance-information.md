@@ -47,7 +47,7 @@ Describe where the data is used in reports, analysis or visualisations.
 ## License and Attribution
 License information should be included for each data table and the data package can be added using the table properties and data package properties commands. If this is insufficient to explain the licensing, then provide additional details here.
 
-Provide any preferred attribution statement.
+Provide any preferred attribution statement or copyright notice
 
 ## Preparation
 Your data may be prepared by a community of volunteers. If relevant, provide instructions on how to run any preparation and processing scripts to generate the data.
