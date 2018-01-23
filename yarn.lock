@@ -8730,16 +8730,16 @@ sinon-test@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/sinon-test/-/sinon-test-2.1.2.tgz#c2ad2119d3c1f5aa23f191754844d671fb443789"
 
-sinon@^4.0.2:
-  version "4.1.5"
-  resolved "https://registry.yarnpkg.com/sinon/-/sinon-4.1.5.tgz#620a9b2ac599f88b0455763070f16f4057ed6395"
+sinon@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/sinon/-/sinon-4.2.1.tgz#3664e90ea4bccec6ebde3c06e3da8179983371d9"
   dependencies:
     diff "^3.1.0"
     formatio "1.2.0"
     lodash.get "^4.4.2"
     lolex "^2.2.0"
     nise "^1.2.0"
-    supports-color "^4.4.0"
+    supports-color "^5.1.0"
     type-detect "^4.0.5"
 
 slash@^1.0.0:
