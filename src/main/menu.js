@@ -245,6 +245,7 @@ const template = [
         label: 'Header Row',
         type: 'checkbox',
         checked: false,
+        accelerator: 'Shift+CmdOrCtrl+H',
         click(menuItem) {
           // revert 'checked' toggle so only controlled by header row event
           menuItem.checked = !menuItem.checked
