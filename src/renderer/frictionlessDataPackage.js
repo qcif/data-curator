@@ -59,7 +59,7 @@ function hasAllPackageRequirements(requiredMessages) {
     if (!name || name.trim() === '') {
       requiredMessages.push(`Package property, 'name' must be set.`)
     }
-    addSourcesRequirements(packageProperties.sources, requiredMessages, 'package')
+    addSourcesRequirements(packageProperties, requiredMessages, 'package')
   }
   return requiredMessages.length === 0
 }
@@ -72,7 +72,7 @@ async function initPackage() {
 function addPackageProperties(dataPackage) {
   let packageProperties = hotStore.state.packageProperties
   _.merge(dataPackage.descriptor, packageProperties)
-  removeEmptyLicenses(dataPackage.descriptor)
+  removeEmptiesFromDescriptor(dataPackage.descriptor)
 }
 
 async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
@@ -122,7 +122,7 @@ function hasAllResourceRequirements(hot, requiredMessages) {
     if (!name || name.trim() === '') {
       requiredMessages.push(`Table property, 'name', must not be empty.`)
     }
-    addSourcesRequirements(tableProperties.sources, requiredMessages, 'table')
+    addSourcesRequirements(tableProperties, requiredMessages, 'table')
     addForeignKeyRequirements(tableProperties, requiredMessages)
   }
   let columnProperties = hotStore.state.hotTabs[hot.guid].columnProperties
@@ -130,23 +130,37 @@ function hasAllResourceRequirements(hot, requiredMessages) {
     requiredMessages.push(`Column properties must be set.`)
   } else {
     if (!hasAllColumnNames(hot.guid, columnProperties)) {
-      requiredMessages.push(`All column property 'name's must not be empty.`)
+      requiredMessages.push(`Column property names cannot be empty.`)
     }
   }
   return requiredMessages.length === 0
 }
 
-function addSourcesRequirements(sources, requiredMessages, entityName) {
-  if (!sources) {
-    requiredMessages.push(`At least 1 ${entityName} source must be set.`)
-  } else {
-    for (let source of sources) {
-      if (!source.title || source.title.trim() === '') {
-        requiredMessages.push(`At least 1 ${entityName} source does not have a title.`)
-        return false
-      }
+function addSourcesRequirements(properties, requiredMessages, entityName) {
+  if (typeof properties.sources === 'undefined') {
+    return
+  }
+  for (let source of properties.sources) {
+    if (hasAllEmptyValues(source)) {
+      _.pull(properties.sources, source)
+    } else if (!source.title || source.title.trim() === '') {
+      requiredMessages.push(`At least 1 ${entityName} source does not have a title.`)
+      return false
+    } else {
+      // console.log('source is valid')
     }
   }
+}
+
+function hasAllEmptyValues(propertyObject) {
+  let isEmpty = true
+  _.forOwn(propertyObject, function(value, key) {
+    if (value.trim().length > 0) {
+      isEmpty = false
+      return false
+    }
+  })
+  return isEmpty
 }
 
 function addForeignKeyRequirements(tableProperties, requiredMessages) {
@@ -185,12 +199,17 @@ function addColumnProperties(resource, hotId) {
 function addTableProperties(resource, hotId) {
   let tableProperties = hotStore.state.hotTabs[hotId].tableProperties
   _.merge(resource.descriptor, tableProperties)
-  removeEmptyLicenses(resource.descriptor)
+  removeEmptiesFromDescriptor(resource.descriptor)
 }
 
-function removeEmptyLicenses(descriptor) {
-  if (descriptor.licenses && descriptor.licenses.length === 0) {
-    _.unset(descriptor, 'licenses')
+function removeEmptiesFromDescriptor(descriptor) {
+  removeEmpty(descriptor, 'licenses')
+  removeEmpty(descriptor, 'sources')
+}
+
+function removeEmpty(descriptor, propertyName) {
+  if (descriptor[propertyName] && descriptor[propertyName].length === 0) {
+    _.unset(descriptor, propertyName)
   }
 }
 
