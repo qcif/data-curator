@@ -295,7 +295,6 @@ export default {
       'resetPackagePropertiesToObject',
       'resetTablePropertiesToObject',
       'resetColumnPropertiesToObject',
-      'pushAllColumnsProperty',
       'pushTableProperty',
       'pushPackageProperty'
     ]),

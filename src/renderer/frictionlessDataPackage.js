@@ -43,7 +43,7 @@ async function buildDataPackage(errorMessages) {
   let dataPackage = await initPackage()
   await buildAllResourcesForDataPackage(dataPackage, errorMessages)
   // adding package properties for validation only
-  addPackageProperties(dataPackage)
+  addPackageProperties(dataPackage.descriptor)
   return dataPackage
 }
 
@@ -69,10 +69,10 @@ async function initPackage() {
   return dataPackage
 }
 
-function addPackageProperties(dataPackage) {
+function addPackageProperties(descriptor) {
   let packageProperties = hotStore.state.packageProperties
-  _.merge(dataPackage.descriptor, packageProperties)
-  removeEmptiesFromDescriptor(dataPackage.descriptor)
+  _.merge(descriptor, packageProperties)
+  removeEmptiesFromDescriptor(descriptor)
 }
 
 async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
@@ -107,6 +107,7 @@ async function createValidResource(hotId, errorMessages) {
   }
   let resource = await buildResource(hotTab.tabId, hot.guid)
   if (!resource.valid) {
+    console.log(resource.errors)
     errorMessages.push('There is a required table or column property that is missing. Please check that all required properties are entered.')
     return false
   }
@@ -177,9 +178,11 @@ function addForeignKeyRequirements(tableProperties, requiredMessages) {
 
 async function buildResource(tabId, hotId) {
   let resource = await initResourceAndInfer()
-  addColumnProperties(resource, hotId)
-  addTableProperties(resource, hotId)
-  addPath(resource, tabId)
+  let descriptor = resource.descriptor
+  addColumnProperties(descriptor, hotId)
+  addTableProperties(descriptor, hotId)
+  removeEmptiesFromDescriptor(descriptor)
+  addPath(descriptor, tabId)
   resource.commit()
   return resource
 }
@@ -190,16 +193,21 @@ async function initResourceAndInfer() {
   return resource
 }
 
-function addColumnProperties(resource, hotId) {
+function addColumnProperties(descriptor, hotId) {
   let columnProperties = hotStore.state.hotTabs[hotId].columnProperties
-  resource.descriptor.schema = {}
-  resource.descriptor.schema.fields = columnProperties
+  descriptor.schema = {}
+  descriptor.schema.fields = columnProperties
 }
 
-function addTableProperties(resource, hotId) {
+function addTableProperties(descriptor, hotId) {
   let tableProperties = hotStore.state.hotTabs[hotId].tableProperties
-  _.merge(resource.descriptor, tableProperties)
-  removeEmptiesFromDescriptor(resource.descriptor)
+  _.merge(descriptor, tableProperties)
+  moveMissingValues(descriptor, tableProperties)
+}
+
+function moveMissingValues(descriptor, tableProperties) {
+  _.unset(descriptor, 'missingValues')
+  descriptor.schema.missingValues = tableProperties.missingValues
 }
 
 function removeEmptiesFromDescriptor(descriptor) {
@@ -213,10 +221,9 @@ function removeEmpty(descriptor, propertyName) {
   }
 }
 
-function addPath(resource, tabId) {
+function addPath(descriptor, tabId) {
   let parent = 'data'
   let filename = tabStore.state.tabObjects[tabId].filename
   let basename = path.basename(filename)
-  let resourcePath = `${parent}/${basename}`
-  resource.descriptor.path = resourcePath
+  descriptor.path = `${parent}/${basename}`
 }
