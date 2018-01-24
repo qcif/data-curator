@@ -40,7 +40,6 @@ export async function guessColumnProperties() {
 
 function checkRow(rowNumber, row, schema, errorCollector) {
   try {
-    console.log(schema)
     schema.castRow(row)
   } catch (err) {
     if (err.multiple) {
@@ -56,9 +55,11 @@ function checkRow(rowNumber, row, schema, errorCollector) {
 }
 
 async function checkForSchema(data, hotId) {
-  let columnProperties = store.state.hotTabs[hotId].columnProperties
+  let hotTab = store.state.hotTabs[hotId]
   let schema = await initDataAndInferSchema(data)
-  schema.descriptor.fields = columnProperties
+  schema.descriptor.fields = hotTab.columnProperties
+  store.mutations.initMissingValues(store.state, store.state.hotTabs[hotId])
+  schema.descriptor.missingValues = hotTab.tableProperties.missingValues
   let table = await initDataAgainstSchema(data, schema)
   table.schema.commit()
   return table

@@ -26,6 +26,12 @@ export function getHotIdFromTabIdFunction() {
   return getters.getHotIdFromTabId(state, getters)
 }
 
+function mergeSchemaForColumnProperties(currentProperties, descriptor) {
+  let properties = [...currentProperties]
+  _.merge(properties, descriptor.fields)
+  return properties
+}
+
 const getters = {
   getHotTabs: state => {
     return state.hotTabs
@@ -82,11 +88,6 @@ const getters = {
   },
   getProvenance: state => {
     return state.provenanceProperties
-  },
-  getMissingValuesFromHot: (state, getters) => (hotId) => {
-    if (state.hotTabs[hotId].tableProperties) {
-      return state.hotTabs[hotId].tableProperties.missingValues
-    }
   },
   getHotColumnProperty: (state, getters) => (property) => {
     let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
@@ -198,21 +199,29 @@ const mutations = {
   pushPackageProperty(state, property) {
     _.set(state.packageProperties, property.key, property.value)
   },
-  pushMissingValues(state, hotMissingValues) {
-    let hotId = hotMissingValues.hotId
-    _.set(state.hotTabs, `${hotId}.tableProperties.missingValues`, hotMissingValues.missingValues)
-  },
   pushTableSchema(state, hotIdSchema) {
     let hotId = hotIdSchema.hotId
     let hotTab = state.hotTabs[hotId]
-    if (!hotTab.columnProperties) {
+    mutations.initColumnProperties(state, hotTab)
+    // we cannot mutate the vuex state itself (in lodash call) - we can only assign a new value
+    state.hotTabs[hotId].columnProperties = mergeSchemaForColumnProperties(hotTab.columnProperties, hotIdSchema.schema.descriptor)
+    return state.hotTabs[hotId].columnProperties
+  },
+  initColumnProperties(state, hotTab) {
+    if (typeof hotTab.columnProperties === 'undefined' || !hotTab.columnProperties) {
       hotTab.columnProperties = []
     }
-    // we cannot mutate the vuex state itself (in lodash call) - we can only assign a new value
-    let columnProperties = [...hotTab.columnProperties]
-    let isMerged = _.merge(columnProperties, hotIdSchema.schema.descriptor.fields)
-    state.hotTabs[hotId].columnProperties = columnProperties
-    return isMerged
+  },
+  initMissingValues(state, hotTab) {
+    mutations.initTableProperties(state, hotTab)
+    if (typeof hotTab.tableProperties.missingValues === 'undefined' || !hotTab.tableProperties.missingValues) {
+      hotTab.tableProperties.missingValues = ['']
+    }
+  },
+  initTableProperties(state, hotTab) {
+    if (typeof hotTab.tableProperties === 'undefined' || !hotTab.tableProperties) {
+      hotTab.tableProperties = []
+    }
   },
   destroyHotTab(state, hotId) {
     _.unset(state.hotTabs, hotId)
