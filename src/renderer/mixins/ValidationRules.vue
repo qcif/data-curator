@@ -14,7 +14,7 @@ export default {
           }
         case 'name':
           return {
-            required: false,
+            required: true,
             regex: /^([-a-z0-9._/])+$/
           }
         case 'integer':
@@ -24,7 +24,7 @@ export default {
         case 'enum':
         case 'pattern':
           return {
-            required: false
+            required: true
           }
         default:
           return ''
@@ -42,7 +42,7 @@ export default {
             regex: 'The name field format is invalid. It must consist only of lowercase alphanumeric characters plus ".", "-" and "_".'
           },
           enum: {
-            required: 'There must be an array of values present.'
+            required: 'Separate valid values with a comma.'
           },
           pattern: {
             required: 'There must be a pattern present.'
