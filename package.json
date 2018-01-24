@@ -93,7 +93,7 @@
     "moment": "^2.19.1",
     "node-fs-extra": "^0.8.2",
     "pikaday": "^1.6.1",
-    "pouchdb-adapter-idb": "^6.3.4",
+    "pouchdb-adapter-idb": "^6.4.2",
     "request": "^2.81.0",
     "rxjs": "^5.5.2",
     "slug": "^0.9.1",
