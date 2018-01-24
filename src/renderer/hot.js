@@ -1,6 +1,7 @@
 import Handsontable from 'handsontable/dist/handsontable.full.js'
 import {remote} from 'electron'
 import store from '@/store/modules/hots.js'
+import {allTablesAllColumnsFromSchema$, allTablesAllColumnNames$} from '@/rxSubject.js'
 const Dialog = remote.dialog
 
 const _hots = {}
@@ -242,17 +243,14 @@ export function removeRows() {
   if (typeof range === 'undefined') {
     return
   }
-
   const start = Math.min(range.from.row, range.to.row)
   const end = Math.max(range.from.row, range.to.row)
-
   for (let row = start; row <= end; row++) {
     // rows are re-indexed after each remove
     // so always remove 'start'
     hot.alter('remove_row', start)
   }
-
-  hot.deselectCell()
+  reselectCurrentCellOrMin()
 }
 
 export function removeColumns() {
@@ -261,7 +259,6 @@ export function removeColumns() {
   if (typeof range === 'undefined') {
     return
   }
-
   const start = Math.min(range.from.col, range.to.col)
   const end = Math.max(range.from.col, range.to.col)
   for (let col = start; col <= end; col++) {
@@ -269,9 +266,10 @@ export function removeColumns() {
     // so always remove 'start'
     hot.alter('remove_col', start)
     store.mutations.removeColumnIndexForHotId(store.state, {hotId: hot.guid, columnIndex: start})
+    allTablesAllColumnsFromSchema$.next(store.getters.getAllHotTablesColumnProperties(store.state, store.getters)())
+    allTablesAllColumnNames$.next(store.getters.getAllHotTablesColumnNames(store.state, store.getters)())
   }
-
-  hot.deselectCell()
+  reselectCurrentCellOrMin()
 }
 
 export {
