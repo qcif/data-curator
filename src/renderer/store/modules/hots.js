@@ -1,7 +1,7 @@
 const state = {
   hotTabs: {},
   packageProperties: {},
-  provenanceProperties: {}
+  provenanceProperties: { markdown: '' }
 }
 
 const tableFields = ['encoding', 'format', 'mediatype', 'missingValues', 'name', 'path', 'profile', 'sources', 'title', 'primaryKeys', 'description', 'licenses']
