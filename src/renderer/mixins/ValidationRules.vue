@@ -34,6 +34,9 @@ export default {
   mounted: function() {
     const dict = {
       en: {
+        // messages: {
+        //   email: () => `The email field must be a valid email.`
+        // },
         custom: {
           version: {
             regex: 'The version field must comply with semantic versioning e.g. 1.0.0'
@@ -49,6 +52,12 @@ export default {
           },
           formatValue: {
             required: 'There must be a format value pattern present.'
+          },
+          sourceUrl: {
+            url: 'The path field must be a valid email or path.'
+          },
+          sourcePath: {
+            regex: 'The path field must be a valid email or path.'
           }
         }
       }
