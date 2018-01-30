@@ -4,9 +4,9 @@
       <div class="inputs-container">
         <div v-for="prop in Object.keys(source)" class="input-group">
           <span class="input-group-addon input-sm">{{prop}}</span>
-          <input :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(prop + index) }" :value="source[prop]" @input="setSourceProp(index, prop, $event.target.value)" type="text" :id="prop + index" v-validate="sourceValidationRules(prop)" :name="prop + index"/>
-          <div v-show="errors.has(prop + index) || errors.has('coupon')" class="row help validate-danger">
-            {{ errors}}
+          <input :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(prop + index) }" :value="source[prop]" @input="setSourceProp(index, prop, $event.target.value)" type="text" :id="prop + index" v-validate="sourceValidationRules(prop, index)" :name="prop + index"/>
+          <div v-show="errors.has(prop + index)" class="row help validate-danger">
+            {{ errors.first(prop + index)}}
           </div>
         </div>
       </div>
@@ -46,7 +46,8 @@ export default {
   computed: {
     ...mapGetters(['getActiveTab']),
     regexForPath() {
-      return /^([.](?![.])(?=[/]))?(([^\0])+[/]?)+$/
+      // no ../ or nulls or absolute paths allowed
+      return /^(([.](?![.])|[^/.:])+[/]*)+$/
     }
   },
   asyncComputed: {
@@ -94,34 +95,49 @@ export default {
         }, 100)
       }
     },
-    setSourceProp: async function(index, prop, value) {
-      let vueValidator = this.$validator.errors
-      let sourceErrors = true
-      if (prop === 'path') {
-        try {
-          sourceErrors = await this.$validator.validateAll({sourcePath: value, sourceUrl: value})
-        } catch (err) {
-          console.log('Problem with validation', err)
-        }
-      }
+    setSourceProp: function(index, prop, value) {
       this.setProperty(`sources[${index}][${prop}]`, value)
       let sources = this.getProperty('sources') || []
       this.sources = sources
-      let name = `${prop}${index}`
-      if (!sourceErrors) {
-        if (!this.$validator.errors.has('sourcePath') || !this.$validator.errors.has('sourceUrl')) {
-          // 1 of validations passed so ensure neither error message remains
-          this.$validator.errors.remove('sourcePath')
-          this.$validator.errors.remove('sourceUrl')
-        } else if (this.$validator.errors.has('sourcePath') && this.$validator.errors.has('sourceUrl')) {
-          // we only need 1 error message
-          this.$validator.errors.remove('sourcePath')
-        }
+      if (prop === 'path') {
+        this.validateUrlOrPath(index, value)
       }
-
-      console.log(this.$validator.errors)
     },
-    sourceValidationRules: function(prop) {
+    validateUrlOrPath: async function(index, value) {
+      let prop = 'path'
+      let field = `${prop}${index}`
+      try {
+        let hasValidUrl = await this.validateUrl(field, value)
+        let hasValidPath = await this.validatePath(field, value)
+        this.$validator.detach(field)
+        if (!hasValidUrl && !hasValidPath) {
+          this.$validator.errors.add({field: field, msg: 'The path field must be a valid email or path.'})
+        }
+      } catch (err) {
+        console.log('Problem with validation', err)
+      }
+    },
+    validateUrl: async function(field, value) {
+      return this.validate(field, value, {url: true})
+    },
+    validatePath: async function(field, value) {
+      return this.validate(field, value, {
+        regex: this.regexForPath
+      })
+    },
+    validate: async function(field, value, rulesObject) {
+      let isValid = true
+      // ensure there are no other fields by this name
+      this.$validator.detach(field)
+      await this.$validator.attach({
+        name: field,
+        rules: rulesObject
+      })
+      isValid = await this.$validator.validate(field, value)
+      this.$validator.detach(field)
+      return isValid
+    },
+    sourceValidationRules: function(prop, index) {
       switch (prop) {
         case 'email':
           return 'email'
@@ -140,22 +156,6 @@ export default {
     getActiveTab: function(tab) {
       this.initSources(tab)
     }
-  },
-  beforeDestroy: function() {
-    this.$validator.detach('sourceUrl')
-    this.$validator.detach('sourcePath')
-  },
-  created: function() {
-    this.$validator.attach({
-      name: 'sourceUrl',
-      rules: 'url:true'
-    })
-    this.$validator.attach({
-      name: 'sourcePath',
-      rules: {
-        regex: this.regexForPath
-      }
-    })
   }
 }
 </script>

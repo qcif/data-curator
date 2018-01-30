@@ -52,12 +52,6 @@ export default {
           },
           formatValue: {
             required: 'There must be a format value pattern present.'
-          },
-          sourceUrl: {
-            url: 'The path field must be a valid email or path.'
-          },
-          sourcePath: {
-            regex: 'The path field must be a valid email or path.'
           }
         }
       }
