@@ -4,7 +4,10 @@
       <div class="inputs-container">
         <div v-for="prop in Object.keys(source)" class="input-group">
           <span class="input-group-addon input-sm">{{prop}}</span>
-          <input class="form-control input-sm" :value="source[prop]" @input="setSourceProp(index, prop, $event.target.value)" type="text" />
+          <input :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(prop + index) }" :value="source[prop]" @input="setSourceProp(index, prop, $event.target.value)" type="text" :id="prop + index" v-validate="sourceValidationRules(prop, index)" :name="prop + index"/>
+          <div v-show="errors.has(prop + index)" class="row help validate-danger">
+            {{ errors.first(prop + index)}}
+          </div>
         </div>
       </div>
       <button v-show="getSources.length > 1" type="button" class="btn btn-danger btn-sm" @click="removeSource(index)">
@@ -26,10 +29,13 @@ import {
 } from 'vuex'
 import SideNav from './SideNav'
 import AsyncComputed from 'vue-async-computed'
+import ValidationRules from '../mixins/ValidationRules'
+import VeeValidate from 'vee-validate'
 import Vue from 'vue'
 Vue.use(AsyncComputed)
 export default {
   name: 'sources',
+  mixins: [ValidationRules],
   data() {
     return {
       sources: []
@@ -38,7 +44,11 @@ export default {
   props: ['setProperty', 'getProperty', 'getPropertyGivenHotId'],
   extends: SideNav,
   computed: {
-    ...mapGetters(['getActiveTab'])
+    ...mapGetters(['getActiveTab']),
+    regexForPath() {
+      // no ../ or nulls or absolute paths allowed
+      return /^(([.](?![.])|[^/.:]+)+[/]*)+$/
+    }
   },
   asyncComputed: {
     getSources: {
@@ -68,7 +78,7 @@ export default {
       this.setProperty('sources', sources)
       this.sources = sources
     },
-    emptySource() {
+    emptySource: function() {
       return {'title': '', 'path': '', 'email': ''}
     },
     getSourcesFromTab: async function(tab) {
@@ -89,6 +99,55 @@ export default {
       this.setProperty(`sources[${index}][${prop}]`, value)
       let sources = this.getProperty('sources') || []
       this.sources = sources
+      if (prop === 'path') {
+        this.validateUrlOrPath(index, value)
+      }
+    },
+    validateUrlOrPath: async function(index, value) {
+      let prop = 'path'
+      let field = `${prop}${index}`
+      try {
+        let hasValidUrl = await this.validateUrl(field, value)
+        let hasValidPath = await this.validatePath(field, value)
+        this.$validator.detach(field)
+        if (!hasValidUrl && !hasValidPath) {
+          this.$validator.errors.add({field: field, msg: 'The path field must be a valid email or path.'})
+        }
+      } catch (err) {
+        console.log('Problem with validation', err)
+      }
+    },
+    validateUrl: async function(field, value) {
+      // keep url:true as string for validation to work correctly
+      return this.validate(field, value, 'url:true')
+    },
+    validatePath: async function(field, value) {
+      return this.validate(field, value, {
+        regex: this.regexForPath
+      })
+    },
+    validate: async function(field, value, rules) {
+      let isValid = true
+      // ensure there are no other fields by this name
+      this.$validator.detach(field)
+      await this.$validator.attach({
+        name: field,
+        rules: rules
+      })
+      isValid = await this.$validator.validate(field, value)
+      this.$validator.detach(field)
+      // console.log(isValid)
+      return isValid
+    },
+    sourceValidationRules: function(prop, index) {
+      switch (prop) {
+        case 'email':
+          return 'email'
+        case 'title':
+          return 'required'
+        default:
+          return ''
+      }
     }
   },
   mounted: function() {
@@ -104,4 +163,7 @@ export default {
 </script>
 <style lang="styl" scoped>
 @import '~static/css/sources'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/validationrules'
 </style>
