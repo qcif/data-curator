@@ -47,7 +47,7 @@ export default {
     ...mapGetters(['getActiveTab']),
     regexForPath() {
       // no ../ or nulls or absolute paths allowed
-      return /^(([.](?![.])|[^/.:])+[/]*)+$/
+      return /^(([.](?![.])|[^/.:]+)+[/]*)+$/
     }
   },
   asyncComputed: {
@@ -118,23 +118,25 @@ export default {
       }
     },
     validateUrl: async function(field, value) {
-      return this.validate(field, value, {url: true})
+      // keep url:true as string for validation to work correctly
+      return this.validate(field, value, 'url:true')
     },
     validatePath: async function(field, value) {
       return this.validate(field, value, {
         regex: this.regexForPath
       })
     },
-    validate: async function(field, value, rulesObject) {
+    validate: async function(field, value, rules) {
       let isValid = true
       // ensure there are no other fields by this name
       this.$validator.detach(field)
       await this.$validator.attach({
         name: field,
-        rules: rulesObject
+        rules: rules
       })
       isValid = await this.$validator.validate(field, value)
       this.$validator.detach(field)
+      // console.log(isValid)
       return isValid
     },
     sourceValidationRules: function(prop, index) {
