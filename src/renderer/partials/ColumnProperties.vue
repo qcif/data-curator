@@ -12,25 +12,37 @@
               {{ option1}}
             </option>
           </select>
-          <select v-if="formprop.key==='format'" :value="getFormatProperty" v-model="formatProperty" @input="setFormatProperty($event.target.value)" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
-            <option v-for="option2 in formatValues" :key="option2" v-bind:value="option2">
-              {{ option2}}
-            </option>
-          </select>
+          <div id="format-container" v-if="formprop.key==='format'" :class="{ 'format-pattern': formatValuesHasPattern }">
+            <select :value="getFormatProperty" v-model="formatProperty" @input="setFormatProperty($event.target.value)" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
+                <option v-for="option2 in formatPropertiesForType" :key="option2" v-bind:value="option2">
+                  {{ option2}}
+                </option>
+            </select>
+            <input v-if="formatValuesHasPattern" v-model="formatPropertyValue" type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has('formatValue') }" v-validate.initial="'formatPattern|required'" name="formatValue"/>
+            <div v-show="formatValuesHasPattern && errors.has('formatValue')" class="row help validate-danger">
+              {{ errors.first('formatValue')}}
+            </div>
+          </div>
         </template>
         <div v-else-if="formprop.key === 'constraints'" id="constraints" class="col-sm-9">
           <div class="input-group row" v-for="option in constraintValues" :key="option">
             <input type="checkbox" :id="option" :checked="getConstraintCheck(option)" @click="setConstraintCheck(option, $event.target)"></input>
             <label :for="option" class="form-control-static">{{option}}</label>
             <template v-if="!isBooleanConstraint(option) && getConstraintCheck(option)">
-              <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate="constraintValidationRules(option)" :name="option"/>
+              <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate.initial="constraintValidationRules(option)" :name="option"/>
             </template>
             <div v-show="errors.has(option) && removeConstraint(option)" class="row help validate-danger">
-              {{ errors.first(option)}}
+              {{ errors.collect(option)}}
             </div>
           </div>
         </div>
         <input v-else-if="formprop.key === 'name'" :disabled="formprop.isDisabled" :value="getNameProperty" @input="setProperty(formprop.key, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
+        <template v-else-if="formprop.key === 'rdfType'" >
+          <input :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }" v-validate="{url:true}" :id="formprop.key" :name="formprop.key"/>
+          <div v-show="formprop.key === 'rdfType' && errors.has(formprop.key)" class="row help validate-danger">
+            {{ errors.first(formprop.key)}}
+          </div>
+        </template>
         <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
       </div>
     </div>
@@ -50,13 +62,15 @@ import {
   Subscription
 } from 'rxjs/Subscription'
 import {
-  allTablesAllColumnNames$
+  allTablesAllColumnNames$,
+  allTablesAllColumnsFromSchema$
 } from '@/rxSubject.js'
 import {
   HotRegister
 } from '@/hot.js'
 import ColumnTooltip from '../mixins/ColumnTooltip'
 import ValidationRules from '../mixins/ValidationRules'
+import {isValidPatternForType} from '@/dateFormats.js'
 Vue.use(VueRx, {
   Subscription
 })
@@ -71,6 +85,7 @@ export default {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       typeProperty: '',
       formatProperty: '',
+      formatPropertyValue: '',
       constraintInputKeyValues: {},
       allTablesAllColumnsNames: {},
       // TODO: setup args so clear for constraints only
@@ -163,44 +178,55 @@ export default {
       constraintBooleanBindings: ['required', 'unique']
     }
   },
+  subscriptions() {
+    return {
+      allTablesAllColumns: allTablesAllColumnsFromSchema$
+    }
+  },
   asyncComputed: {
     getTypeProperty: {
       async get() {
+        // type won't always have current hotid immediately available
         let hotId = await this.currentHotId()
-        // let hotId = this.activeCurrentHotId
         let getter = this.getter(hotId, 'type')
         let property = this.getHotColumnProperty(getter)
         if (!property) {
-          this.pushColumnProperty(this.setter(hotId, 'type', 'any'))
           property = 'any'
+          this.pushColumnProperty(this.setter(hotId, 'type', property))
         }
-        // view doesn't always re-render
         this.typeProperty = property
-        this.$forceUpdate()
         return property
       },
       watch() {
         // ensure getter changes for tabs and columns
         let temp = this.getActiveTab
         let temp2 = this.cIndex
+        let temp3 = this.allTablesAllColumns
       }
     },
     getFormatProperty: {
       async get() {
-        let hotId = this.activeCurrentHotId
+        // use promise for format's hotid to keep in sync with getTypeProperty
+        let hotId = await this.currentHotId()
         let getter = this.getter(hotId, 'format')
         let property = this.getHotColumnProperty(getter)
         if (!property) {
-          this.pushColumnProperty(this.setter(hotId, 'format', property))
           property = 'default'
+          this.pushColumnProperty(this.setter(hotId, 'format', property))
+        }
+        // ensure format value model is updated if this is a pattern (important after vue destroy->create)
+        if (isValidPatternForType(property, this.typeProperty) && _.indexOf(this.formatPropertiesForType, 'pattern') > -1) {
+          this.formatPropertyValue = property
+          property = 'pattern'
         }
         this.formatProperty = property
-        this.$forceUpdate()
         return property
       },
       watch() {
         let temp = this.getActiveTab
         let temp2 = this.cIndex
+        // ensure format also updates after setting type
+        let temp3 = this.typeProperty
       }
     }
   },
@@ -214,12 +240,26 @@ export default {
     setTypeProperty: async function(value) {
       this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), 'type', value))
       this.typeProperty = value
-      return value
+      // keep format up-to-date with type
+      if (_.indexOf(this.formatPropertiesForType, this.formatProperty) === -1) {
+        this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), 'format', 'default'))
+      }
+      // return value
     },
     setFormatProperty: function(value) {
-      let hotId = this.activeCurrentHotId
-      this.pushColumnProperty(this.setter(hotId, 'format', value))
-      this.formatValue = value
+      // if it's a pattern, watcher will trigger appropriate method when this.formatProperty is set
+      if (value !== 'pattern') {
+        let hotId = this.activeCurrentHotId
+        this.pushColumnProperty(this.setter(hotId, 'format', value))
+      }
+      this.formatProperty = value
+    },
+    setFormatPropertyValueForPattern: function() {
+      let pattern = this.formatPropertyValue
+      if (isValidPatternForType(pattern, this.typeProperty)) {
+        let hotId = this.activeCurrentHotId
+        this.pushColumnProperty(this.setter(hotId, 'format', pattern))
+      }
     },
     getProperty: function(key) {
       let hotId = this.activeCurrentHotId
@@ -269,7 +309,7 @@ export default {
       return property
     },
     removeConstraint: function(key) {
-      this.constraintInputKeyValues[key] = ''
+      _.unset(this.constraintInputKeyValues, key)
       this.pushConstraintInputKeyValues()
       return true
     },
@@ -281,12 +321,15 @@ export default {
       this.debounceSetConstraints(this.setter(this.activeCurrentHotId, 'constraints', this.constraintInputKeyValues))
     },
     constraintValidationRules: function(option) {
-      if (_.indexOf(['minLength', 'maxLength'], option) > -1) {
-        return 'numeric'
-      } else if (_.indexOf(['minimum', 'maximum'], option) > -1) {
-        return this.validationRules(this.typeProperty)
-      } else {
-        return ''
+      switch (option) {
+        case 'minLength':
+        case 'maxLength':
+          return 'numeric|required'
+        case 'minimum':
+        case 'maximum':
+          return `${this.validationRules(this.typeProperty)}|required`
+        default:
+          return this.validationRules(option)
       }
     },
     updateConstraintInputKeyValues: function() {
@@ -297,9 +340,14 @@ export default {
     },
     updateAllTablesAllColumnsNames: function(update) {
       this.allTablesAllColumnsNames = update || {}
+    },
+    typePropertyWrapper: function() {
+      return this.typeProperty
+    },
+    formatPropertyValueWrapper: function() {
+      return this.formatPropertyValue
     }
   },
-  watch: {},
   computed: {
     ...mapGetters([
       'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getAllHotTablesColumnNames'
@@ -308,9 +356,13 @@ export default {
       let allColumns = this.allTablesAllColumnsNames[this.activeCurrentHotId] || []
       return allColumns[this.cIndex] || ''
     },
-    formatValues() {
-      let property = this.typeProperty
-      return this.formats[property]
+    formatValuesHasPattern() {
+      return this.formatProperty === 'pattern' && _.indexOf(this.formatPropertiesForType, 'pattern') > -1
+    },
+    formatPropertiesForType() {
+      let property = this.typeProperty || 'any'
+      let choices = this.formats[property]
+      return choices
     },
     constraintValues() {
       let property = this.typeProperty
@@ -318,10 +370,20 @@ export default {
       return this.constraints[property]
     },
     isDropdownFormatDisabled() {
-      return !this.formatValues ? false : this.formatValues.length < 2
+      return !this.formatPropertiesForType ? false : this.formatPropertiesForType.length < 2
     }
   },
-  created: function() {
+  watch: {
+    'formatProperty': function(nextFormat) {
+      if (nextFormat === 'pattern') {
+        if (_.indexOf(this.formatPropertiesForType, 'pattern') > -1) {
+          this.setFormatPropertyValueForPattern()
+        }
+      }
+    },
+    'formatPropertyValue': function() {
+      this.setFormatPropertyValueForPattern()
+    }
   },
   mounted: function() {
     let vueUpdateAllTablesAllColumnsNames = this.updateAllTablesAllColumnsNames
@@ -330,7 +392,20 @@ export default {
     })
     allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
   },
-  destroyed: function() {
+  created: function() {
+    let vueType = this.typePropertyWrapper
+    let vueFormat = this.formatPropertyValueWrapper
+    this.$validator.extend('formatPattern', {
+      getMessage: function(field) { return `The format pattern is not supported.` },
+      validate: function(value) {
+        return new Promise((resolve) => {
+          let isValid = isValidPatternForType(vueFormat(), vueType())
+          resolve({
+            valid: isValid
+          })
+        })
+      }
+    })
   }
 }
 </script>

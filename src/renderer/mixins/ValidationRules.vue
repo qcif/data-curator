@@ -15,23 +15,17 @@ export default {
         case 'name':
           return {
             required: true,
-            regex: /^([-a-z0-9._/])+$/,
-            unique_name: true
+            regex: /^([-a-z0-9._/])+$/
           }
         case 'integer':
           return 'numeric'
         case 'number':
           return 'decimal'
-        // case 'date':
-        //   return 'date_format:YYYY-MM-DD'
-        // case 'time':
-        //   return 'date_format:HH:mm:ss'
-        // case 'datetime':
-        //   return 'date_format:YYYY-MM-DD HH:mm:ssZ'
-        // case 'year':
-        //   return 'date_format:YYYY'
-        // case 'yearmonth':
-        //   return 'date_format:YYYY-MM'
+        case 'enum':
+        case 'pattern':
+          return {
+            required: true
+          }
         default:
           return ''
       }
@@ -40,17 +34,29 @@ export default {
   mounted: function() {
     const dict = {
       en: {
+        // messages: {
+        //   email: () => `The email field must be a valid email.`
+        // },
         custom: {
           version: {
             regex: 'The version field must comply with semantic versioning e.g. 1.0.0'
           },
           name: {
             regex: 'The name field format is invalid. It must consist only of lowercase alphanumeric characters plus ".", "-" and "_".'
+          },
+          enum: {
+            required: 'Separate valid values with a comma.'
+          },
+          pattern: {
+            required: 'There must be a pattern present.'
+          },
+          formatValue: {
+            required: 'There must be a format value pattern present.'
           }
         }
       }
     }
-    this.$validator.updateDictionary(dict)
+    VeeValidate.Validator.localize(dict)
   }
 }
 </script>

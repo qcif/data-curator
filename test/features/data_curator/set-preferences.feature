@@ -18,34 +18,24 @@ Feature: Set Preferences
 
   Preferences that can be set include:
 
+  - Default Publishing platform
+    - CKAN (in the future add DataHub.io, Data.World, OctoPub)
+    - Portal URL e.g. https/data.qld.gov.au
+
   - Default Data Package properties
-    - "license name" - pick from list of valid open licences or supply another. See http://opendefinition.org/licenses/ and http://frictionlessdata.io/specs/data-package/#licenses
-    - "license path" - default from licence name, or supply another
-    - "license title"  - default from licence name, or supply another
+    - "license name" - pick from list of valid open licences ~~or supply another~~. See http://opendefinition.org/licenses/ and http://frictionlessdata.io/specs/data-package/#licenses
+    - "license path" - default from licence name ~~, or supply another~~
+    - "license title"  - default from licence name ~~, or supply another~~
     - Sources
-      - "title"
+      - "title" (mandatory if other values exist)
       - "path"
       - "email"
-    - Contributors - see http://frictionlessdata.io/specs/data-package/#contributors
-      - "organization" -
-      - "title" -
-      - "email" -
-      - "path" -
-      - "role" - one of the standard values
-
-  - Default Table properties
-    - "Default save CSV dialect" - when saving a file (comma(default), tab, semi-colon, custom)
-    - If a Custom CSV dialect is supported, then set
-      - "delimiter" - specifies the character sequence which should separate fields (aka columns). Default = ","
-      - "lineTerminator" - specifies the character sequence which should terminate rows. Default = "\r\n"
-      - "quoteChar" - specifies a one-character string to use as the quoting character. Default = '"'
-      - "doubleQuote" - controls the handling of quotes inside fields. If true, two consecutive quotes should be interpreted as one. Default = "true"
-      - "escapeChar" - specifies a one-character string to use for escaping (for example, \), mutually exclusive with quoteChar. Not set by default
-      - "nullSequence" - specifies the null sequence (for example \N). Not set by default
-      - "skipInitialSpace" - specifies how to interpret whitespace which immediately follows a delimiter; if false, it means that whitespace immediately after a delimiter should be treated as part of the following field. Default = true
-      - "header" - indicates whether the file includes a header row. If true the first row in the file is a header row, not data. Default = "true"
-      - "caseSensitiveHeader" - indicates that case in the header is meaningful. For example, columns CAT and Cat should not be equated. Default = "false"
-      - "csvddfVersion" - a number, in n.n format, e.g., 1.0. If not present, consumers should assume latest schema version.
+    - [Contributors](http://frictionlessdata.io/specs/data-package/#contributors) allow multiple entries (e.g. Author and Maintainer for CKAN)
+      - "organization"
+      - "title" (mandatory if other values exist)
+      - "email"
+      - "path"
+      - "role" - one of the standard values in a drop down list
 
   Scenario: Set Preferences
     Given I have opened Data Curator

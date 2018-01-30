@@ -15,11 +15,11 @@
 </form>
 </template>
 <script>
-import SideNav from './SideNav'
-import licenses from '../partials/Licenses'
-import sources from '../partials/Sources'
-import PackageTooltip from '../mixins/PackageTooltip'
-import ValidationRules from '../mixins/ValidationRules'
+import SideNav from '@/partials/SideNav'
+import licenses from '@/partials/Licenses'
+import sources from '@/partials/Sources'
+import PackageTooltip from '@/mixins/PackageTooltip'
+import ValidationRules from '@/mixins/ValidationRules'
 import {
   mapMutations,
   mapState,

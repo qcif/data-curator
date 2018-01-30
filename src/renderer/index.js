@@ -80,19 +80,19 @@ ipc.on('editSelectAll', function() {
 })
 
 ipc.on('insertRowAbove', function() {
-  insertRowAbove(false)
+  insertRowAbove()
 })
 
 ipc.on('insertRowBelow', function() {
-  insertRowBelow(false)
+  insertRowBelow()
 })
 
 ipc.on('insertColumnLeft', function() {
-  insertColumnLeft(false)
+  insertColumnLeft()
 })
 
 ipc.on('insertColumnRight', function() {
-  insertColumnRight(false)
+  insertColumnRight()
 })
 
 ipc.on('removeRows', function() {

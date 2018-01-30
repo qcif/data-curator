@@ -141,8 +141,7 @@ const template = [
         click() {
           BrowserWindow.getFocusedWindow().webContents.send('editRedo')
         }
-      },
-      {
+      }, {
         type: 'separator'
       },
       // electron roles for copy/cut/paste seem to be more reliable than equivalent for hot
@@ -150,28 +149,25 @@ const template = [
         role: 'cut',
         label: 'Cut',
         accelerator: 'CmdOrCtrl+X'
-      },
-      {
+      }, {
         role: 'copy',
         label: 'Copy',
         accelerator: 'CmdOrCtrl+C'
-      },
-      {
+      }, {
         role: 'paste',
         label: 'Paste',
         accelerator: 'CmdOrCtrl+V'
       },
       // {
-      //   // turned off for Beta release
-      //   // role: 'selectall',
+      //    turned off for Beta release
+      //    role: 'selectall',
       //   label: 'Select All',
       //   enabled: false,
       //   accelerator: 'CmdOrCtrl+A'
       // },
       {
         type: 'separator'
-      },
-      {
+      }, {
         label: 'Insert Row Above',
         accelerator: 'CmdOrCtrl+I',
         click() {
@@ -249,6 +245,7 @@ const template = [
         label: 'Header Row',
         type: 'checkbox',
         checked: false,
+        accelerator: 'Shift+CmdOrCtrl+H',
         click(menuItem) {
           // revert 'checked' toggle so only controlled by header row event
           menuItem.checked = !menuItem.checked
@@ -342,15 +339,15 @@ const template = [
     submenu: [
       {
         role: 'minimize'
-      // hide until implemented
-      // }, {
-      //   type: 'separator'
-      // }, {
-      //   label: 'Next Tab',
-      //   accelerator: 'CmdOrCtrl+Right'
-      // }, {
-      //   label: 'Previous Tab',
-      //   accelerator: 'CmdOrCtrl+Left'
+        // hide until implemented
+        // }, {
+        //   type: 'separator'
+        // }, {
+        //   label: 'Next Tab',
+        //   accelerator: 'CmdOrCtrl+Right'
+        // }, {
+        //   label: 'Previous Tab',
+        //   accelerator: 'CmdOrCtrl+Left'
       }, {
         type: 'separator'
       }, {
@@ -402,15 +399,17 @@ const template = [
   }
 ]
 
-// Tailor menu for Windows - add About to Help menu if (process.platform !== 'darwin') {
-template[4].submenu.push({
-  type: 'separator'
-}, {
-  label: 'About Data Curator',
-  click: function() {
-    showSidePanel('about')
-  }
-})
+// Tailor menu for Windows - add About to Help menu
+if (process.platform !== 'darwin') {
+  template[4].submenu.push({
+    type: 'separator'
+  }, {
+    label: 'About Data Curator',
+    click: function() {
+      showSidePanel('about')
+    }
+  })
+}
 
 // Tailor menu for macOS
 if (process.platform === 'darwin') {
@@ -422,15 +421,15 @@ if (process.platform === 'darwin') {
         click: function() {
           showSidePanel('about')
         }
-      // Placeholder for future feature
-      //      }, {
-      //        type: 'separator'
-      //      }, {
-      //        label: 'Preferences'
-      //        accelerator: 'CmdOrCtrl+,',
-      //        click: function() {
-      //          showSidePanel('preferences')
-      //        }
+        // Placeholder for future feature
+        //      }, {
+        //        type: 'separator'
+        //      }, {
+        //        label: 'Preferences'
+        //        accelerator: 'CmdOrCtrl+,',
+        //        click: function() {
+        //          showSidePanel('preferences')
+        //        }
       }, {
         type: 'separator'
       }, {
@@ -460,15 +459,15 @@ if (process.platform === 'darwin') {
       role: 'minimize'
     }, {
       role: 'zoom'
-    // hide until implemented
-    // }, {
-    //   type: 'separator'
-    // }, {
-    //   label: 'Next Tab',
-    //   accelerator: 'CmdOrCtrl+Right'
-    // }, {
-    //   label: 'Previous Tab',
-    //   accelerator: 'CmdOrCtrl+Left'
+      // hide until implemented
+      // }, {
+      //   type: 'separator'
+      // }, {
+      //   label: 'Next Tab',
+      //   accelerator: 'CmdOrCtrl+Right'
+      // }, {
+      //   label: 'Previous Tab',
+      //   accelerator: 'CmdOrCtrl+Left'
     }, {
       type: 'separator'
     }, {

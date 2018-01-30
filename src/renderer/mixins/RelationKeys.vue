@@ -24,7 +24,7 @@ export default {
     ...mapGetters(['getActiveTab', 'getAllHotTablesColumnNames', 'getAllTabTitles', 'getTabObjects', 'getHotIdFromTabId', 'getTabId', 'getAllForeignKeys', 'tabTitle'])
   },
   methods: {
-    ...mapMutations(['pushAllColumnsProperty', 'pushForeignKeysLocalFieldsForTable', 'pushForeignKeysForeignFieldsForTable', 'pushForeignKeysForeignTableForTable']),
+    ...mapMutations(['pushForeignKeysLocalFieldsForTable', 'pushForeignKeysForeignFieldsForTable', 'pushForeignKeysForeignTableForTable']),
     initTableHeaderKeys: function() {
       allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
     },

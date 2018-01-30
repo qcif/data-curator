@@ -43,7 +43,7 @@ async function buildDataPackage(errorMessages) {
   let dataPackage = await initPackage()
   await buildAllResourcesForDataPackage(dataPackage, errorMessages)
   // adding package properties for validation only
-  addPackageProperties(dataPackage)
+  addPackageProperties(dataPackage.descriptor)
   return dataPackage
 }
 
@@ -59,6 +59,7 @@ function hasAllPackageRequirements(requiredMessages) {
     if (!name || name.trim() === '') {
       requiredMessages.push(`Package property, 'name' must be set.`)
     }
+    addSourcesRequirements(packageProperties, requiredMessages, 'package')
   }
   return requiredMessages.length === 0
 }
@@ -68,10 +69,10 @@ async function initPackage() {
   return dataPackage
 }
 
-function addPackageProperties(dataPackage) {
+function addPackageProperties(descriptor) {
   let packageProperties = hotStore.state.packageProperties
-  _.merge(dataPackage.descriptor, packageProperties)
-  removeEmptyLicenses(dataPackage.descriptor)
+  _.merge(descriptor, packageProperties)
+  removeEmptiesFromDescriptor(descriptor)
 }
 
 async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
@@ -106,6 +107,7 @@ async function createValidResource(hotId, errorMessages) {
   }
   let resource = await buildResource(hotTab.tabId, hot.guid)
   if (!resource.valid) {
+    console.log(resource.errors)
     errorMessages.push('There is a required table or column property that is missing. Please check that all required properties are entered.')
     return false
   }
@@ -113,30 +115,74 @@ async function createValidResource(hotId, errorMessages) {
 }
 
 function hasAllResourceRequirements(hot, requiredMessages) {
-  if (!hotStore.state.hotTabs[hot.guid].tableProperties) {
+  let tableProperties = hotStore.state.hotTabs[hot.guid].tableProperties
+  if (!tableProperties) {
     requiredMessages.push(`Table properties must be set.`)
   } else {
-    let name = hotStore.state.hotTabs[hot.guid].tableProperties.name
+    let name = tableProperties.name
     if (!name || name.trim() === '') {
       requiredMessages.push(`Table property, 'name', must not be empty.`)
     }
+    addSourcesRequirements(tableProperties, requiredMessages, 'table')
+    addForeignKeyRequirements(tableProperties, requiredMessages)
   }
   let columnProperties = hotStore.state.hotTabs[hot.guid].columnProperties
   if (!columnProperties) {
     requiredMessages.push(`Column properties must be set.`)
   } else {
     if (!hasAllColumnNames(hot.guid, columnProperties)) {
-      requiredMessages.push(`All column property 'name's must not be empty.`)
+      requiredMessages.push(`Column property names cannot be empty.`)
     }
   }
   return requiredMessages.length === 0
 }
 
+function addSourcesRequirements(properties, requiredMessages, entityName) {
+  if (typeof properties.sources === 'undefined') {
+    return
+  }
+  for (let source of properties.sources) {
+    if (hasAllEmptyValues(source)) {
+      _.pull(properties.sources, source)
+    } else if (!source.title || source.title.trim() === '') {
+      requiredMessages.push(`At least 1 ${entityName} source does not have a title.`)
+      return false
+    } else {
+      // console.log('source is valid')
+    }
+  }
+}
+
+function hasAllEmptyValues(propertyObject) {
+  let isEmpty = true
+  _.forOwn(propertyObject, function(value, key) {
+    if (value.trim().length > 0) {
+      isEmpty = false
+      return false
+    }
+  })
+  return isEmpty
+}
+
+function addForeignKeyRequirements(tableProperties, requiredMessages) {
+  if (typeof tableProperties.foreignKeys === 'undefined') {
+    return
+  }
+  for (let foreignKey of tableProperties.foreignKeys) {
+    if (_.isEmpty(foreignKey.fields) || _.isEmpty(foreignKey.reference.fields)) {
+      requiredMessages.push(`Foreign keys cannot be empty.`)
+      return false
+    }
+  }
+}
+
 async function buildResource(tabId, hotId) {
   let resource = await initResourceAndInfer()
-  addColumnProperties(resource, hotId)
-  addTableProperties(resource, hotId)
-  addPath(resource, tabId)
+  let descriptor = resource.descriptor
+  addColumnProperties(descriptor, hotId)
+  addTableProperties(descriptor, hotId)
+  removeEmptiesFromDescriptor(descriptor)
+  addPath(descriptor, tabId)
   resource.commit()
   return resource
 }
@@ -147,28 +193,37 @@ async function initResourceAndInfer() {
   return resource
 }
 
-function addColumnProperties(resource, hotId) {
+function addColumnProperties(descriptor, hotId) {
   let columnProperties = hotStore.state.hotTabs[hotId].columnProperties
-  resource.descriptor.schema = {}
-  resource.descriptor.schema.fields = columnProperties
+  descriptor.schema = {}
+  descriptor.schema.fields = columnProperties
 }
 
-function addTableProperties(resource, hotId) {
+function addTableProperties(descriptor, hotId) {
   let tableProperties = hotStore.state.hotTabs[hotId].tableProperties
-  _.merge(resource.descriptor, tableProperties)
-  removeEmptyLicenses(resource.descriptor)
+  _.merge(descriptor, tableProperties)
+  moveMissingValues(descriptor, tableProperties)
 }
 
-function removeEmptyLicenses(descriptor) {
-  if (descriptor.licenses && descriptor.licenses.length === 0) {
-    _.unset(descriptor, 'licenses')
+function moveMissingValues(descriptor, tableProperties) {
+  _.unset(descriptor, 'missingValues')
+  descriptor.schema.missingValues = tableProperties.missingValues
+}
+
+function removeEmptiesFromDescriptor(descriptor) {
+  removeEmpty(descriptor, 'licenses')
+  removeEmpty(descriptor, 'sources')
+}
+
+function removeEmpty(descriptor, propertyName) {
+  if (descriptor[propertyName] && descriptor[propertyName].length === 0) {
+    _.unset(descriptor, propertyName)
   }
 }
 
-function addPath(resource, tabId) {
+function addPath(descriptor, tabId) {
   let parent = 'data'
   let filename = tabStore.state.tabObjects[tabId].filename
   let basename = path.basename(filename)
-  let resourcePath = `${parent}/${basename}`
-  resource.descriptor.path = resourcePath
+  descriptor.path = `${parent}/${basename}`
 }
