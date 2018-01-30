@@ -3073,9 +3073,9 @@ ejs@^2.5.7, ejs@~2.5.6:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.5.7.tgz#cc872c168880ae3c7189762fd5ffc00896c9518a"
 
-electron-builder-lib@19.55.2:
-  version "19.55.2"
-  resolved "https://registry.yarnpkg.com/electron-builder-lib/-/electron-builder-lib-19.55.2.tgz#9808495613cd947a0d1abf83b962c16da6402f9c"
+electron-builder-lib@19.55.3:
+  version "19.55.3"
+  resolved "https://registry.yarnpkg.com/electron-builder-lib/-/electron-builder-lib-19.55.3.tgz#06fd10374c3c2315eade512c408f857baa5921e5"
   dependencies:
     "7zip-bin" "^2.4.1"
     asar-integrity "0.2.4"
@@ -3103,15 +3103,15 @@ electron-builder-lib@19.55.2:
     semver "^5.5.0"
     temp-file "^3.1.1"
 
-electron-builder@^19.27.2:
-  version "19.55.2"
-  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-19.55.2.tgz#af709037a97e85fe55cf87e87255bf96333750a3"
+electron-builder@^19.55.3:
+  version "19.55.3"
+  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-19.55.3.tgz#01d3070af8a2eb97d91e6d029f28104b4bf8a068"
   dependencies:
     bluebird-lst "^1.0.5"
     builder-util "4.2.1"
     builder-util-runtime "4.0.3"
     chalk "^2.3.0"
-    electron-builder-lib "19.55.2"
+    electron-builder-lib "19.55.3"
     electron-download-tf "4.3.4"
     fs-extra-p "^4.5.0"
     is-ci "^1.1.0"
@@ -3119,7 +3119,7 @@ electron-builder@^19.27.2:
     read-config-file "2.1.1"
     sanitize-filename "^1.6.1"
     update-notifier "^2.3.0"
-    yargs "^10.1.1"
+    yargs "^11.0.0"
 
 electron-chromedriver@~1.7.1:
   version "1.7.1"
@@ -9921,9 +9921,9 @@ yargs-parser@^7.0.0:
   dependencies:
     camelcase "^4.1.0"
 
-yargs-parser@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-8.1.0.tgz#f1376a33b6629a5d063782944da732631e966950"
+yargs-parser@^9.0.2:
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-9.0.2.tgz#9ccf6a43460fe4ed40a9bb68f48d43b8a68cc077"
   dependencies:
     camelcase "^4.1.0"
 
@@ -9945,9 +9945,9 @@ yargs@6.6.0:
     y18n "^3.2.1"
     yargs-parser "^4.2.0"
 
-yargs@^10.1.1:
-  version "10.1.2"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-10.1.2.tgz#454d074c2b16a51a43e2fb7807e4f9de69ccb5c5"
+yargs@^11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-11.0.0.tgz#c052931006c5eee74610e5fc0354bedfd08a201b"
   dependencies:
     cliui "^4.0.0"
     decamelize "^1.1.1"
@@ -9960,7 +9960,7 @@ yargs@^10.1.1:
     string-width "^2.0.0"
     which-module "^2.0.0"
     y18n "^3.2.1"
-    yargs-parser "^8.1.0"
+    yargs-parser "^9.0.2"
 
 yargs@^4.8.0:
   version "4.8.1"
