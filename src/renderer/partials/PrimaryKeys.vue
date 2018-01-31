@@ -35,8 +35,6 @@ export default {
     },
 
     pushSelectedKeys: function(values) {
-      console.log(`property name before push is ${this.propertyName}`)
-      console.log(values)
       this.setProperty(this.propertyName, values)
     }
   }

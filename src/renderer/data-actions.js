@@ -39,7 +39,7 @@ export function saveDataToFile(hot, format, filename, callback) {
         console.log('There was a problem saving data to file.')
         throw err
       }
-      console.log('File saved successfully.')
+      // console.log('File saved successfully.')
     }
   }
 
@@ -52,27 +52,5 @@ export function saveDataToFile(hot, format, filename, callback) {
   } else {
     data = $.csv.fromArrays(arrays, format.options)
   }
-  // console.log('incoming hot arrays are:')
-  // console.log(hot.getData())
-  // console.log('outgoing csv data is')
-  // console.log(data)
   fs.writeFile(filename, data, callback)
 }
-
-// TODO: once file formats updated to match use this function and remove dependency on jQuery csv
-// function csvToArrays(data, format) {
-//   var arrays = parse(data, format)
-//   return arrays
-// }
-
-// TODO: once file formats updated to match use this function and remove dependency on jQuery csv
-// function arraysToCsvToFile(arrays, format, filename, callback) {
-//   // TODO: now that using node.js csv 'formats' will need to be updated from jQuery csv to node.js csv
-//   stringify(arrays, format, function(err, data) {
-//     if (err) {
-//       console.log('There was a problem converting arrays to csv.')
-//       throw err
-//     }
-//     fs.writeFile(filename, data, callback)
-//   })
-// }

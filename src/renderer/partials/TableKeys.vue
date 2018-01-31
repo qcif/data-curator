@@ -22,7 +22,6 @@ export default {
   },
   methods: {
     setSelectedTable(value) {
-      console.log('pushing from table keys vue...')
       this.pushSelectedTable(value)
     }
   }

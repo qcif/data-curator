@@ -37,25 +37,18 @@
             {{sideNavViewTitle}}
           </a>
         </div>
-        <!-- <div class="row"> -->
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
           <component :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :cIndex="currentColumnIndex">
           </component>
         </transition>
-        <!-- </div> -->
-        <!-- <div class="row"/> -->
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
-          <a v-if="enableSideNavLeftArrow" href="#" v-tooltip="tooltip('tooltip-previous')" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
-          <!-- <span v-else class="left disabled"><span class="btn fa fa-chevron-left fa-2x" /></span> -->
+          <a v-if="enableSideNavLeftArrow" href="#" v-tooltip.left="tooltip('tooltip-previous')" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
           <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" />
-          <a v-if="enableSideNavRightArrow" href="#" v-tooltip="tooltip('tooltip-next')" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
-          <!-- <span v-else class="right disabled"><span class="btn fa fa-chevron-right fa-2x" /></span> -->
+          <a v-if="enableSideNavRightArrow" href="#" v-tooltip.left="tooltip('tooltip-next')" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
           <component v-if="enableSideNavRightArrow" is="tooltipNext" />
         </div>
-        <!-- </div> -->
     </nav>
     <div id="main-panel" class="panel panel-default" :class="sideNavPropertiesForMain">
-      <!-- <div id="main-top-panel" class="panel panel-heading"></div> -->
       <div id="main-middle-panel" class="panel panel-body" :class="messageStatus">
         <div id='csvEditor'>
           <ul class="nav nav-tabs">
@@ -70,7 +63,6 @@
               </ul>
             </li>
             <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')">
-            <!-- <li class="tab-add" @click="addTab"> -->
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
             <component is="tooltipAddTab" />
@@ -139,7 +131,6 @@ import {
   getCurrentColumnIndexOrMin,
   getCurrentColumnIndexOrMax,
   reselectCurrentCellOrMin,
-  reselectCurrentCellOrMax,
   incrementActiveColumn,
   decrementActiveColumn,
   getActiveSelected,
@@ -280,9 +271,6 @@ export default {
     toolbarMenuName() {
       return _.get(this.toolbarMenus[this.toolbarIndex], 'name')
     },
-    maxColAllowed() {
-      return getColumnCount() - 1
-    },
     messageStatus() {
       return this.messages ? 'messages-opened' : 'messages-closed'
     },
@@ -307,7 +295,6 @@ export default {
       'resetPackagePropertiesToObject',
       'resetTablePropertiesToObject',
       'resetColumnPropertiesToObject',
-      'pushAllColumnsProperty',
       'pushTableProperty',
       'pushPackageProperty'
     ]),
@@ -346,8 +333,7 @@ export default {
       try {
         await validateActiveDataAgainstSchema(this.reportValidationRowErrors)
       } catch (err) {
-        console.log('There was an error(s) validating table.')
-        console.log(err)
+        console.log('There was an error(s) validating table.', err)
       }
     },
     storeResetCallback: function(allProperties) {
@@ -382,8 +368,7 @@ export default {
           this.exportPackageFeedback()
         }
       } catch (err) {
-        console.log('There was an error creating a data package.')
-        console.log(err)
+        console.log('There was an error creating a data package.', err)
       }
     },
     latestHotContainer: function() {
@@ -507,7 +492,7 @@ export default {
       } else if (index > this.toolbarIndex) {
         this.sideNavTransition = 'sideNav-right'
       } else {
-        // console.log('same toolbar selection...')
+        // ('same toolbar selection...')
       }
     },
     isSideNavToolbarMenu: function(index) {
@@ -518,9 +503,8 @@ export default {
       this.enableSideNavLeftArrow = false
       this.enableSideNavRightArrow = false
       if (this.sideNavView === 'column') {
-        // this.currentColumnIndex = getCurrentColumnIndexOrMin()
         this.enableSideNavLeftArrow = this.currentColumnIndex > 0
-        this.enableSideNavRightArrow = this.currentColumnIndex < this.maxColAllowed
+        this.enableSideNavRightArrow = this.currentColumnIndex < getColumnCount() - 1
       }
     },
     updateSideNavState: function() {
@@ -545,20 +529,19 @@ export default {
     },
     updateActiveColumn: function() {
       let selected = getActiveSelected()
-      if (!selected) {
-        console.log('Cannot update active column without a column selected.')
-      } else {
+      if (selected) {
         this.currentColumnIndex = selected[1]
+      } else {
+        // ('Cannot update active column without a column selected.')
       }
     },
     updateToolbarMenuForColumn: function(index) {
-      let maxColAllowed = this.maxColAllowed
       let currentColIndex = getCurrentColumnIndexOrMax()
       if (index < this.toolbarIndex && currentColIndex > 0) {
         decrementActiveColumn(currentColIndex)
         this.updateActiveColumn()
       } else if (index > this.toolbarIndex) {
-        if (currentColIndex < maxColAllowed) {
+        if (currentColIndex < getColumnCount()) {
           incrementActiveColumn(currentColIndex)
           this.updateActiveColumn()
         } else {
@@ -636,7 +619,7 @@ export default {
     adjustSidenavFormHeight: function() {
       let sidenav = document.querySelector('#sidenav')
       let sidenavHeight = sidenav.clientHeight
-      // console.log(`height is ${sidenavHeight}`)
+      // (`height is ${sidenavHeight}`)
       let form = sidenav.querySelector('form')
       this.sideNavFormHeight = (sidenavHeight - 150) + 'px'
       if (form) {
@@ -729,13 +712,11 @@ export default {
   beforeCreate: function() {
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
       let hot = HotRegister.getInstance(hotId)
-      // console.log(`sending ${hot.hasColHeaders()}`)
       ipc.send('hasHeaderRow', hot.hasColHeaders())
     })
     onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
   },
   created: function() {
-    console.log('home vue created.')
     const vueGuessProperties = this.inferColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       vueGuessProperties()

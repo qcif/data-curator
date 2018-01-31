@@ -4,7 +4,7 @@ Feature: Create Constraint from Column
   So that I quickly define the enum constraint
 
   If the number of unique values in the enum exceed a limit, then error.
-  Suggest enum not appropriate constraint or clean data first
+  Suggest enum not appropriate constraint, clean data, or create reference table and foreign key relationship.
 
   Scenario: Create Constraint from Column
     Given I have opened Data Curator

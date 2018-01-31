@@ -7,8 +7,6 @@ Vue.directive('tooltip', function(el, binding) {
   // el.style.backgroundColor = binding.value
 })
 
-// const actionsInjector = require('inject-loader!../../src/renderer/storage/modules/')
-
 const stubbedStore = {
   state: {
     tabs: [],

@@ -9,6 +9,7 @@ Feature: Data Quality Information
 
   See:
   - [Sample report](https://relishapp.com/odi-australia/data-curator/docs/backlog/sample-data-quality-information)
+  - [GoodTables.py conversation](https://gitter.im/frictionlessdata/chat?at=5a4791515355812e57324073)
 
   - research:
 

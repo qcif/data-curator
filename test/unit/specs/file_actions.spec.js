@@ -2,7 +2,6 @@ import {HotRegister} from '@/hot.js'
 import {rows} from '@/ragged-rows'
 import {saveDataToFile, loadDataIntoHot} from '@/data-actions'
 import {fileFormats} from '@/file-formats'
-import { mutations } from '@/store'
 import {remote} from 'electron'
 import fs from 'fs'
 import os from 'os'
@@ -16,50 +15,73 @@ let assert = chai.assert
 let expect = chai.expect
 let should = chai.should()
 
-let items = {
-  tab: {
-    activeTitle: '',
-    activeFilename: '',
-    filenames: []
-  }
-}
-
 describe('file actions', () => {
-  let hot
-  let hotId
-  let stubGlobal
+  let globalStub
+  let hotRegisterActiveQueryStub
+  let items = {
+    tab: {
+      activeTitle: '',
+      activeFilename: '',
+      filenames: []
+    }
+  }
+  let hotElementClassName = 'stubbedHot'
+
+  function resetDocument() {
+    document.open()
+    document.write('<html><body></body></html>')
+    document.close()
+  }
+
+  function stubDom() {
+    let hotView = document.createElement('div')
+    hotView.setAttribute('class', hotElementClassName)
+    document.body.appendChild(hotView)
+  }
+
+  function stubActiveQuery() {
+    return document.querySelectorAll(`.${hotElementClassName}`)[0]
+  }
+
+  function stubHotRegisterActiveQuery() {
+    hotRegisterActiveQueryStub = sinon.stub(HotRegister, 'activeQuery')
+    hotRegisterActiveQueryStub.withArgs().returns(stubActiveQuery())
+  }
+
   before(function() {
     window._ = require('lodash')
   })
 
   beforeEach(() => {
-    let hotView = document.createElement('div')
-    document.body.appendChild(hotView)
-    hotId = HotRegister.register(hotView)
-    hot = HotRegister.getInstance(hotId)
+    resetDocument()
+    stubDom()
+    stubHotRegisterActiveQuery()
   })
 
-  let stubGlobalTab = () => {
-    stubGlobal = sinon.stub(remote, 'getGlobal')
-    stubGlobal.withArgs('tab').returns({ activeTitle: '',
-      activeFilename: '',
-      filenames: []
-    })
+  function registerHot() {
+    let container = stubActiveQuery()
+    let hotId = HotRegister.register(container)
+    let hot = HotRegister.getInstance(hotId)
+    return hot
+  }
+
+  let globalStubTab = () => {
+    globalStub = sinon.stub(remote, 'getGlobal')
+    globalStub.withArgs('tab').returns({activeTitle: '', activeFilename: '', filenames: []})
   }
 
   afterEach(() => {
     HotRegister.destroyAllHots()
-    hot = null
+    hotRegisterActiveQueryStub.restore()
   })
 
   describe('opening csv data', () => {
     it('opens simple csv data capturing it in a handsontable', () => {
       let data = 'foo,bar,baz\r\n1,2,3\r\n4,5,6'
-      hot.addHook('afterLoadData', function() {
-        expect(hot.getData()).to.eql([
-          [
-            'foo', 'bar', 'baz'
-          ],
+      let hot = registerHot()
+      hot.addHook('afterUpdateSettings', function() {
+        expect(hot.getColHeader()).to.deep.equal(['foo', 'bar', 'baz'])
+        expect(hot.getData()).to.deep.equal([
           [
             '1', '2', '3'
           ],
@@ -73,11 +95,10 @@ describe('file actions', () => {
   describe('opening semicolon-separated data', () => {
     it('opens simple semicolon-separated data capturing it in a handsontable', () => {
       let data = 'foo;bar;baz\r\n1;2;3\r\n4;5;6'
-      hot.addHook('afterLoadData', () => {
-        expect(hot.getData()).to.eql([
-          [
-            'foo', 'bar', 'baz'
-          ],
+      let hot = registerHot()
+      hot.addHook('afterUpdateSettings', function() {
+        expect(hot.getColHeader()).to.deep.equal(['foo', 'bar', 'baz'])
+        expect(hot.getData()).to.deep.equal([
           [
             '1', '2', '3'
           ],
@@ -92,15 +113,16 @@ describe('file actions', () => {
     it('saves simple csv data to a file, with data intact', done => {
       let data = 'foo,bar,baz\r\n1,2,3\r\n4,5,6\r\n'
       let tempFile = `${os.tmpdir()}/mycsv.csv`
-      stubGlobalTab()
-      hot.addHook('afterLoadData', () => {
+      globalStubTab()
+      let hot = registerHot()
+      hot.addHook('afterUpdateSettings', function() {
         saveDataToFile(hot, fileFormats.csv, tempFile, () => {
           fs.readFile(tempFile, 'utf-8', (err, d) => {
             console.log('running callback...')
             if (err) {
               console.log(err.stack)
             }
-            expect(d).to.eq(data)
+            expect(d).to.deep.equal(data)
 
             // TODO : title is now in tab - test this.
             done()
@@ -108,7 +130,7 @@ describe('file actions', () => {
         })
       })
       loadDataIntoHot(hot, data)
-      stubGlobal.restore()
+      globalStub.restore()
     })
   })
 
@@ -116,20 +138,21 @@ describe('file actions', () => {
     it('converts a file from csv to tsv', done => {
       let data = 'foo,bar,baz\r\n1,2,3\r\n4,5,6'
       let tempFile = `${os.tmpdir()}/mytsv.tsv`
-      stubGlobalTab()
-      hot.addHook('afterLoadData', () => {
+      globalStubTab()
+      let hot = registerHot()
+      hot.addHook('afterUpdateSettings', () => {
         saveDataToFile(hot, fileFormats.tsv, tempFile, () => {
           fs.readFile(tempFile, 'utf-8', (err, d) => {
             if (err) {
               console.log(err.stack)
             }
-            expect(d).to.eq('foo\tbar\tbaz\r\n1\t2\t3\r\n4\t5\t6\r\n')
+            expect(d).to.deep.equal('foo\tbar\tbaz\r\n1\t2\t3\r\n4\t5\t6\r\n')
             done()
           })
         })
       })
       loadDataIntoHot(hot, data)
-      stubGlobal.restore()
+      globalStub.restore()
     })
   })
 })

@@ -1,1 +1,1 @@
-These features have been prioritised for version 2. [What features would you like](https://github.com/ODIQueensland/data-curator/issues/84)?
+These features prioritised for version 2 have been moved to the relevant directories or to the backlog directory or tagged @backlog

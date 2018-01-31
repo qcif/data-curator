@@ -59,20 +59,18 @@ ipc.on('getCSV', function(e, format) {
 ipc.on('editUndo', function() {
   let hot = HotRegister.getActiveInstance()
   if (hot.isUndoAvailable) {
-    console.log('undo is available')
     hot.undo()
   } else {
-    console.log('undo is not available')
+    // console.log('undo is not available')
   }
 })
 
 ipc.on('editRedo', function() {
   let hot = HotRegister.getActiveInstance()
   if (hot.isRedoAvailable) {
-    console.log('redo is available')
     hot.redo()
   } else {
-    console.log('redo is not available')
+    // console.log('redo is not available')
   }
 })
 
@@ -82,19 +80,19 @@ ipc.on('editSelectAll', function() {
 })
 
 ipc.on('insertRowAbove', function() {
-  insertRowAbove(false)
+  insertRowAbove()
 })
 
 ipc.on('insertRowBelow', function() {
-  insertRowBelow(false)
+  insertRowBelow()
 })
 
 ipc.on('insertColumnLeft', function() {
-  insertColumnLeft(false)
+  insertColumnLeft()
 })
 
 ipc.on('insertColumnRight', function() {
-  insertColumnRight(false)
+  insertColumnRight()
 })
 
 ipc.on('removeRows', function() {

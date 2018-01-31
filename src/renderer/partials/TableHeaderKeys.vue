@@ -21,8 +21,6 @@ export default {
         return this.getSelectedKeys
       },
       set: function(value) {
-        console.log('about to send value:')
-        console.log(value)
         this.pushSelectedKeys(value)
       }
     }

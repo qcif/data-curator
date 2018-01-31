@@ -1,7 +1,7 @@
 const state = {
   hotTabs: {},
   packageProperties: {},
-  provenanceProperties: {}
+  provenanceProperties: { markdown: '' }
 }
 
 const tableFields = ['encoding', 'format', 'mediatype', 'missingValues', 'name', 'path', 'profile', 'sources', 'title', 'primaryKeys', 'description', 'licenses']
@@ -26,48 +26,47 @@ export function getHotIdFromTabIdFunction() {
   return getters.getHotIdFromTabId(state, getters)
 }
 
+function mergeSchemaForColumnProperties(currentProperties, descriptor) {
+  let properties = [...currentProperties]
+  _.merge(properties, descriptor.fields)
+  return properties
+}
+
 const getters = {
   getHotTabs: state => {
     return state.hotTabs
   },
   getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
-    // console.log('entered getAllHotColumnPropertiesFromHotId')
-    // console.log(state.hotTabs)
     return state.hotTabs[hotId].columnProperties || []
   },
   // ensure getter fires each time by passing in function
   getAllHotTablesColumnNames: (state, getters) => () => {
-    // console.log('entered get all hot table column names function...')
     let hotIdColumnNames = {}
     for (let hotId in state.hotTabs) {
-      // console.log(`next hot id is ${hotId}`)
       let columnProps = state.hotTabs[hotId].columnProperties || []
       let columnNames = columnProps.map(column => {
         return column.name
       })
-      // console.log(`names are`)
-      // console.log(columnNames)
       hotIdColumnNames[hotId] = columnNames
     }
-    // console.log(`hot id column names are...`)
-    // console.log(hotIdColumnNames)
+    return hotIdColumnNames
+  },
+  getAllHotTablesColumnProperties: (state, getters) => () => {
+    let hotIdColumnNames = {}
+    for (let hotId in state.hotTabs) {
+      hotIdColumnNames[hotId] = state.hotTabs[hotId].columnProperties || []
+    }
     return hotIdColumnNames
   },
   getAllHotColumnNamesFromHotId: (state, getters) => (hotId) => {
-    // console.log('triggered get all hot column names...')
-    // console.log(`hot id is: ${hotId}`)
     if (!state.hotTabs[hotId].columnProperties) {
       state.hotTabs[hotId].columnProperties = []
-      // console.log('not hot columns set. aborting...')
       // return
     }
     let names = state.hotTabs[hotId].columnProperties.map(column => {
       let name = column.name
-      // console.log(`returning column name: ${name}`)
       return column.name
     })
-    // console.log(`returning active hot all column names`)
-    // console.log(names)
     return names
   },
   getHotIdFromTabId: (state, getters) => (tabId) => {
@@ -90,21 +89,11 @@ const getters = {
   getProvenance: state => {
     return state.provenanceProperties
   },
-  getMissingValuesFromHot: (state, getters) => (hotId) => {
-    if (state.hotTabs[hotId].tableProperties) {
-      return state.hotTabs[hotId].tableProperties.missingValues
-    }
-  },
   getHotColumnProperty: (state, getters) => (property) => {
     let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
     return hotColumnProperties[property.key]
   },
   getTableProperty: (state, getters) => (property) => {
-    // console.log('incoming table property for table property get...')
-    // console.log(property)
-    // console.log('attempting to fetch table properties...')
-    // console.log(property)
-    // console.log(state.hotTabs[property.hotId])
     let tableProperties = state.hotTabs[property.hotId].tableProperties || {}
     return tableProperties[property.key]
   },
@@ -123,14 +112,10 @@ const getters = {
   getAllForeignKeys: (state, getters) => () => {
     let allForeignKeys = {}
     for (let hotId in state.hotTabs) {
-      console.log(`hot id in get all foreign keys is ${hotId}`)
       let tableProperties = state.hotTabs[hotId].tableProperties || {}
-      console.log('table properties')
-      console.log(typeof tableProperties)
       let foreignKeys = tableProperties.foreignKeys || []
       allForeignKeys[hotId] = foreignKeys
     }
-    console.log('completed get all foreign keys')
     return allForeignKeys
   }
 }
@@ -158,22 +143,12 @@ const mutations = {
       }
       mutations.pushColumnProperty(state, property)
     }
-    // console.log('all push complete')
-    // console.log(state.hotTabs)
   },
   pushColumnProperty(state, property) {
-    // console.log(`incoming property is...`)
-    // console.log(property)
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
-    // console.log('pushed column property complete')
-    // console.log(state.hotTabs)
   },
   pushTableProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
-    console.log(`table property:`)
-    console.log(property)
-    console.log('pushed...')
-    console.log(state.hotTabs)
   },
   pushForeignKeysLocalFieldsForTable(state, property) {
     let tableProperties = _.assign({}, state.hotTabs[property.hotId].tableProperties) || {}
@@ -187,17 +162,11 @@ const mutations = {
         }
       }
     }
-    console.log(`so far foreign local keys are:`)
-    console.log(foreignKeys)
     foreignKeys[property.index].fields = property.fields
-    console.log(`completed 'hots.js': pushForeignKeysLocalFieldsForTable`)
     state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
-    console.log(state.hotTabs)
   },
   pushForeignKeysForeignTableForTable(state, property) {
     let tableProperties = _.assign({}, state.hotTabs[property.hotId].tableProperties) || {}
-    console.log(`table properties is:`)
-    console.log(tableProperties)
     let foreignKeys = tableProperties.foreignKeys || []
     if (!foreignKeys[property.index]) {
       foreignKeys[property.index] = {
@@ -208,11 +177,8 @@ const mutations = {
         }
       }
     }
-    console.log(`so far foreign keys tables are:`)
-    console.log(foreignKeys)
     foreignKeys[property.index].reference.resource = property.resource
     state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
-    console.log(state.hotTabs)
     // _.set(state.hotTabs, `${property.hotId}.tableProperties.foreignKeys`, property.foreignKeys)
   },
   pushForeignKeysForeignFieldsForTable(state, property) {
@@ -227,45 +193,35 @@ const mutations = {
         }
       }
     }
-    console.log(`so far foreign keys are:`)
-    console.log(foreignKeys)
     foreignKeys[property.index].reference.fields = property.fields
     state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
-    console.log(state.hotTabs)
-  },
-  // TODO : schema fields has simply been incorporated into overwriting column properties - remove legacy methods
-  pushTableSchemaProperty(state, property) {
-    mutations.pushTableProperty(state, property)
-  },
-  // deprecated
-  pushTableSchemaDescriptorProperty(state, property) {
-    mutations.pushTableProperty(state, property)
   },
   pushPackageProperty(state, property) {
     _.set(state.packageProperties, property.key, property.value)
-    //    console.log('package properties pushed...')
-    //    console.log(state)
   },
-  pushMissingValues(state, hotMissingValues) {
-    let hotId = hotMissingValues.hotId
-    _.set(state.hotTabs, `${hotId}.tableProperties.missingValues`, hotMissingValues.missingValues)
-  },
-  pushTableSchema(state, hotTable) {
-    let isColumnPropertiesMerged = mutations.mergeTableSchemaOverCurrentColumnProperties(state, hotTable)
-    return isColumnPropertiesMerged
-  },
-
-  mergeTableSchemaOverCurrentColumnProperties(state, hotIdSchema) {
+  pushTableSchema(state, hotIdSchema) {
     let hotId = hotIdSchema.hotId
     let hotTab = state.hotTabs[hotId]
-    if (!hotTab.columnProperties) {
+    mutations.initColumnProperties(state, hotTab)
+    // we cannot mutate the vuex state itself (in lodash call) - we can only assign a new value
+    state.hotTabs[hotId].columnProperties = mergeSchemaForColumnProperties(hotTab.columnProperties, hotIdSchema.schema.descriptor)
+    return state.hotTabs[hotId].columnProperties
+  },
+  initColumnProperties(state, hotTab) {
+    if (typeof hotTab.columnProperties === 'undefined' || !hotTab.columnProperties) {
       hotTab.columnProperties = []
     }
-    // we cannot mutate the vuex state itself (in lodash call) - we can only assign a new value
-    let columnProperties = [...hotTab.columnProperties]
-    let isMerged = _.merge(columnProperties, hotIdSchema.schema.descriptor.fields)
-    state.hotTabs[hotId].columnProperties = columnProperties
-    return isMerged
+  },
+  initMissingValues(state, hotTab) {
+    mutations.initTableProperties(state, hotTab)
+    if (typeof hotTab.tableProperties.missingValues === 'undefined' || !hotTab.tableProperties.missingValues) {
+      hotTab.tableProperties.missingValues = ['']
+    }
+  },
+  initTableProperties(state, hotTab) {
+    if (typeof hotTab.tableProperties === 'undefined' || !hotTab.tableProperties) {
+      hotTab.tableProperties = []
+    }
   },
   destroyHotTab(state, hotId) {
     _.unset(state.hotTabs, hotId)
@@ -283,6 +239,19 @@ const mutations = {
   },
   resetColumnPropertiesForHotId(state, property) {
     state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}
+  },
+  removeColumnIndexForHotId(state, property) {
+    let columnProperties = state.hotTabs[property.hotId].columnProperties
+    if (typeof columnProperties !== 'undefined' && columnProperties.length > property.columnIndex) {
+      state.hotTabs[property.hotId].columnProperties.splice(property.columnIndex, 1)
+    }
+  },
+  pushColumnIndexForHotId(state, property) {
+    let columnProperties = state.hotTabs[property.hotId].columnProperties
+    if (typeof columnProperties == 'undefined') {
+      state.hotTabs[property.hotId].columnProperties = []
+    }
+    state.hotTabs[property.hotId].columnProperties.splice(property.columnIndex, 0, {})
   },
   resetPackagePropertiesToObject(state, properties) {
     _.set(state, 'packageProperties', properties)

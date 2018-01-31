@@ -4,7 +4,7 @@
     <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
       <label v-show="formprop.label" v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label" :for="formprop.label">{{formprop.label}}</label>
       <component :is="formprop.tooltipView"/>
-      <input v-if="formprop.key === 'missingValue'" :value="missingValues" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
+      <input v-if="formprop.key === 'missingValues'" :value="missingValues" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
       <component v-else-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
       <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" v-validate="validationRules(formprop.key)" :name="formprop.key"/>
       <div v-show="errors.has(formprop.key) && removeValue(formprop.key)" class="row help validate-danger">
@@ -107,11 +107,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getMissingValuesFromHot', 'getActiveTab', 'getTableProperty', 'getHotTabs'])
+    ...mapGetters(['getActiveTab', 'getTableProperty', 'getHotTabs'])
   },
   methods: {
     ...mapMutations([
-      'pushTableSchemaDescriptorProperty', 'pushTableProperty'
+      'pushTableProperty'
     ]),
     getArrayValues: async function(key) {
       let tabId = this.getActiveTab
@@ -141,17 +141,6 @@ export default {
         }) || ['']
         let string = array.join()
         return string
-      }
-    },
-    setMissingValues: function(value) {
-      let hot = HotRegister.getActiveInstance()
-      if (hot) {
-        let array = Array.from(new Set(value.split(',')))
-        this.pushTableSchemaDescriptorProperty({
-          hotId: hot.guid,
-          key: 'missingValues',
-          value: array
-        })
       }
     },
     getProperty: function(key) {
