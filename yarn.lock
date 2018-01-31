@@ -8808,8 +8808,9 @@ table@^4.0.1:
     slice-ansi "1.0.0"
     string-width "^2.1.1"
 
-tableschema@../tableschema-js:
-  version "1.5.1"
+tableschema@^1.2.1:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.4.2.tgz#d0077ef955358982c66f8caeba8f5bcac87e2963"
   dependencies:
     axios "^0.16.1"
     csv "^1.1.1"
@@ -8820,11 +8821,10 @@ tableschema@../tableschema-js:
     regenerator-runtime "^0.11.0"
     stream-to-async-iterator "^0.2.0"
     tv4 "^1.2.7"
-    validator "^9.2.0"
 
-tableschema@^1.2.1:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.4.2.tgz#d0077ef955358982c66f8caeba8f5bcac87e2963"
+tableschema@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.5.1.tgz#cf030be7ac8dd7802f6a86e9826e34eaf59512a4"
   dependencies:
     axios "^0.16.1"
     csv "^1.1.1"
@@ -9460,10 +9460,6 @@ validate-npm-package-license@^3.0.1:
 validate.io-undefined@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/validate.io-undefined/-/validate.io-undefined-1.0.3.tgz#7e27fcbb315b841e78243431897671929e20b7f4"
-
-validator@^9.2.0:
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/validator/-/validator-9.4.0.tgz#c503ef88f7e6b8fb7688599267b309482d81ae60"
 
 validator@~7.0.0:
   version "7.0.0"

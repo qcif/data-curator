@@ -16,7 +16,7 @@
   }
 }
 
-/* #sidenav label,#sidenav input,#sidenav select {
+#sidenav label,#sidenav input,#sidenav select {
   border-top: 0;
   padding-left: 5px !important;
   padding-right: 5px !important;
@@ -24,88 +24,8 @@
 }
 #sidenav select, #sidenav input {
   width: 100%;
-} */
+}
 
-/* .col-sm-9 {
+.col-sm-9 {
   width: 100%;
-} */
-
-/*.hidden {display: none;}*/
-
-.nav-tabs>li.tab-heading.active a {
-  position: relative;
-}
-
-.nav-tabs>li.tab-heading a {
-  margin: 0;
-}
-
-.tab-add a {
-  position: relative;
-}
-
-.tab-add a:hover {
-  background-color: initial !important;
-  border-color: transparent !important;
-  margin: 0;
-}
-
-.tab-add a button {
-  position: absolute;
-  bottom: 0;
-}
-
-@media screen and (min-width: 480px) {
-  /*.col-sm-3 {
-    float: left;
-  }
-  .col-sm-9 {
-    float: left;
-  }*/
-  .col-sm-9 {
-    width: 100%;
-  }
-  .toolbar-text {
-    visibility: visible;
-  }
-}
-@media screen and (min-width: 768px) {
-  #sidenav label,#sidenav input,#sidenav select {
-    display: inline-block;
-    /*margin: 0 !important;*/
-    border-top: 0;
-    padding-left: 5px !important;
-    padding-right: 5px !important;
-    text-align: left !important;
-  }
-  #sidenav select, #sidenav input {
-    width: 100%;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  #main-panel.left {
-    margin-left: 160px !important;
-  }
-  #main-panel.right {
-    margin-right: 160px !important;
-  }
-  #sidenav {
-    width: 160px !important;
-  }
-  #sidenav .navbar-brand {
-    padding-top: 25px;
-  }
-  #sidenav.closed {
-    width: 0 !important;
-  }
-  .toolbar-text {
-    visibility: collapse;
-  }
-  #toolbar li a {
-    padding: 0;
-    margin: 0;
-    height: 50px;
-    width: 50px;
-  }
 }
