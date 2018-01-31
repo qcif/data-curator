@@ -42,9 +42,9 @@
           </component>
         </transition>
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
-          <a v-if="enableSideNavLeftArrow" href="#" v-tooltip="tooltip('tooltip-previous')" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
+          <a v-if="enableSideNavLeftArrow" href="#" v-tooltip.left="tooltip('tooltip-previous')" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
           <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" />
-          <a v-if="enableSideNavRightArrow" href="#" v-tooltip="tooltip('tooltip-next')" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
+          <a v-if="enableSideNavRightArrow" href="#" v-tooltip.left="tooltip('tooltip-next')" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
           <component v-if="enableSideNavRightArrow" is="tooltipNext" />
         </div>
     </nav>
