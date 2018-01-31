@@ -13,10 +13,7 @@ async function initDataAndInferSchema(data) {
 async function initDataAgainstSchema(data, schema) {
   // provide schema rather than infer
   // frictionless default for csv dialect is that tables DO have headers
-  let table = await Table.load(data, {
-    schema: schema,
-    headers: 0
-  })
+  let table = await Table.load(data, {schema: schema, headers: 0})
   return table
 }
 
@@ -41,35 +38,25 @@ export async function guessColumnProperties() {
   return message
 }
 
-function checkRow(rowNumber, row, schema, errorCollector) {
-  try {
-    schema.castRow(row)
-  } catch (err) {
-    handleErrors(err, errorCollector, rowNumber)
-  }
-}
-
-function handleErrors(err, errorCollector, rowNumber) {
-  if (err.multiple) {
-    for (const error of err.errors) {
-      let columnNumber = error.columnNumber || 'N/A'
-      errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: error.message, name: error.name})
-    }
-  } else {
-    let columnNumber = err.columnNumber || 'N/A'
-    errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: err.message, name: err.name})
-  }
-}
-
 async function checkForSchema(data, hotId) {
   let hotTab = store.state.hotTabs[hotId]
   let schema = await initDataAndInferSchema(data)
   schema.descriptor.fields = hotTab.columnProperties
+  schema.descriptor.primaryKey = hotTab.tableProperties.primaryKeys
+  schema.descriptor.foreignKeys = hotTab.tableProperties.foreignKeys
   store.mutations.initMissingValues(store.state, store.state.hotTabs[hotId])
   schema.descriptor.missingValues = hotTab.tableProperties.missingValues
   let table = await initDataAgainstSchema(data, schema)
   table.schema.commit()
   return table
+}
+
+function checkRow(rowNumber, row, schema, errorCollector) {
+  try {
+    schema.castRow(row)
+  } catch (err) {
+    handleRowError(err, rowNumber, errorCollector)
+  }
 }
 
 function isRowBlank(row) {
@@ -138,36 +125,47 @@ export async function validateActiveDataAgainstSchema(callback) {
   }
   let data = includeHeadersInData(hot)
   const errorCollector = []
-  let hasColHeader = hot.hasColHeaders()
-  checkHeaderErrors(data[0], errorCollector, hasColHeader)
+  const hasColHeaders = hot.hasColHeaders()
+  checkHeaderErrors(data[0], errorCollector, hasColHeaders)
   let table = await checkForSchema(data, id)
   // don't cast at stream, wait until row to cast otherwise not all errors will be reported.
-  const stream = await table.iter({extended: true, stream: true, cast: true, forceCast: true})
+  const stream = await table.iter({extended: true, stream: true, cast: true, forceCast: true, relations: true})
   stream.on('data', (row) => {
-    let rowNumber = hasColHeader
+    // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
+    let rowNumber = hasColHeaders
       ? row[0]
       : row[0] + 1
-    handleRow(row, rowNumber, errorCollector, table.schema)
-  })
-  stream.on('error', (err) => {
-    // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
-    if (err) {
-      handleErrors(err, errorCollector, rowNumber)
+    if (row[2] instanceof Error) {
+      let err = row[2]
+      handleRowError(err, rowNumber, errorCollector)
+    } else {
+      if (isRowBlank(row[2])) {
+        errorCollector.push({rowNumber: rowNumber, message: `Row ${rowNumber} is completely blank`, name: 'Blank Row'})
+      }
+      // TODO: once frictionless release allows forceCast remove this call & the corresponding method
+      checkRow(rowNumber, row[2], schema, errorCollector)
     }
+  })
+  // some errors are not at row level - handle these
+  stream.on('error', (err) => {
+    const rowNumber = err.rowNumber ? err.rowNumber : 'N/A'
+    handleRowError(err, rowNumber, errorCollector)
+    callback(errorCollector)
   })
   stream.on('end', () => {
     callback(errorCollector)
   })
 }
 
-function handleRow(row, rowNumber, errorCollector, schema) {
-  // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
-  if (row instanceof Error) {
-    console.log('This is an error. Handle it differently')
-    return
+function handleRowError(err, rowNumber, errorCollector) {
+  if (err.multiple) {
+    for (const error of err.errors) {
+      // console.log(error)
+      let columnNumber = error.columnNumber || 'N/A'
+      errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: error.message, name: error.name})
+    }
+  } else {
+    let columnNumber = err.columnNumber || 'N/A'
+    errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: err.message, name: err.name})
   }
-  if (isRowBlank(row[2])) {
-    errorCollector.push({rowNumber: rowNumber, message: `Row ${rowNumber} is completely blank`, name: 'Blank Row'})
-  }
-  checkRow(rowNumber, row[2], schema, errorCollector)
 }
