@@ -114,7 +114,7 @@
     "vue-template-compiler": "^2.5.2",
     "vuex": "^3.0.0",
     "webpack-fix-default-import-plugin": "^1.0.3",
-    "xlsx": "^0.11.7",
+    "xlsx": "^0.11.18",
     "zeroclipboard": "^2.3.0"
   },
   "devDependencies": {
