@@ -34,7 +34,6 @@ export default {
       'getProvenance'
     ]),
     markText() {
-      console.log(typeof this.provenance)
       return markdown().render(this.provenance)
     },
     buttonIconClass() {
