@@ -38,6 +38,22 @@ export async function guessColumnProperties() {
   return message
 }
 
+function checkRow(rowNumber, row, schema, errorCollector) {
+  try {
+    schema.castRow(row)
+  } catch (err) {
+    if (err.multiple) {
+      for (const error of err.errors) {
+        let columnNumber = error.columnNumber || 'N/A'
+        errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: error.message, name: error.name})
+      }
+    } else {
+      let columnNumber = err.columnNumber || 'N/A'
+      errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: err.message, name: err.name})
+    }
+  }
+}
+
 async function checkForSchema(data, hotId) {
   let hotTab = store.state.hotTabs[hotId]
   let schema = await initDataAndInferSchema(data)
@@ -49,14 +65,6 @@ async function checkForSchema(data, hotId) {
   let table = await initDataAgainstSchema(data, schema)
   table.schema.commit()
   return table
-}
-
-function checkRow(rowNumber, row, schema, errorCollector) {
-  try {
-    schema.castRow(row)
-  } catch (err) {
-    handleRowError(err, rowNumber, errorCollector)
-  }
 }
 
 function isRowBlank(row) {
@@ -129,43 +137,18 @@ export async function validateActiveDataAgainstSchema(callback) {
   checkHeaderErrors(data[0], errorCollector, hasColHeaders)
   let table = await checkForSchema(data, id)
   // don't cast at stream, wait until row to cast otherwise not all errors will be reported.
-  const stream = await table.iter({extended: true, stream: true, cast: true, forceCast: true, relations: true})
+  const stream = await table.iter({extended: true, stream: true, cast: false, relations: true})
   stream.on('data', (row) => {
     // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
     let rowNumber = hasColHeaders
       ? row[0]
       : row[0] + 1
-    if (row[2] instanceof Error) {
-      let err = row[2]
-      handleRowError(err, rowNumber, errorCollector)
-    } else {
-      if (isRowBlank(row[2])) {
-        errorCollector.push({rowNumber: rowNumber, message: `Row ${rowNumber} is completely blank`, name: 'Blank Row'})
-      }
-      // TODO: once frictionless release allows forceCast remove this call & the corresponding method
-      checkRow(rowNumber, row[2], schema, errorCollector)
+    if (isRowBlank(row[2])) {
+      errorCollector.push({rowNumber: rowNumber, message: `Row ${rowNumber} is completely blank`, name: 'Blank Row'})
     }
-  })
-  // some errors are not at row level - handle these
-  stream.on('error', (err) => {
-    const rowNumber = err.rowNumber ? err.rowNumber : 'N/A'
-    handleRowError(err, rowNumber, errorCollector)
-    callback(errorCollector)
+    checkRow(rowNumber, row[2], table.schema, errorCollector)
   })
   stream.on('end', () => {
     callback(errorCollector)
   })
-}
-
-function handleRowError(err, rowNumber, errorCollector) {
-  if (err.multiple) {
-    for (const error of err.errors) {
-      // console.log(error)
-      let columnNumber = error.columnNumber || 'N/A'
-      errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: error.message, name: error.name})
-    }
-  } else {
-    let columnNumber = err.columnNumber || 'N/A'
-    errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: err.message, name: err.name})
-  }
 }
