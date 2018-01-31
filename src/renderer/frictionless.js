@@ -13,7 +13,10 @@ async function initDataAndInferSchema(data) {
 async function initDataAgainstSchema(data, schema) {
   // provide schema rather than infer
   // frictionless default for csv dialect is that tables DO have headers
-  let table = await Table.load(data, {schema: schema, headers: 0})
+  let table = await Table.load(data, {
+    schema: schema,
+    headers: 0
+  })
   return table
 }
 
@@ -42,15 +45,19 @@ function checkRow(rowNumber, row, schema, errorCollector) {
   try {
     schema.castRow(row)
   } catch (err) {
-    if (err.multiple) {
-      for (const error of err.errors) {
-        let columnNumber = error.columnNumber || 'N/A'
-        errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: error.message, name: error.name})
-      }
-    } else {
-      let columnNumber = err.columnNumber || 'N/A'
-      errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: err.message, name: err.name})
+    handleErrors(err, errorCollector, rowNumber)
+  }
+}
+
+function handleErrors(err, errorCollector, rowNumber) {
+  if (err.multiple) {
+    for (const error of err.errors) {
+      let columnNumber = error.columnNumber || 'N/A'
+      errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: error.message, name: error.name})
     }
+  } else {
+    let columnNumber = err.columnNumber || 'N/A'
+    errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: err.message, name: err.name})
   }
 }
 
@@ -131,21 +138,36 @@ export async function validateActiveDataAgainstSchema(callback) {
   }
   let data = includeHeadersInData(hot)
   const errorCollector = []
-  checkHeaderErrors(data[0], errorCollector, hot.hasColHeaders())
+  let hasColHeader = hot.hasColHeaders()
+  checkHeaderErrors(data[0], errorCollector, hasColHeader)
   let table = await checkForSchema(data, id)
   // don't cast at stream, wait until row to cast otherwise not all errors will be reported.
-  const stream = await table.iter({extended: true, stream: true, cast: false})
+  const stream = await table.iter({extended: true, stream: true, cast: true, forceCast: true})
   stream.on('data', (row) => {
-    // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
-    let rowNumber = hot.hasColHeaders()
+    let rowNumber = hasColHeader
       ? row[0]
       : row[0] + 1
-    if (isRowBlank(row[2])) {
-      errorCollector.push({rowNumber: rowNumber, message: `Row ${rowNumber} is completely blank`, name: 'Blank Row'})
+    handleRow(row, rowNumber, errorCollector, table.schema)
+  })
+  stream.on('error', (err) => {
+    // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
+    if (err) {
+      handleErrors(err, errorCollector, rowNumber)
     }
-    checkRow(rowNumber, row[2], table.schema, errorCollector)
   })
   stream.on('end', () => {
     callback(errorCollector)
   })
+}
+
+function handleRow(row, rowNumber, errorCollector, schema) {
+  // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
+  if (row instanceof Error) {
+    console.log('This is an error. Handle it differently')
+    return
+  }
+  if (isRowBlank(row[2])) {
+    errorCollector.push({rowNumber: rowNumber, message: `Row ${rowNumber} is completely blank`, name: 'Blank Row'})
+  }
+  checkRow(rowNumber, row[2], schema, errorCollector)
 }
