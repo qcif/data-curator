@@ -1,5 +1,7 @@
 - data_curator (Data Curator):
   - about.feature
+  - check-for-update.feature
+  - set-preferences.feature
   - quit.feature
 - file:
   - new.feature
@@ -27,6 +29,9 @@
   - delete-rows.feature
   - delete-columns.feature
   - data-entry.feature
+  - find.feature
+  - replace-in-column.feature
+  - replace-in-table.feature
 - tools:
   - freeze-header-row.feature
   - guess-column-properties.feature
@@ -35,13 +40,15 @@
   - set-provenance-information.feature
   - sample-provenance-information.md
   - set-datapackage-properties.feature
+  - create-constraint-from-column.feature
+  - create-lookup-table-from-column.feature
   - validate-table.feature
   - export-datapackage.feature
+  - publish-data-package.feature
 - window:
   - show-next-tab.feature
   - show-previous-tab.feature
 - help:
-  - edit-keyboard-shortcuts.feature (Keyboard Shortcuts)
   - support-forum.feature
   - report-issues.feature
 - other:
@@ -50,9 +57,11 @@
   - add-tab.feature
   - move-cursor-in-table.feature
   - sort-column.feature
-  - move-to-next-previous-panel.feature
+  - move-to-next-previous-column-property.feature
   - show-help-tags.feature
   - menu-keyboard-shortcuts.feature (Menu keyboard shortcuts)
+  - edit-keyboard-shortcuts.feature (Edit Keyboard Shortcuts)
+
 - version-2 (Version 2):
   - check-for-update.feature
   - set-preferences.feature

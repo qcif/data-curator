@@ -33,10 +33,6 @@ function createWindow() {
   }
 }
 
-// function checkForMultipleWindows() {
-//   console.log('checking for multiple windows...')
-// }
-
 const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
   // Someone tried to run a second instance, we should focus our window.
   console.log('Attempted to open a second instance. Disallowing...')

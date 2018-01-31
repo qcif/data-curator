@@ -43,7 +43,6 @@ export default {
       }
     },
     currentHotId: async function() {
-      // console.log(`home hot id is: ${this.activeCurrentHotHomeId}`)
       let hotId
       let hot = HotRegister.getActiveInstance()
       if (hot) {
@@ -54,20 +53,15 @@ export default {
           hotId = await this.getHotIdFromTabId(this.getActiveTab)
         } catch (err) {
           if (err) {
-            console.log('Problem with promise of hot id')
-            console.log(err)
           }
         }
       }
       // enable faster access for setters
       this.activeCurrentHotId = hotId
-      console.log('set hot id in sidenav')
-      console.log(hotId)
       return hotId
     },
     propertyGetObject: function(key) {
       const hotId = HotRegister.getActiveInstance().guid
-      console.log(`hotid is ${hotId}`)
       return {
         'hotId': hotId,
         'key': key
@@ -88,7 +82,6 @@ export default {
         return hotId
       } catch (err) {
         if (err) {
-          console.log('Problem with promise of hot id')
           console.log(err)
         }
       }

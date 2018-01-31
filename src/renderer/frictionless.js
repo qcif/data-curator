@@ -1,7 +1,8 @@
 import {Table, Schema} from 'tableschema'
-import {HotRegister} from '../renderer/hot.js'
-import store from '../renderer/store/modules/hots.js'
+import {HotRegister} from '@/hot.js'
+import store from '@/store/modules/hots.js'
 import {includeHeadersInData, hasAllColumnNames} from '@/frictionlessUtilities.js'
+import {allTablesAllColumnsFromSchema$} from '@/rxSubject.js'
 
 async function initDataAndInferSchema(data) {
   const schema = await Schema.load({})
@@ -30,10 +31,10 @@ export async function guessColumnProperties() {
   // let activeHot = HotRegister.getActiveHotIdData()
   let schema = await initDataAndInferSchema(data)
   let isStored = storeData(id, schema)
+  allTablesAllColumnsFromSchema$.next(store.getters.getAllHotTablesColumnProperties(store.state, store.getters)())
   let message = isStored
     ? 'Success: Guess column properties succeeded.'
     : 'Failed: Guess column properties failed.'
-  // console.log('returning from guess column properties...')
   return message
 }
 
@@ -43,14 +44,10 @@ function checkRow(rowNumber, row, schema, errorCollector) {
   } catch (err) {
     if (err.multiple) {
       for (const error of err.errors) {
-        // console.log('got next error')
-        console.log(error)
         let columnNumber = error.columnNumber || 'N/A'
         errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: error.message, name: error.name})
       }
     } else {
-      // console.log('got next error')
-      console.log(err)
       let columnNumber = err.columnNumber || 'N/A'
       errorCollector.push({columnNumber: columnNumber, rowNumber: rowNumber, message: err.message, name: err.name})
     }
@@ -58,13 +55,15 @@ function checkRow(rowNumber, row, schema, errorCollector) {
 }
 
 async function checkForSchema(data, hotId) {
-  let columnProperties = store.state.hotTabs[hotId].columnProperties
+  let hotTab = store.state.hotTabs[hotId]
   let schema = await initDataAndInferSchema(data)
-  schema.descriptor.fields = columnProperties
+  schema.descriptor.fields = hotTab.columnProperties
+  schema.descriptor.primaryKey = hotTab.tableProperties.primaryKeys
+  schema.descriptor.foreignKeys = hotTab.tableProperties.foreignKeys
+  store.mutations.initMissingValues(store.state, store.state.hotTabs[hotId])
+  schema.descriptor.missingValues = hotTab.tableProperties.missingValues
   let table = await initDataAgainstSchema(data, schema)
   table.schema.commit()
-  console.log(table.schema.valid)
-  console.log(table.schema.errors)
   return table
 }
 
@@ -134,13 +133,14 @@ export async function validateActiveDataAgainstSchema(callback) {
   }
   let data = includeHeadersInData(hot)
   const errorCollector = []
-  checkHeaderErrors(data[0], errorCollector, hot.hasColHeaders())
+  const hasColHeaders = hot.hasColHeaders()
+  checkHeaderErrors(data[0], errorCollector, hasColHeaders)
   let table = await checkForSchema(data, id)
   // don't cast at stream, wait until row to cast otherwise not all errors will be reported.
-  const stream = await table.iter({extended: true, stream: true, cast: false})
+  const stream = await table.iter({extended: true, stream: true, cast: false, relations: true})
   stream.on('data', (row) => {
     // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
-    let rowNumber = hot.hasColHeaders()
+    let rowNumber = hasColHeaders
       ? row[0]
       : row[0] + 1
     if (isRowBlank(row[2])) {

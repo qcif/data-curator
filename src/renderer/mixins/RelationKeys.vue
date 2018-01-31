@@ -24,7 +24,7 @@ export default {
     ...mapGetters(['getActiveTab', 'getAllHotTablesColumnNames', 'getAllTabTitles', 'getTabObjects', 'getHotIdFromTabId', 'getTabId', 'getAllForeignKeys', 'tabTitle'])
   },
   methods: {
-    ...mapMutations(['pushAllColumnsProperty', 'pushForeignKeysLocalFieldsForTable', 'pushForeignKeysForeignFieldsForTable', 'pushForeignKeysForeignTableForTable']),
+    ...mapMutations(['pushForeignKeysLocalFieldsForTable', 'pushForeignKeysForeignFieldsForTable', 'pushForeignKeysForeignTableForTable']),
     initTableHeaderKeys: function() {
       allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
     },
@@ -35,7 +35,6 @@ export default {
   mounted: async function() {
     let vueUpdateSubscriptions = this.updateSubscriptions
     this.$subscribeTo(allTablesAllColumnNames$, async function(allTablesAllColumnNames) {
-      console.log('subscribed to all tables all columns...')
       await vueUpdateSubscriptions(allTablesAllColumnNames)
     })
     this.initTableHeaderKeys()

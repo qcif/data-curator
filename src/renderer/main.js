@@ -12,7 +12,6 @@ let DefaultVue = Vue.extend({
   store
 })
 function compileVue (mount, name) {
-  // console.log(`name is ${name}`)
   new DefaultVue({template: `<App routerName="${name}"/>`}).$mount(mount)
 }
 if (document.querySelector('#app')) {

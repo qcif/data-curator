@@ -31,10 +31,9 @@ function generateDataPackage(filename, json) {
     } // Sets the compression level.
   })
   output.on('close', () => {
-    console.log(archive.pointer() + ' total bytes')
-    console.log('archiver has been finalized and the output file descriptor has closed.')
+    // console.log(archive.pointer() + ' total bytes')
   }).on('end', () => {
-    console.log('Data has been drained')
+    // console.log('Data has been drained')
   })
   archive.on('warning', function(err) {
     if (err.code === 'ENOENT') {

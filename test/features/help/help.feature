@@ -1,3 +1,5 @@
+@backlog
+
 Feature: Help
   As a Data Packager or Data Consumer
   I want to display help information
@@ -13,7 +15,7 @@ Feature: Help
     - be embedded within Data Curator so no Internet connect is required?
     - include a search function?
 
-  Initial draft at https://odiqueensland.github.io/data-curator-help/   
+  Initial draft at https://odiqueensland.github.io/data-curator-help/
 
   Scenario: Help
     Given I have opened Data Curator
