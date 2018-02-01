@@ -24,7 +24,7 @@
             </div>
           </div>
         </template>
-        <div v-else-if="formprop.key === 'constraints'" id="constraints" class="col-sm-9">
+        <div v-else-if="formprop.key === 'constraints'" id="constraints" class="col-sm-9"><br>
           <div class="input-group row" v-for="option in constraintValues" :key="option">
             <input type="checkbox" :id="option" :checked="getConstraintCheck(option)" @click="setConstraintCheck(option, $event.target)"></input>
             <label :for="option" class="form-control-static">{{option}}</label>

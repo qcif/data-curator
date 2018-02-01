@@ -405,14 +405,44 @@
     </thead>
     <tbody>
       <tr>
+        <td><b>Header Row</b> - Freeze first row and use values for Column Name</td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Ctrl</kbd> <kbd>H</kbd></td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>H</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Guess Column Properties</b> - set Type and Format based on column values</td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Ctrl</kbd> <kbd>G</kbd></td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>G</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Set Column Properties</b></td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Ctrl</kbd> <kbd>C</kbd></td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>C</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Set Table Properties</b></td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Ctrl</kbd> <kbd>T</kbd></td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>T</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Set Provenance Information</b></td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Ctrl</kbd> <kbd>P</kbd></td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>P</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Set Data Package Properties</b></td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Ctrl</kbd> <kbd>D</kbd></td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>D</kbd></td>
+      </tr>
+      <tr>
         <td><b>Validate Table</b> (uses Column Properties if set)</td>
         <td><kbd>Shift &#8679;</kbd> <kbd>Ctrl</kbd> <kbd>V</kbd></td>
         <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>V</kbd></td>
       </tr>
       <tr>
         <td><b>Export Data Package</b> - save all data and properties to a .zip file</td>
-        <td><kbd>Ctrl</kbd> <kbd>D</kbd></td>
-        <td><kbd>Command &#8984;</kbd> <kbd>D</kbd></td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Ctrl</kbd> <kbd>X</kbd></td>
+        <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>X</kbd></td>
       </tr>
     </tbody>
   </table>
