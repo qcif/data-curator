@@ -491,6 +491,13 @@ axios@^0.16.1:
     follow-redirects "^1.2.3"
     is-buffer "^1.1.5"
 
+axios@^0.17.1:
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.17.1.tgz#2d8e3e5d0bdbd7327f91bc814f5c57660f81824d"
+  dependencies:
+    follow-redirects "^1.2.5"
+    is-buffer "^1.1.5"
+
 babel-code-frame@^6.22.0, babel-code-frame@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-code-frame/-/babel-code-frame-6.26.0.tgz#63fd43f7dc1e3bb7ce35947db8fe369a3f58c74b"
@@ -4042,6 +4049,12 @@ flush-write-stream@^1.0.0:
 follow-redirects@^1.2.3:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.2.6.tgz#4dcdc7e4ab3dd6765a97ff89c3b4c258117c79bf"
+  dependencies:
+    debug "^3.1.0"
+
+follow-redirects@^1.2.5:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.4.1.tgz#d8120f4518190f55aac65bb6fc7b85fcd666d6aa"
   dependencies:
     debug "^3.1.0"
 
@@ -8877,11 +8890,11 @@ tableschema@^1.2.1:
     stream-to-async-iterator "^0.2.0"
     tv4 "^1.2.7"
 
-tableschema@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.5.1.tgz#cf030be7ac8dd7802f6a86e9826e34eaf59512a4"
+tableschema@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.6.0.tgz#2ddf30b537b63856d27f315e3dd80abd71f365ea"
   dependencies:
-    axios "^0.16.1"
+    axios "^0.17.1"
     csv "^1.1.1"
     d3-time-format "^0.3.2"
     es6-error "^4.0.2"
@@ -8890,6 +8903,7 @@ tableschema@^1.5.1:
     regenerator-runtime "^0.11.0"
     stream-to-async-iterator "^0.2.0"
     tv4 "^1.2.7"
+    validator "^9.2.0"
 
 tapable@^0.2.7:
   version "0.2.8"
@@ -9515,6 +9529,10 @@ validate-npm-package-license@^3.0.1:
 validate.io-undefined@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/validate.io-undefined/-/validate.io-undefined-1.0.3.tgz#7e27fcbb315b841e78243431897671929e20b7f4"
+
+validator@^9.2.0:
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-9.4.0.tgz#c503ef88f7e6b8fb7688599267b309482d81ae60"
 
 validator@~7.0.0:
   version "7.0.0"
