@@ -48,6 +48,9 @@ const getters = {
       allTabTitles[tabId] = object.title
     })
     return allTabTitles
+  },
+  findTabIdFromTitle: (state, getters) => (title) => {
+    return _.findKey(state.tabObjects, function(o) { return o.title === title })
   }
 }
 
