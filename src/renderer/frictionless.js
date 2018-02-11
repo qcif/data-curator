@@ -42,15 +42,9 @@ export async function guessColumnProperties() {
 }
 
 function checkRow(rowNumber, row, schema, tableRows, errorCollector) {
-  console.log(tableRows)
-  console.log(row)
   // if row contains foreign relation objects cast the original
   try {
-    if (_.isArray(tableRows)) {
-      schema.castRow(tableRows[rowNumber - 1])
-    } else {
-      schema.castRow(row)
-    }
+    schema.castRow(row)
   } catch (err) {
     errorHandler(err, rowNumber, errorCollector)
   }
@@ -81,12 +75,10 @@ async function createFrictionlessTable(data, schema) {
 }
 
 async function collateForeignKeys(localHotId, callback) {
-  console.log('inside collate foreign keys...')
   const foreignKeys = store.state.hotTabs[localHotId].tableProperties.foreignKeys
   if (typeof foreignKeys === 'undefined') {
     return false
   }
-  console.log('foreign keys detected...')
   let relations = {}
   for (const foreignKey of foreignKeys) {
     let foreignHotId = getHotIdFromForeignKeyForeignTable(foreignKey.reference.resource, localHotId)
@@ -96,23 +88,9 @@ async function collateForeignKeys(localHotId, callback) {
       break
     }
     let data = getForeignKeyData(foreignHotId)
-    // let json = []
     let schema = await buildSchema(data, foreignHotId)
     let table = await createFrictionlessTable(data, schema)
     let rows = await table.read({keyed: true})
-    console.log('have schema fields')
-    console.log(schema.fields)
-    console.log('have foreign table')
-    console.log(table)
-    console.log('have rows')
-    console.log(rows)
-    // send data and headers separately to csvToJson
-    // let headers = data.shift()
-    // console.log('calling csv to json...')
-    // await csvToJson(data, json, schema, foreignKey.reference.fields, schema.fields)
-    // if (_.has(relations, foreignKey.reference.resource)) {
-    //   console.log(`Warning: Relations key ${foreignKey.reference.resource} already exists.`)
-    // }
     relations[foreignKey.reference.resource] = rows
   }
   return relations
@@ -131,49 +109,6 @@ function getHotIdFromForeignKeyForeignTable(title, hotId) {
   let tabId = tabStore.getters.findTabIdFromTitle(tabStore.state, tabStore.getters)(title)
   return store.getters.getSyncHotIdFromTabId(store.state, store.getters)(tabId)
 }
-
-// async function csvToJson(inputData, json, schema, headers, schemaFields) {
-//   let stream = stringify()
-//   // send headers immediately to stream
-//   stream.write(headers)
-//   let indicies = []
-//   for (const [index, field] of schemaFields.entries()) {
-//     if (indicies.length === headers.length) {
-//       break
-//     }
-//     if (_.indexOf(headers, field.name) !== -1) {
-//       indicies.push(index)
-//     }
-//   }
-//   console.log('indicies are:')
-//   console.log(indicies)
-//   for (let row of inputData) {
-//     // ensure foreign key values include field properties if valid
-//     // let castRow
-//     try {
-//       // castRow = schema.castRow(row)
-//       // castRow = row
-//       let filteredRow = row.filter(function(elem, index, array) {
-//         return schemaFields[index]
-//       })
-//     } catch (error) {
-//       console.log('Cast row failed', error)
-//       castRow = row
-//     }
-//     stream.write(castRow)
-//   }
-//   stream.end()
-//   try {
-//     await promisePipe(csv({checkType: true}).fromStream(stream).on('json', (row) => {
-//       json.push(row)
-//     }).on('done', () => {
-//       console.log('completed csv to json.')
-//       console.log(json)
-//     }))
-//   } catch (error) {
-//     throw new Error('There was a problem converting csv to json.', error)
-//   }
-// }
 
 function isRowBlank(row) {
   let isRowBlank = row.filter(Boolean)
@@ -223,15 +158,17 @@ export async function validateActiveDataAgainstSchema(callback) {
   checkHeaderErrors(headers, errorCollector, hasColHeaders)
   let schema = await buildSchema(data, hotId)
   let table = await createFrictionlessTable(data, schema)
-  let relations = await collateForeignKeys(hotId, callback)
-  let tableRows
-  try {
-    tableRows = await table.read()
-  } catch (error) {
-    console.log('cast errors on read')
-    console.log(error)
-  }
-  const stream = await table.iter({keyed: false, extended: true, stream: true, cast: true, relations: relations})
+  // wait for frictionless pr#124 and uncomment
+  let relations = false
+  // try {
+  //   relations = await collateForeignKeys(hotId, callback)
+  // } catch (error) {
+  //   errorCollector.push({rowNumber: 0,
+  //     message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`,
+  //     name: 'Invalid foreign table(s)'
+  //   })
+  // }
+  const stream = await table.iter({keyed: false, extended: true, stream: true, cast: false, relations: relations})
   stream.on('data', (row) => {
     // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
     let rowNumber = hasColHeaders
@@ -240,14 +177,14 @@ export async function validateActiveDataAgainstSchema(callback) {
     if (isRowBlank(row[2])) {
       errorCollector.push({rowNumber: rowNumber, message: `Row ${rowNumber} is completely blank`, name: 'Blank Row'})
     }
-    checkRow(rowNumber, row[2], table.schema, tableRows, errorCollector)
+    checkRow(rowNumber, row[2], table.schema, errorCollector)
   })
-  stream.on('error', (error) => {
-    console.log(error)
-    errorHandler(error, 'N/A', errorCollector)
-    // ensure error sent back
-    stream.end()
-  })
+  // stream.on('error', (error) => {
+  //   console.log(error)
+  //   errorHandler(error, 'N/A', errorCollector)
+  //   // ensure error sent back
+  //   stream.end()
+  // })
   stream.on('end', () => {
     callback(errorCollector)
   })
@@ -275,16 +212,6 @@ function hasColumnProperties(hotId, callb) {
     ])
     return false
   }
-  // if (!hasAllColumnTypes(hotId, columnProperties)) {
-  //   callb([
-  //     {
-  //       rowNumber: 0,
-  //       message: `Every Column property, including the column properties of any foreign keys, must have a 'type'.`,
-  //       name: 'Missing Column Property types'
-  //     }
-  //   ])
-  //   return false
-  // }
   return true
 }
 
