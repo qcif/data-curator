@@ -2,11 +2,8 @@ import {Table, Schema} from 'tableschema'
 import {HotRegister} from '@/hot.js'
 import store from '@/store/modules/hots.js'
 import tabStore from '@/store/modules/tabs.js'
-import {includeHeadersInData, hasAllColumnNames, hasAllColumnTypes} from '@/frictionlessUtilities.js'
+import {includeHeadersInData, hasAllColumnNames} from '@/frictionlessUtilities.js'
 import {allTablesAllColumnsFromSchema$} from '@/rxSubject.js'
-import stringify from 'csv-stringify'
-import csv from 'csvtojson'
-import promisePipe from 'promisepipe'
 
 async function inferSchema(data) {
   const schema = await Schema.load({})
