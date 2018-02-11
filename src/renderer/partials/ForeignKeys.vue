@@ -157,7 +157,7 @@ export default {
       let tabId = _.findKey(this.allTabTableNames, function(o) {
         return o === tableName
       })
-      let hotId = this.getTabId(tabId)
+      let hotId = this.getSyncHotIdFromTabId(tabId)
       return hotId
     },
     getSelectedLocalKeys: function(index) {
