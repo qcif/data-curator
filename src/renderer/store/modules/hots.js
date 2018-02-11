@@ -59,15 +59,23 @@ const getters = {
     return hotIdColumnNames
   },
   getAllHotColumnNamesFromHotId: (state, getters) => (hotId) => {
+    return getters.getAllHotColumnPropertyFromHotId(state, getters)({hotId: hotId, key: 'name'})
+  },
+  getAllHotColumnTypesFromHotId: (state, getters) => (hotId) => {
+    return getters.getAllHotColumnPropertyFromHotId(state, getters)({hotId: hotId, key: 'type'})
+  },
+  getAllHotColumnPropertyFromHotId: (state, getters) => (property) => {
+    const hotId = property.hotId
+    const propertyKey = property.key
     if (!state.hotTabs[hotId].columnProperties) {
       state.hotTabs[hotId].columnProperties = []
       // return
     }
-    let names = state.hotTabs[hotId].columnProperties.map(column => {
-      let name = column.name
-      return column.name
+    let values = state.hotTabs[hotId].columnProperties.map(column => {
+      let value = column[propertyKey]
+      return column[propertyKey]
     })
-    return names
+    return values
   },
   getHotIdFromTabId: (state, getters) => (tabId) => {
     return new Promise((resolve, reject) => {
@@ -82,7 +90,7 @@ const getters = {
       }
     })
   },
-  getTabId: (state, getters) => (tabId) => {
+  getSyncHotIdFromTabId: (state, getters) => (tabId) => {
     let hotId = _.findKey(state.hotTabs, {tabId: tabId})
     return hotId
   },
