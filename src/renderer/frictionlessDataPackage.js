@@ -60,6 +60,7 @@ function hasAllPackageRequirements(requiredMessages) {
       requiredMessages.push(`Package property, 'name' must be set.`)
     }
     addSourcesRequirements(packageProperties, requiredMessages, 'package')
+    addContributorsRequirements(packageProperties, requiredMessages, 'package')
   }
   return requiredMessages.length === 0
 }
@@ -149,6 +150,22 @@ function addSourcesRequirements(properties, requiredMessages, entityName) {
       return false
     } else {
       // console.log('source is valid')
+    }
+  }
+}
+
+function addContributorsRequirements(properties, requiredMessages, entityName) {
+  if (typeof properties.contributors === 'undefined') {
+    return
+  }
+  for (let contributor of properties.contributors) {
+    if (hasAllEmptyValues(contributor)) {
+      _.pull(properties.contributors, contributor)
+    } else if (!contributor.title || contributor.title.trim() === '') {
+      requiredMessages.push(`At least 1 ${entityName} contributor does not have a title.`)
+      return false
+    } else {
+      // console.log('contributor is valid')
     }
   }
 }
