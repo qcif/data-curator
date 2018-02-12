@@ -8876,6 +8876,20 @@ table@^4.0.1:
     slice-ansi "1.0.0"
     string-width "^2.1.1"
 
+tableschema@../tableschema-js:
+  version "1.6.0"
+  dependencies:
+    axios "^0.17.1"
+    csv "^1.1.1"
+    d3-time-format "^0.3.2"
+    es6-error "^4.0.2"
+    lodash "^4.13.1"
+    moment "~2.18.0"
+    regenerator-runtime "^0.11.0"
+    stream-to-async-iterator "^0.2.0"
+    tv4 "^1.2.7"
+    validator "^9.2.0"
+
 tableschema@^1.2.1:
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.4.2.tgz#d0077ef955358982c66f8caeba8f5bcac87e2963"
@@ -8889,21 +8903,6 @@ tableschema@^1.2.1:
     regenerator-runtime "^0.11.0"
     stream-to-async-iterator "^0.2.0"
     tv4 "^1.2.7"
-
-tableschema@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.6.0.tgz#2ddf30b537b63856d27f315e3dd80abd71f365ea"
-  dependencies:
-    axios "^0.17.1"
-    csv "^1.1.1"
-    d3-time-format "^0.3.2"
-    es6-error "^4.0.2"
-    lodash "^4.13.1"
-    moment "~2.18.0"
-    regenerator-runtime "^0.11.0"
-    stream-to-async-iterator "^0.2.0"
-    tv4 "^1.2.7"
-    validator "^9.2.0"
 
 tapable@^0.2.7:
   version "0.2.8"
