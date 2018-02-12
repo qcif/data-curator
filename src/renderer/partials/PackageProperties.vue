@@ -18,6 +18,7 @@
 import SideNav from '@/partials/SideNav'
 import licenses from '@/partials/Licenses'
 import sources from '@/partials/Sources'
+import contributors from '@/partials/Contributors'
 import PackageTooltip from '@/mixins/PackageTooltip'
 import ValidationRules from '@/mixins/ValidationRules'
 import {
@@ -31,35 +32,32 @@ export default {
   mixins: [ValidationRules, PackageTooltip],
   components: {
     licenses,
-    sources
+    sources,
+    contributors
   },
   data() {
     return {
       formprops: [{
         label: 'Name*',
         key: 'name',
-        type: 'input',
         tooltipId: 'tooltip-package-name',
         tooltipView: 'tooltipPackageName'
       },
       {
         label: 'Id',
         key: 'id',
-        type: 'input',
         tooltipId: 'tooltip-package-id',
         tooltipView: 'tooltipPackageId'
       },
       {
         label: 'Title',
         key: 'title',
-        type: 'input',
         tooltipId: 'tooltip-package-title',
         tooltipView: 'tooltipPackageTitle'
       },
       {
         label: 'Description',
         key: 'description',
-        type: 'markdown',
         tooltipId: 'tooltip-package-description',
         tooltipView: 'tooltipPackageDescription'
       },
@@ -67,14 +65,12 @@ export default {
       {
         label: 'Version',
         key: 'version',
-        type: 'input',
         tooltipId: 'tooltip-package-version',
         tooltipView: 'tooltipPackageVersion'
       },
       {
         label: 'Source(s)',
         key: 'sources',
-        type: 'dropdown',
         tooltipId: 'tooltip-package-sources',
         tooltipView: 'tooltipPackageSources'
       },
@@ -83,6 +79,12 @@ export default {
         key: 'licenses',
         tooltipId: 'tooltip-package-licenses',
         tooltipView: 'tooltipPackageLicenses'
+      },
+      {
+        label: 'Contributor(s)',
+        key: 'contributors',
+        tooltipId: 'tooltip-package-contributors',
+        tooltipView: 'tooltipPackageContributors'
       }
       ]
     }
