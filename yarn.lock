@@ -5336,9 +5336,9 @@ istanbul@^0.4.0:
     which "^1.1.1"
     wordwrap "^1.0.0"
 
-jquery-csv@^0.8.3:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/jquery-csv/-/jquery-csv-0.8.3.tgz#8145797bc5c1b93b799d00c0a08194ec2fcad5bc"
+jquery-csv@^0.8.9:
+  version "0.8.9"
+  resolved "https://registry.yarnpkg.com/jquery-csv/-/jquery-csv-0.8.9.tgz#73ee322c7bc1b11177273e7d3a6ace6ea35c7834"
 
 jquery@^3.2.1:
   version "3.2.1"
