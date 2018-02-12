@@ -33,6 +33,10 @@ export default {
     'tooltipPackageLicenses': {
       components: {externalLink},
       template: `<div id="tooltip-package-licenses">The <externalLink text="Open License" url="http://frictionlessdata.io/specs/data-package/#licenses"/> under which this data package is provided</div>`
+    },
+    'tooltipPackageContributors': {
+      components: {externalLink},
+      template: `<div id="tooltip-package-contributors">Each <externalLink text="Contributor" url="http://frictionlessdata.io/specs/data-package/#contributors"/> must have a title and may have path and/or email</div>`
     }
   }
 }
