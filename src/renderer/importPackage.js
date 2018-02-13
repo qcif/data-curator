@@ -1,14 +1,15 @@
 import fs from 'fs-extra'
 import path from 'path'
-import hotStore from '@/store/modules/hots.js'
-import tabStore from '@/store/modules/tabs.js'
+import store from '@/store'
 import unzipper from 'unzipper'
 import etl from 'etl'
 import {ipcRenderer as ipc} from 'electron'
 
 export async function unzipFile(zipSource, storeCallback) {
   try {
-    let processedProperties = await unzipFileToDir(zipSource, createUnzipDestination(zipSource))
+    let destination = createUnzipDestination(zipSource)
+    await fs.ensureDir(destination)
+    let processedProperties = await unzipFileToDir(zipSource, destination)
     storeCallback(processedProperties)
   } catch (err) {
     console.log(`Error processing zip source: ${zipSource}`, err)
@@ -51,7 +52,7 @@ async function processStream(entry, processed, fileDestination) {
       await fs.ensureFile(fileDestination)
       await unzippedEntryToFile(entry, fileDestination)
       let textMd = await stringify(fileDestination)
-      await setProvenance(textMd)
+      setProvenance(textMd)
       processed.md.push(fileDestination)
       break
     default:
@@ -83,8 +84,8 @@ async function stringify(filename) {
   return text
 }
 
-async function setProvenance(text) {
-  hotStore.mutations.pushProvenance(hotStore.state, text)
+function setProvenance(text) {
+  store.commit('pushProvenance', text)
 }
 
 async function processJsonFile(processed, unzipDestination) {
@@ -118,7 +119,7 @@ async function getHotIdsFromFilenames(processed, unzipDestination) {
     if (!tabId) {
       throw new Error(`There was a problem matching ${fileDestination} with an opened tab.`)
     }
-    let hotId = _.findKey(hotStore.state.hotTabs, {tabId: tabId})
+    let hotId = _.findKey(store.getters.getHotTabs, {tabId: tabId})
     // ensure csv path accounts for parent folders zipped up
     let re = new RegExp('^' + processed.parentFolders + '/')
     let resourcePathname = _.replace(pathname, re, '')
@@ -129,11 +130,11 @@ async function getHotIdsFromFilenames(processed, unzipDestination) {
 
 async function getTabIdFromFilename(filename) {
   return new Promise((resolve, reject) => {
-    let tabId = _.findKey(tabStore.state.tabObjects, {filename: filename})
+    let tabId = _.findKey(store.getters.getTabObjects, {filename: filename})
     if (!tabId) {
       // wait for tabs to be ready
       _.delay(function(filename) {
-        resolve(_.findKey(tabStore.state.tabObjects, {filename: filename}))
+        resolve(_.findKey(store.getters.getTabObjects, {filename: filename}))
       }, 500, filename)
     } else {
       resolve(tabId)
