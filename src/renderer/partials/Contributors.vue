@@ -10,7 +10,7 @@
           </div>
         </div>
       </div>
-      <button v-show="getContributors.length > 1" type="button" class="btn btn-danger btn-sm" @click="removeContributor(index)">
+      <button type="button" class="btn btn-danger btn-sm" @click="removeContributor(index)">
         <span class="glyphicon glyphicon-minus"/>
       </button>
     </div>
@@ -94,12 +94,6 @@ export default {
     },
     initContributors: async function(tab) {
       let contributors = await this.getContributorsFromTab(tab)
-      if (!contributors) {
-        const vueAddContributor = this.addContributor
-        _.delay(function() {
-          vueAddContributor()
-        }, 100)
-      }
     },
     setContributorProp: function(index, prop, value) {
       this.setProperty(`contributors[${index}][${prop}]`, value)
