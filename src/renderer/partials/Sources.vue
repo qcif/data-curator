@@ -54,6 +54,7 @@ export default {
     getSources: {
       async get() {
         let tab = this.getActiveTab
+        // TODO: may need distinction here for package vs tables
         let sources = await this.getSourcesFromTab(tab)
         return sources
       },
@@ -86,6 +87,7 @@ export default {
       let sources = this.getPropertyGivenHotId('sources', hotId)
       return sources
     },
+    // TODO: fix this redundant method
     initSources: async function(tab) {
       let sources = await this.getSourcesFromTab(tab)
     },

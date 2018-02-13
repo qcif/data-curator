@@ -4,7 +4,12 @@
       <div class="inputs-container">
         <div v-for="prop in Object.keys(contributor)" class="input-group">
           <span class="input-group-addon input-sm">{{prop}}</span>
-          <input :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(getValidationProp(prop) + index) }" :value="contributor[prop]" @input="setContributorProp(index, prop, $event.target.value)" type="text" :id="prop + index" v-validate="contributorValidationRules(prop, index)" :name="getValidationProp(prop) + index"/>
+          <select v-if="prop === 'role'" class="form-control input-sm" :value="contributor[prop]" @input="setContributorProp(index, prop, $event.target.value)" :id="prop" >
+            <option v-for="role in roles" :key="role" v-bind:value="role">
+              {{ role}}
+            </option>
+          </select>
+          <input v-else :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(getValidationProp(prop) + index) }" :value="contributor[prop]" @input="setContributorProp(index, prop, $event.target.value)" type="text" :id="prop + index" v-validate="contributorValidationRules(prop, index)" :name="getValidationProp(prop) + index"/>
           <div v-show="errors.has(getValidationProp(prop) + index)" class="row help validate-danger">
             {{ errors.first(getValidationProp(prop) + index)}}
           </div>
@@ -51,13 +56,20 @@ export default {
     },
     roles() {
       return ['author', 'publisher', 'maintainer', 'wrangler', 'contributor']
+    },
+    defaultRole() {
+      return 'contributor'
     }
   },
   asyncComputed: {
     getContributors: {
       async get() {
-        let tab = this.getActiveTab
-        let contributors = await this.getContributorsFromTab(tab)
+        let contributors = this.getContributorsFromPackageProperties() || []
+        for (const [index, contributor] of contributors.entries()) {
+          if (contributor.role.trim() === '') {
+            this.setProperty(`contributors[${index}]role`, this.defaultRole)
+          }
+        }
         return contributors
       },
       watch() {
@@ -87,57 +99,17 @@ export default {
     emptyContributor: function() {
       return {'title': '', 'path': '', 'email': '', 'role': '', 'organization': ''}
     },
-    getContributorsFromTab: async function(tab) {
-      let hotId = await this.waitForHotIdFromTabId(tab)
-      let contributors = this.getPropertyGivenHotId('contributors', hotId)
+    getContributorsFromPackageProperties: function() {
+      let contributors = this.getProperty('contributors')
       return contributors
     },
-    initContributors: async function(tab) {
-      let contributors = await this.getContributorsFromTab(tab)
+    initContributors: function() {
+      this.contributors = this.getContributorsFromPackageProperties()
     },
     setContributorProp: function(index, prop, value) {
       this.setProperty(`contributors[${index}][${prop}]`, value)
       let contributors = this.getProperty('contributors') || []
       this.contributors = contributors
-      if (prop === 'path') {
-        this.validateUrlOrPath(index, value)
-      }
-    },
-    validateUrlOrPath: async function(index, value) {
-      let prop = 'path'
-      let field = `${prop}${index}`
-      try {
-        let hasValidUrl = await this.validateUrl(field, value)
-        let hasValidPath = await this.validatePath(field, value)
-        this.$validator.detach(field)
-        if (!hasValidUrl && !hasValidPath) {
-          this.$validator.errors.add({field: field, msg: 'The path field must be a valid email or path.'})
-        }
-      } catch (err) {
-        console.log('Problem with validation', err)
-      }
-    },
-    validateUrl: async function(field, value) {
-      // keep url:true as string for validation to work correctly
-      return this.validate(field, value, 'url:true')
-    },
-    validatePath: async function(field, value) {
-      return this.validate(field, value, {
-        regex: this.regexForPath
-      })
-    },
-    validate: async function(field, value, rules) {
-      let isValid = true
-      // ensure there are no other fields by this name
-      this.$validator.detach(field)
-      await this.$validator.attach({
-        name: field,
-        rules: rules
-      })
-      isValid = await this.$validator.validate(field, value)
-      this.$validator.detach(field)
-      // console.log(isValid)
-      return isValid
     },
     contributorValidationRules: function(prop, index) {
       switch (prop) {
@@ -147,23 +119,13 @@ export default {
           return 'required'
         case 'path':
           return 'url'
-        case 'role':
-          return {
-            in: this.roles
-          }
         default:
           return ''
       }
     }
   },
   mounted: function() {
-    let tab = this.getActiveTab
-    this.initContributors(tab)
-  },
-  watch: {
-    getActiveTab: function(tab) {
-      this.initContributors(tab)
-    }
+    this.initContributors()
   }
 }
 </script>
