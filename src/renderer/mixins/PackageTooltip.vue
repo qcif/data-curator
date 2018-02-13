@@ -36,7 +36,7 @@ export default {
     },
     'tooltipPackageContributors': {
       components: {externalLink},
-      template: `<div id="tooltip-package-contributors">Each <externalLink text="Contributor" url="http://frictionlessdata.io/specs/data-package/#contributors"/> must have a title and may have path and/or email</div>`
+      template: `<div id="tooltip-package-contributors">Each <externalLink text="Contributor" url="http://frictionlessdata.io/specs/data-package/#contributors"/> must have a title and may contain path, email, role and organization</div>`
     }
   }
 }
