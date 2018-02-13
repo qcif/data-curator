@@ -152,6 +152,10 @@ function addSourcesRequirements(properties, requiredMessages, entityName) {
       // console.log('source is valid')
     }
   }
+  if (properties.sources.length < 1) {
+    properties.sources = null
+    _.unset(properties, 'sources')
+  }
 }
 
 function addContributorsRequirements(properties, requiredMessages, entityName) {
@@ -167,6 +171,10 @@ function addContributorsRequirements(properties, requiredMessages, entityName) {
     } else {
       // console.log('contributor is valid')
     }
+  }
+  if (properties.contributors.length < 1) {
+    properties.contributors = null
+    _.unset(properties, 'contributors')
   }
 }
 
