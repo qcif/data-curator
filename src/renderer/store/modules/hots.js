@@ -217,7 +217,6 @@ const mutations = {
     }
     _.merge(columnProperties, hotIdSchema.schema.descriptor.fields)
     state.hotTabs[hotId].columnProperties = columnProperties
-    console.log(state.hotTabs[hotId].columnProperties)
     return state.hotTabs[hotId].columnProperties
   },
   initColumnProperties(state, hotTab) {
