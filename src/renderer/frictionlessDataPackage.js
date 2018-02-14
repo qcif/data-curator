@@ -1,4 +1,4 @@
-import {Resource, Package, validate} from 'datapackage'
+import {Resource, Package} from 'datapackage'
 import {HotRegister} from '@/hot.js'
 import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
@@ -22,7 +22,7 @@ export async function createDataPackage() {
         errorMessages.push('There is a problem with at least 1 package property. Please check and try again.')
         return errorMessages
       }
-      createZipFile(JSON.stringify(dataPackage.descriptor))
+      createZipFile(dataPackage.descriptor)
     }
   } catch (err) {
     if (err) {

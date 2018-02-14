@@ -108,6 +108,9 @@ const getters = {
   getPackageProperty: (state, getters) => (property) => {
     return state.packageProperties[property.key]
   },
+  getPackageProperties: state => {
+    return state.packageProperties
+  },
   getConstraint: (state, getters) => (property) => {
     let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
     let constraints = hotColumnProperties['constraints']
