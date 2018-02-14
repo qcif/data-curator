@@ -19,10 +19,10 @@ export function addHotContainerListeners(container) {
     var f = e.dataTransfer.files[0]
     fs.readFile(f.path, 'utf-8', function(err, data) {
       if (err) {
-        console.log(err.stack)
+        console.log(err)
       }
       // if we're dragging a file in, default the format to comma-separated
-      loadData(hot, data, file.formats.csv.options)
+      loadData(hot, data, file.formats.csv)
     })
   }
 
@@ -48,11 +48,12 @@ ipc.on('getCSV', function(e, format) {
   let hot = HotRegister.getActiveInstance()
   var data
   // if no format specified, default to csv
-  if (typeof format === 'undefined') {
-    data = $.csv.fromArrays(hot.getData())
-  } else {
-    data = $.csv.fromArrays(hot.getData(), format.options)
-  }
+  // TODO: update to node csv and check dialect mappings
+  // if (typeof format === 'undefined') {
+  //   data = $.csv.fromArrays(hot.getData())
+  // } else {
+  //   data = $.csv.fromArrays(hot.getData(), format.options)
+  // }
   ipc.send('sendCSV', data)
 })
 

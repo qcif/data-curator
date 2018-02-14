@@ -1,6 +1,6 @@
 import {ipcRenderer as ipc} from 'electron'
 import {allTablesAllColumnNames$} from '@/rxSubject.js'
-import store from '@/store/modules/hots.js'
+import store from '@/store'
 import {HotRegister} from '@/hot.js'
 import {pushAllTabTitlesSubscription} from '@/store/modules/tabs.js'
 
@@ -56,12 +56,12 @@ function updateHot(hot, data, header) {
 }
 
 function updateAllColumnsName(values) {
-  store.mutations.pushAllColumnsProperty(store.state, {
+  store.commit('pushAllColumnsProperty', {
     hotId: HotRegister.getActiveInstance().guid,
     key: 'name',
     values: values
   })
   // do not allow getter to cache as does not seem to pick up change
-  allTablesAllColumnNames$.next(store.getters.getAllHotTablesColumnNames(store.state, store.getters)())
+  allTablesAllColumnNames$.next(store.getters.getAllHotTablesColumnNames())
   pushAllTabTitlesSubscription()
 }

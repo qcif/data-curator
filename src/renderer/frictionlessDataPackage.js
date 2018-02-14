@@ -1,4 +1,4 @@
-import {Resource, Package, validate} from 'datapackage'
+import {Resource, Package} from 'datapackage'
 import {HotRegister} from '@/hot.js'
 import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
@@ -22,7 +22,7 @@ export async function createDataPackage() {
         errorMessages.push('There is a problem with at least 1 package property. Please check and try again.')
         return errorMessages
       }
-      createZipFile(JSON.stringify(dataPackage.descriptor))
+      createZipFile(dataPackage.descriptor)
     }
   } catch (err) {
     if (err) {
@@ -60,6 +60,7 @@ function hasAllPackageRequirements(requiredMessages) {
       requiredMessages.push(`Package property, 'name' must be set.`)
     }
     addSourcesRequirements(packageProperties, requiredMessages, 'package')
+    addContributorsRequirements(packageProperties, requiredMessages, 'package')
   }
   return requiredMessages.length === 0
 }
@@ -131,7 +132,7 @@ function hasAllResourceRequirements(hot, requiredMessages) {
     requiredMessages.push(`Column properties must be set.`)
   } else {
     if (!hasAllColumnNames(hot.guid, columnProperties)) {
-      requiredMessages.push(`Column property names cannot be empty.`)
+      requiredMessages.push(`Column property names cannot be empty - set a Header Row`)
     }
   }
   return requiredMessages.length === 0
@@ -150,6 +151,30 @@ function addSourcesRequirements(properties, requiredMessages, entityName) {
     } else {
       // console.log('source is valid')
     }
+  }
+  if (properties.sources.length < 1) {
+    properties.sources = null
+    _.unset(properties, 'sources')
+  }
+}
+
+function addContributorsRequirements(properties, requiredMessages, entityName) {
+  if (typeof properties.contributors === 'undefined') {
+    return
+  }
+  for (let contributor of properties.contributors) {
+    if (hasAllEmptyValues(contributor)) {
+      _.pull(properties.contributors, contributor)
+    } else if (!contributor.title || contributor.title.trim() === '') {
+      requiredMessages.push(`At least 1 ${entityName} contributor does not have a title.`)
+      return false
+    } else {
+      // console.log('contributor is valid')
+    }
+  }
+  if (properties.contributors.length < 1) {
+    properties.contributors = null
+    _.unset(properties, 'contributors')
   }
 }
 

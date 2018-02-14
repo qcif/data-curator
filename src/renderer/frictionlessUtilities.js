@@ -11,6 +11,15 @@ export function includeHeadersInData(hot) {
 
 export function hasAllColumnNames(hotId, columnProperties) {
   let names = store.getters.getAllHotColumnNamesFromHotId(store.state, store.getters)(hotId)
-  let validNames = _.without(names, undefined, null, '')
-  return validNames.length === columnProperties.length
+  return hasAllValidColumnProperty(names, columnProperties)
+}
+
+export function hasAllColumnTypes(hotId, columnProperties) {
+  let types = store.getters.getAllHotColumnTypesFromHotId(store.state, store.getters)(hotId)
+  return hasAllValidColumnProperty(types, columnProperties)
+}
+
+function hasAllValidColumnProperty(values, columnProperties) {
+  let validValues = _.without(values, undefined, null, '')
+  return validValues.length === columnProperties.length
 }

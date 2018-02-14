@@ -13,12 +13,12 @@ const fileFormats = {
         extensions: ['csv']
       }
     ],
-    options: {
-      separator: ',',
-      delimiter: '"'
+    dialect: {
+      delimiter: ',',
+      quoteChar: '"'
     },
-    mime_type: 'text/csv',
-    default_extension: 'csv'
+    mediatype: 'text/csv',
+    format: 'csv'
   },
   tsv: {
     label: 'Tab separated...',
@@ -34,12 +34,12 @@ const fileFormats = {
         extensions: ['dat']
       }
     ],
-    options: {
-      separator: '\t',
-      delimiter: '"'
+    dialect: {
+      delimiter: '\t',
+      quoteChar: '"'
     },
-    mime_type: 'text/tab-separated-values',
-    default_extension: 'tsv'
+    mediatype: 'text/tab-separated-values',
+    format: 'tsv'
   },
   semicolon: {
     label: 'Semicolon separated...',
@@ -49,12 +49,12 @@ const fileFormats = {
         extensions: ['csv']
       }
     ],
-    options: {
-      separator: ';',
-      delimiter: '"'
+    dialect: {
+      delimiter: ';',
+      quoteChar: '"'
     },
-    mime_type: 'text/csv',
-    default_extension: 'csv'
+    mediatype: 'text/csv',
+    format: 'csv'
   }
 }
 

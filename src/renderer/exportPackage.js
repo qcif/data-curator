@@ -7,7 +7,8 @@ import hotStore from '@/store/modules/hots.js'
 import {extractNameFromFile} from '@/store/tabStoreUtilities.js'
 const Dialog = remote.dialog
 
-export function createZipFile(json) {
+export function createZipFile(text) {
+  let json = JSON.stringify(text, null, 4)
   Dialog.showSaveDialog({
     filters: [
       {

@@ -1,29 +1,28 @@
 <template>
   <div id="container" class="container-fluid">
-  <form id="custom-format">
+  <form id="custom-format" v-on:submit.prevent="submit()">
     <div class="form-wrapper">
 
       <div class="form-group">
-        <label for="separator">Separator</label>
-        <input type="text" class="form-control" id="separator" name="separator" value=",">
+        <label for="separator">Delimiter</label>
+        <input type="text" class="form-control" id="delimiter" name="delimiter" :value="getDelimiter" @input="setDelimiter($event.target.value)" >
       </div>
 
       <div class="form-group">
-        <label for="delimiter">Text Delimiter</label>
-        <input type="text" class="form-control" id="delimiter" name="delimiter" value='"'>
+        <label for="delimiter">Quote Character</label>
+        <input type="text" class="form-control" id="quoteChar" name="quoteChar" :value="getQuoteChar" @input="setQuoteChar($event.target.value)">
       </div>
 
     </div>
 
     <div class="well">
       <button id="submit" class="btn btn-default">Go</button>
-      <button id="cancel" class="btn btn-default">Cancel</button>
+      <button id="cancel" class="btn btn-default" @click="cancel()">Cancel</button>
     </div>
   </form>
   </div>
 </template>
 <script>
-window.$ = window.jQuery = require('jquery/dist/jquery.js')
 const {
   shell
 } = require('electron')
@@ -31,20 +30,35 @@ var ipc = require('electron').ipcRenderer
 require('bootstrap/dist/js/bootstrap.min.js')
 export default {
   name: 'customformat',
-  methods: {},
-  mounted: function() {
-    $('#cancel').click(function(e) {
-      window.close()
-    })
-
-    $('#submit').click(function(e) {
-      e.preventDefault()
+  computed: {
+    getDelimiter() {
+      return ','
+      // TODO : couple to vuex
+    },
+    getQuoteChar() {
+      return ','
+      // TODO : couple to vuex
+    }
+  },
+  methods: {
+    setDelimiter(delimiter) {
+      // TODO: complete
+    },
+    setQuoteChar(quoteChar) {
+      // TODO: complete
+    },
+    submit() {
       let format = {
-        separator: $('#separator').val(),
-        delimiter: $('#delimiter').val()
+        delimiter: document.querySelector('#delimiter').val(),
+        quoteChar: document.querySelector('#quoteChar').val()
       }
       ipc.send('formatSelected', format)
-    })
+    },
+    cancel() {
+      window.close()
+    }
+  },
+  mounted: function() {
   }
 }
 </script>
