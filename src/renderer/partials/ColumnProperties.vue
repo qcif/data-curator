@@ -314,6 +314,10 @@ export default {
       return true
     },
     setConstraintValue: function(key, value) {
+      // TODO: split at double quote and comma
+      // if (key === 'enum') {
+      //   value = _.toArray(value)
+      // }
       this.constraintInputKeyValues[key] = value
       this.pushConstraintInputKeyValues()
     },

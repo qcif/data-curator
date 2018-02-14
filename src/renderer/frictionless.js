@@ -13,7 +13,6 @@ async function inferSchema(data) {
   // frictionless default for csv dialect is that tables DO have headers
   // await schema.infer(data, {headers: 0})
   await schema.infer(dataClone, {headers: headers})
-  console.log(schema)
   return schema
 }
 

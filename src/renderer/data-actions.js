@@ -1,21 +1,31 @@
-import tabStore from '../renderer/store/modules/tabs.js'
+import tabStore from '@/store/modules/tabs.js'
 import fs from 'fs'
 import {fixRaggedRows} from '@/ragged-rows.js'
 import {includeHeadersInData} from '@/frictionlessUtilities.js'
 import {toggleHeaderNoFeedback} from '@/headerRow.js'
+import {pushCsvDialect} from '@/dialect.js'
 // import parse from 'csv-parse/lib/sync'
 // import stringify from 'csv-stringify'
+// TODO : replace jQuery with node 'csv' library's stringify and transform
 const $ = global.jQuery = require('jquery/dist/jquery.js')
 require('jquery-csv/src/jquery.csv.js')
+var parse = require('csv-parse/lib/sync')
+var stringify = require('csv-stringify/lib/sync')
 
+// { delimiter: ',', lineTerminator, quoteChar, doubleQuote, escapeChar, nullSequence, skipInitialSpace, header, caseSensitiveHeader, csvddfVersion }
+const frictionlessToCsvmapper = {delimiter: 'delimiter', lineTerminator: 'rowDelimiter', quoteChar: 'quote', escapeChar: 'escape', skipInitialSpace: 'ltrim'}
 export function loadDataIntoHot(hot, data, format) {
   let arrays
   // if no format specified, default to csv
   if (typeof format === 'undefined' || !format) {
-    arrays = $.csv.toArrays(data)
+    arrays = parse(data)
   } else {
-    arrays = $.csv.toArrays(data, format.options)
+    let csvOptions = dialectToCsvOptions(format.dialect)
+    // TODO: update to stream
+    arrays = parse(data, csvOptions)
+    pushCsvDialect(hot.guid, format)
   }
+
   fixRaggedRows(arrays)
   hot.loadData(arrays)
   hot.render()
@@ -48,9 +58,24 @@ export function saveDataToFile(hot, format, filename, callback) {
   let data
   // if no format specified, default to csv
   if (typeof format === 'undefined' || !format) {
-    data = $.csv.fromArrays(arrays)
+    // TODO: update to stream
+    data = stringify(arrays)
   } else {
-    data = $.csv.fromArrays(arrays, format.options)
+    let csvOptions = dialectToCsvOptions(format.dialect)
+    data = stringify(arrays, csvOptions)
+    pushCsvDialect(hot.guid, format)
   }
   fs.writeFile(filename, data, callback)
+}
+
+function dialectToCsvOptions(dialect) {
+  let csvOptions = {}
+  if (dialect) {
+    _.forEach(frictionlessToCsvmapper, function(csvKey, frictionlessKey) {
+      if (_.has(dialect, frictionlessKey)) {
+        csvOptions[csvKey] = dialect[frictionlessKey]
+      }
+    })
+  }
+  return csvOptions
 }
