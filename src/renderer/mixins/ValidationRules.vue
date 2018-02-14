@@ -45,7 +45,7 @@ export default {
             regex: 'The name field format is invalid. It must consist only of lowercase alphanumeric characters plus ".", "-" and "_".'
           },
           enum: {
-            required: 'Separate valid values with a comma.'
+            required: 'Quote each "valid value" and separate with a comma.'
           },
           pattern: {
             required: 'There must be a pattern present.'
