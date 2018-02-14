@@ -1,4 +1,4 @@
-import {Resource, Package, validate} from 'datapackage'
+import {Resource, Package} from 'datapackage'
 import {HotRegister} from '@/hot.js'
 import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
@@ -22,7 +22,7 @@ export async function createDataPackage() {
         errorMessages.push('There is a problem with at least 1 package property. Please check and try again.')
         return errorMessages
       }
-      createZipFile(JSON.stringify(dataPackage.descriptor))
+      createZipFile(dataPackage.descriptor)
     }
   } catch (err) {
     if (err) {
@@ -152,6 +152,10 @@ function addSourcesRequirements(properties, requiredMessages, entityName) {
       // console.log('source is valid')
     }
   }
+  if (properties.sources.length < 1) {
+    properties.sources = null
+    _.unset(properties, 'sources')
+  }
 }
 
 function addContributorsRequirements(properties, requiredMessages, entityName) {
@@ -167,6 +171,10 @@ function addContributorsRequirements(properties, requiredMessages, entityName) {
     } else {
       // console.log('contributor is valid')
     }
+  }
+  if (properties.contributors.length < 1) {
+    properties.contributors = null
+    _.unset(properties, 'contributors')
   }
 }
 

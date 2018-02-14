@@ -26,12 +26,6 @@ export function getHotIdFromTabIdFunction() {
   return getters.getHotIdFromTabId(state, getters)
 }
 
-function mergeSchemaForColumnProperties(currentProperties, descriptor) {
-  let properties = [...currentProperties]
-  _.merge(properties, descriptor.fields)
-  return properties
-}
-
 const getters = {
   getHotTabs: state => {
     return state.hotTabs
@@ -107,6 +101,9 @@ const getters = {
   },
   getPackageProperty: (state, getters) => (property) => {
     return state.packageProperties[property.key]
+  },
+  getPackageProperties: state => {
+    return state.packageProperties
   },
   getConstraint: (state, getters) => (property) => {
     let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
@@ -212,7 +209,15 @@ const mutations = {
     let hotTab = state.hotTabs[hotId]
     mutations.initColumnProperties(state, hotTab)
     // we cannot mutate the vuex state itself (in lodash call) - we can only assign a new value
-    state.hotTabs[hotId].columnProperties = mergeSchemaForColumnProperties(hotTab.columnProperties, hotIdSchema.schema.descriptor)
+    let columnProperties = []
+    for (let column of hotTab.columnProperties) {
+      let nextObject = {}
+      columnProperties.push(nextObject)
+      _.assign(nextObject, column)
+    }
+    _.merge(columnProperties, hotIdSchema.schema.descriptor.fields)
+    state.hotTabs[hotId].columnProperties = columnProperties
+    console.log(state.hotTabs[hotId].columnProperties)
     return state.hotTabs[hotId].columnProperties
   },
   initColumnProperties(state, hotTab) {

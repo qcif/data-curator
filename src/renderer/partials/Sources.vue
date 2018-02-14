@@ -10,7 +10,7 @@
           </div>
         </div>
       </div>
-      <button v-show="getSources.length > 1" type="button" class="btn btn-danger btn-sm" @click="removeSource(index)">
+      <button type="button" class="btn btn-danger btn-sm" @click="removeSource(index)">
         <span class="glyphicon glyphicon-minus"/>
       </button>
     </div>
@@ -54,6 +54,7 @@ export default {
     getSources: {
       async get() {
         let tab = this.getActiveTab
+        // TODO: may need distinction here for package vs tables
         let sources = await this.getSourcesFromTab(tab)
         return sources
       },
@@ -86,14 +87,9 @@ export default {
       let sources = this.getPropertyGivenHotId('sources', hotId)
       return sources
     },
+    // TODO: fix this redundant method
     initSources: async function(tab) {
       let sources = await this.getSourcesFromTab(tab)
-      if (!sources) {
-        const vueAddSource = this.addSource
-        _.delay(function() {
-          vueAddSource()
-        }, 100)
-      }
     },
     setSourceProp: function(index, prop, value) {
       this.setProperty(`sources[${index}][${prop}]`, value)
