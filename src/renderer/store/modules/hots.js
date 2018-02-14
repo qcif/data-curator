@@ -26,12 +26,6 @@ export function getHotIdFromTabIdFunction() {
   return getters.getHotIdFromTabId(state, getters)
 }
 
-function mergeSchemaForColumnProperties(currentProperties, descriptor) {
-  let properties = [...currentProperties]
-  _.merge(properties, descriptor.fields)
-  return properties
-}
-
 const getters = {
   getHotTabs: state => {
     return state.hotTabs
@@ -59,15 +53,23 @@ const getters = {
     return hotIdColumnNames
   },
   getAllHotColumnNamesFromHotId: (state, getters) => (hotId) => {
+    return getters.getAllHotColumnPropertyFromHotId(state, getters)({hotId: hotId, key: 'name'})
+  },
+  getAllHotColumnTypesFromHotId: (state, getters) => (hotId) => {
+    return getters.getAllHotColumnPropertyFromHotId(state, getters)({hotId: hotId, key: 'type'})
+  },
+  getAllHotColumnPropertyFromHotId: (state, getters) => (property) => {
+    const hotId = property.hotId
+    const propertyKey = property.key
     if (!state.hotTabs[hotId].columnProperties) {
       state.hotTabs[hotId].columnProperties = []
       // return
     }
-    let names = state.hotTabs[hotId].columnProperties.map(column => {
-      let name = column.name
-      return column.name
+    let values = state.hotTabs[hotId].columnProperties.map(column => {
+      let value = column[propertyKey]
+      return column[propertyKey]
     })
-    return names
+    return values
   },
   getHotIdFromTabId: (state, getters) => (tabId) => {
     return new Promise((resolve, reject) => {
@@ -82,7 +84,7 @@ const getters = {
       }
     })
   },
-  getTabId: (state, getters) => (tabId) => {
+  getSyncHotIdFromTabId: (state, getters) => (tabId) => {
     let hotId = _.findKey(state.hotTabs, {tabId: tabId})
     return hotId
   },
@@ -99,6 +101,9 @@ const getters = {
   },
   getPackageProperty: (state, getters) => (property) => {
     return state.packageProperties[property.key]
+  },
+  getPackageProperties: state => {
+    return state.packageProperties
   },
   getConstraint: (state, getters) => (property) => {
     let hotColumnProperties = getHotColumnPropertiesFromPropertyObject(property)
@@ -204,7 +209,14 @@ const mutations = {
     let hotTab = state.hotTabs[hotId]
     mutations.initColumnProperties(state, hotTab)
     // we cannot mutate the vuex state itself (in lodash call) - we can only assign a new value
-    state.hotTabs[hotId].columnProperties = mergeSchemaForColumnProperties(hotTab.columnProperties, hotIdSchema.schema.descriptor)
+    let columnProperties = []
+    for (let column of hotTab.columnProperties) {
+      let nextObject = {}
+      columnProperties.push(nextObject)
+      _.assign(nextObject, column)
+    }
+    _.merge(columnProperties, hotIdSchema.schema.descriptor.fields)
+    state.hotTabs[hotId].columnProperties = columnProperties
     return state.hotTabs[hotId].columnProperties
   },
   initColumnProperties(state, hotTab) {
