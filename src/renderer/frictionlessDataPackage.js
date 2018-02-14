@@ -132,7 +132,7 @@ function hasAllResourceRequirements(hot, requiredMessages) {
     requiredMessages.push(`Column properties must be set.`)
   } else {
     if (!hasAllColumnNames(hot.guid, columnProperties)) {
-      requiredMessages.push(`Column property names cannot be empty.`)
+      requiredMessages.push(`Column property names cannot be empty - set a Header Row`)
     }
   }
   return requiredMessages.length === 0
