@@ -163,21 +163,18 @@ export async function validateActiveDataAgainstSchema(callback) {
       name: 'Invalid foreign table(s)'
     })
   }
-  const stream = await table.iter({keyed: false, extended: true, stream: true, cast: false, forceCast: true, relations: relations})
+  const stream = await table.iter({keyed: false, extended: true, stream: true, cast: true, forceCast: true, relations: relations})
   stream.on('data', (row) => {
     // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
     let rowNumber = hasColHeaders
       ? row[0]
       : row[0] + 1
-    if (row[2] instanceof Error) {
-      let err = row[2]
-      errorHandler(err, rowNumber, errorCollector)
+    if (row instanceof Error) {
+      errorHandler(row, rowNumber, errorCollector)
     } else {
       if (isRowBlank(row[2])) {
         errorCollector.push({rowNumber: rowNumber, message: `Row ${rowNumber} is completely blank`, name: 'Blank Row'})
       }
-      // TODO: once frictionless release allows forceCast remove this call & the corresponding method
-    // checkRow(rowNumber, row[2], table.schema, errorCollector)
     }
   })
   stream.on('error', (error) => {

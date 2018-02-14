@@ -8,12 +8,12 @@ function makeCustomFormat(separator, delimiter) {
   return {
     label: 'Custom',
     filters: [],
-    options: {
-      separator: separator,
-      delimiter: delimiter
+    dialect: {
+      delimiter: delimiter,
+      quoteChar: quoteChar
     },
-    mime_type: 'text/plain',
-    default_extension: 'txt'
+    mediatype: 'text/plain',
+    format: 'txt'
   }
 }
 
@@ -27,7 +27,7 @@ function saveAsCustom() {
   })
   ipc.once('formatSelected', function(event, data) {
     dialog.close()
-    let format = makeCustomFormat(data.separator, data.delimiter)
+    let format = makeCustomFormat(data.delimiter, data.quoteChar)
     saveFileAs(format, currentWindow)
   })
   dialog.loadURL(`http://localhost:9080/#/customformat`)
@@ -120,8 +120,8 @@ function openFile(format) {
   })
 }
 
-ipc.on('openFileIntoTab', (event, arg) => {
-  readFile(arg)
+ipc.on('openFileIntoTab', (event, arg1, arg2) => {
+  readFile(arg1, arg2)
 })
 
 function readFile(filename, format) {
@@ -131,7 +131,7 @@ function readFile(filename, format) {
   }
   Fs.readFile(filename, 'utf-8', function(err, data) {
     if (err) {
-      console.log(err.stack)
+      console.log(err)
     } else {
       createWindowTabWithFormattedDataFile(data, format, filename)
       // enableSave()
