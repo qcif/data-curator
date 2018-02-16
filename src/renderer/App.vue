@@ -13,3 +13,6 @@
 <style lang="styl" scoped>
 @import '~static/css/default'
 </style>
+<style scoped>
+@import '~bootstrap/dist/css/bootstrap.min.css'
+</style>

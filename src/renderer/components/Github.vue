@@ -48,12 +48,3 @@ export default {
   methods: {}
 }
 </script>
-<style scoped>
-@import '~bootstrap/dist/css/bootstrap.min.css'
-</style>
-<style scoped>
-@import '~components-font-awesome/css/font-awesome.min.css'
-</style>
-<style scoped>
-@import '/static/css/datapackage.css'
-</style>
