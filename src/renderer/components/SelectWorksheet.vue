@@ -49,9 +49,6 @@ export default {
   }
 }
 </script>
-<style scoped>
-@import '~bootstrap/dist/css/bootstrap.min.css'
-</style>
 <style lang="styl" scoped>
 @import '~static/css/select-worksheet'
 </style>

@@ -89,9 +89,6 @@ are null values unknown, missing or not applicable?
   }
 }
 </script>
-<style scoped>
-@import '~bootstrap/dist/css/bootstrap.min.css'
-</style>
 <style lang="styl" scoped>
 @import '~static/css/provenanceprops'
 </style>
