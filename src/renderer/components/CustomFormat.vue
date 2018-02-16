@@ -27,7 +27,7 @@ const {
   shell
 } = require('electron')
 var ipc = require('electron').ipcRenderer
-require('bootstrap/dist/js/bootstrap.min.js')
+
 export default {
   name: 'customformat',
   computed: {

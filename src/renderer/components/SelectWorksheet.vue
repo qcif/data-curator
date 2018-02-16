@@ -16,7 +16,7 @@
 </template>
 <script>
 var ipc = require('electron').ipcRenderer
-require('bootstrap/dist/js/bootstrap.min.js')
+
 export default {
   name: 'selectworksheet',
   data() {
