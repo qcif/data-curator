@@ -17,7 +17,6 @@
 </template>
 <script>
 import SideNav from './SideNav'
-import 'bootstrap/dist/js/bootstrap.min.js'
 import markdown from 'markdown-it/dist/markdown-it.min.js'
 import ProvenanceTooltip from '../mixins/ProvenanceTooltip'
 import {

@@ -6,12 +6,11 @@
   </div>
 </template>
 <script>
-window.$ = window.jQuery = require('jquery/dist/jquery.js')
 const {
   shell
 } = require('electron')
 var ipc = require('electron').ipcRenderer
-require('bootstrap/dist/js/bootstrap.min.js')
+
 ipc.once('ghPagesUrl', function(event, url) {
   $('#pages-url').attr('href', url)
   $('#pages-url').html(url)

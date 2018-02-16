@@ -152,7 +152,6 @@ import {
   fileFormats
 } from '../file-formats.js'
 import {ipcRenderer as ipc} from 'electron'
-import 'bootstrap/dist/js/bootstrap.min.js'
 import 'lodash/lodash.min.js'
 import '../menu.js'
 import {unzipFile} from '@/importPackage.js'
