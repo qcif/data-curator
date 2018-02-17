@@ -1,4 +1,4 @@
-[![version][version-badge]][changelog] [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
+[![version][version-badge]][releases] [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 [![Travis Build Status](https://travis-ci.org/ODIQueensland/data-curator.svg)](https://travis-ci.org/ODIQueensland/data-curator)
 [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/?svg=true)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
 
@@ -197,7 +197,7 @@ To automate deployment, we are using:
 To trigger the automated build and draft release, create and push a git tag, following the versioning pattern used in current releases.
 Ensure that any changes in this tag are also released back to develop and master branches.
 
-Changes are recorded in the [Change Log][changelog].
+Changes are recorded on the [Releases][releases] page.
 
-[changelog]: ./CHANGELOG.md
+[releases]: https://github.com/ODIQueensland/data-curator/releases
 [version-badge]: https://img.shields.io/github/package-json/v/ODIQueensland/data-curator.svg
