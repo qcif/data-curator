@@ -107,8 +107,7 @@ function getHotIdFromForeignKeyForeignTable(title, hotId) {
 }
 
 function isRowBlank(row) {
-  let isRowBlank = row.filter(Boolean)
-  return isRowBlank.length === 0
+  return row.filter(Boolean).length === 0
 }
 
 function blankCellCount(row) {
@@ -156,31 +155,35 @@ export async function validateActiveDataAgainstSchema(callback) {
   let table = await createFrictionlessTable(data, schema)
   // wait for frictionless pr#124 and uncomment
   let relations = false
-  // try {
-  //   relations = await collateForeignKeys(hotId, callback)
-  // } catch (error) {
-  //   errorCollector.push({rowNumber: 0,
-  //     message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`,
-  //     name: 'Invalid foreign table(s)'
-  //   })
-  // }
-  const stream = await table.iter({keyed: false, extended: true, stream: true, cast: false, relations: relations})
+  try {
+    relations = await collateForeignKeys(hotId, callback)
+  } catch (error) {
+    errorCollector.push({rowNumber: 0,
+      message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`,
+      name: 'Invalid foreign table(s)'
+    })
+  }
+  const stream = await table.iter({keyed: false, extended: true, stream: true, cast: true, forceCast: true, relations: relations})
   stream.on('data', (row) => {
     // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
     let rowNumber = hasColHeaders
       ? row[0]
       : row[0] + 1
-    if (isRowBlank(row[2])) {
-      errorCollector.push({rowNumber: rowNumber, message: `Row ${rowNumber} is completely blank`, name: 'Blank Row'})
+    if (row instanceof Error) {
+      errorHandler(row, rowNumber, errorCollector)
+    } else {
+      if (isRowBlank(row[2])) {
+        errorCollector.push({rowNumber: rowNumber, message: `Row ${rowNumber} is completely blank`, name: 'Blank Row'})
+      }
     }
-    checkRow(rowNumber, row[2], table.schema, errorCollector)
   })
-  // stream.on('error', (error) => {
-  //   console.log(error)
-  //   errorHandler(error, 'N/A', errorCollector)
-  //   // ensure error sent back
-  //   stream.end()
-  // })
+  stream.on('error', (error) => {
+    console.log(error)
+    const rowNumber = error.rowNumber ? error.rowNumber : 'N/A'
+    errorHandler(error, rowNumber, errorCollector)
+    // ensure error sent back
+    stream.end()
+  })
   stream.on('end', () => {
     callback(errorCollector)
   })

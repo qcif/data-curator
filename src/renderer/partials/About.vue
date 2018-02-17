@@ -46,7 +46,7 @@ export default {
       {
         items: [
           {
-            label: `Beta version ${this.getApplicationVersion()} - access the support forum or report issues via the help menu`
+            label: `Beta version ${this.getApplicationVersion()} - Access the support forum or report issues via the Help menu`
           }
         ]
       },
@@ -80,6 +80,16 @@ export default {
         },
         {
           label: 'Includes software developed by the Queensland Cyber Infrastructure Foundation on behalf of the Queensland Government and the ODI Australian Network'
+        }
+        ]
+      },
+      {
+        items: [{
+          image: 'static/img/frictionless-data.png',
+          link: 'https://frictionlessdata.io'
+        },
+        {
+          label: 'Using Frictionless Data specifications and software'
         }
         ]
       }
