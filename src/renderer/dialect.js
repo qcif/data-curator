@@ -17,5 +17,4 @@ export function pushCsvDialect(guid, formatOriginal = {}) {
   if (format.format) {
     store.commit('pushTableProperty', {hotId: guid, key: 'format', value: format.format})
   }
-  console.log(store)
 }
