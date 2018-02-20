@@ -1,5 +1,6 @@
 import electron from 'electron'
 import { Application } from 'spectron'
+const fakeDialog = require('spectron-fake-dialog')
 
 export default {
   afterEach () {
@@ -17,7 +18,11 @@ export default {
       startTimeout: 10000,
       waitTimeout: 10000
     })
-
+    fakeDialog.apply(this.app)
     return this.app.start()
+    .then(() =>
+      // 1 = Quit (No Cancel No save)
+      fakeDialog.mock([ { method: 'showMessageBox', value: 1 } ])
+    )
   }
 }

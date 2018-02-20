@@ -13,7 +13,7 @@
               <!-- <a href="#"> -->
                 <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
                 <object v-if="menu.image" :class="menu.class" :data="menu.image" type="image/svg+xml" />
-                <div class="toolbar-text">{{menu.name}}</div>
+                <div :id="menu.id" class="toolbar-text">{{menu.name}}</div>
               </a>
               <component :is="menu.tooltipView" />
             </li>
@@ -88,13 +88,13 @@
             </ul>
               <h3>{{messagesTitle}}</h3>
               <template  v-if="messagesType === 'error'">
-                <div v-for="errorMessage in messages">
+                <div :id="'error-messages' + index" v-for="(errorMessage, index) in messages" :key="index">
                   <span v-show="errorMessage.rowNumber">(row:{{errorMessage.rowNumber}})</span>
                   <span v-show="errorMessage.columnNumber">(column:{{errorMessage.columnNumber}})</span>
                   <span>{{errorMessage.message}}</span>
                 </div>
               </template>
-              <div v-else>
+              <div id="error-message" v-else>
                 <span>{{messages}}</span>
               </div>
           </div>
@@ -181,12 +181,14 @@ export default {
       sideNavFormHeight: '300px',
       toolbarMenus: [{
         name: 'Guess',
+        id: 'guess-column-properties',
         image: 'static/img/guess-column-properties.svg',
         tooltipId: 'tooltip-guess',
         tooltipView: 'tooltipGuess'
       },
       {
         name: 'Column',
+        id: 'column-properties',
         image: 'static/img/column-properties.svg',
         tooltipId: 'tooltip-column',
         tooltipView: 'tooltipColumn',
@@ -195,6 +197,7 @@ export default {
       },
       {
         name: 'Table',
+        id: 'table-properties',
         image: 'static/img/table-properties.svg',
         tooltipId: 'tooltip-table',
         tooltipView: 'tooltipTable',
@@ -203,6 +206,7 @@ export default {
       },
       {
         name: 'Provenance',
+        id: 'provenance-information',
         image: 'static/img/provenance-information.svg',
         tooltipId: 'tooltip-provenance',
         tooltipView: 'tooltipProvenance',
@@ -211,6 +215,7 @@ export default {
       },
       {
         name: 'Package',
+        id: 'data-package-properties',
         image: 'static/img/data-package-properties.svg',
         tooltipId: 'tooltip-package',
         tooltipView: 'tooltipPackage',
@@ -219,12 +224,14 @@ export default {
       },
       {
         name: 'Validate',
+        id: 'validate-data',
         image: 'static/img/validate.svg',
         tooltipId: 'tooltip-validate',
         tooltipView: 'tooltipValidate'
       },
       {
         name: 'Export',
+        id: 'export-package',
         image: 'static/img/export.svg',
         tooltipId: 'tooltip-export',
         tooltipView: 'tooltipExport',
