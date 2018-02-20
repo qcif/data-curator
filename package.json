@@ -88,7 +88,6 @@
     "moment": "^2.19.1",
     "pikaday": "^1.6.1",
     "pouchdb-adapter-idb": "^6.3.4",
-    "remove": "^0.1.5",
     "request": "^2.81.0",
     "rxjs": "^5.5.2",
     "slug": "^0.9.1",
