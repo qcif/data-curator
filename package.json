@@ -26,8 +26,8 @@
     "test": "yarn run unit && yarn run e2e",
     "unit": "karma start test/unit/karma.conf.js",
     "e2e": "yarn run pack && mocha test/e2e",
-    "cucumber:full": "yarn run pack && cucumber-js",
-    "cucumber": "cucumber-js"
+    "cucumber": "yarn run pack && yarn run cucumber:postpack",
+    "cucumber:postpack": "cucumber-js"
   },
   "build": {
     "productName": "DataCurator",
@@ -160,6 +160,7 @@
     "karma-webpack": "^2.0.5",
     "mocha": "^3.0.2",
     "mocha-webpack": "^1.0.1",
+    "multispinner": "^0.2.1",
     "node-gyp": "^3.6.2",
     "node-loader": "^0.6.0",
     "require-dir": "^0.3.0",

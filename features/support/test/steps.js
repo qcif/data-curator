@@ -1,22 +1,15 @@
 const { Given, When, Then} = require('cucumber')
 const { expect, should, assert } = require('chai')
-var fakeDialog = require('spectron-fake-dialog')
-var Application = require('spectron').Application
-var electron = require('electron')
 
 Given(/^I have opened Data Curator$/, function () {
-  this.app = new Application({
-    path: electron,
-    args: ['dist/electron/main.js'],
-    startTimeout: 10000,
-    waitTimeout: 10000
-  })
-  fakeDialog.apply(this.app)
-  return this.app.start()
-    .then(() =>
-      // 1 = Quit (No Cancel No save)
-      fakeDialog.mock([ { method: 'showMessageBox', value: 1 } ])
-    )
+  return this
+    .app
+    .client
+    .waitUntilWindowLoaded()
+    .getTitle()
+    .then(title => {
+      expect(title).to.equal('Data Curator')
+    })
 })
 
 When(/^I invoke the Guess Column Properties command$/, function () {
