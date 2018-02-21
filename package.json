@@ -27,7 +27,7 @@
     "unit": "karma start test/unit/karma.conf.js",
     "e2e": "yarn run pack && mocha test/e2e",
     "cucumber": "yarn run pack && yarn run cucumber:postpack",
-    "cucumber:postpack": "cucumber-js"
+    "cucumber:postpack": "cucumber-js test/features --tags @impl"
   },
   "build": {
     "productName": "DataCurator",

@@ -9,6 +9,16 @@ Feature: New
   - Tab names must be unique
   - Name a new tab, "untitled" with a sequential number appended to the end to enable uniqueness
 
+  @impl
+  Scenario: Default
+    When I have opened Data Curator
+    Then I should see 1 window opened
+    And The window should have 1 tab opened
+    And The tab should have 1 table
+    And The table should have 1 row by 3 columns
+    And The table should be empty
+    And The cursor should be in row 1, column 1
+
   Scenario: Add Tab
     Given I have opened Data Curator
     When I invoke the "New" command
