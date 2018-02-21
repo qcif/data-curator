@@ -2,7 +2,6 @@ import Handsontable from 'handsontable/dist/handsontable.full.js'
 import {remote} from 'electron'
 import store from '@/store/modules/hots.js'
 import {allTablesAllColumnsFromSchema$, allTablesAllColumnNames$} from '@/rxSubject.js'
-import {ipcRenderer as ipc} from 'electron'
 const Dialog = remote.dialog
 
 const _hots = {}

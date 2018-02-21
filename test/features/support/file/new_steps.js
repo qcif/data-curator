@@ -1,6 +1,5 @@
-const { Given, When, Then} = require('cucumber')
-const { expect, should, assert } = require('chai')
-// const {HotRegister} = require('../../../../src/renderer/hot.js')
+import { expect, should, assert } from 'chai'
+import { Given, When, Then} from 'cucumber'
 
 When(/^I have opened Data Curator$/, function () {
   return this

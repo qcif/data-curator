@@ -1,6 +1,6 @@
-var { setWorldConstructor } = require('cucumber')
-var Application = require('spectron').Application
-var electron = require('electron')
+import {setWorldConstructor} from 'cucumber'
+import {Application} from 'spectron'
+import electron from 'electron'
 
 function CustomWorld() {
   this.app = new Application({
