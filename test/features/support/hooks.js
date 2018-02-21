@@ -1,7 +1,7 @@
-var Application = require('spectron').Application
-var electron = require('electron')
-var { After, Before } = require('cucumber')
-var fakeDialog = require('spectron-fake-dialog')
+import {Application} from 'spectron'
+import electron from 'electron'
+import {After, Before} from 'cucumber'
+import fakeDialog from 'spectron-fake-dialog'
 
 After({timeout: 10000}, function () {
   if (this.app && this.app.isRunning()) {
