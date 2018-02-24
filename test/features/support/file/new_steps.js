@@ -1,5 +1,6 @@
 import { expect, should, assert } from 'chai'
 import { Given, When, Then} from 'cucumber'
+const _ = require('lodash')
 
 When(/^I have opened Data Curator$/, function () {
   return this
@@ -42,11 +43,16 @@ Then(/^The tab should have 1 table$/, function () {
     })
 })
 
-Then(/^The table should have 1 row by 3 columns$/, function () {
+Then(/^The table (?:should have|has) (\d+) row[s]? by (\d+) column[s]?$/, function (rowCount, colCount) {
   return this.app.client.element('.editor.handsontable')
-    .getText('.ht_master table tr td')
-    .then(array => {
-      expect(array).to.deep.equal(['', '', ''])
+    .elements('.ht_master table tr th')
+    .then(response => {
+      expect(response.value.length).to.deep.equal(rowCount)
+    })
+    .element('.ht_master table tr')
+    .elements('td')
+    .then(response => {
+      expect(response.value.length).to.deep.equal(colCount)
     })
 })
 
@@ -57,24 +63,32 @@ Then(/^The table should be empty$/, function () {
       let text = array.join('')
       expect(text).to.equal('')
     })
+})
 
-  Then(/^The cursor should be in row {int}, column {int}$/, function (int, int2) {
-    // Write code here that turns the phrase above into concrete actions
-    callback(null, 'pending')
-    // var currentState = this.app
-    // this.app.electron.ipcMain.on('currentCellSelection-message', (event, arg) => {
-    //   currentState.client.
-    // })
-    // return this.app.webContents
-    //   .send('getCurrentCellSelection')
-    //   .then( ()=> {
-    //
-    //   })
-  })
-
-// BrowserWindow.getFocusedWindow().webContents.send('toggleActiveHeaderRow')
-//     ipc.on('currentCellSelectione', function() {
-//       let activeHot = HotRegister.getActiveInstance()
-//       let currentCell = activeHot.getSelected()
-//       ipc.send('currentCellSelection', currentCell)
+Then(/^The cursor should be in row (\d+), column (\d+)$/, function (rowNumber, colNumber) {
+  return this.app.client.element('.editor.handsontable')
+    .getAttribute('.ht_master table tr th', 'class')
+    .then(response => {
+      const selectedRowHeaderClass = 'ht__highlight'
+      // when only 1 value returned no longer an array
+      if (_.isArray(response)) {
+        expect(response[rowNumber - 1]).to.equal(selectedRowHeaderClass)
+      } else if (rowNumber === 1) {
+        expect(response).to.equal(selectedRowHeaderClass)
+      } else {
+        throw new Error(`There is only 1 row in the table, but the test tried to look for row number: ${rowNumber}`)
+      }
+    })
+    .getAttribute('.ht_master table tr td', 'class')
+    .then(response => {
+      const selectedCellClass = 'current highlight'
+      // when only 1 value returned no longer an array
+      if (_.isArray(response)) {
+        expect(response[colNumber - 1]).to.equal(selectedCellClass)
+      } else if (colNumber === 1) {
+        expect(response).to.equal(selectedCellClass)
+      } else {
+        throw new Error(`There is only 1 column in the table, but the test tried to look for column number: ${colNumber}`)
+      }
+    })
 })

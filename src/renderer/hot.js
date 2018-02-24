@@ -1,5 +1,5 @@
 import Handsontable from 'handsontable/dist/handsontable.full.js'
-import {remote} from 'electron'
+import {remote, ipcRenderer as ipc} from 'electron'
 import store from '@/store/modules/hots.js'
 import {allTablesAllColumnsFromSchema$, allTablesAllColumnNames$} from '@/rxSubject.js'
 const Dialog = remote.dialog
@@ -197,7 +197,7 @@ export function insertRow(offset, mathFn) {
   if (typeof range !== 'undefined') {
     const selection = mathFn(range.from.row, range.to.row) + offset
     hot.alter('insert_row', selection)
-    reselectCurrentCellOrMin()
+    hot.selectCell(selection, 0)
   }
 }
 
@@ -272,10 +272,13 @@ export function removeColumns() {
   reselectCurrentCellOrMin()
 }
 
-ipc.on('getCurrentCellSelection', function() {
-  let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getSelected()
-  ipc.send('currentCellSelection', currentCell)
+ipc.on('reselectCurrentCellOrMin', function(event, arg) {
+  reselectCurrentCellOrMin()
+})
+
+ipc.on('selectHotCell', function(event, rowCountNumber, ColCountNumber) {
+  let hot = HotRegister.getActiveInstance()
+  hot.selectCell(rowCountNumber - 1, ColCountNumber - 1)
 })
 
 export {
