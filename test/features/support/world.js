@@ -9,6 +9,8 @@ function CustomWorld() {
     startTimeout: 10000,
     waitTimeout: 10000
   })
+  this.rowNumber = null
+  this.colNumber = null
 }
 
 setWorldConstructor(CustomWorld)

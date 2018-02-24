@@ -5,9 +5,14 @@ Feature: Insert Row Below
 
   The "Insert Row Below" command can be invoked using a menu item or keyboard shortcut
 
+  @latest
+  @impl
   Scenario: Insert Row Below
     Given I have opened Data Curator
-    And the cursor is in a row
-    When I invoke the "Insert Row Below" command
-    Then insert a row below the current row
-    And move the cursor to the first column of the new row
+    And The table has 1 row by 3 columns
+    And I click in row 1, column 1
+    And I right-click
+    Then I invoke the "Insert Row Below" command
+    And The table should have 2 rows by 3 columns
+    Then I should see a new row below the current row
+    And I should see the cursor in the first column

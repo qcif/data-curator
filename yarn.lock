@@ -5544,10 +5544,6 @@ just-extend@^1.1.26:
   version "1.1.27"
   resolved "https://registry.yarnpkg.com/just-extend/-/just-extend-1.1.27.tgz#ec6e79410ff914e472652abfa0e603c03d60e905"
 
-karma-chai-as-promised@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/karma-chai-as-promised/-/karma-chai-as-promised-0.1.2.tgz#d611f95e0a9b48965b3a58660f03df17f961940b"
-
 karma-chai@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/karma-chai/-/karma-chai-0.1.0.tgz#bee5ad40400517811ae34bb945f762909108b79a"

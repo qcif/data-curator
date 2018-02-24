@@ -28,9 +28,7 @@ export function addHotContainerListeners(container) {
 
   container.addEventListener('contextmenu', function(e) {
     e.preventDefault()
-    menu.popup(BrowserWindow.getFocusedWindow())
-    // rowAbove.enabled = true
-    // columnLeft.enabled = true
+    menu.popup(BrowserWindow.getFocusedWindow(), {async: true})
   }, false)
 }
 
@@ -44,6 +42,7 @@ ipc.on('saveData', function(e, format, fileName) {
   saveDataToFile(hot, format, fileName)
 })
 
+// TODO: correct once github references re-introduced
 ipc.on('getCSV', function(e, format) {
   let hot = HotRegister.getActiveInstance()
   var data
@@ -86,6 +85,14 @@ ipc.on('insertRowAbove', function() {
 
 ipc.on('insertRowBelow', function() {
   insertRowBelow()
+})
+
+ipc.on('clickLabelOnContextMenu', function(event, arg) {
+  menu.items.find(x => x.label === arg).click()
+})
+
+ipc.on('closeContextMenu', function() {
+  menu.closePopUp(BrowserWindow.getFocusedWindow())
 })
 
 ipc.on('insertColumnLeft', function() {
