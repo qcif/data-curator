@@ -26,10 +26,10 @@
     "test": "yarn run unit && yarn run e2e",
     "unit": "karma start test/unit/karma.conf.js",
     "e2e": "yarn run pack && mocha test/e2e",
-    "cucumber": "yarn run pack && yarn run cucumber:postpack2",
-    "cucumber:postpack": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @impl features",
-    "cucumber:postpack2": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register features -f json:cucumber_report.json",
-    "cucumber:report2": "node cucumber-report.js"
+    "cucumber": "yarn run pack && yarn run cucumber:postpack && yarn run cucumber:report",
+    "cucumber:postpack": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @impl test/features -f json:test/cucumber_report.json",
+    "cucumber:load": "cross-env BABEL_ENV=test ./node_modules/.bin/babel src -d lib --ignore '**/*_spec.js'",
+    "cucumber:report": "node test/cucumber-report.js"
   },
   "build": {
     "productName": "DataCurator",
@@ -111,11 +111,9 @@
     "zeroclipboard": "^2.3.0"
   },
   "devDependencies": {
-    "@istanbuljs/nyc-config-babel": "^1.2.3",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.22.1",
     "babel-eslint": "^8.0.1",
-    "babel-istanbul": "^0.12.2",
     "babel-loader": "^7.0.0",
     "babel-plugin-istanbul": "^4.1.5",
     "babel-plugin-transform-runtime": "^6.22.0",
@@ -151,9 +149,6 @@
     "exports-loader": "^0.7.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.5",
-    "grunt": "^1.0.2",
-    "grunt-cli": "^1.2.0",
-    "grunt-cucumber-coverage": "^1.0.0-rc.6",
     "html-webpack-include-assets-plugin": "^0.0.5",
     "html-webpack-plugin": "^2.16.1",
     "inject-loader": "^3.0.0",
@@ -166,7 +161,6 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "^0.0.31",
     "karma-webpack": "^2.0.5",
-    "load-grunt-tasks": "^3.5.2",
     "mocha": "^3.0.2",
     "mocha-webpack": "^1.0.1",
     "multispinner": "^0.2.1",
