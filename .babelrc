@@ -35,5 +35,6 @@
       ]
     }
   },
-  "plugins": ["transform-runtime"]
+  "plugins": ["transform-runtime"],
+  "sourceMaps": "inline"
 }

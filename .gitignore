@@ -24,3 +24,5 @@ cucumber_report.html
 cucumber_report.json
 test/cucumber_report.html
 test/cucumber_report.json
+lib
+lib/

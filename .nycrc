@@ -1,5 +1,14 @@
 {
-  "extends": "@istanbuljs/nyc-config-babel",
   "sourceMap": false,
-  "instrument": false
+  "instrument": false,
+  "reporter": [
+    "lcov",
+    "text"
+  ],
+  "include": [
+    "**/*.js"
+  ],
+  "exclude" : [
+    "node_modules"
+  ]
 }
