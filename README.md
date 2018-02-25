@@ -156,16 +156,18 @@ Tools to automate testing are being established.
 
 ### Acceptance tests
 
-We have:
+Acceptance tests for [Data Curator](https://github.com/ODIQueensland/data-curator/blob/master/README.md) are:
 
-- defined [Acceptance tests](https://github.com/ODIQueensland/data-curator/tree/master/test/features) using the [Gherkin language](https://cucumber.io/docs/reference#gherkin)
-- shared [Acceptance tests in a pretty format](https://relishapp.com/odi-australia/data-curator/docs) [using](https://relishapp.com/relish/relish/docs) [Relish](https://relishapp.com)
+- written using the [Gherkin language](https://cucumber.io/docs/reference#gherkin) ([learn more](https://media.pragprog.com/titles/hwcuc/gherkin.pdf)) and stored [on GitHub](https://github.com/ODIQueensland/data-curator/tree/master/test/features)
+- [shared](https://relishapp.com/odi-australia/data-curator/docs) using [Relish](https://relishapp.com) (which will be replaced by Cucumber Pro)
+- [shared](https://app.cucumber.pro/projects/data-curator/documents/branch/develop) using [Cucumber Pro](https://cucumber.io/pro) beta
+- arranged in folders like the application menu structure
 
 To push the acceptance tests (.feature files) to Relish:
 
 `relish push odi-australia/data-curator path /your-local-path/data-curator/test/features`
 
-We may link acceptance tests to lower level tests ([cucumber-js](https://github.com/cucumber/cucumber-js/) will probably be helpful).
+Acceptance tests are automatically added to Cucumber Pro via a GitHub webhook.
 
 ### Integration and Unit tests
 
