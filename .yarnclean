@@ -10,6 +10,9 @@ doc
 website
 images
 !istanbul/lib/assets
+!babel-istanbul/lib/assets
+!istanbul-reports/lib/html/assets
+!nyc/node_modules/istanbul-reports/lib/html/assets
 assets
 !karma/static
 static

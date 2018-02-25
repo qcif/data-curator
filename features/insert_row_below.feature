@@ -2,7 +2,6 @@ Feature: Insert Row Below
   As a Data Packager
   I want to insert another row below the current row
   So that I can add more data to the data tab
-
   The "Insert Row Below" command can be invoked using a menu item or keyboard shortcut
 
   @latest
