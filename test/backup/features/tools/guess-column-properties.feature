@@ -9,7 +9,16 @@ Feature: Guess Column Properties
 
   If column properties already exist for the guessed properties, then prompt the user to ask if they should be over-written.
 
-  Scenario: Guess column properties
+  @impl
+  Scenario: Guess column properties immediately after opening Data Curator
     Given I have opened Data Curator
     When I invoke the Guess Column Properties command
     Then I should see the success message
+
+  Scenario: Guess column properties
+    Given I have opened Data Curator
+    And I have opened 1 data tab
+    When I invoke the "Guess Column Properties" command
+    Then set the 'name' property for each column to the value in the first row of the column
+    And infer the column 'type' and 'format' properties from a sample of the data
+    And open the Column Properties panel for the first column
