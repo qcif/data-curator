@@ -1,0 +1,564 @@
+[
+  {
+    "description": "  As a Data Packager\n  I want to derive as many column properties as possible from the data and the CSV dialect\n  So that I can quickly set the column properties\n\n  The \"Guess Column Properties\" command can be invoked using a menu item or a toolbar button\n\n  Read the first 100 rows of the data and for each column, infer the data type and format and set the 'type' and 'format' property values to the inferred values.\n\n  If column properties already exist for the guessed properties, then prompt the user to ask if they should be over-written.",
+    "keyword": "Feature",
+    "name": "Guess Column Properties",
+    "line": 1,
+    "id": "guess-column-properties",
+    "tags": [],
+    "uri": "features/guess-column-properties.feature",
+    "elements": [
+      {
+        "id": "guess-column-properties;guess-column-properties-immediately-after-opening-data-curator",
+        "keyword": "Scenario",
+        "line": 13,
+        "name": "Guess column properties immediately after opening Data Curator",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 12
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "features/support/hooks.js:18"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3995000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 14,
+            "name": "I have opened Data Curator",
+            "match": {
+              "location": "features/step_definitions/newf_steps.js:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 27000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 15,
+            "name": "I invoke the Guess Column Properties command",
+            "match": {
+              "location": "features/step_definitions/guesscolumnproperties_steps.js:4"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 146000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 16,
+            "name": "I should see the success message",
+            "match": {
+              "location": "features/step_definitions/guesscolumnproperties_steps.js:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 105000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "features/support/hooks.js:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1051000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "guess-column-properties;guess-column-properties",
+        "keyword": "Scenario",
+        "line": 18,
+        "name": "Guess column properties",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "features/support/hooks.js:18"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3946000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 19,
+            "name": "I have opened Data Curator",
+            "match": {
+              "location": "features/step_definitions/newf_steps.js:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 28000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 20,
+            "name": "I have opened 1 data tab",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 21,
+            "name": "I invoke the \"Guess Column Properties\" command",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 22,
+            "name": "set the 'name' property for each column to the value in the first row of the column",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 23,
+            "name": "infer the column 'type' and 'format' properties from a sample of the data",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 24,
+            "name": "open the Column Properties panel for the first column",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "features/support/hooks.js:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1037000000
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "  As a Data Packager\n  I want to insert another row below the current row\n  So that I can add more data to the data tab\n  The \"Insert Row Below\" command can be invoked using a menu item or keyboard shortcut",
+    "keyword": "Feature",
+    "name": "Insert Row Below",
+    "line": 1,
+    "id": "insert-row-below",
+    "tags": [],
+    "uri": "features/insert_row_below.feature",
+    "elements": [
+      {
+        "id": "insert-row-below;insert-row-below",
+        "keyword": "Scenario",
+        "line": 9,
+        "name": "Insert Row Below",
+        "tags": [
+          {
+            "name": "@latest",
+            "line": 7
+          },
+          {
+            "name": "@impl",
+            "line": 8
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "features/support/hooks.js:18"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4066000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 10,
+            "name": "I have opened Data Curator",
+            "match": {
+              "location": "features/step_definitions/newf_steps.js:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 29000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "The table has 1 row by 3 columns",
+            "match": {
+              "location": "features/step_definitions/newf_steps.js:46"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 83000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "I click in row 1, column 1",
+            "match": {
+              "location": "features/step_definitions/insertrow_steps.js:8"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 29000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I right-click",
+            "match": {
+              "location": "features/step_definitions/insertrow_steps.js:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 127000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 14,
+            "name": "I invoke the \"Insert Row Below\" command",
+            "match": {
+              "location": "features/step_definitions/insertrow_steps.js:23"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 30000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "The table should have 2 rows by 3 columns",
+            "match": {
+              "location": "features/step_definitions/newf_steps.js:46"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 52000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 16,
+            "name": "I should see a new row below the current row",
+            "match": {
+              "location": "features/step_definitions/insertrow_steps.js:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 19000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "I should see the cursor in the first column",
+            "match": {
+              "location": "features/step_definitions/insertrow_steps.js:37"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 32000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "features/support/hooks.js:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1091000000
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "  As a Data Packager\n  I want to add a data table\n  So that I can add and edit related data\n\n  The \"New\" command can be invoked using a menu item or the add tab button\n\n  Rules:\n  - Tab names must be unique\n  - Name a new tab, \"untitled\" with a sequential number appended to the end to enable uniqueness",
+    "keyword": "Feature",
+    "name": "New",
+    "line": 1,
+    "id": "new",
+    "tags": [],
+    "uri": "features/newf.feature",
+    "elements": [
+      {
+        "id": "new;default",
+        "keyword": "Scenario",
+        "line": 13,
+        "name": "Default",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 12
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "features/support/hooks.js:18"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3949000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 14,
+            "name": "I have opened Data Curator",
+            "match": {
+              "location": "features/step_definitions/newf_steps.js:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 27000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 15,
+            "name": "I should see 1 window opened",
+            "match": {
+              "location": "features/step_definitions/newf_steps.js:16"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 17000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "The window should have 1 tab opened",
+            "match": {
+              "location": "features/step_definitions/newf_steps.js:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 59000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "The tab should have 1 table",
+            "match": {
+              "location": "features/step_definitions/newf_steps.js:33"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 52000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 18,
+            "name": "The table should have 1 row by 3 columns",
+            "match": {
+              "location": "features/step_definitions/newf_steps.js:46"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 69000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 19,
+            "name": "The table should be empty",
+            "match": {
+              "location": "features/step_definitions/newf_steps.js:59"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 84000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 20,
+            "name": "The cursor should be in row 1, column 1",
+            "match": {
+              "location": "features/step_definitions/newf_steps.js:68"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 162000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "features/support/hooks.js:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1038000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "new;add-tab",
+        "keyword": "Scenario",
+        "line": 22,
+        "name": "Add Tab",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "features/support/hooks.js:18"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3946000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 23,
+            "name": "I have opened Data Curator",
+            "match": {
+              "location": "features/step_definitions/newf_steps.js:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 141000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 24,
+            "name": "I invoke the \"New\" command",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 25,
+            "name": "create an empty 1 row by 3 column data tab in a new tab",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 26,
+            "name": "show it the right-most position",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 27,
+            "name": "set a unique Tab name",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 28,
+            "name": "place the cursor in row 1, column 1",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "features/support/hooks.js:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1039000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
