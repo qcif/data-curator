@@ -19,3 +19,4 @@ test/temp/
 test/unit/coverage/
 .eslintrc
 src/renderer/data
+.nyc_output
