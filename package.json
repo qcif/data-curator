@@ -31,7 +31,7 @@
     "cucumber:test": "remap-istanbul -i coverage/coverage.json -o coverage/coverage.json",
     "cucumber:report": "istanbul report lcov text",
     "cucumber:postpack": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @impl features",
-    "cucumber:postpack2": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register features",
+    "cucumber:postpack2": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register features -f json:cucumber_report.json",
     "cucumber:nyc": "cross-env BABEL_ENV=test ./node_modules/.bin/babel src -d lib --ignore '**/*_spec.js'",
     "cucumber:nyc2": "cross-env BABEL_ENV=test ./node_modules/.bin/nyc --silent node ./node_modules/.bin/cucumber-js --require-module babel-core/register",
     "cucumber:nyc3": "nyc report --reporter=lcov",
