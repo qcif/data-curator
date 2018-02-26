@@ -4,7 +4,6 @@ Feature: Insert Row Below
   So that I can add more data to the data tab
   The "Insert Row Below" command can be invoked using a menu item or keyboard shortcut
 
-  @latest
   @impl
   Scenario: Insert Row Below
     Given I have opened Data Curator

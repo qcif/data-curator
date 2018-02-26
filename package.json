@@ -26,7 +26,7 @@
     "test": "yarn run unit && yarn run e2e",
     "unit": "karma start test/unit/karma.conf.js",
     "e2e": "yarn run pack && yarn run cucumber:postpack && yarn run cucumber:report",
-    "cucumber:postpack": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @impl test/features -f json:test/cucumber_report.json",
+    "cucumber:postpack": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @latest test/features -f json:test/cucumber_report.json",
     "cucumber:report": "node test/cucumber-report.js"
   },
   "build": {
