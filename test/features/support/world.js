@@ -2,7 +2,9 @@ import {setWorldConstructor} from 'cucumber'
 import {Application} from 'spectron'
 import electron from 'electron'
 
-function CustomWorld() {
+function CustomWorld({attach, parameters}) {
+  this.attach = attach
+  this.parameters = parameters
   this.app = new Application({
     path: electron,
     args: ['dist/electron/main.js'],

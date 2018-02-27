@@ -10,7 +10,7 @@ When(/^I invoke the Guess Column Properties command$/, function () {
 Then(/^I should see the success message$/, function () {
   return this.app.client.waitForVisible('#message-panel', 1000)
     .getText('#error-message')
-    .then(text => {
+    .then(function(text) {
       expect(text).to.equal('Success: Guess column properties succeeded.')
     })
 })

@@ -5,7 +5,7 @@ const _ = require('lodash')
 // When(/^I invoke the "Open Comma Separated" command$/, function () {
 //     .waitUntilWindowLoaded()
 //     .getTitle()
-//     .then(title => {
+//     .then(function(title) {
 //       expect(title).to.equal('Data Curator')
 //     })
 // })
