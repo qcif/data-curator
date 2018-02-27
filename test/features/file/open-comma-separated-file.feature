@@ -18,7 +18,7 @@ Feature: Open a Comma separated value file
   @latest
   Scenario: Open an existing comma separated value file
     Given I have opened Data Curator
-    When I click on the File->Open menu
+    When I click on the File menu
     # Then a prompt, requesting the 'filename' and 'location' is shown
     # And only files ending with a ".csv" can be selected
     # And the selected 'filename' is opened in a new data tab to the right of any other open data tabs

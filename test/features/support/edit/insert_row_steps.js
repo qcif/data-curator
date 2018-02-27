@@ -29,7 +29,7 @@ Then(/^I should see a new row below the current row$/, function () {
   return this.app.client
     .element('.editor.handsontable')
     .elements('.ht_master table tr th')
-    .then(response => {
+    .then(function(response) {
       expect(response.value.length).to.equal(this.rowNumber + 1)
     })
 })
@@ -38,7 +38,7 @@ Then(/^I should see the cursor in the first column$/, function () {
   return this.app.client
     .element('.editor.handsontable')
     .elements('.ht_master table tr td.current.highlight')
-    .then(response => {
+    .then(function(response) {
       expect(response.value.length).to.equal(this.colNumber)
     })
 })

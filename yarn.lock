@@ -82,6 +82,10 @@
   version "7.0.52"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.52.tgz#8990d3350375542b0c21a83cd0331e6a8fc86716"
 
+"@types/node@^8.0.24":
+  version "8.9.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.9.4.tgz#dfd327582a06c114eb6e0441fa3d6fab35edad48"
+
 abbrev@1, abbrev@1.0.x:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.0.9.tgz#91b4792588a7738c25f35dd6f63752a2f8776135"
@@ -3271,6 +3275,13 @@ electron-chromedriver@~1.7.1:
     electron-download "^4.1.0"
     extract-zip "^1.6.5"
 
+electron-chromedriver@~1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/electron-chromedriver/-/electron-chromedriver-1.8.0.tgz#901714133cf6f6093d365e1f44a52d99624d8241"
+  dependencies:
+    electron-download "^4.1.0"
+    extract-zip "^1.6.5"
+
 electron-debug@~1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/electron-debug/-/electron-debug-1.4.0.tgz#bec7005522220a9d0622153352e1bbff0f37af2e"
@@ -3371,6 +3382,14 @@ electron-publish@19.55.2:
 electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.18:
   version "1.3.22"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.22.tgz#4322d52c151406e3eaef74ad02676883e8416418"
+
+electron@^1.4.12:
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-1.8.2.tgz#a817cd733c2972b3c7cc4f777caf6e424b88014d"
+  dependencies:
+    "@types/node" "^8.0.24"
+    electron-download "^3.0.1"
+    extract-zip "^1.0.3"
 
 electron@^1.7.11:
   version "1.7.11"
@@ -8754,6 +8773,23 @@ spdy@^3.4.1:
 spectron-fake-dialog@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/spectron-fake-dialog/-/spectron-fake-dialog-0.0.1.tgz#ffd5cfadcac64eb957340389f047529c4a68e23a"
+
+spectron-fake-menu@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/spectron-fake-menu/-/spectron-fake-menu-0.0.1.tgz#c2d3f3eb14e1dc0fafbca20b12bf05234abbb96c"
+  dependencies:
+    electron "^1.4.12"
+    spectron "^3.4.0"
+
+spectron@^3.4.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/spectron/-/spectron-3.8.0.tgz#122c3562fd7e92b7cdf6f94094aa495b150dfa51"
+  dependencies:
+    dev-null "^0.1.1"
+    electron-chromedriver "~1.8.0"
+    request "^2.81.0"
+    split "^1.0.0"
+    webdriverio "^4.8.0"
 
 spectron@^3.7.1:
   version "3.7.2"

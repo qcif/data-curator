@@ -25,8 +25,10 @@
     "test-main": "mocha-webpack --webpack-config .electron-vue/webpack.test.config.js --glob *_spec.js test/main/specs",
     "test": "yarn run unit && yarn run e2e",
     "unit": "karma start test/unit/karma.conf.js",
-    "e2e": "yarn run pack && yarn run cucumber:postpack && yarn run cucumber:report",
-    "cucumber:postpack": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @latest test/features -f json:test/cucumber_report.json",
+    "e2e": "yarn run pack && yarn run cucumber:postpack; yarn run cucumber:report",
+    "e2e:dev": "yarn run cucumber:postpack:dev; yarn run cucumber:report",
+    "cucumber:postpack:dev": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @latest test/features -f json:test/cucumber_report.json",
+    "cucumber:postpack": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @impl test/features -f json:test/cucumber_report.json",
     "cucumber:report": "node test/cucumber-report.js"
   },
   "build": {
@@ -170,6 +172,7 @@
     "sinon-test": "^2.1.2",
     "spectron": "^3.7.1",
     "spectron-fake-dialog": "^0.0.1",
+    "spectron-fake-menu": "^0.0.1",
     "style-loader": "^0.18.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",

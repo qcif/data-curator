@@ -6,6 +6,7 @@ var options = {
   output: 'test/cucumber_report.html',
   reportSuiteAsScenarios: true,
   launchReport: true,
+  storeScreenshots: false,
   metadata: {
     'App Version': '0.3.2',
     'Test Environment': 'STAGING',
