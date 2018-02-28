@@ -1,32 +1,33 @@
 import { expect, should, assert } from 'chai'
 import { Given, When, Then, After, Before} from 'cucumber'
-import fakeMenu from 'spectron-fake-menu'
+import {fileFormats} from '../../../../src/renderer/file-formats.js'
 const _ = require('lodash')
 
-Before({timeout: 10000}, function () {
-  fakeMenu.apply(this.app)
-  this.fakeMenu = fakeMenu
+When(/^I click on the "([\w]+?)"->"([\w]+?)" menu/, async function (menuLabel, subMenuLabel) {
+  let returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel])
+  expect(returned).to.equal(subMenuLabel)
 })
 
-When(/^I click on the ([\w]+?) menu/, function (menuLabel) {
-  return this.app
-    .client.waitUntilWindowLoaded()
-    .getWindowCount().should.eventually.have.at.least(1)
+// 3rd menu may contain spaces, dots
+When(/^I click on the "([\w]+?)"->"([\w]+?)"->"([\w \.]+?)" menu/, async function (menuLabel, subMenuLabel, subSubMenuLabel) {
+  let returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel, subSubMenuLabel])
+  expect(returned).to.equal(subSubMenuLabel)
+})
+
+Then('I should see the openfile dialog', async function () {
+  let globalNames = await this.app
     .electron
-    .Menu
-    .getApplicationMenu()
-    .then(function(menu) {
-      console.log('entered menu')
-      // let menu1 = getMenuFromLabel(menu, menuLabel)
-      // let submenu = getSubMenuFromMenu(menu1, subMenuLabels)
-      // submenu.click()
-    })
+    .remote
+    .getGlobal('openFileDialogReturned')
+  console.log(globalNames)
+  expect(globalNames).to.deep.equal(this.openFileDialogReturned)
 })
 
-function getMenuFromLabel(menu, menuLabel) {
-  return menu.items.find(function(x) { x.label === menuLabel })
-}
-
-function getSubMenuFromMenu(menu, subMenuLabel) {
-  return menu.submenu.items.find(function(x) { x.label === subMenuLabel })
-}
+Then('another tab is opened with its filename as the title', async function () {
+  let filePath = require('path').join(__dirname, '../../../fixtures/valid.csv')
+  await this.app.electron.ipcRenderer.send('openFileIntoTab', filePath, fileFormats.csv)
+  let text = await this.app.client
+    .timeouts('implicit', 3000)
+    .getText('#tab1')
+  expect(text).to.equal('valid')
+})

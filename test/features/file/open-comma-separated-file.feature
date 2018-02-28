@@ -16,13 +16,12 @@ Feature: Open a Comma separated value file
   - "Guess Column Properties" on open
 
   @latest
+  @impl
   Scenario: Open an existing comma separated value file
     Given I have opened Data Curator
-    When I click on the File menu
-    # Then a prompt, requesting the 'filename' and 'location' is shown
-    # And only files ending with a ".csv" can be selected
-    # And the selected 'filename' is opened in a new data tab to the right of any other open data tabs
-    # And set the Tab name to the 'filename'
-    # And set the CSV Dialect in the Table Properties to "Comma Separated"
-    # And "Fix Ragged Rows"
-    # And "Freeze Header Row"
+    When I click on the "File"->"Open"->"Comma separated..." menu
+    Then I should see the openfile dialog
+    And another tab is opened with its filename as the title
+    And set the CSV Dialect in the Table Properties to "Comma Separated"
+    And "Fix Ragged Rows"
+    And "Freeze Header Row"

@@ -15,30 +15,28 @@ When(/^I right-click$/, function () {
   let app = this.app
   return this.app.client
     .rightClick('.ht_master table')
-    .then(function() {
-      app.webContents.send('clickInsertRowBelow')
-    })
 })
 
-Then(/^I invoke the "Insert Row Below" command$/, function () {
+Then(/^I click on "Insert Row Below"$/, function () {
   return this.app
     .webContents.send('clickLabelOnContextMenu', 'Insert row below')
 })
 
-Then(/^I should see a new row below the current row$/, function () {
+Then(/^I should see (\d+) new row[s]? below the current row$/, function (numberOfNewRows) {
+  let worldRowNumber = this.rowNumber
   return this.app.client
     .element('.editor.handsontable')
     .elements('.ht_master table tr th')
     .then(function(response) {
-      expect(response.value.length).to.equal(this.rowNumber + 1)
+      expect(response.value.length).to.equal(worldRowNumber + numberOfNewRows)
     })
 })
 
-Then(/^I should see the cursor in the first column$/, function () {
+Then(/^I should see (\d+) columns$/, function (numberOfColumns) {
   return this.app.client
     .element('.editor.handsontable')
-    .elements('.ht_master table tr td.current.highlight')
+    .elements('.ht_master table tr:first-child td')
     .then(function(response) {
-      expect(response.value.length).to.equal(this.colNumber)
+      expect(response.value.length).to.equal(numberOfColumns)
     })
 })

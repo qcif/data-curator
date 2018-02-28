@@ -1,6 +1,11 @@
 import {setWorldConstructor} from 'cucumber'
 import {Application} from 'spectron'
 import electron from 'electron'
+// import fakeDialog from 'spectron-fake-dialog'
+import chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+chai.should()
+chai.use(chaiAsPromised)
 
 function CustomWorld({attach, parameters}) {
   this.attach = attach
@@ -13,6 +18,8 @@ function CustomWorld({attach, parameters}) {
   })
   this.rowNumber = null
   this.colNumber = null
+  this.openFileDialogReturned = ['stubbedFilenameForMenuSteps.txt']
+  chaiAsPromised.transferPromiseness = this.app.transferPromiseness
 }
 
 setWorldConstructor(CustomWorld)
