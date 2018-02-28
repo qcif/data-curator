@@ -8,9 +8,10 @@ Feature: Insert Row Below
   Scenario: Insert Row Below
     Given I have opened Data Curator
     And The table has 1 row by 3 columns
-    And I click in row 1, column 1
+    When I click in row 1, column 1
     And I right-click
-    Then I invoke the "Insert Row Below" command
+    Then I click on "Insert Row Below"
     And The table should have 2 rows by 3 columns
-    Then I should see a new row below the current row
-    And I should see the cursor in the first column
+    And I should see 1 new row below the current row
+    And I should see 3 columns
+    And I should see the cursor in row 2, column 1

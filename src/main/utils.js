@@ -163,3 +163,39 @@ export function quitOrSaveDialog(event, endButtonName, callback) {
     }
   })
 }
+
+export function testMenu() {
+  clickLabelsOnMenu()
+}
+
+ipc.on('clickLabelsOnMenu', async function(event, arg) {
+  let returned = await promiseClickLabelsOnMenu()
+  event.returnValue = returned
+  //   menu = subMenu
+  // }
+})
+
+function promiseClickLabelsOnMenu() {
+  return new Promise((resolve, reject) => {
+    // There is a short render wait in home page, so if hotId not first returned, just wait and try again
+    resolve(clickLabelsOnMenu())
+  })
+}
+
+function clickLabelsOnMenu() {
+  // console.log(arg) // prints "ping"
+  // console.log('args are')
+  // console.log(args)
+  // let menuLabel = args.shift()
+  let menu = Menu.getApplicationMenu().items.find(x => x.label === 'File')
+  // console.log(menu.submenu.items)
+  menu.click()
+  // for (subMenuLabel of args) {
+  let subMenu = menu.submenu.items.find(x => x.label === 'Open')
+  // console.log(subMenu.submenu.items)
+  subMenu.click()
+  let subSubMenu = subMenu.submenu.items.find(x => x.label.startsWith('Comma'))
+  // console.log(subSubMenu)
+  subSubMenu.click()
+  return subSubMenu.label
+}

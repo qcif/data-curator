@@ -65,7 +65,7 @@ Then(/^The table should be empty$/, function () {
     })
 })
 
-Then(/^The cursor should be in row (\d+), column (\d+)$/, function (rowNumber, colNumber) {
+Then(/^(?:The cursor should be|I should see the cursor) in row (\d+), column (\d+)$/, function (rowNumber, colNumber) {
   return this.app.client.element('.editor.handsontable')
     .getAttribute('.ht_master table tr th', 'class')
     .then(function(response) {
@@ -79,7 +79,7 @@ Then(/^The cursor should be in row (\d+), column (\d+)$/, function (rowNumber, c
         throw new Error(`There is only 1 row in the table, but the test tried to look for row number: ${rowNumber}`)
       }
     })
-    .getAttribute('.ht_master table tr td', 'class')
+    .getAttribute(`.ht_master table tr:nth-child(${rowNumber}) td`, 'class')
     .then(function(response) {
       const selectedCellClass = 'current highlight'
       // when only 1 value returned no longer an array

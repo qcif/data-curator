@@ -33,20 +33,20 @@ function createWindow() {
   }
 }
 
-// const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
-//   // Someone tried to run a second instance, we should focus our window.
-//   console.log('Attempted to open a second instance. Disallowing...')
-//   let firstWindow = BrowserWindow.getAllWindows()[0]
-//   if (firstWindow) {
-//     if (firstWindow.isMinimized()) { firstWindow.restore() }
-//     firstWindow.focus()
-//   }
-// })
-//
-// if (isSecondInstance) {
-//   console.log('Data curator is already open. Quitting this application.')
-//   app.quit()
-// }
+const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
+  // Someone tried to run a second instance, we should focus our window.
+  console.log('Attempted to open a second instance. Disallowing...')
+  let firstWindow = BrowserWindow.getAllWindows()[0]
+  if (firstWindow) {
+    if (firstWindow.isMinimized()) { firstWindow.restore() }
+    firstWindow.focus()
+  }
+})
+
+if (isSecondInstance) {
+  console.log('Data curator is already open. Quitting this application.')
+  app.quit()
+}
 
 // app.on('activate', checkForMultipleWindows)
 
