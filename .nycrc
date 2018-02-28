@@ -1,0 +1,14 @@
+{
+  "sourceMap": false,
+  "instrument": false,
+  "reporter": [
+    "lcov",
+    "text"
+  ],
+  "include": [
+    "**/*.js"
+  ],
+  "exclude" : [
+    "node_modules"
+  ]
+}
