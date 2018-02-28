@@ -164,10 +164,10 @@ Acceptance tests for [Data Curator](https://github.com/ODIQueensland/data-curato
 - arranged in folders like the application menu structure
 - integrated with:
  * [Spectron](https://electron.atom.io/spectron/), a purpose built Electron testing framework
- * [Cucumber-js] (https://github.com/cucumber/cucumber-js), a tool for running automated tests written in plain language for JavaScript
+ * [Cucumber-js](https://github.com/cucumber/cucumber-js), a tool for running automated tests written in plain language for JavaScript
  * Reporting tools:
-    -  [nyc] (https://github.com/istanbuljs/nyc), a tool for javascript test coverage
-    -  [Cucumber-html-reporter] (https://github.com/gkushang/cucumber-html-reporter), generates Cucumber HTML reports with pie charts
+    -  [nyc](https://github.com/istanbuljs/nyc), a tool for javascript test coverage
+    -  [Cucumber-html-reporter](https://github.com/gkushang/cucumber-html-reporter), generates Cucumber HTML reports with pie charts
  * Other common testing tools, such as [Chai](http://chaijs.com)
 
 To push the acceptance tests (.feature files) to Relish:
