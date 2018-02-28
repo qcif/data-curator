@@ -59,13 +59,4 @@ menu.append(removeCol)
 
 export {
   menu
-  // rowAbove
-  // rowBelow: rowBelow,
-  // columnLeft
-  // ,
-  // columnRight,
-  // removeRow,
-  // removeCol: removeCol,
-  // freezeRow: freezeRow,
-  // unfreezeRow: unfreezeRow
 }
