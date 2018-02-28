@@ -31,12 +31,10 @@
 </div>
 </template>
 <script>
-window.$ = window.jQuery = require('jquery/dist/jquery.js')
 const {
   shell
 } = require('electron')
 var ipc = require('electron').ipcRenderer
-require('bootstrap/dist/js/bootstrap.min.js')
 ipc.once('apiKey', function(event, akey) {
   var key = akey
   var rootURL = process.env.NODE_ENV == 'development' ? 'http://git-data-publisher.dev' : 'https://octopub.io'
@@ -79,13 +77,7 @@ export default {
 }
 </script>
 <style scoped>
-@import '~bootstrap/dist/css/bootstrap.min.css'
-</style>
-<style scoped>
 @import '~components-font-awesome/css/font-awesome.min.css'
-</style>
-<style scoped>
-@import '~bootstrap-tagsinput/dist/bootstrap-tagsinput.css'
 </style>
 <style scoped>
 @import '/static/css/datapackage.css'

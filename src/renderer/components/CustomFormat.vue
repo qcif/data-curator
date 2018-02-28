@@ -27,7 +27,7 @@ const {
   shell
 } = require('electron')
 var ipc = require('electron').ipcRenderer
-require('bootstrap/dist/js/bootstrap.min.js')
+
 export default {
   name: 'customformat',
   computed: {
@@ -62,9 +62,6 @@ export default {
   }
 }
 </script>
-<style scoped>
-@import '~bootstrap/dist/css/bootstrap.min.css'
-</style>
 <style scoped>
 @import '~components-font-awesome/css/font-awesome.min.css'
 </style>
