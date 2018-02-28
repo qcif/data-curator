@@ -7,8 +7,6 @@ import {pushCsvDialect} from '@/dialect.js'
 // import parse from 'csv-parse/lib/sync'
 // import stringify from 'csv-stringify'
 // TODO : replace jQuery with node 'csv' library's stringify and transform
-const $ = global.jQuery = require('jquery/dist/jquery.js')
-require('jquery-csv/src/jquery.csv.js')
 var parse = require('csv-parse/lib/sync')
 var stringify = require('csv-stringify/lib/sync')
 

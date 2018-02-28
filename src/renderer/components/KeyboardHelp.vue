@@ -500,14 +500,10 @@
 </div>
 </template>
 <script>
-import 'bootstrap/dist/js/bootstrap.min.js'
 export default {
   name: 'keyboardhelp'
 }
 </script>
-<style scoped>
-@import '~bootstrap/dist/css/bootstrap.min.css'
-</style>
 <style scoped>
 @import '~components-font-awesome/css/font-awesome.min.css'
 </style>

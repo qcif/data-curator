@@ -113,6 +113,9 @@ function openFile(format) {
   Dialog.showOpenDialog({
     filters: format.filters
   }, function(filenames) {
+    if (process.env.BABEL_ENV === 'test') {
+      global.openFileDialogReturned = filenames
+    }
     if (filenames === undefined || filenames.length === 0) {
       return
     }
