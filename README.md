@@ -183,7 +183,7 @@ We use:
 - [Mocha](https://mochajs.org)
 - [Chai](http://chaijs.com)
 - [Sinon](http://sinonjs.org)
-- [Mocha-webpack] (https://github.com/zinserjan/mocha-webpack), a mocha test runner with integrated webpack precompiler. Currently we use this for testing code running in electron's 'main' process.
+- [Mocha-webpack](https://github.com/zinserjan/mocha-webpack), a mocha test runner with integrated webpack precompiler. Currently we use this for testing code running in electron's 'main' process.
 
 ### Continuous integration
 
