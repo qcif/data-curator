@@ -95,7 +95,7 @@
     "slug": "^0.9.1",
     "sortablejs": "^1.6.0",
     "spectron-fake-dialog": "^0.0.1",
-    "svgo": "^1.0.0",
+    "svgo": "^1.0.5",
     "tableschema": "^1.7.0",
     "temp": "^0.8.3",
     "unzipper": "^0.8.11",
