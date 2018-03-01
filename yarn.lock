@@ -4500,11 +4500,11 @@ handlebars@^4.0.1, handlebars@^4.0.3:
   optionalDependencies:
     uglify-js "^2.6"
 
-handsontable@^0.34.5:
-  version "0.34.5"
-  resolved "https://registry.yarnpkg.com/handsontable/-/handsontable-0.34.5.tgz#9cb1a85f6b497902a094c5715595b2de51ede00c"
+handsontable@^0.36.0:
+  version "0.36.0"
+  resolved "https://registry.yarnpkg.com/handsontable/-/handsontable-0.36.0.tgz#12cb7d939c1c962ff82801ecc265968af2cfd200"
   dependencies:
-    moment "2.18.1"
+    moment "2.20.1"
     numbro "1.11.0"
     pikaday "1.5.1"
 
@@ -6336,13 +6336,13 @@ mocha@^3.0.2:
     mkdirp "0.5.1"
     supports-color "3.1.2"
 
-moment@2.18.1, moment@~2.18.0, moment@~2.18.1:
-  version "2.18.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
-
-moment@2.x, moment@^2.19.1:
+moment@2.20.1, moment@2.x, moment@^2.19.1:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.20.1.tgz#d6eb1a46cbcc14a2b2f9434112c1ff8907f313fd"
+
+moment@~2.18.0, moment@~2.18.1:
+  version "2.18.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
 
 move-concurrently@^1.0.1:
   version "1.0.1"
