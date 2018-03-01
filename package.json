@@ -130,7 +130,7 @@
     "cross-env": "^5.0.0",
     "css-loader": "^0.28.4",
     "cucumber": "^4.0.0",
-    "cucumber-html-reporter": "^4.0.1",
+    "cucumber-html-reporter": "^4.0.2",
     "del": "^3.0.0",
     "devtron": "^1.1.0",
     "electron": "^1.7.11",
