@@ -168,7 +168,9 @@ Acceptance tests for [Data Curator](https://github.com/ODIQueensland/data-curato
  * Reporting tools:
     -  [nyc](https://github.com/istanbuljs/nyc), a tool for javascript test coverage
     -  [Cucumber-html-reporter](https://github.com/gkushang/cucumber-html-reporter), generates Cucumber HTML reports with pie charts
- * Other common testing tools, such as [Chai](http://chaijs.com)
+ * Other testing tools, include:
+    - [Chai](http://chaijs.com)
+    - [Spectron-fake-dialog](https://github.com/joe-re/spectron-fake-dialog)
 
 To push the acceptance tests (.feature files) to Relish:
 
