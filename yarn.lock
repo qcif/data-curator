@@ -8276,9 +8276,9 @@ sinon-chai@^2.14.0:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/sinon-chai/-/sinon-chai-2.14.0.tgz#da7dd4cc83cd6a260b67cca0f7a9fdae26a1205d"
 
-sinon-test@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/sinon-test/-/sinon-test-2.1.2.tgz#c2ad2119d3c1f5aa23f191754844d671fb443789"
+sinon-test@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/sinon-test/-/sinon-test-2.1.3.tgz#62f4de385f0fb3369c8514b5b998426a82e1effc"
 
 sinon@^4.4.2:
   version "4.4.2"
