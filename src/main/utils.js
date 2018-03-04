@@ -3,7 +3,12 @@ import {fileFormats} from '../renderer/file-formats.js'
 let path = require('path')
 
 export function createWindow() {
-  let mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 800, minHeight: 600})
+  let mainWindow
+  if (process.env.BABEL_ENV !== 'test') {
+    mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 800, minHeight: 600, nodeIntegration: false})
+  } else {
+    mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 800, minHeight: 600})
+  }
 
   const winURL = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080`
