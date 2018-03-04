@@ -19,7 +19,12 @@ function makeCustomFormat(separator, delimiter) {
 
 function saveAsCustom() {
   let currentWindow = BrowserWindow.getFocusedWindow()
-  let dialog = new BrowserWindow({width: 200, height: 400})
+  let dialog
+  if (process.env.BABEL_ENV !== 'test') {
+    dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
+  } else {
+    dialog = new BrowserWindow({width: 200, height: 400})
+  }
   dialog.setMenu(null)
   dialog.once('closed', function() {
     ipc.removeAllListeners('formatSelected')
@@ -77,7 +82,12 @@ function saveFile() {
 
 function openCustom() {
   // var window = BrowserWindow.getFocusedWindow()
-  let dialog = new BrowserWindow({width: 200, height: 400})
+  let dialog
+  if (process.env.BABEL_ENV !== 'test') {
+    dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
+  } else {
+    dialog = new BrowserWindow({width: 200, height: 400})
+  }
   dialog.setMenu(null)
   dialog.once('closed', function() {
     ipc.removeAllListeners('formatSelected')
