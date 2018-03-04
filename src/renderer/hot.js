@@ -49,10 +49,10 @@ const HotRegister = {
       },
       afterUpdateSettings() {
         hot.render()
-        // hot.deselectCell()
+      // hot.deselectCell()
       },
       afterSelection(r, c, r2, c2, preventScrolling) {
-        // preventScrolling.value = true
+      // preventScrolling.value = true
         if (typeof listeners.selectionListener !== 'undefined') {
           listeners.selectionListener()
         }
@@ -81,6 +81,9 @@ const HotRegister = {
   getInstance(id) {
     let hot = _.get(_hots, id)
     return _.get(_hots, id)
+  },
+  getHotCount() {
+    return _hots.length
   },
   // TODO: consider cache (vue computed) of method, and moving to Home.vue to use with props, as used a lot
   getActiveInstance() {

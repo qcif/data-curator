@@ -183,14 +183,9 @@ function promiseClickLabelsOnMenu() {
 }
 
 function clickLabelsOnMenu() {
-  // console.log(arg) // prints "ping"
-  // console.log('args are')
-  // console.log(args)
-  // let menuLabel = args.shift()
   let menu = Menu.getApplicationMenu().items.find(x => x.label === 'File')
   // console.log(menu.submenu.items)
   menu.click()
-  // for (subMenuLabel of args) {
   let subMenu = menu.submenu.items.find(x => x.label === 'Open')
   // console.log(subMenu.submenu.items)
   subMenu.click()

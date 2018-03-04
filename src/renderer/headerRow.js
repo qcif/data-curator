@@ -51,7 +51,8 @@ export function toggleHeaderOn(hot) {
 function updateHot(hot, data, header) {
   hot.loadData(data)
   hot.updateSettings({colHeaders: header})
-  hot.render()
+  // already render in update setting hook in HotRegister, so no need here.
+  // hot.render()
   // reselectCurrentCellOrMin()
 }
 
