@@ -169,33 +169,32 @@ export function quitOrSaveDialog(event, endButtonName, callback) {
   })
 }
 
-export function testMenu() {
-  clickLabelsOnMenu()
-}
-
-ipc.on('clickLabelsOnMenu', async function(event, arg) {
-  let returned = await promiseClickLabelsOnMenu()
-  event.returnValue = returned
-  //   menu = subMenu
-  // }
+ipc.on('clickLabelsOnMenu', function(event, args) {
+  try {
+    let returned = clickLabelsOnMenu(args)
+    event.returnValue = returned
+  } catch (error) {
+    throw (error)
+  }
 })
 
-function promiseClickLabelsOnMenu() {
-  return new Promise((resolve, reject) => {
-    // There is a short render wait in home page, so if hotId not first returned, just wait and try again
-    resolve(clickLabelsOnMenu())
-  })
-}
-
-function clickLabelsOnMenu() {
-  let menu = Menu.getApplicationMenu().items.find(x => x.label === 'File')
+function clickLabelsOnMenu(args) {
+  let menu = Menu.getApplicationMenu().items.find(x => x.label === args[0])
   // console.log(menu.submenu.items)
   menu.click()
-  let subMenu = menu.submenu.items.find(x => x.label === 'Open')
-  // console.log(subMenu.submenu.items)
-  subMenu.click()
-  let subSubMenu = subMenu.submenu.items.find(x => x.label.startsWith('Comma'))
-  // console.log(subSubMenu)
-  subSubMenu.click()
-  return subSubMenu.label
+  let returnLabel = menu.label
+  let subMenu
+  if (args.length > 1) {
+    subMenu = menu.submenu.items.find(x => x.label === args[1])
+    subMenu.click()
+    returnLabel = subMenu.label
+  }
+  // // console.log(subMenu.submenu.items)
+  if (args.length > 2) {
+    let subSubMenu = subMenu.submenu.items.find(x => x.label === args[2])
+    // console.log(subSubMenu)
+    subSubMenu.click()
+    returnLabel = subSubMenu.label
+  }
+  return returnLabel
 }

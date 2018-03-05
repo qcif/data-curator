@@ -5,18 +5,19 @@ const _ = require('lodash')
 
 When(/^I click on the "([\w]+?)"->"([\w]+?)" menu/, async function (menuLabel, subMenuLabel) {
   let returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel])
+  console.log(returned)
   expect(returned).to.equal(subMenuLabel)
 })
 
 // 3rd menu may contain spaces, dots
 When(/^I click on the "([\w]+?)"->"([\w]+?)"->"([\w \.]+?)" menu/, async function (menuLabel, subMenuLabel, subSubMenuLabel) {
-  let globalNames = await this.app
-    .electron
-    .remote
-    .getGlobal('openFileDialogReturned')
-  expect(globalNames).to.be.a('null')
-  let returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel, subSubMenuLabel])
-  expect(returned).to.equal(subSubMenuLabel)
+  try {
+    let returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel, subSubMenuLabel])
+    console.log(returned)
+    expect(returned).to.equal(subSubMenuLabel)
+  } catch (error) {
+    throw error
+  }
 })
 
 Then('I should see the openfile dialog', async function () {
