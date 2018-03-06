@@ -1,42 +1,44 @@
 import {dialog as Dialog, BrowserWindow, ipcMain as ipc} from 'electron'
 import Fs from 'fs'
 import {enableSave, createWindowTabWithFormattedDataFile} from './utils'
+import _ from 'lodash'
 let path = require('path')
-const _ = require('lodash')
-function makeCustomFormat(separator, delimiter) {
-  // assemble a format object describing a custom format
-  return {
-    label: 'Custom',
-    filters: [],
-    dialect: {
-      delimiter: delimiter,
-      quoteChar: quoteChar
-    },
-    mediatype: 'text/plain',
-    format: 'txt'
-  }
-}
 
-function saveAsCustom() {
-  let currentWindow = BrowserWindow.getFocusedWindow()
-  let dialog
-  if (process.env.BABEL_ENV !== 'test') {
-    dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
-  } else {
-    dialog = new BrowserWindow({width: 200, height: 400})
-  }
-  dialog.setMenu(null)
-  dialog.once('closed', function() {
-    ipc.removeAllListeners('formatSelected')
-    dialog = null
-  })
-  ipc.once('formatSelected', function(event, data) {
-    dialog.close()
-    let format = makeCustomFormat(data.delimiter, data.quoteChar)
-    saveFileAs(format, currentWindow)
-  })
-  dialog.loadURL(`http://localhost:9080/#/customformat`)
-}
+// function makeCustomFormat(separator, delimiter) {
+//   // assemble a format object describing a custom format
+//   return {
+//     label: 'Custom',
+//     filters: [],
+//     dialect: {
+//       delimiter: delimiter,
+//       quoteChar: quoteChar
+//
+//     },
+//     mediatype: 'text/plain',
+//     format: 'txt'
+//   }
+// }
+
+// function saveAsCustom() {
+//   let currentWindow = BrowserWindow.getFocusedWindow()
+//   let dialog
+//   if (process.env.BABEL_ENV !== 'test') {
+//     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
+//   } else {
+//     dialog = new BrowserWindow({width: 200, height: 400})
+//   }
+//   dialog.setMenu(null)
+//   dialog.once('closed', function() {
+//     ipc.removeAllListeners('formatSelected')
+//     dialog = null
+//   })
+//   ipc.once('formatSelected', function(event, data) {
+//     dialog.close()
+//     let format = makeCustomFormat(data.delimiter, data.quoteChar)
+//     saveFileAs(format, currentWindow)
+//   })
+//   dialog.loadURL(`http://localhost:9080/#/customformat`)
+// }
 
 function saveFileAs(format, currentWindow) {
   if (!currentWindow) {
@@ -80,26 +82,26 @@ function saveFile() {
   currentWindow.webContents.send('saveData', currentWindow.format, global.tab.activeFilename)
 }
 
-function openCustom() {
-  // var window = BrowserWindow.getFocusedWindow()
-  let dialog
-  if (process.env.BABEL_ENV !== 'test') {
-    dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
-  } else {
-    dialog = new BrowserWindow({width: 200, height: 400})
-  }
-  dialog.setMenu(null)
-  dialog.once('closed', function() {
-    ipc.removeAllListeners('formatSelected')
-    dialog = null
-  })
-  ipc.once('formatSelected', function(event, data) {
-    dialog.close()
-    var format = makeCustomFormat(data.separator, data.delimiter)
-    openFile(format)
-  })
-  dialog.loadURL(`http://localhost:9080/#/customformat`)
-}
+// function openCustom() {
+//   // var window = BrowserWindow.getFocusedWindow()
+//   let dialog
+//   if (process.env.BABEL_ENV !== 'test') {
+//     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
+//   } else {
+//     dialog = new BrowserWindow({width: 200, height: 400})
+//   }
+//   dialog.setMenu(null)
+//   dialog.once('closed', function() {
+//     ipc.removeAllListeners('formatSelected')
+//     dialog = null
+//   })
+//   ipc.once('formatSelected', function(event, data) {
+//     dialog.close()
+//     var format = makeCustomFormat(data.separator, data.delimiter)
+//     openFile(format)
+//   })
+//   dialog.loadURL(`http://localhost:9080/#/customformat`)
+// }
 
 export function importDataPackage() {
   let window = BrowserWindow.getFocusedWindow()
@@ -170,9 +172,9 @@ function openedFilenameExists(filename) {
 
 export {
   openFile,
-  openCustom,
+  // openCustom,
   readFile,
   saveFileAs,
-  saveAsCustom,
+  // saveAsCustom,
   saveFile
 }

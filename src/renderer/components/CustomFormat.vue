@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div id="container" class="container-fluid">
   <form id="custom-format" v-on:submit.prevent="submit()">
     <div class="form-wrapper">
@@ -67,4 +67,4 @@ export default {
 </style>
 <style scoped>
 @import '/static/css/datapackage.css'
-</style>
+</style> -->
