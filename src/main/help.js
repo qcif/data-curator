@@ -17,7 +17,7 @@ export function showKeyboardHelp() {
   }
 
   keyboardHelpWindow.setMenu(null)
-  keyboardHelpWindow.loadURL(`http://localhost:9080/#/keyboardhelp`)
+  // keyboardHelpWindow.loadURL(`http://localhost:9080/#/keyboardhelp`)
 
   const winURL = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080/keyboardhelp.html`
