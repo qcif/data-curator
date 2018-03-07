@@ -205,7 +205,7 @@ function hasColumnProperties(hotId, callb) {
     callb([
       {
         rowNumber: 0,
-        message: `Every Column property, including the column properties of any foreign keys, must have a 'name'.`,
+        message: `Every Column property, including the column properties of any foreign keys, must have a unique 'name'.`,
         name: 'Missing Column Property names'
       }
     ])

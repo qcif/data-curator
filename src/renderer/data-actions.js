@@ -3,7 +3,7 @@ import fs from 'fs'
 import {fixRaggedRows} from '@/ragged-rows.js'
 import {includeHeadersInData} from '@/frictionlessUtilities.js'
 import {toggleHeaderNoFeedback} from '@/headerRow.js'
-import {pushCsvDialect} from '@/dialect.js'
+import {pushCsvFormat} from '@/dialect.js'
 // import parse from 'csv-parse/lib/sync'
 // import stringify from 'csv-stringify'
 // TODO : replace jQuery with node 'csv' library's stringify and transform
@@ -21,14 +21,16 @@ export function loadDataIntoHot(hot, data, format) {
     let csvOptions = dialectToCsvOptions(format.dialect)
     // TODO: update to stream
     arrays = parse(data, csvOptions)
-    pushCsvDialect(hot.guid, format)
+    pushCsvFormat(hot.guid, format)
   }
 
   fixRaggedRows(arrays)
   hot.loadData(arrays)
   hot.render()
   // frictionless csv header default = true
-  toggleHeaderNoFeedback(hot)
+  if (format.dialect.header) {
+    toggleHeaderNoFeedback(hot)
+  }
 }
 
 export function saveDataToFile(hot, format, filename, callback) {
@@ -61,7 +63,7 @@ export function saveDataToFile(hot, format, filename, callback) {
   } else {
     let csvOptions = dialectToCsvOptions(format.dialect)
     data = stringify(arrays, csvOptions)
-    pushCsvDialect(hot.guid, format)
+    pushCsvFormat(hot.guid, format)
   }
   fs.writeFile(filename, data, callback)
 }

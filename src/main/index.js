@@ -2,10 +2,11 @@
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
-import {dialog, app, Menu, BrowserWindow} from 'electron'
+import {app, Menu, BrowserWindow} from 'electron'
 import {quitOrSaveDialog, createWindowTab} from './utils'
 import {readFile} from './file.js'
 import {menu as template} from './menu'
+require * from('./rendererToMenu.js')
 
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')

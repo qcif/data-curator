@@ -158,6 +158,7 @@ import {unzipFile} from '@/importPackage.js'
 import {toggleHeaderWithFeedback} from '@/headerRow.js'
 import {onNextHotIdFromTabRx, hotIdFromTab$} from '@/rxSubject.js'
 import {getHotIdFromTabIdFunction} from '@/store/modules/hots.js'
+import {isCaseSensitive} from '@/frictionlessUtilities'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
@@ -718,7 +719,9 @@ export default {
   beforeCreate: function() {
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
       let hot = HotRegister.getInstance(hotId)
+
       ipc.send('hasHeaderRow', hot.hasColHeaders())
+      ipc.send('hasCaseSensitiveHeader', isCaseSensitive(hotId))
     })
     onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
   },
