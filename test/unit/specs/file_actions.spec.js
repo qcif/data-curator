@@ -1,16 +1,11 @@
-import {HotRegister} from '@/hot.js'
 import {rows} from '@/ragged-rows'
 import {saveDataToFile, loadDataIntoHot} from '@/data-actions'
 import {fileFormats} from '@/file-formats'
 import {remote} from 'electron'
 import fs from 'fs'
 import os from 'os'
-
-import sinon from 'sinon'
+import * from '../helper.js'
 import chai from 'chai'
-sinon.config = {
-  useFakeTimers: false
-}
 let assert = chai.assert
 let expect = chai.expect
 let should = chai.should()
@@ -18,65 +13,6 @@ let should = chai.should()
 // const readF = util.promisify(fs.readFile)
 
 describe('file actions', () => {
-  let globalStub
-  let hotRegisterActiveQueryStub
-  let items = {
-    tab: {
-      activeTitle: '',
-      activeFilename: '',
-      filenames: []
-    }
-  }
-  let hotElementClassName = 'stubbedHot'
-
-  function resetDocument() {
-    document.open()
-    document.write('<html><body></body></html>')
-    document.close()
-  }
-
-  function stubDom() {
-    let hotView = document.createElement('div')
-    hotView.setAttribute('class', hotElementClassName)
-    document.body.appendChild(hotView)
-  }
-
-  function stubActiveQuery() {
-    return document.querySelectorAll(`.${hotElementClassName}`)[0]
-  }
-
-  function stubHotRegisterActiveQuery() {
-    hotRegisterActiveQueryStub = sinon.stub(HotRegister, 'activeQuery')
-    hotRegisterActiveQueryStub.withArgs().returns(stubActiveQuery())
-  }
-
-  before(function() {
-    window._ = require('lodash')
-  })
-
-  beforeEach(() => {
-    resetDocument()
-    stubDom()
-    stubHotRegisterActiveQuery()
-  })
-
-  function registerHot() {
-    let container = stubActiveQuery()
-    let hotId = HotRegister.register(container)
-    let hot = HotRegister.getInstance(hotId)
-    return hot
-  }
-
-  let globalStubTab = () => {
-    globalStub = sinon.stub(remote, 'getGlobal')
-    globalStub.withArgs('tab').returns({activeTitle: '', activeFilename: '', filenames: []})
-  }
-
-  afterEach(() => {
-    HotRegister.destroyAllHots()
-    hotRegisterActiveQueryStub.restore()
-  })
-
   describe('opening csv data', () => {
     it('opens simple csv data capturing it in a handsontable', () => {
       let data = `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`
