@@ -6,7 +6,7 @@ import {app, Menu, BrowserWindow} from 'electron'
 import {quitOrSaveDialog, createWindowTab} from './utils'
 import {readFile} from './file.js'
 import {menu as template} from './menu'
-require * from('./rendererToMenu.js')
+require('./rendererToMenu.js')
 
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')

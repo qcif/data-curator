@@ -8,8 +8,6 @@ ipc.on('toggleSaveMenu', (event, arg) => {
 
 ipc.on('hasCaseSensitiveHeader', (event, arg) => {
   let subMenu = getSubMenuFromMenu('Tools', 'Case Sensitive Header Row')
-  console.log('got return')
-  console.log(arg)
   subMenu.checked = arg
 })
 
