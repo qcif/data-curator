@@ -158,7 +158,7 @@
     "karma-electron": "^5.2.2",
     "karma-mocha": "^1.2.0",
     "karma-sourcemap-loader": "^0.3.7",
-    "karma-spec-reporter": "^0.0.31",
+    "karma-spec-reporter": "^0.0.32",
     "karma-webpack": "^2.0.13",
     "mocha": "^3.0.2",
     "mocha-webpack": "^1.0.1",
