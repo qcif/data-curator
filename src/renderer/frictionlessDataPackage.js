@@ -1,8 +1,7 @@
 import {Resource, Package} from 'datapackage'
 import {HotRegister} from '@/hot.js'
-import store from '@/store'
-// import tabStore from '@/store/modules/tabs.js'
-// import hotStore from '@/store/modules/hots.js'
+import tabStore from '@/store/modules/tabs.js'
+import hotStore from '@/store/modules/hots.js'
 import path from 'path'
 import {createZipFile} from '@/exportPackage.js'
 import {hasAllColumnNames} from '@/frictionlessUtilities.js'
@@ -34,7 +33,7 @@ export async function createDataPackage() {
 }
 
 export function haveAllTabsGotFilenames() {
-  return store.getters.getTabFilenames.length === store.getters.getTabs.length
+  return tabStore.getters.getTabFilenames(tabStore.state).length === tabStore.state.tabs.length
 }
 
 async function buildDataPackage(errorMessages) {
@@ -49,10 +48,10 @@ async function buildDataPackage(errorMessages) {
 }
 
 function hasAllPackageRequirements(requiredMessages) {
-  if (!store.getters.getProvenance || !store.getters.getProvenance.markdown) {
+  if (!hotStore.state.provenanceProperties || !hotStore.state.provenanceProperties.markdown) {
     requiredMessages.push(`Provenance properties must be set.`)
   }
-  let packageProperties = store.getters.getPackageProperties
+  let packageProperties = hotStore.state.packageProperties
   if (!packageProperties || _.isEmpty(packageProperties)) {
     requiredMessages.push(`Package properties must be set.`)
   } else {
@@ -72,14 +71,14 @@ async function initPackage() {
 }
 
 function addPackageProperties(descriptor) {
-  let packageProperties = store.getters.getPackageProperties
+  let packageProperties = hotStore.state.packageProperties
   _.merge(descriptor, packageProperties)
   removeEmptiesFromDescriptor(descriptor)
 }
 
 async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
   const resourcePaths = []
-  for (let hotId in store.getters.getHotTabs) {
+  for (let hotId in hotStore.state.hotTabs) {
     try {
       let resource = await createValidResource(hotId, errorMessages)
       if (!resource) {
@@ -102,7 +101,7 @@ async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
 }
 
 async function createValidResource(hotId, errorMessages) {
-  let hotTab = store.getters.getHotTabs[hotId]
+  let hotTab = hotStore.state.hotTabs[hotId]
   let hot = HotRegister.getInstance(hotId)
   if (!hasAllResourceRequirements(hot, errorMessages)) {
     return false
@@ -117,7 +116,7 @@ async function createValidResource(hotId, errorMessages) {
 }
 
 function hasAllResourceRequirements(hot, requiredMessages) {
-  let tableProperties = store.getters.getHotTabs[hot.guid].tableProperties
+  let tableProperties = hotStore.state.hotTabs[hot.guid].tableProperties
   if (!tableProperties) {
     requiredMessages.push(`Table properties must be set.`)
   } else {
@@ -128,7 +127,7 @@ function hasAllResourceRequirements(hot, requiredMessages) {
     addSourcesRequirements(tableProperties, requiredMessages, 'table')
     addForeignKeyRequirements(tableProperties, requiredMessages)
   }
-  let columnProperties = store.getters.getHotTabs[hot.guid].columnProperties
+  let columnProperties = hotStore.state.hotTabs[hot.guid].columnProperties
   if (!columnProperties) {
     requiredMessages.push(`Column properties must be set.`)
   } else {
@@ -220,13 +219,13 @@ async function initResourceAndInfer() {
 }
 
 function addColumnProperties(descriptor, hotId) {
-  let columnProperties = store.getters.getHotTabs[hotId].columnProperties
+  let columnProperties = hotStore.state.hotTabs[hotId].columnProperties
   descriptor.schema = {}
   descriptor.schema.fields = columnProperties
 }
 
 function addTableProperties(descriptor, hotId) {
-  let tableProperties = store.getters.getHotTabs[hotId].tableProperties
+  let tableProperties = hotStore.state.hotTabs[hotId].tableProperties
   _.merge(descriptor, tableProperties)
   moveMissingValues(descriptor, tableProperties)
 }
@@ -249,7 +248,7 @@ function removeEmpty(descriptor, propertyName) {
 
 function addPath(descriptor, tabId) {
   let parent = 'data'
-  let filename = store.getters.getTabObjects[tabId].filename
+  let filename = tabStore.state.tabObjects[tabId].filename
   let basename = path.basename(filename)
   descriptor.path = `${parent}/${basename}`
 }
