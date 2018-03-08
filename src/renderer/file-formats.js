@@ -15,9 +15,9 @@ const fileFormats = {
         extensions: ['csv']
       }
     ],
-    dialect: _.assign({
+    dialect: _.assign({}, _dialectDefaults, {
       delimiter: ','
-    }, _dialectDefaults),
+    }),
     mediatype: 'text/csv',
     format: 'csv'
   },
@@ -35,9 +35,9 @@ const fileFormats = {
         extensions: ['dat']
       }
     ],
-    dialect: _.assign({
+    dialect: _.assign({}, _dialectDefaults, {
       delimiter: '\t'
-    }, _dialectDefaults),
+    }),
     mediatype: 'text/tab-separated-values',
     format: 'tsv'
   },
@@ -49,9 +49,9 @@ const fileFormats = {
         extensions: ['csv']
       }
     ],
-    dialect: _.assign({
+    dialect: _.assign({}, _dialectDefaults, {
       delimiter: ';'
-    }, _dialectDefaults),
+    }),
     mediatype: 'text/csv',
     format: 'csv'
   }

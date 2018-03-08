@@ -33,7 +33,6 @@ ipc.on('clickLabelsOnMenu', function(event, args) {
 
 function clickLabelsOnMenu(args) {
   let menu = Menu.getApplicationMenu().items.find(x => x.label === args[0])
-  // console.log(menu.submenu.items)
   menu.click()
   let returnLabel = menu.label
   let subMenu
@@ -42,10 +41,8 @@ function clickLabelsOnMenu(args) {
     subMenu.click()
     returnLabel = subMenu.label
   }
-  // // console.log(subMenu.submenu.items)
   if (args.length > 2) {
     let subSubMenu = subMenu.submenu.items.find(x => x.label === args[2])
-    // console.log(subSubMenu)
     subSubMenu.click()
     returnLabel = subSubMenu.label
   }

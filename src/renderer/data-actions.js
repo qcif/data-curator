@@ -28,9 +28,7 @@ export function loadDataIntoHot(hot, data, format) {
   hot.loadData(arrays)
   hot.render()
   // frictionless csv header default = true
-  if (format.dialect.header) {
-    toggleHeaderNoFeedback(hot)
-  }
+  toggleHeaderNoFeedback(hot)
 }
 
 export function saveDataToFile(hot, format, filename, callback) {
