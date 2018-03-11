@@ -30,6 +30,10 @@ const getters = {
   getHotTabs: state => {
     return state.hotTabs
   },
+  getTableProperties: (state, getters) => (hotId) => {
+    console.log(JSON.stringify(state))
+    return state.hotTabs[hotId].tableProperties || {}
+  },
   getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].columnProperties || []
   },
@@ -282,6 +286,13 @@ const mutations = {
         throw new Error(`Unable to find tab with hot id: ${hotId}`)
       }
       _.set(state.hotTabs[hotId], 'columnProperties', hotIdColumns[hotId])
+    }
+  },
+  resetAll(state) {
+    state = {
+      hotTabs: {},
+      packageProperties: {},
+      provenanceProperties: { markdown: '' }
     }
   }
 }

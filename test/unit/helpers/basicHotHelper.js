@@ -1,19 +1,13 @@
 import {HotRegister} from '@/hot.js'
-import sinon from 'sinon'
-sinon.config = {
-  useFakeTimers: false
-}
 
-let globalStub
 let hotRegisterActiveQueryStub
-let items = {
-  tab: {
-    activeTitle: '',
-    activeFilename: '',
-    filenames: []
-  }
-}
 let hotElementClassName = 'stubbedHot'
+
+export function stubHotInDocumentDom() {
+  resetDocument()
+  stubDom()
+  stubHotRegisterActiveQuery()
+}
 
 function resetDocument() {
   document.open()
@@ -27,38 +21,23 @@ function stubDom() {
   document.body.appendChild(hotView)
 }
 
-function stubActiveQuery() {
-  return document.querySelectorAll(`.${hotElementClassName}`)[0]
-}
-
 function stubHotRegisterActiveQuery() {
   hotRegisterActiveQueryStub = sinon.stub(HotRegister, 'activeQuery')
   hotRegisterActiveQueryStub.withArgs().returns(stubActiveQuery())
 }
 
-before(function() {
-  window._ = require('lodash')
-})
+function stubActiveQuery() {
+  return document.querySelectorAll(`.${hotElementClassName}`)[0]
+}
 
-beforeEach(() => {
-  resetDocument()
-  stubDom()
-  stubHotRegisterActiveQuery()
-})
+export function resetHot() {
+  HotRegister.destroyAllHots()
+  hotRegisterActiveQueryStub.restore()
+}
 
-function registerHot() {
+export function registerHot() {
   let container = stubActiveQuery()
   let hotId = HotRegister.register(container)
   let hot = HotRegister.getInstance(hotId)
   return hot
 }
-
-let globalStubTab = () => {
-  globalStub = sinon.stub(remote, 'getGlobal')
-  globalStub.withArgs('tab').returns({activeTitle: '', activeFilename: '', filenames: []})
-}
-
-afterEach(() => {
-  HotRegister.destroyAllHots()
-  hotRegisterActiveQueryStub.restore()
-})
