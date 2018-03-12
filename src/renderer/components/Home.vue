@@ -350,7 +350,7 @@ export default {
     },
     importDataPackage: async function(filename) {
       let message = await unzipFile(filename, this.storeResetCallback)
-      this.messagesTitle = message ? 'Import Data Package Error' : 'Import Data Package Success'
+      this.messagesTitle = message ? 'Open Data Package Error' : 'Open Data Package Success'
       this.messages = message || 'All Properties have been imported.'
       this.messagesType = 'feedback'
     },

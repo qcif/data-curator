@@ -32,7 +32,7 @@ export function toggleHeaderNoFeedback(hot) {
 export function toggleHeaderOff(hot) {
   let header = hot.getColHeader()
   let data = _.concat([header], hot.getData())
-  updateHot(hot, data, false)
+  updateHot(hot, data, {colHeaders: false, columnSorting: false})
   updateAllColumnsName(header.map(x => {
     return ''
   }))
@@ -43,17 +43,14 @@ export function toggleHeaderOn(hot) {
   let data = hot.getData()
   let header = data[0]
   data = _.drop(data)
-  updateHot(hot, data, header)
+  updateHot(hot, data, {colHeaders: header, columnSorting: true})
   updateAllColumnsName(hot.getColHeader())
   ipc.send('hasHeaderRow', true)
 }
 
-function updateHot(hot, data, header) {
+function updateHot(hot, data, settings) {
   hot.loadData(data)
-  hot.updateSettings({colHeaders: header})
-  // already render in update setting hook in HotRegister, so no need here.
-  // hot.render()
-  // reselectCurrentCellOrMin()
+  hot.updateSettings(settings)
 }
 
 function updateAllColumnsName(values) {

@@ -15,7 +15,7 @@ const HotRegister = {
       // autoColumnSize: {syncLimit: 300},
       fixedRowsTop: 0,
       // enable when header row function implemented - otherwise header is sorted with values
-      columnSorting: true,
+      columnSorting: false,
       sortIndicator: true,
       contextMenu: false,
       autoRowSize: true,
