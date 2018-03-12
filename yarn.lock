@@ -6948,7 +6948,7 @@ pluralize@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
 
-popper.js@^1.12.5:
+popper.js@1.12.5:
   version "1.12.5"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.5.tgz#229e4dea01629e1f1a1e26991ffade5024220fa6"
 
@@ -9220,11 +9220,11 @@ vue-async-computed@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/vue-async-computed/-/vue-async-computed-3.3.1.tgz#9d754e649ccabef97e7e3932f1bc097a66a23db7"
 
-vue-directive-tooltip@^1.4.1:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/vue-directive-tooltip/-/vue-directive-tooltip-1.4.2.tgz#480b3f405bbe1e1152a4f844cbe9dc6991ff15bb"
+vue-directive-tooltip@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/vue-directive-tooltip/-/vue-directive-tooltip-1.4.4.tgz#547ff7a914c5b0e642a02e822ef01ae347775c13"
   dependencies:
-    popper.js "^1.12.5"
+    popper.js "1.12.5"
 
 vue-electron@^1.0.6:
   version "1.0.6"

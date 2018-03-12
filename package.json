@@ -101,7 +101,7 @@
     "vee-validate": "^2.0.4",
     "vue": "^2.5.2",
     "vue-async-computed": "^3.3.1",
-    "vue-directive-tooltip": "^1.4.1",
+    "vue-directive-tooltip": "^1.4.4",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",
     "vue-rx": "^5.0.0",
