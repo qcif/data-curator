@@ -626,7 +626,6 @@ export default {
     adjustSidenavFormHeight: function() {
       let sidenav = document.querySelector('#sidenav')
       let sidenavHeight = sidenav.clientHeight
-      // (`height is ${sidenavHeight}`)
       let form = sidenav.querySelector('form')
       this.sideNavFormHeight = (sidenavHeight - 150) + 'px'
       if (form) {
@@ -719,7 +718,6 @@ export default {
   beforeCreate: function() {
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
       let hot = HotRegister.getInstance(hotId)
-
       ipc.send('hasHeaderRow', hot.hasColHeaders())
       ipc.send('hasCaseSensitiveHeader', isCaseSensitive(hotId))
     })
