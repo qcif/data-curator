@@ -31,7 +31,6 @@ const getters = {
     return state.hotTabs
   },
   getTableProperties: (state, getters) => (hotId) => {
-    console.log(JSON.stringify(state))
     return state.hotTabs[hotId].tableProperties || {}
   },
   getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {

@@ -18,6 +18,7 @@
                   {{ option2}}
                 </option>
             </select>
+            <!-- <input v-if="formatValuesHasPattern" v-model="formatPropertyValue" type="text" :class="{ 'form-control input-sm col-sm-9': true}" /> -->
             <input v-if="formatValuesHasPattern" v-model="formatPropertyValue" type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has('formatValue') }" v-validate.initial="'formatPattern|required'" name="formatValue"/>
             <div v-show="formatValuesHasPattern && errors.has('formatValue')" class="row help validate-danger">
               {{ errors.first('formatValue')}}
@@ -305,8 +306,13 @@ export default {
       this.$forceUpdate()
     },
     getConstraintValue: function(key) {
-      let property = this.constraintInputKeyValues[key]
-      return property
+      let value = this.constraintInputKeyValues[key]
+      if (key === 'enum' && _.isArray(value)) {
+        let updatedValue = `"${_.join(value, '","')}"`
+        return updatedValue
+      } else {
+        return value
+      }
     },
     removeConstraint: function(key) {
       _.unset(this.constraintInputKeyValues, key)
@@ -314,15 +320,20 @@ export default {
       return true
     },
     setConstraintValue: function(key, value) {
-      // TODO: split at double quote and comma
-      // if (key === 'enum') {
-      //   value = _.toArray(value)
-      // }
       this.constraintInputKeyValues[key] = value
       this.pushConstraintInputKeyValues()
     },
     pushConstraintInputKeyValues: function() {
-      this.debounceSetConstraints(this.setter(this.activeCurrentHotId, 'constraints', this.constraintInputKeyValues))
+      // assign to a separate object, so not influenced by validation's removal of invalid values
+      let constraintValues = {}
+      _.assign(constraintValues, this.constraintInputKeyValues)
+      // transform enum to array using quote,comma as separator
+      if (_.has(constraintValues, 'enum')) {
+        let trimmed = _.trim(constraintValues.enum, '"')
+        let split = _.split(trimmed, /"[\s]?,[\s]?"/)
+        constraintValues.enum = split
+      }
+      this.debounceSetConstraints(this.setter(this.activeCurrentHotId, 'constraints', constraintValues))
     },
     constraintValidationRules: function(option) {
       switch (option) {

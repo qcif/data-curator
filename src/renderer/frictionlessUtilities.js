@@ -31,11 +31,8 @@ function hasAllValidColumnProperty(values, columnProperties) {
 }
 
 export function isCaseSensitive(hotId) {
-  console.log(JSON.stringify(store.state))
   const tableProperties = store.state.hotTabs[hotId].tableProperties
-  console.log(tableProperties)
   let caseSensitiveHeader = DEFAULT_DIALECT.caseSensitiveHeader
-  console.log(DEFAULT_DIALECT.caseSensitiveHeader)
   if (typeof tableProperties !== 'undefined' && typeof tableProperties.dialect !== 'undefined' && tableProperties.dialect.caseSensitiveHeader) {
     caseSensitiveHeader = tableProperties.dialect.caseSensitiveHeader
   }

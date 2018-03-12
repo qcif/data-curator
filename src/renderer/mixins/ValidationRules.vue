@@ -22,6 +22,11 @@ export default {
         case 'number':
           return 'decimal'
         case 'enum':
+          return {
+            // required ensures clicking checkbox triggers message
+            required: true,
+            regex: /^(["][^"]+?["])(,["][^"]+?["])*$/
+          }
         case 'pattern':
           return {
             required: true
@@ -32,6 +37,7 @@ export default {
     }
   },
   mounted: function() {
+    const enumRuleValue = 'Quote each "valid value" and separate with a comma.'
     const dict = {
       en: {
         // messages: {
@@ -45,7 +51,8 @@ export default {
             regex: 'The name field format is invalid. It must consist only of lowercase alphanumeric characters plus ".", "-" and "_".'
           },
           enum: {
-            required: 'Quote each "valid value" and separate with a comma.'
+            required: enumRuleValue,
+            regex: enumRuleValue
           },
           pattern: {
             required: 'There must be a pattern present.'
