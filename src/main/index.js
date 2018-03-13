@@ -51,7 +51,11 @@ if (isSecondInstance) {
 
 // app.on('activate', checkForMultipleWindows)
 
-app.on('ready', createWindow)
+app.on('ready', () => {
+  createWindow()
+  let id = BrowserWindow.getAllWindows()[0].id
+  global.mainWindowId = id
+})
 
 function closeAppNoPrompt() {
   app.exit()
