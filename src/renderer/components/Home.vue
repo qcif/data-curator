@@ -718,6 +718,11 @@ export default {
   beforeCreate: function() {
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
       let hot = HotRegister.getInstance(hotId)
+      // FOR testing: https://github.com/ODIQueensland/data-curator/issues/387
+      // let plugin = hot.getPlugin('autoRowSize')
+      // console.log(`sync calc: ${plugin.getSyncCalculationLimit()}`)
+      // console.log(`first row: ${plugin.getFirstVisibleRow()}`)
+      // console.log(`second row: ${plugin.getLastVisibleRow()}`)
       ipc.send('hasHeaderRow', hot.hasColHeaders())
       ipc.send('hasCaseSensitiveHeader', isCaseSensitive(hotId))
     })

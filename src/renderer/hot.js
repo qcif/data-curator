@@ -15,7 +15,7 @@ const HotRegister = {
       // autoColumnSize: {syncLimit: 300},
       fixedRowsTop: 0,
       // enable when header row function implemented - otherwise header is sorted with values
-      columnSorting: false,
+      columnSorting: true,
       sortIndicator: true,
       contextMenu: false,
       autoRowSize: true,
@@ -25,7 +25,9 @@ const HotRegister = {
       manualRowMove: true,
       enterBeginsEditing: false,
       persistentState: true,
-      outsideClickDeselects: false,
+      // outsideClickDeselects: must be set to true -
+      // -otherwise visibleRows will include ALL rows (even for large datasets), which will affect performance when switching tabs (https://github.com/ODIQueensland/data-curator/issues/387)
+      outsideClickDeselects: true,
       undo: true,
       tabMoves({shiftKey}) {
         if (!shiftKey) {
