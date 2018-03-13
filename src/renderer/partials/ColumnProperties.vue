@@ -304,6 +304,9 @@ export default {
       }
       this.pushConstraintInputKeyValues()
       this.$forceUpdate()
+      window.setTimeout(function() {
+        document.querySelector(`input[name=${key}]`).focus()
+      }, 100)
     },
     getConstraintValue: function(key) {
       let value = this.constraintInputKeyValues[key]
