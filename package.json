@@ -180,7 +180,7 @@
     "url-loader": "^0.6.2",
     "vue-html-loader": "^1.2.2",
     "vue-loader": "^12.2.1",
-    "vue-server-renderer": "^2.5.14",
+    "vue-server-renderer": "^2.5.15",
     "vue-style-loader": "^3.0.1",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.3",
