@@ -506,7 +506,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 function webContents() {
-  return BrowserWindow.getFocusedWindow().webContents
+  // use .fromId rather than .focusedWindow as latter does not apply if app minimized
+  // use .fromId rather than .getAllWindows[0] as if child window present and main window minimized won't work
+  let id = global.mainWindowId
+  let browserWindow = BrowserWindow.fromId(id)
+  browserWindow.restore()
+  return browserWindow.webContents
 }
 
 export {
