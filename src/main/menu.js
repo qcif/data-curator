@@ -1,11 +1,6 @@
 import {openFile, saveFileAs, saveFile, importDataPackage} from './file.js'
 import {
-  guessColumnProperties,
-  createWindowTab,
-  validateTable,
-  showSidePanel,
-  toggleActiveHeaderRow,
-  triggerMenuButton
+  createWindowTab
 } from './utils.js'
 import {importExcel} from './excel.js'
 import {showKeyboardHelp} from './help.js'
@@ -136,7 +131,7 @@ const template = [
         label: 'Undo',
         accelerator: 'CmdOrCtrl+Z',
         click() {
-          BrowserWindow.getFocusedWindow().webContents.send('editUndo')
+          webContents().send('editUndo')
         }
       }, {
         label: 'Redo',
@@ -144,7 +139,7 @@ const template = [
           ? 'Shift+CmdOrCtrl+Z'
           : 'CmdOrCtrl+Y',
         click() {
-          BrowserWindow.getFocusedWindow().webContents.send('editRedo')
+          webContents().send('editRedo')
         }
       }, {
         type: 'separator'
@@ -176,13 +171,13 @@ const template = [
         label: 'Insert Row Above',
         accelerator: 'CmdOrCtrl+I',
         click() {
-          BrowserWindow.getFocusedWindow().webContents.send('insertRowAbove')
+          webContents().send('insertRowAbove')
         }
       }, {
         label: 'Insert Row Below',
         accelerator: 'CmdOrCtrl+K',
         click() {
-          BrowserWindow.getFocusedWindow().webContents.send('insertRowBelow')
+          webContents().send('insertRowBelow')
         }
       }, {
         type: 'separator'
@@ -190,25 +185,25 @@ const template = [
         label: 'Insert Column Before',
         accelerator: 'CmdOrCtrl+J',
         click() {
-          BrowserWindow.getFocusedWindow().webContents.send('insertColumnLeft')
+          webContents().send('insertColumnLeft')
         }
       }, {
         label: 'Insert Column After',
         accelerator: 'CmdOrCtrl+L',
         click() {
-          BrowserWindow.getFocusedWindow().webContents.send('insertColumnRight')
+          webContents().send('insertColumnRight')
         }
       }, {
         type: 'separator'
       }, {
         label: 'Remove Row(s)',
         click() {
-          BrowserWindow.getFocusedWindow().webContents.send('removeRows')
+          webContents().send('removeRows')
         }
       }, {
         label: 'Remove Column(s)',
         click() {
-          BrowserWindow.getFocusedWindow().webContents.send('removeColumns')
+          webContents().send('removeColumns')
         }
       }
     ]
@@ -254,7 +249,17 @@ const template = [
         click(menuItem) {
           // revert 'checked' toggle so only controlled by header row event
           menuItem.checked = !menuItem.checked
-          toggleActiveHeaderRow()
+          webContents().send('toggleActiveHeaderRow')
+        }
+      },
+      {
+        label: 'Case Sensitive Header Row',
+        type: 'checkbox',
+        checked: false,
+        click(menuItem) {
+          // revert 'checked' toggle so only controlled by event
+          menuItem.checked = !menuItem.checked
+          webContents().send('toggleCaseSensitiveHeader')
         }
       }, {
         // Placeholder for future features
@@ -277,7 +282,7 @@ const template = [
         label: 'Guess Column Properties',
         accelerator: 'Shift+CmdOrCtrl+G',
         click: function() {
-          guessColumnProperties()
+          webContents().send('guessColumnProperties')
         }
       }, {
         type: 'separator'
@@ -285,25 +290,25 @@ const template = [
         label: 'Set Column Properties',
         accelerator: 'Shift+CmdOrCtrl+C',
         click() {
-          triggerMenuButton('Column')
+          webContents().send('triggerMenuButton', 'Column')
         }
       }, {
         label: 'Set Table Properties',
         accelerator: 'Shift+CmdOrCtrl+T',
         click() {
-          triggerMenuButton('Table')
+          webContents().send('triggerMenuButton', 'Table')
         }
       }, {
         label: 'Set Provenance Information',
         accelerator: 'Shift+CmdOrCtrl+P',
         click() {
-          triggerMenuButton('Provenance')
+          webContents().send('triggerMenuButton', 'Provenance')
         }
       }, {
         label: 'Set Data Package Properties',
         accelerator: 'Shift+CmdOrCtrl+D',
         click() {
-          triggerMenuButton('Package')
+          webContents().send('triggerMenuButton', 'Package')
         }
       }, {
         type: 'separator'
@@ -311,7 +316,7 @@ const template = [
         label: 'Validate Table',
         accelerator: 'Shift+CmdOrCtrl+V',
         click() {
-          validateTable()
+          webContents().send('validateTable')
         }
       }, {
         type: 'separator'
@@ -319,7 +324,7 @@ const template = [
         label: 'Export Data Package...',
         accelerator: 'Shift+CmdOrCtrl+X',
         click() {
-          triggerMenuButton('Export')
+          webContents().send('triggerMenuButton', 'Export')
         }
       }
       // Placeholder for future features
@@ -416,7 +421,7 @@ if (process.platform !== 'darwin') {
   }, {
     label: 'About Data Curator',
     click: function() {
-      showSidePanel('about')
+      webContents().send('showSidePanel', 'about')
     }
   })
 }
@@ -429,7 +434,7 @@ if (process.platform === 'darwin') {
       {
         label: 'About Data Curator',
         click: function() {
-          showSidePanel('about')
+          webContents().send('showSidePanel', 'about')
         }
         // Placeholder for future feature
         //      }, {
@@ -438,7 +443,7 @@ if (process.platform === 'darwin') {
         //        label: 'Preferences'
         //        accelerator: 'CmdOrCtrl+,',
         //        click: function() {
-        //          showSidePanel('preferences')
+        //          webContents().send('showSidePanel', 'preferences')
         //        }
       }, {
         type: 'separator'
@@ -498,6 +503,15 @@ if (process.env.NODE_ENV !== 'production') {
       }
     ]
   })
+}
+
+function webContents() {
+  // use .fromId rather than .focusedWindow as latter does not apply if app minimized
+  // use .fromId rather than .getAllWindows[0] as if child window present and main window minimized won't work
+  let id = global.mainWindowId
+  let browserWindow = BrowserWindow.fromId(id)
+  browserWindow.restore()
+  return browserWindow.webContents
 }
 
 export {

@@ -3,11 +3,11 @@
     <ul class="list-group" v-for="(list, index) in aboutProps" :key="index">
       <li :style="aboutListStyle" class="list-group-item" v-for="(item, index) in list.items" :key="index">
         <template v-if="item.image">
-          <a v-if="item.link" :href="item.link"><img :height="item.height" width="auto" :src="item.image" /></a>
+          <a v-if="item.link" href="#" @click="openLink(item.link)"><img :height="item.height" width="auto" :src="item.image" /></a>
           <img v-else :src="item.image" />
         </template>
         <template v-if="item.label">
-          <a :style="item.style" v-if="item.link" :href="item.link">{{item.label}}</a>
+          <a :style="item.style" v-if="item.link" href="#" @click="openLink(item.link)">{{item.label}}</a>
           <span :style="item.style" v-else>{{item.label}}</span>
         </template>
       </li>
@@ -16,7 +16,7 @@
 </template>
 <script>
 import SideNav from '@/partials/SideNav'
-import {remote} from 'electron'
+import {remote, shell} from 'electron'
 export default {
   extends: SideNav,
   name: 'about',
@@ -99,6 +99,9 @@ export default {
   methods: {
     getApplicationVersion: function() {
       return remote.getGlobal('version')
+    },
+    openLink: function(url) {
+      shell.openExternal(url)
     }
   }
 }

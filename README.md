@@ -89,8 +89,9 @@ Data Curator proudly [uses open source software](https://github.com/ODIQueenslan
   [Node.js](https://nodejs.org/en/download/)                           | [Node.js](https://nodejs.org/en/)                                    | [licence](https://raw.githubusercontent.com/nodejs/node/master/LICENSE)          | [contribute](https://nodejs.org/en/get-involved/)                              
   [Chromium](http://www.chromium.org/Home)                             | [The Chromium Authors](https://cs.chromium.org/chromium/src/AUTHORS) | [licence](https://cs.chromium.org/chromium/src/LICENSE)                          | [contribute](http://www.chromium.org/getting-involved)                         
   [Vue.js](https://vuejs.org)                                          | Yuxi (Evan) You                                                      | [MIT](https://github.com/vuejs/vue/blob/dev/LICENSE)                             | [donate](https://vuejs.org/support-vuejs/)                                     
-  [electron-vue](https://github.com/SimulatedGREG/electron-vue)        | SimulatedGREG (Greg Holguin)                                         | [MIT](https://github.com/SimulatedGREG/electron-vue/blob/master/LICENSE.md)      | [donate](https://vuejs.org/support-vuejs/)                                     
-  [Handsontable](https://github.com/handsontable/handsontable)         | [Handsontable](https://handsontable.com)                             | [MIT](https://github.com/handsontable/handsontable/blob/master/LICENSE)          | [Buy Pro](https://handsontable.com/pricing.html)                               
+  [electron-vue](https://github.com/SimulatedGREG/electron-vue)        | SimulatedGREG (Greg Holguin)                                         | [MIT](https://github.com/SimulatedGREG/electron-vue/blob/master/LICENSE.md)      | [contribute](https://simulatedgreg.gitbooks.io/electron-vue/content/en/contributing.html)
+  [Handsontable](https://github.com/handsontable/handsontable)         | [Handsontable](https://handsontable.com)                             | [MIT](https://github.com/handsontable/handsontable/blob/master/LICENSE)          | [buy pro](https://handsontable.com/pricing.html)
+  [Cucumber.js](https://github.com/cucumber/cucumber-js) | [Cucumber.io](https://cucumber.io) | [MIT](https://github.com/cucumber/cucumber-js/blob/master/LICENSE) | [contribute](https://opencollective.com/cucumber/donate?referral=5936)
 
 ## Download and Install Data Curator
 
@@ -122,7 +123,7 @@ You can use [yarn](https://yarnpkg.com/en/) to install all relevant packages and
 
 We're keeping our dependencies up to date with [Dependabot](https://dependabot.com).
 
-### Development: Running the full application locally
+### Running the application locally
 
 To open the app on your local machine and run Data Curator in development mode:
 
@@ -152,8 +153,6 @@ We have adopted [Standard JS](https://standardjs.com) as our JavaScript coding s
 
 ## Tests
 
-Tools to automate testing are being established.
-
 ### Acceptance tests
 
 Acceptance tests for [Data Curator](https://github.com/ODIQueensland/data-curator/blob/master/README.md) are:
@@ -162,24 +161,42 @@ Acceptance tests for [Data Curator](https://github.com/ODIQueensland/data-curato
 - [shared](https://relishapp.com/odi-australia/data-curator/docs) using [Relish](https://relishapp.com) (which will be replaced by Cucumber Pro)
 - [shared privately](https://app.cucumber.pro/projects/data-curator/documents/branch/develop) using the [Cucumber Pro](https://cucumber.io/pro) beta
 - arranged in folders like the application menu structure
+- integrated with:
 
-To push the acceptance tests (.feature files) to Relish:
+  - [Spectron](https://electron.atom.io/spectron/), a purpose built Electron testing framework
+  - [Cucumber-js](https://github.com/cucumber/cucumber-js), a tool for running automated tests written in plain language for JavaScript
+  - reporting tools:
+
+    -  [nyc](https://github.com/istanbuljs/nyc), a tool for javascript test coverage
+    -  [Cucumber-html-reporter](https://github.com/gkushang/cucumber-html-reporter), generates Cucumber HTML reports with pie charts
+  - other common testing tools, such as
+    - [Chai](http://chaijs.com)
+    - [Spectron-fake-dialog](https://github.com/joe-re/spectron-fake-dialog)
+
+To push the acceptance tests (.feature and .md files) to Relish:
 
 `relish push odi-australia/data-curator path /your-local-path/data-curator/test/features`
 
 Acceptance tests are automatically added to Cucumber Pro via a GitHub webhook.
 
-### Integration and Unit tests
+### Unit tests
 
-We're considering:
+For unit testing, we use:
+- [Karma](https://karma-runner.github.io/1.0/index.html), a browser test runner, designed for low-level/unit testing. Currently we use this for testing code running in electron's 'renderer' process.
+- [Mocha](https://mochajs.org)
+- [Chai](http://chaijs.com)
+- [Sinon](http://sinonjs.org)
+- [Mocha-webpack](https://github.com/zinserjan/mocha-webpack), a mocha test runner with integrated webpack precompiler. Currently we use this for testing code running in electron's 'main' process.
 
-- End-to-end tests: [Spectron](https://electron.atom.io/spectron/), a purpose built Electron testing framework
-- Unit tests: [Karma](https://karma-runner.github.io/1.0/index.html), a browser test runner, designed for low-level/unit testing
-- [Comma Chameleon](https://github.com/theodi/comma-chameleon#tests) currently uses [Electron-Mocha](https://github.com/jprichardson/electron-mocha), [Chai](http://chaijs.com) and [Sinon](http://sinonjs.org) for unit tests
-- Spectron and Karma can be used with any testing library, including [Mocha](https://mochajs.org), [Chai](http://chaijs.com) and [Jasmine](http://jasmine.github.io)
-- [Travis](https://travis-ci.org) and [Appveyor](https://www.appveyor.com) for continuous integration
+### Continuous integration
 
-To run tests and launch Data Curator:
+For continuous integration, we use:
+- [Appveyor](https://www.appveyor.com)
+- [Travis](https://travis-ci.org)
+
+We plan to integrate the acceptance and unit tests with code commits
+
+To run unit tests and implemented acceptance tests:
 
 `yarn run test`
 

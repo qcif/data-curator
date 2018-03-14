@@ -13,7 +13,7 @@ Feature: Guess Column Properties
   Scenario: Guess column properties immediately after opening Data Curator
     Given I have opened Data Curator
     When I invoke the Guess Column Properties command
-    Then I should see the success message
+    Then I should see the failure message
 
   Scenario: Guess column properties
     Given I have opened Data Curator

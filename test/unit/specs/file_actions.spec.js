@@ -1,83 +1,30 @@
 import {HotRegister} from '@/hot.js'
-import {rows} from '@/ragged-rows'
+import {resetHotStore} from '../helpers/storeHelper.js'
+import {stubHotInDocumentDom, resetHot, registerHot} from '../helpers/basicHotHelper.js'
+import {globalBefore, globalStubTab, restoreRemoteGetGlobal} from '../helpers/globalHelper.js'
 import {saveDataToFile, loadDataIntoHot} from '@/data-actions'
 import {fileFormats} from '@/file-formats'
-import {remote} from 'electron'
-import fs from 'fs'
+import fs from 'fs-extra'
 import os from 'os'
-
-import sinon from 'sinon'
-import chai from 'chai'
-sinon.config = {
-  useFakeTimers: false
-}
-let assert = chai.assert
-let expect = chai.expect
-let should = chai.should()
+// sinonTest doesn't seem to work with complex callbacks
+// const sinonTest = require('sinon-test')(sinon, {useFakeTimers: false})
 
 describe('file actions', () => {
-  let globalStub
-  let hotRegisterActiveQueryStub
-  let items = {
-    tab: {
-      activeTitle: '',
-      activeFilename: '',
-      filenames: []
-    }
-  }
-  let hotElementClassName = 'stubbedHot'
-
-  function resetDocument() {
-    document.open()
-    document.write('<html><body></body></html>')
-    document.close()
-  }
-
-  function stubDom() {
-    let hotView = document.createElement('div')
-    hotView.setAttribute('class', hotElementClassName)
-    document.body.appendChild(hotView)
-  }
-
-  function stubActiveQuery() {
-    return document.querySelectorAll(`.${hotElementClassName}`)[0]
-  }
-
-  function stubHotRegisterActiveQuery() {
-    hotRegisterActiveQueryStub = sinon.stub(HotRegister, 'activeQuery')
-    hotRegisterActiveQueryStub.withArgs().returns(stubActiveQuery())
-  }
-
-  before(function() {
-    window._ = require('lodash')
+  // let globalStub
+  before(() => {
+    globalBefore()
   })
-
   beforeEach(() => {
-    resetDocument()
-    stubDom()
-    stubHotRegisterActiveQuery()
+    stubHotInDocumentDom()
   })
-
-  function registerHot() {
-    let container = stubActiveQuery()
-    let hotId = HotRegister.register(container)
-    let hot = HotRegister.getInstance(hotId)
-    return hot
-  }
-
-  let globalStubTab = () => {
-    globalStub = sinon.stub(remote, 'getGlobal')
-    globalStub.withArgs('tab').returns({activeTitle: '', activeFilename: '', filenames: []})
-  }
-
   afterEach(() => {
-    HotRegister.destroyAllHots()
-    hotRegisterActiveQueryStub.restore()
+    resetHot()
+    resetHotStore()
   })
 
   describe('opening csv data', () => {
     it('opens simple csv data capturing it in a handsontable', () => {
-      let data = 'foo,bar,baz\r\n1,2,3\r\n4,5,6'
+      let data = `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`
       let hot = registerHot()
       hot.addHook('afterUpdateSettings', function() {
         expect(hot.getColHeader()).to.deep.equal(['foo', 'bar', 'baz'])
@@ -94,7 +41,7 @@ describe('file actions', () => {
 
   describe('opening semicolon-separated data', () => {
     it('opens simple semicolon-separated data capturing it in a handsontable', () => {
-      let data = 'foo;bar;baz\r\n1;2;3\r\n4;5;6'
+      let data = `foo;bar;baz${os.EOL}1;2;3${os.EOL}4;5;6`
       let hot = registerHot()
       hot.addHook('afterUpdateSettings', function() {
         expect(hot.getColHeader()).to.deep.equal(['foo', 'bar', 'baz'])
@@ -110,49 +57,66 @@ describe('file actions', () => {
   })
 
   describe('saving csv data into a file', () => {
-    it('saves simple csv data to a file, with data intact', done => {
-      let data = 'foo,bar,baz\r\n1,2,3\r\n4,5,6\r\n'
+    it('saves simple csv data to a file, with data intact, using dialect.lineTerminator', function(done) {
+      let data = `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`
+      let expectedData = `foo,bar,baz\r\n1,2,3\r\n4,5,6\r\n`
       let tempFile = `${os.tmpdir()}/mycsv.csv`
-      globalStubTab()
+      let globalStub = globalStubTab()
       let hot = registerHot()
       hot.addHook('afterUpdateSettings', function() {
-        saveDataToFile(hot, fileFormats.csv, tempFile, () => {
-          fs.readFile(tempFile, 'utf-8', (err, d) => {
-            console.log('running callback...')
+        saveDataToFile(hot, fileFormats.csv, tempFile, function() {
+          fs.readFile(tempFile, 'utf-8', function(err, d) {
             if (err) {
-              console.log(err.stack)
+              restoreRemoteGetGlobal()
+              fs.removeSync(tempFile)
+              done(err)
+            } else {
+              try {
+                expect(d).to.deep.equal(expectedData)
+              } catch (err) {
+                done(err)
+              } finally {
+                restoreRemoteGetGlobal()
+                fs.removeSync(tempFile)
+                done()
+              }
+              // TODO : title is now in tab - test this.
             }
-            expect(d).to.deep.equal(data)
-
-            // TODO : title is now in tab - test this.
-            done()
           })
         })
       })
       loadDataIntoHot(hot, data)
-      globalStub.restore()
     })
   })
 
   describe('convert file', () => {
-    it('converts a file from csv to tsv', done => {
-      let data = 'foo,bar,baz\r\n1,2,3\r\n4,5,6'
+    it('converts a file from csv to tsv, using dialect.lineTerminator', function(done) {
+      let data = `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`
       let tempFile = `${os.tmpdir()}/mytsv.tsv`
-      globalStubTab()
+      let globalStub = globalStubTab()
       let hot = registerHot()
       hot.addHook('afterUpdateSettings', () => {
         saveDataToFile(hot, fileFormats.tsv, tempFile, () => {
+          let expectedData = `foo\tbar\tbaz\r\n1\t2\t3\r\n4\t5\t6\r\n`
           fs.readFile(tempFile, 'utf-8', (err, d) => {
             if (err) {
-              console.log(err.stack)
+              restoreRemoteGetGlobal()
+              fs.removeSync(tempFile)
+              done(err)
             }
-            expect(d).to.deep.equal('foo\tbar\tbaz\r\n1\t2\t3\r\n4\t5\t6\r\n')
-            done()
+            try {
+              expect(d).to.deep.equal(expectedData)
+            } catch (err) {
+              done(err)
+            } finally {
+              restoreRemoteGetGlobal()
+              fs.removeSync(tempFile)
+              done()
+            }
           })
         })
       })
       loadDataIntoHot(hot, data)
-      globalStub.restore()
     })
   })
 })

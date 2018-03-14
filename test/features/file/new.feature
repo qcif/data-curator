@@ -19,9 +19,11 @@ Feature: New
     And The table should be empty
     And The cursor should be in row 1, column 1
 
+  @latest
+  @impl
   Scenario: Add Tab
     Given I have opened Data Curator
-    When I invoke the "New" command
+    When I click on the "File"->"New" menu
     Then create an empty 1 row by 3 column data tab in a new tab
     And show it the right-most position
     And set a unique Tab name

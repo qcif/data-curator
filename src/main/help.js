@@ -9,9 +9,15 @@ function getKeyboardShorcutsMenu() {
 export function showKeyboardHelp() {
   let keyboardShortcutsSubMenu = getKeyboardShorcutsMenu()
   keyboardShortcutsSubMenu.enabled = false
-  let keyboardHelpWindow = new BrowserWindow({width: 760, height: 400})
+  let keyboardHelpWindow
+  if (process.env.BABEL_ENV !== 'test') {
+    keyboardHelpWindow = new BrowserWindow({width: 760, height: 400, nodeIntegration: false})
+  } else {
+    keyboardHelpWindow = new BrowserWindow({width: 760, height: 400})
+  }
+
   keyboardHelpWindow.setMenu(null)
-  keyboardHelpWindow.loadURL(`http://localhost:9080/#/keyboardhelp`)
+  // keyboardHelpWindow.loadURL(`http://localhost:9080/#/keyboardhelp`)
 
   const winURL = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080/keyboardhelp.html`
