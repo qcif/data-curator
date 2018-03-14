@@ -33,7 +33,7 @@
               <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate.initial="constraintValidationRules(option)" :name="option"/>
             </template>
             <div v-show="errors.has(option) && removeConstraint(option)" class="row help validate-danger">
-              {{ errors.collect(option)}}
+              {{ errors.collect(option)[0]}}
             </div>
           </div>
         </div>
@@ -305,7 +305,10 @@ export default {
       this.pushConstraintInputKeyValues()
       this.$forceUpdate()
       window.setTimeout(function() {
-        document.querySelector(`input[name=${key}]`).focus()
+        let element = document.querySelector(`input[name=${key}]`)
+        if (element) {
+          element.focus()
+        }
       }, 100)
     },
     getConstraintValue: function(key) {
