@@ -10,10 +10,14 @@ cache:
 before_install:
 - brew update
 install:
-- nvm install 8
+- nvm install --lts
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
 - yarn
+before_script:
+- yarn run lint
+- yarn run lint:test
+- yarn run test
 script:
 - yarn run release:predraft
 branches:

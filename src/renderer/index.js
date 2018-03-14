@@ -1,11 +1,11 @@
 import {HotRegister, insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight, removeRows, removeColumns} from '@/hot.js'
 import {loadDataIntoHot, saveDataToFile} from '@/data-actions.js'
-import {remote} from 'electron'
+import {ipcRenderer as ipc, remote} from 'electron'
+import {isCaseSensitive} from '@/frictionlessUtilities'
+import {pushCsvDialect} from '@/dialect.js'
+import {menu} from '@/menu.js'
+import fs from 'fs-extra'
 const BrowserWindow = remote.BrowserWindow
-var ipc = require('electron').ipcRenderer
-var fs = require('fs')
-
-var menu = require('../renderer/menu.js').menu
 
 export function addHotContainerListeners(container) {
   container.ondragover = function() {
@@ -109,4 +109,11 @@ ipc.on('removeRows', function() {
 
 ipc.on('removeColumns', function() {
   removeColumns()
+})
+
+ipc.on('toggleCaseSensitiveHeader', function() {
+  let hotId = HotRegister.getActiveInstance().guid
+  const toggledCase = !isCaseSensitive(hotId)
+  pushCsvDialect(hotId, {caseSensitiveHeader: toggledCase})
+  ipc.send('hasCaseSensitiveHeader', toggledCase)
 })

@@ -4,7 +4,7 @@
     <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
       <label v-show="formprop.label" v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label" :for="formprop.label">{{formprop.label}}</label>
       <component :is="formprop.tooltipView"/>
-      <input v-if="formprop.key === 'missingValues'" :value="missingValues" @input="setArrayValues(formprop.key, $event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
+      <input v-if="formprop.key === 'missingValues'" :value="missingValues" @input="setMissingValuesWithSingleEmpty($event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
       <component v-else-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
       <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" v-validate="validationRules(formprop.key)" :name="formprop.key"/>
       <div v-show="errors.has(formprop.key) && removeValue(formprop.key)" class="row help validate-danger">
@@ -115,10 +115,15 @@ export default {
     ]),
     getArrayValues: async function(key) {
       let tabId = this.getActiveTab
-      let values = await this.getArrayValuesFromTabId(key, tabId)
+      let values = await this.getArrayValuesWithoutEmptiesFromTabId(key, tabId)
       // ensure re-render in input
       this.$forceUpdate()
       return values
+    },
+    setMissingValuesWithSingleEmpty: function(value) {
+      let withoutEmpties = this.removeEmptyMissingValueMarkersFromString(value)
+      let withSingleEmpty = `${withoutEmpties},`
+      this.setArrayValues('missingValues', withSingleEmpty)
     },
     setArrayValues: function(key, value) {
       // TODO : hotId could be cached for all methods using it.
@@ -131,6 +136,17 @@ export default {
           value: array
         })
       }
+    },
+    getArrayValuesWithoutEmptiesFromTabId: async function(key, tabId) {
+      let withEmpties = await this.getArrayValuesFromTabId(key, tabId)
+      let withoutEmpties = this.removeEmptyMissingValueMarkersFromString(withEmpties)
+      return withoutEmpties
+    },
+    removeEmptyMissingValueMarkersFromString: function(string) {
+      let withoutInternalEmpties = string.replace(/[,]+/g, ',')
+      // also remove 'empty' it at start or end
+      let trimmed = _.trim(withoutInternalEmpties, ',')
+      return trimmed
     },
     getArrayValuesFromTabId: async function(key, tabId) {
       let hotId = await this.waitForHotIdFromTabId(tabId)

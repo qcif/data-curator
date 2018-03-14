@@ -47,7 +47,7 @@ module.exports = config => {
         flags: ['--show']
       }
     },
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha', 'sinon-chai'],
     files: ['./index.js'],
     preprocessors: {
       './index.js': ['webpack', 'sourcemap']

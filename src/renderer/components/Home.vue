@@ -1,4 +1,4 @@
-<template>
+panelWidthDiff<template>
 <div id="home-container" class="panel panel-group">
   <div id="header-panel" class="panel-heading">
     <nav class="navbar navbar-default">
@@ -54,7 +54,7 @@
           <ul class="nav nav-tabs">
             <li>
               <ul class="nav nav-tabs" id='csvTab'>
-                <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" class="tab-header" @click="setActiveTab(tab)">
+                <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" class="tab-header" @click="setActiveTabWrapper(tab)">
                   <a>
                     <span>{{tabTitle(tab)}}</span>
                     <span v-if="tabs.length > 1" class="tabclose btn-default fa fa-times" @click.stop="closeTab"></span>
@@ -158,6 +158,7 @@ import {unzipFile} from '@/importPackage.js'
 import {toggleHeaderWithFeedback} from '@/headerRow.js'
 import {onNextHotIdFromTabRx, hotIdFromTab$} from '@/rxSubject.js'
 import {getHotIdFromTabIdFunction} from '@/store/modules/hots.js'
+import {isCaseSensitive} from '@/frictionlessUtilities'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
@@ -179,6 +180,12 @@ export default {
       messagesTitle: 'Feedback',
       loadingDataMessage: false,
       sideNavFormHeight: '300px',
+      widthInner1: null,
+      widthMain1: null,
+      heightInner1: null,
+      heightMain1: null,
+      panelWidthDiff: null,
+      panelHeightDiff: null,
       toolbarMenus: [{
         name: 'Guess',
         id: 'guess-column-properties',
@@ -304,6 +311,55 @@ export default {
       'pushTableProperty',
       'pushPackageProperty'
     ]),
+    saveHotPanelDimensions: function() {
+      this.widthInner1 = document.querySelector('.ht_master .wtHolder').offsetWidth
+      this.heightInner1 = document.querySelector('.ht_master .wtHolder').offsetHeight
+    },
+    saveMainMiddlePanelDimensions: function() {
+      this.widthMain1 = document.querySelector('#main-middle-panel').offsetWidth
+      this.heightMain1 = document.querySelector('.ht_master .wtHolder').offsetHeight
+    },
+    calculatePanelDiff: function() {
+      this.panelWidthDiff = this.widthMain1 - this.widthInner1
+      this.panelHeightDiff = this.heightMain1 - this.heightInner1
+      console.log(`panel diff: ${this.panelWidthDiff}`)
+      console.log(`panel diff: ${this.panelHeightDiff}`)
+    },
+    testSideMain: function() {
+      // TODO : refactor this as an event that plays once only rather than a continuous condition-check
+      if (!this.widthInner1 && !this.widthMain1 & !this.panelWidthDiff) {
+        this.saveMainMiddlePanelDimensions()
+        this.saveHotPanelDimensions()
+        this.calculatePanelDiff()
+      }
+      console.log(`diff: ${this.panelWidthDiff}`)
+      let panelWidthDiff = this.panelWidthDiff
+      window.setTimeout(function() {
+        document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
+          let width1 = document.querySelector('#main-middle-panel').offsetWidth
+          let updatedInner = width1 - panelWidthDiff
+          // el.style.width = `${updatedInner - 15}px`
+          el.style.width = `${updatedInner}px`
+        })
+      }, 500)
+    },
+    testBottomMain: function() {
+      // TODO : refactor this as an event that plays once only rather than a continuous condition-check
+      if (!this.heightInner1 && !this.heightMain1 & !this.panelHeightDiff) {
+        this.saveMainMiddlePanelDimensions()
+        this.saveHotPanelDimensions()
+        this.calculatePanelDiff()
+      }
+      console.log(`diff: ${this.panelHeightDiff}`)
+      let panelHeightDiff = this.panelHeightDiff
+      window.setTimeout(function() {
+        document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
+          let height1 = document.querySelector('#main-middle-panel').offsetHeight
+          let updatedInner = height1 - panelHeightDiff
+          el.style.height = `${updatedInner}px`
+        })
+      }, 500)
+    },
     selectionListener: function() {
       this.updateActiveColumn()
       this.resetSideNavArrows()
@@ -349,7 +405,7 @@ export default {
     },
     importDataPackage: async function(filename) {
       let message = await unzipFile(filename, this.storeResetCallback)
-      this.messagesTitle = message ? 'Import Data Package Error' : 'Import Data Package Success'
+      this.messagesTitle = message ? 'Open Data Package Error' : 'Open Data Package Success'
       this.messages = message || 'All Properties have been imported.'
       this.messagesType = 'feedback'
     },
@@ -412,8 +468,20 @@ export default {
         index: this.tabIndex
       })
       // activeRxTab.next(tabId)
-      this.setActiveTab(nextTabId)
+      this.setActiveTabWrapper(nextTabId)
       this.pushTab(nextTabId)
+    },
+    setActiveTabWrapper: function(tabId) {
+      // for (let hotId of HotRegister.getAllHotIds()) {
+      //   let hot = HotRegister.getInstance(hotId)
+      //   hot.updateSettings({outsideClickDeselects: true})
+      //   // FOR testing: https://github.com/ODIQueensland/data-curator/issues/387
+      //   let plugin = hot.getPlugin('autoRowSize')
+      //   // console.log(`sync calc: ${plugin.getSyncCalculationLimit()}`)
+      //   // console.log(`first row: ${plugin.getFirstVisibleRow()}`)
+      //   console.log(`second row: ${plugin.getLastVisibleRow()}`)
+      // }
+      this.setActiveTab(tabId)
     },
     loadDefaultDataIntoContainer: function(container) {
       let defaultData = '"","",""'
@@ -472,7 +540,7 @@ export default {
       if (tabId === this.activeTab) {
         let targetTabIndex = _.indexOf(this.tabs, tabId)
         let previousTabId = this.getPreviousTabId(targetTabIndex)
-        this.setActiveTab(previousTabId)
+        this.setActiveTabWrapper(previousTabId)
       }
       this.destroyTabObject(tabId)
       let hotId = await this.getHotIdFromTabId(tabId)
@@ -625,7 +693,6 @@ export default {
     adjustSidenavFormHeight: function() {
       let sidenav = document.querySelector('#sidenav')
       let sidenavHeight = sidenav.clientHeight
-      // (`height is ${sidenavHeight}`)
       let form = sidenav.querySelector('form')
       this.sideNavFormHeight = (sidenavHeight - 150) + 'px'
       if (form) {
@@ -659,6 +726,12 @@ export default {
       } catch (err) {
         console.log('Problem with getting hot id from watched tab', err)
       }
+    },
+    sideNavPropertiesForMain: function() {
+      this.testSideMain()
+    },
+    messageStatus: function() {
+      this.testBottomMain()
     }
   },
   mounted: function() {
@@ -718,7 +791,14 @@ export default {
   beforeCreate: function() {
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
       let hot = HotRegister.getInstance(hotId)
+      // hot.updateSettings({outsideClickDeselects: false})
+      // FOR testing: https://github.com/ODIQueensland/data-curator/issues/387
+      // let plugin = hot.getPlugin('autoRowSize')
+      // console.log(`sync calc: ${plugin.getSyncCalculationLimit()}`)
+      // console.log(`first row: ${plugin.getFirstVisibleRow()}`)
+      // console.log(`second row: ${plugin.getLastVisibleRow()}`)
       ipc.send('hasHeaderRow', hot.hasColHeaders())
+      ipc.send('hasCaseSensitiveHeader', isCaseSensitive(hotId))
     })
     onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
   },

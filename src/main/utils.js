@@ -1,9 +1,13 @@
-import {dialog, ipcMain as ipc, BrowserWindow, Menu} from 'electron'
+import {dialog, BrowserWindow} from 'electron'
 import {fileFormats} from '../renderer/file-formats.js'
-let path = require('path')
 
 export function createWindow() {
-  let mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 800, minHeight: 600})
+  let mainWindow
+  if (process.env.BABEL_ENV !== 'test') {
+    mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 800, minHeight: 600, nodeIntegration: false})
+  } else {
+    mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 800, minHeight: 600})
+  }
 
   const winURL = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080`
@@ -69,73 +73,6 @@ export function createWindowTabWithFormattedDataFile(data, format, filename) {
   }
 }
 
-export function showSidePanel(name) {
-  let window = BrowserWindow.getFocusedWindow()
-  window.webContents.send('showSidePanel', name)
-}
-
-export function guessColumnProperties() {
-  let window = BrowserWindow.getFocusedWindow()
-  window.webContents.send('guessColumnProperties')
-}
-
-export function triggerMenuButton(name) {
-  let window = BrowserWindow.getFocusedWindow()
-  window.webContents.send('triggerMenuButton', name)
-}
-
-export function validateTable() {
-  let window = BrowserWindow.getFocusedWindow()
-  window.webContents.send('validateTable')
-}
-
-ipc.on('toggleSaveMenu', (event, arg) => {
-  toggleSaveMenu()
-})
-
-export function toggleSaveMenu() {
-  let saveSubMenu = getSaveSubMenu()
-  let activeFilename = global.tab.activeFilename
-  saveSubMenu.enabled = (typeof activeFilename !== 'undefined' && activeFilename.length > 0)
-}
-
-function getSaveSubMenu() {
-  return getSubMenuFromMenu('File', 'Save')
-}
-
-export function toggleActiveHeaderRow() {
-  BrowserWindow.getFocusedWindow().webContents.send('toggleActiveHeaderRow')
-}
-
-ipc.on('hasHeaderRow', (event, arg) => {
-  toggleMenuItemHeaderRowCheck(arg)
-})
-
-export function toggleMenuItemHeaderRowCheck(isActiveHeaderRowEnabled) {
-  let subMenu = getHeaderRowMenu()
-  subMenu.checked = isActiveHeaderRowEnabled
-}
-
-function getHeaderRowMenu() {
-  return getSubMenuFromMenu('Tools', 'Header Row')
-}
-
-function getSubMenuFromMenu(menuLabel, subMenuLabel) {
-  let menu = Menu.getApplicationMenu().items.find(x => x.label === menuLabel)
-  let subMenu = menu.submenu.items.find(x => x.label === subMenuLabel)
-  return subMenu
-}
-
-async function saveAndExit(callback, filename) {
-  try {
-    let browserWindow = BrowserWindow.getAllWindows()[0]
-    await browserWindow.webContents.send('saveData', browserWindow.format, filename)
-    callback()
-  } catch (err) {
-    console.log(err)
-  }
-}
-
 export function quitOrSaveDialog(event, endButtonName, callback) {
   event.preventDefault()
   let browserWindow = BrowserWindow.getFocusedWindow()
@@ -164,38 +101,12 @@ export function quitOrSaveDialog(event, endButtonName, callback) {
   })
 }
 
-export function testMenu() {
-  clickLabelsOnMenu()
-}
-
-ipc.on('clickLabelsOnMenu', async function(event, arg) {
-  let returned = await promiseClickLabelsOnMenu()
-  event.returnValue = returned
-  //   menu = subMenu
-  // }
-})
-
-function promiseClickLabelsOnMenu() {
-  return new Promise((resolve, reject) => {
-    // There is a short render wait in home page, so if hotId not first returned, just wait and try again
-    resolve(clickLabelsOnMenu())
-  })
-}
-
-function clickLabelsOnMenu() {
-  // console.log(arg) // prints "ping"
-  // console.log('args are')
-  // console.log(args)
-  // let menuLabel = args.shift()
-  let menu = Menu.getApplicationMenu().items.find(x => x.label === 'File')
-  // console.log(menu.submenu.items)
-  menu.click()
-  // for (subMenuLabel of args) {
-  let subMenu = menu.submenu.items.find(x => x.label === 'Open')
-  // console.log(subMenu.submenu.items)
-  subMenu.click()
-  let subSubMenu = subMenu.submenu.items.find(x => x.label.startsWith('Comma'))
-  // console.log(subSubMenu)
-  subSubMenu.click()
-  return subSubMenu.label
+async function saveAndExit(callback, filename) {
+  try {
+    let browserWindow = BrowserWindow.getAllWindows()[0]
+    await browserWindow.webContents.send('saveData', browserWindow.format, filename)
+    callback()
+  } catch (err) {
+    console.log(err)
+  }
 }

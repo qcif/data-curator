@@ -11,9 +11,3 @@ export function fixRaggedRows(arrays) {
 function getMaxRowLength(csv_array) {
   return Math.max(...(csv_array.map(row => row.length)))
 }
-
-export function matchColumnHeadersToMaxRowLength(hot, arrays) {
-  const maxRowLength = getMaxRowLength(arrays)
-  arrays[0].push(...(Array(maxRowLength - arrays[0].length).fill(null)))
-  hot.updateSettings({data: arrays})
-}

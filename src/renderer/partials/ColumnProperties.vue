@@ -18,6 +18,7 @@
                   {{ option2}}
                 </option>
             </select>
+            <!-- <input v-if="formatValuesHasPattern" v-model="formatPropertyValue" type="text" :class="{ 'form-control input-sm col-sm-9': true}" /> -->
             <input v-if="formatValuesHasPattern" v-model="formatPropertyValue" type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has('formatValue') }" v-validate.initial="'formatPattern|required'" name="formatValue"/>
             <div v-show="formatValuesHasPattern && errors.has('formatValue')" class="row help validate-danger">
               {{ errors.first('formatValue')}}
@@ -32,10 +33,11 @@
               <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate.initial="constraintValidationRules(option)" :name="option"/>
             </template>
             <div v-show="errors.has(option) && removeConstraint(option)" class="row help validate-danger">
-              {{ errors.collect(option)}}
+              {{ errors.collect(option)[0]}}
             </div>
           </div>
         </div>
+        <textarea v-else-if="formprop.key === 'description'" rows="4" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" class="form-control label-sm col-sm-9" :id="formprop.key" ></textarea>
         <input v-else-if="formprop.key === 'name'" :disabled="formprop.isDisabled" :value="getNameProperty" @input="setProperty(formprop.key, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
         <template v-else-if="formprop.key === 'rdfType'" >
           <input :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }" v-validate="{url:true}" :id="formprop.key" :name="formprop.key"/>
@@ -51,6 +53,7 @@
 </template>
 <script>
 import SideNav from './SideNav'
+import autosize from 'autosize'
 import {
   mapMutations,
   mapGetters
@@ -71,6 +74,7 @@ import {
 import ColumnTooltip from '../mixins/ColumnTooltip'
 import ValidationRules from '../mixins/ValidationRules'
 import {isValidPatternForType} from '@/dateFormats.js'
+// import autosizeTextArea from '../partials/AutosizeTextArea'
 Vue.use(VueRx, {
   Subscription
 })
@@ -82,6 +86,7 @@ export default {
   props: ['cIndex'],
   data() {
     return {
+      content1: '',
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       typeProperty: '',
       formatProperty: '',
@@ -303,10 +308,21 @@ export default {
       }
       this.pushConstraintInputKeyValues()
       this.$forceUpdate()
+      window.setTimeout(function() {
+        let element = document.querySelector(`input[name=${key}]`)
+        if (element) {
+          element.focus()
+        }
+      }, 100)
     },
     getConstraintValue: function(key) {
-      let property = this.constraintInputKeyValues[key]
-      return property
+      let value = this.constraintInputKeyValues[key]
+      if (key === 'enum' && _.isArray(value)) {
+        let updatedValue = `"${_.join(value, '","')}"`
+        return updatedValue
+      } else {
+        return value
+      }
     },
     removeConstraint: function(key) {
       _.unset(this.constraintInputKeyValues, key)
@@ -314,15 +330,20 @@ export default {
       return true
     },
     setConstraintValue: function(key, value) {
-      // TODO: split at double quote and comma
-      // if (key === 'enum') {
-      //   value = _.toArray(value)
-      // }
       this.constraintInputKeyValues[key] = value
       this.pushConstraintInputKeyValues()
     },
     pushConstraintInputKeyValues: function() {
-      this.debounceSetConstraints(this.setter(this.activeCurrentHotId, 'constraints', this.constraintInputKeyValues))
+      // assign to a separate object, so not influenced by validation's removal of invalid values
+      let constraintValues = {}
+      _.assign(constraintValues, this.constraintInputKeyValues)
+      // transform enum to array using quote,comma as separator
+      if (_.has(constraintValues, 'enum')) {
+        let trimmed = _.trim(constraintValues.enum, '"')
+        let split = _.split(trimmed, /"[\s]?,[\s]?"/)
+        constraintValues.enum = split
+      }
+      this.debounceSetConstraints(this.setter(this.activeCurrentHotId, 'constraints', constraintValues))
     },
     constraintValidationRules: function(option) {
       switch (option) {
@@ -395,6 +416,7 @@ export default {
       vueUpdateAllTablesAllColumnsNames(result)
     })
     allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
+    autosize(document.querySelector('textarea'))
   },
   created: function() {
     let vueType = this.typePropertyWrapper

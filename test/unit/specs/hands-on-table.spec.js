@@ -1,74 +1,32 @@
-import chai from 'chai'
 import Handsontable from 'handsontable/dist/handsontable.full.js'
 import {HotRegister, insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight} from '@/hot.js'
 import store from '@/store/modules/hots.js'
-import sinon from 'sinon'
-import * as sinonTestFactory from 'sinon-test'
-let assert = chai.assert
-let expect = chai.expect
-let should = chai.should()
+import {resetHotStore} from '../helpers/storeHelper.js'
+import {stubHotInDocumentDom, resetHot, registerHot} from '../helpers/basicHotHelper.js'
+import {globalBefore} from '../helpers/globalHelper.js'
 
 describe('hands on table', () => {
   let data
   let expectedData
   let hot
-  const sinonTest = sinonTestFactory.configureTest(sinon, {useFakeTimers: false})
+
   before(() => {
-    window._ = require('lodash')
-    store.state = {
-      hotTabs: {},
-      packageProperties: {},
-      provenanceProperties: {}
-    }
+    globalBefore()
   })
 
   beforeEach(() => {
+    stubHotInDocumentDom()
+    hot = registerHot()
     data = stubData()
     expectedData = stubData()
-    resetDocument()
-    stubActiveContainer()
-    registerHot()
   })
 
   afterEach(() => {
-    HotRegister.destroyAllHots()
+    resetHot()
+    resetHotStore()
     data = null
     expectedData = null
-    hot = null
-    store.state = {
-      hotTabs: {},
-      packageProperties: {},
-      provenanceProperties: {}
-    }
   })
-
-  function resetDocument() {
-    document.open()
-    document.write('<html><body></body></html>')
-    document.close()
-  }
-
-  function stubActiveContainer() {
-    let hotView = document.createElement('div')
-    let childElement = [
-      {
-        attr: 'id',
-        value: 'csvContent'
-      }, {
-        attr: 'class',
-        value: 'active'
-      }, {
-        attr: 'class',
-        value: 'editor'
-      }
-    ].reduce(function(parent, elem) {
-      let element = document.createElement('div')
-      element.setAttribute(elem.attr, elem.value)
-      parent.appendChild(element)
-      return parent.firstElementChild
-    }, hotView)
-    document.body.appendChild(hotView)
-  }
 
   function stubData() {
     return [
@@ -109,12 +67,6 @@ describe('hands on table', () => {
     }
   }
 
-  function registerHot() {
-    let container = document.querySelector('.editor')
-    let hotId = HotRegister.register(container)
-    hot = HotRegister.getInstance(hotId)
-  }
-
   describe('loading Hands On Table library into workview', () => {
     it('constructs hands on table via controller without altering loaded data', () => {
       hot.addHook('afterLoadData', () => {
@@ -124,7 +76,7 @@ describe('hands on table', () => {
     })
 
     it('returns the same data when loaded via hot controller as it does directly throught hot library', () => {
-      let hot2 = new Handsontable(document.querySelector('.editor'), stubDefaultHotProperties(data))
+      let hot2 = new Handsontable(document.querySelector('.stubbedHot'), stubDefaultHotProperties(data))
       hot.addHook('afterLoadData', () => {
         expect(hot.getData()).to.deep.equal(hot2.getData())
       })
@@ -535,8 +487,8 @@ describe('hands on table', () => {
       }))
     })
 
-    function mockPushColumnIndex(mocker, columnIndex) {
-      let mock = mocker(store.mutations)
+    function mockPushColumnIndex(sMock, columnIndex) {
+      let mock = sMock(store.mutations)
       mock.expects('pushColumnIndexForHotId').withArgs(store.state, {
         hotId: hot.guid,
         columnIndex: columnIndex

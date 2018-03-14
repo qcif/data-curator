@@ -1,5 +1,5 @@
 import { expect, should, assert } from 'chai'
-import { Given, When, Then} from 'cucumber'
+import { Given, When, Then } from 'cucumber'
 const _ = require('lodash')
 
 When(/^I have opened Data Curator$/, function () {

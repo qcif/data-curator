@@ -26,6 +26,10 @@ function storeData(hotId, schema) {
 export async function guessColumnProperties() {
   let hot = HotRegister.getActiveInstance()
   let id = hot.guid
+  let columnProperties = store.state.hotTabs[id].columnProperties
+  if (!columnProperties || !hasAllColumnNames(id, columnProperties)) {
+    return 'Failed: Guess column properties failed. Column names must be set.'
+  }
   let data = includeHeadersInData(hot)
   // let activeHot = HotRegister.getActiveHotIdData()
   let schema = await inferSchema(data)
@@ -172,9 +176,9 @@ export async function validateActiveDataAgainstSchema(callback) {
     if (row instanceof Error) {
       errorHandler(row, rowNumber, errorCollector)
     } else {
-      if (isRowBlank(row[2])) {
-        errorCollector.push({rowNumber: rowNumber, message: `Row ${rowNumber} is completely blank`, name: 'Blank Row'})
-      }
+      // if (isRowBlank(row[2])) {
+      //   errorCollector.push({rowNumber: rowNumber, message: `Row ${rowNumber} is completely blank`, name: 'Blank Row'})
+      // }
     }
   })
   stream.on('error', (error) => {
@@ -205,7 +209,7 @@ function hasColumnProperties(hotId, callb) {
     callb([
       {
         rowNumber: 0,
-        message: `Every Column property, including the column properties of any foreign keys, must have a 'name'.`,
+        message: `Every Column property, including the column properties of any foreign keys, must have a unique 'name'.`,
         name: 'Missing Column Property names'
       }
     ])

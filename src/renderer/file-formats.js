@@ -1,9 +1,11 @@
-
+import _ from 'lodash'
+import {DEFAULT_DIALECT as _dialectDefaults} from 'datapackage/lib/config.js'
 /**
  * Definitions for supported file types
  *
  * Add more objects here to support additional formats
  */
+
 const fileFormats = {
   csv: {
     label: 'Comma separated...',
@@ -13,10 +15,9 @@ const fileFormats = {
         extensions: ['csv']
       }
     ],
-    dialect: {
-      delimiter: ',',
-      quoteChar: '"'
-    },
+    dialect: _.assign({}, _dialectDefaults, {
+      delimiter: ','
+    }),
     mediatype: 'text/csv',
     format: 'csv'
   },
@@ -34,10 +35,9 @@ const fileFormats = {
         extensions: ['dat']
       }
     ],
-    dialect: {
-      delimiter: '\t',
-      quoteChar: '"'
-    },
+    dialect: _.assign({}, _dialectDefaults, {
+      delimiter: '\t'
+    }),
     mediatype: 'text/tab-separated-values',
     format: 'tsv'
   },
@@ -49,10 +49,9 @@ const fileFormats = {
         extensions: ['csv']
       }
     ],
-    dialect: {
-      delimiter: ';',
-      quoteChar: '"'
-    },
+    dialect: _.assign({}, _dialectDefaults, {
+      delimiter: ';'
+    }),
     mediatype: 'text/csv',
     format: 'csv'
   }

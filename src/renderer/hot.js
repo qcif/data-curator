@@ -25,7 +25,9 @@ const HotRegister = {
       manualRowMove: true,
       enterBeginsEditing: false,
       persistentState: true,
-      outsideClickDeselects: false,
+      // outsideClickDeselects: must be set to true -
+      // -otherwise visibleRows will include ALL rows (even for large datasets), which will affect performance when switching tabs (https://github.com/ODIQueensland/data-curator/issues/387)
+      outsideClickDeselects: true,
       undo: true,
       tabMoves({shiftKey}) {
         if (!shiftKey) {
@@ -49,10 +51,10 @@ const HotRegister = {
       },
       afterUpdateSettings() {
         hot.render()
-        // hot.deselectCell()
+      // hot.deselectCell()
       },
       afterSelection(r, c, r2, c2, preventScrolling) {
-        // preventScrolling.value = true
+      // preventScrolling.value = true
         if (typeof listeners.selectionListener !== 'undefined') {
           listeners.selectionListener()
         }
@@ -81,6 +83,12 @@ const HotRegister = {
   getInstance(id) {
     let hot = _.get(_hots, id)
     return _.get(_hots, id)
+  },
+  getAllHotIds() {
+    return _.keys(_hots)
+  },
+  getHotCount() {
+    return _hots.length
   },
   // TODO: consider cache (vue computed) of method, and moving to Home.vue to use with props, as used a lot
   getActiveInstance() {

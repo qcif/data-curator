@@ -17,26 +17,5 @@ export default new Router({
       path: '*',
       redirect: '/'
     }
-    // Keep below commented out until implemented
-    // {
-    //   path: '/chooserepo',
-    //   name: 'chooserepo',
-    //   component: require('@/components/ChooseRepo')
-    // },
-    // {
-    //   path: '/customformat',
-    //   name: 'customformat',
-    //   component: require('@/components/CustomFormat')
-    // },
-    // {
-    //   path: '/github',
-    //   name: 'github',
-    //   component: require('@/components/Github')
-    // },
-    // {
-    //   path: '/githubsuccess',
-    //   name: 'githubsuccess',
-    //   component: require('@/components/GithubSuccess')
-    // }
   ]
 })
