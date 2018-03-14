@@ -1,5 +1,5 @@
 import { expect, should, assert } from 'chai'
-import { Given, When, Then, After, Before} from 'cucumber'
+import { Given, When, Then, After, Before } from 'cucumber'
 import {fileFormats} from '../../../../src/renderer/file-formats.js'
 const _ = require('lodash')
 
@@ -10,7 +10,7 @@ When(/^I click on the "([\w]+?)"->"([\w]+?)" menu/, async function (menuLabel, s
 })
 
 // 3rd menu may contain spaces, dots
-When(/^I click on the "([\w]+?)"->"([\w]+?)"->"([\w \.]+?)" menu/, async function (menuLabel, subMenuLabel, subSubMenuLabel) {
+When(/^I click on the "([\w]+?)"->"([\w]+?)"->"([\w .]+?)" menu/, async function (menuLabel, subMenuLabel, subSubMenuLabel) {
   try {
     let returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel, subSubMenuLabel])
     console.log(returned)

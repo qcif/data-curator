@@ -1,8 +1,8 @@
 import { expect, should, assert } from 'chai'
-import { Given, When, Then} from 'cucumber'
-import chai from 'chai'
+import { Given, When, Then } from 'cucumber'
+// import chai from 'chai'
 const _ = require('lodash')
-chai.should()
+// chai.should()
 // chai.use(chaiAsPromised)
 
 Given(/^I click in row (\d+), column (\d+)$/, function (rowNumber, colNumber) {
