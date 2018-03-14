@@ -14,10 +14,10 @@ install:
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
 - yarn
-before_script:
-- yarn run lint
-- yarn run lint:test
-- yarn run test
+# before_script:
+# - yarn run lint
+# - yarn run lint:test
+# - yarn run test
 script:
 - yarn run release:predraft
 branches:
