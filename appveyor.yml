@@ -27,10 +27,10 @@ install:
   - yarn
   - node --version
 
-before_build:
-  - yarn run lint
-  - yarn run lint:test
-  - yarn run test
+# before_build:
+#   - yarn run lint
+#   - yarn run lint:test
+#   - yarn run test
 
 build_script:
   #- yarn test
