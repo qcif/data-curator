@@ -14,3 +14,18 @@ Then(/^I should see the success message$/, function () {
       expect(text).to.equal('Success: Guess column properties succeeded.')
     })
 })
+
+Then(/^I should see the failure message$/, function () {
+  return this.app.client.waitForVisible('#message-panel', 1000)
+    .getText('#error-message')
+    .then(function(text) {
+      expect(text).to.match(/^Failed: Guess column properties failed.*$/)
+    })
+})
+Then(/^I should a message to set column name$/, function () {
+  return this.app.client.waitForVisible('#message-panel', 1000)
+    .getText('#error-message')
+    .then(function(text) {
+      expect(text).to.match(/^.*Column names must be set.$/)
+    })
+})
