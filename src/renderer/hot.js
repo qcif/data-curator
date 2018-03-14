@@ -84,6 +84,9 @@ const HotRegister = {
     let hot = _.get(_hots, id)
     return _.get(_hots, id)
   },
+  getAllHotIds() {
+    return _.keys(_hots)
+  },
   getHotCount() {
     return _hots.length
   },
