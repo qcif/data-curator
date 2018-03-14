@@ -37,6 +37,7 @@
             </div>
           </div>
         </div>
+        <textarea v-else-if="formprop.key === 'description'" rows="4" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" class="form-control label-sm col-sm-9" :id="formprop.key" ></textarea>
         <input v-else-if="formprop.key === 'name'" :disabled="formprop.isDisabled" :value="getNameProperty" @input="setProperty(formprop.key, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
         <template v-else-if="formprop.key === 'rdfType'" >
           <input :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }" v-validate="{url:true}" :id="formprop.key" :name="formprop.key"/>
@@ -52,6 +53,7 @@
 </template>
 <script>
 import SideNav from './SideNav'
+import autosize from 'autosize'
 import {
   mapMutations,
   mapGetters
@@ -72,6 +74,7 @@ import {
 import ColumnTooltip from '../mixins/ColumnTooltip'
 import ValidationRules from '../mixins/ValidationRules'
 import {isValidPatternForType} from '@/dateFormats.js'
+// import autosizeTextArea from '../partials/AutosizeTextArea'
 Vue.use(VueRx, {
   Subscription
 })
@@ -83,6 +86,7 @@ export default {
   props: ['cIndex'],
   data() {
     return {
+      content1: '',
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       typeProperty: '',
       formatProperty: '',
@@ -412,6 +416,7 @@ export default {
       vueUpdateAllTablesAllColumnsNames(result)
     })
     allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
+    autosize(document.querySelector('textarea'))
   },
   created: function() {
     let vueType = this.typePropertyWrapper

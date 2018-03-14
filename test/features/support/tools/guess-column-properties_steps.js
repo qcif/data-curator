@@ -1,5 +1,5 @@
 import { expect, should, assert } from 'chai'
-import { Given, When, Then} from 'cucumber'
+import { Given, When, Then } from 'cucumber'
 
 When(/^I invoke the Guess Column Properties command$/, function () {
   return this.app.client.waitForVisible('#toolbar')
