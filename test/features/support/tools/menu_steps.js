@@ -33,7 +33,7 @@ Then('another tab is opened with its filename as the title', async function () {
   let filePath = require('path').join(__dirname, '../../../fixtures/valid.csv')
   await this.app.electron.ipcRenderer.send('openFileIntoTab', filePath, fileFormats.csv)
   let text = await this.app.client
-    .timeouts('implicit', 3000)
+    .timeouts('implicit', 5000)
     .getText('#tab1')
   expect(text).to.equal('valid')
 })

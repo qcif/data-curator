@@ -32,18 +32,18 @@ describe('frictionless utilities', () => {
         store.state.hotTabs[hot.guid] = test.hotTab
         expect(sut.isCaseSensitive(hot.guid)).to.equal(test.expected)
       }))
-      describe('default dialect', () => {
-        [ {dialect: false},
-          {dialect: true}
-        ].forEach(function(testDialect) {
-          it(`when table properties is ${JSON.stringify(test.hotTabs)} and DEFAULT is ${dialect}`, sinonTest(function() {
-            let hot = registerHot()
-            store.state.hotTabs[hot.guid] = test.hotTab
-            this.stub(DEFAULT_DIALECT, 'caseSensitiveHeader').value(testDialect)
-            expect(sut.isCaseSensitive(hot.guid)).to.equal(test.expected)
-          }))
-        })
-      })
+      // describe('default dialect', () => {
+      //   [ {dialect: false},
+      //     {dialect: true}
+      //   ].forEach(function(testDialect) {
+      //     it(`when table properties is ${JSON.stringify(test.hotTabs)} and DEFAULT is ${dialect}`, sinonTest(function() {
+      //       let hot = registerHot()
+      //       store.state.hotTabs[hot.guid] = test.hotTab
+      //       this.stub(DEFAULT_DIALECT, 'caseSensitiveHeader').value(testDialect)
+      //       expect(sut.isCaseSensitive(hot.guid)).to.equal(test.expected)
+      //     }))
+      //   })
+      // })
     })
   })
 
