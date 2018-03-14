@@ -9593,9 +9593,9 @@ vue-rx@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/vue-rx/-/vue-rx-5.0.0.tgz#71ed02e68c5e04db9d3cb765f4454b619a75c32d"
 
-vue-server-renderer@^2.5.14:
-  version "2.5.14"
-  resolved "https://registry.yarnpkg.com/vue-server-renderer/-/vue-server-renderer-2.5.14.tgz#42e45a89e350078f2a79219dc916e4ba36d2cf35"
+vue-server-renderer@^2.5.15:
+  version "2.5.15"
+  resolved "https://registry.yarnpkg.com/vue-server-renderer/-/vue-server-renderer-2.5.15.tgz#36284a74c4562f7206a982f90888a3cc7a46ae02"
   dependencies:
     chalk "^1.1.3"
     hash-sum "^1.0.2"
