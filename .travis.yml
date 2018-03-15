@@ -23,4 +23,3 @@ script:
 branches:
   only:
   - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
-  - develop
