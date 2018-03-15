@@ -19,7 +19,8 @@ install:
 # - yarn run lint:test
 # - yarn run test
 script:
-- yarn run release:predraft
+- yarn run release:pre
 branches:
   only:
   - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+  - develop
