@@ -707,6 +707,24 @@ export default {
       this.messagesTitle = 'Header Error'
       this.messages = 'At least 2 rows are required before a header row can be set.'
       this.messagesType = 'feedback'
+    },
+    setHotComments: function() {
+      if (this.messagesType === 'error') {
+        let hot = HotRegister.getActiveInstance()
+        let commentsPlugin = hot.getPlugin('comments')
+        for (const errorMessage of this.messages) {
+          // handsontable mark row/col indexes, whereas frictionless mark row/col count
+          let columnNumber = 0
+          let rowNumber = 0
+          if (typeof errorMessage.rowNumber !== 'undefined' && errorMessage.rowNumber > 0) {
+            rowNumber = errorMessage.rowNumber - 1
+          }
+          if (typeof errorMessage.columnNumber !== 'undefined' && errorMessage.columnNumber > 0) {
+            columnNumber = errorMessage.columnNumber - 1
+          }
+          commentsPlugin.setCommentAtCell(rowNumber, columnNumber, errorMessage.message)
+        }
+      }
     }
   },
   components: {
@@ -730,8 +748,11 @@ export default {
     sideNavPropertiesForMain: function() {
       this.testSideMain()
     },
-    messageStatus: function() {
+    messageStatus: function(value) {
       this.testBottomMain()
+      if (value === 'messages-opened') {
+        this.setHotComments()
+      }
     }
   },
   mounted: function() {
