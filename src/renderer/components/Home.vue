@@ -89,9 +89,13 @@ panelWidthDiff<template>
               <h3>{{messagesTitle}}</h3>
               <template  v-if="messagesType === 'error'">
                 <div :id="'error-messages' + index" v-for="(errorMessage, index) in messages" :key="index">
+                  <a href="#" @click="goToCell(errorMessage.rowNumber, errorMessage.columnNumber)"
+                    @mouseover="hoverErrorCell(errorMessage.rowNumber, errorMessage.columnNumber)"
+                    @mouseout="exitHoverErrorCell(errorMessage.rowNumber, errorMessage.columnNumber)">
                   <span v-show="errorMessage.rowNumber">(row:{{errorMessage.rowNumber}})</span>
                   <span v-show="errorMessage.columnNumber">(column:{{errorMessage.columnNumber}})</span>
                   <span>{{errorMessage.message}}</span>
+                  </a>
                 </div>
               </template>
               <div id="error-message" v-else>
@@ -359,6 +363,41 @@ export default {
           el.style.height = `${updatedInner}px`
         })
       }, 500)
+    },
+    hoverErrorCell(row, column) {
+      this.hoverCell(row, column, '.htCommentCell.current.highlight', this.addErrorStyle)
+    },
+    hoverCell(row, column, selector, styleFn) {
+      let hot = HotRegister.getActiveInstance()
+      let rowIndex = this.transformCountToIndex(row)
+      let columnIndex = this.transformCountToIndex(column)
+      hot.selectCell(rowIndex, columnIndex)
+      let element = document.querySelector(selector)
+      styleFn(element)
+      hot.deselectCell()
+    },
+    addErrorStyle(element) {
+      element.style.border = 'solid 1px #ff3860'
+      element.style.outline = 'solid 1px #ff3860'
+      element.style.boxShadow = '1px 1px 5px #999'
+    },
+    exitHoverErrorCell(row, column) {
+      this.exitHoverCell(row, column, '.htCommentCell.current.highlight')
+    },
+    exitHoverCell(row, column, selector) {
+      let hot = HotRegister.getActiveInstance()
+      let rowIndex = this.transformCountToIndex(row)
+      let columnIndex = this.transformCountToIndex(column)
+      hot.selectCell(rowIndex, columnIndex)
+      let element = document.querySelector(selector)
+      element.removeAttribute('style')
+      hot.deselectCell()
+    },
+    goToCell(row, column) {
+      let hot = HotRegister.getActiveInstance()
+      let rowIndex = this.transformCountToIndex(row)
+      let columnIndex = this.transformCountToIndex(column)
+      hot.selectCell(rowIndex, columnIndex)
     },
     selectionListener: function() {
       this.updateActiveColumn()
@@ -713,18 +752,17 @@ export default {
         let hot = HotRegister.getActiveInstance()
         let commentsPlugin = hot.getPlugin('comments')
         for (const errorMessage of this.messages) {
-          // handsontable mark row/col indexes, whereas frictionless mark row/col count
-          let columnNumber = 0
-          let rowNumber = 0
-          if (typeof errorMessage.rowNumber !== 'undefined' && errorMessage.rowNumber > 0) {
-            rowNumber = errorMessage.rowNumber - 1
-          }
-          if (typeof errorMessage.columnNumber !== 'undefined' && errorMessage.columnNumber > 0) {
-            columnNumber = errorMessage.columnNumber - 1
-          }
-          commentsPlugin.setCommentAtCell(rowNumber, columnNumber, errorMessage.message)
+          commentsPlugin.setCommentAtCell(this.transformCountToIndex(errorMessage.rowNumber), this.transformCountToIndex(errorMessage.columnNumber), errorMessage.message)
         }
       }
+    },
+    // handsontable mark row/col indexes, whereas frictionless mark row/col count
+    transformCountToIndex: function(count) {
+      let index = 0
+      if (typeof count === 'number' && count > 0) {
+        index = count - 1
+      }
+      return index
     }
   },
   components: {
@@ -748,11 +786,11 @@ export default {
     sideNavPropertiesForMain: function() {
       this.testSideMain()
     },
-    messageStatus: function(value) {
+    messageStatus: function() {
       this.testBottomMain()
-      if (value === 'messages-opened') {
-        this.setHotComments()
-      }
+    },
+    messages: function() {
+      this.setHotComments()
     }
   },
   mounted: function() {
@@ -863,4 +901,7 @@ export default {
 </style>
 <style lang="styl" scoped>
 @import '~static/css/tooltip'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/validationrules'
 </style>
