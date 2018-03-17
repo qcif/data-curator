@@ -88,6 +88,9 @@ panelWidthDiff<template>
             </ul>
               <h3>{{messagesTitle}}</h3>
               <template  v-if="messagesType === 'error'">
+                <div>
+                  <i>{{messages.length}} Errors</i>
+                </div>
                 <div :id="'error-messages' + index" v-for="(errorMessage, index) in messages" :key="index">
                   <a href="#" @click="goToCell(errorMessage.rowNumber, errorMessage.columnNumber)"
                     @mouseover="hoverToSelectErrorCell(errorMessage.rowNumber, errorMessage.columnNumber)"
@@ -191,6 +194,7 @@ export default {
       heightMain1: null,
       panelWidthDiff: null,
       panelHeightDiff: null,
+      previousComments: [],
       toolbarMenus: [{
         name: 'Guess',
         id: 'guess-column-properties',
@@ -370,6 +374,7 @@ export default {
     },
     hoverToSelectCell: function(row, column, styleFn) {
       let hot = HotRegister.getActiveInstance()
+      let commentsPlugin = hot.getPlugin('comments')
       let range = this.getCellOrRow(hot, row, column)
       hot.selectCell(range.from.row, range.from.col, range.to.row, range.to.col)
       let elements = this.getHighlightedAreaOrCellSelectors()
@@ -758,11 +763,15 @@ export default {
       if (this.messagesType === 'error') {
         let hot = HotRegister.getActiveInstance()
         let commentsPlugin = hot.getPlugin('comments')
+        for (const previousComment of this.previousComments) {
+          commentsPlugin.removeCommentAtCell(previousComment.row, previousComment.col)
+        }
+        this.previousComments = []
         for (const errorMessage of this.messages) {
           let range = this.getCellOrRow(hot, errorMessage.rowNumber, errorMessage.columnNumber)
           commentsPlugin.setRange(range)
           commentsPlugin.setComment(errorMessage.message)
-          // commentsPlugin.show()
+          this.previousComments.push({row: range.from.row, col: range.from.col})
         }
       }
     },
