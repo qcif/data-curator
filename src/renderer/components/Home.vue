@@ -90,8 +90,8 @@ panelWidthDiff<template>
               <template  v-if="messagesType === 'error'">
                 <div :id="'error-messages' + index" v-for="(errorMessage, index) in messages" :key="index">
                   <a href="#" @click="goToCell(errorMessage.rowNumber, errorMessage.columnNumber)"
-                    @mouseover="hoverErrorCell(errorMessage.rowNumber, errorMessage.columnNumber)"
-                    @mouseout="exitHoverErrorCell(errorMessage.rowNumber, errorMessage.columnNumber)">
+                    @mouseover="hoverToSelectErrorCell(errorMessage.rowNumber, errorMessage.columnNumber)"
+                    @mouseout="exitHoverToSelectErrorCell(errorMessage.rowNumber, errorMessage.columnNumber)">
                   <span v-show="errorMessage.rowNumber">(row:{{errorMessage.rowNumber}})</span>
                   <span v-show="errorMessage.columnNumber">(column:{{errorMessage.columnNumber}})</span>
                   <span>{{errorMessage.message}}</span>
@@ -163,6 +163,7 @@ import {toggleHeaderWithFeedback} from '@/headerRow.js'
 import {onNextHotIdFromTabRx, hotIdFromTab$} from '@/rxSubject.js'
 import {getHotIdFromTabIdFunction} from '@/store/modules/hots.js'
 import {isCaseSensitive} from '@/frictionlessUtilities'
+import Handsontable from 'handsontable/dist/handsontable.full.min.js'
 export default {
   name: 'home',
   mixins: [HomeTooltip],
@@ -364,36 +365,42 @@ export default {
         })
       }, 500)
     },
-    hoverErrorCell(row, column) {
-      this.hoverCell(row, column, '.htCommentCell.current.highlight', this.addErrorStyle)
+    hoverToSelectErrorCell: function(row, column) {
+      this.hoverToSelectCell(row, column, this.addErrorStyle)
     },
-    hoverCell(row, column, selector, styleFn) {
+    hoverToSelectCell: function(row, column, styleFn) {
       let hot = HotRegister.getActiveInstance()
-      let rowIndex = this.transformCountToIndex(row)
-      let columnIndex = this.transformCountToIndex(column)
-      hot.selectCell(rowIndex, columnIndex)
-      let element = document.querySelector(selector)
-      styleFn(element)
+      let range = this.getCellOrRow(hot, row, column)
+      hot.selectCell(range.from.row, range.from.col, range.to.row, range.to.col)
+      let elements = this.getHighlightedAreaOrCellSelectors()
+      for (let element of elements) {
+        styleFn(element)
+      }
       hot.deselectCell()
     },
-    addErrorStyle(element) {
+    addErrorStyle: function(element) {
       element.style.border = 'solid 1px #ff3860'
       element.style.outline = 'solid 1px #ff3860'
       element.style.boxShadow = '1px 1px 5px #999'
     },
-    exitHoverErrorCell(row, column) {
-      this.exitHoverCell(row, column, '.htCommentCell.current.highlight')
+    exitHoverToSelectErrorCell: function(row, column) {
+      this.exitHoverToSelectCell(row, column)
     },
-    exitHoverCell(row, column, selector) {
+    exitHoverToSelectCell: function(row, column) {
       let hot = HotRegister.getActiveInstance()
-      let rowIndex = this.transformCountToIndex(row)
-      let columnIndex = this.transformCountToIndex(column)
-      hot.selectCell(rowIndex, columnIndex)
-      let element = document.querySelector(selector)
-      element.removeAttribute('style')
+      let range = this.getCellOrRow(hot, row, column)
+      hot.selectCell(range.from.row, range.from.col, range.to.row, range.to.col)
+      let elements = this.getHighlightedAreaOrCellSelectors()
+      for (let element of elements) {
+        element.removeAttribute('style')
+      }
       hot.deselectCell()
     },
-    goToCell(row, column) {
+    getHighlightedAreaOrCellSelectors: function() {
+      let elements = document.querySelectorAll('.highlight')
+      return elements
+    },
+    goToCell: function(row, column) {
       let hot = HotRegister.getActiveInstance()
       let rowIndex = this.transformCountToIndex(row)
       let columnIndex = this.transformCountToIndex(column)
@@ -752,10 +759,28 @@ export default {
         let hot = HotRegister.getActiveInstance()
         let commentsPlugin = hot.getPlugin('comments')
         for (const errorMessage of this.messages) {
-          commentsPlugin.setCommentAtCell(this.transformCountToIndex(errorMessage.rowNumber), this.transformCountToIndex(errorMessage.columnNumber), errorMessage.message)
+          let range = this.getCellOrRow(hot, errorMessage.rowNumber, errorMessage.columnNumber)
+          commentsPlugin.setRange(range)
+          commentsPlugin.setComment(errorMessage.message)
+          // commentsPlugin.show()
         }
       }
     },
+
+    getCellOrRow: function(hot, row, column) {
+      let rowIndex = this.transformCountToIndex(row)
+      let columnFromIndex
+      let columnToIndex
+      if (typeof column !== 'number') {
+        columnFromIndex = 0
+        columnToIndex = this.transformCountToIndex(hot.countCols())
+      } else {
+        columnToIndex = this.transformCountToIndex(column)
+        columnFromIndex = columnToIndex
+      }
+      return {from: {col: columnFromIndex, row: rowIndex}, to: {col: columnToIndex, row: rowIndex}}
+    },
+
     // handsontable mark row/col indexes, whereas frictionless mark row/col count
     transformCountToIndex: function(count) {
       let index = 0
