@@ -42,7 +42,7 @@ Feature: Validate Table
     And errors have been detected and displayed
     When I invoke the "Pop out validation error messages" command
     Then display the error messages in a table in a separate window
-    Add show a count of the number of errors detected
+    And show a count of the number of errors detected
 
   Scenario: Sort validation error messages
     Given I have Validated a Table
