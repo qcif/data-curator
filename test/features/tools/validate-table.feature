@@ -1,7 +1,7 @@
 Feature: Validate Table
   As a Data Packager
   I want to validate the data for common errors and against the schema defined by the column properties
-  So that I can correct errors and only share validated data with Data Consumers
+  So that I can correct errors and share validated data with Data Consumers
 
   The "Validate Table" command can be invoked using a menu item, toolbar button or keyboard shortcut
 
@@ -14,7 +14,7 @@ Feature: Validate Table
 
   Schema validation checks include the:
   - data is the same 'type' and 'format' as defined in the column properties, ignoring 'missing values'
-  - data conforms with the 'contraints'
+  - data conforms with the 'constraints'
   - 'foreign key' relationships to one or more columns in:
     - the same table
     - the same data package
@@ -36,3 +36,37 @@ Feature: Validate Table
     And validate the data against the available schema
     And display error messages
     And highlight errors in the relevant cells, rows or columns
+
+  Scenario: Pop out validation error messages
+    Given I have Validated a Table
+    And errors have been detected and displayed
+    When I invoke the "Pop out validation error messages" command
+    Then display the error messages in a table in a separate window
+    Add show a count of the number of errors detected
+
+  Scenario: Sort validation error messages
+    Given I have Validated a Table
+    And errors have been detected and displayed error messages in a table in a separate window
+    When I invoke the sort column command
+    Then sort the error messages by that columns
+
+  Scenario: Filter validation error messages
+    Given I have Validated a Table
+    And errors have been detected and displayed error messages in a table in a separate window
+    When I invoke the filter column command
+    And provide a filter value(s)
+    Then only display the error messages that meet the filter criteria
+
+  Scenario: Link to error cell
+    Given I have Validated a Table
+    And errors have been detected and displayed
+    When I click the error message
+    Then move the cursor to the associated cell in table
+
+  Scenario: Write residual error to provenance information
+    Given I have Validated a Table
+    And errors have been detected and displayed error messages in a table in a separate window
+    When I invoke the "write errors to provenance information" command
+    Then append a heading "### Known Data Errors" to the end of the provenance information
+    And append a paragraph "This data is published with the following {count} data errors. Other errors may be present and could be detected after these errors are resolved." to the end of the provenance information
+    And append each error message as a bullet item to the end of the provenance information
