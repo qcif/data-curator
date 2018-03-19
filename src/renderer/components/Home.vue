@@ -535,6 +535,7 @@ export default {
       this.setActiveTab(tabId)
     },
     loadDefaultDataIntoContainer: function(container) {
+      console.log('enter load...')
       let defaultData = '"","",""'
       this.loadDataIntoContainer(container, defaultData)
     },
@@ -557,6 +558,7 @@ export default {
       addHotContainerListeners(container)
       let hot = HotRegister.getActiveInstance()
       let activeHotId = hot.guid
+      console.log(`guid: ${hot.guid}`)
       let activeTabId = this.activeTab
       // hack! - force data to wait for latest render e.g, for loader message
       window.setTimeout(function() {
@@ -762,6 +764,7 @@ export default {
     setHotComments: function() {
       if (this.messagesType === 'error') {
         let hot = HotRegister.getActiveInstance()
+        console.log(`in set hot comments: ${hot.guid}`)
         let commentsPlugin = hot.getPlugin('comments')
         for (const previousComment of this.previousComments) {
           commentsPlugin.removeCommentAtCell(previousComment.row, previousComment.col)
@@ -867,6 +870,7 @@ export default {
     this.$nextTick(function() {
       require('../index.js')
       const vueSetTabsOrder = this.setTabsOrder
+      let csvTab = document.getElementById('csvTab')
       Sortable.create(csvTab, {
         animation: 150,
         onSort: function(evt) {
@@ -884,6 +888,7 @@ export default {
   beforeCreate: function() {
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
       let hot = HotRegister.getInstance(hotId)
+      console.log(`in before create: ${hot}`)
       // hot.updateSettings({outsideClickDeselects: false})
       // FOR testing: https://github.com/ODIQueensland/data-curator/issues/387
       // let plugin = hot.getPlugin('autoRowSize')

@@ -41,3 +41,9 @@ export function registerHot() {
   let hot = HotRegister.getInstance(hotId)
   return hot
 }
+
+export function registerHotWithContainer(container) {
+  let hotId = HotRegister.register(container)
+  let hot = HotRegister.getInstance(hotId)
+  return hot
+}
