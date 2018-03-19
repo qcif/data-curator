@@ -34,15 +34,16 @@ Feature: Validate Table
     Then assemble the Table Schema if avaliable from Column Properties
     And check for structural data errors
     And validate the data against the available schema
-    And display error messages
+    And display error messages in a panel
     And highlight errors in the relevant cells, rows or columns
 
   Scenario: Pop out validation error messages
     Given I have Validated a Table
-    And errors have been detected and displayed
+    And errors have been detected and displayed in a panel
     When I invoke the "Pop out validation error messages" command
     Then display the error messages in a table in a separate window
     And show a count of the number of errors detected
+    And close the error message panel
 
   Scenario: Sort validation error messages
     Given I have Validated a Table
