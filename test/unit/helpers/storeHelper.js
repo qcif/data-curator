@@ -15,18 +15,45 @@ export function stubSimpleTabStore() {
       activeTab: '',
       tabObjects: {},
       tabIndex: -1,
-      activeTitle: ''
+      activeTitle: '',
+      hotTabs: {}
     },
 
     getters: {
       getTabs: state => {
-        return 'stubbed tab'
+        return ['tab0']
       },
       getActiveTab: state => {
-        return 'stubbed active tab'
+        return 'tab0'
       },
       tabTitle: (state, getters) => (tabId) => {
-        return `stubbed title for ${tabId}`
+        return `title`
+      },
+      getTabIndex: state => {
+        return 0
+      }
+    },
+    mutations: {
+      pushTabTitle(state, tab) {
+        _.set(state.tabObjects, `tab0.title`, 'title')
+      },
+      incrementTabIndex(state) {
+        state.tabIndex++
+      },
+      setActiveTab (state, tabId) {
+        state.activeTitle = 'title'
+      },
+      pushTab (state, tabId) {
+        state.tabs.push('tab0')
+      },
+      pushPackageProperty(state, property) {
+        _.set(state.packageProperties, property.key, property.value)
+      },
+      pushHotTab(state, hotTab) {
+        _.set(state.hotTabs, `${hotTab.hotId}.tabId`, hotTab.tabId)
+      },
+      pushTableProperty(state, property) {
+        _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
       }
     }
   }
