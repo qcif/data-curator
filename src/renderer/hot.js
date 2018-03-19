@@ -1,4 +1,4 @@
-import Handsontable from 'handsontable/dist/handsontable.full.js'
+import Handsontable from 'handsontable/dist/handsontable.full.min.js'
 import {remote, ipcRenderer as ipc} from 'electron'
 import store from '@/store/modules/hots.js'
 import {allTablesAllColumnsFromSchema$, allTablesAllColumnNames$} from '@/rxSubject.js'
@@ -25,9 +25,14 @@ const HotRegister = {
       manualRowMove: true,
       enterBeginsEditing: false,
       persistentState: true,
+      currentRowClassName: 'currentRow',
+      currentColClassName: 'currentCol',
       // outsideClickDeselects: must be set to true -
       // -otherwise visibleRows will include ALL rows (even for large datasets), which will affect performance when switching tabs (https://github.com/ODIQueensland/data-curator/issues/387)
       outsideClickDeselects: true,
+      comments: {
+        displayDelay: 1000
+      },
       undo: true,
       tabMoves({shiftKey}) {
         if (!shiftKey) {
