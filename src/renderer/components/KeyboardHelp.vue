@@ -192,11 +192,13 @@
       </tr>
     </thead>
     <tbody>
+<!--
       <tr>
         <td><b>Settings</b> / <b>Preferences</b> - set defaults to improve productivity</td>
         <td><kbd>Ctrl</kbd> <kbd>,</kbd></td>
         <td><kbd>Command &#8984;</kbd> <kbd>,</kbd></td>
       </tr>
+-->
       <tr>
         <td><b>Hide</b> the application</td>
         <td></td>
@@ -244,25 +246,6 @@
         <td><kbd>Shift &#8679;</kbd> <kbd>Ctrl</kbd> <kbd>S</kbd></td>
         <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>S</kbd></td>
       </tr>
-      <!--
-    <tr>
-      <td><b>Save All</b> unsaved changes to the data tables </td>
-      <td><kbd>Alt</kbd> <kbd>Ctrl</kbd> <kbd>S</kbd></td>
-      <td><kbd>Option &#8997;</kbd> <kbd>Command &#8984;</kbd> <kbd>S</kbd></td>
-    </tr>
--->
-      <tr>
-        <td><b>Close Tab</b> - optionally save unsaved work before closing the active tab </td>
-        <td><kbd>Ctrl</kbd> <kbd>W</kbd> </td>
-        <td><kbd>Command &#8984;</kbd> <kbd>W</kbd></td>
-      </tr>
-      <!--
-    <tr>
-      <td><b>Print</b> sample data and all properties</td>
-      <td><kbd>Ctrl</kbd> <kbd>P</kbd></td>
-      <td><kbd>Command &#8984;</kbd> <kbd>P</kbd></td>
-    </tr>
--->
     </tbody>
   </table>
 
@@ -300,11 +283,13 @@
         <td><kbd>Ctrl</kbd> <kbd>V</kbd></td>
         <td><kbd>Command &#8984;</kbd> <kbd>V</kbd></td>
       </tr>
+<!--
       <tr>
         <td><b>Select All</b> the data in the table</td>
         <td><kbd>Ctrl</kbd> <kbd>A</kbd> </td>
         <td><kbd>Command &#8984;</kbd> <kbd>A</kbd></td>
       </tr>
+-->
       <tr>
         <td><b>Insert Row Above</b> - add an empty row above the current cell</td>
         <td><kbd>Ctrl</kbd> <kbd>I</kbd></td>
@@ -328,8 +313,7 @@
     </tbody>
   </table>
 
-  <!--
-
+<!--
     <table class="table table-striped">
 <thead>
       <tr>
@@ -351,6 +335,7 @@
       </tr>
       </tbody>
     </table>
+-->
 
     <table class="table table-striped">
 <thead>
@@ -386,14 +371,8 @@
         <td><kbd>Alt</kbd> <kbd>Ctrl</kbd> <kbd>E</kbd></td>
         <td><kbd>Option &#8997;</kbd> <kbd>Command &#8984;</kbd> <kbd>E</kbd></td>
       </tr>
-      <tr>
-        <td><b>Sort</b></td>
-        <td><kbd>Alt</kbd> <kbd>Ctrl</kbd> <kbd>R</kbd></td>
-        <td><kbd>Option &#8997;</kbd> <kbd>Command &#8984;</kbd> <kbd>R</kbd></td>
-      </tr>
       </tbody>
     </table>
--->
 
   <table class="table table-striped">
     <thead>
