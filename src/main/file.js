@@ -1,6 +1,6 @@
 import {dialog as Dialog, BrowserWindow, ipcMain as ipc} from 'electron'
 import Fs from 'fs'
-import {enableSave, createWindowTabWithFormattedDataFile} from './utils'
+import {enableSave, createWindowTabWithFormattedDataFile, getMainWindow} from './utils'
 import _ from 'lodash'
 let path = require('path')
 
@@ -20,7 +20,7 @@ let path = require('path')
 // }
 
 // function saveAsCustom() {
-//   let currentWindow = BrowserWindow.getFocusedWindow()
+//   let currentWindow = getMainWindow()
 //   let dialog
 //   if (process.env.BABEL_ENV !== 'test') {
 //     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
@@ -42,7 +42,7 @@ let path = require('path')
 
 function saveFileAs(format, currentWindow) {
   if (!currentWindow) {
-    currentWindow = BrowserWindow.getFocusedWindow()
+    currentWindow = getMainWindow()
   }
   Dialog.showSaveDialog({
     filters: format.filters,
@@ -78,12 +78,12 @@ function savedFilenameExists(filename) {
 }
 
 function saveFile() {
-  let currentWindow = BrowserWindow.getFocusedWindow()
+  let currentWindow = getMainWindow()
   currentWindow.webContents.send('saveData', currentWindow.format, global.tab.activeFilename)
 }
 
 // function openCustom() {
-//   // var window = BrowserWindow.getFocusedWindow()
+//   // var window = getMainWindow()
 //   let dialog
 //   if (process.env.BABEL_ENV !== 'test') {
 //     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
@@ -104,7 +104,7 @@ function saveFile() {
 // }
 
 export function importDataPackage() {
-  let window = BrowserWindow.getFocusedWindow()
+  let window = getMainWindow()
   Dialog.showOpenDialog({
     filters: [
       {
@@ -156,7 +156,7 @@ function readFile(filename, format) {
 
 // TODO: consider toggle global var and use with debounce to check when last dialog triggered so don't get too many dialogs for multiple file opens
 function showAlreadyOpenedFileDialog() {
-  Dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
+  Dialog.showMessageBox(getMainWindow(), {
     type: 'warning',
     // title is not displayed on screen on macOS
     title: 'File not opened',

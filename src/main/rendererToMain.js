@@ -1,4 +1,5 @@
 import {ipcMain as ipc, Menu} from 'electron'
+import {showErrorsWindow} from './errorsWindow.js'
 
 ipc.on('toggleSaveMenu', (event, arg) => {
   let saveSubMenu = getSubMenuFromMenu('File', 'Save')
@@ -14,6 +15,10 @@ ipc.on('hasCaseSensitiveHeader', (event, arg) => {
 ipc.on('hasHeaderRow', (event, arg) => {
   let subMenu = getSubMenuFromMenu('Tools', 'Header Row')
   subMenu.checked = arg
+})
+
+ipc.on('showErrorsWindow', (event, arg) => {
+  showErrorsWindow()
 })
 
 function getSubMenuFromMenu(menuLabel, subMenuLabel) {

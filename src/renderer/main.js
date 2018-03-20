@@ -20,6 +20,8 @@ if (document.querySelector('#app')) {
   compileVue('#keyboardhelp', 'keyboardhelp')
 } else if (document.querySelector('#openexcel')) {
   compileVue('#openexcel', 'openexcel')
+} else if (document.querySelector('#errors')) {
+  compileVue('#errors', 'errors')
 } else {
   console.log('No match found for root id on incoming page.')
 }

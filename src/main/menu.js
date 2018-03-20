@@ -1,6 +1,6 @@
 import {openFile, saveFileAs, saveFile, importDataPackage} from './file.js'
 import {
-  createWindowTab
+  createWindowTab, getMainWindow
 } from './utils.js'
 import {importExcel} from './excel.js'
 import {showKeyboardHelp} from './help.js'
@@ -508,9 +508,7 @@ if (process.env.NODE_ENV !== 'production') {
 function webContents() {
   // use .fromId rather than .focusedWindow as latter does not apply if app minimized
   // use .fromId rather than .getAllWindows[0] as if child window present and main window minimized won't work
-  let id = global.mainWindowId
-  let browserWindow = BrowserWindow.fromId(id)
-  browserWindow.restore()
+  let browserWindow = getMainWindow()
   return browserWindow.webContents
 }
 
