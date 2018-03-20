@@ -1,6 +1,6 @@
 import {BrowserWindow, ipcMain as ipc, dialog as Dialog} from 'electron'
 import XLSX from 'xlsx'
-import {createWindowTabWithData} from './utils'
+import {createWindowTabWithData, getExcelWindow} from './utils'
 
 export function importExcel() {
   Dialog.showOpenDialog({
@@ -17,17 +17,16 @@ export function importExcel() {
     var first_sheet_name = workbook.SheetNames[0]
     var worksheet = workbook.Sheets[first_sheet_name]
 
-    let popup
-    if (process.env.BABEL_ENV !== 'test') {
-      popup = new BrowserWindow({width: 300, height: 150, nodeIntegration: false})
-    } else {
-      popup = new BrowserWindow({width: 300, height: 150})
-    }
+    let popup = getExcelWindow()
+    popup.setMenu(null)
     const winURL = process.env.NODE_ENV === 'development'
       ? `http://localhost:9080/openexcel.html`
       : `file://${__dirname}/openexcel.html`
     popup.loadURL(winURL)
     popup.setMenu(null)
+    popup.on('show', function() {
+
+    })
     popup.webContents.on('did-finish-load', function() {
       popup.webContents.send('loadSheets', workbook.SheetNames)
       ipc.once('worksheetCanceled', function() {

@@ -3,10 +3,10 @@
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 import {app, Menu, BrowserWindow} from 'electron'
-import {quitOrSaveDialog, createWindowTab} from './utils'
+import {quitOrSaveDialog, createWindowTab, getMainWindow} from './utils'
 import {readFile} from './file.js'
 import {menu as template} from './menu'
-require('./rendererToMenu.js')
+require('./rendererToMain.js')
 
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
@@ -37,11 +37,7 @@ function createWindow() {
 const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
   // Someone tried to run a second instance, we should focus our window.
   console.log('Attempted to open a second instance. Disallowing...')
-  let firstWindow = BrowserWindow.getAllWindows()[0]
-  if (firstWindow) {
-    if (firstWindow.isMinimized()) { firstWindow.restore() }
-    firstWindow.focus()
-  }
+  getMainWindow()
 })
 
 if (isSecondInstance) {

@@ -5,7 +5,6 @@ import {isCaseSensitive} from '@/frictionlessUtilities'
 import {pushCsvDialect} from '@/dialect.js'
 import {menu} from '@/menu.js'
 import fs from 'fs-extra'
-const BrowserWindow = remote.BrowserWindow
 
 export function addHotContainerListeners(container) {
   container.ondragover = function() {
@@ -28,8 +27,14 @@ export function addHotContainerListeners(container) {
 
   container.addEventListener('contextmenu', function(e) {
     e.preventDefault()
-    menu.popup(BrowserWindow.getFocusedWindow(), {async: true})
+    menu.popup(getMainWindow(), {async: true})
   }, false)
+}
+
+export function getMainWindow() {
+  let mainWindowId = remote.getGlobal('mainWindowId')
+  let mainWindow = remote.BrowserWindow.fromId(mainWindowId)
+  return mainWindow
 }
 
 export function loadData(key, data, format) {
@@ -92,7 +97,7 @@ ipc.on('clickLabelOnContextMenu', function(event, arg) {
 })
 
 ipc.on('closeContextMenu', function() {
-  menu.closePopUp(BrowserWindow.getFocusedWindow())
+  menu.closePopUp(getMainWindow())
 })
 
 ipc.on('insertColumnLeft', function() {

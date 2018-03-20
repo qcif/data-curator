@@ -775,7 +775,6 @@ export default {
         }
       }
     },
-
     getCellOrRow: function(hot, row, column) {
       let rowIndex = this.transformCountToIndex(row)
       let columnFromIndex
@@ -789,7 +788,6 @@ export default {
       }
       return {from: {col: columnFromIndex, row: rowIndex}, to: {col: columnToIndex, row: rowIndex}}
     },
-
     // handsontable mark row/col indexes, whereas frictionless mark row/col count
     transformCountToIndex: function(count) {
       let index = 0
@@ -797,6 +795,11 @@ export default {
         index = count - 1
       }
       return index
+    },
+    getErrorMessages: function() {
+      if (this.messagesType === 'error') {
+        return this.messages
+      }
     }
   },
   components: {
@@ -825,9 +828,28 @@ export default {
     },
     messages: function() {
       this.setHotComments()
+      ipc.send('showErrorsWindow')
     }
   },
   mounted: function() {
+    const vueGoToCell = this.goToCell
+    ipc.on('showErrorCell', function(event, arg) {
+      vueGoToCell(arg.row, arg.column)
+    })
+    const vueGetErrorMessages = this.getErrorMessages
+    ipc.on('getErrorMessages', function(event, arg) {
+      console.log('received request for get messages')
+      let messages = vueGetErrorMessages()
+      event.sender.send('errorMessages', messages)
+    })
+    const vueHoverToSelectErrorCell = this.hoverToSelectErrorCell
+    ipc.on('hoverToSelectErrorCell', function(event, arg) {
+      vueHoverToSelectErrorCell(arg.row, arg.column)
+    })
+    const vueExitHoverToSelectErrorCell= this.exitHoverToSelectErrorCell
+    ipc.on('exitHoverToSelectErrorCell', function(event, arg) {
+      vueExitHoverToSelectErrorCell(arg.row, arg.column)
+    })
     const vueTriggerMenuButton = this.triggerMenuButton
     ipc.on('triggerMenuButton', function(event, arg) {
       vueTriggerMenuButton(arg)
