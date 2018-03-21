@@ -1,4 +1,4 @@
-Feature: Toggle Header Row
+Feature: Set Header Row
   As a Data Packager
   I want to freeze the header row (the first row)
   So that the data is not included in "Sort Column" command
