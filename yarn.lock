@@ -2666,6 +2666,10 @@ csv-parser@~1.8.0:
     minimist "^0.2.0"
     ndjson "^1.4.0"
 
+csv-sniffer@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/csv-sniffer/-/csv-sniffer-0.1.1.tgz#d641017728004615767b6dce89ce2076efb0f0b7"
+
 csv-stringify@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-1.1.2.tgz#77a41526581bce3380f12b00d7c5bbac70c82b58"
@@ -6207,11 +6211,11 @@ moment@2.20.1:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.20.1.tgz#d6eb1a46cbcc14a2b2f9434112c1ff8907f313fd"
 
-moment@2.x, moment@^2.21.0:
+moment@2.x, moment@^2.21.0, moment@~2.21.0:
   version "2.21.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.21.0.tgz#2a114b51d2a6ec9e6d83cf803f838a878d8a023a"
 
-moment@~2.18.0, moment@~2.18.1:
+moment@~2.18.1:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
 
@@ -8656,16 +8660,17 @@ table@4.0.2:
     slice-ansi "1.0.0"
     string-width "^2.1.1"
 
-tableschema@^1.2.1, tableschema@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.7.0.tgz#79d8ab6cc0a45ddf57779fe8ff32f1cdd63d471e"
+tableschema@^1.2.1, tableschema@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.9.0.tgz#afc67dd3893028bc3445feb66e52f4f90b6e473c"
   dependencies:
     axios "^0.17.1"
     csv "^1.1.1"
+    csv-sniffer "^0.1.1"
     d3-time-format "^0.3.2"
     es6-error "^4.0.2"
     lodash "^4.13.1"
-    moment "~2.18.0"
+    moment "~2.21.0"
     regenerator-runtime "^0.11.0"
     stream-to-async-iterator "^0.2.0"
     tv4 "^1.2.7"
