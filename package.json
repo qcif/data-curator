@@ -169,7 +169,7 @@
     "multispinner": "^0.2.1",
     "node-gyp": "^3.6.2",
     "node-loader": "^0.6.0",
-    "nyc": "^11.4.1",
+    "nyc": "^11.6.0",
     "require-dir": "^0.3.0",
     "sinon": "^4.4.2",
     "sinon-chai": "^2.14.0",
