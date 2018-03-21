@@ -781,6 +781,7 @@ export default {
           commentsPlugin.setRange(range)
           commentsPlugin.setComment(errorMessage.message)
           this.previousComments.push({row: range.from.row, col: range.from.col})
+          // wait for hot to update cells with comment class
           _.delay(this.updateCellsFromHotRange, 100, hot, range, this.addErrorHighlightStyle)
         }
       }
