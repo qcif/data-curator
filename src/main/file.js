@@ -22,10 +22,10 @@ let path = require('path')
 // function saveAsCustom() {
 //   let currentWindow = BrowserWindow.getFocusedWindow()
 //   let dialog
-//   if (process.env.BABEL_ENV !== 'test') {
-//     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
-//   } else {
+//   if (process.env.BABEL_ENV === 'test' || process.env.NODE_ENV === 'development') {
 //     dialog = new BrowserWindow({width: 200, height: 400})
+//   } else {
+//     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
 //   }
 //   dialog.setMenu(null)
 //   dialog.once('closed', function() {
@@ -85,10 +85,10 @@ function saveFile() {
 // function openCustom() {
 //   // var window = BrowserWindow.getFocusedWindow()
 //   let dialog
-//   if (process.env.BABEL_ENV !== 'test') {
-//     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
-//   } else {
+//   if (process.env.BABEL_ENV === 'test' || process.env.NODE_ENV === 'development') {
 //     dialog = new BrowserWindow({width: 200, height: 400})
+//   } else {
+//     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
 //   }
 //   dialog.setMenu(null)
 //   dialog.once('closed', function() {

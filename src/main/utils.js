@@ -3,10 +3,10 @@ import {fileFormats} from '../renderer/file-formats.js'
 
 export function createWindow() {
   let mainWindow
-  if (process.env.BABEL_ENV !== 'test') {
-    mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 800, minHeight: 600, nodeIntegration: false})
-  } else {
+  if (process.env.BABEL_ENV === 'test' || process.env.NODE_ENV === 'development') {
     mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 800, minHeight: 600})
+  } else {
+    mainWindow = new BrowserWindow({width: 800, height: 600, minWidth: 800, minHeight: 600, nodeIntegration: false})
   }
 
   const winURL = process.env.NODE_ENV === 'development'

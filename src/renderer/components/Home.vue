@@ -370,34 +370,42 @@ export default {
       }, 500)
     },
     hoverToSelectErrorCell: function(row, column) {
-      this.hoverToSelectCell(row, column, this.addErrorStyle)
+      this.updateCellsFromCount(row, column, this.addErrorHoverStyle)
     },
-    hoverToSelectCell: function(row, column, styleFn) {
-      let hot = HotRegister.getActiveInstance()
-      let commentsPlugin = hot.getPlugin('comments')
-      let range = this.getCellOrRow(hot, row, column)
-      hot.selectCell(range.from.row, range.from.col, range.to.row, range.to.col)
-      let elements = this.getHighlightedAreaOrCellSelectors()
-      for (let element of elements) {
-        styleFn(element)
-      }
-      hot.deselectCell()
+    exitHoverToSelectErrorCell: function(row, column) {
+      this.updateCellsFromCount(row, column, this.removeErrorHoverStyle)
     },
-    addErrorStyle: function(element) {
+    addErrorHoverStyle: function(element) {
       element.style.border = 'solid 1px #ff3860'
       element.style.outline = 'solid 1px #ff3860'
       element.style.boxShadow = '1px 1px 5px #999'
     },
-    exitHoverToSelectErrorCell: function(row, column) {
-      this.exitHoverToSelectCell(row, column)
+    removeErrorHoverStyle: function(element) {
+      element.style.border = ''
+      element.style.outline = ''
+      element.style.boxShadow = ''
     },
-    exitHoverToSelectCell: function(row, column) {
+    addErrorHighlightStyle: function(element) {
+      element.style.backgroundColor = 'rgb(245, 186, 186)'
+    },
+    removeErrorHighlightStyle: function(element) {
+      element.style.backgroundColor = ''
+    },
+    updateCellsFromCount: function(row, column, fn) {
       let hot = HotRegister.getActiveInstance()
-      let range = this.getCellOrRow(hot, row, column)
+      let range = this.getCellOrRowFromCount(hot, row, column)
+      this.updateCellsFromHotRange(hot, range, fn)
+    },
+    updateCellsFromIndex: function(row, column, fn) {
+      let hot = HotRegister.getActiveInstance()
+      let range = this.getCellOrRowFromIndex(hot, row, column)
+      this.updateCellsFromHotRange(hot, range, fn)
+    },
+    updateCellsFromHotRange: function(hot, range, fn) {
       hot.selectCell(range.from.row, range.from.col, range.to.row, range.to.col)
       let elements = this.getHighlightedAreaOrCellSelectors()
       for (let element of elements) {
-        element.removeAttribute('style')
+        fn(element)
       }
       hot.deselectCell()
     },
@@ -765,18 +773,20 @@ export default {
         let commentsPlugin = hot.getPlugin('comments')
         for (const previousComment of this.previousComments) {
           commentsPlugin.removeCommentAtCell(previousComment.row, previousComment.col)
+          this.updateCellsFromIndex(previousComment.row, previousComment.col, this.removeErrorHighlightStyle)
         }
         this.previousComments = []
         for (const errorMessage of this.messages) {
-          let range = this.getCellOrRow(hot, errorMessage.rowNumber, errorMessage.columnNumber)
+          let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
           commentsPlugin.setRange(range)
           commentsPlugin.setComment(errorMessage.message)
+          this.updateCellsFromCount(errorMessage.rowNumber, errorMessage.columnNumber, this.addErrorHighlightStyle)
           this.previousComments.push({row: range.from.row, col: range.from.col})
         }
       }
     },
 
-    getCellOrRow: function(hot, row, column) {
+    getCellOrRowFromCount: function(hot, row, column) {
       let rowIndex = this.transformCountToIndex(row)
       let columnFromIndex
       let columnToIndex
@@ -785,6 +795,18 @@ export default {
         columnToIndex = this.transformCountToIndex(hot.countCols())
       } else {
         columnToIndex = this.transformCountToIndex(column)
+        columnFromIndex = columnToIndex
+      }
+      return {from: {col: columnFromIndex, row: rowIndex}, to: {col: columnToIndex, row: rowIndex}}
+    },
+    getCellOrRowFromIndex: function(hot, rowIndex, columnIndex) {
+      let columnFromIndex
+      let columnToIndex
+      if (typeof columnIndex !== 'number') {
+        columnFromIndex = 0
+        columnToIndex = this.transformCountToIndex(hot.countCols())
+      } else {
+        columnToIndex = columnIndex
         columnFromIndex = columnToIndex
       }
       return {from: {col: columnFromIndex, row: rowIndex}, to: {col: columnToIndex, row: rowIndex}}
