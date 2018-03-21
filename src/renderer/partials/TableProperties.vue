@@ -5,6 +5,7 @@
       <label v-show="formprop.label" v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label" :for="formprop.label">{{formprop.label}}</label>
       <component :is="formprop.tooltipView"/>
       <input v-if="formprop.key === 'missingValues'" :value="missingValues" @input="setMissingValuesWithSingleEmpty($event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
+      <textarea v-else-if="formprop.key === 'description'" rows="4" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" class="form-control label-sm col-sm-9" :id="formprop.key" ></textarea>
       <component v-else-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
       <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" v-validate="validationRules(formprop.key)" :name="formprop.key"/>
       <div v-show="errors.has(formprop.key) && removeValue(formprop.key)" class="row help validate-danger">
@@ -32,6 +33,7 @@ import {
 } from '../hot.js'
 import TableTooltip from '../mixins/TableTooltip'
 import ValidationRules from '../mixins/ValidationRules'
+import autosize from 'autosize'
 // import {
 //   Validator
 // } from 'vee-validate'
@@ -186,6 +188,7 @@ export default {
         })
       })
     })
+    autosize(document.querySelector('textarea'))
   }
 }
 </script>

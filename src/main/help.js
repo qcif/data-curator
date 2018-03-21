@@ -10,10 +10,10 @@ export function showKeyboardHelp() {
   let keyboardShortcutsSubMenu = getKeyboardShorcutsMenu()
   keyboardShortcutsSubMenu.enabled = false
   let keyboardHelpWindow
-  if (process.env.BABEL_ENV !== 'test') {
-    keyboardHelpWindow = new BrowserWindow({width: 760, height: 400, nodeIntegration: false})
-  } else {
+  if (process.env.BABEL_ENV === 'test' || process.env.NODE_ENV === 'development') {
     keyboardHelpWindow = new BrowserWindow({width: 760, height: 400})
+  } else {
+    keyboardHelpWindow = new BrowserWindow({width: 760, height: 400, nodeIntegration: false})
   }
 
   keyboardHelpWindow.setMenu(null)

@@ -136,7 +136,6 @@
     "cucumber": "^4.0.0",
     "cucumber-html-reporter": "^4.0.2",
     "del": "^3.0.0",
-    "devtron": "^1.1.0",
     "electron": "^1.8.2",
     "electron-builder": "^19.27.2",
     "electron-debug": "~1.4.0",
