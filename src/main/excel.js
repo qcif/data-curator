@@ -18,10 +18,10 @@ export function importExcel() {
     var worksheet = workbook.Sheets[first_sheet_name]
 
     let popup
-    if (process.env.BABEL_ENV !== 'test') {
-      popup = new BrowserWindow({width: 300, height: 150, nodeIntegration: false})
-    } else {
+    if (process.env.BABEL_ENV === 'test' || process.env.NODE_ENV === 'development') {
       popup = new BrowserWindow({width: 300, height: 150})
+    } else {
+      popup = new BrowserWindow({width: 300, height: 150, nodeIntegration: false})
     }
     const winURL = process.env.NODE_ENV === 'development'
       ? `http://localhost:9080/openexcel.html`
