@@ -780,12 +780,11 @@ export default {
           let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
           commentsPlugin.setRange(range)
           commentsPlugin.setComment(errorMessage.message)
-          this.updateCellsFromCount(errorMessage.rowNumber, errorMessage.columnNumber, this.addErrorHighlightStyle)
           this.previousComments.push({row: range.from.row, col: range.from.col})
+          _.delay(this.updateCellsFromHotRange, 100, hot, range, this.addErrorHighlightStyle)
         }
       }
     },
-
     getCellOrRowFromCount: function(hot, row, column) {
       let rowIndex = this.transformCountToIndex(row)
       let columnFromIndex
@@ -811,7 +810,6 @@ export default {
       }
       return {from: {col: columnFromIndex, row: rowIndex}, to: {col: columnToIndex, row: rowIndex}}
     },
-
     // handsontable mark row/col indexes, whereas frictionless mark row/col count
     transformCountToIndex: function(count) {
       let index = 0
