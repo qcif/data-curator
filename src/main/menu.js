@@ -215,10 +215,12 @@ const template = [
         accelerator: 'CmdOrCtrl+F'
       }, {
         label: 'Find Next',
-        accelerator: 'CmdOrCtrl+G'
+        accelerator: 'CmdOrCtrl+G',
+        enabled: false
       }, {
         label: 'Find Previous',
-        accelerator: 'Shift+CmdOrCtrl+G'
+        accelerator: 'Shift+CmdOrCtrl+G',
+        enabled: false
       }, {
         type: 'separator'
       }, {
