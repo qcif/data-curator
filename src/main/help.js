@@ -11,12 +11,6 @@ export function showKeyboardHelp() {
   let keyboardShortcutsSubMenu = getKeyboardShorcutsMenu()
   keyboardShortcutsSubMenu.enabled = false
   let keyboardHelpWindow = getKeyboardHelpWindow()
-  keyboardHelpWindow.setMenu(null)
-
-  const winURL = process.env.NODE_ENV === 'development'
-    ? `http://localhost:9080/keyboardhelp.html`
-    : `file://${__dirname}/keyboardhelp.html`
-  keyboardHelpWindow.loadURL(winURL)
   keyboardHelpWindow.on('show', function () {
     global.keyboardHelpWindowId = keyboardHelpWindow.id
   })

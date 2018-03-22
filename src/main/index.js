@@ -3,7 +3,7 @@
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 import {app, Menu, BrowserWindow, ipcMain as ipc, dialog} from 'electron'
-import {focusWindow, quitOrSaveDialog} from './utils'
+import {createWindowTab, quitOrSaveDialog, getErrorsWindow} from './utils'
 import {template, getSubMenuFromMenu, clickLabelsOnMenu} from './menu'
 import {fileFormats} from '../renderer/file-formats.js'
 
@@ -36,7 +36,7 @@ if (isSecondInstance) {
 app.on('ready', () => {
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
-  let browserWindow = createMainWindow()
+  let browserWindow = createWindowTab()
 })
 
 function closeAppNoPrompt() {
@@ -72,7 +72,7 @@ ipc.on('hasHeaderRow', (event, arg) => {
 })
 
 ipc.on('showErrorsWindow', (event, arg) => {
-  showErrorsWindow()
+  getErrorsWindow()
 })
 
 ipc.on('clickLabelsOnMenu', function(event, args) {

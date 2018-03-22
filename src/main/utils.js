@@ -1,6 +1,6 @@
 import {BrowserWindow} from 'electron'
 
-export function createWindowAndTab() {
+export function createWindowTab() {
   let mainWindow = focusMainWindow()
   if (!mainWindow) {
     mainWindow = createMainWindow()
@@ -10,17 +10,12 @@ export function createWindowAndTab() {
 }
 
 export function createMainWindow() {
-  let mainWindow = newWindow('mainWindowId', {width: 800, height: 600, minWidth: 800, minHeight: 600})
-  const winURL = process.env.NODE_ENV === 'development'
+  const url = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080`
     : `file://${__dirname}/index.html`
-  mainWindow.loadURL(winURL)
+  let mainWindow = newWindow('mainWindowId', {width: 800, height: 600, minWidth: 800, minHeight: 600}, url)
   mainWindow.title = 'Data-curator'
   mainWindow.format = fileFormats.csv
-  mainWindow.on('closed', function() {
-    mainWindow = null
-  })
-
   mainWindow.on('resize', function() {
     // TODO : replace with debounce
     if (global.resizeTimerId) {
@@ -31,7 +26,6 @@ export function createMainWindow() {
     }, 250)
     global.resizeTimerId = timerId
   })
-
   if (process.env.NODE_ENV === 'production') {
     mainWindow.on('close', (event) => {
       quitOrSaveDialog(event, 'Close All', closeWindowNoPrompt)
@@ -106,27 +100,22 @@ export function focusMainWindow() {
 }
 
 export function getExcelWindow() {
-  return focusOrNewWindow('excelWindowId', {width: 300, height: 150})
+  return focusOrNewSecondaryWindow('openexcel', {width: 300, height: 150})
 }
 
 export function getKeyboardHelpWindow() {
-  return focusOrNewWindow('keyboardHelpWindowId', {width: 760, height: 400})
+  return focusOrNewSecondaryWindow('keyboardhelp', {width: 760, height: 400})
 }
 
 export function getErrorsWindow() {
-  return focusOrNewWindow('errorsWindowId', {width: 760, height: 400})
+  return focusOrNewWindow('errors', {width: 760, height: 400})
 }
 
-function focusOrNewWindow(id, dimensions) {
-  console.log(`id is ${id}`)
-  let browserWindow
-  if (typeof id !== 'undefined' && id) {
-    browserWindow = focusWindow(id)
-  }
+function focusOrNewSecondaryWindow(id, dimensions) {
+  let browserWindow = focusWindow(id)
   if (!browserWindow) {
-    console.log(`grabbing new window`)
     browserWindow = newWindow(id, dimensions)
-    // closed (not close) will fire on destroy call
+    browserWindow.setMenu(null)
   }
   return browserWindow
 }
@@ -142,12 +131,18 @@ export function focusWindow(id) {
   return browserWindow
 }
 
-export function newWindow(id, dimensions) {
+export function newWindow(id, dimensions, url) {
   if (process.env.NODE_ENV === 'production' && process.env.BABEL_ENV !== 'test') {
     dimensions.nodeIntegration = false
   }
   console.log(dimensions)
   let browserWindow = new BrowserWindow(dimensions)
+  if (!url) {
+    url = process.env.NODE_ENV === 'development'
+      ? `http://localhost:9080/${id}.html`
+      : `file://${__dirname}/${id}.html`
+  }
+  browserWindow.loadURL(url)
   global[id] = browserWindow.id
   console.log('globals now:')
   console.log(global)

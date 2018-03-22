@@ -18,15 +18,6 @@ export function importExcel() {
     var worksheet = workbook.Sheets[first_sheet_name]
 
     let excelWindow = getExcelWindow()
-    excelWindow.setMenu(null)
-    const winURL = process.env.NODE_ENV === 'development'
-      ? `http://localhost:9080/openexcel.html`
-      : `file://${__dirname}/openexcel.html`
-    excelWindow.loadURL(winURL)
-    excelWindow.setMenu(null)
-    excelWindow.on('show', function() {
-      global.excelWindowId = excelWindow.id
-    })
     excelWindow.webContents.on('did-finish-load', function() {
       excelWindow.webContents.send('loadSheets', workbook.SheetNames)
       ipc.once('worksheetCanceled', function() {
