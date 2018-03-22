@@ -1,5 +1,5 @@
 import {openFile, saveFileAs, saveFile, importDataPackage} from './file.js'
-import {createWindowAndTab, focusMainWindow} from './utils.js'
+import {createWindowTab, focusMainWindow} from './utils.js'
 import {importExcel} from './excel.js'
 import {showKeyboardHelp} from './help.js'
 import {fileFormats} from '../renderer/file-formats.js'
@@ -54,7 +54,7 @@ const template = [
         label: 'New',
         accelerator: 'CmdOrCtrl+N',
         click() {
-          createWindowAndTab()
+          createWindowTab()
         }
       }, {
         type: 'separator'
