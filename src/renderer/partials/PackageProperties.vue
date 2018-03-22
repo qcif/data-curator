@@ -126,3 +126,6 @@ export default {
 <style lang="styl" scoped>
 @import '~static/css/validationrules'
 </style>
+<style lang="styl" scoped>
+@import '~static/css/sidenav'
+</style>

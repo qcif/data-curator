@@ -2,11 +2,10 @@
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
-import {app, Menu, BrowserWindow} from 'electron'
-import {quitOrSaveDialog, createWindowTab, getMainWindow} from './utils'
-import {readFile} from './file.js'
-import {menu as template} from './menu'
-require('./rendererToMain.js')
+import {app, Menu, BrowserWindow, ipcMain as ipc, dialog} from 'electron'
+import {focusWindow, quitOrSaveDialog} from './utils'
+import {template, getSubMenuFromMenu, clickLabelsOnMenu} from './menu'
+import {fileFormats} from '../renderer/file-formats.js'
 
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
@@ -21,23 +20,10 @@ global.tab = {
   filenames: []
 }
 
-// var mainWindow = null
-function createWindow() {
-  var menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
-
-  var filename = clFilename
-  if (filename) {
-    readFile([filename])
-  } else {
-    createWindowTab()
-  }
-}
-
 const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
   // Someone tried to run a second instance, we should focus our window.
   console.log('Attempted to open a second instance. Disallowing...')
-  getMainWindow()
+  focusMainWindow()
 })
 
 if (isSecondInstance) {
@@ -48,9 +34,9 @@ if (isSecondInstance) {
 // app.on('activate', checkForMultipleWindows)
 
 app.on('ready', () => {
-  createWindow()
-  let id = BrowserWindow.getAllWindows()[0].id
-  global.mainWindowId = id
+  var menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
+  let browserWindow = createMainWindow()
 })
 
 function closeAppNoPrompt() {
@@ -68,6 +54,36 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+
+ipc.on('toggleSaveMenu', (event, arg) => {
+  let saveSubMenu = getSubMenuFromMenu('File', 'Save')
+  let activeFilename = global.tab.activeFilename
+  saveSubMenu.enabled = (typeof activeFilename !== 'undefined' && activeFilename.length > 0)
+})
+
+ipc.on('hasCaseSensitiveHeader', (event, arg) => {
+  let subMenu = getSubMenuFromMenu('Tools', 'Case Sensitive Header Row')
+  subMenu.checked = arg
+})
+
+ipc.on('hasHeaderRow', (event, arg) => {
+  let subMenu = getSubMenuFromMenu('Tools', 'Header Row')
+  subMenu.checked = arg
+})
+
+ipc.on('showErrorsWindow', (event, arg) => {
+  showErrorsWindow()
+})
+
+ipc.on('clickLabelsOnMenu', function(event, args) {
+  try {
+    let returned = clickLabelsOnMenu(args)
+    event.returnValue = returned
+  } catch (error) {
+    throw (error)
+  }
+})
+
 /**
  * Auto Updater
  *

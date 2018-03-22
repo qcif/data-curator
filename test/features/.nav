@@ -14,14 +14,12 @@
   - save-as-comma-separated-file.feature
   - save-as-tab-separated-file.feature
   - save-as-semi-colon-separated-file.feature
-  - close-tab.feature
 - edit:
   - undo.feature
   - redo.feature
   - cut.feature
   - copy.feature
   - paste.feature
-  - select-all.feature
   - insert-row-above.feature
   - insert-row-below.feature
   - insert-column-before.feature
@@ -32,8 +30,12 @@
   - find.feature
   - replace-in-column.feature
   - replace-in-table.feature
+- find:
+  - find.feature
+  - replace.feature
 - tools:
   - freeze-header-row.feature
+  - case-sensitive-header-row.feature
   - guess-column-properties.feature
   - set-column-properties.feature
   - set-table-properties.feature
@@ -82,15 +84,12 @@
   - close-all-tabs.feature
   - print.feature
   - read-only-mode.feature
-  - find.feature
   - data-quality-information.feature
   - sample-data-quality-information.md
   - set-view-properties.feature
   - export-closed-datapackage.feature
 - drafts:
   - save-all.feature
-  - replace-in-table.feature
-  - replace-in-column.feature
   - sort-column.feature
   - filter-column.feature
   - validate-as-you-type.feature

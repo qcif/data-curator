@@ -1,10 +1,16 @@
-import {dialog, BrowserWindow} from 'electron'
-import {fileFormats} from '../renderer/file-formats.js'
-import _ from 'lodash'
+import {BrowserWindow} from 'electron'
 
-export function createWindow() {
-  let mainWindow = getMainWindow()
+export function createWindowAndTab() {
+  let mainWindow = focusMainWindow()
+  if (!mainWindow) {
+    mainWindow = createMainWindow()
+  }
+  mainWindow.webContents.send('addTab')
+  return mainWindow
+}
 
+export function createMainWindow() {
+  let mainWindow = newWindow('mainWindowId', {width: 800, height: 600, minWidth: 800, minHeight: 600})
   const winURL = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080`
     : `file://${__dirname}/index.html`
@@ -31,47 +37,12 @@ export function createWindow() {
       quitOrSaveDialog(event, 'Close All', closeWindowNoPrompt)
     })
   }
-
   return mainWindow
-}
-
-function closeWindowNoPrompt(result) {
-  let browserWindow = getMainWindow()
-  if (browserWindow) {
-    browserWindow.destroy()
-  }
-}
-
-export function createWindowTab() {
-  let window = getMainWindow()
-  if (window == null) {
-    window = createWindow()
-  } else {
-    window.webContents.send('addTab')
-  }
-}
-
-export function createWindowTabWithData(data) {
-  let window = getMainWindow()
-  if (window == null) {
-    window = createWindow()
-  } else {
-    window.webContents.send('addTabWithData', data)
-  }
-}
-
-export function createWindowTabWithFormattedDataFile(data, format, filename) {
-  let window = getMainWindow()
-  if (window == null) {
-    window = createWindow()
-  } else {
-    window.webContents.send('addTabWithFormattedDataFile', data, format, filename)
-  }
 }
 
 export function quitOrSaveDialog(event, endButtonName, callback) {
   event.preventDefault()
-  let browserWindow = getMainWindow()
+  let browserWindow = focusMainWindow()
   dialog.showMessageBox(browserWindow, {
     type: 'warning',
     buttons: [
@@ -99,42 +70,69 @@ export function quitOrSaveDialog(event, endButtonName, callback) {
 
 async function saveAndExit(callback, filename) {
   try {
-    let browserWindow = getMainWindow()
-    await browserWindow.webContents.send('saveData', browserWindow.format, filename)
+    let mainWindow = focusMainWindow()
+    await mainWindow.webContents.send('saveData', browserWindow.format, filename)
     callback()
   } catch (err) {
     console.log(err)
   }
 }
 
-export function getMainWindow() {
-  return focusOrNewWindow(global.mainWindowId, {width: 800, height: 600, minWidth: 800, minHeight: 600})
+function closeWindowNoPrompt(result) {
+  // let window = BrowserWindow.getFocusedWindow()
+  let mainWindow = focusMainWindow()
+  if (mainWindow) {
+    mainWindow.destroy()
+  }
+  // ensure any other opened windows are closed
+  for (browserWindow of BrowserWindow.getAllWindows) {
+    browserWindow.destroy()
+  }
+  console.log(`closed all windows`)
+}
+
+export function createWindowTabWithData(data) {
+  let mainWindow = focusMainWindow()
+  mainWindow.webContents.send('addTabWithData', data)
+}
+
+export function createWindowTabWithFormattedDataFile(data, format, filename) {
+  let mainWindow = focusMainWindow()
+  mainWindow.webContents.send('addTabWithFormattedDataFile', data, format, filename)
+}
+
+export function focusMainWindow() {
+  return focusWindow('mainWindowId')
 }
 
 export function getExcelWindow() {
-  return focusOrNewWindow(global.excelWindowId, {width: 300, height: 150})
+  return focusOrNewWindow('excelWindowId', {width: 300, height: 150})
 }
 
 export function getKeyboardHelpWindow() {
-  return focusOrNewWindow(global.keyboardHelpWindowId, {width: 760, height: 400})
+  return focusOrNewWindow('keyboardHelpWindowId', {width: 760, height: 400})
 }
 
 export function getErrorsWindow() {
-  return focusOrNewWindow(global.keyboardHelpWindowId, {width: 760, height: 400})
+  return focusOrNewWindow('errorsWindowId', {width: 760, height: 400})
 }
 
 function focusOrNewWindow(id, dimensions) {
   console.log(`id is ${id}`)
-  if (typeof id !== 'undefined') {
-    return focusWindow(id)
-  } else {
-    console.log(`grabbing new window`)
-    return newWindow(dimensions)
+  let browserWindow
+  if (typeof id !== 'undefined' && id) {
+    browserWindow = focusWindow(id)
   }
+  if (!browserWindow) {
+    console.log(`grabbing new window`)
+    browserWindow = newWindow(id, dimensions)
+    // closed (not close) will fire on destroy call
+  }
+  return browserWindow
 }
 
 export function focusWindow(id) {
-  let browserWindow = BrowserWindow.fromId(id)
+  let browserWindow = BrowserWindow.fromId(global[id])
   if (browserWindow) {
     if (browserWindow.isMinimized()) {
       browserWindow.restore()
@@ -144,10 +142,18 @@ export function focusWindow(id) {
   return browserWindow
 }
 
-export function newWindow(dimensions) {
-  if (process.env.BABEL_ENV !== 'test') {
-    _.assign(dimensions, {nodeIntegration: false})
+export function newWindow(id, dimensions) {
+  if (process.env.NODE_ENV === 'production' && process.env.BABEL_ENV !== 'test') {
+    dimensions.nodeIntegration = false
   }
   console.log(dimensions)
-  return new BrowserWindow(dimensions)
+  let browserWindow = new BrowserWindow(dimensions)
+  global[id] = browserWindow.id
+  console.log('globals now:')
+  console.log(global)
+  browserWindow.on('closed', (event) => {
+    global[id] = null
+    browserWindow = null
+  })
+  return browserWindow
 }

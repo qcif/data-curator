@@ -17,35 +17,30 @@ export function importExcel() {
     var first_sheet_name = workbook.SheetNames[0]
     var worksheet = workbook.Sheets[first_sheet_name]
 
-    let popup = getExcelWindow()
-    popup.setMenu(null)
+    let excelWindow = getExcelWindow()
+    excelWindow.setMenu(null)
     const winURL = process.env.NODE_ENV === 'development'
       ? `http://localhost:9080/openexcel.html`
       : `file://${__dirname}/openexcel.html`
-    popup.loadURL(winURL)
-    popup.setMenu(null)
-    popup.on('show', function() {
-
+    excelWindow.loadURL(winURL)
+    excelWindow.setMenu(null)
+    excelWindow.on('show', function() {
+      global.excelWindowId = excelWindow.id
     })
-    popup.webContents.on('did-finish-load', function() {
-      popup.webContents.send('loadSheets', workbook.SheetNames)
+    excelWindow.webContents.on('did-finish-load', function() {
+      excelWindow.webContents.send('loadSheets', workbook.SheetNames)
       ipc.once('worksheetCanceled', function() {
-        if (popup) {
-          popup.close()
+        if (excelWindow) {
+          excelWindow.close()
         }
       })
       ipc.once('worksheetSelected', function(e, sheet_name) {
         let data = XLSX.utils.sheet_to_csv(workbook.Sheets[sheet_name])
-        if (popup) {
-          popup.close()
+        if (excelWindow) {
+          excelWindow.close()
         }
         createWindowTabWithData(data)
       })
-    })
-    popup.on('closed', function(e) {
-      if (popup) {
-        popup = null
-      }
     })
   })
 }
