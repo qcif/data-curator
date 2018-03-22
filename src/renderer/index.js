@@ -27,11 +27,11 @@ export function addHotContainerListeners(container) {
 
   container.addEventListener('contextmenu', function(e) {
     e.preventDefault()
-    menu.popup(getMainWindow(), {async: true})
+    menu.popup(getHomeWindow(), {async: true})
   }, false)
 }
 
-export function getMainWindow() {
+export function getHomeWindow() {
   let mainWindowId = remote.getGlobal('mainWindowId')
   let mainWindow = remote.BrowserWindow.fromId(mainWindowId)
   return mainWindow
@@ -97,7 +97,7 @@ ipc.on('clickLabelOnContextMenu', function(event, arg) {
 })
 
 ipc.on('closeContextMenu', function() {
-  menu.closePopUp(getMainWindow())
+  menu.closePopUp(getHomeWindow())
 })
 
 ipc.on('insertColumnLeft', function() {

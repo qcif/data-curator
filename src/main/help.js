@@ -17,8 +17,10 @@ export function showKeyboardHelp() {
     ? `http://localhost:9080/keyboardhelp.html`
     : `file://${__dirname}/keyboardhelp.html`
   keyboardHelpWindow.loadURL(winURL)
+  keyboardHelpWindow.on('show', function () {
+    global.keyboardHelpWindowId = keyboardHelpWindow.id
+  })
   keyboardHelpWindow.on('closed', function () {
     keyboardShortcutsSubMenu.enabled = true
-    keyboardHelpWindow = null
   })
 }

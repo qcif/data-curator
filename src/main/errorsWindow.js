@@ -12,6 +12,8 @@ export function showErrorsWindow() {
     global.errorsWindowId = errorsWindow.id
   })
   errorsWindow.on('closed', function () {
-    errorsWindow = null
+    if (errorsWindow) {
+      errorsWindow = null
+    }
   })
 }

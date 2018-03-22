@@ -1,6 +1,6 @@
 import {dialog as Dialog, BrowserWindow, ipcMain as ipc} from 'electron'
 import Fs from 'fs'
-import {enableSave, createWindowTabWithFormattedDataFile, getMainWindow} from './utils'
+import {enableSave, createWindowTabWithFormattedDataFile, focusMainWindow} from './utils'
 import _ from 'lodash'
 let path = require('path')
 
@@ -20,12 +20,12 @@ let path = require('path')
 // }
 
 // function saveAsCustom() {
-//   let currentWindow = getMainWindow()
+//   let currentWindow = focusMainWindow()
 //   let dialog
-//   if (process.env.BABEL_ENV !== 'test') {
-//     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
-//   } else {
+//   if (process.env.BABEL_ENV === 'test' || process.env.NODE_ENV === 'development') {
 //     dialog = new BrowserWindow({width: 200, height: 400})
+//   } else {
+//     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
 //   }
 //   dialog.setMenu(null)
 //   dialog.once('closed', function() {
@@ -42,7 +42,7 @@ let path = require('path')
 
 function saveFileAs(format, currentWindow) {
   if (!currentWindow) {
-    currentWindow = getMainWindow()
+    currentWindow = focusWindow(id)
   }
   Dialog.showSaveDialog({
     filters: format.filters,
@@ -78,17 +78,17 @@ function savedFilenameExists(filename) {
 }
 
 function saveFile() {
-  let currentWindow = getMainWindow()
+  let currentWindow = focusMainWindow()
   currentWindow.webContents.send('saveData', currentWindow.format, global.tab.activeFilename)
 }
 
 // function openCustom() {
-//   // var window = getMainWindow()
+//   // var window = focusMainWindow()
 //   let dialog
-//   if (process.env.BABEL_ENV !== 'test') {
-//     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
-//   } else {
+//   if (process.env.BABEL_ENV === 'test' || process.env.NODE_ENV === 'development') {
 //     dialog = new BrowserWindow({width: 200, height: 400})
+//   } else {
+//     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
 //   }
 //   dialog.setMenu(null)
 //   dialog.once('closed', function() {
@@ -104,7 +104,7 @@ function saveFile() {
 // }
 
 export function importDataPackage() {
-  let window = getMainWindow()
+  let window = focusMainWindow()
   Dialog.showOpenDialog({
     filters: [
       {
@@ -156,7 +156,7 @@ function readFile(filename, format) {
 
 // TODO: consider toggle global var and use with debounce to check when last dialog triggered so don't get too many dialogs for multiple file opens
 function showAlreadyOpenedFileDialog() {
-  Dialog.showMessageBox(getMainWindow(), {
+  Dialog.showMessageBox(focusMainWindow(), {
     type: 'warning',
     // title is not displayed on screen on macOS
     title: 'File not opened',

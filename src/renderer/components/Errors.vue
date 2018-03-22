@@ -28,7 +28,7 @@
 </template>
 <script>
 import {ipcRenderer as ipc, remote} from 'electron'
-import {getMainWindow} from '../index.js'
+import {getHomeWindow} from '../index.js'
 export default {
   name: 'errors',
   data() {
@@ -38,23 +38,23 @@ export default {
   },
   computed: {
     // cache main window
-    mainWindow() {
-      return getMainWindow()
+    homeWindow() {
+      return getHomeWindow()
     }
   },
   methods: {
     goToCell: function() {
-      this.mainWindow.webContents.send('showErrorCell', {row: 1, column: 1})
+      this.homeWindow.webContents.send('showErrorCell', {row: 1, column: 1})
       this.getErrorMessages()
     },
     hoverToSelectErrorCell: function() {
-      this.mainWindow.webContents.send('hoverToSelectErrorCell', {row: 1, column: 1})
+      this.homeWindow.webContents.send('hoverToSelectErrorCell', {row: 1, column: 1})
     },
     exitHoverToSelectErrorCell: function() {
-      this.mainWindow.webContents.send('exitHoverToSelectErrorCell', {row: 1, column: 1})
+      this.homeWindow.webContents.send('exitHoverToSelectErrorCell', {row: 1, column: 1})
     },
     getErrorMessages: function() {
-      this.mainWindow.webContents.send('getErrorMessages')
+      this.homeWindow.webContents.send('getErrorMessages')
     },
     setErrorMessages: function(errorMessages) {
       this.errorMessages = errorMessages
