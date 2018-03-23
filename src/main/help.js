@@ -1,20 +1,11 @@
-import {BrowserWindow, Menu} from 'electron'
-import {getKeyboardHelpWindow} from './utils'
-
-function getKeyboardShorcutsMenu() {
-  let helpMenu = Menu.getApplicationMenu().items.find(x => x.role === 'help')
-  let keyboardShortcutsSubMenu = helpMenu.submenu.items.find(x => x.label === 'Keyboard Shortcuts')
-  return keyboardShortcutsSubMenu
-}
+import {focusOrNewSecondaryWindow} from './windows'
+import {getSubMenuFromMenu} from './menu.js'
 
 export function showKeyboardHelp() {
-  let keyboardShortcutsSubMenu = getKeyboardShorcutsMenu()
-  keyboardShortcutsSubMenu.enabled = false
-  let keyboardHelpWindow = getKeyboardHelpWindow()
-  keyboardHelpWindow.on('show', function () {
-    global.keyboardHelpWindowId = keyboardHelpWindow.id
-  })
-  keyboardHelpWindow.on('closed', function () {
-    keyboardShortcutsSubMenu.enabled = true
+  let shortcutsSubMenu = getSubMenuFromMenu('Help', 'Keyboard Shortcuts')
+  shortcutsSubMenu.enabled = false
+  let browserWindow = focusOrNewSecondaryWindow('keyboardhelp', {width: 760, height: 400})
+  browserWindow.on('closed', function () {
+    shortcutsSubMenu.enabled = true
   })
 }

@@ -1,6 +1,6 @@
 import {dialog as Dialog, BrowserWindow, ipcMain as ipc} from 'electron'
 import Fs from 'fs'
-import {enableSave, createWindowTabWithFormattedDataFile, focusMainWindow} from './utils'
+import {enableSave, createWindowTabWithFormattedDataFile, focusMainWindow} from './windows'
 import _ from 'lodash'
 let path = require('path')
 

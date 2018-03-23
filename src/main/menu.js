@@ -1,9 +1,9 @@
 import {openFile, saveFileAs, saveFile, importDataPackage} from './file.js'
-import {createWindowTab, focusMainWindow} from './utils.js'
+import {createWindowTab, focusMainWindow} from './windows.js'
 import {importExcel} from './excel.js'
 import {showKeyboardHelp} from './help.js'
 import {fileFormats} from '../renderer/file-formats.js'
-import {shell, BrowserWindow} from 'electron'
+import {shell, BrowserWindow, Menu} from 'electron'
 
 // build 'Open...' and 'Save As...' submenus
 const open_submenu = []
