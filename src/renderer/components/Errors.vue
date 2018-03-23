@@ -15,7 +15,7 @@
     <tbody>
       <tr>
         <td><b>Testing</b>, errors</td>
-        <td><kbd>  <a href="#" @click="goToCell()"
+        <td><kbd>  <a href="#" @click.prevent="goToCell()"
         @mouseover="hoverToSelectErrorCell()"
         @mouseout="exitHoverToSelectErrorCell()">
         Enter</a></kbd></td>
@@ -27,7 +27,7 @@
 </div>
 </template>
 <script>
-import {ipcRenderer as ipc, remote} from 'electron'
+import {ipcRenderer as ipc} from 'electron'
 import {getHomeWindow} from '../index.js'
 export default {
   name: 'errors',
@@ -45,7 +45,8 @@ export default {
   methods: {
     goToCell: function() {
       this.homeWindow.webContents.send('showErrorCell', {row: 1, column: 1})
-      this.getErrorMessages()
+      // this.getErrorMessages()
+      // ipc.send('focusMainWindow')
     },
     hoverToSelectErrorCell: function() {
       this.homeWindow.webContents.send('hoverToSelectErrorCell', {row: 1, column: 1})
