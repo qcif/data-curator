@@ -45,7 +45,7 @@ export default {
   methods: {
     goToCell: function() {
       this.homeWindow.webContents.send('showErrorCell', {row: 1, column: 1})
-      // this.getErrorMessages()
+      this.getErrorMessages()
       // ipc.send('focusMainWindow')
     },
     hoverToSelectErrorCell: function() {
@@ -58,20 +58,22 @@ export default {
       this.homeWindow.webContents.send('getErrorMessages')
     },
     setErrorMessages: function(errorMessages) {
-      this.errorMessages = errorMessages
+      this.messages = errorMessages
     }
   },
   mounted: function() {
     const vueSetErrorMessages = this.setErrorMessages
     ipc.on('errorMessages', function(event, arg) {
       console.log('message returned')
-      console.log(arg)
-      vueSetErrorMessages(arg)
+      if (_.isArray(arg)) {
+        vueSetErrorMessages(arg[0])
+      }
     })
   },
   watch: {
-    messages: function() {
-      console.log(messsages)
+    messages: function(value) {
+      console.log('message watch triggered.')
+      console.log(value)
     }
   }
 }

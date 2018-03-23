@@ -130,7 +130,8 @@ import {
 import * as Sortable from 'sortablejs/Sortable.js'
 import {
   addHotContainerListeners,
-  loadData
+  loadData,
+  getWindow
 } from '../index.js'
 import {
   HotRegister,
@@ -853,6 +854,7 @@ export default {
       this.testBottomMain()
     },
     messages: function() {
+      console.log('home messages watch triggered')
       this.setHotComments()
       ipc.send('showErrorsWindow')
     }
@@ -872,7 +874,7 @@ export default {
     ipc.on('getErrorMessages', function(event, arg) {
       console.log('received request for get messages')
       let messages = vueGetErrorMessages()
-      event.sender.send('errorMessages', messages)
+      getWindow('errors').webContents.send('errorMessages', messages)
     })
     const vueHoverToSelectErrorCell = this.hoverToSelectErrorCell
     ipc.on('hoverToSelectErrorCell', function(event, arg) {
