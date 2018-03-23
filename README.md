@@ -158,8 +158,7 @@ We have adopted [Standard JS](https://standardjs.com) as our JavaScript coding s
 Acceptance tests for [Data Curator](https://github.com/ODIQueensland/data-curator/blob/master/README.md) are:
 
 - written using the [Gherkin language](https://cucumber.io/docs/reference#gherkin) ([learn more](https://media.pragprog.com/titles/hwcuc/gherkin.pdf)) and stored [on GitHub](https://github.com/ODIQueensland/data-curator/tree/master/test/features)
-- [shared](https://relishapp.com/odi-australia/data-curator/docs) using [Relish](https://relishapp.com) (which will be replaced by Cucumber Pro)
-- [shared](https://app.cucumber.pro/projects/data-curator/documents/branch/develop) using the [Cucumber Pro](https://cucumber.io/pro) beta
+- [shared](https://app.cucumber.pro/projects/data-curator/documents/branch/develop) using the [Cucumber Pro](https://cucumber.io/pro) beta. 
 - arranged in folders like the application menu structure
 - integrated with:
 
