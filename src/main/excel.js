@@ -1,6 +1,7 @@
-import {BrowserWindow, ipcMain as ipc, dialog as Dialog} from 'electron'
+import {ipcMain as ipc, dialog as Dialog} from 'electron'
 import XLSX from 'xlsx'
-import {createWindowTabWithData, getExcelWindow} from './utils'
+import {createWindowTabWithData, focusOrNewSecondaryWindow} from './windows'
+import {getSubMenuFromMenu} from './menu.js'
 
 export function importExcel() {
   Dialog.showOpenDialog({
@@ -17,18 +18,23 @@ export function importExcel() {
     var first_sheet_name = workbook.SheetNames[0]
     var worksheet = workbook.Sheets[first_sheet_name]
 
-    let excelWindow = getExcelWindow()
-    excelWindow.webContents.on('did-finish-load', function() {
-      excelWindow.webContents.send('loadSheets', workbook.SheetNames)
+    let shortcutsSubMenu = getSubMenuFromMenu('File', 'Open Excel Sheet...')
+    shortcutsSubMenu.enabled = false
+    let browserWindow = focusOrNewSecondaryWindow('openexcel', {width: 300, height: 150})
+    browserWindow.on('closed', function () {
+      shortcutsSubMenu.enabled = true
+    })
+    browserWindow.webContents.on('did-finish-load', function() {
+      browserWindow.webContents.send('loadSheets', workbook.SheetNames)
       ipc.once('worksheetCanceled', function() {
-        if (excelWindow) {
-          excelWindow.close()
+        if (browserWindow) {
+          browserWindow.close()
         }
       })
       ipc.once('worksheetSelected', function(e, sheet_name) {
         let data = XLSX.utils.sheet_to_csv(workbook.Sheets[sheet_name])
-        if (excelWindow) {
-          excelWindow.close()
+        if (browserWindow) {
+          browserWindow.close()
         }
         createWindowTabWithData(data)
       })

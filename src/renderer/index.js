@@ -32,7 +32,7 @@ export function addHotContainerListeners(container) {
 }
 
 export function getHomeWindow() {
-  let mainWindowId = remote.getGlobal('mainWindowId')
+  let mainWindowId = remote.getGlobal('windows')['mainWindowId']
   let mainWindow = remote.BrowserWindow.fromId(mainWindowId)
   return mainWindow
 }

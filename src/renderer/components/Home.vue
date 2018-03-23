@@ -859,12 +859,12 @@ export default {
     ipc.on('showErrorCell', function(event, arg) {
       vueGoToCell(arg.row, arg.column)
     })
-    const vueGetErrorMessages = this.getErrorMessages
-    ipc.on('getErrorMessages', function(event, arg) {
-      console.log('received request for get messages')
-      let messages = vueGetErrorMessages()
-      event.sender.send('errorMessages', messages)
-    })
+    // const vueGetErrorMessages = this.getErrorMessages
+    // ipc.on('getErrorMessages', function(event, arg) {
+    //   console.log('received request for get messages')
+    //   let messages = vueGetErrorMessages()
+    //   event.sender.send('errorMessages', messages)
+    // })
     const vueHoverToSelectErrorCell = this.hoverToSelectErrorCell
     ipc.on('hoverToSelectErrorCell', function(event, arg) {
       vueHoverToSelectErrorCell(arg.row, arg.column)
