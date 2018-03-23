@@ -1,4 +1,4 @@
-panelWidthDiff<template>
+<template>
 <div id="home-container" class="panel panel-group">
   <div id="header-panel" class="panel-heading">
     <nav class="navbar navbar-default">
