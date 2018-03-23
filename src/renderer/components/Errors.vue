@@ -28,7 +28,7 @@
 </template>
 <script>
 import {ipcRenderer as ipc} from 'electron'
-import {getHomeWindow} from '../index.js'
+import {getWindow} from '../index.js'
 export default {
   name: 'errors',
   data() {
@@ -39,7 +39,7 @@ export default {
   computed: {
     // cache main window
     homeWindow() {
-      return getHomeWindow()
+      return getWindow('home')
     }
   },
   methods: {
