@@ -859,17 +859,21 @@ export default {
   },
   mounted: function() {
     const vueGoToCell = this.goToCell
+    const vueNextTick = this.$nextTick
     // request may be coming from another page - get focus first
     ipc.on('showErrorCell', async function(event, arg) {
       await ipc.send('focusMainWindow')
-      vueGoToCell(arg.row, arg.column)
+      // ensure cell select occurs after main window focus
+      _.delay(function(arg) {
+        vueGoToCell(arg.row, arg.column)
+      }, 100, arg)
     })
-    // const vueGetErrorMessages = this.getErrorMessages
-    // ipc.on('getErrorMessages', function(event, arg) {
-    //   console.log('received request for get messages')
-    //   let messages = vueGetErrorMessages()
-    //   event.sender.send('errorMessages', messages)
-    // })
+    const vueGetErrorMessages = this.getErrorMessages
+    ipc.on('getErrorMessages', function(event, arg) {
+      console.log('received request for get messages')
+      let messages = vueGetErrorMessages()
+      event.sender.send('errorMessages', messages)
+    })
     const vueHoverToSelectErrorCell = this.hoverToSelectErrorCell
     ipc.on('hoverToSelectErrorCell', function(event, arg) {
       vueHoverToSelectErrorCell(arg.row, arg.column)
