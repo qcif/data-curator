@@ -1,6 +1,7 @@
 import {ipcMain as ipc} from 'electron'
 import {showErrors} from './errors.js'
 import {getSubMenuFromMenu, clickLabelsOnMenu} from './menu'
+import {focusMainWindow} from './windows.js'
 
 ipc.on('toggleSaveMenu', (event, arg) => {
   let saveSubMenu = getSubMenuFromMenu('File', 'Save')
@@ -22,11 +23,15 @@ ipc.on('showErrorsWindow', (event, arg) => {
   showErrors()
 })
 
-ipc.on('clickLabelsOnMenu', function(event, args) {
+ipc.on('clickLabelsOnMenu', (event, arg) => {
   try {
-    let returned = clickLabelsOnMenu(args)
+    let returned = clickLabelsOnMenu(arg)
     event.returnValue = returned
   } catch (error) {
     throw (error)
   }
+})
+
+ipc.on('focusMainWindow', (event, arg) => {
+  focusMainWindow()
 })

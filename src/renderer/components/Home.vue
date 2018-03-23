@@ -92,7 +92,7 @@ panelWidthDiff<template>
                   <i>{{messages.length}} Errors</i>
                 </div>
                 <div :id="'error-messages' + index" v-for="(errorMessage, index) in messages" :key="index">
-                  <a href="#" @click="goToCell(errorMessage.rowNumber, errorMessage.columnNumber)"
+                  <a href="#" @click.prevent="goToCell(errorMessage.rowNumber, errorMessage.columnNumber)"
                     @mouseover="hoverToSelectErrorCell(errorMessage.rowNumber, errorMessage.columnNumber)"
                     @mouseout="exitHoverToSelectErrorCell(errorMessage.rowNumber, errorMessage.columnNumber)">
                   <span v-show="errorMessage.rowNumber">(row:{{errorMessage.rowNumber}})</span>
@@ -823,6 +823,9 @@ export default {
       if (this.messagesType === 'error') {
         return this.messages
       }
+    },
+    focusOnWindow: function() {
+      ipc.send('focusMainWindow')
     }
   },
   components: {
@@ -856,7 +859,9 @@ export default {
   },
   mounted: function() {
     const vueGoToCell = this.goToCell
-    ipc.on('showErrorCell', function(event, arg) {
+    // request may be coming from another page - get focus first
+    ipc.on('showErrorCell', async function(event, arg) {
+      await ipc.send('focusMainWindow')
       vueGoToCell(arg.row, arg.column)
     })
     // const vueGetErrorMessages = this.getErrorMessages
