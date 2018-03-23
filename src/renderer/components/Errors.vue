@@ -1,37 +1,17 @@
 <template>
 <div id="container" class="container-fluid">
 
-  <h1>Validation Errors</h1>
+  <h1>Errors</h1>
 
-  <h2>Errors</h2>
   <div>
    <vue-good-table
-     title="Demo Table"
      :columns="columns"
      :rows="rows"
      :paginate="true"
      :defaultSortBy="{field: 'row', type: 'asc'}"
-     :lineNumbers="false"/>
+     :onClick="goToCell"
+    styleClass="table condensed table-bordered table-striped"/>
  </div>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th style="width:50%">Table Editing shortcuts</th>
-        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
-        <th style="width:25%"><i class="fa fa-apple"></i></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><b>Testing</b>, errors</td>
-        <td><kbd>  <a href="#" @click.prevent="goToCell()"
-        @mouseover="hoverToSelectErrorCell()"
-        @mouseout="exitHoverToSelectErrorCell()">
-        Enter</a></kbd></td>
-        <td><kbd>Enter</kbd></td>
-      </tr>
-    </tbody>
-  </table>
 
 </div>
 </template>
@@ -76,10 +56,8 @@ export default {
     }
   },
   methods: {
-    goToCell: function() {
-      this.homeWindow.webContents.send('showErrorCell', {row: 1, column: 1})
-      this.getErrorMessages()
-      // ipc.send('focusMainWindow')
+    goToCell: function(error) {
+      this.homeWindow.webContents.send('showErrorCell', {row: error.rowNumber, column: error.columnNumber})
     },
     hoverToSelectErrorCell: function() {
       this.homeWindow.webContents.send('hoverToSelectErrorCell', {row: 1, column: 1})
@@ -97,17 +75,16 @@ export default {
   mounted: function() {
     const vueSetErrorMessages = this.setErrorMessages
     ipc.on('errorMessages', function(event, arg) {
-      console.log('message returned')
       if (_.isArray(arg)) {
         vueSetErrorMessages(arg)
       }
     })
+    this.getErrorMessages()
   },
   watch: {
     messages: function(messages) {
       this.rows = []
       for (let next of messages) {
-        console.log(next)
         this.rows.push({rowNumber: next.rowNumber, columnNumber: next.columnNumber, message: next.message})
       }
     }
