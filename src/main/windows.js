@@ -15,7 +15,6 @@ export function createMainWindow() {
     ? `http://localhost:9080`
     : `file://${__dirname}/index.html`
   let mainWindow = newWindow('home', {width: 800, height: 600, minWidth: 800, minHeight: 600}, url)
-  mainWindow.title = 'Data-curator'
   mainWindow.format = fileFormats.csv
   mainWindow.on('resize', function() {
     // TODO : replace with debounce
