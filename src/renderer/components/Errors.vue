@@ -4,6 +4,15 @@
   <h1>Validation Errors</h1>
 
   <h2>Errors</h2>
+  <div>
+   <vue-good-table
+     title="Demo Table"
+     :columns="columns"
+     :rows="rows"
+     :paginate="true"
+     :defaultSortBy="{field: 'row', type: 'asc'}"
+     :lineNumbers="false"/>
+ </div>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -27,13 +36,37 @@
 </div>
 </template>
 <script>
+import Vue from 'vue'
+import VueGoodTable from 'vue-good-table'
 import {ipcRenderer as ipc} from 'electron'
 import {getWindow} from '../index.js'
+Vue.use(VueGoodTable)
 export default {
   name: 'errors',
   data() {
     return {
-      messages: false
+      messages: false,
+      columns: [
+        {
+          label: 'Row number',
+          field: 'rowNumber',
+          filterable: true,
+          type: 'number'
+        },
+        {
+          label: 'Column number',
+          field: 'columnNumber',
+          filterable: true,
+          type: 'number'
+        },
+        {
+          label: 'Error message',
+          field: 'message',
+          filterable: true
+        }
+      ],
+      rows: [
+      ]
     }
   },
   computed: {
@@ -66,14 +99,17 @@ export default {
     ipc.on('errorMessages', function(event, arg) {
       console.log('message returned')
       if (_.isArray(arg)) {
-        vueSetErrorMessages(arg[0])
+        vueSetErrorMessages(arg)
       }
     })
   },
   watch: {
-    messages: function(value) {
-      console.log('message watch triggered.')
-      console.log(value)
+    messages: function(messages) {
+      this.rows = []
+      for (let next of messages) {
+        console.log(next)
+        this.rows.push({rowNumber: next.rowNumber, columnNumber: next.columnNumber, message: next.message})
+      }
     }
   }
 }
