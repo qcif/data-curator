@@ -5,7 +5,7 @@ Feature: Guess Column Properties
 
   The "Guess Column Properties" command can be invoked using a menu item or a toolbar button
 
-  Read the first 100 rows of the data and for each column, infer the data type and format and set the 'type' and 'format' property values to the inferred values.
+  Read a sample of the data and for each column, infer the data type and format and set the 'type' and 'format' property values to the inferred values.
 
   If column properties already exist for the guessed properties, then prompt the user to ask if they should be over-written.
 
