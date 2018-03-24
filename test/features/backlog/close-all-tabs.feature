@@ -1,3 +1,5 @@
+@backlog
+
 Feature: Close all tabs
   As a Data Packager
   I want to close all data tabs and warn if there are unsaved changes

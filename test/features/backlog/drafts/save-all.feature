@@ -1,4 +1,4 @@
-@draft
+@draft @backlog
 
 Feature: Save all
   As a Data Packager

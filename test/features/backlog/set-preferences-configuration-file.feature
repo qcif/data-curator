@@ -1,3 +1,5 @@
+@backlog
+
 Feature: Set Preferences using Configuration File
   As a Open Data leader in my organisation
   I want to deploy Data Curator with some preset preference settings

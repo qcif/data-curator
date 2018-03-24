@@ -1,4 +1,4 @@
-@backlog
+@backlog @draft
 
 Feature: Read Only Mode
   As a Data Packager or Data Consumer
@@ -7,7 +7,7 @@ Feature: Read Only Mode
 
   Read only for data and metadata
   Read only for metadata only
-  Read only for certain properties 
+  Read only for certain properties
 
   Scenario: Read Only Mode
     Given I have opened Data Curator
