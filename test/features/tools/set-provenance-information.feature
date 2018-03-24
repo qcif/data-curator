@@ -16,7 +16,7 @@ Feature: Set Provenance Information
   - bold, italics
   - links, images
 
-  [Sample Provenance Information]( https://relishapp.com/odi-australia/data-curator/docs/tools/sample-provenance-information)
+  [Sample Provenance Information](https://github.com/ODIQueensland/data-curator/blob/master/test/features/tools/sample-provenance-information.md)
 
   Scenario: Provenance information
     Given I have opened Data Curator
