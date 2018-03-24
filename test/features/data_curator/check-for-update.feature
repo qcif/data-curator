@@ -5,7 +5,7 @@ Feature: Check for update
   I want to update to the lastest version of the application
   So that I gain access to the lastest bug fixes and new features
 
-  Rules:
+## Rules
 
   - Check for update is run when you "Open Data Curator"
   - Check for update requires a connection to the Internet
@@ -14,8 +14,8 @@ Feature: Check for update
   - Different releases are available for different <operating system> and <platform>
   - Allow user to defer the update
 
-  Unresolved:
-  
+## Unresolved
+
   - What is the best approach to updating software given there will be frequent releases?
   - Many organisations are adopting application whitelisting to reduce the threat of cyber intrusions
   - [Application whitelisting](https://asd.gov.au/publications/protect/application_whitelisting.htm) is identified as the most effective strategy to mitigate cyber security incidents by the Australian Signals Directorate.
