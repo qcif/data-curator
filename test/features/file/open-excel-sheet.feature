@@ -9,10 +9,6 @@ Feature: Open an Excel Sheet
 
   Excel sheets may contain non-tabular data in a sheet, e.g. charts. Only tabular data will be opened.
 
-  Desirable features include:
-  - If the active tab is empty, when the file is opened, insert the file contents into the empty table
-  - "Guess Column Properties" on open
-
   Scenario: Open an Excel Sheet
     Given I have opened Data Curator
     When I invoke the "Open Excel Sheet" command
