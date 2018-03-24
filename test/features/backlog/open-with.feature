@@ -1,3 +1,5 @@
+@backlog
+
 Feature: Open with
   As a Data Consumer
   I want to open a Data Package published on CKAN directly into Data Curator
