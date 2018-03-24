@@ -8,7 +8,7 @@ Feature: Data Quality Information
   The "Data Quality Information" command can be invoked using a menu item
 
   See:
-  - [Sample report](https://relishapp.com/odi-australia/data-curator/docs/backlog/sample-data-quality-information)
+  - [Sample report](https://github.com/ODIQueensland/data-curator/blob/master/test/features/backlog/sample-data-quality-information.md)
   - [GoodTables.py conversation](https://gitter.im/frictionlessdata/chat?at=5a4791515355812e57324073)
 
   - research:
