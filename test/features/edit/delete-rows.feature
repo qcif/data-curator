@@ -12,7 +12,7 @@ Feature: Remove Rows
     - The "Remove Row(s)" command can be invoked using a menu item or keyboard shortcut
 
   Scenario: Remove Row(s)
-    Given I have selected the row(s) to be deleted
-    When I invoke the "Remove Row(s)" command
+    Given a row(s) is selected
+    When "Remove Row(s)" is invoked
     Then delete the selected row(s)
     And move the cursor to the required position in the table

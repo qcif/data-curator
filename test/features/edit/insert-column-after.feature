@@ -8,5 +8,5 @@ Feature: Insert Column After
 
   Scenario: Insert Column After
     Given the cursor is in a data table
-    When I invoke the "Insert Column After" command
+    When "Insert Column After" is invoked
     Then insert a column after the current column

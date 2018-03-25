@@ -12,6 +12,6 @@ Feature: Undo
     - The "Undo" command can be invoked using a menu item or keyboard shortcut
 
   Scenario: Undo a command
-    Given I have performed a command that can be undone
-    When I invoke the "Undo" command
+    Given a command that can be undone has been performed 
+    When "Undo" is invoked
     Then reverse the previous command
