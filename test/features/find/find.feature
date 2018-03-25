@@ -3,7 +3,7 @@ Feature: Find data
   I want to find data within the current column or across the current table
   So that I can determine if the data exists and correct it if necessary
 
-  Rules
+  RULES
   =====
 
   - Users can choose to find across the table or within the current column

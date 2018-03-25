@@ -3,7 +3,7 @@ Feature: Remove Rows
   I want to delete one or more rows
   So that I can only share the data that is appropriate to share
 
-  Rules
+  RULES
   =====
 
     - One row can be deleted based on the location of the cursor in the table

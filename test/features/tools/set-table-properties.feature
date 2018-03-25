@@ -3,7 +3,7 @@ Feature: Set Table Properties
   I want to described the table
   So that it can be validated and Data Consumers can understand and use it
 
-  Rules
+  RULES
   =====
 
     - Table properties are defined in:

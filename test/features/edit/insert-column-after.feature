@@ -3,7 +3,7 @@ Feature: Insert Column After
   I want to insert another column after the current column
   So that I can add more data to the data table
 
-  Rules
+  RULES
   =====
 
     - The "Insert Column After" command can be invoked using a menu item or keyboard shortcut

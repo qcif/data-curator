@@ -15,7 +15,7 @@ Feature: Data Quality Information
 
     - https://idl.cs.washington.edu/files/2012-Profiler-AVI.pdf
 
-  Questions
+  QUESTIONS
   =========
 
     - prompt user for quality dimensions to include in report

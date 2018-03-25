@@ -5,7 +5,7 @@ Feature: Create Constraint from Column
   I want to find all unique values in a column of data
   So that I quickly define the enum constraint
 
-  Rules
+  RULES
   =====
 
     - If the number of unique values in the enum exceed a limit, then error.

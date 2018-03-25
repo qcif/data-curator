@@ -3,7 +3,7 @@ Feature: Report Issues
   I want to report issues I find in the application
   So that I can help improve the application
 
-  Rules
+  RULES
   =====
 
     - "Report Issues" can be invoked from a menu item

@@ -5,7 +5,7 @@ Feature: Close all tabs
   I want to close all data tabs and warn if there are unsaved changes
   So that I can finish my work quickly
 
-  Rules
+  RULES
   =====
 
     - The "Close all tabs" command can be invoked by a menu item

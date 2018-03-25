@@ -5,7 +5,7 @@ Feature: Save all
   I want to save all unsaved changes in every data tab
   So that I can quickly save my progress
 
-  Rules
+  RULES
   =====
 
   - If available, use the CSV dialect settings in associated Table Properties.

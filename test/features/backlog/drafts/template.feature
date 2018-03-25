@@ -16,22 +16,22 @@ Feature: Template
 #   Maintainer - a person who application development support for the application
 #
 
-  Rules
+  RULES
   =====
 
-  - Describe any rules to be applied in the Scenario
+  - Describe any RULES to be applied in the Scenario
 
-  Notes
+  NOTES
   =====
 
   - add notes
 
-  Questions
+  QUESTIONS
   =========
 
-    - unresolved questions 
+    - QUESTIONS questions
 
-  Later
+  LATER
   =====
 
   - Describe any deferred features
@@ -48,7 +48,7 @@ Feature: Template
     Then some testable outcome is achieved (i.e check the outcome)
     And something else we can check happens too
 
-# General rules
+# General RULES
 #
 # Technique - write "upwards": Then, When, Given
 #
@@ -64,7 +64,7 @@ Feature: Template
 
 
 
-# Given rules
+# Given RULES
 #
 # Write in perfect present tense - http://www.ef-australia.com.au/english-resources/english-grammar/present-perfect/
 #
@@ -72,13 +72,13 @@ Feature: Template
 #
 # Omit the obvious. E.g. Given app is open
 #
-# When rules
+# When RULES
 #
 # Don't drive the User Interface in the When statement. State what happened, not how it happened.
 #
 # Single When per scenario
 #
-# Then rules
+# Then RULES
 #
 # Use "should" in Then statement
 #

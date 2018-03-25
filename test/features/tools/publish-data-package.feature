@@ -7,7 +7,7 @@ Feature: Publish Data Package
 
   The "Publish Data Package" command can be invoked using a menu item when Data Package has been exported successfully.
 
-  Rules
+  RULES
   =====
 
     - The ability to publish to an open data portal is usually secured through an API key

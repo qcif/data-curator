@@ -5,7 +5,9 @@ Feature: Open file with Drag and Drop
   I want to drag a file onto the Application
   So that can I quickly open it
 
-  Rules:
+  RULES
+  =====
+  
   - Valid file types are .csv, .tsv, .xls, .xlsx
   - .csv are assumed to be comma separated
   - as semi-colon separated files do not have a unique file extension, they are treated as comma separated

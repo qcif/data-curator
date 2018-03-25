@@ -3,7 +3,7 @@ Feature: Open a Data Package
   I want to open a tabular data package
   So that I can view or edit the data, metadata and provenance information in the data package
 
-  Rules
+  RULES
   =====
 
     - A [Data package](http://frictionlessdata.io/specs/data-package/) can be stored in `.zip` or `.json` format.

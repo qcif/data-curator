@@ -5,7 +5,7 @@ Feature: Set Header Row
   and the header row value may be able to be used to invoke the "Sort Column" command
   and the header row remains visable when the rows are scrolled
 
-  Rules
+  RULES
   =====
 
     - "Header Row" can be disabled and enabled by a checkbox menu item

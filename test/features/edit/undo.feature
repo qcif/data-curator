@@ -3,7 +3,7 @@ Feature: Undo
   I want to reverse the edit command(s) or data entry I just performed by mistake
   So that I can revert the data or metadata to a prior good state
 
-  Rules
+  RULES
   =====
 
     - Only Edit commands and Data Entry can be undone
