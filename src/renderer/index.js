@@ -123,6 +123,6 @@ ipc.on('toggleCaseSensitiveHeader', function() {
   ipc.send('hasCaseSensitiveHeader', toggledCase)
 })
 
-function sendCloseWindow(windowName) {
-  ipc.send('closeWindow', windowName)
+export function closeSecondaryWindow(windowName) {
+  ipc.sendSync('closeSecondaryWindow', windowName)
 }
