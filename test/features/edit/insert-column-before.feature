@@ -7,6 +7,6 @@ Feature: Insert Column Before
     - The "Insert Column Before" command can be invoked using a menu item or keyboard shortcut
 
   Scenario: Use the menu to insert a column before the current column
-    Given the cursor is in a data table 
-    When I invoke the "Insert Column Before" command
+    Given the cursor is in a data table
+    When "Insert Column Before"  is invoked
     Then insert a column before the current column

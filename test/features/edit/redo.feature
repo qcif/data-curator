@@ -8,6 +8,6 @@ Feature: Redo
     - The "Redo" command can be invoked using a menu item or keyboard shortcut
 
   Scenario: Redo an Undo command
-    Given I have performed an "Undo" command
-    When I invoke the "Redo" command
-    Then reserve the previous "Undo" command
+    Given an "Undo" command has been performed
+    When "Redo" is invoked
+    Then reverse the previous "Undo" command

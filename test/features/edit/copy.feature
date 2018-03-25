@@ -8,6 +8,6 @@ Feature: Copy
     - The "Copy" command can be invoked using a menu item or keyboard shortcut
 
   Scenario: Copy data
-    Given I have selected some data
-    When I invoke the "Copy" command
+    Given some data is selected
+    When "Copy" is invoked
     Then copy the data to the clipboard for use in the "Paste" command

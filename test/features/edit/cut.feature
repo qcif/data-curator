@@ -8,7 +8,7 @@ Feature: Cut
     - The "Cut" command can be invoked using a menu item or keyboard shortcut
 
   Scenario: Cut data
-    Given I have selected some data
-    When I invoke the  "Cut" command
+    Given some data is selected
+    When "Cut" is invoked
     Then copy the selected data to the cliboard
     And delete the selected data from the table

@@ -12,7 +12,7 @@ Feature: Remove Columns
     - The "Remove Column(s)" command can be invoked using a menu item or keyboard shortcut
 
   Scenario: Remove Column(s)
-    Given I have selected the column(s) to be deleted
-    When I invoke the "Remove Column(s)" command
+    Given a column(s) is selected
+    When "Remove Column(s)" is invoked
     Then delete the selected column(s)
     And move the cursor to the required position in the table
