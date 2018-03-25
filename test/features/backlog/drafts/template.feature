@@ -17,22 +17,22 @@ Feature: Template
 #
 
   RULES
-  =====
+  -----
 
   - Describe any RULES to be applied in the Scenario
 
   NOTES
-  =====
+  -----
 
   - add notes
 
   QUESTIONS
-  =========
+  ---------
 
     - QUESTIONS questions
 
   LATER
-  =====
+  -----
 
   - Describe any deferred features
 
