@@ -7,14 +7,14 @@ Feature: Set Case Sensitive Header Row
   - "Case Sensitive Header Row" can be disabled and enabled by a checkbox menu item
   - By default "Case Sensitive Header Row" is disabled
 
-  Scenario: Set Case Sensitive Header Row
+  Scenario: Enable Case Sensitive Header Row
     Given Data Curator is open
     When "Case Sensitive Header Row" is enabled
     Then check the menu item
     And consider case in determining the uniqueness of the header row
     And set the 'caseSensitiveHeader' in the CSV Dialect to 'true'
 
-  Scenario: Unset Case Sensitive Header Row
+  Scenario: Disable Case Sensitive Header Row
     Given Data Curator is open
     When "Case Sensitive Header Row" is disabled
     Then uncheck the menu item
