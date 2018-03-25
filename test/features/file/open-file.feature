@@ -16,9 +16,9 @@ Feature: Open file
     - The "Open File" command can be invoked using the menu or a keyboard shortcut
 
   Scenario: Open a file
-    Given I have opened Data Curator
-    When I invoke the "Open File" command
-    Then I should see the openfile dialog
+    Given Data Curator is open
+    When "Open File" is invoked
+    Then the openfile dialog is shown
     And another tab is opened with its filename as the title
     And set the CSV Dialect `delimiter` in the Table Properties based on the file extension, data and CSV Dialect defaults
     And "Fix Ragged Rows"

@@ -8,7 +8,7 @@ Feature: Initiate feature using menu keyboard shortcut
   Some menu items have different names on different operating systems e.g. Preferences on macOS is called Settings on Windows.
 
   Scenario Outline: Use Keyboard Shortcut
-    Given I have opened Data Curator in an <operating system>
+     Given Data Curator is open in an <operating system>
      When I use a <operating system> <shortcut>
      Then the <command> is initiated
 
