@@ -1,7 +1,6 @@
-@template @draft
+@draft
 
 Feature: Template
-# the feature name should be some terse yet descriptive text of what is desired
   As an explicit user role
   I want to use a feature
   So that some benefit
@@ -19,7 +18,7 @@ Feature: Template
 
   General Rules
   -------------
-
+  - the feature name should be some terse yet descriptive text of what is desired
   - Technique - write "upwards": Then, When, Given
   - Don't put 'or' in the Given/When/Then statements - these statements should be pulled out into two different scenarios.
   - Don't put conditions in  When/Then statements. An if statement can be changed into two different scenarios and the if condition put up into the Given statement.
@@ -45,27 +44,24 @@ Feature: Template
   - Use "should" in Then statement
 
   NOTES
-  -----
+  =====
 
   - add notes
 
   QUESTIONS
-  ---------
+  =========
 
   - any questions
 
   LATER
-  -----
+  =====
 
   - Describe any deferred features
 
   Scenario: Some determinable business situation
 #   the scenario name is important as it is returned when automated tests fail.
-    Given I have opened Data Curator [initial context]
-    And I have done some other precondition
-    When some action by the actor (i.e. a event happens)
-    When I select "Previous Tab" from the menu
-    When I use the Previous Tab keyboard shortcut
-    And yet another action
-    Then some testable outcome is achieved (i.e check the outcome)
+    Given Data Curator is open
+    And some other precondition
+    When some action by the actor is invoked    And yet another action
+    Then some testable outcome is achieved
     And something else we can check happens too
