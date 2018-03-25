@@ -7,7 +7,9 @@ Feature: About
   I want to see acknowledgement of my contribution
   So that I can confirm that licencing requirements or other obligations have been met
 
-  Rules:
+  Rules
+  =====
+  
   - The "About" command can be invoked using a menu item
   - The "Close About Panel" is invoked using a button on the About panel
 
