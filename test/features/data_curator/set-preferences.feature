@@ -15,14 +15,15 @@ Feature: Set Preferences
       - CKAN (in the future add DataHub.io, Data.World, OctoPub)
       - Portal URL e.g. https/data.qld.gov.au
     - Default Data Package properties
-      - `license name` - pick from list of valid open licences. See http://opendefinition.org/licenses/ and http://frictionlessdata.io/specs/data-package/#licenses
-      - `license path` - default from licence name
-      - `license title` - default from licence name
-      - Sources
+      - [`licenses`](http://frictionlessdata.io/specs/data-package/#licenses)
+        - `license name` - pick from list of valid open licences. See [Open Definition](http://opendefinition.org/licenses/) for a list of licenses
+        - `license path` - default from licence name
+        - `license title` - default from licence name
+      -  [`Sources`](http://frictionlessdata.io/specs/data-package/#licenses)
         - `title` (mandatory if other values exist)
         - `path`
         - `email`
-      - [Contributors](http://frictionlessdata.io/specs/data-package/#contributors) allow multiple entries (e.g. Author and Maintainer for CKAN)
+      - [`Contributors`](http://frictionlessdata.io/specs/data-package/#contributors), allow multiple entries (e.g. Author and Maintainer for CKAN)
         - `organization`
         - `title` (mandatory if other values exist)
         - `email`
@@ -33,7 +34,7 @@ Feature: Set Preferences
   =========
 
   - provide a preference for "check for update on launch"?
-  - will Preferences influence command shortcuts, e.g.
+  - will preferences influence command shortcuts, e.g.
     - open (shortcut adjusted to default CSV Dialect `delimiter`)
     - save (shortcut adjusted to default CSV Dialect `delimiter`)
 
