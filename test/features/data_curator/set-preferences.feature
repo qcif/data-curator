@@ -15,11 +15,11 @@ Feature: Set Preferences
       - CKAN (in the future add DataHub.io, Data.World, OctoPub)
       - Portal URL e.g. https/data.qld.gov.au
     - Default Data Package properties
-      - [`licenses`](http://frictionlessdata.io/specs/data-package/#licenses)
+      - [`Licenses`](http://frictionlessdata.io/specs/data-package/#licenses):
         - `license name` - pick from list of valid open licences. See [Open Definition](http://opendefinition.org/licenses/) for a list of licenses
         - `license path` - default from licence name
         - `license title` - default from licence name
-      -  [`Sources`](http://frictionlessdata.io/specs/data-package/#licenses)
+      -  [`Sources`](http://frictionlessdata.io/specs/data-package/#licenses):
         - `title` (mandatory if other values exist)
         - `path`
         - `email`
