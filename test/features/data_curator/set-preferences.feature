@@ -15,19 +15,19 @@ Feature: Set Preferences
       - CKAN (in the future add DataHub.io, Data.World, OctoPub)
       - Portal URL e.g. https/data.qld.gov.au
     - Default Data Package properties
-      - "license name" - pick from list of valid open licences. See http://opendefinition.org/licenses/ and http://frictionlessdata.io/specs/data-package/#licenses
-      - "license path" - default from licence name
-      - "license title" - default from licence name
+      - `license name` - pick from list of valid open licences. See http://opendefinition.org/licenses/ and http://frictionlessdata.io/specs/data-package/#licenses
+      - `license path` - default from licence name
+      - `license title` - default from licence name
       - Sources
-        - "title" (mandatory if other values exist)
-        - "path"
-        - "email"
+        - `title` (mandatory if other values exist)
+        - `path`
+        - `email`
       - [Contributors](http://frictionlessdata.io/specs/data-package/#contributors) allow multiple entries (e.g. Author and Maintainer for CKAN)
-        - "organization"
-        - "title" (mandatory if other values exist)
-        - "email"
-        - "path"
-        - "role" - one of the standard values in a drop down list
+        - `organization`
+        - `title` (mandatory if other values exist)
+        - `email`
+        - `path`
+        - `role` - one of the standard values in a drop down list
 
   QUESTIONS
   =========
