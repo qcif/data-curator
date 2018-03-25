@@ -27,8 +27,8 @@ Feature: Validate Table
   - [GoodTables.py](https://github.com/frictionlessdata/goodtables-py) implementation
 
   Scenario: Validate Table
-    Given I have opened Data Curator
-    And I have 1 data tab open
+    Given Data Curator is open
+    And a data tab is open
     And column properties may have been entered for some or all columns
     When I invoke the "Validate Table" command
     Then assemble the Table Schema if avaliable from Column Properties
@@ -38,7 +38,7 @@ Feature: Validate Table
     And highlight errors in the relevant cells, rows or columns
 
   Scenario: Pop out validation error messages
-    Given I have Validated a Table
+    Given Data Curator is open
     And errors have been detected and displayed in a panel
     When I invoke the "Pop out validation error messages" command
     Then display the error messages in a table in a separate window

@@ -6,9 +6,9 @@ Feature: Create Lookup Table from Column
   So that I can improve the validation of the data and potentially add descriptions to the look-up values
 
   Scenario: Create Lookup Table from Column
-    Given I have opened Data Curator
+    Given Data Curator is open
     And the cursor is in a column in a data tab
-    When I invoke the "Create Lookup Table from Column" command
+    When "Create Lookup Table from Column" is invoked
     Then read all the rows in that column
     And identify all the unique values
     And use the result to populate the first column a new data tab

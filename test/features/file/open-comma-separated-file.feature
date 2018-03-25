@@ -3,15 +3,11 @@ Feature: Open a Comma separated value file
   I want to open a comma separated value (CSV) file
   So that I can describe, validate and package the data
 
-  The Open Comma Separated command can be invoked using the menu or a keyboard shortcut
-
-  The data will be stored in a ".csv" file
-
-  The most common form of separated value files is a comma separated value (CSV) file.
-
-  The [CSV Dialect specification](http://frictionlessdata.io/specs/csv-dialect/#specification) describes variations that use Tab or Semicolon to seperate values. Custom formats are sometimes used. Each of these formats can be described using a CSV Dialect that describes the 'delimiter' and other options.
-
-  Use the default CSV dialect values in the specification to open the file and separate the values into the correct columns.
+  Rules:
+    - The Open Comma Separated command can be invoked using the menu or a keyboard shortcut
+    - The data will be stored in a ".csv" file
+    - The most common form of separated value files is a comma separated value (CSV) file. The [CSV Dialect specification](http://frictionlessdata.io/specs/csv-dialect/#specification) describes variations that use Tab or Semicolon to seperate values. Custom formats are sometimes used. Each of these formats can be described using a CSV Dialect that describes the 'delimiter' and other options.
+    - Use the default CSV dialect values in the specification to open the file and separate the values into the correct columns.
 
   @latest
   @impl

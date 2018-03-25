@@ -1,15 +1,15 @@
 Feature: Initiate an editor command using a keyboard shortcut
-As a User
-I want to invoke an editor command using a keyboard shortcut
-So that I can initiate a command using the keyboard instead of the mouse
+  As a User
+  I want to invoke an editor command using a keyboard shortcut
+  So that I can initiate a command using the keyboard instead of the mouse
 
   Scenario Outline: Initiate an editor command using a keyboard shortcut
-    Given I have opened Data Curator in an <operating system>
-     When I use a <operating system> <shortcut>
+    Given Data Curator is open in an <operating system>
+     When <operating system> <shortcut> is used
      Then the <editor command> is invoked
 
     Examples:
-    | Editor shortcut                                                  | Windows / Linux     | macOS      |
+    | Editor command                                                   | Windows / Linux     | macOS      |
     | Insert row below, if in last row                                 | Enter               | Enter      |
     | Insert column after if in last column                            | Tab                 | Tab        |
     | Cancel data entry                                                | Esc                 | Esc        |
