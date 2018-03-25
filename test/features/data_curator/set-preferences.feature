@@ -29,7 +29,9 @@ Feature: Set Preferences
         - "path"
         - "role" - one of the standard values in a drop down list
 
-  Unresolved:
+  Unresolved
+  ==========
+
   - provide a preference for "check for update on launch"?
   - will Preferences influence command shortcuts, e.g.
     - open (shortcut adjusted to default CSV Dialect `delimiter`)

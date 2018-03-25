@@ -1,4 +1,4 @@
-@backlog 
+@backlog
 
 Feature: Set View Properties
   As a Data Packager
@@ -16,7 +16,7 @@ Feature: Set View Properties
     - Vega Schema - https://github.com/vega/schema
 
   Background:
-    Given I have opened Data Curator
+    Given Data Curator is open
     And I have opened a data tab
 
   Scenario: Use the menu to set View Properties

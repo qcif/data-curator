@@ -3,7 +3,9 @@ Feature: Set Column Properties
   I want to describe the meaning and structure of the data
   So that it can be validated and Data Consumers can understand and use it
 
-  Rules:
+  Rules
+  =====
+
     - Column properties are defined in http://frictionlessdata.io/specs/table-schema/
     - The 'name', 'type' and 'format' can be pre-populated using Guess Column Properties
     - A 'name' must be entered for each column. 'name' will be defaulted from the value in the first row

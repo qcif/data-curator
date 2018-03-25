@@ -3,9 +3,11 @@ Feature: Initiate feature using menu keyboard shortcut
   I want to select a command using a keyboard shortcut
   So that I can initiate a command quick using the keyboard rather than using the mouse
 
-  Some menu items are required by the operating system e.g. Services on macOS
+  Rules
+  =====
 
-  Some menu items have different names on different operating systems e.g. Preferences on macOS is called Settings on Windows.
+  - Some menu items are required by the operating system e.g. Services on macOS
+  - Some menu items have different names on different operating systems e.g. Preferences on macOS is called Settings on Windows.
 
   Scenario Outline: Use Keyboard Shortcut
      Given Data Curator is open in an <operating system>

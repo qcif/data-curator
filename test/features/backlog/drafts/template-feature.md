@@ -16,7 +16,20 @@ Feature: Template
 #   Maintainer - a person who application development support for the application
 #
 
-  Describe any rules to be applied in the Scenario
+  Rules
+  =====
+
+  - Describe any rules to be applied in the Scenario
+
+  Notes
+  =====
+
+  - add notes
+
+  Deferred
+  ========
+
+  - Describe any deferred features
 
 
   Scenario: Some determinable business situation

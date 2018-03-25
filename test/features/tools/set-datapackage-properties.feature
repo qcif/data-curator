@@ -3,7 +3,9 @@ Feature: Set Data Package Properties
   I want to describe the data package properties
   So that Data Consumers can understand the data inside the package and how it can be used
 
-  Rules:
+  Rules
+  =====
+
   - Despite 'name' being only recommended in the specification, it must be entered
   - The 'profile' must be set to 'tabular-data-package'.
   - All other properties should be defaulted were possible or read from Preferences/Settings (when implemented)

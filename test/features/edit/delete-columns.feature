@@ -3,7 +3,9 @@ Feature: Remove Columns
   I want to delete one or more columns
   So that I can only share the data that is appropriate to share
 
-  Rules:
+  Rules
+  =====
+
     - One column can be deleted based on the location of the cursor in the table
     - One or more columns can be deleted by selecting a number of columns
     - If the a column is deleted, move the cursor to the next column

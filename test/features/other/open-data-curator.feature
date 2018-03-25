@@ -3,7 +3,9 @@ Feature: Open Data Curator
   I want to open the application only once
   So that I can focus working on one data package at a time
 
-  Rules:
+  Rules
+  =====
+
     - The application can be opened by:
       - launching it using a icon
       - opening a file and specifying to use the application

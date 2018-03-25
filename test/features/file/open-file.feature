@@ -5,7 +5,9 @@ Feature: Open file
   I want to open tabular data stored in one of a number of file formats
   So that I can describe, validate and package the data
 
-  Rules:
+  Rules
+  =====
+
     - The openfile dialog presents the user with a limited choice of file formats to open
     - The data will be stored in a `.csv`, `.tsv`, `.xls`, or `.xlsx` file
     - If `.csv` the file may be a comma or semicolon separated value file, inspect the data to infer the [CSV Dialect](http://frictionlessdata.io/specs/csv-dialect/) `delimiter` - `,` or `;`

@@ -3,7 +3,9 @@ Feature: Insert Column Before
   I want to insert another column before the current column
   So that I can add more data to the data table
 
-  Rules:
+  Rules
+  =====
+
     - The "Insert Column Before" command can be invoked using a menu item or keyboard shortcut
 
   Scenario: Use the menu to insert a column before the current column

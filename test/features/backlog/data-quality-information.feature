@@ -27,7 +27,7 @@ Feature: Data Quality Information
     - [structural issues](https://github.com/frictionlessdata/goodtables-py#validation-against-structure-checks)
 
   Scenario: Data Quality Information
-    Given I have opened Data Curator
+    Given Data Curator is open
     And I have entered data in 1 or more tables
     When I invoke the "Data Quality Information" command
     Then read all the data

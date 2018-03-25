@@ -3,7 +3,9 @@ Feature: Open a Tab separated value file
   I want to open a tab separated value (TSV) file
   So that I can describe, validate and package the data
 
-  Rules:
+  Rules
+  =====
+
     - The "Open Tab Separated" value file command can be invoked using the menu command
     - The data will be stored in a ".tsv" file
     - Use the default values in the [CSV Dialect specification](http://frictionlessdata.io/specs/csv-dialect/#specification) but with 'delimiter' = '\t' to open the file and separate the values into the correct columns.

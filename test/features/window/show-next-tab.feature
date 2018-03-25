@@ -5,7 +5,9 @@ Feature:  Show Next Tab
   I want to quickly move to the next data tab (to the right)
   So that I can view related data
 
-  Rules:
+  Rules
+  =====
+
     - If you are on the right-most tab, disable the Show next tab menu option and keyboard shortcut.
     - The "Show Next Tab" command can be invoked using a menu item or keyboard shortcut
 

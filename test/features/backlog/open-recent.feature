@@ -6,12 +6,12 @@ Feature: Open Recent
   So that I don't need to remember where they are located
 
   Scenario: Open a recently opened file
-    Given I have opened Data Curator
+    Given Data Curator is open
     When I select "Open Recent" from the menu
     Then a list of recently opened filenames are shown
     And the selected file is opened in a new data tab to the right of any other open data tabs
 
   Scenario: Clear the Open Recent list of files
-    Given I have opened Data Curator
+    Given Data Curator is open
     When I select "Clear Menu" from the menu
     Then the the list of recently opened files is deleted

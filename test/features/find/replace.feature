@@ -3,7 +3,9 @@ Feature: Replace data
   I want to replace one or more values that have been found
   So that I correct data errors quickly
 
-  Rules:
+  Rules
+  =====
+
     - "Replace" can be invoked from a menu item, a keyboard shortcut, or button
     - "Replace All" can be invoked from a button
 

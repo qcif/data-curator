@@ -3,7 +3,9 @@ Feature: Cut
   I want to remove data from the table and copy it to the clipboard
   So that I can paste the data elsewhere within the application or into another application
 
-  Rules:
+  Rules
+  =====
+  
     - Selected data can be some or all of the data in a cell, or one or more cells (e.g. row(s), column(s) or block of cells)
     - The "Cut" command can be invoked using a menu item or keyboard shortcut
 

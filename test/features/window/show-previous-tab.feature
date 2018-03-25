@@ -5,7 +5,9 @@ Feature:  Show Previous Tab
   I want to quickly move to the previous data tab (to the left)
   So that I can view related data
 
-  Rules:
+  Rules
+  =====
+
     - If you are on the left-most tab, disable the Show previous tab menu option and keyboard shortcut.
     - The "Show Previous Tab" command can be invoked using a menu item or keyboard shortcut
 

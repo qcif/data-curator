@@ -3,7 +3,9 @@ Feature: Set Table Properties
   I want to described the table
   So that it can be validated and Data Consumers can understand and use it
 
-  Rules:
+  Rules
+  =====
+
     - Table properties are defined in:
       - http://frictionlessdata.io/specs/data-resource/
       - http://frictionlessdata.io/specs/tabular-data-resource/

@@ -5,7 +5,9 @@ Feature: Create Constraint from Column
   I want to find all unique values in a column of data
   So that I quickly define the enum constraint
 
-  Rules:
+  Rules
+  =====
+
     - If the number of unique values in the enum exceed a limit, then error.
     - Suggest enum not appropriate constraint, clean data, or create reference table and foreign key relationship.
     - The "Create Constraint from Column" command can be invoked using a menu item
