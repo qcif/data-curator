@@ -3,7 +3,9 @@ Feature: New
   I want to add a data table
   So that I can add and edit related data
 
-  Rules:
+  Rules
+  =====
+
   - Tab names must be unique
   - Name a new tab, "untitled" with a sequential number appended to the end to enable uniqueness
   - The "New" command can be invoked using a menu item or the add tab button

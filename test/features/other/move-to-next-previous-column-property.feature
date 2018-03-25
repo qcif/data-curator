@@ -3,7 +3,9 @@ Feature: Move to Next / Previous Column Properties Panel
   I want to move sequentially through each column property panel
   So that I can efficiently set all the column properties
 
-  Rules:
+  Rules
+  =====
+
     - "Next Column" and "Previous Column" are invoked using a button in the Column Properties panel
     - Hide button rules:
       - If the cursor is in the first column, the previous button should be hidden

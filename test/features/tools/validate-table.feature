@@ -3,7 +3,9 @@ Feature: Validate Table
   I want to validate the data for common errors and against the schema defined by the column properties
   So that I can correct errors and share validated data with Data Consumers
 
-  Rules:
+  Rules
+  =====
+
     - The "Validate Table" command can be invoked using a menu item, toolbar button or shortcut
     - [Structural data checks](https://github.com/frictionlessdata/goodtables-py#validation-against-structure-checks) include:
       - blank header

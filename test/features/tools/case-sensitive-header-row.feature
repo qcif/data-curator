@@ -3,7 +3,9 @@ Feature: Set Case Sensitive Header Row
   I want character case be considered in determining the uniqueness of the header row
   So that I have increased flexibility in naming column headers
 
-  Rules:
+  Rules
+  =====
+
   - "Case Sensitive Header Row" can be disabled and enabled by a checkbox menu item
   - By default "Case Sensitive Header Row" is disabled
 

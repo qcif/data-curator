@@ -3,7 +3,9 @@ Feature: Move cursor in table
   I want to move the cursor within the table
   So that I can edit data in a different cell
 
-  Rules:
+  Rules
+  =====
+
     - Move commands can be invoked by a keyboard shortcut
     - If a movement causes the cursor to move off the screen but is still within the table, then scroll the table so the cursor remains visible on the screen
     - If the cursor is in the first or last, row or column and a move command would go beyond the edge of the table, do nothing

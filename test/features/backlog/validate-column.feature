@@ -17,9 +17,8 @@ Feature: Validate Column
  Validate column can be invoked by a menu item or panel button
 
   Scenario: Validate a column
-    Given I have opened Data Curator
-    And I have 1 data tab open
-    And the cursor is in a column
+    Given Data Curator is open
+    And the cursor is in a data tab
     And column properties may have been entered for that column
     When I invoke the "Validate Column" command
     Then assemble the Schema from the Column Properties

@@ -3,7 +3,9 @@ Feature: Open an Excel Sheet
   I want to open an Excel Sheet
   So that can describe, validate and package the data
 
-  Rules:
+  Rules
+  =====
+
     - The "Open Excel Sheet" command can be invoked using the menu command
     - The data may be stored in a ".xlsx" or ".xls" file
     - Excel sheets may contain non-tabular data in a sheet, e.g. charts. Only tabular data will be opened.

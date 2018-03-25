@@ -3,7 +3,9 @@ Feature: Paste
   I want to copy the data from the clipboard
   So that I can quickly enter data from other data sources
 
-  Rules:
+  Rules
+  =====
+
     - The "Paste" command can be invoked using a menu item or keyboard shortcut
 
   Scenario: Paste data from the clipboard

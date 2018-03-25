@@ -3,7 +3,9 @@ Feature: Undo
   I want to reverse the edit command(s) or data entry I just performed by mistake
   So that I can revert the data or metadata to a prior good state
 
-  Rules:
+  Rules
+  =====
+
     - Only Edit commands and Data Entry can be undone
     - Data entry in any panel can be undone when the panel is active
     - Undo only works within the scope of the current active panel back to when the panel was bought into focus
@@ -12,6 +14,6 @@ Feature: Undo
     - The "Undo" command can be invoked using a menu item or keyboard shortcut
 
   Scenario: Undo a command
-    Given a command that can be undone has been performed 
+    Given a command that can be undone has been performed
     When "Undo" is invoked
     Then reverse the previous command

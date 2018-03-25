@@ -3,7 +3,9 @@ Feature: Find data
   I want to find data within the current column or across the current table
   So that I can determine if the data exists and correct it if necessary
 
-  Rules:
+  Rules
+  =====
+
   - Users can choose to find across the table or within the current column
   - The default search constraint is find in table
   - When a search is performed and no values are found, inform the user
@@ -12,7 +14,9 @@ Feature: Find data
   - "Find" can be invoked using a toolbar, menu item or keyboard shortcut
   - "Find next" and "Find previous" can be invoked using a using a menu item, button or keyboard shortcut
 
-  Notes:
+  Notes
+  =====
+  
   - https://docs.handsontable.com/0.34.4/demo-searching.html
 
   Scenario: Find next

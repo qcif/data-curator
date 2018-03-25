@@ -6,8 +6,8 @@ Feature: Import Column Properties
   So that I can quickly and consistently apply column properties to similar data
 
   Scenario: Import Column Properties
-    Given I have opened Data Curator
-    And the cursor is in a column in a data tab
+    Given Data Curator is open
+    And the cursor is in a data tab
     When I invoke the "Import Column Properties" command
     Then a prompt, requesting the 'filename' and location, or a url is shown
     And only files ending with a ".json" can be selected

@@ -3,7 +3,9 @@ Feature: Show Help Tags
   I want to access context-sensitive help
   So that I can learn how to use a control without needing to shift my focus away from the application interface
 
-  Rules:
+  Rules
+  =====
+
     - Help Tags are invoked by hovering the cursor over a control or label
     - Help Tags can be dismissed by moving away from the control or label
     - Controls with associatied help tags are typically Toolbar buttons and Field labels
@@ -19,5 +21,5 @@ Feature: Show Help Tags
   Scenario: Hide Help Tag
     Given Data Curator is open
     And a Help Tag is displayed
-    When the Help Tag is dismissed 
+    When the Help Tag is dismissed
     Then hide the Help Tag

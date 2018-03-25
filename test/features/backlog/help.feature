@@ -18,6 +18,6 @@ Feature: Help
   Initial draft at https://odiqueensland.github.io/data-curator-help/
 
   Scenario: Help
-    Given I have opened Data Curator
+    Given Data Curator is open
     When I invoke the "Help" command
     Then open the Help index in a separate window
