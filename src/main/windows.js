@@ -39,6 +39,13 @@ export function createWindowTabWithFormattedDataFile(data, format, filename) {
   mainWindow.webContents.send('addTabWithFormattedDataFile', data, format, filename)
 }
 
+export function closeSecondaryWindow(windowName) {
+  let browserWindow = focusWindow(windowName)
+  console.log(`closing ${windowName} window`)
+  browserWindow.close()
+  focusMainWindow()
+}
+
 export function focusMainWindow() {
   return focusWindow('home')
 }

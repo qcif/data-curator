@@ -1,7 +1,7 @@
 import {ipcMain as ipc} from 'electron'
 import {showErrors} from './errors.js'
 import {getSubMenuFromMenu, clickLabelsOnMenu} from './menu'
-import {focusMainWindow} from './windows.js'
+import {focusMainWindow, closeSecondaryWindow} from './windows.js'
 
 ipc.on('toggleSaveMenu', (event, arg) => {
   let saveSubMenu = getSubMenuFromMenu('File', 'Save')
@@ -34,4 +34,8 @@ ipc.on('clickLabelsOnMenu', (event, arg) => {
 
 ipc.on('focusMainWindow', (event, arg) => {
   focusMainWindow()
+})
+
+ipc.on('closeSecondaryWindow', (event, arg) => {
+  closeSecondaryWindow(arg)
 })

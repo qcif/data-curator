@@ -229,7 +229,7 @@ sideNavFooterHeight = 70px
     #message-panel
       position absolute
       width 100%
-      // overflow-x hidden !important
+      overflow-y hidden !important
       .closebtn
         transform translate(0px,-10px)
         position relative
@@ -239,10 +239,16 @@ sideNavFooterHeight = 70px
       .message-title
         margin-top 5px
         margin-bottom 0px
-        // position fixed
+        position relative
+        display block
+        top 0
+        overflow-y: hidden
       .navbar.errors
         margin-bottom 0px
-        // position fixed
+        position relative
+        display block
+        top 0
+        overflow-y: hidden
     &.left #message-panel
       padding-right sideNavMargin
     &.right #message-panel

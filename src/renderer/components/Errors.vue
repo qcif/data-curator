@@ -25,7 +25,7 @@
 import Vue from 'vue'
 import VueGoodTable from 'vue-good-table'
 import {ipcRenderer as ipc} from 'electron'
-import {getWindow} from '../index.js'
+import {getWindow, closeSecondaryWindow} from '../index.js'
 import rowLink from '../partials/RowLink'
 Vue.use(VueGoodTable)
 export default {
@@ -74,20 +74,26 @@ export default {
       this.homeWindow.webContents.send('getErrorMessages')
     },
     setErrorMessages: function(errorMessages) {
-      if (!errorMessages) {
-        this.messages = false
-        this.title = ''
-        // close window
-      } else {
-        this.messages = errorMessages.messages
-        this.title = errorMessages.title
-      }
+      this.messages = errorMessages.messages
+      this.title = errorMessages.title
+    },
+    resetErrorMessages: function() {
+      this.messages = false
+      this.title = ''
+      // close window
+      closeSecondaryWindow('errors')
     }
   },
   mounted: function() {
     const vueSetErrorMessages = this.setErrorMessages
+    const vueResetErrorMessages = this.resetErrorMessages
     ipc.on('errorMessages', function(event, arg) {
-      vueSetErrorMessages(arg)
+      if (!arg) {
+        vueResetErrorMessages()
+      } else {
+        console.log('captured in non-empty function')
+        vueSetErrorMessages(arg)
+      }
     })
     // Initial window open, we need to trigger errors call
     this.getErrorMessages()

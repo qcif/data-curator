@@ -78,19 +78,30 @@
       <div id="main-bottom-panel" class="panel-footer" :class="mainBottomPanelStatus">
         <div id="message-panel" class="panel-default">
           <!-- tidy up messages view with components -->
-          <div v-show="messages">
+          <div v-show="checkForMessages()">
             <ul class="nav navbar-right closebtn">
               <li>
                 <a href="#" @click="closeMessages()">
-                  <span style="color:#000" class="btn-default fa fa-times" />
+                  <span class="btn-default fa fa-times" />
                 </a>
               </li>
             </ul>
-              <h3>{{messagesTitle}}</h3>
-              <template  v-if="messagesType === 'error'">
-                <div>
-                  <i>{{messages.length}} Errors</i>
+            <h3 class="message-title">{{messagesTitle}}</h3>
+            <template  v-if="messagesType === 'error'">
+              <nav class="navbar errors">
+                <div class="container-fluid">
+                  <i class="navbar-text">{{messages.length}} Errors</i>
+                  <ul class="nav navbar-nav navbar-left">
+                    <li>
+                      <a href="#">
+                        <!-- <a href="#" @click="closeMessages()"> -->
+                        <span class="btn-default fa fa-external-link"  @click="openErrorsWindow()"/>
+                      </a>
+                    </li>
+                  </ul>
                 </div>
+              </nav>
+              <div class="errors-content">
                 <div :id="'error-messages' + index" v-for="(errorMessage, index) in messages" :key="index">
                   <a href="#" @click.prevent="goToCell(errorMessage.rowNumber, errorMessage.columnNumber)"
                     @mouseover="hoverToSelectErrorCell(errorMessage.rowNumber, errorMessage.columnNumber)"
@@ -100,8 +111,9 @@
                   <span>{{errorMessage.message}}</span>
                   </a>
                 </div>
-              </template>
-              <div id="error-message" v-else>
+              </div>
+            </template>
+            <div id="other-message" v-else>
                 <span>{{messages}}</span>
               </div>
           </div>
@@ -828,6 +840,16 @@ export default {
     },
     packErrorMessages: function() {
       return {title: this.messagesTitle, messages: this.messages}
+    },
+    checkForMessages: function() {
+      return this.messages
+    },
+    openErrorsWindow: function() {
+      console.log('sending error window open...')
+      ipc.send('showErrorsWindow')
+      // send error messages to error window that is already open
+      console.log('sending packed error messages...')
+      getWindow('errors').webContents.send('errorMessages', this.packErrorMessages())
     }
   },
   components: {
@@ -857,10 +879,8 @@ export default {
     messages: function(messages) {
       if (this.messagesType === 'error') {
         this.setHotComments()
-        ipc.send('showErrorsWindow')
-        // send error messages to error window that is already open
-        getWindow('errors').webContents.send('errorMessages', this.packErrorMessages())
       } else {
+        console.log('sending empty error messages')
         getWindow('errors').webContents.send('errorMessages')
       }
     }
