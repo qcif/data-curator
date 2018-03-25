@@ -209,7 +209,6 @@ sideNavFooterHeight = 70px
   bottom 0
   left 0
   z-index 200 !important
-  padding-right 5px
   transition: 0.5s
   &.closed
     margin-left 0
@@ -219,45 +218,52 @@ sideNavFooterHeight = 70px
   &.messages-opened
     height 150px !important
     overflow-y scroll
-    overflow-x hidden !important
     &.left
       margin-left sideNavMargin
       padding-right sideNavMargin
     &.right
-      padding-right sideNavMargin
+      // width 80%
+      margin-right sideNavMargin
       margin-left 0
     #message-panel
-      position absolute
-      width 100%
-      overflow-y hidden !important
+      // position absolute
+      // width 100%
+      // height 100%
+      // overflow-y visible
       .closebtn
-        transform translate(0px,-10px)
+        transform translate(10px,-15px)
         position relative
-        right 15px
+        right 0
       .btn-default
         color #000
+        // overflow-y hidden
       .message-title
         margin-top 5px
         margin-bottom 0px
-        position relative
-        display block
-        top 0
-        overflow-y: hidden
+        // position relative
+        // display block
+        // overflow-y hidden
+        // top 0
       .navbar.errors
         margin-bottom 0px
-        position relative
-        display block
-        top 0
-        overflow-y: hidden
+        // position relative
+        // display block
+        // top 0
+        // overflow-y hidden
+      // .errors-content
+        // height 100%
+        // position relative
+        // display block
+        // overflow-y scroll !important
     &.left #message-panel
       padding-right sideNavMargin
     &.right #message-panel
-      padding-right sideNavMargin
+      margin-right sideNavMargin
+      padding-right 0
       margin-left 0
     &.closed #message-panel
       margin-left 0
       padding-right 15px
-
 
 #sidenav-footer
   z-index 100
