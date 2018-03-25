@@ -3,7 +3,9 @@ Feature: Quit
   I want to close the application and prompt if there are unsaved changes.
   So that I can quickly and safely finish work
 
-  Rules:
+  Rules
+  =====
+
   - Different operating systems use different terms to end the application:
     - Windows uses "Close"
     - macOS uses "Quit".

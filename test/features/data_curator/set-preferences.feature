@@ -5,7 +5,9 @@ Feature: Set Preferences
   I want to set default values and behaviours
   So that I can work efficiently and avoid re-keying values or repeating common actions
 
-  Rules:
+  Rules
+  =====
+
   - Preferences is called Settings on non-macOS platforms
   - Preferences can be invoked via a menu item or keyboard shortcut
   - Preferences that can be set include:

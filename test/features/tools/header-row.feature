@@ -5,7 +5,9 @@ Feature: Set Header Row
   and the header row value may be able to be used to invoke the "Sort Column" command
   and the header row remains visable when the rows are scrolled
 
-  Rules:
+  Rules
+  =====
+
     - "Header Row" can be disabled and enabled by a checkbox menu item
     - By default "Header Row" is disabled
     - 'header' = 'true' or 'false' is set in the [CSV Dialect](http://frictionlessdata.io/specs/csv-dialect/#specification) by default
