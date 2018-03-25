@@ -2,7 +2,7 @@
 
 Feature: Template
 # the feature name should be some terse yet descriptive text of what is desired
-  As an # explicit user role #see below
+  As an # explicit user role
   I want to # use a feature
   So that # some benefit
 
