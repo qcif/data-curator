@@ -29,8 +29,8 @@ Feature: Set Preferences
         - "path"
         - "role" - one of the standard values in a drop down list
 
-  Unresolved
-  ==========
+  Questions
+  =========
 
   - provide a preference for "check for update on launch"?
   - will Preferences influence command shortcuts, e.g.
