@@ -3,7 +3,7 @@ Feature: Set Provenance Information
   I want to describe the provenance information for the data
   So that Data Consumers can make an informed choice about using the data
 
-  Rules
+  RULES
   =====
 
     - The "Set Provenance Information" command can be invoked using a menu item or the toolbar
@@ -12,7 +12,7 @@ Feature: Set Provenance Information
       - saved as it is entered
       - saved as a `README.md` in the `datapackage.zip`
 
-  Later
+  LATER
   =====
 
     - a toolbar will be provided to support [markdown features](http://commonmark.org/help/)

@@ -3,7 +3,7 @@ Feature: Open Data Curator
   I want to open the application only once
   So that I can focus working on one data package at a time
 
-  Rules
+  RULES
   =====
 
     - The application can be opened by:

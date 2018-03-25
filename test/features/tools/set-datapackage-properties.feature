@@ -3,7 +3,7 @@ Feature: Set Data Package Properties
   I want to describe the data package properties
   So that Data Consumers can understand the data inside the package and how it can be used
 
-  Rules
+  RULES
   =====
 
   - Despite 'name' being only recommended in the specification, it must be entered

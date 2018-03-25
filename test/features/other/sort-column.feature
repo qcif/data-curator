@@ -3,7 +3,7 @@ Feature: Sort column
   I want to sort a column in ascending, descending, or original order
   So that I can detect cells with similar but different values that may be errors
 
-  Rules
+  RULES
   =====
 
     - The "Sort column" command can be invoked by clicking on the column header

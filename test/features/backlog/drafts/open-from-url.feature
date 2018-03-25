@@ -5,7 +5,7 @@ Feature: Open from a URL
   I want to open an file from a URL
   So that can I don't have to down the file and then open it
 
-  Questions
+  QUESTIONS
   =========
 
   - Can type be auto-detected?

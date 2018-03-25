@@ -3,7 +3,7 @@ Feature: Set Column Properties
   I want to describe the meaning and structure of the data
   So that it can be validated and Data Consumers can understand and use it
 
-  Rules
+  RULES
   =====
 
     - Column properties are defined in http://frictionlessdata.io/specs/table-schema/

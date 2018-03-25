@@ -3,7 +3,7 @@ Feature: Open a Tab separated value file
   I want to open a tab separated value (TSV) file
   So that I can describe, validate and package the data
 
-  Rules
+  RULES
   =====
 
     - The "Open Tab Separated" value file command can be invoked using the menu command

@@ -3,7 +3,7 @@ Feature: Open a Comma separated value file
   I want to open a comma separated value (CSV) file
   So that I can describe, validate and package the data
 
-  Rules
+  RULES
   =====
 
     - The Open Comma Separated command can be invoked using the menu or a keyboard shortcut

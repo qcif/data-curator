@@ -3,13 +3,13 @@ Feature: Quit
   I want to close the application and prompt if there are unsaved changes.
   So that I can quickly and safely finish work
 
-  Rules
+  RULES
   =====
 
-  - Different operating systems use different terms to end the application:
-    - Windows uses "Close"
-    - macOS uses "Quit".
-  - "Quit" can be invoked by a menu item, keyboard shortcut, or system functions
+    - Different operating systems use different terms to end the application:
+      - Windows uses "Close"
+      - macOS uses "Quit".
+    - "Quit" can be invoked by a menu item, keyboard shortcut, or system functions
 
   Scenario: Quit the application, all work saved
     Given Data Curator is open

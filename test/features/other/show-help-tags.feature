@@ -3,7 +3,7 @@ Feature: Show Help Tags
   I want to access context-sensitive help
   So that I can learn how to use a control without needing to shift my focus away from the application interface
 
-  Rules
+  RULES
   =====
 
     - Help Tags are invoked by hovering the cursor over a control or label

@@ -5,7 +5,7 @@ Feature: Set Preferences
   I want to set default values and behaviours
   So that I can work efficiently and avoid re-keying values or repeating common actions
 
-  Rules
+  RULES
   =====
 
   - Preferences is called Settings on non-macOS platforms
@@ -29,7 +29,7 @@ Feature: Set Preferences
         - "path"
         - "role" - one of the standard values in a drop down list
 
-  Questions
+  QUESTIONS
   =========
 
   - provide a preference for "check for update on launch"?

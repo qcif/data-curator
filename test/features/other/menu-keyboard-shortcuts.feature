@@ -3,7 +3,7 @@ Feature: Initiate feature using menu keyboard shortcut
   I want to select a command using a keyboard shortcut
   So that I can initiate a command quick using the keyboard rather than using the mouse
 
-  Rules
+  RULES
   =====
 
   - Some menu items are required by the operating system e.g. Services on macOS

@@ -3,7 +3,7 @@ Feature: Move cursor in table
   I want to move the cursor within the table
   So that I can edit data in a different cell
 
-  Rules
+  RULES
   =====
 
     - Move commands can be invoked by a keyboard shortcut

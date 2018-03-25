@@ -3,7 +3,7 @@ Feature: Insert Row Above
   I want to insert another row above the current row
   So that I can add more data to the data table
 
-  Rules
+  RULES
   =====
 
     - If a row is inserted above the first row and the CSV dialect has 'headerRow' set to 'true', then the 'name' property for each column may be invalidated.

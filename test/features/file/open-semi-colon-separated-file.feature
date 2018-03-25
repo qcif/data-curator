@@ -3,7 +3,7 @@ Feature: Open a Semi-colon separated value file
   I want to open a semi-colon separated value file
   So that I can describe, validate and package the data
 
-  Rules
+  RULES
   =====
 
     - The Open Semi-colon separated value file command can be invoked using the menu command

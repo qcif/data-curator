@@ -3,7 +3,7 @@ Feature: Export Data Package
   I want to export the data and associated metadata in a data package
   So that Data Consumers can access usuable open data and associated metadata in a single file
 
-  Rules
+  RULES
   =====
 
     - Export data package creates a datapackage.zip file that includes:

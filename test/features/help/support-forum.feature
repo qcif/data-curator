@@ -3,7 +3,7 @@ Feature: Support Forum
   I want to get support from the application community
   So that I can discuss and learn about the application
 
-  Rules
+  RULES
   =====
 
     - "Support Forum" can be invoked from a menu item

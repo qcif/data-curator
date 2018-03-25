@@ -5,7 +5,7 @@ Feature: Open file
   I want to open tabular data stored in one of a number of file formats
   So that I can describe, validate and package the data
 
-  Rules
+  RULES
   =====
 
     - The openfile dialog presents the user with a limited choice of file formats to open

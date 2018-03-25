@@ -3,7 +3,7 @@ Feature: New
   I want to add a data table
   So that I can add and edit related data
 
-  Rules
+  RULES
   =====
 
   - Tab names must be unique

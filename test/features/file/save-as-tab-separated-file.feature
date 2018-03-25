@@ -3,7 +3,7 @@ Feature: Save As Tab separated value file
   I want to save the data changes in the active data tab as a comma separated value file
   In order to save the data to a different filename, location or CSV dialect.
 
-  Rules
+  RULES
   =====
 
     - The file extension of the saved file must be .tsv

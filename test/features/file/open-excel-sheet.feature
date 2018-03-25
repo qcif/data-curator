@@ -3,7 +3,7 @@ Feature: Open an Excel Sheet
   I want to open an Excel Sheet
   So that can describe, validate and package the data
 
-  Rules
+  RULES
   =====
 
     - The "Open Excel Sheet" command can be invoked using the menu command

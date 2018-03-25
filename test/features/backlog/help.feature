@@ -9,7 +9,9 @@ Feature: Help
 
   Not all operating systems have a keyboard shortcut for help. Windows has function-key 1 (F1) but macOS does not have an equivalent convention.
 
-  Unresolved:
+  QUESTIONS
+  =========
+  
   - Should Help:
     - be launched in a separate window that will require access to the internet?
     - be embedded within Data Curator so no Internet connect is required?

@@ -5,7 +5,7 @@ Feature: Read Only Mode
   I want to view data package components in a read-only mode
   So that I do not make unintended changes
 
-  Questions
+  QUESTIONS
   =========
 
     - Read only for data and metadata
