@@ -3,13 +3,13 @@ Feature: Paste
   I want to copy the data from the clipboard
   So that I can quickly enter data from other data sources
 
-  The "Paste" command can be invoked using a menu item or keyboard shortcut
+  Rules:
+    - The "Paste" command can be invoked using a menu item or keyboard shortcut
 
   Scenario: Paste data from the clipboard
-    Given I have opened Data Curator
-    And data is held in the clipboard
-    And the cursor in a data tab
+    Given data is held in the clipboard
+    And the cursor is in a data table cell
     When I invoke the "Paste" command
     Then copy the data from the clipboard
-    And paste it into the data tab starting from the current cursor location
-    And add rows or columns as required
+    And paste it into the data table starting from the current cell
+    And add rows or columns if the data in the clipboard doesn't fit in the current table
