@@ -773,12 +773,17 @@ export default {
     },
     toggleHeader: function() {
       let hot = HotRegister.getActiveInstance()
-      toggleHeaderWithFeedback(hot, this.toggleHeaderErrorMessage, this.closeMessages)
+      toggleHeaderWithFeedback(hot, this.addHeaderErrorMessage, this.removeHeaderErrorMessage)
     },
-    toggleHeaderErrorMessage: function() {
+    addHeaderErrorMessage: function() {
       this.messagesTitle = 'Header Error'
       this.messages = 'At least 2 rows are required before a header row can be set.'
       this.messagesType = 'feedback'
+    },
+    removeHeaderErrorMessage: function() {
+      if (this.messagesTitle === 'Header Error') {
+        this.closeMessages()
+      }
     },
     setHotComments: function() {
       let hot = HotRegister.getActiveInstance()
@@ -845,10 +850,7 @@ export default {
       return this.messages
     },
     openErrorsWindow: function() {
-      console.log('sending error window open...')
       ipc.send('showErrorsWindow')
-      // send error messages to error window that is already open
-      console.log('sending packed error messages...')
       getWindow('errors').webContents.send('errorMessages', this.packErrorMessages())
     }
   },
@@ -881,7 +883,12 @@ export default {
         this.setHotComments()
       } else {
         console.log('sending empty error messages')
-        getWindow('errors').webContents.send('errorMessages')
+        const browserWindow = getWindow('errors')
+        console.log(`browser window is`)
+        console.log(browserWindow)
+        if (browserWindow) {
+          browserWindow.webContents.send('errorMessages')
+        }
       }
     }
   },
