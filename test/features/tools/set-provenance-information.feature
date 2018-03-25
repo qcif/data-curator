@@ -12,9 +12,9 @@ Feature: Set Provenance Information
       - saved as it is entered
       - saved as a `README.md` in the `datapackage.zip`
 
-  Deferred
-  ========
-  
+  Later
+  =====
+
     - a toolbar will be provided to support [markdown features](http://commonmark.org/help/)
       - headings
       - lists
