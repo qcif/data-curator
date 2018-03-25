@@ -769,22 +769,20 @@ export default {
       this.messagesType = 'feedback'
     },
     setHotComments: function() {
-      if (this.messagesType === 'error') {
-        let hot = HotRegister.getActiveInstance()
-        let commentsPlugin = hot.getPlugin('comments')
-        for (const previousComment of this.previousComments) {
-          commentsPlugin.removeCommentAtCell(previousComment.row, previousComment.col)
-          this.updateCellsFromIndex(previousComment.row, previousComment.col, this.removeErrorHighlightStyle)
-        }
-        this.previousComments = []
-        for (const errorMessage of this.messages) {
-          let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
-          commentsPlugin.setRange(range)
-          commentsPlugin.setComment(errorMessage.message)
-          this.previousComments.push({row: range.from.row, col: range.from.col})
-          // wait for hot to update cells with comment class
-          _.delay(this.updateCellsFromHotRange, 100, hot, range, this.addErrorHighlightStyle)
-        }
+      let hot = HotRegister.getActiveInstance()
+      let commentsPlugin = hot.getPlugin('comments')
+      for (const previousComment of this.previousComments) {
+        commentsPlugin.removeCommentAtCell(previousComment.row, previousComment.col)
+        this.updateCellsFromIndex(previousComment.row, previousComment.col, this.removeErrorHighlightStyle)
+      }
+      this.previousComments = []
+      for (const errorMessage of this.messages) {
+        let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
+        commentsPlugin.setRange(range)
+        commentsPlugin.setComment(errorMessage.message)
+        this.previousComments.push({row: range.from.row, col: range.from.col})
+        // wait for hot to update cells with comment class
+        _.delay(this.updateCellsFromHotRange, 100, hot, range, this.addErrorHighlightStyle)
       }
     },
     getCellOrRowFromCount: function(hot, row, column) {
@@ -827,6 +825,9 @@ export default {
     },
     focusOnWindow: function() {
       ipc.send('focusMainWindow')
+    },
+    packErrorMessages: function() {
+      return {title: this.messagesTitle, messages: this.messages}
     }
   },
   components: {
@@ -853,10 +854,15 @@ export default {
     messageStatus: function() {
       this.testBottomMain()
     },
-    messages: function() {
-      console.log('home messages watch triggered')
-      this.setHotComments()
-      ipc.send('showErrorsWindow')
+    messages: function(messages) {
+      if (this.messagesType === 'error') {
+        this.setHotComments()
+        ipc.send('showErrorsWindow')
+        // send error messages to error window that is already open
+        getWindow('errors').webContents.send('errorMessages', this.packErrorMessages())
+      } else {
+        getWindow('errors').webContents.send('errorMessages')
+      }
     }
   },
   mounted: function() {
@@ -871,18 +877,22 @@ export default {
       }, 100, arg)
     })
     const vueGetErrorMessages = this.getErrorMessages
+    const vuePackErrorMessages = this.packErrorMessages
     ipc.on('getErrorMessages', function(event, arg) {
-      console.log('received request for get messages')
       let messages = vueGetErrorMessages()
-      getWindow('errors').webContents.send('errorMessages', messages)
+      if (messages) {
+        getWindow('errors').webContents.send('errorMessages', vuePackErrorMessages())
+      } else {
+        getWindow('errors').webContents.send('errorMessages')
+      }
     })
     const vueHoverToSelectErrorCell = this.hoverToSelectErrorCell
     ipc.on('hoverToSelectErrorCell', function(event, arg) {
-      vueHoverToSelectErrorCell(arg.row, arg.column)
+      vueHoverToSelectErrorCell(arg.rowNumber, arg.columnNumber)
     })
     const vueExitHoverToSelectErrorCell= this.exitHoverToSelectErrorCell
     ipc.on('exitHoverToSelectErrorCell', function(event, arg) {
-      vueExitHoverToSelectErrorCell(arg.row, arg.column)
+      vueExitHoverToSelectErrorCell(arg.rowNumber, arg.columnNumber)
     })
     const vueTriggerMenuButton = this.triggerMenuButton
     ipc.on('triggerMenuButton', function(event, arg) {

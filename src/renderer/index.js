@@ -122,3 +122,7 @@ ipc.on('toggleCaseSensitiveHeader', function() {
   pushCsvDialect(hotId, {caseSensitiveHeader: toggledCase})
   ipc.send('hasCaseSensitiveHeader', toggledCase)
 })
+
+function sendCloseWindow(windowName) {
+  ipc.send('closeWindow', windowName)
+}

@@ -1,7 +1,7 @@
 <template>
 <div id="container" class="container-fluid">
 
-  <h1>Errors</h1>
+  <h1>{{title}}</h1>
 
   <div>
    <vue-good-table
@@ -10,7 +10,13 @@
      :paginate="true"
      :defaultSortBy="{field: 'row', type: 'asc'}"
      :onClick="goToCell"
-    styleClass="table condensed table-bordered table-striped"/>
+    styleClass="table condensed table-bordered table-striped">
+      <template slot="table-row" slot-scope="props">
+        <rowLink gClass="center-align" :row="props.row" :value="props.row.rowNumber"/>
+        <rowLink gClass="center-align" :row="props.row" :value="props.row.columnNumber"/>
+        <rowLink gClass="left-align"  :row="props.row" :value="props.row.message"/>
+      </template>
+</vue-good-table>
  </div>
 
 </div>
@@ -20,11 +26,16 @@ import Vue from 'vue'
 import VueGoodTable from 'vue-good-table'
 import {ipcRenderer as ipc} from 'electron'
 import {getWindow} from '../index.js'
+import rowLink from '../partials/RowLink'
 Vue.use(VueGoodTable)
 export default {
   name: 'errors',
+  components: {
+    rowLink
+  },
   data() {
     return {
+      title: '',
       messages: false,
       columns: [
         {
@@ -59,33 +70,35 @@ export default {
     goToCell: function(error) {
       this.homeWindow.webContents.send('showErrorCell', {row: error.rowNumber, column: error.columnNumber})
     },
-    hoverToSelectErrorCell: function() {
-      this.homeWindow.webContents.send('hoverToSelectErrorCell', {row: 1, column: 1})
-    },
-    exitHoverToSelectErrorCell: function() {
-      this.homeWindow.webContents.send('exitHoverToSelectErrorCell', {row: 1, column: 1})
-    },
     getErrorMessages: function() {
       this.homeWindow.webContents.send('getErrorMessages')
     },
     setErrorMessages: function(errorMessages) {
-      this.messages = errorMessages
+      if (!errorMessages) {
+        this.messages = false
+        this.title = ''
+        // close window
+      } else {
+        this.messages = errorMessages.messages
+        this.title = errorMessages.title
+      }
     }
   },
   mounted: function() {
     const vueSetErrorMessages = this.setErrorMessages
     ipc.on('errorMessages', function(event, arg) {
-      if (_.isArray(arg)) {
-        vueSetErrorMessages(arg)
-      }
+      vueSetErrorMessages(arg)
     })
+    // Initial window open, we need to trigger errors call
     this.getErrorMessages()
   },
   watch: {
     messages: function(messages) {
       this.rows = []
-      for (let next of messages) {
-        this.rows.push({rowNumber: next.rowNumber, columnNumber: next.columnNumber, message: next.message})
+      if (messages) {
+        for (let next of messages) {
+          this.rows.push({rowNumber: next.rowNumber, columnNumber: next.columnNumber, message: next.message})
+        }
       }
     }
   }
