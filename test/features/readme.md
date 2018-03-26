@@ -4,6 +4,14 @@ Acceptance tests for [Data Curator](https://github.com/ODIQueensland/data-curato
 - [shared](https://app.cucumber.pro/projects/data-curator/documents/branch/master) using [Cucumber Pro](https://cucumber.io/pro) beta
 - arranged in folders like the application menu structure
 
+Writing a test
+--------------
+
+- add two trailing spaces to the end of user stories to make a [soft line break](http://spec.commonmark.org/0.28/#soft-line-breaks). Check that youe editor doesn't automatically remove trailing spaces
+- use the [underline method for headings](http://spec.commonmark.org/0.28/#setext-heading-underline) in feature descriptions
+
+Tags
+----
 We use `@tags` to help manage features:
 
 - the `@backlog` tag is used to indicate that the feature is not in our [release plans](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open)
