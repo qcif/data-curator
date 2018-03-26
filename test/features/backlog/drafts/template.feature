@@ -1,9 +1,9 @@
 @draft
 
 Feature: Template
-  As an explicit user role
-  I want to use a feature
-  So that some benefit
+  As an explicit user role  
+  I want to use a feature  
+  So that some benefit  
 
   RULES
   =====

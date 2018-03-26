@@ -1,7 +1,7 @@
 Feature: About
-  As a Data Packager or Data Consumer
-  I want to know the version of the application
-  So that I can inform the Maintainer about issues I experience using a version of the application
+  As a Data Packager or Data Consumer  
+  I want to know the version of the application  
+  So that I can inform the Maintainer about issues I experience using a version of the application  
 
   As a Sponsor, Contributor or Maintainer of the application
   I want to see acknowledgement of my contribution
