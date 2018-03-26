@@ -1,7 +1,7 @@
 Feature: Set Data Package Properties
-  As a Data Packager
-  I want to describe the data package properties
-  So that Data Consumers can understand the data inside the package and how it can be used
+  As a Data Packager  
+  I want to describe the data package properties  
+  So that Data Consumers can understand the data inside the package and how it can be used  
 
   RULES
   =====

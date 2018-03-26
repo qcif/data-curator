@@ -1,9 +1,9 @@
 @backlog
 
 Feature: Create Constraint from Column
-  As a Data Packager
-  I want to find all unique values in a column of data
-  So that I quickly define the enum constraint
+  As a Data Packager  
+  I want to find all unique values in a column of data  
+  So that I quickly define the enum constraint  
 
   RULES
   =====

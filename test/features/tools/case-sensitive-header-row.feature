@@ -1,7 +1,7 @@
 Feature: Set Case Sensitive Header Row
-  As a Data Packager
-  I want character case be considered in determining the uniqueness of the header row
-  So that I have increased flexibility in naming column headers
+  As a Data Packager  
+  I want character case be considered in determining the uniqueness of the header row  
+  So that I have increased flexibility in naming column headers  
 
   RULES
   =====

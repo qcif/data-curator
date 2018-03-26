@@ -1,7 +1,7 @@
 Feature: Open a Data Package
-  As a User
-  I want to open a tabular data package
-  So that I can view or edit the data, metadata and provenance information in the data package
+  As a User  
+  I want to open a tabular data package  
+  So that I can view or edit the data, metadata and provenance information in the data package  
 
   RULES
   =====

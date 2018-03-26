@@ -1,7 +1,7 @@
 Feature: Find data
-  As a User
-  I want to find data within the current column or across the current table
-  So that I can determine if the data exists and correct it if necessary
+  As a User  
+  I want to find data within the current column or across the current table  
+  So that I can determine if the data exists and correct it if necessary  
 
   RULES
   =====

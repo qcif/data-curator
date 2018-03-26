@@ -1,7 +1,7 @@
 Feature: Support Forum
-  As a User
-  I want to get support from the application community
-  So that I can discuss and learn about the application
+  As a User  
+  I want to get support from the application community  
+  So that I can discuss and learn about the application  
 
   RULES
   =====

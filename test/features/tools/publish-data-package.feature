@@ -1,11 +1,9 @@
 @backlog
 
 Feature: Publish Data Package
-  As a Data Packager
-  I want to publish a data package to an open data portal
-  So that I don't have to upload it manually through the open data portal's user interface
-
-  The "Publish Data Package" command can be invoked using a menu item when Data Package has been exported successfully.
+  As a Data Packager  
+  I want to publish a data package to an open data portal  
+  So that I don't have to upload it manually through the open data portal's user interface  
 
   RULES
   =====
@@ -16,6 +14,7 @@ Feature: Publish Data Package
     - CKAN is a popular open data portal and will be the initial target. Datahub.io, Data.World are other targets.
     - There is a [CKAN extension](https://github.com/ckan/ckanext-datapackager) that supports uploading data packages through the API
     - The users prior step to this task is likely to have been `export data package`. Remember the location and filename of the export.
+    - The "Publish Data Package" command can be invoked using a menu item when Data Package has been exported successfully.
 
   Scenario: Publish Data Package
     Given Data Curator is open

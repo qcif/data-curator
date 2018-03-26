@@ -1,7 +1,7 @@
 Feature: Open a Tab separated value file
-  As a Data Packager
-  I want to open a tab separated value (TSV) file
-  So that I can describe, validate and package the data
+  As a Data Packager  
+  I want to open a tab separated value (TSV) file  
+  So that I can describe, validate and package the data  
 
   RULES
   =====

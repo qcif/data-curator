@@ -1,9 +1,9 @@
 @backlog
 
 Feature: Open file
-  As a Data Packager
-  I want to open tabular data stored in one of a number of file formats
-  So that I can describe, validate and package the data
+  As a Data Packager  
+  I want to open tabular data stored in one of a number of file formats  
+  So that I can describe, validate and package the data  
 
   RULES
   =====

@@ -1,7 +1,7 @@
 Feature: Sort column
-  As a Data Packager
-  I want to sort a column in ascending, descending, or original order
-  So that I can detect cells with similar but different values that may be errors
+  As a Data Packager  
+  I want to sort a column in ascending, descending, or original order  
+  So that I can detect cells with similar but different values that may be errors  
 
   RULES
   =====

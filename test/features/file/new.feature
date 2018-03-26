@@ -1,7 +1,7 @@
 Feature: New
-  As a Data Packager
-  I want to add a data table
-  So that I can add and edit related data
+  As a Data Packager  
+  I want to add a data table  
+  So that I can add and edit related data  
 
   RULES
   =====

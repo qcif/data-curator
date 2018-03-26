@@ -1,7 +1,7 @@
 Feature: Open an Excel Sheet
-  As a User
-  I want to open an Excel Sheet
-  So that can describe, validate and package the data
+  As a User  
+  I want to open an Excel Sheet  
+  So that can describe, validate and package the data  
 
   RULES
   =====

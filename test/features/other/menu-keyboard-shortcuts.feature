@@ -1,7 +1,7 @@
 Feature: Initiate feature using menu keyboard shortcut
-  As a Data Packager or Data Consumer
-  I want to select a command using a keyboard shortcut
-  So that I can initiate a command quick using the keyboard rather than using the mouse
+  As a Data Packager or Data Consumer  
+  I want to select a command using a keyboard shortcut  
+  So that I can initiate a command quick using the keyboard rather than using the mouse  
 
   RULES
   =====

@@ -1,9 +1,9 @@
 Feature: Set Header Row
-  As a Data Packager
-  I want to freeze the header row (the first row)
-  So that the data is not included in "Sort Column" command
-  and the header row value may be able to be used to invoke the "Sort Column" command
-  and the header row remains visable when the rows are scrolled
+  As a Data Packager  
+  I want to freeze the header row (the first row)  
+  So that the data is not included in "Sort Column" command  
+  and the header row value may be able to be used to invoke the "Sort Column" command  
+  and the header row remains visable when the rows are scrolled  
 
   RULES
   =====

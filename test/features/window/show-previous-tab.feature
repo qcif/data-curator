@@ -1,9 +1,9 @@
 @backlog
 
 Feature:  Show Previous Tab
-  As a Data Packager
-  I want to quickly move to the previous data tab (to the left)
-  So that I can view related data
+  As a Data Packager  
+  I want to quickly move to the previous data tab (to the left)  
+  So that I can view related data  
 
   RULES
   =====
