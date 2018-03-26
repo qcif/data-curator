@@ -1124,7 +1124,7 @@ babel-plugin-transform-minify-booleans@^6.8.2:
   version "6.8.3"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-minify-booleans/-/babel-plugin-transform-minify-booleans-6.8.3.tgz#5906ed776d3718250519abf1bace44b0b613ddf9"
 
-babel-plugin-transform-object-rest-spread@^6.22.0, babel-plugin-transform-object-rest-spread@^6.26.0:
+babel-plugin-transform-object-rest-spread@^6.22.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-object-rest-spread/-/babel-plugin-transform-object-rest-spread-6.26.0.tgz#0f36692d50fef6b7e2d4b3ac1478137a963b7b06"
   dependencies:
@@ -9201,11 +9201,9 @@ vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
 
-vee-validate@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-2.0.4.tgz#cf76e7a742d801243b6682b9d104fd322f3da13c"
-  dependencies:
-    babel-plugin-transform-object-rest-spread "^6.26.0"
+vee-validate@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-2.0.6.tgz#0a28046e3c80fb5b9b944da5f7771c7404f90a6a"
 
 vendors@^1.0.0:
   version "1.0.1"
