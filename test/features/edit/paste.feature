@@ -1,7 +1,7 @@
 Feature: Paste
-  As a Data Packager
-  I want to copy the data from the clipboard
-  So that I can quickly enter data from other data sources
+  As a Data Packager  
+  I want to copy the data from the clipboard  
+  So that I can quickly enter data from other data sources  
 
   RULES
   =====

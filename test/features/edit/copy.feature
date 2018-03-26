@@ -1,7 +1,7 @@
 Feature: Copy
-  As a Data Packager
-  I want to copy data to the clipboard
-  So that I can paste the data elsewhere in the application or into another application
+  As a Data Packager  
+  I want to copy data to the clipboard  
+  So that I can paste the data elsewhere in the application or into another application  
 
   RULES
   =====

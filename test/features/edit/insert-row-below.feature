@@ -1,7 +1,7 @@
 Feature: Insert Row Below
-  As a Data Packager
-  I want to insert another row below the current row
-  So that I can add more data to the data tab
+  As a Data Packager  
+  I want to insert another row below the current row  
+  So that I can add more data to the data tab  
 
   RULES
   =====

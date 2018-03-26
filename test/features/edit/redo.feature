@@ -1,7 +1,7 @@
 Feature: Redo
-  As a Data Packager
-  I want to reverse an undo table edit command I just performed
-  So that I can continue editing as if I hadn't performed the undo command
+  As a Data Packager  
+  I want to reverse an undo table edit command I just performed  
+  So that I can continue editing as if I hadn't performed the undo command  
 
   RULES
   =====

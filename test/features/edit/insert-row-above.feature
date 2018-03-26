@@ -1,7 +1,7 @@
 Feature: Insert Row Above
-  As a Data Packager
-  I want to insert another row above the current row
-  So that I can add more data to the data table
+  As a Data Packager  
+  I want to insert another row above the current row  
+  So that I can add more data to the data table  
 
   RULES
   =====
