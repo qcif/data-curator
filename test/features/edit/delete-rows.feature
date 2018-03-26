@@ -1,7 +1,7 @@
 Feature: Remove Rows
-  As a Data Packager
-  I want to delete one or more rows
-  So that I can only share the data that is appropriate to share
+  As a Data Packager  
+  I want to delete one or more rows  
+  So that I can only share the data that is appropriate to share  
 
   RULES
   =====

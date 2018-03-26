@@ -1,7 +1,7 @@
 Feature: Cut
-  As a Data Packager
-  I want to remove data from the table and copy it to the clipboard
-  So that I can paste the data elsewhere within the application or into another application
+  As a Data Packager  
+  I want to remove data from the table and copy it to the clipboard  
+  So that I can paste the data elsewhere within the application or into another application  
 
   RULES
   =====

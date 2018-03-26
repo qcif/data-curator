@@ -1,7 +1,7 @@
 Feature: Undo
-  As a Data Packager
-  I want to reverse the edit command(s) or data entry I just performed by mistake
-  So that I can revert the data or metadata to a prior good state
+  As a Data Packager  
+  I want to reverse the edit command(s) or data entry I just performed by mistake  
+  So that I can revert the data or metadata to a prior good state  
 
   RULES
   =====

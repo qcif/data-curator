@@ -1,7 +1,7 @@
 Feature: Insert Column After
-  As a Data Packager
-  I want to insert another column after the current column
-  So that I can add more data to the data table
+  As a Data Packager  
+  I want to insert another column after the current column  
+  So that I can add more data to the data table  
 
   RULES
   =====
