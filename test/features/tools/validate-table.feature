@@ -60,7 +60,7 @@ Feature: Validate Table
     When I click the error message
     Then move the cursor to the associated cell in table
 
-  Scenario: Write residual error to provenance information
+  Scenario: Write residual errors to provenance information
     Given data in a table has been validated
     And errors have been detected and displayed error messages in a table in a separate window
     When I invoke the "write errors to provenance information" command
