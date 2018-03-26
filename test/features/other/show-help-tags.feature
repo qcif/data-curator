@@ -1,7 +1,7 @@
 Feature: Show Help Tags
-  As a User
-  I want to access context-sensitive help
-  So that I can learn how to use a control without needing to shift my focus away from the application interface
+  As a User  
+  I want to access context-sensitive help  
+  So that I can learn how to use a control without needing to shift my focus away from the application interface  
 
   RULES
   =====

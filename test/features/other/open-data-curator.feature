@@ -1,7 +1,7 @@
 Feature: Open Data Curator
-  As a User
-  I want to open the application only once
-  So that I can focus working on one data package at a time
+  As a User  
+  I want to open the application only once  
+  So that I can focus working on one data package at a time  
 
   RULES
   =====

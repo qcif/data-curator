@@ -1,7 +1,7 @@
 Feature: Move cursor in table
-  As a Data Packager
-  I want to move the cursor within the table
-  So that I can edit data in a different cell
+  As a Data Packager  
+  I want to move the cursor within the table  
+  So that I can edit data in a different cell  
 
   RULES
   =====

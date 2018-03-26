@@ -1,7 +1,7 @@
 Feature: Report Issues
-  As a User
-  I want to report issues I find in the application
-  So that I can help improve the application
+  As a User  
+  I want to report issues I find in the application  
+  So that I can help improve the application  
 
   RULES
   =====

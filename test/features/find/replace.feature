@@ -1,7 +1,7 @@
 Feature: Replace data
-  As a Data Packager
-  I want to replace one or more values that have been found
-  So that I correct data errors quickly
+  As a Data Packager  
+  I want to replace one or more values that have been found  
+  So that I correct data errors quickly  
 
   RULES
   =====

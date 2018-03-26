@@ -1,7 +1,7 @@
 Feature: Initiate an editor command using a keyboard shortcut
-  As a User
-  I want to invoke an editor command using a keyboard shortcut
-  So that I can initiate a command using the keyboard instead of the mouse
+  As a User  
+  I want to invoke an editor command using a keyboard shortcut  
+  So that I can initiate a command using the keyboard instead of the mouse  
 
   Scenario Outline: Initiate an editor command using a keyboard shortcut
     Given Data Curator is open in an <operating system>

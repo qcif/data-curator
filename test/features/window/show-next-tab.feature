@@ -1,9 +1,9 @@
 @backlog
 
 Feature:  Show Next Tab
-  As a Data Packager
-  I want to quickly move to the next data tab (to the right)
-  So that I can view related data
+  As a Data Packager  
+  I want to quickly move to the next data tab (to the right)  
+  So that I can view related data  
 
   RULES
   =====

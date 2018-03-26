@@ -1,7 +1,7 @@
 Feature: Set Table Properties
-  As a Data Packager
-  I want to described the table
-  So that it can be validated and Data Consumers can understand and use it
+  As a Data Packager  
+  I want to described the table  
+  So that it can be validated and Data Consumers can understand and use it  
 
   RULES
   =====

@@ -1,9 +1,9 @@
 @backlog
 
 Feature: Create Lookup Table from Column
-  As a Data Packager
-  I want to quickly make a look-up table
-  So that I can improve the validation of the data and potentially add descriptions to the look-up values
+  As a Data Packager  
+  I want to quickly make a look-up table  
+  So that I can improve the validation of the data and potentially add descriptions to the look-up values  
 
   Scenario: Create Lookup Table from Column
     Given Data Curator is open

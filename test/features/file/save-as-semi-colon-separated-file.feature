@@ -1,7 +1,7 @@
 Feature: Save As Semicolon separated value file
-  As an Data Packager
-  I want to save the data changes in the active data tab as a comma separated value file
-  In order to save the data to a different filename, location or CSV dialect.
+  As an Data Packager  
+  I want to save the data changes in the active data tab as a comma separated value file  
+  In order to save the data to a different filename, location or CSV dialect  
 
   RULES
   =====

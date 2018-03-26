@@ -1,7 +1,7 @@
 Feature: Open a Comma separated value file
-  As a Data Packager
-  I want to open a comma separated value (CSV) file
-  So that I can describe, validate and package the data
+  As a Data Packager  
+  I want to open a comma separated value (CSV) file  
+  So that I can describe, validate and package the data  
 
   RULES
   =====

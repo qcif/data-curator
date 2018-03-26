@@ -1,7 +1,7 @@
 Feature: Set Column Properties
-  As a Data Packager
-  I want to describe the meaning and structure of the data
-  So that it can be validated and Data Consumers can understand and use it
+  As a Data Packager  
+  I want to describe the meaning and structure of the data  
+  So that it can be validated and Data Consumers can understand and use it  
 
   RULES
   =====
