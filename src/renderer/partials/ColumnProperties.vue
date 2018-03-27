@@ -374,6 +374,20 @@ export default {
     },
     onMouseUp: function(e) {
       // select current cell then return focus here
+      console.log(e)
+      console.log(e.target)
+      let selectElement = document.querySelector('select')
+      if (e.target == selectElement) {
+        console.log(' flagged selected')
+      } else {
+        this.reselectHotCell()
+        e.target.focus()
+      }
+    },
+    onSelectUp: function(e) {
+      // select current cell then return focus here
+      console.log('selected')
+      console.log(e)
       this.reselectHotCell()
       e.target.focus()
     }
@@ -422,7 +436,9 @@ export default {
     })
     allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
     autosize(document.querySelector('textarea'))
+    // workaround for: https://github.com/handsontable/handsontable/issues/4932
     document.getElementById('columnProperties').addEventListener('mouseup', this.onMouseUp, false)
+    document.getElementById('columnProperties').addEventListener('change', this.onSelectUp, false)
   },
   created: function() {
     let vueType = this.typePropertyWrapper

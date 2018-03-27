@@ -94,8 +94,13 @@
                   <ul class="nav navbar-nav navbar-left">
                     <li>
                       <a href="#">
-                        <!-- <a href="#" @click="closeMessages()"> -->
-                        <span class="btn-default fa fa-external-link"  @click="openErrorsWindow()"/>
+                        <span class="btn-default fas fa-external-link-alt"  @click="openErrorsWindow()"/>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <!-- <object data="static/img/validation-results.svg" type="image/svg+xml" /> -->
+                        <span class="btn-default fal fa-file-times"  />
                       </a>
                     </li>
                   </ul>
@@ -1012,7 +1017,7 @@ export default {
 }
 </script>
 <style scoped>
-@import '~components-font-awesome/css/font-awesome.min.css'
+@import '~components-font-awesome/css/fontawesome-all.min.css'
 </style>
 <style lang="styl" scoped>
 @import '~static/css/default'

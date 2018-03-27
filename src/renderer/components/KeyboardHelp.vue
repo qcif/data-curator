@@ -8,8 +8,8 @@
     <thead>
       <tr>
         <th style="width:50%">Table Editing shortcuts</th>
-        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
-        <th style="width:25%"><i class="fa fa-apple"></i></th>
+        <th style="width:25%"><i class="fab fa-windows fa-lg"></i> &nbsp; <i class="fab fa-linux fa-lg"></i></th>
+        <th style="width:25%"><i class="fab fa-apple fa-lg"></i></th>
       </tr>
     </thead>
     <tbody>
@@ -45,8 +45,8 @@
     <thead>
       <tr>
         <th style="width:50%">Table Navigation shortcuts</th>
-        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
-        <th style="width:25%"><i class="fa fa-apple"></i></th>
+        <th style="width:25%"><i class="fab fa-windows fa-lg"></i> &nbsp; <i class="fab fa-linux fa-lg"></i></th>
+        <th style="width:25%"><i class="fab fa-apple fa-lg"></i></th>
       </tr>
     </thead>
     <tbody>
@@ -97,8 +97,8 @@
     <thead>
       <tr>
         <th style="width:50%">Table Selection shortcuts</th>
-        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
-        <th style="width:25%"><i class="fa fa-apple"></i></th>
+        <th style="width:25%"><i class="fab fa-windows fa-lg"></i> &nbsp; <i class="fab fa-linux fa-lg"></i></th>
+        <th style="width:25%"><i class="fab fa-apple fa-lg"></i></th>
       </tr>
     </thead>
     <tbody>
@@ -154,8 +154,8 @@
     <thead>
       <tr>
         <th style="width:50%">Context menu shortcuts</th>
-        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
-        <th style="width:25%"><i class="fa fa-apple"></i></th>
+        <th style="width:25%"><i class="fab fa-windows fa-lg"></i> &nbsp; <i class="fab fa-linux fa-lg"></i></th>
+        <th style="width:25%"><i class="fab fa-apple fa-lg"></i></th>
       </tr>
     </thead>
     <tbody>
@@ -187,8 +187,8 @@
     <thead>
       <tr>
         <th style="width:50%">Data Curator menu shortcuts</th>
-        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
-        <th style="width:25%"><i class="fa fa-apple"></i></th>
+        <th style="width:25%"><i class="fab fa-windows fa-lg"></i> &nbsp; <i class="fab fa-linux fa-lg"></i></th>
+        <th style="width:25%"><i class="fab fa-apple fa-lg"></i></th>
       </tr>
     </thead>
     <tbody>
@@ -219,8 +219,8 @@
     <thead>
       <tr>
         <th style="width:50%">File menu shortcuts</th>
-        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
-        <th style="width:25%"><i class="fa fa-apple"></i></th>
+        <th style="width:25%"><i class="fab fa-windows fa-lg"></i> &nbsp; <i class="fab fa-linux fa-lg"></i></th>
+        <th style="width:25%"><i class="fab fa-apple fa-lg"></i></th>
       </tr>
     </thead>
     <tbody>
@@ -270,8 +270,8 @@
     <thead>
       <tr>
         <th style="width:50%">Edit menu shortcuts</th>
-        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
-        <th style="width:25%"><i class="fa fa-apple"></i></th>
+        <th style="width:25%"><i class="fab fa-windows fa-lg"></i> &nbsp; <i class="fab fa-linux fa-lg"></i></th>
+        <th style="width:25%"><i class="fab fa-apple fa-lg"></i></th>
       </tr>
     </thead>
     <tbody>
@@ -334,8 +334,8 @@
 <thead>
       <tr>
         <th style="width:50%">View menu shortcuts</th>
-        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
-        <th style="width:25%"><i class="fa fa-apple"></i></th>
+        <th style="width:25%"><i class="fab fa-windows fa-lg"></i> &nbsp; <i class="fab fa-linux fa-lg"></i></th>
+        <th style="width:25%"><i class="fab fa-apple fa-lg"></i></th>
       </tr>
       </thead>
 <tbody>
@@ -356,8 +356,8 @@
 <thead>
       <tr>
         <th style="width:50%">Find menu shortcuts</th>
-        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
-        <th style="width:25%"><i class="fa fa-apple"></i></th>
+        <th style="width:25%"><i class="fab fa-windows fa-lg"></i> &nbsp; <i class="fab fa-linux fa-lg"></i></th>
+        <th style="width:25%"><i class="fab fa-apple fa-lg"></i></th>
       </tr>
       </thead>
 <tbody>
@@ -399,8 +399,8 @@
     <thead>
       <tr>
         <th style="width:50%">Tools menu shortcuts</th>
-        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
-        <th style="width:25%"><i class="fa fa-apple"></i></th>
+        <th style="width:25%"><i class="fab fa-windows fa-lg"></i> &nbsp; <i class="fab fa-linux fa-lg"></i></th>
+        <th style="width:25%"><i class="fab fa-apple fa-lg"></i></th>
       </tr>
     </thead>
     <tbody>
@@ -451,8 +451,8 @@
     <thead>
       <tr>
         <th style="width:50%">Window menu shortcuts</th>
-        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
-        <th style="width:25%"><i class="fa fa-apple"></i></th>
+        <th style="width:25%"><i class="fab fa-windows fa-lg"></i> &nbsp; <i class="fab fa-linux fa-lg"></i></th>
+        <th style="width:25%"><i class="fab fa-apple fa-lg"></i></th>
       </tr>
     </thead>
     <tbody>
@@ -479,8 +479,8 @@
     <thead>
       <tr>
         <th style="width:50%">Help menu shortcuts</th>
-        <th style="width:25%"><i class="fa fa-windows"></i> &nbsp; <i class="fa fa-linux"></i></th>
-        <th style="width:25%"><i class="fa fa-apple"></i></th>
+        <th style="width:25%"><i class="fab fa-windows fa-lg"></i> &nbsp; <i class="fab fa-linux fa-lg"></i></th>
+        <th style="width:25%"><i class="fab fa-apple fa-lg"></i></th>
       </tr>
     </thead>
     <tbody>
@@ -505,7 +505,7 @@ export default {
 }
 </script>
 <style scoped>
-@import '~components-font-awesome/css/font-awesome.min.css'
+@import '~components-font-awesome/css/fontawesome-all.min.css'
 </style>
 <style lang="styl" scoped>
 @import '~static/css/keyboard-help'
