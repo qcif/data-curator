@@ -10,7 +10,8 @@ export default new Router({
       components: {
         default: require('@/components/Home'),
         keyboardhelp: require('@/components/KeyboardHelp'),
-        openexcel: require('@/components/SelectWorksheet')
+        openexcel: require('@/components/SelectWorksheet'),
+        errors: require('@/components/Errors')
       }
     },
     {
