@@ -9533,9 +9533,9 @@ vue-async-computed@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/vue-async-computed/-/vue-async-computed-3.3.1.tgz#9d754e649ccabef97e7e3932f1bc097a66a23db7"
 
-vue-directive-tooltip@^1.4.1:
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/vue-directive-tooltip/-/vue-directive-tooltip-1.4.4.tgz#547ff7a914c5b0e642a02e822ef01ae347775c13"
+vue-directive-tooltip@^1.4.5:
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/vue-directive-tooltip/-/vue-directive-tooltip-1.4.5.tgz#d55519132cd7d405d4e941d6bea0a0da01ef6278"
   dependencies:
     popper.js "1.12.5"
 
