@@ -12,15 +12,15 @@ Feature: Close tab
   If the data changes in the tab are unsaved, offer to cancel the command
 
   Scenario: Close the active tab and the data in the tab is saved
-    Given I have opened Data Curator
-    And I have opened 1 data tab
+    Given Data Curator is open
+    And one or more data tabs are open
     And I have saved the data in the active tab
     When I invoke the "Close Tab" command
     Then close the active tab
 
   Scenario: Close tab but the data in the tab is unsaved
-    Given I have opened Data Curator
-    And I have opened 1 data tab
+    Given Data Curator is open
+    And one or more data tabs are open
     And I haven't saved the data in the active tab
     When I invoke the "Close Tab" command
     Then provide a warning that there is unsaved work and offer to cancel the command, or quit the application
