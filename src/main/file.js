@@ -40,10 +40,10 @@ let path = require('path')
 //   dialog.loadURL(`http://localhost:9080/#/customformat`)
 // }
 
-function saveFileAs(format, currentWindow) {
-  if (!currentWindow) {
-    currentWindow = focusWindow(id)
-  }
+export function saveFileAs(format) {
+  console.log('before save')
+  console.log(global.tab)
+  let currentWindow = focusMainWindow()
   Dialog.showSaveDialog({
     filters: format.filters,
     defaultPath: global.tab.activeTitle
@@ -71,13 +71,14 @@ To save the data, choose a unique file name.`
 }
 
 function savedFilenameExists(filename) {
+  console.log(global.tab)
   let threshold = global.tab.activeFilename === filename ? 1 : 0
   let length = global.tab.filenames.length
   let filtered = _.without(global.tab.filenames, filename)
   return length - filtered.length > threshold
 }
 
-function saveFile() {
+export function saveFile() {
   let currentWindow = focusMainWindow()
   currentWindow.webContents.send('saveData', currentWindow.format, global.tab.activeFilename)
 }
@@ -121,7 +122,7 @@ export function importDataPackage() {
   })
 }
 
-function openFile(format) {
+export function openFile(format) {
   Dialog.showOpenDialog({
     filters: format.filters
   }, function(filenames) {
@@ -139,7 +140,7 @@ ipc.on('openFileIntoTab', (event, arg1, arg2) => {
   readFile(arg1, arg2)
 })
 
-function readFile(filename, format) {
+export function readFile(filename, format) {
   if (openedFilenameExists(filename)) {
     showAlreadyOpenedFileDialog()
     return
@@ -168,13 +169,4 @@ function showAlreadyOpenedFileDialog() {
 
 function openedFilenameExists(filename) {
   return _.indexOf(global.tab.filenames, filename) > -1
-}
-
-export {
-  openFile,
-  // openCustom,
-  readFile,
-  saveFileAs,
-  // saveAsCustom,
-  saveFile
 }
