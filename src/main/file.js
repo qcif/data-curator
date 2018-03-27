@@ -41,8 +41,6 @@ let path = require('path')
 // }
 
 export function saveFileAs(format) {
-  console.log('before save')
-  console.log(global.tab)
   let currentWindow = focusMainWindow()
   Dialog.showSaveDialog({
     filters: format.filters,
@@ -71,7 +69,6 @@ To save the data, choose a unique file name.`
 }
 
 function savedFilenameExists(filename) {
-  console.log(global.tab)
   let threshold = global.tab.activeFilename === filename ? 1 : 0
   let length = global.tab.filenames.length
   let filtered = _.without(global.tab.filenames, filename)
