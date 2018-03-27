@@ -89,10 +89,8 @@ export default {
     const vueResetErrorMessages = this.resetErrorMessages
     ipc.on('errorMessages', function(event, arg) {
       if (!arg) {
-        console.log('no args sent')
         vueResetErrorMessages()
       } else {
-        console.log('have args')
         vueSetErrorMessages(arg)
       }
     })
