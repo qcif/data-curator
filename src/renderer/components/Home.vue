@@ -42,12 +42,10 @@
           </component>
         </transition>
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
-          <!-- <a v-if="leftArrow" href="#" v-tooltip.left="tooltip('tooltip-previous')" class="left" @click.prevent="sideNavLeft()"><span class="btn fa fa-chevron-left fa-2x" /></a> -->
-          <a v-if="leftArrow" href="#" class="left" @click.prevent="sideNavLeft()"><span class="btn fa fa-chevron-left fa-2x" /></a>
-          <!-- <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" /> -->
-          <!-- <a v-if="rightArrow" href="#" v-tooltip.left="tooltip('tooltip-next')" class="right" @click.prevent="sideNavRight()"><span class="btn fa fa-chevron-right fa-2x" /></a> -->
-          <a v-if="rightArrow" href="#" class="right" @click.prevent="sideNavRight()"><span class="btn fa fa-chevron-right fa-2x" /></a>
-          <!-- <component v-if="enableSideNavRightArrow" is="tooltipNext" /> -->
+          <a v-if="isLeftArrowEnabled" href="#" v-tooltip.left="tooltip('tooltip-previous')" class="left" @click.prevent="sideNavLeft()"><span class="btn fa fa-chevron-left fa-2x" /></a>
+          <component v-if="leftArrow" is="tooltipPrevious" />
+          <a v-if="isRightArrowEnabled" href="#" v-tooltip.left="tooltip('tooltip-next')" class="right" @click.prevent="sideNavRight()"><span class="btn fa fa-chevron-right fa-2x" /></a>
+          <component v-if="isRightArrowEnabled" is="tooltipNext" />
         </div>
     </nav>
     <div id="main-panel" class="panel panel-default" :class="sideNavPropertiesForMain">
@@ -192,12 +190,12 @@ export default {
   name: 'home',
   mixins: [HomeTooltip],
   asyncComputed: {
-    leftArrow: {
+    isLeftArrowEnabled: {
       async get() {
         return this.sideNavView === 'column' && this.currentColumnIndex > 0
       }
     },
-    rightArrow: {
+    isRightArrowEnabled: {
       async get() {
         let columnCount = getColumnCount()
         if (columnCount) {
