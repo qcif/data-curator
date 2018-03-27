@@ -10,14 +10,20 @@ export function includeHeadersInData(hot) {
   return allData
 }
 
-export function hasAllColumnNames(hotId, columnProperties) {
-  const names = store.getters.getAllHotColumnNamesFromHotId(store.state, store.getters)(hotId)
+export function hasAllColumnNames(hotId, columnProperties, names) {
   if (isCaseSensitive(hotId)) {
-    return hasAllValidColumnProperty(names, columnProperties)
+    const uniqueNames = _.uniqBy(names)
+    return hasAllValidColumnProperty(uniqueNames, columnProperties)
   } else {
     const uniqueNames = _.uniqBy(names, _.lowerCase)
     return hasAllValidColumnProperty(uniqueNames, columnProperties)
   }
+}
+
+export function getValidNames(hotId) {
+  const names = store.getters.getAllHotColumnNamesFromHotId(store.state, store.getters)(hotId)
+  let filteredNames = _.without(names, undefined, null, '')
+  return filteredNames
 }
 
 export function hasAllColumnTypes(hotId, columnProperties) {

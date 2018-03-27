@@ -2,7 +2,7 @@ import {Table, Schema} from 'tableschema'
 import {HotRegister} from '@/hot.js'
 import store from '@/store/modules/hots.js'
 import tabStore from '@/store/modules/tabs.js'
-import {includeHeadersInData, hasAllColumnNames} from '@/frictionlessUtilities.js'
+import {includeHeadersInData, hasAllColumnNames, getValidNames} from '@/frictionlessUtilities.js'
 import {allTablesAllColumnsFromSchema$} from '@/rxSubject.js'
 
 async function inferSchema(data) {
@@ -27,8 +27,15 @@ export async function guessColumnProperties() {
   let hot = HotRegister.getActiveInstance()
   let id = hot.guid
   let columnProperties = store.state.hotTabs[id].columnProperties
-  if (!columnProperties || !hasAllColumnNames(id, columnProperties)) {
-    return 'Failed: Guess column properties failed. Column names must be set.'
+  if (!columnProperties) {
+    return 'Failed: Guess column properties failed. Column properties must be set.'
+  }
+  let names = getValidNames(id)
+  if (_.isEmpty(names)) {
+    return 'Failed: Guess column properties failed. Column property names must be set.'
+  }
+  if (!hasAllColumnNames(id, columnProperties, names)) {
+    return 'Failed: Guess column properties failed. All Column property names must be set and must be unique.'
   }
   let data = includeHeadersInData(hot)
   // let activeHot = HotRegister.getActiveHotIdData()
