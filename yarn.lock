@@ -8294,9 +8294,9 @@ sinon-test@^2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/sinon-test/-/sinon-test-2.1.3.tgz#62f4de385f0fb3369c8514b5b998426a82e1effc"
 
-sinon@^4.4.2:
-  version "4.4.8"
-  resolved "https://registry.yarnpkg.com/sinon/-/sinon-4.4.8.tgz#0479e0ccb8caa0d737ce9773c8d53d57d38f2d84"
+sinon@^4.4.9:
+  version "4.4.9"
+  resolved "https://registry.yarnpkg.com/sinon/-/sinon-4.4.9.tgz#0792a2a5171eb0cf242edacb0eba3898b8b4297f"
   dependencies:
     "@sinonjs/formatio" "^2.0.0"
     diff "^3.1.0"
