@@ -2,11 +2,10 @@
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
-import {app, Menu, BrowserWindow} from 'electron'
-import {quitOrSaveDialog, createWindowTab} from './utils'
-import {readFile} from './file.js'
-import {menu as template} from './menu'
-require('./rendererToMenu.js')
+import {app, Menu, BrowserWindow, dialog} from 'electron'
+import {createWindowTab, focusMainWindow} from './windows'
+import {template} from './menu'
+import './rendererToMain.js'
 
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
@@ -20,28 +19,12 @@ global.tab = {
   activeFilename: '',
   filenames: []
 }
-
-// var mainWindow = null
-function createWindow() {
-  var menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
-
-  var filename = clFilename
-  if (filename) {
-    readFile([filename])
-  } else {
-    createWindowTab()
-  }
-}
+global.windows = {}
 
 const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
   // Someone tried to run a second instance, we should focus our window.
   console.log('Attempted to open a second instance. Disallowing...')
-  let firstWindow = BrowserWindow.getAllWindows()[0]
-  if (firstWindow) {
-    if (firstWindow.isMinimized()) { firstWindow.restore() }
-    firstWindow.focus()
-  }
+  focusMainWindow()
 })
 
 if (isSecondInstance) {
@@ -49,29 +32,90 @@ if (isSecondInstance) {
   app.quit()
 }
 
-// app.on('activate', checkForMultipleWindows)
-
 app.on('ready', () => {
-  createWindow()
-  let id = BrowserWindow.getAllWindows()[0].id
-  global.mainWindowId = id
+  var menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
+  let browserWindow = createWindowTab()
+  if (process.env.NODE_ENV === 'production') {
+    browserWindow.on('close', (event) => {
+      quitDialog(event, closeWindowNoPrompt)
+    })
+  }
 })
 
 function closeAppNoPrompt() {
   app.exit()
 }
 
-if (process.env.NODE_ENV === 'production') {
-  app.on('before-quit', (event) => {
-    quitOrSaveDialog(event, 'Quit', closeAppNoPrompt)
+// app.on('window-all-closed', () => {
+//   if (process.platform !== 'darwin') {
+//     app.quit()
+//   }
+// })
+
+export function quitDialog(event, callback) {
+  event.preventDefault()
+  let browserWindow = focusMainWindow()
+  dialog.showMessageBox(browserWindow, {
+    type: 'warning',
+    buttons: [
+      'Cancel', 'Quit'
+    ],
+    defaultId: 0,
+    title: 'Quit Application',
+    message: 'There may be unsaved work. Are you sure you want to quit?'
+  }, function(response) {
+    if (response === 0) {
+      return
+    }
+    callback()
   })
 }
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
+export function quitOrSaveDialog(event, endButtonName, callback) {
+  event.preventDefault()
+  let browserWindow = focusMainWindow()
+  dialog.showMessageBox(browserWindow, {
+    type: 'warning',
+    buttons: [
+      'Cancel', endButtonName, 'Save'
+    ],
+    defaultId: 0,
+    title: 'Save current tab before close?',
+    message: 'Save current tab before close?'
+  }, function(response) {
+    if (response === 0) {
+      return
+    }
+    if (response === 1) {
+      callback()
+    } else {
+      dialog.showSaveDialog({}, function(filename) {
+        if (filename === undefined) {
+          return
+        }
+        saveAndExit(callback, filename)
+      })
+    }
+  })
+}
+
+async function saveAndExit(callback, filename) {
+  try {
+    let browserWindow = focusMainWindow()
+    await browserWindow.webContents.send('saveData', browserWindow.format, filename)
+    callback()
+  } catch (err) {
+    console.log(err)
   }
-})
+}
+
+function closeWindowNoPrompt(result) {
+  // ensure all windows are closed
+  for (let browserWindow of BrowserWindow.getAllWindows()) {
+    browserWindow.destroy()
+  }
+}
 /**
  * Auto Updater
  *

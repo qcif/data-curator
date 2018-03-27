@@ -82,7 +82,7 @@ async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
     try {
       let resource = await createValidResource(hotId, errorMessages)
       if (!resource) {
-        console.log(`did not add resource: ${hotId}`)
+        console.log(`Did not add resource: ${hotId}`)
         break
       }
       if (resourcePaths.indexOf(resource.descriptor.path) !== -1) {
