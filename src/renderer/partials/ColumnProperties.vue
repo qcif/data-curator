@@ -83,7 +83,7 @@ export default {
   extends: SideNav,
   name: 'column',
   mixins: [ValidationRules, ColumnTooltip],
-  props: ['cIndex'],
+  props: ['cIndex', 'reselectHotCell'],
   data() {
     return {
       content1: '',
@@ -371,6 +371,11 @@ export default {
     },
     formatPropertyValueWrapper: function() {
       return this.formatPropertyValue
+    },
+    onMouseUp: function(e) {
+      // select current cell then return focus here
+      this.reselectHotCell()
+      e.target.focus()
     }
   },
   computed: {
@@ -417,6 +422,7 @@ export default {
     })
     allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
     autosize(document.querySelector('textarea'))
+    document.getElementById('columnProperties').addEventListener('mouseup', this.onMouseUp, false)
   },
   created: function() {
     let vueType = this.typePropertyWrapper

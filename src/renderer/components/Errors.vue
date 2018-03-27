@@ -78,10 +78,11 @@ export default {
       this.title = errorMessages.title
     },
     resetErrorMessages: function() {
+      console.log('resetting...')
       this.messages = false
       this.title = ''
       // close window
-      closeSecondaryWindow('errors')
+      // closeSecondaryWindow('errors')
     }
   },
   mounted: function() {
@@ -89,9 +90,10 @@ export default {
     const vueResetErrorMessages = this.resetErrorMessages
     ipc.on('errorMessages', function(event, arg) {
       if (!arg) {
+        console.log('no args sent')
         vueResetErrorMessages()
       } else {
-        console.log('captured in non-empty function')
+        console.log('have args')
         vueSetErrorMessages(arg)
       }
     })
