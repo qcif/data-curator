@@ -38,14 +38,16 @@
           </a>
         </div>
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
-          <component :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :cIndex="currentColumnIndex">
+          <component :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :cIndex="currentColumnIndex" :reselectHotCell="reselectHotCell">
           </component>
         </transition>
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
-          <a v-if="enableSideNavLeftArrow" href="#" v-tooltip.left="tooltip('tooltip-previous')" class="left" @click.prevent="sideNavLeft"><span class="btn fa fa-chevron-left fa-2x" /></a>
-          <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" />
-          <a v-if="enableSideNavRightArrow" href="#" v-tooltip.left="tooltip('tooltip-next')" class="right" @click.prevent="sideNavRight"><span class="btn fa fa-chevron-right fa-2x" /></a>
-          <component v-if="enableSideNavRightArrow" is="tooltipNext" />
+          <!-- <a v-if="leftArrow" href="#" v-tooltip.left="tooltip('tooltip-previous')" class="left" @click.prevent="sideNavLeft()"><span class="btn fa fa-chevron-left fa-2x" /></a> -->
+          <a v-if="leftArrow" href="#" class="left" @click.prevent="sideNavLeft()"><span class="btn fa fa-chevron-left fa-2x" /></a>
+          <!-- <component v-if="enableSideNavLeftArrow" is="tooltipPrevious" /> -->
+          <!-- <a v-if="rightArrow" href="#" v-tooltip.left="tooltip('tooltip-next')" class="right" @click.prevent="sideNavRight()"><span class="btn fa fa-chevron-right fa-2x" /></a> -->
+          <a v-if="rightArrow" href="#" class="right" @click.prevent="sideNavRight()"><span class="btn fa fa-chevron-right fa-2x" /></a>
+          <!-- <component v-if="enableSideNavRightArrow" is="tooltipNext" /> -->
         </div>
     </nav>
     <div id="main-panel" class="panel panel-default" :class="sideNavPropertiesForMain">
@@ -78,7 +80,7 @@
       <div id="main-bottom-panel" class="panel-footer" :class="mainBottomPanelStatus">
         <div id="message-panel" class="panel-default">
           <!-- tidy up messages view with components -->
-          <div v-show="checkForMessages()">
+          <div v-show="toggleMessageView()">
             <ul class="nav navbar-right closebtn">
               <li>
                 <a href="#" @click="closeMessages()">
@@ -151,10 +153,13 @@ import {
   getCurrentColumnIndexOrMin,
   getCurrentColumnIndexOrMax,
   reselectCurrentCellOrMin,
-  incrementActiveColumn,
-  decrementActiveColumn,
+  // incrementColumn,
+  // decrementColumn,
   getActiveSelected,
-  reselectCellOrMin
+  reselectCellOrMin,
+  waitForHotInstance,
+  getColumnCountFromInstance,
+  getColumnCountFromInstanceId
 } from '../hot.js'
 import about from '../partials/About'
 import preferences from '../partials/Preferences'
@@ -180,9 +185,31 @@ import {onNextHotIdFromTabRx, hotIdFromTab$} from '@/rxSubject.js'
 import {getHotIdFromTabIdFunction} from '@/store/modules/hots.js'
 import {isCaseSensitive} from '@/frictionlessUtilities'
 import Handsontable from 'handsontable/dist/handsontable.full.min.js'
+import AsyncComputed from 'vue-async-computed'
+import Vue from 'vue'
+Vue.use(AsyncComputed)
 export default {
   name: 'home',
   mixins: [HomeTooltip],
+  asyncComputed: {
+    leftArrow: {
+      async get() {
+        return this.sideNavView === 'column' && this.currentColumnIndex > 0
+      }
+    },
+    rightArrow: {
+      async get() {
+        let columnCount = getColumnCount()
+        if (columnCount) {
+          return this.sideNavView === 'column' && this.currentColumnIndex < columnCount - 1
+        }
+      },
+      watch() {
+        let temp = this.currentColumnIndex
+        let temp2 = this.sideNavView
+      }
+    }
+  },
   data() {
     return {
       currentHotId: '',
@@ -194,8 +221,8 @@ export default {
       sideNavViewTitle: '',
       sideNavTransition: '',
       enableTransition: false,
-      enableSideNavLeftArrow: true,
-      enableSideNavRightArrow: true,
+      // enableSideNavLeftArrow: true,
+      // enableSideNavRightArrow: true,
       messagesType: '',
       messages: false,
       messagesTitle: 'Feedback',
@@ -208,6 +235,8 @@ export default {
       panelWidthDiff: null,
       panelHeightDiff: null,
       previousComments: [],
+      errorsWindowId: null,
+      activeSelected: [],
       toolbarMenus: [{
         name: 'Guess',
         id: 'guess-column-properties',
@@ -296,7 +325,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId']),
+    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId', 'getHotSelection']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -331,7 +360,8 @@ export default {
       'resetTablePropertiesToObject',
       'resetColumnPropertiesToObject',
       'pushTableProperty',
-      'pushPackageProperty'
+      'pushPackageProperty',
+      'pushHotSelection'
     ]),
     saveHotPanelDimensions: function() {
       this.widthInner1 = document.querySelector('.ht_master .wtHolder').offsetWidth
@@ -433,8 +463,12 @@ export default {
       hot.selectCell(rowIndex, columnIndex)
     },
     selectionListener: function() {
-      this.updateActiveColumn()
-      this.resetSideNavArrows()
+      // with deselectOutsideHot set to true, we need to track last selection.
+      let hot = HotRegister.getActiveInstance()
+      let selected = hot.getSelected()
+      this.pushHotSelection({hotId: hot.guid, selected: selected})
+      this.updateActiveColumn(selected)
+      // this.resetSideNavArrows()
     },
     inferColumnProperties: async function() {
       try {
@@ -444,12 +478,6 @@ export default {
       } catch (err) {
         console.log(err)
       }
-    },
-    // TODO: tidy up error view handling and consistency in dependent usages
-    closeMessages: function() {
-      this.messages = false
-      this.messagesType = ''
-      this.messageTitle = ''
     },
     // TODO: tidy up message objects
     reportValidationRowErrors: function(errorCollection) {
@@ -544,15 +572,10 @@ export default {
       this.pushTab(nextTabId)
     },
     setActiveTabWrapper: function(tabId) {
-      // for (let hotId of HotRegister.getAllHotIds()) {
-      //   let hot = HotRegister.getInstance(hotId)
-      //   hot.updateSettings({outsideClickDeselects: true})
-      //   // FOR testing: https://github.com/ODIQueensland/data-curator/issues/387
-      //   let plugin = hot.getPlugin('autoRowSize')
-      //   // console.log(`sync calc: ${plugin.getSyncCalculationLimit()}`)
-      //   // console.log(`first row: ${plugin.getFirstVisibleRow()}`)
-      //   console.log(`second row: ${plugin.getLastVisibleRow()}`)
-      // }
+      let hot = HotRegister.getActiveInstance()
+      if (hot) {
+        hot.deselectCell()
+      }
       this.setActiveTab(tabId)
     },
     loadDefaultDataIntoContainer: function(container) {
@@ -582,6 +605,7 @@ export default {
       // hack! - force data to wait for latest render e.g, for loader message
       window.setTimeout(function() {
         loadData(activeHotId, data, format)
+        getCurrentColumnIndexOrMin()
       }, 1)
       this.pushHotTab({
         'hotId': activeHotId,
@@ -645,23 +669,12 @@ export default {
       let toolbarMenu = this.toolbarMenus[index]
       return toolbarMenu.sideNavPosition && toolbarMenu.sideNavView
     },
-    resetSideNavArrows: function() {
-      this.enableSideNavLeftArrow = false
-      this.enableSideNavRightArrow = false
-      if (this.sideNavView === 'column') {
-        this.enableSideNavLeftArrow = this.currentColumnIndex > 0
-        this.enableSideNavRightArrow = this.currentColumnIndex < getColumnCount() - 1
-      }
-    },
     updateSideNavState: function() {
       let toolbarMenu = this.toolbarMenus[this.toolbarIndex]
       this.sideNavPosition = toolbarMenu.sideNavPosition
       this.sideNavView = toolbarMenu.sideNavView
       this.sideNavViewTitle = toolbarMenu.name
       this.openSideNav()
-      // ensure a cell is selected before any of menu tools start
-      reselectCurrentCellOrMin()
-      this.resetSideNavArrows()
     },
     updateToolbarMenuForSideNav: function(index) {
       if (this.sideNavStatus === 'closed' || this.toolbarIndex === -1) {
@@ -673,28 +686,12 @@ export default {
       this.toolbarIndex = index
       this.updateSideNavState()
     },
-    updateActiveColumn: function() {
-      let selected = getActiveSelected()
+    updateActiveColumn: function(selected) {
       if (selected) {
         this.currentColumnIndex = selected[1]
       } else {
-        // ('Cannot update active column without a column selected.')
+        console.log('Cannot update active column without a column selected.')
       }
-    },
-    updateToolbarMenuForColumn: function(index) {
-      let currentColIndex = getCurrentColumnIndexOrMax()
-      if (index < this.toolbarIndex && currentColIndex > 0) {
-        decrementActiveColumn(currentColIndex)
-        this.updateActiveColumn()
-      } else if (index > this.toolbarIndex) {
-        if (currentColIndex < getColumnCount()) {
-          incrementActiveColumn(currentColIndex)
-          this.updateActiveColumn()
-        } else {
-          this.updateToolbarMenu(index)
-        }
-      }
-      this.resetSideNavArrows()
     },
     updateToolbarMenuForButton: function(index) {
       this.toolbarIndex = index
@@ -719,27 +716,17 @@ export default {
       } else {
         this.updateToolbarMenuForButton(index)
       }
-    },
-    updateToolbarMenuFromArrows: function(index) {
-      if (this.sideNavView === 'column') {
-        this.updateToolbarMenuForColumn(index)
-      } else if (index > 0) {
-        this.updateToolbarMenu(index)
-      }
+      this.reselectHotCell()
     },
     sideNavLeft: function() {
-      let nextIndex = this.toolbarIndex - 1
-      let nextToolbar = this.toolbarMenus[nextIndex]
-      if (nextToolbar.sideNavView === 'column') {
-        getCurrentColumnIndexOrMax()
-      }
-      this.updateToolbarMenuFromArrows(nextIndex)
+      let activeHot = HotRegister.getActiveInstance()
+      let selection = this.getHotSelection(activeHot.guid)
+      activeHot.selectCell(selection[0], selection[1] - 1)
     },
     sideNavRight: function() {
-      let nextIndex = this.toolbarIndex + 1
-      if (nextIndex < this.toolbarMenus.length) {
-        this.updateToolbarMenuFromArrows(nextIndex)
-      }
+      let activeHot = HotRegister.getActiveInstance()
+      let selection = this.getHotSelection(activeHot.guid)
+      activeHot.selectCell(selection[0], selection[1] + 1)
     },
     createTabId: function(tabId) {
       return `tab${tabId}`
@@ -835,23 +822,47 @@ export default {
       }
       return index
     },
-    getErrorMessages: function() {
-      if (this.messagesType === 'error') {
-        return this.messages
-      }
-    },
     focusOnWindow: function() {
       ipc.send('focusMainWindow')
     },
     packErrorMessages: function() {
       return {title: this.messagesTitle, messages: this.messages}
     },
-    checkForMessages: function() {
+    closeMessages: function() {
+      this.messages = false
+      this.messagesType = ''
+      this.messageTitle = ''
+    },
+    closeMessagePanel: function() {
+      this.errorsWindowId = null
+    },
+    toggleMessageView: function() {
+      if (this.messagesType === 'error' && getWindow('errors')) {
+        return false
+      }
       return this.messages
     },
-    openErrorsWindow: function() {
-      ipc.send('showErrorsWindow')
-      getWindow('errors').webContents.send('errorMessages', this.packErrorMessages())
+    openErrorsWindow: async function() {
+      await ipc.send('showErrorsWindow')
+    },
+    sendErrorsToErrorsWindow: function() {
+      const browserWindow = getWindow('errors')
+      if (browserWindow) {
+        if (this.messages && this.messagesType === 'error') {
+          browserWindow.webContents.send('errorMessages', this.packErrorMessages())
+        } else {
+          browserWindow.webContents.send('errorMessages')
+        }
+        // messages are to appear in 1 window or the other, not both
+        this.closeMessages()
+      }
+    },
+    reselectHotCell: function() {
+      let hot = HotRegister.getActiveInstance()
+      let selection = this.getHotSelection(hot.guid)
+      if (selection) {
+        hot.selectCell(selection[0], selection[1], selection[2], selection[3])
+      }
     }
   },
   components: {
@@ -867,10 +878,13 @@ export default {
       try {
         let hotId = await this.getHotIdFromTabId(tabId)
         this.currentHotId = hotId
-        reselectCellOrMin(hotId)
+        // reselectCellOrMin(hotId)
+        this.reselectHotCell()
       } catch (err) {
         console.log('Problem with getting hot id from watched tab', err)
       }
+      this.closeMessages()
+      this.sendErrorsToErrorsWindow()
     },
     sideNavPropertiesForMain: function() {
       this.testSideMain()
@@ -878,17 +892,12 @@ export default {
     messageStatus: function() {
       this.testBottomMain()
     },
-    messages: function(messages) {
+    messages: function() {
       if (this.messagesType === 'error') {
         this.setHotComments()
-      } else {
-        console.log('sending empty error messages')
-        const browserWindow = getWindow('errors')
-        console.log(`browser window is`)
-        console.log(browserWindow)
-        if (browserWindow) {
-          browserWindow.webContents.send('errorMessages')
-        }
+      }
+      if (this.messages) {
+        this.sendErrorsToErrorsWindow()
       }
     }
   },
@@ -903,15 +912,9 @@ export default {
         vueGoToCell(arg.row, arg.column)
       }, 100, arg)
     })
-    const vueGetErrorMessages = this.getErrorMessages
-    const vuePackErrorMessages = this.packErrorMessages
+    const vueSendErrorsToErrorsWindow = this.sendErrorsToErrorsWindow
     ipc.on('getErrorMessages', function(event, arg) {
-      let messages = vueGetErrorMessages()
-      if (messages) {
-        getWindow('errors').webContents.send('errorMessages', vuePackErrorMessages())
-      } else {
-        getWindow('errors').webContents.send('errorMessages')
-      }
+      vueSendErrorsToErrorsWindow()
     })
     const vueHoverToSelectErrorCell = this.hoverToSelectErrorCell
     ipc.on('hoverToSelectErrorCell', function(event, arg) {

@@ -30,6 +30,9 @@ const getters = {
   getHotTabs: state => {
     return state.hotTabs
   },
+  getHotSelection: (state, getters) => (hotId) => {
+    return state.hotTabs[hotId].selected
+  },
   getTableProperties: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].tableProperties || {}
   },
@@ -140,6 +143,9 @@ const mutations = {
     if (hotTab.tabId) {
       _.set(state.hotTabs, `${hotId}.tabId`, hotTab.tabId)
     }
+  },
+  pushHotSelection(state, property) {
+    _.set(state.hotTabs, `${property.hotId}.selected`, property.selected)
   },
   pushAllColumnsProperty(state, properties) {
     for (const [index, value] of properties.values.entries()) {
