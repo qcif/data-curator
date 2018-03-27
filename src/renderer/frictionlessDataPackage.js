@@ -131,7 +131,8 @@ function hasAllResourceRequirements(hot, requiredMessages) {
   if (!columnProperties) {
     requiredMessages.push(`Column properties must be set.`)
   } else {
-    if (!hasAllColumnNames(hot.guid, columnProperties)) {
+    let names = getValidNames(hot.guid)
+    if (!hasAllColumnNames(hot.guid, columnProperties, names)) {
       requiredMessages.push(`Column property names cannot be empty - set a Header Row`)
     }
   }

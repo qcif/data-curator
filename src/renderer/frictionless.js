@@ -205,7 +205,8 @@ function hasColumnProperties(hotId, callb) {
     ])
     return false
   }
-  if (!hasAllColumnNames(hotId, columnProperties)) {
+  let names = getValidNames(hotId)
+  if (!hasAllColumnNames(hotId, columnProperties, names)) {
     callb([
       {
         message: `Every Column property, including the column properties of any foreign keys, must have a unique 'name'.`,
