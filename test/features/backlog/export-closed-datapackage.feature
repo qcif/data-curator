@@ -7,8 +7,8 @@ Feature: Export Closed Data Package
 
   Operates the same as Export Data Package but allows a non-open licence to be applied
 
-    Scenario: Export Closed Data Package
-    Given I have opened Data Curator
+  Scenario: Export Closed Data Package
+    Given Data Curator is open
     And I have completed all the required column, table and data package properties
     And I have not selected an Open Data Licence
     And I have purchased the enterprise add in
