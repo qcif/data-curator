@@ -2278,9 +2278,9 @@ component-inherit@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/component-inherit/-/component-inherit-0.0.3.tgz#645fc4adf58b72b649d5cae65135619db26ff143"
 
-components-font-awesome@^4.7.0:
-  version "4.7.0"
-  resolved "https://registry.yarnpkg.com/components-font-awesome/-/components-font-awesome-4.7.0.tgz#a7550094b6e2cb5cd7dce49c405771c533e9cfe1"
+components-font-awesome@^5.0.6:
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/components-font-awesome/-/components-font-awesome-5.0.6.tgz#0974f26bd5d741dd49a83af2c1ce4ba311256e7c"
 
 compress-commons@^1.2.0:
   version "1.2.2"
