@@ -78,7 +78,6 @@ export default {
       this.title = errorMessages.title
     },
     resetErrorMessages: function() {
-      console.log('resetting...')
       this.messages = false
       this.title = ''
       // close window
