@@ -12,7 +12,7 @@ Feature: Print
   'Print' can be invoked by a menu item or a keyboard shortcut
 
   Scenario: Use the menu to close all tabs, all work saved
-    Given I have opened Data Curator
+    Given Data Curator is open
     And I have saved a Data Package
     When I invoke 'Print'
     Then print a one page sample of the Data

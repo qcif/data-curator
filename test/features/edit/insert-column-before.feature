@@ -1,13 +1,14 @@
 Feature: Insert Column Before
-  As a Data Packager
-  I want to insert another column before the current column
-  So that I can add more data to the data tab
+  As a Data Packager  
+  I want to insert another column before the current column  
+  So that I can add more data to the data table  
 
-  The "Insert Column Before" command can be invoked using a menu item or keyboard shortcut
+  RULES
+  =====
+
+    - The "Insert Column Before" command can be invoked using a menu item or keyboard shortcut
 
   Scenario: Use the menu to insert a column before the current column
-    Given I have opened Data Curator
-    And the cursor is in a column
-    When I invoke the "Insert Column Before" command
+    Given the cursor is in a data table
+    When "Insert Column Before"  is invoked
     Then insert a column before the current column
-    And move the cursor to the new column and the current row

@@ -4,7 +4,7 @@ import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
 import path from 'path'
 import {createZipFile} from '@/exportPackage.js'
-import {hasAllColumnNames} from '@/frictionlessUtilities.js'
+import {hasAllColumnNames, getValidNames} from '@/frictionlessUtilities.js'
 
 export async function createDataPackage() {
   const errorMessages = []
@@ -82,7 +82,7 @@ async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
     try {
       let resource = await createValidResource(hotId, errorMessages)
       if (!resource) {
-        console.log(`did not add resource: ${hotId}`)
+        console.log(`Did not add resource: ${hotId}`)
         break
       }
       if (resourcePaths.indexOf(resource.descriptor.path) !== -1) {
@@ -131,7 +131,8 @@ function hasAllResourceRequirements(hot, requiredMessages) {
   if (!columnProperties) {
     requiredMessages.push(`Column properties must be set.`)
   } else {
-    if (!hasAllColumnNames(hot.guid, columnProperties)) {
+    let names = getValidNames(hot.guid)
+    if (!hasAllColumnNames(hot.guid, columnProperties, names)) {
       requiredMessages.push(`Column property names cannot be empty - set a Header Row`)
     }
   }

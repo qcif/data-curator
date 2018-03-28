@@ -6,7 +6,7 @@ Feature: Open a Google Sheet
   So that I can describe, validate and package the data
 
   Scenario: Use the menu to open an Google Sheet
-    Given I have opened Data Curator
+    Given Data Curator is open
     When I select Open, Google Sheet from the menu
     Then a prompt, requesting the file name and location (url) is shown
     And a prompt, requesting the sheet to open is shown

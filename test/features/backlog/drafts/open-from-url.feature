@@ -1,13 +1,15 @@
-@draft
+@draft @backlog
 
 Feature: Open from a URL
   As a User
   I want to open an file from a URL
   So that can I don't have to down the file and then open it
 
-  Can type be auto-detected?
-  May just be variant on other open command but specify url instead of directory
+  QUESTIONS
+  =========
 
+  - Can type be auto-detected?
+  - May just be variant on "Open File" command but specify url instead of directory
 
   Scenario: Use the menu to open an Google Sheet
     Given I have opened Data Curator

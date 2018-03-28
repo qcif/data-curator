@@ -3,7 +3,7 @@
 [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/?svg=true)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
 
  :sparkles: [Download Data Curator](https://github.com/ODIQueensland/data-curator/releases/latest) for Windows or macOS.
-:bulb:[Request a new feature](https://github.com/ODIQueensland/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=Stephen-Gates) :beetle: [Report a bug](https://github.com/ODIQueensland/data-curator/issues/new?template=bug.md&labels=problem:Bug) :rocket: [View our plans](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open)
+:bulb:[Request a new feature](https://github.com/ODIQueensland/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=Stephen-Gates) :beetle: [Report a bug](https://github.com/ODIQueensland/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=Stephen-Gates) :rocket: [View our plans](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open)
 
 # Data Curator
 
@@ -37,7 +37,7 @@ Using data from any of these sources, you can:
 
 - automatically create a [schema](http://frictionlessdata.io/specs/table-schema/) that describes the data fields
 - refine the schema to include extra [data validation rules](http://frictionlessdata.io/specs/table-schema/#constraints)
-- describe the [provenance](https://relishapp.com/odi-australia/data-curator/docs/tools/set-provenance-information) of your data
+- describe the provenance of your data
 - save data as a valid CSV file in various [CSV dialects](http://frictionlessdata.io/specs/csv-dialect/)
 
 The schema enables you to:
@@ -158,8 +158,7 @@ We have adopted [Standard JS](https://standardjs.com) as our JavaScript coding s
 Acceptance tests for [Data Curator](https://github.com/ODIQueensland/data-curator/blob/master/README.md) are:
 
 - written using the [Gherkin language](https://cucumber.io/docs/reference#gherkin) ([learn more](https://media.pragprog.com/titles/hwcuc/gherkin.pdf)) and stored [on GitHub](https://github.com/ODIQueensland/data-curator/tree/master/test/features)
-- [shared](https://relishapp.com/odi-australia/data-curator/docs) using [Relish](https://relishapp.com) (which will be replaced by Cucumber Pro)
-- [shared privately](https://app.cucumber.pro/projects/data-curator/documents/branch/develop) using the [Cucumber Pro](https://cucumber.io/pro) beta
+- [shared](https://app.cucumber.pro/projects/data-curator/documents/branch/develop) using the [Cucumber Pro](https://cucumber.io/pro) beta.
 - arranged in folders like the application menu structure
 - integrated with:
 
@@ -172,10 +171,6 @@ Acceptance tests for [Data Curator](https://github.com/ODIQueensland/data-curato
   - other common testing tools, such as
     - [Chai](http://chaijs.com)
     - [Spectron-fake-dialog](https://github.com/joe-re/spectron-fake-dialog)
-
-To push the acceptance tests (.feature and .md files) to Relish:
-
-`relish push odi-australia/data-curator path /your-local-path/data-curator/test/features`
 
 Acceptance tests are automatically added to Cucumber Pro via a GitHub webhook.
 

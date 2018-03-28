@@ -10,13 +10,13 @@ Feature: Show validation results as a graphic
   See http://setosa.io/blog/2014/08/03/csv-fingerprints/
 
   Scenario: Show validation results as a graphic
-    Given I have opened Data Curator
+    Given Data Curator is open
     And I have validated the table
     When I select "Show overview" on the error message panel
     Then display a csv-fingerprint graphic in the panel
 
   Scenario: Hide validation results graphic
-    Given I have opened Data Curator
+    Given Data Curator is open
     And I have shown the overview on the error message panel
     When I select "Close overview" on the error message panel
     Then hide the csv-fingerprint graphic in the panel

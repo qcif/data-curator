@@ -8,7 +8,7 @@ export function setActiveGlobal(filename, title) {
 
 export function resetGlobalFilenames(filenames) {
   remote.getGlobal('tab').filenames.length = 0
-  remote.getGlobal('tab').filenames.push(...filenames)
+  remote.getGlobal('tab').filenames = filenames
 }
 
 export function extractNameFromFile(fullPath) {

@@ -148,6 +148,18 @@ let rendererConfig = {
         ? path.resolve(__dirname, '../node_modules')
         : false
     }),
+    new HtmlWebpackPlugin({
+      filename: 'errors.html',
+      template: path.resolve(__dirname, '../src/errors.ejs'),
+      minify: {
+        collapseWhitespace: true,
+        removeAttributeQuotes: true,
+        removeComments: true
+      },
+      nodeModules: process.env.NODE_ENV !== 'production'
+        ? path.resolve(__dirname, '../node_modules')
+        : false
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new FixDefaultImportPlugin()

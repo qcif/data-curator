@@ -1,4 +1,3 @@
-# ignore this features and don't display them in cucumber pro
+# ignore this features and doesn't display them in cucumber pro
 test/features/backlog
 test/features/version_2
-test/features/drafts

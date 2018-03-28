@@ -1,3 +1,5 @@
+@backlog
+
 Feature: Set Preferences using Configuration File
   As a Open Data leader in my organisation
   I want to deploy Data Curator with some preset preference settings
@@ -16,6 +18,6 @@ Feature: Set Preferences using Configuration File
 
 Scenario: Set Preferences using Configuration File
   Given I have defined a Configuration file
-  When I open Data Curator
+  When Data Curator is opened 
   Then read the Configuration file
   And default the preference settings from the values in the configuration file

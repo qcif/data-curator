@@ -6,6 +6,7 @@
       <component :is="formprop.tooltipView"/>
       <component v-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
       <!-- <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)"/> -->
+      <textarea v-else-if="formprop.key === 'description'" rows="4" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" class="form-control label-sm col-sm-9" :id="formprop.key" ></textarea>
       <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" v-validate="validationRules(formprop.key)" :name="formprop.key"/>
       <div v-show="errors.has(formprop.key) && removeProperty(formprop.key)" class="row help validate-danger">
         {{ errors.first(formprop.key)}}
@@ -26,6 +27,7 @@ import {
   mapState,
   mapGetters
 } from 'vuex'
+import autosize from 'autosize'
 export default {
   extends: SideNav,
   name: 'packager',
@@ -115,9 +117,15 @@ export default {
       this.setProperty(key, value)
       return true
     }
+  },
+  mounted: function() {
+    autosize(document.querySelector('textarea'))
   }
 }
 </script>
 <style lang="styl" scoped>
 @import '~static/css/validationrules'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/sidenav'
 </style>

@@ -1,7 +1,7 @@
 const state = {
   hotTabs: {},
   packageProperties: {},
-  provenanceProperties: { markdown: '' }
+  provenanceProperties: { markdown: '', errors: [] }
 }
 
 const tableFields = ['encoding', 'format', 'mediatype', 'missingValues', 'name', 'path', 'profile', 'sources', 'title', 'primaryKeys', 'description', 'licenses']
@@ -29,6 +29,9 @@ export function getHotIdFromTabIdFunction() {
 const getters = {
   getHotTabs: state => {
     return state.hotTabs
+  },
+  getHotSelection: (state, getters) => (hotId) => {
+    return state.hotTabs[hotId].selected
   },
   getTableProperties: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].tableProperties || {}
@@ -132,6 +135,14 @@ const mutations = {
   pushProvenance(state, value) {
     _.set(state.provenanceProperties, 'markdown', value)
   },
+  pushProvenanceErrors(state, value) {
+    // ensure set to new object
+    _.set(state.provenanceProperties, 'errors', value)
+  },
+  removeProvenanceErrors(state) {
+    // ensure set to new empty object
+    state.provenanceProperties.errors = []
+  },
   pushHotTab(state, hotTab) {
     let hotId = hotTab.hotId
     if (!hotId) {
@@ -140,6 +151,9 @@ const mutations = {
     if (hotTab.tabId) {
       _.set(state.hotTabs, `${hotId}.tabId`, hotTab.tabId)
     }
+  },
+  pushHotSelection(state, property) {
+    _.set(state.hotTabs, `${property.hotId}.selected`, property.selected)
   },
   pushAllColumnsProperty(state, properties) {
     for (const [index, value] of properties.values.entries()) {

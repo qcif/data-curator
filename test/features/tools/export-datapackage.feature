@@ -1,33 +1,27 @@
 Feature: Export Data Package
-  As a Data Packager
-  I want to export the data and associated metadata in a data package
-  So that Data Consumers can access usuable open data and associated metadata in a single file
+  As a Data Packager  
+  I want to export the data and associated metadata in a data package  
+  So that Data Consumers can access usuable open data and associated metadata in a single file  
 
-  Specification:
-  - The Data Package properties are defined at http://frictionlessdata.io/specs/data-package/
-  - The application only works with Tabular Data Packages, defined at http://frictionlessdata.io/specs/tabular-data-package/
+  RULES
+  =====
 
-  Export data package creates a datapackage.zip file that includes:
-  - readme.md (containing the provenance information)
-  - datapackage.json (containing the data package, table (data resource), csv dialect and column (schema) properties)
-  - a data directory (containing each data file in the appropriate separated value file format)
-
-  Rules to enable export data package menu item:
-  - Licence property is mandatory
-  - Successful validation against Table Schema
-
-  Defaults:
-  - Default the file save location from the Preferences/Settings (when implemented)
-  - Default the filename to datapackage name property
-  - Set Created to Now - see http://frictionlessdata.io/specs/data-package/#created
-  - Set Profile to `tabular-data-package` - see http://frictionlessdata.io/specs/tabular-data-package/#specification
-
-  Export Data Package can be invoked by a menu item or the toolbar
+    - Export data package creates a datapackage.zip file that includes:
+      - readme.md (containing the provenance information)
+      - datapackage.json (containing the data package, table (data resource), csv dialect and column (schema) properties)
+      - a data directory (containing each data file in the appropriate separated value file format)
+    - Mandatory column, table and package properties must be set to export data package
+      - Mandatory metadata is defined in the [specification](http://frictionlessdata.io/specs)
+      - Licence property is also mandatory
+      - Provenance is also mandatory
+      - Successful validation against Table Schema is also desirable
+    - Set default values
+    - "Export Data Package" can be invoked by a menu item or the toolbar
 
   Scenario: Use the menu to Export Data Package
-    Given I have opened Data Curator
-    And I have completed all the required column, table and data package properties
-    When I invoke the "Export Data Package" command
+    Given Data Curator is open
+    And all the required column, table and data package properties have been completed
+    When "Export Data Package" is invoked
     Then prompt for location and name to save the file
     And assemble the data, properties and provenance information into a data package file
     And save it to the location

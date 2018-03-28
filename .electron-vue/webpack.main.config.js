@@ -9,14 +9,6 @@ const webpack = require('webpack')
 const BabiliWebpackPlugin = require('babili-webpack-plugin')
 const FixDefaultImportPlugin = require('webpack-fix-default-import-plugin')
 
-let yargsParsed = require('yargs-parser').detailed(process.argv.slice(2), {
-  alias: {
-    filename: ['f']
-  },
-  configuration: {
-    'dot-notation': false
-  }
-})
 let mainConfig = {
   entry: {
     main: path.join(__dirname, '../src/main/index.js')
@@ -64,8 +56,7 @@ let mainConfig = {
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
-    new FixDefaultImportPlugin(),
-    new webpack.DefinePlugin({clFilename: JSON.stringify(yargsParsed.argv.filename)})
+    new FixDefaultImportPlugin()
   ],
   target: 'electron-main'
 }
