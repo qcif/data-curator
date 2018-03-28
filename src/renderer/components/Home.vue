@@ -91,18 +91,20 @@
               <nav class="navbar errors">
                 <div class="container-fluid">
                   <i class="navbar-text">{{messages.length}} Errors</i>
-                  <ul class="nav navbar-nav navbar-left">
+                  <ul class="nav navbar-nav navbar-left" >
                     <li>
-                      <a href="#">
+                      <a href="#" v-tooltip.top="tooltip('tooltip-open-errors-window')">
                         <span class="btn-default fas fa-external-link-alt"  @click="openErrorsWindow()"/>
                       </a>
                     </li>
+                    <component is="tooltipOpenErrorsWindow" />
                     <li>
-                      <a href="#">
+                      <a href="#" v-tooltip.top="tooltip('tooltip-write-errors-provenance')">
                         <object data="static/img/validation-results.svg" type="image/svg+xml" />
                         <!-- <span class="btn-default fas fa-file-alt"  /> -->
                       </a>
                     </li>
+                    <component is="tooltipWriteErrorsProvenance" />
                   </ul>
                 </div>
               </nav>
