@@ -1,9 +1,12 @@
 #provenanceProperties
   #provenance-description
-  #provenance-errors
     background-color #fff
     width 100%
     border 1px solid #ccc
+  #provenance-errors
+    @extend #provenanceProperties #provenance-description
+    cursor not-allowed
+
   #provenance-preview
   #provenance-errors-preview
     @extend #provenanceProperties #provenance-description

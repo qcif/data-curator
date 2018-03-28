@@ -20,7 +20,7 @@
       </template>
       <template v-else>
         <textarea v-model="provenance" :placeholder="placeholder" rows="25" cols="55" class="form-control input-sm col-sm-9" id="provenance-description" />
-        <textarea v-model="provenanceErrors" rows="10" cols="55" class="form-control input-sm col-sm-9" id="provenance-errors" />
+        <textarea readonly="readonly" v-model="provenanceErrors" rows="10" cols="55" class="form-control input-sm col-sm-9" id="provenance-errors" />
       </template>
     </div>
   </div>
@@ -35,6 +35,7 @@ import {
   mapState,
   mapGetters
 } from 'vuex'
+import os from 'os'
 export default {
   extends: SideNav,
   name: 'provenance',
@@ -63,9 +64,26 @@ export default {
     togglePreview: function() {
       this.isPreview = !this.isPreview
     },
+    resetProvenanceErrors: function() {
+      this.provenanceErrors = ''
+    },
     addErrorsToProvenance: function() {
-      // this.pushProvenanceErrors(errors)
-      this.provenanceErrors = this.getProvenance.errors
+      this.resetProvenanceErrors()
+      this.provenanceErrors = this.compileErrors()
+    },
+    compileErrors: function() {
+      let compiled = _.template(`### Known Data Errors
+
+This data is published with the following data errors:
+
+<%= errorsList %>`
+      )
+      return compiled({ 'errorsList': this.errorsListToString() })
+    },
+    errorsListToString: function() {
+      return _.map(this.getProvenance.errors, function(error) {
+        return `${error.message}${os.EOL}`
+      })
     }
   },
   watch: {
@@ -75,6 +93,8 @@ export default {
   },
   mounted: function() {
     this.provenance = this.getProvenance.markdown
+    this.addErrorsToProvenance()
+    document.querySelector('#provenance-errors').focus()
   },
   data() {
     return {
