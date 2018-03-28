@@ -38,7 +38,7 @@
           </a>
         </div>
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
-          <component :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :cIndex="currentColumnIndex" :reselectHotCell="reselectHotCell">
+          <component ref="sidenavref" :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :cIndex="currentColumnIndex" :reselectHotCell="reselectHotCell">
           </component>
         </transition>
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
@@ -90,19 +90,21 @@
             <template  v-if="messagesType === 'error'">
               <nav class="navbar errors">
                 <div class="container-fluid">
-                  <i class="navbar-text">{{messages.length}} Errors</i>
-                  <ul class="nav navbar-nav navbar-left">
+                  <i class="navbar-text">{{messages.length}} Error(s)</i>
+                  <ul class="nav navbar-nav navbar-left" >
                     <li>
-                      <a href="#">
-                        <span class="btn-default fas fa-external-link-alt"  @click="openErrorsWindow()"/>
+                      <a href="#" v-tooltip.top="tooltip('tooltip-open-errors-window')" @click="openErrorsWindow()">
+                        <span class="btn-default fas fa-external-link-alt"/>
                       </a>
                     </li>
+                    <component is="tooltipOpenErrorsWindow" />
                     <li>
-                      <a href="#">
-                        <!-- <object data="static/img/validation-results.svg" type="image/svg+xml" /> -->
-                        <span class="btn-default fal fa-file-times"  />
+                      <a href="#" v-tooltip.top="tooltip('tooltip-write-errors-provenance')" @click.prevent="writeErrorsToProvenance()">
+                        <object data="static/img/validation-results.svg" type="image/svg+xml" />
+                        <!-- <span class="btn-default fas fa-file-alt"  /> -->
                       </a>
                     </li>
+                    <component is="tooltipWriteErrorsProvenance" />
                   </ul>
                 </div>
               </nav>
@@ -176,6 +178,7 @@ import {
 } from '../frictionless.js'
 import {createDataPackage} from '@/frictionlessDataPackage.js'
 import HomeTooltip from '../mixins/HomeTooltip'
+import ErrorsTooltip from '../mixins/ErrorsTooltip'
 import {
   fileFormats
 } from '../file-formats.js'
@@ -184,16 +187,23 @@ import 'lodash/lodash.min.js'
 import '../menu.js'
 import {unzipFile} from '@/importPackage.js'
 import {toggleHeaderWithFeedback} from '@/headerRow.js'
-import {onNextHotIdFromTabRx, hotIdFromTab$} from '@/rxSubject.js'
+import {onNextHotIdFromTabRx, hotIdFromTab$, provenanceErrors$} from '@/rxSubject.js'
+import VueRx from 'vue-rx'
+import {
+  Subscription
+} from 'rxjs/Subscription'
 import {getHotIdFromTabIdFunction} from '@/store/modules/hots.js'
 import {isCaseSensitive} from '@/frictionlessUtilities'
 import Handsontable from 'handsontable/dist/handsontable.full.min.js'
 import AsyncComputed from 'vue-async-computed'
 import Vue from 'vue'
 Vue.use(AsyncComputed)
+Vue.use(VueRx, {
+  Subscription
+})
 export default {
   name: 'home',
-  mixins: [HomeTooltip],
+  mixins: [HomeTooltip, ErrorsTooltip],
   asyncComputed: {
     isLeftArrowEnabled: {
       async get() {
@@ -364,7 +374,8 @@ export default {
       'resetColumnPropertiesToObject',
       'pushTableProperty',
       'pushPackageProperty',
-      'pushHotSelection'
+      'pushHotSelection',
+      'pushProvenanceErrors'
     ]),
     saveHotPanelDimensions: function() {
       this.widthInner1 = document.querySelector('.ht_master .wtHolder').offsetWidth
@@ -866,6 +877,14 @@ export default {
       if (selection) {
         hot.selectCell(selection[0], selection[1], selection[2], selection[3])
       }
+    },
+    writeErrorsToProvenance: function() {
+      this.pushProvenanceErrors(this.messages)
+      this.showProvenanceErrors()
+    },
+    showProvenanceErrors: function() {
+      this.updateToolbarMenu(3)
+      provenanceErrors$.next()
     }
   },
   components: {
@@ -979,6 +998,10 @@ export default {
       this.closeSideNav()
       this.addTab()
     })
+    const vueShowProvenanceErrors = this.showProvenanceErrors
+    ipc.on('showProvenanceErrors', function(event, arg) {
+      vueShowProvenanceErrors()
+    })
   },
   beforeCreate: function() {
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
@@ -1037,4 +1060,7 @@ export default {
 </style>
 <style lang="styl" scoped>
 @import '~static/css/validationrules'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/icons'
 </style>
