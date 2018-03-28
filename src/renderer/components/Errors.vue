@@ -1,9 +1,19 @@
 <template>
-<div id="container" class="container-fluid">
-
+<div id="container" class="container-fluid errors-window">
   <h1>{{title}}</h1>
-
   <div>
+  <template v-if="messages">
+    <i class="navbar-text">{{messages.length}} Error(s)</i>
+    <ul class="nav navbar-nav navbar-left" >
+      <li>
+        <a href="#" v-tooltip.top="tooltip('tooltip-write-errors-provenance')">
+          <object data="static/img/validation-results.svg" type="image/svg+xml" />
+          <!-- <span class="btn-default fas fa-file-alt"  /> -->
+        </a>
+      </li>
+      <component is="tooltipWriteErrorsProvenance" />
+    </ul>
+   </template>
    <vue-good-table
      :columns="columns"
      :rows="rows"
@@ -27,12 +37,14 @@ import VueGoodTable from 'vue-good-table'
 import {ipcRenderer as ipc} from 'electron'
 import {getWindow, closeSecondaryWindow} from '../index.js'
 import rowLink from '../partials/RowLink'
+import ErrorsTooltip from '../mixins/ErrorsTooltip'
 Vue.use(VueGoodTable)
 export default {
   name: 'errors',
   components: {
     rowLink
   },
+  mixins: [ErrorsTooltip],
   data() {
     return {
       title: '',
@@ -114,4 +126,10 @@ export default {
 </style>
 <style lang="styl" scoped>
 @import '~static/css/keyboard-help'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/tooltip'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/icons'
 </style>

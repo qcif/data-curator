@@ -9,6 +9,11 @@
             <span class="provenance-preview-icon glyphicon" :class="buttonIconClass"/>{{buttonText}}
         </button>
       </span>
+      <span class="provenance-errors">
+        <button v-show="!isPreview" type="button" class="btn btn-danger btn-sm">
+            <span class="provenance-errors-icon fas fa-times-circle"/>Remove Errors
+        </button>
+      </span>
       <template v-if="isPreview">
       <div v-html="markProvenanceText" class="col-sm-9" id="provenance-preview" />
       <div v-html="markErrorsText" class="col-sm-9" id="provenance-errors-preview" />

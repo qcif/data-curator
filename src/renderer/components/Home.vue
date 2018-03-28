@@ -90,11 +90,11 @@
             <template  v-if="messagesType === 'error'">
               <nav class="navbar errors">
                 <div class="container-fluid">
-                  <i class="navbar-text">{{messages.length}} Errors</i>
+                  <i class="navbar-text">{{messages.length}} Error(s)</i>
                   <ul class="nav navbar-nav navbar-left" >
                     <li>
-                      <a href="#" v-tooltip.top="tooltip('tooltip-open-errors-window')">
-                        <span class="btn-default fas fa-external-link-alt"  @click="openErrorsWindow()"/>
+                      <a href="#" v-tooltip.top="tooltip('tooltip-open-errors-window')" @click="openErrorsWindow()">
+                        <span class="btn-default fas fa-external-link-alt"/>
                       </a>
                     </li>
                     <component is="tooltipOpenErrorsWindow" />
@@ -178,6 +178,7 @@ import {
 } from '../frictionless.js'
 import {createDataPackage} from '@/frictionlessDataPackage.js'
 import HomeTooltip from '../mixins/HomeTooltip'
+import ErrorsTooltip from '../mixins/ErrorsTooltip'
 import {
   fileFormats
 } from '../file-formats.js'
@@ -195,7 +196,7 @@ import Vue from 'vue'
 Vue.use(AsyncComputed)
 export default {
   name: 'home',
-  mixins: [HomeTooltip],
+  mixins: [HomeTooltip, ErrorsTooltip],
   asyncComputed: {
     isLeftArrowEnabled: {
       async get() {
@@ -1039,4 +1040,7 @@ export default {
 </style>
 <style lang="styl" scoped>
 @import '~static/css/validationrules'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/icons'
 </style>
