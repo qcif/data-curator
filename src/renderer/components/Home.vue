@@ -99,8 +99,8 @@
                     </li>
                     <li>
                       <a href="#">
-                        <!-- <object data="static/img/validation-results.svg" type="image/svg+xml" /> -->
-                        <span class="btn-default fal fa-file-times"  />
+                        <object data="static/img/validation-results.svg" type="image/svg+xml" />
+                        <!-- <span class="btn-default fas fa-file-alt"  /> -->
                       </a>
                     </li>
                   </ul>
