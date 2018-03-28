@@ -9,8 +9,14 @@
             <span class="provenance-preview-icon glyphicon" :class="buttonIconClass"/>{{buttonText}}
         </button>
       </span>
-      <div v-if="isPreview" v-html="markText" class="col-sm-9" id="preview" />
-      <textarea v-else v-model="provenance" :placeholder="placeholder" rows="25" cols="55" class="form-control input-sm col-sm-9" id="description" />
+      <template v-if="isPreview">
+      <div v-html="markProvenanceText" class="col-sm-9" id="provenance-preview" />
+      <div v-html="markErrorsText" class="col-sm-9" id="provenance-errors-preview" />
+      </template>
+      <template v-else>
+        <textarea v-model="provenance" :placeholder="placeholder" rows="25" cols="55" class="form-control input-sm col-sm-9" id="provenance-description" />
+        <textarea v-model="provenanceErrors" rows="10" cols="55" class="form-control input-sm col-sm-9" id="provenance-errors" />
+      </template>
     </div>
   </div>
 </form>
@@ -32,8 +38,11 @@ export default {
     ...mapGetters([
       'getProvenance'
     ]),
-    markText() {
+    markProvenanceText() {
       return markdown().render(this.provenance)
+    },
+    markErrorsText() {
+      return markdown().render(this.provenanceErrors)
     },
     buttonIconClass() {
       return this.isPreview ? 'glyphicon-pencil' : 'glyphicon-search'
@@ -44,10 +53,14 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'pushProvenance'
+      'pushProvenance', 'removeProvenanceErrors'
     ]),
     togglePreview: function() {
       this.isPreview = !this.isPreview
+    },
+    addErrorsToProvenance: function() {
+      // this.pushProvenanceErrors(errors)
+      this.provenanceErrors = this.getProvenance.errors
     }
   },
   watch: {
@@ -62,6 +75,7 @@ export default {
     return {
       isPreview: false,
       provenance: '',
+      provenanceErrors: '',
       placeholder: `Short description of the dataset (the first sentence and first paragraph should be extractable to provide short standalone descriptions)
 
 ### Why was the dataset created?
