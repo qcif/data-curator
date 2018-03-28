@@ -122,7 +122,9 @@ export default {
       }
     })
     // Initial window open, we need to trigger errors call
-    this.getErrorMessages()
+    this.$nextTick(function() {
+      this.getErrorMessages()
+    })
   },
   watch: {
     messages: function(messages) {
