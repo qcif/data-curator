@@ -9,7 +9,7 @@ let allTablesAllColumnsFromSchema$ = new Subject()
 let activeTab$ = new Subject()
 let hotIdFromTab$ = new Subject()
 let allTabsTitles$ = new Subject()
-let selectedForeignTable$ = new Subject()
+// let selectedForeignTable$ = new Subject()
 // let getSelectedLocalKeys$ = new Subject()
 
 export function onNextHotIdFromTabRx(asyncFunction) {
@@ -34,6 +34,5 @@ export {
   activeTab$,
   allTablesAllColumnNames$,
   allTablesAllColumnsFromSchema$,
-  allTabsTitles$,
-  selectedForeignTable$
+  allTabsTitles$
 }

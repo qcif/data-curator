@@ -99,7 +99,7 @@
                     </li>
                     <component is="tooltipOpenErrorsWindow" />
                     <li>
-                      <a href="#" v-tooltip.top="tooltip('tooltip-write-errors-provenance')">
+                      <a href="#" v-tooltip.top="tooltip('tooltip-write-errors-provenance')" @click="writeErrorsToProvenance()">
                         <object data="static/img/validation-results.svg" type="image/svg+xml" />
                         <!-- <span class="btn-default fas fa-file-alt"  /> -->
                       </a>
@@ -367,7 +367,8 @@ export default {
       'resetColumnPropertiesToObject',
       'pushTableProperty',
       'pushPackageProperty',
-      'pushHotSelection'
+      'pushHotSelection',
+      'pushProvenanceErrors'
     ]),
     saveHotPanelDimensions: function() {
       this.widthInner1 = document.querySelector('.ht_master .wtHolder').offsetWidth
@@ -869,6 +870,11 @@ export default {
       if (selection) {
         hot.selectCell(selection[0], selection[1], selection[2], selection[3])
       }
+    },
+    writeErrorsToProvenance: function() {
+      this.pushProvenanceErrors(this.messages)
+      this.updateToolbarMenu(3)
+      document.querySelector('#provenance-errors').focus()
     }
   },
   components: {
