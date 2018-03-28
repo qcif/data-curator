@@ -1,10 +1,20 @@
 #provenanceProperties
-  #description
+  #provenance-description
     background-color #fff
     width 100%
     border 1px solid #ccc
-  #preview
-    @extend #provenanceProperties #description
+  #provenance-errors
+    @extend #provenanceProperties #provenance-description
+    cursor not-allowed
+
+  #provenance-preview
+  #provenance-errors-preview
+    @extend #provenanceProperties #provenance-description
     min-height: 14px
+  #provenance-preview
+    white-space pre-line
 .provenance-preview-icon
+.provenance-errors-icon
   margin-right 5px
+.provenance-errors
+  float right
