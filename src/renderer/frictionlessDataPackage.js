@@ -4,7 +4,7 @@ import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
 import path from 'path'
 import {createZipFile} from '@/exportPackage.js'
-import {hasAllColumnNames} from '@/frictionlessUtilities.js'
+import {hasAllColumnNames, getValidNames} from '@/frictionlessUtilities.js'
 
 export async function createDataPackage() {
   const errorMessages = []
