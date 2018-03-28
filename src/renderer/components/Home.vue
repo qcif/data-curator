@@ -38,7 +38,7 @@
           </a>
         </div>
         <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
-          <component :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :cIndex="currentColumnIndex" :reselectHotCell="reselectHotCell">
+          <component ref="sidenavref" :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :cIndex="currentColumnIndex" :reselectHotCell="reselectHotCell">
           </component>
         </transition>
         <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
@@ -99,7 +99,7 @@
                     </li>
                     <component is="tooltipOpenErrorsWindow" />
                     <li>
-                      <a href="#" v-tooltip.top="tooltip('tooltip-write-errors-provenance')" @click="writeErrorsToProvenance()">
+                      <a href="#" v-tooltip.top="tooltip('tooltip-write-errors-provenance')" @click.prevent="writeErrorsToProvenance()">
                         <object data="static/img/validation-results.svg" type="image/svg+xml" />
                         <!-- <span class="btn-default fas fa-file-alt"  /> -->
                       </a>
@@ -187,13 +187,20 @@ import 'lodash/lodash.min.js'
 import '../menu.js'
 import {unzipFile} from '@/importPackage.js'
 import {toggleHeaderWithFeedback} from '@/headerRow.js'
-import {onNextHotIdFromTabRx, hotIdFromTab$} from '@/rxSubject.js'
+import {onNextHotIdFromTabRx, hotIdFromTab$, provenanceErrors$} from '@/rxSubject.js'
+import VueRx from 'vue-rx'
+import {
+  Subscription
+} from 'rxjs/Subscription'
 import {getHotIdFromTabIdFunction} from '@/store/modules/hots.js'
 import {isCaseSensitive} from '@/frictionlessUtilities'
 import Handsontable from 'handsontable/dist/handsontable.full.min.js'
 import AsyncComputed from 'vue-async-computed'
 import Vue from 'vue'
 Vue.use(AsyncComputed)
+Vue.use(VueRx, {
+  Subscription
+})
 export default {
   name: 'home',
   mixins: [HomeTooltip, ErrorsTooltip],
@@ -873,8 +880,11 @@ export default {
     },
     writeErrorsToProvenance: function() {
       this.pushProvenanceErrors(this.messages)
+      this.showProvenanceErrors()
+    },
+    showProvenanceErrors: function() {
       this.updateToolbarMenu(3)
-      document.querySelector('#provenance-errors').focus()
+      provenanceErrors$.next()
     }
   },
   components: {
@@ -911,6 +921,7 @@ export default {
       if (this.messages) {
         this.sendErrorsToErrorsWindow()
       }
+      console.log('messages changed again')
     }
   },
   mounted: function() {
@@ -987,6 +998,10 @@ export default {
       })
       this.closeSideNav()
       this.addTab()
+    })
+    const vueShowProvenanceErrors = this.showProvenanceErrors
+    ipc.on('showProvenanceErrors', function() {
+      vueShowProvenanceErrors()
     })
   },
   beforeCreate: function() {

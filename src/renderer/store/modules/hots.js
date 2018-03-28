@@ -1,7 +1,7 @@
 const state = {
   hotTabs: {},
   packageProperties: {},
-  provenanceProperties: { markdown: '', errors: '' }
+  provenanceProperties: { markdown: '', errors: [] }
 }
 
 const tableFields = ['encoding', 'format', 'mediatype', 'missingValues', 'name', 'path', 'profile', 'sources', 'title', 'primaryKeys', 'description', 'licenses']
@@ -136,10 +136,12 @@ const mutations = {
     _.set(state.provenanceProperties, 'markdown', value)
   },
   pushProvenanceErrors(state, value) {
+    // ensure set to new object
     _.set(state.provenanceProperties, 'errors', value)
   },
-  removeProvenanceErrors(state, key) {
-    _.set(state.provenanceProperties, 'errors', '')
+  removeProvenanceErrors(state) {
+    // ensure set to new empty object
+    state.provenanceProperties.errors = []
   },
   pushHotTab(state, hotTab) {
     let hotId = hotTab.hotId

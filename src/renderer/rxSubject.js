@@ -1,6 +1,7 @@
 import { Subject } from 'rxjs/Subject'
 import { Observable } from 'rxjs/Observable'
 import { Subscription } from 'rxjs/Subscription'
+import { ReplaySubject } from 'rxjs/ReplaySubject'
 import 'rxjs/add/observable/fromPromise'
 // import Rx from 'rxjs/Rx'
 
@@ -9,6 +10,7 @@ let allTablesAllColumnsFromSchema$ = new Subject()
 let activeTab$ = new Subject()
 let hotIdFromTab$ = new Subject()
 let allTabsTitles$ = new Subject()
+let provenanceErrors$ = new ReplaySubject(1)
 // let selectedForeignTable$ = new Subject()
 // let getSelectedLocalKeys$ = new Subject()
 
@@ -34,5 +36,6 @@ export {
   activeTab$,
   allTablesAllColumnNames$,
   allTablesAllColumnsFromSchema$,
-  allTabsTitles$
+  allTabsTitles$,
+  provenanceErrors$
 }
