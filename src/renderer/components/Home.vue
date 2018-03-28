@@ -921,7 +921,6 @@ export default {
       if (this.messages) {
         this.sendErrorsToErrorsWindow()
       }
-      console.log('messages changed again')
     }
   },
   mounted: function() {
@@ -1000,7 +999,7 @@ export default {
       this.addTab()
     })
     const vueShowProvenanceErrors = this.showProvenanceErrors
-    ipc.on('showProvenanceErrors', function() {
+    ipc.on('showProvenanceErrors', function(event, arg) {
       vueShowProvenanceErrors()
     })
   },

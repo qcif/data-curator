@@ -69,7 +69,7 @@ export default {
       this.provenanceErrors = ''
     },
     addErrorsToProvenance: function() {
-      this.resetProvenanceErrors()
+      // this.resetProvenanceErrors()
       if (this.getProvenance.errors.length > 0) {
         this.provenanceErrors = this.compileErrors()
         this.focusErrors()
@@ -97,6 +97,7 @@ export default {
     this.provenance = this.getProvenance.markdown
     const vueAddErrorsToProvenance = this.addErrorsToProvenance
     this.$subscribeTo(provenanceErrors$, function() {
+      // console.log(messages)
       vueAddErrorsToProvenance()
     })
   },

@@ -6,7 +6,7 @@
     <i class="navbar-text">{{messages.length}} Error(s)</i>
     <ul class="nav navbar-nav navbar-left" >
       <li>
-        <a href="#" v-tooltip.top="tooltip('tooltip-write-errors-provenance')" @click="writeErrorsToProvenance()">
+        <a href="#" v-tooltip.top="tooltip('tooltip-write-errors-provenance')" @click.prevent="writeErrorsToProvenance()">
           <object data="static/img/validation-results.svg" type="image/svg+xml" />
           <!-- <span class="btn-default fas fa-file-alt"  /> -->
         </a>
@@ -38,6 +38,7 @@ import {ipcRenderer as ipc} from 'electron'
 import {getWindow, closeSecondaryWindow} from '../index.js'
 import rowLink from '../partials/RowLink'
 import ErrorsTooltip from '../mixins/ErrorsTooltip'
+import {provenanceErrors$} from '@/rxSubject.js'
 import {
   mapMutations
 } from 'vuex'
@@ -104,6 +105,7 @@ export default {
     writeErrorsToProvenance: function() {
       this.pushProvenanceErrors(this.messages)
       this.showProvenanceErrors()
+      provenanceErrors$.next()
     },
     showProvenanceErrors: function() {
       this.homeWindow.webContents.send('showProvenanceErrors')

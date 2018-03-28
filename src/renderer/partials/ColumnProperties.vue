@@ -374,11 +374,8 @@ export default {
     },
     onMouseUp: function(e) {
       // select current cell then return focus here
-      console.log(e)
-      console.log(e.target)
       let selectElement = document.querySelector('select')
       if (e.target == selectElement) {
-        console.log(' flagged selected')
       } else {
         this.reselectHotCell()
         e.target.focus()
@@ -386,8 +383,6 @@ export default {
     },
     onSelectUp: function(e) {
       // select current cell then return focus here
-      console.log('selected')
-      console.log(e)
       this.reselectHotCell()
       e.target.focus()
     }
