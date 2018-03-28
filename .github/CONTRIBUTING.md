@@ -16,19 +16,17 @@ The best way to contribute financially to this project is to [join the ODI Austr
 
 ## Contribute Ideas and Feature Requests
 
-Your idea for a feature addition may already exist on our [issues backlog](https://github.com/ODIQueensland/data-curator/issues) or [feature backlog](https://github.com/ODIQueensland/data-curator/tree/master/test/features/backlog). If the gist of your idea isn't there:
-- [add an issue](https://github.com/ODIQueensland/data-curator/issues) - we'll label it with `f:feature-request`
-- to discuss your idea privately, [contact us](https://theodi.org.au/contact/)
+Your idea for a feature addition may already exist on our [issues backlog](https://github.com/ODIQueensland/data-curator/issues) or [feature backlog](https://github.com/ODIQueensland/data-curator/tree/master/test/features/backlog). If a similar idea is in the backlog, please join the conversation.
 
-If a similar idea is in the backlog, please join the conversation.
+If the gist of your idea isn't there:
+- [request a feature](https://github.com/ODIQueensland/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=Stephen-Gates)
+- to discuss your idea privately, [contact us](https://theodi.org.au/contact/).
 
 ## Contribute Issues
 
-If you encounter a problem, please [add an issue](https://github.com/ODIQueensland/data-curator/issues). Make sure it hasn't already be reported.
+If you encounter a problem, please [add an issue](https://github.com/ODIQueensland/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=Stephen-Gates). Make sure it isn't [already reported](https://github.com/ODIQueensland/data-curator/issues).
 
-In order for us to best respond to the issue, we need as much information about the issue as you can provide. Please fill in as many sections as apply from our issue ticket template to provide us with as much detail as possible. Provide a descriptive name for your issue.
-
-If you're [able](https://help.github.com/articles/applying-labels-to-issues-and-pull-requests/) to, [select a label](https://github.com/theodi/toolbox/wiki/Labels-In-Use-Across-the-ODI-Toolbox) for your issue. We've adopted the ODI's approach to labelling issues. We may add or change labels on your issue to help us manage the issue backlog.
+In order for us to best respond to the issue, we need as much information about the issue as you can provide. Please provide a descriptive name for your issue and provide us with as much detail as possible.
 
 ## Contribute Documentation
 

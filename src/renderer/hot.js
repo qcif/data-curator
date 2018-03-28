@@ -1,4 +1,4 @@
-import Handsontable from 'handsontable/dist/handsontable.full.js'
+import Handsontable from 'handsontable/dist/handsontable.full.min.js'
 import {remote, ipcRenderer as ipc} from 'electron'
 import store from '@/store/modules/hots.js'
 import {allTablesAllColumnsFromSchema$, allTablesAllColumnNames$} from '@/rxSubject.js'
@@ -25,9 +25,14 @@ const HotRegister = {
       manualRowMove: true,
       enterBeginsEditing: false,
       persistentState: true,
+      currentRowClassName: 'currentRow',
+      currentColClassName: 'currentCol',
       // outsideClickDeselects: must be set to true -
       // -otherwise visibleRows will include ALL rows (even for large datasets), which will affect performance when switching tabs (https://github.com/ODIQueensland/data-curator/issues/387)
       outsideClickDeselects: true,
+      comments: {
+        displayDelay: 1000
+      },
       undo: true,
       tabMoves({shiftKey}) {
         if (!shiftKey) {
@@ -51,7 +56,6 @@ const HotRegister = {
       },
       afterUpdateSettings() {
         hot.render()
-      // hot.deselectCell()
       },
       afterSelection(r, c, r2, c2, preventScrolling) {
       // preventScrolling.value = true
@@ -93,7 +97,9 @@ const HotRegister = {
   // TODO: consider cache (vue computed) of method, and moving to Home.vue to use with props, as used a lot
   getActiveInstance() {
     let activeHot = this.activeQuery()
-    return this.getInstance(activeHot.id)
+    if (activeHot) {
+      return this.getInstance(activeHot.id)
+    }
   },
   activeQuery() {
     return document.querySelectorAll('#csvContent .active .editor')[0]
@@ -131,6 +137,7 @@ export function getCurrentColumnIndexOrMin() {
   }
   return currentCell[1]
 }
+
 export function getCurrentColumnIndexOrMax() {
   let activeHot = HotRegister.getActiveInstance()
   let currentCell = activeHot.getSelected()
@@ -175,20 +182,37 @@ export function reselectCurrentCellOrMax() {
   }
 }
 
-export function incrementActiveColumn(activeColumnIndex) {
-  let activeHot = HotRegister.getActiveInstance()
-  activeHot.selectCell(0, activeColumnIndex + 1)
-}
-
-export function decrementActiveColumn(activeColumnIndex) {
-  let activeHot = HotRegister.getActiveInstance()
-  activeHot.selectCell(0, activeColumnIndex - 1)
-}
-
 export function getColumnCount() {
   let activeHot = HotRegister.getActiveInstance()
-  let colCount = activeHot.countCols()
+  let colCount
+  if (activeHot) {
+    colCount = activeHot.countCols()
+  }
   return colCount
+}
+
+export function getColumnCountFromInstance(hot) {
+  let colCount = hot.countCols()
+  return colCount
+}
+
+export function getColumnCountFromInstanceId(hotId) {
+  let hot = HotRegister.getInstan(hotId)
+  let colCount = hot.countCols()
+  return colCount
+}
+
+export function waitForHotInstance() {
+  return new Promise((resolve, reject) => {
+    let hot = HotRegister.getActiveInstance()
+    if (!hot) {
+      _.delay(function() {
+        resolve(HotRegister.getActiveInstance())
+      }, 100)
+    } else {
+      resolve(hot)
+    }
+  })
 }
 
 export function insertRowAbove() {

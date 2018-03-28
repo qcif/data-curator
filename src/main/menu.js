@@ -1,12 +1,9 @@
 import {openFile, saveFileAs, saveFile, importDataPackage} from './file.js'
-import {
-  createWindowTab
-} from './utils.js'
+import {createWindowTab, focusMainWindow} from './windows.js'
 import {importExcel} from './excel.js'
 import {showKeyboardHelp} from './help.js'
 import {fileFormats} from '../renderer/file-formats.js'
-import {shell, BrowserWindow} from 'electron'
-// fileActions = require('./file')
+import {shell, BrowserWindow, Menu} from 'electron'
 
 // build 'Open...' and 'Save As...' submenus
 const open_submenu = []
@@ -508,12 +505,34 @@ if (process.env.NODE_ENV !== 'production') {
 function webContents() {
   // use .fromId rather than .focusedWindow as latter does not apply if app minimized
   // use .fromId rather than .getAllWindows[0] as if child window present and main window minimized won't work
-  let id = global.mainWindowId
-  let browserWindow = BrowserWindow.fromId(id)
-  browserWindow.restore()
+  let browserWindow = focusMainWindow()
   return browserWindow.webContents
 }
 
+export function getSubMenuFromMenu(menuLabel, subMenuLabel) {
+  let menu = Menu.getApplicationMenu().items.find(x => x.label === menuLabel)
+  let subMenu = menu.submenu.items.find(x => x.label === subMenuLabel)
+  return subMenu
+}
+
+export function clickLabelsOnMenu(args) {
+  let menu = Menu.getApplicationMenu().items.find(x => x.label === args[0])
+  menu.click()
+  let returnLabel = menu.label
+  let subMenu
+  if (args.length > 1) {
+    subMenu = menu.submenu.items.find(x => x.label === args[1])
+    subMenu.click()
+    returnLabel = subMenu.label
+  }
+  if (args.length > 2) {
+    let subSubMenu = subMenu.submenu.items.find(x => x.label === args[2])
+    subSubMenu.click()
+    returnLabel = subSubMenu.label
+  }
+  return returnLabel
+}
+
 export {
-  template as menu
+  template
 }

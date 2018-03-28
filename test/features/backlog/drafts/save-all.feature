@@ -1,17 +1,17 @@
-@draft
+@draft @backlog
 
 Feature: Save all
   As a Data Packager
   I want to save all unsaved changes in every data tab
   So that I can quickly save my progress
 
-  If available, use the CSV dialect settings in associated Table Properties.
+  RULES
+  =====
 
-  If these are unavailable, then use the CSV dialect specified in Preferences.
-
-  By default the CSV dialect will be a comma separated file with defaults settings as documented in http://frictionlessdata.io/specs/csv-dialect/#specification
-
-  The CSV dialect selected may change the file extension e.g. tab separated values files use .tsv
+  - If available, use the CSV dialect settings in associated Table Properties.
+  - If these are unavailable, then use the CSV dialect specified in Preferences.
+  - By default the CSV dialect will be a comma separated file with defaults settings as documented in the [specification](http://frictionlessdata.io/specs/csv-dialect/#specification)
+  - The CSV dialect selected may change the file extension e.g. tab separated values files use .tsv
 
   Scenario: Use the menu to save all data changes and all data has been saved once
     Given I have opened Data Curator

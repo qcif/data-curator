@@ -72,9 +72,9 @@ Then(/^(?:The cursor should be|I should see the cursor) in row (\d+), column (\d
       const selectedRowHeaderClass = 'ht__highlight'
       // when only 1 value returned no longer an array
       if (_.isArray(response)) {
-        expect(response[rowNumber - 1]).to.equal(selectedRowHeaderClass)
+        expect(response[rowNumber - 1]).to.contain(selectedRowHeaderClass)
       } else if (rowNumber === 1) {
-        expect(response).to.equal(selectedRowHeaderClass)
+        expect(response).to.contain(selectedRowHeaderClass)
       } else {
         throw new Error(`There is only 1 row in the table, but the test tried to look for row number: ${rowNumber}`)
       }
@@ -84,9 +84,9 @@ Then(/^(?:The cursor should be|I should see the cursor) in row (\d+), column (\d
       const selectedCellClass = 'current highlight'
       // when only 1 value returned no longer an array
       if (_.isArray(response)) {
-        expect(response[colNumber - 1]).to.equal(selectedCellClass)
+        expect(response[colNumber - 1]).to.contain(selectedCellClass)
       } else if (colNumber === 1) {
-        expect(response).to.equal(selectedCellClass)
+        expect(response).to.contain(selectedCellClass)
       } else {
         throw new Error(`There is only 1 column in the table, but the test tried to look for column number: ${colNumber}`)
       }

@@ -5,7 +5,6 @@ const _ = require('lodash')
 
 When(/^I click on the "([\w]+?)"->"([\w]+?)" menu/, async function (menuLabel, subMenuLabel) {
   let returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel])
-  console.log(returned)
   expect(returned).to.equal(subMenuLabel)
 })
 
@@ -13,7 +12,6 @@ When(/^I click on the "([\w]+?)"->"([\w]+?)" menu/, async function (menuLabel, s
 When(/^I click on the "([\w]+?)"->"([\w]+?)"->"([\w .]+?)" menu/, async function (menuLabel, subMenuLabel, subSubMenuLabel) {
   try {
     let returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel, subSubMenuLabel])
-    console.log(returned)
     expect(returned).to.equal(subSubMenuLabel)
   } catch (error) {
     throw error
@@ -25,7 +23,6 @@ Then('I should see the openfile dialog', async function () {
     .electron
     .remote
     .getGlobal('openFileDialogReturned')
-  console.log(globalNames)
   expect(globalNames).to.deep.equal(this.openFileDialogReturned)
 })
 

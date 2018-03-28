@@ -5,7 +5,6 @@ import {isCaseSensitive} from '@/frictionlessUtilities'
 import {pushCsvDialect} from '@/dialect.js'
 import {menu} from '@/menu.js'
 import fs from 'fs-extra'
-const BrowserWindow = remote.BrowserWindow
 
 export function addHotContainerListeners(container) {
   container.ondragover = function() {
@@ -28,8 +27,17 @@ export function addHotContainerListeners(container) {
 
   container.addEventListener('contextmenu', function(e) {
     e.preventDefault()
-    menu.popup(BrowserWindow.getFocusedWindow(), {async: true})
+    menu.popup(getWindow('home'), {async: true})
   }, false)
+}
+
+export function getWindow(id) {
+  let browserWindow
+  let windowId = remote.getGlobal('windows')[id]
+  if (windowId) {
+    browserWindow = remote.BrowserWindow.fromId(windowId)
+  }
+  return browserWindow
 }
 
 export function loadData(key, data, format) {
@@ -92,7 +100,7 @@ ipc.on('clickLabelOnContextMenu', function(event, arg) {
 })
 
 ipc.on('closeContextMenu', function() {
-  menu.closePopUp(BrowserWindow.getFocusedWindow())
+  menu.closePopUp(getWindow('home'))
 })
 
 ipc.on('insertColumnLeft', function() {
@@ -117,3 +125,7 @@ ipc.on('toggleCaseSensitiveHeader', function() {
   pushCsvDialect(hotId, {caseSensitiveHeader: toggledCase})
   ipc.send('hasCaseSensitiveHeader', toggledCase)
 })
+
+export function closeSecondaryWindow(windowName) {
+  ipc.sendSync('closeSecondaryWindow', windowName)
+}

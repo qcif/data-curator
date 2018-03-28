@@ -1,4 +1,4 @@
-@draft
+@draft @backlog
 
 Feature: Welcome Guide
   As a Data Packager

@@ -210,20 +210,60 @@ sideNavFooterHeight = 70px
   left 0
   z-index 200 !important
   transition: 0.5s
+  &.closed
+    margin-left 0
+    padding-right 5px
   &.messages-closed
     height 0
   &.messages-opened
     height 150px !important
     overflow-y scroll
-  &.closed
-    margin-left 0
-    padding-right 5px
-  &.left
-    margin-left sideNavMargin
-    padding-right sideNavMargin
-  &.right
-    padding-right sideNavMargin
-    margin-left 0
+    &.left
+      margin-left sideNavMargin
+      padding-right sideNavMargin
+    &.right
+      // width 80%
+      margin-right sideNavMargin
+      margin-left 0
+    #message-panel
+      // position absolute
+      // width 100%
+      // height 100%
+      // overflow-y visible
+      .closebtn
+        transform translate(10px,-15px)
+        position relative
+        right 0
+      .btn-default
+        color #000
+        // overflow-y hidden
+      .message-title
+        margin-top 5px
+        margin-bottom 0px
+        // position relative
+        // display block
+        // overflow-y hidden
+        // top 0
+      .navbar.errors
+        margin-bottom 0px
+        // position relative
+        // display block
+        // top 0
+        // overflow-y hidden
+      // .errors-content
+        // height 100%
+        // position relative
+        // display block
+        // overflow-y scroll !important
+    &.left #message-panel
+      padding-right sideNavMargin
+    &.right #message-panel
+      margin-right sideNavMargin
+      padding-right 0
+      margin-left 0
+    &.closed #message-panel
+      margin-left 0
+      padding-right 15px
 
 #sidenav-footer
   z-index 100
@@ -314,25 +354,20 @@ span.tabclose.btn-default:hover
 #columnProperties option
   width auto
 
-.nav-tabs>li.tab-heading.active a {
-  position: relative;
-}
+.nav-tabs>li.tab-heading.active a
+  position relative
 
-.nav-tabs>li.tab-heading a {
-  margin: 0;
-}
+.nav-tabs>li.tab-heading a
+  margin 0
 
-.tab-add a {
-  position: relative;
-}
+.tab-add a
+  position relative
 
-.tab-add a:hover {
-  background-color: initial !important;
-  border-color: transparent !important;
-  margin: 0;
-}
+.tab-add a:hover
+  background-color initial !important
+  border-color transparent !important
+  margin 0
 
-.tab-add a button {
-  position: absolute;
-  bottom: 0;
-}
+.tab-add a button
+  position absolute
+  bottom 0

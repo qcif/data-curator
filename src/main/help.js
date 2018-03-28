@@ -1,30 +1,11 @@
-import {BrowserWindow, Menu} from 'electron'
-
-function getKeyboardShorcutsMenu() {
-  let helpMenu = Menu.getApplicationMenu().items.find(x => x.role === 'help')
-  let keyboardShortcutsSubMenu = helpMenu.submenu.items.find(x => x.label === 'Keyboard Shortcuts')
-  return keyboardShortcutsSubMenu
-}
+import {focusOrNewSecondaryWindow} from './windows'
+import {getSubMenuFromMenu} from './menu.js'
 
 export function showKeyboardHelp() {
-  let keyboardShortcutsSubMenu = getKeyboardShorcutsMenu()
-  keyboardShortcutsSubMenu.enabled = false
-  let keyboardHelpWindow
-  if (process.env.BABEL_ENV !== 'test') {
-    keyboardHelpWindow = new BrowserWindow({width: 760, height: 400, nodeIntegration: false})
-  } else {
-    keyboardHelpWindow = new BrowserWindow({width: 760, height: 400})
-  }
-
-  keyboardHelpWindow.setMenu(null)
-  // keyboardHelpWindow.loadURL(`http://localhost:9080/#/keyboardhelp`)
-
-  const winURL = process.env.NODE_ENV === 'development'
-    ? `http://localhost:9080/keyboardhelp.html`
-    : `file://${__dirname}/keyboardhelp.html`
-  keyboardHelpWindow.loadURL(winURL)
-  keyboardHelpWindow.on('closed', function () {
-    keyboardShortcutsSubMenu.enabled = true
-    keyboardHelpWindow = null
+  let shortcutsSubMenu = getSubMenuFromMenu('Help', 'Keyboard Shortcuts')
+  shortcutsSubMenu.enabled = false
+  let browserWindow = focusOrNewSecondaryWindow('keyboardhelp', {width: 760, height: 400})
+  browserWindow.on('closed', function () {
+    shortcutsSubMenu.enabled = true
   })
 }

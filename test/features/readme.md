@@ -1,11 +1,18 @@
 Acceptance tests for [Data Curator](https://github.com/ODIQueensland/data-curator/blob/master/README.md) are:
 
 - written using the [Gherkin language](https://cucumber.io/docs/reference#gherkin) ([learn more](https://media.pragprog.com/titles/hwcuc/gherkin.pdf)) and stored [on GitHub](https://github.com/ODIQueensland/data-curator/tree/master/test/features)
-- [shared](https://relishapp.com/odi-australia/data-curator/docs) using [Relish](https://relishapp.com) (which will be replaced by Cucumber Pro)
-- [shared](https://app.cucumber.pro/projects/data-curator/documents/branch/develop) using [Cucumber Pro](https://cucumber.io/pro) beta
+- [shared](https://app.cucumber.pro/projects/data-curator/documents/branch/master) using [Cucumber Pro](https://cucumber.io/pro) beta
 - arranged in folders like the application menu structure
 
-We use @tags to help manage features:
+Writing a test
+--------------
+
+- add two trailing spaces to the end of user stories to make a [soft line break](http://spec.commonmark.org/0.28/#soft-line-breaks). Check that your editor doesn't automatically remove trailing spaces
+- use the [underline method for headings](http://spec.commonmark.org/0.28/#setext-heading-underline) in feature descriptions
+
+Tags
+----
+We use `@tags` to help manage features:
 
 - the `@backlog` tag is used to indicate that the feature is not in our [release plans](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open)
 - the `@draft` tab is used for draft features
