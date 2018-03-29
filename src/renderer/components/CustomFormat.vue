@@ -63,7 +63,7 @@ export default {
 }
 </script>
 <style scoped>
-@import '~components-font-awesome/css/font-awesome.min.css'
+@import '~components-font-awesome/css/fontawesome-all.min.css'
 </style>
 <style scoped>
 @import '/static/css/datapackage.css'

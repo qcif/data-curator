@@ -12,7 +12,7 @@ export function includeHeadersInData(hot) {
 
 export function hasAllColumnNames(hotId, columnProperties, names) {
   if (isCaseSensitive(hotId)) {
-    const uniqueNames = _.uniqBy(names)
+    const uniqueNames = _.uniq(names)
     return hasAllValidColumnProperty(uniqueNames, columnProperties)
   } else {
     const uniqueNames = _.uniqBy(names, _.lowerCase)
