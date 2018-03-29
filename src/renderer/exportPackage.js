@@ -5,6 +5,7 @@ import {remote} from 'electron'
 import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
 import {extractNameFromFile} from '@/store/tabStoreUtilities.js'
+import os from 'os'
 const Dialog = remote.dialog
 
 export function createZipFile(text) {
@@ -66,5 +67,19 @@ function zipResources(archive) {
 
 function zipProvenanceProperties(archive) {
   let provenance = hotStore.state.provenanceProperties.markdown
-  archive.append(provenance, { name: 'README.md' })
+  let errors = _.map(hotStore.state.provenanceProperties.errors, function(error) {
+    return `${error.message}`
+  }).join(os.EOL)
+  let errorsPre = getErrorsPreText()
+  let pText = `${provenance}${os.EOL}${errorsPre}${errors}`
+  archive.append(pText, { name: 'README.md' })
+}
+
+// TODO: refactor this and other common functions in home,errors,provenance
+function getErrorsPreText() {
+  return `### Known Data Errors
+
+This data is published with the following data errors:
+
+`
 }

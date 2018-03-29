@@ -1,9 +1,19 @@
 <template>
-<div id="container" class="container-fluid">
-
+<div id="container" class="container-fluid errors-window">
   <h1>{{title}}</h1>
-
   <div>
+  <template v-if="messages">
+    <i class="navbar-text">{{messages.length}} Error(s)</i>
+    <ul class="nav navbar-nav navbar-left" >
+      <li>
+        <a href="#" v-tooltip.top="tooltip('tooltip-write-errors-provenance')" @click.prevent="writeErrorsToProvenance()">
+          <object data="static/img/validation-results.svg" type="image/svg+xml" />
+          <!-- <span class="btn-default fas fa-file-alt"  /> -->
+        </a>
+      </li>
+      <component is="tooltipWriteErrorsProvenance" />
+    </ul>
+   </template>
    <vue-good-table
      :columns="columns"
      :rows="rows"
@@ -27,12 +37,18 @@ import VueGoodTable from 'vue-good-table'
 import {ipcRenderer as ipc} from 'electron'
 import {getWindow, closeSecondaryWindow} from '../index.js'
 import rowLink from '../partials/RowLink'
+import ErrorsTooltip from '../mixins/ErrorsTooltip'
+import {provenanceErrors$} from '@/rxSubject.js'
+import {
+  mapMutations
+} from 'vuex'
 Vue.use(VueGoodTable)
 export default {
   name: 'errors',
   components: {
     rowLink
   },
+  mixins: [ErrorsTooltip],
   data() {
     return {
       title: '',
@@ -67,6 +83,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'pushProvenanceErrors'
+    ]),
     goToCell: function(error) {
       this.homeWindow.webContents.send('showErrorCell', {row: error.rowNumber, column: error.columnNumber})
     },
@@ -82,6 +101,14 @@ export default {
       this.title = ''
       // close window
       // closeSecondaryWindow('errors')
+    },
+    writeErrorsToProvenance: function() {
+      this.pushProvenanceErrors(this.messages)
+      this.showProvenanceErrors()
+      provenanceErrors$.next()
+    },
+    showProvenanceErrors: function() {
+      this.homeWindow.webContents.send('showProvenanceErrors')
     }
   },
   mounted: function() {
@@ -95,7 +122,9 @@ export default {
       }
     })
     // Initial window open, we need to trigger errors call
-    this.getErrorMessages()
+    this.$nextTick(function() {
+      this.getErrorMessages()
+    })
   },
   watch: {
     messages: function(messages) {
@@ -110,8 +139,14 @@ export default {
 }
 </script>
 <style scoped>
-@import '~components-font-awesome/css/font-awesome.min.css'
+@import '~components-font-awesome/css/fontawesome-all.min.css'
 </style>
 <style lang="styl" scoped>
 @import '~static/css/keyboard-help'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/tooltip'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/icons'
 </style>
