@@ -1,6 +1,6 @@
 Feature: Validate Table
   As a Data Packager  
-  I want to validate the data for common errors and against the [schema](https://frictionlessdata.io/specs/table-schema/) I have defined
+  I want to validate the data for common errors and against the [schema](https://frictionlessdata.io/specs/table-schema/) I have defined  
   So that I can correct errors and share validated data with Data Consumers  
 
   RULES
