@@ -5135,11 +5135,13 @@ html-minifier@^3.2.3:
     relateurl "0.2.x"
     uglify-js "3.3.x"
 
-html-webpack-include-assets-plugin@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/html-webpack-include-assets-plugin/-/html-webpack-include-assets-plugin-0.0.5.tgz#ca38767d019189414c0e8cbaa0e8b32557031a8d"
+html-webpack-include-assets-plugin@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/html-webpack-include-assets-plugin/-/html-webpack-include-assets-plugin-1.0.4.tgz#279cfdf001301f5a945b2525f7f6394d48a3a157"
   dependencies:
-    minimatch "^3.0.3"
+    glob "^7.1.2"
+    minimatch "^3.0.4"
+    slash "^1.0.0"
 
 html-webpack-plugin@^2.16.1:
   version "2.30.1"
