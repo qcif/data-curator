@@ -187,7 +187,7 @@
     "vue-server-renderer": "^2.5.14",
     "vue-style-loader": "^4.1.0",
     "webpack": "^4.3.0",
-    "webpack-dev-server": "^2.9.3",
+    "webpack-dev-server": "^3.1.1",
     "webpack-fix-default-import-plugin": "^1.0.3",
     "webpack-hot-middleware": "^2.21.2",
     "webpack-merge": "^4.1.2",
