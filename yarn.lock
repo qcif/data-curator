@@ -9543,9 +9543,9 @@ vue-electron@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/vue-electron/-/vue-electron-1.0.6.tgz#e798e03180b8933539defe31f92e53b9242b9406"
 
-vue-good-table@^1.20.3:
-  version "1.20.3"
-  resolved "https://registry.yarnpkg.com/vue-good-table/-/vue-good-table-1.20.3.tgz#a756fe29fa953dd8eddc1956e1a6fcc19f961ff8"
+vue-good-table@^1.21.0:
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/vue-good-table/-/vue-good-table-1.21.0.tgz#10e75795f3b4ae6014d7d4689043719a9aeec28f"
   dependencies:
     babel-runtime "^6.26.0"
     date-fns "^2.0.0-alpha.7"
