@@ -20,7 +20,7 @@ Feature: Template
   -------------
   - the feature name should be some terse yet descriptive text of what is desired
   - Technique - write "upwards": Then, When, Given
-  - Don't put 'or' in the Given/When/Then statements - these statements should be pulled out into two different scenarios.
+  - Don't put "or" in the Given/When/Then statements - these statements should be pulled out into two different scenarios.
   - Don't put conditions in  When/Then statements. An if statement can be changed into two different scenarios and the if condition put up into the Given statement.
   - Use "quotes" arounded named things in the Application, e.g. a "Menu item name"
   - Use "double quotes" not 'single quotes'
@@ -28,7 +28,6 @@ Feature: Template
   Rules for Given
   ---------------
 
-  - Write in [perfect present tense](http://www.ef-australia.com.au/english-resources/english-grammar/present-perfect/)
   - Write in [third person, not first person](https://automationpanda.com/2017/01/18/should-gherkin-steps-use-first-person-or-third-person/); Using the pronoun "I" is an [anti-pattern](https://cucumber.io/blog/2016/08/31/cucumber-anti-patterns-part-two#scenarios-that-use-i-as-in-the-personal-pronoun)
   - Omit the obvious. E.g. Given app is open
 
@@ -62,6 +61,7 @@ Feature: Template
 #   the scenario name is important as it is returned when automated tests fail.
     Given Data Curator is open
     And some other precondition
-    When some action by the actor is invoked    And yet another action
+    When some action by the actor is invoked
+    And yet another action
     Then some testable outcome is achieved
     And something else we can check happens too
