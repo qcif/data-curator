@@ -8,8 +8,13 @@ Feature: Open a Semi-colon separated value file
 
   - The Open Semi-colon separated value file command can be invoked using the menu command
   - The data has been stored in a ".csv" file
-  - Use the default values in the [CSV Dialect specification](http://frictionlessdata.io/specs/csv-dialect/#specification) but with 'delimiter' = ';' to open the file and separate the values into the correct columns.
-
+  - Use the default values in the [CSV Dialect specification](http://frictionlessdata.io/specs/csv-dialect/#specification) but with 'delimiter' = ';' to open the file and separate the values into the correct columns
+  
+  LATER
+  =====
+  
+  - "Guess Column Properties" on opening the file
+  
   Scenario: Open an existing semi-colon separated value file
     Given Data Curator is open
     When "Open semi-colon Separated" is invoked
@@ -19,4 +24,3 @@ Feature: Open a Semi-colon separated value file
     And the CSV Dialect `delimiter` should be set based on the file extension and CSV Dialect defaults
     And "Fix Ragged Rows" should be invoked
     And "Freeze Header Row" should be invoked
-    And "Guess Column Properties" should be invoked

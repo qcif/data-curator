@@ -8,7 +8,12 @@ Feature: Open an Excel Sheet
 
   - The "Open Excel Sheet" command can be invoked using the menu command
   - The data may be stored in a ".xlsx" or ".xls" file
-  - Excel sheets may contain non-tabular data in a sheet, e.g. charts. Only tabular data will be opened.
+  - Excel sheets may contain non-tabular data in a sheet, e.g. charts. Only tabular data will be opened
+  
+  LATER
+  =====
+  
+  - "Guess Column Properties" on opening the file
 
   Scenario: Open an Excel Sheet
     Given Data Curator is open
