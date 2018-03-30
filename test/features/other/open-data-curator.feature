@@ -17,20 +17,22 @@ Feature: Open Data Curator
     When Data Curator is opened using the launch icon
     Then the application should open
     And an empty data tab should be presented
+    And any preferences set in the prior session should be applied
 
   Scenario: Open the application using the icon, app already running
     Given Data Curator is open
     When I attempt to open Data Curator again using the launch icon
     Then focus should be given to the running instance of Data Curator
 
-  Scenario: Open the application via file open, app not already running
+  Scenario: Open the application using "Open With", app not already running
     Given Data Curator is not open
     And I select a data file using the File System
     When I specify to open the file using Data Curator
     Then the application should open
     And the specified file should open in a tab within the application
+    And any preferences set in the prior session should be applied
 
-  Scenario: Open the application via file open, app already running
+  Scenario: Open the application using "Open With", app already running
     Given Data Curator is open
     And I select a data file using the File System
     When I specify to open the file using Data Curator

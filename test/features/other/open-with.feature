@@ -21,6 +21,7 @@ Feature: Open with
     When "Open with..." is invoked
     Then a prompt to open the file using Data Curator is shown
     And "Open Data Curator" should be invoked
+    And any preferences set in the prior session should be applied
     And the selected file should be unzipped
     And each data resource should be opened (from a URL or local) in a new data tab to the right of any other data tabs
     And each data resource header row should be set using the `dialect`
