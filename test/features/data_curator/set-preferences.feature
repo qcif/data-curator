@@ -44,4 +44,4 @@ Feature: Set Preferences
     Then the preferences panel should be displayed
     And preference values should be accepted and validated 
     And the values should be saved as they are entered
-    And store values so they are reapplied next time Data Curator is opened
+    And values should be stored so they are reapplied next time Data Curator is opened
