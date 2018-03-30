@@ -12,4 +12,4 @@ Feature: Insert Row Above
   Scenario: Insert Row Above
     Given the cursor is in a data table
     When "Insert Row Above" is invoked
-    Then insert a row above the current row
+    Then a row should be inserted above the current row

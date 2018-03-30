@@ -41,7 +41,7 @@ Feature: Set Preferences
   Scenario: Set Preferences
     Given Data Curator is open
     When "Set Preferences" is invoked
-    Then display the preferences panel
-    And accept and validate user input for each setting
-    And save values after they are validated
+    Then the preferences panel should be displayed
+    And preference values should be accepted and validated 
+    And the values should be saved as they are entered
     And store values so they are reapplied next time Data Curator is opened

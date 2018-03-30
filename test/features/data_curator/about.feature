@@ -10,8 +10,8 @@ Feature: About
   RULES
   =====
 
-    - The "About" command can be invoked using a menu item
-    - The "Close About Panel" is invoked using a button on the About panel
+  - The "About" command can be invoked using a menu item
+  - The "Close About Panel" is invoked using a button on the About panel
 
   Scenario: Show the About panel
     Given Data Curator is open
@@ -22,10 +22,10 @@ Feature: About
     And links to external websites
     And the Application logo
     And the Application name
-    And the Application version, are shown
+    And the Application version, should shown
 
   Scenario: Close the About panel
     Given Data Curator is open
     And the About panel is displayed
     When "Close About Panel" is invoked
-    Then the About panel closes
+    Then the About panel should close

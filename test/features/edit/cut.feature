@@ -12,5 +12,5 @@ Feature: Cut
   Scenario: Cut data
     Given some data is selected
     When "Cut" is invoked
-    Then copy the selected data to the cliboard
-    And delete the selected data from the table
+    Then the selected data should be copied to the cliboard
+    And the selected data should be deleted from the table

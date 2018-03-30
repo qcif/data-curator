@@ -11,4 +11,4 @@ Feature: Insert Column After
   Scenario: Insert Column After
     Given the cursor is in a data table
     When "Insert Column After" is invoked
-    Then insert a column after the current column
+    Then a column should be inserted after the current column

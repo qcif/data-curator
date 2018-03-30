@@ -12,13 +12,13 @@ Feature: Set Case Sensitive Header Row
   Scenario: Enable Case Sensitive Header Row
     Given Data Curator is open
     When "Case Sensitive Header Row" is enabled
-    Then check the menu item
-    And consider case in determining the uniqueness of the header row
-    And set the 'caseSensitiveHeader' in the CSV Dialect to 'true'
+    Then the menu item should be checked
+    And case should be used in determining the uniqueness of the header row
+    And the 'caseSensitiveHeader' in the CSV Dialect should be set to 'true'
 
   Scenario: Disable Case Sensitive Header Row
     Given Data Curator is open
     When "Case Sensitive Header Row" is disabled
-    Then uncheck the menu item
-    And don't consider case in determining the uniqueness of the header row
-    And set the 'caseSensitiveHeader' in the CSV Dialect to 'false'
+    Then the menu item should be unchecked
+    And case should not be used in determining the uniqueness of the header row
+    And the 'caseSensitiveHeader' in the CSV Dialect should be set to 'false'

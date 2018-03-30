@@ -6,17 +6,17 @@ Feature: Open a Tab separated value file
   RULES
   =====
 
-    - The "Open Tab Separated" value file command can be invoked using the menu command
-    - The data will be stored in a ".tsv" file
-    - Use the default values in the [CSV Dialect specification](http://frictionlessdata.io/specs/csv-dialect/#specification) but with 'delimiter' = '\t' to open the file and separate the values into the correct columns.
+  - The "Open Tab Separated" value file command can be invoked using the menu command
+  - The data will be stored in a ".tsv" file
+  - Use the default values in the [CSV Dialect specification](http://frictionlessdata.io/specs/csv-dialect/#specification) but with 'delimiter' = '\t' to open the file and separate the values into the correct columns.
 
   Scenario: Open an existing tab separated value file
     Given Data Curator is open
     When "Open Tab Separated" is invoked
-    Then a prompt, requesting the 'filename' and location is shown
-    And only files ending with ".tsv" can be selected
-    And the selected 'filename' is opened in a new data tab to the right of any other open data tabs
-    And set the Tab name to the 'filename'
-    And set the CSV Dialect in the Table Properties to "Tab Separated"
-    And "Fix Ragged Rows"
-    And "Freeze Header Row"
+    Then a prompt, requesting the 'filename' and location should be shown
+    And another tab containing the data should be opened 
+    And the tab title should be set to the filename
+    And the CSV Dialect `delimiter` should be set based on the file extension and CSV Dialect defaults
+    And "Fix Ragged Rows" should be invoked
+    And "Freeze Header Row" should be invoked
+    And "Guess Column Properties" should be invoked

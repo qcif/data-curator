@@ -13,6 +13,6 @@ Feature: Save As Tab separated value file
     Given Data Curator is open
     And one data tab is open
     When "Save As Tab separated" is invoked
-    Then a prompt, requesting the filename and location is displayed
-    And the data is saved at the filename.tsv and location
-    And set the 'delimiter' to '\t' in the Table CSV Dialect
+    Then a prompt, requesting the filename and location should be displayed
+    And the data should be saved at the filename.tsv and location using the correct CSV Dialect
+    And the 'delimiter' should be set to '\t' in the Table CSV Dialect

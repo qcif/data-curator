@@ -12,7 +12,7 @@ Feature: Initiate feature using menu keyboard shortcut
   Scenario Outline: Use Keyboard Shortcut
      Given Data Curator is open in an <operating system>
      When I use a <operating system> <shortcut>
-     Then the <command> is initiated
+     Then the <command> should be invoked
 
     Examples:
       | command               | windows shortcut      | linux shortcut        | macOS shortcut          |
