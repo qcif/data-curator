@@ -3,7 +3,7 @@ Feature: Close tab
   I want to close the active data tab and be warned if there are unsaved changes  
   So that I can finish my work on that tab quickly and safely  
 
-  Rules
+  RULES
   =====
   
   - The "Close Tab" command can be invoked by a menu item, shortcut or pressing the close button of the tab
