@@ -1,9 +1,9 @@
 @backlog
 
 Feature: Save as
-  As an Data Packager
-  I want to save the data changes in the active data tab to a valid separated value file format
-  So that the data can be retrieved later
+  As an Data Packager  
+  I want to save the data changes in the active data tab to a valid separated value file format  
+  So that the data can be retrieved later  
 
   RULES
   =====

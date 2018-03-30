@@ -1,9 +1,9 @@
 @backlog
 
 Feature: Close all tabs
-  As a Data Packager
-  I want to close all data tabs and warn if there are unsaved changes
-  So that I can finish my work quickly
+  As a Data Packager  
+  I want to close all data tabs and warn if there are unsaved changes  
+  So that I can finish my work quickly  
 
   RULES
   =====
