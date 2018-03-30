@@ -13,6 +13,11 @@ Feature: Save as
   - The CSV dialect selected may change the file extension e.g. tab separated values files use .tsv
   - The "Save as..." command can be invoked from the menu or using a keyboard shortcut
   - The "Save as..." command can be cancelled 
+  
+  NOTES
+  =====
+  
+  - This will replace the file type specific save as commands
 
   Scenario: Save the data 
     Given I have opened Data Curator
