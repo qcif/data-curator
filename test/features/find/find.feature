@@ -23,12 +23,10 @@ Feature: Find data
     Given Data Curator is open
     And provided a value to find and optionally search constraints
     When "Find next" is invoked
-    Then find the next value after the current active cell that matches that value and within the search constraints
-    And highlight the found value
+    Then the next value after the current active cell that matches that value and complies with the search constraints should be highlighted in the table
 
   Scenario: Find previous
     Given Data Curator is open
     And provided a value to find for and search constraints
     When "Find previous" is invoked
-    Then find the previous value before the current active cell that matches that value and within the search constraints
-    And highlight the found value
+    Then the previous value after the current active cell that matches that value and complies with the search constraints should be highlighted in the table

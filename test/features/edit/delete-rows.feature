@@ -16,5 +16,5 @@ Feature: Remove Rows
   Scenario: Remove Row(s)
     Given a row(s) is selected
     When "Remove Row(s)" is invoked
-    Then delete the selected row(s)
-    And move the cursor to the required position in the table
+    Then the selected row(s) should be deleted
+    And the cursor should be moved to the required position in the table

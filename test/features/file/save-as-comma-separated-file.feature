@@ -6,12 +6,12 @@ Feature: Save As Comma separated value file
   RULES
   =====
 
-    - The file extension of the saved file must be .csv
-    - The "Save As Comma separated" command can be invoked by a menu item or keyboard shortcut
+  - The file extension of the saved file must be .csv
+  - The "Save As Comma separated" command can be invoked by a menu item or keyboard shortcut
 
   Scenario: Save As Comma separated value file
     Given Data Curator is open
     And one data tab is open
     When "Save As Comma separated" is invoked
-    Then a prompt, requesting the filename and location is displayed
-    And the data is saved at the filename.csv and location using the correct CSV Dialect
+    Then a prompt, requesting the filename and location should be displayed
+    And the data should be saved at the filename.csv and location using the correct CSV Dialect

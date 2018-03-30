@@ -6,11 +6,11 @@ Feature: Quit
   RULES
   =====
 
-    - Different operating systems use different terms to end the application:
-      - Windows uses "Close"
-      - macOS uses "Quit".
-    - "Quit" can be invoked by a menu item, keyboard shortcut, or system functions
-    - "Quit" can be cancelled
+  - Different operating systems use different terms to end the application:
+    - Windows uses "Close"
+    - macOS uses "Quit".
+  - "Quit" can be invoked by a menu item, keyboard shortcut, or system functions
+  - "Quit" can be cancelled
 
   Scenario: Quit the application, all work saved
     Given Data Curator is open

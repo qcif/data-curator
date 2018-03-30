@@ -8,9 +8,9 @@ Feature: Create Constraint from Column
   RULES
   =====
 
-    - If the number of unique values in the enum exceed a limit, then error.
-    - Suggest enum not appropriate constraint, clean data, or create reference table and foreign key relationship.
-    - The "Create Constraint from Column" command can be invoked using a menu item
+  - If the number of unique values in the enum exceed a limit, then error.
+  - Suggest enum not appropriate constraint, clean data, or create reference table and foreign key relationship.
+  - The "Create Constraint from Column" command can be invoked using a menu item
 
   Scenario: Create Constraint from Column
     Given Data Curator is open
@@ -18,4 +18,4 @@ Feature: Create Constraint from Column
     When "Create Constraint from Column" is invoked
     Then read all the rows in that column
     And identify all the unique values
-    And use the result to populate the enum constraint
+    And use the result should be used to populate the enum constraint

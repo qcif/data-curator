@@ -17,6 +17,6 @@ Feature: Set Data Package Properties
 
   Scenario: Set Data Package Properties
     When "Set Data Package Properties" is invoked
-    Then display a panel that allows properties to be entered
-    And accept and validate property values
-    And save the values as they are entered
+    Then a panel that allows properties to be set should be displayed
+    And property values should be accepted and validated 
+    And the values should be saved as they are entered

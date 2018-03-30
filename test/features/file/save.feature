@@ -14,4 +14,4 @@ Feature: Save
     And one data tab is open
     And the data has been saved at least once
     When "Save" is invoked
-    Then save the data in the active tab at its current location and filename
+    Then the data in the active tab should be saved at its current location and filename

@@ -6,13 +6,13 @@ Feature: Set Column Properties
   RULES
   =====
 
-    - Column properties are defined in http://frictionlessdata.io/specs/table-schema/
-    - The 'name', 'type' and 'format' can be pre-populated using Guess Column Properties
-    - A 'name' must be entered for each column. 'name' will be defaulted from the value in the first row
-    - The 'title' and 'description' are optional
-    - Each 'type' has a 'format' of 'default' and may have a limited set of other formats.
-    - Each column may have one or more 'constraints' to further restrict the valid values that can be entered into a column. Constraints can vary by 'type'.
-    - "Set Column Properties" for the current column can be invoked from the menu, toolbar or shortcut
+  - Column properties are defined in http://frictionlessdata.io/specs/table-schema/
+  - The 'name', 'type' and 'format' can be pre-populated using Guess Column Properties
+  - A 'name' must be entered for each column. 'name' will be defaulted from the value in the first row
+  - The 'title' and 'description' are optional
+  - Each 'type' has a 'format' of 'default' and may have a limited set of other formats.
+  - Each column may have one or more 'constraints' to further restrict the valid values that can be entered into a column. Constraints can vary by 'type'.
+  - "Set Column Properties" for the current column can be invoked from the menu, toolbar or shortcut
 
   Background:
     Given Data Curator is open
@@ -20,6 +20,6 @@ Feature: Set Column Properties
 
   Scenario: Set Column Properties for the current column
     When "Column Properties" is invoked
-    Then display a panel that allows properties for the current column to be set
-    And accept and validate column property values
-    And save the values as they are entered
+    Then a panel that allows properties for the current column to be set should be displayed
+    And column property values should be accepted and validated 
+    And the values should be saved as they are entered

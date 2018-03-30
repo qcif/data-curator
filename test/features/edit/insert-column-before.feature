@@ -10,5 +10,5 @@ Feature: Insert Column Before
 
   Scenario: Use the menu to insert a column before the current column
     Given the cursor is in a data table
-    When "Insert Column Before"  is invoked
-    Then insert a column before the current column
+    When "Insert Column Before" is invoked
+    Then a column should be inserted before the current column

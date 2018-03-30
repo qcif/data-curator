@@ -6,10 +6,10 @@ Feature: Redo
   RULES
   =====
 
-    - Only actions performed in editing the data in the table can be undo
-    - The "Redo" command can be invoked using a menu item or keyboard shortcut
+  - Only actions performed in editing the data in the table can be undo
+  - The "Redo" command can be invoked using a menu item or keyboard shortcut
 
   Scenario: Redo an Undo command
     Given an "Undo" command has been performed
     When "Redo" is invoked
-    Then reverse the previous "Undo" command
+    Then the previous "Undo" command should be reversed

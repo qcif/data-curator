@@ -8,13 +8,13 @@ Feature:  Show Previous Tab
   RULES
   =====
 
-    - If you are on the left-most tab, disable the Show previous tab menu option and keyboard shortcut.
-    - The "Show Previous Tab" command can be invoked using a menu item or keyboard shortcut
+  - If you are on the left-most tab, disable the Show previous tab menu option and keyboard shortcut.
+  - The "Show Previous Tab" command can be invoked using a menu item or keyboard shortcut
 
-  Scenario: Use the menu to show the previous tab
+  Scenario: Show the previous tab
     Given Data Curator is open
     And more than one tab is open
     And the left-most tab is not selected
-    When I invoke the "Next Tab" command
-    Then deactive the current tab
-    And activate the tab to the left
+    When "Next Tab" is invoked
+    Then the current tab should be deactivated
+    And the tab to the left should be activated
