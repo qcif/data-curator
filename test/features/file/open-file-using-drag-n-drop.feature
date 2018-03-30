@@ -1,9 +1,9 @@
 @backlog
 
 Feature: Open file using Drag and Drop
-  As a User
-  I want to drag a file onto the Application
-  So that can I quickly start working with the data 
+  As a User  
+  I want to drag a file onto the Application  
+  So that can I quickly start working with the data  
 
   RULES
   =====
