@@ -23,4 +23,4 @@ Feature: Quit
     Given Data Curator is open
     And some data changes have not been saved
     When "Quit" is invoked
-    Then a warning should appear prompting to save unsaved work 
+    Then a warning to save unsaved work should be shown
