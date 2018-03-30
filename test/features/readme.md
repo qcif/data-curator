@@ -7,9 +7,12 @@ Acceptance tests for [Data Curator](https://github.com/ODIQueensland/data-curato
 Writing a test
 ==============
 
+Markdown tips
+-------------
 
 - add two trailing spaces to the end of user stories to make a [soft line break](http://spec.commonmark.org/0.28/#soft-line-breaks). Check that your editor doesn't automatically remove trailing spaces
 - use the [underline method for headings](http://spec.commonmark.org/0.28/#setext-heading-underline) in feature descriptions
+- Name readme's README.md (case matters)
 
 General Rules
 -------------
