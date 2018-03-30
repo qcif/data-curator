@@ -2,23 +2,23 @@
 
 Feature: Close all tabs
   As a Data Packager  
-  I want to close all data tabs and warn if there are unsaved changes  
-  So that I can finish my work quickly  
+  I want to close all data tabs and be warned if there are unsaved changes  
+  So that I can finish my work quickly and safely  
 
   RULES
   =====
 
-  - The "Close all tabs" command can be invoked by a menu item
-  - The "Close all tabs" command can be cancelled
+  - The "Close All tabs" command can be invoked by a menu item
+  - The "Close All tabs" command can be cancelled
 
-  Scenario: Close all tabs, all work saved
+  Scenario: Close all tabs and all work is saved
     Given Data Curator is open
     And all data changes have been saved
-    When "Close all Tabs" is invoked
+    When "Close All Tabs" is invoked
     Then all tabs should be closed
 
-  Scenario: Close all tabs, some work unsaved
+  Scenario: Close all tabs and some work is unsaved
     Given Data Curator is open
     And some data changes have not been saved
-    When "Close all Tabs" is invoked
+    When "Close All Tabs" is invoked
     Then a warning to save unsaved work should be shown
