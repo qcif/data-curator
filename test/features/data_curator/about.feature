@@ -22,7 +22,7 @@ Feature: About
     And links to external websites
     And the Application logo
     And the Application name
-    And the Application version, should shown
+    And the Application version, should be shown
 
   Scenario: Close the About panel
     Given Data Curator is open
