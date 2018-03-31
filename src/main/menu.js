@@ -211,7 +211,7 @@ const template = [
     label: 'Find',
     submenu: [
       {
-        label: 'Find...',
+        label: 'Find',
         accelerator: 'CmdOrCtrl+F'
       }, {
         label: 'Find Next',
@@ -223,9 +223,6 @@ const template = [
         enabled: false
       }, {
         type: 'separator'
-      }, {
-        label: 'Replace...',
-        accelerator: 'Alt+CmdOrCtrl+F'
       }, {
         label: 'Replace Next',
         accelerator: 'Alt+CmdOrCtrl+E',
