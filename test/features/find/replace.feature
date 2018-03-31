@@ -6,37 +6,34 @@ Feature: Replace data
   RULES
   =====
 
-  - "Replace" can be invoked from a menu item, a keyboard shortcut, or button
+  - "Replace Next" can be invoked from a menu item, a keyboard shortcut, or button
   - "Replace All" can be invoked from a button
 
   Scenario: Replace in column
     Given Data Curator is open
-    And one or more values have been found using the "Find Next" or "Find Previous" command
-    And a replacement value has been provided
+    And a search and replacement value has been provided
     And the "in column" constraint is set
-    When "Replace" is invoked
-    Then the first value found in the column after the current cursor position should be replaced with the replacement value
+    When "Replace Next" is invoked
+    Then the first value in the current column that matches the search value after the current cursor position should be replaced with the replacement value
 
   Scenario: Replace All in column
     Given Data Curator is open
-    And one or more values have been found using the "Find Next" or "Find Previous" command
-    And a replacement value has been provided
+    And a search and replacement value has been provided
     And the "in column" constraint is set
     When "Replace All" is invoked
-    Then the all found values in the column  should be replaced with the replacement value
+    Then all the values in the current column that match the search value should be replaced with the replacement value
 
   Scenario: Replace in table
     Given Data Curator is open
-    And one or more values have been found using the "Find Next" or "Find Previous" command
-    And a replacement value has been provided
+    And a search and replacement value has been provided
     And the "in table" constraint is set
-    When "Replace" is invoked
-    Then the first value found in the table after the current cursor position should be replaced with the replacement value
+    When "Replace Next" is invoked
+    Then the first value in the table that matches the search value after the current cursor position should be replaced with the replacement value
 
   Scenario: Replace All in table
     Given Data Curator is open
-    And one or more values have been found using the "Find Next" or "Find Previous" command
+    And a search and replacement value has been provided
     And a replacement value has been provided
     And the "in table" constraint is set
     When "Replace All" is invoked
-    Then all found values in the table should be replaced with the replacement value
+    Then all the values in the table that match the search value should be replaced with the replacement value
