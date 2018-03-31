@@ -25,10 +25,9 @@ Feature: Validate Table
   Scenario: Validate Table
     Given Data Curator is open
     And a data tab is open
-    And column properties may have been entered for some or all columns
+    And properties may have been entered to define the schema
     When "Validate Table" is invoked
-    Then assemble the Table Schema if avaliable from Column Properties
-    And structural data errors should be reported
+    Then structural data errors should be reported
     And schema data errors should be reported
     And all errors should be highlighted in the relevant cells, rows or columns
 

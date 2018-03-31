@@ -56,7 +56,7 @@ Open data consumers can use published Data Packages to:
 
 ## Follow our progress
 
-Interested in this project? Subscribe to [Data Curator News](https://github.com/ODIQueensland/data-curator/issues/15) to get occasional updates on our progress and hear about [each release](https://github.com/ODIQueensland/data-curator/releases).
+Interested in this project? Subscribe to [Data Curator News](https://github.com/ODIQueensland/data-curator/issues/15) to get occasional updates on our progress and hear about [each release](https://github.com/ODIQueensland/data-curator/releases). [Ask a question](https://ask.theodi.org.au/c/projects/data-curator) on the forum.
 
 ## Contributions
 
