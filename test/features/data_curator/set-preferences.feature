@@ -33,10 +33,10 @@ Feature: Set Preferences
   QUESTIONS
   =========
 
-  - provide a preference for "check for update on launch"?
   - will preferences influence command shortcuts, e.g.
-    - open (shortcut adjusted to default CSV Dialect `delimiter`)
-    - save (shortcut adjusted to default CSV Dialect `delimiter`)
+    - open CSV (shortcut adjusted to default CSV Dialect `delimiter`)
+    - save as CSV (shortcut adjusted to default CSV Dialect `delimiter`)
+  - if "Open file" and "Save As" are implemented, above is not needed.
 
   Scenario: Set Preferences
     Given Data Curator is open
