@@ -14,7 +14,7 @@ Feature: Find data
   - "Find" can be invoked using a toolbar, menu item or keyboard shortcut
   - "Find next" and "Find previous" can be invoked using a using a menu item, button or keyboard shortcut
 
-  Notes
+  NOTES
   =====
   
   - https://docs.handsontable.com/0.34.4/demo-searching.html

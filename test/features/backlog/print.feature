@@ -5,7 +5,9 @@ Feature: Print
   I want print out key portions of the data package
   So that I can present them to the Data Custodian and seek approval to release the open data
 
-  Notes:
+  NOTES
+  =====
+  
   - see https://electron.atom.io/docs/api/web-contents/#webcontentsprintoptions for implementation option
   - demonstrated in https://github.com/electron/electron-api-demos
 
