@@ -46,4 +46,4 @@ We use `@tags` to help manage features:
 
 - the `@backlog` tag is used to indicate that the feature is not in our [release plans](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open)
 - the `@draft` tab is used for draft features
-- the `@impl` tab indicated that feature tests have been automated
+- the `@impl` tab indicates that feature tests have been automated
