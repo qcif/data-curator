@@ -8,6 +8,11 @@ Feature: Close tab
   
   - The "Close Tab" command can be invoked by a menu item, shortcut or pressing the close button of the tab
   - The "Close Tab" command can be cancelled
+  
+  LATER
+  =====
+  
+  - checking for unsaved data changes
 
   Scenario: Close the active tab and all data changes are saved
     Given Data Curator is open
