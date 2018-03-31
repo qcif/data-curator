@@ -6,8 +6,14 @@ Feature: Open with
   So that I can quickly start working with the data  
   
   RULES
+  =====
   
   - "Open with..." is invoked by right clicking on a file
+  
+  QUESTIONS
+  =========
+  
+  - Should "Open with..." also work with CSV, TSV, XLS, and XLSX files?
   
   NOTES
   =====
