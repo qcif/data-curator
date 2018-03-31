@@ -13,6 +13,7 @@ Feature: Close tab
   =====
   
   - checking for unsaved data changes
+  - invoke by a menu item or shortcut
 
   Scenario: Close the active tab and all data changes are saved
     Given Data Curator is open

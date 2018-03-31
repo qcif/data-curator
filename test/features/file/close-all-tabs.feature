@@ -10,6 +10,11 @@ Feature: Close all tabs
 
   - The "Close All tabs" command can be invoked by a menu item
   - The "Close All tabs" command can be cancelled
+  
+  LATER
+  =====
+  
+  - checking for unsaved data changes
 
   Scenario: Close all tabs and all work is saved
     Given Data Curator is open
