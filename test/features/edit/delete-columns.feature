@@ -11,7 +11,7 @@ Feature: Remove Columns
   - If the a column is deleted, move the cursor to the next column
   - If the last column is deleted, instead moving the cursor to the next column, move the cursor to the previous column
   - When a column is deleted, leave the cursor in the same row
-  - The "Remove Column(s)" command can be invoked using a menu item or keyboard shortcut
+  - The "Remove Column(s)" command can be invoked using a menu item, keyboard shortcut or a context menu in the data tab
 
   Scenario: Remove Column(s)
     Given a column(s) is selected
