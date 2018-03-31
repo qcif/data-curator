@@ -1,4 +1,4 @@
-@backlog
+@backlog @draft
 
 Feature: Validate Column
   As a Data Packager
