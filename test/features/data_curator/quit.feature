@@ -11,6 +11,11 @@ Feature: Quit
     - macOS uses "Quit".
   - "Quit" can be invoked by a menu item, keyboard shortcut, or system functions
   - "Quit" can be cancelled
+  
+  LATER
+  =====
+  
+  - checking for unsaved data changes
 
   Scenario: Quit the application, all work saved
     Given Data Curator is open

@@ -17,7 +17,7 @@ Feature: Open Recent
     Then a list of recently opened filenames should be shown
     And the selected file should be opened in a new data tab to the right of other data tabs
 
-  Scenario: Clear the Open Recent list of files
+  Scenario: Clear the recently opened file list
     Given Data Curator is open
     When "Clear Recent" is invoked
     Then the list of recently opened files should be deleted

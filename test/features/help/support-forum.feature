@@ -13,4 +13,4 @@ Feature: Support Forum
   Scenario: Support Forum
     Given Data Curator is open
     When "Support Forum" is invoked
-    Then the Support web-site should be opened in a separate browser window
+    Then the Support URL should be opened in a separate browser window
