@@ -22,16 +22,12 @@ General Rules
 - Don't put conditions in  When/Then statements. An if statement can be changed into two different scenarios and the if condition put up into the Given statement.
 - Use "quotes" arounded named things in the Application, e.g. a "Menu item name"
 - Use "double quotes" not 'single quotes'
-- Feature descriptions can use [Markdown](http://commonmark.org)
-  - add two trailing spaces to the end of user stories to make a [soft line break](http://spec.commonmark.org/0.28/#soft-line-breaks). Check that your editor doesn't automatically remove trailing spaces
-  - use the [underline method for headings](http://spec.commonmark.org/0.28/#setext-heading-underline) in feature descriptions
 
 
 Rules for Given
 ---------------
 
 - Write in [third person, not first person](https://automationpanda.com/2017/01/18/should-gherkin-steps-use-first-person-or-third-person/); Using the pronoun "I" is an [anti-pattern](https://cucumber.io/blog/2016/08/31/cucumber-anti-patterns-part-two#scenarios-that-use-i-as-in-the-personal-pronoun)
-- Omit the obvious. E.g. Given app is open
 
 Rules for When
 --------------
