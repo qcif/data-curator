@@ -22,16 +22,19 @@ Feature: Find data
   Scenario: Find 
     Given Data Curator is open
     When "Find" is invoked
-    Then a prompt for a search value and constraints should be displayed
+    Then a prompt for a search value and search constraints should be displayed
+    And a prompt for a replacement value should be displayed
 
   Scenario: Find next
     Given Data Curator is open
     And a search value and optionally search constraints have been entered
     When "Find Next" is invoked
-    Then the next value after the current active cell that matches the search value and complies with the search constraints should be highlighted in the table
+    Then the cursor should be moved to next value after the current active cell that matches the search value and complies with the search constraints 
+    And all values that match the search value and complies with the search constraints should be highlighted
 
   Scenario: Find previous
     Given Data Curator is open
     And a search value and optionally search constraints have been entered
     When "Find Previous" is invoked
-    Then the previous value after the current active cell that matches the search value and complies with the search constraints should be highlighted in the table
+    Then the cursor should be moved to previous value after the current active cell that matches the search value and complies with the search constraints 
+    And all values that match the search value and complies with the search constraints should be highlighted
