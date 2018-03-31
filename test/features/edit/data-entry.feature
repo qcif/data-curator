@@ -10,6 +10,6 @@ Feature: Data entry
 
   Scenario: Edit data
     Given the cursor is in a table cell
-    When A value is typed
+    When a value is typed
     Then the value should be updated in the cell
     But the data should not be saved to file
