@@ -1,4 +1,4 @@
-@backlog
+@backlog @draft
 
 Feature: Import Column Properties
   As a Data Packager

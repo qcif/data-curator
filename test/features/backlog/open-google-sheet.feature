@@ -1,4 +1,4 @@
-@backlog
+@backlog @draft
 
 Feature: Open a Google Sheet
   As a User
