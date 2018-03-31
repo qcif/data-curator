@@ -38,6 +38,10 @@ Feature: Invoke a menu command using keyboard shortcut
       | Insert Column After         | control + L           | control + L           | command + L             |
       | Start Dictation             |                       |                       | fn fn                   |
       | Emoji and Symbols           |                       |                       | command + ctrl + space  |
+      | Find                        |                       |                       | command + F             |
+      | Find Next                   |                       |                       | command + G             |
+      | Find Previous               |                       |                       | command + shift + G     |
+      | Replace Next                |                       |                       | command + option + E    |
       | Header Row                  | control + shift + H   | control + shift + H   | command + shift + H     |
       | Guess Column Properties     | control + shift + G   | control + shift + G   | command + shift + G     |
       | Set Column Properties       | control + shift + C   | control + shift + C   | command + shift + C     |
