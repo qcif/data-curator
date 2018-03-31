@@ -7,7 +7,6 @@ Feature: Show Keyboard Shortcuts
   =====
 
   - "Keyboard Shortcuts" can be invoked from a menu item or keyboard shortcut
-  - a list of Keyboard Shortcuts will be launched in a separate browser window 
 
   Scenario: Show Keyboard Shortcuts
     Given Data Curator is open
