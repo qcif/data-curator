@@ -19,14 +19,19 @@ Feature: Find data
   
   - https://docs.handsontable.com/0.34.4/demo-searching.html
 
+  Scenario: Find 
+    Given Data Curator is open
+    When "Find" is invoked
+    Then a prompt for a search value and constraints should be displayed
+
   Scenario: Find next
     Given Data Curator is open
-    And provided a value to find and optionally search constraints
-    When "Find next" is invoked
-    Then the next value after the current active cell that matches that value and complies with the search constraints should be highlighted in the table
+    And a search value and optionally search constraints have been entered
+    When "Find Next" is invoked
+    Then the next value after the current active cell that matches the search value and complies with the search constraints should be highlighted in the table
 
   Scenario: Find previous
     Given Data Curator is open
-    And provided a value to find for and search constraints
-    When "Find previous" is invoked
-    Then the previous value after the current active cell that matches that value and complies with the search constraints should be highlighted in the table
+    And a search value and optionally search constraints have been entered
+    When "Find Previous" is invoked
+    Then the previous value after the current active cell that matches the search value and complies with the search constraints should be highlighted in the table
