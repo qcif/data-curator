@@ -18,6 +18,11 @@ Feature: Find data
   =====
   
   - https://docs.handsontable.com/0.34.4/demo-searching.html
+  
+  USER INTERFACE
+  ==============
+  
+  ![Data Curator](https://github.com/ODIQueensland/data-curator/raw/master/static/img/data-curator-banner.png)
 
   Scenario: Find 
     Given Data Curator is open
