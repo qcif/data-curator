@@ -1,3 +1,5 @@
+![Data Curator](https://github.com/ODIQueensland/data-curator/raw/master/static/img/data-curator-banner.png)
+
 Acceptance tests for [Data Curator](https://github.com/ODIQueensland/data-curator/blob/master/README.md) are:
 
 - written using the [Gherkin language](https://cucumber.io/docs/reference#gherkin) ([learn more](https://media.pragprog.com/titles/hwcuc/gherkin.pdf)) and stored [on GitHub](https://github.com/ODIQueensland/data-curator/tree/master/test/features)
