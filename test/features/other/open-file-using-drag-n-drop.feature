@@ -15,6 +15,11 @@ Feature: Open file using Drag and Drop
     - prompt to determine what Excel Sheet to open
     - set the CSV Dialect `delimiter` to `,`
 
+  LATER
+  =====
+  
+  - Open datapackage.zip or datapackage.json
+
   Scenario: Drag a valid file type on to the application
     Given Data Curator is open
     When I Drag and Drop a comma separated value file type on to the application
