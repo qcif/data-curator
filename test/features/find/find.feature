@@ -22,7 +22,7 @@ Feature: Find data
   USER INTERFACE
   ==============
   
-  ![Data Curator](https://github.com/ODIQueensland/data-curator/raw/master/static/img/data-curator-banner.png)
+  ![Data Curator Find and Replace User Interfance](https://github.com/ODIQueensland/data-curator/raw/develop/static/img/ui/find-and-replace.png)
 
   Scenario: Find 
     Given Data Curator is open
