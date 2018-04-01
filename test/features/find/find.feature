@@ -6,7 +6,7 @@ Feature: Find data
   RULES
   =====
 
-  - Users can choose a search constrain to find data across the table or within the current column
+  - Users can choose a search constraint to find data across the table or within the current column
   - The default search constraint is find in table
   - When "Find next" is invoked but no values are found on reaching the end of the column/table, start the search from the top of the table
   - When "Find previous" is invoked but no values are found on reaching the top of the column/table, start the search from the bottom of the table
