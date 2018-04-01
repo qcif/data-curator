@@ -8,6 +8,11 @@ Feature: Replace data
 
   - "Replace Next" can be invoked from a menu item, a keyboard shortcut, or button
   - "Replace All" can be invoked from a button
+  
+  USER INTERFACE
+  ==============
+  
+  ![Data Curator Find and Replace User Interface](https://github.com/ODIQueensland/data-curator/raw/develop/static/img/ui/find-and-replace.png)
 
   Scenario: Replace Next in column
     Given Data Curator is open
