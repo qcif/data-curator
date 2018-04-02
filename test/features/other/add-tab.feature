@@ -6,6 +6,11 @@ Feature: Add Tab
   RULES
   =====
   - The "Add Tab" command can be invoked using a button
+  
+    USER INTERFACE
+    ==============
+
+    ![Add tab user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/add-tab.png)
 
   Scenario: Add Tab
     Given Data Curator is open
