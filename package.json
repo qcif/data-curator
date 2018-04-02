@@ -106,7 +106,7 @@
     "vue-async-computed": "^3.3.1",
     "vue-directive-tooltip": "^1.4.5",
     "vue-electron": "^1.0.6",
-    "vue-good-table": "^1.21.0",
+    "vue-good-table": "^2.0.0",
     "vue-router": "^3.0.1",
     "vue-rx": "^5.0.0",
     "vue-template-compiler": "^2.5.2",
