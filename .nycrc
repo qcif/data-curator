@@ -5,10 +5,11 @@
     "lcov",
     "text"
   ],
-  "include": [
-    "**/*.js"
-  ],
+  "require": [
+     "babel-register"
+   ],
   "exclude" : [
     "node_modules"
-  ]
+  ],
+  "check-coverage": true
 }
