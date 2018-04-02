@@ -21,6 +21,11 @@ Feature: Validate Table
       - the same table
       - another table in the same data package
       - another table in a data package at a url (not in specification [yet](https://gitter.im/frictionlessdata/chat?at=59eaed08f7299e8f53142845))
+      
+  USER INTERFACE
+  ==============
+
+  ![Validate user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/validate.png)
 
   Scenario: Validate Table
     Given Data Curator is open
