@@ -11,6 +11,11 @@ Feature: Set Data Package Properties
   - All other properties should be defaulted were possible or read from Preferences/Settings (when implemented)
   - "Set Data Package Properties" command can be invoked by a menu item, toolbar, or shortcut
 
+  USER INTERFACE
+  ==============
+
+  ![Data package user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/data-package.png)
+
   Background:
     Given Data Curator is open
     And a data tab is open
