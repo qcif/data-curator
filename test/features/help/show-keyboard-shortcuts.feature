@@ -8,10 +8,10 @@ Feature: Show Keyboard Shortcuts
 
   - "Keyboard Shortcuts" can be invoked from a menu item or keyboard shortcut
   
-    USER INTERFACE
-    ==============
+  USER INTERFACE
+  ==============
 
-    ![Show keyboard shortcuts user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/keyboard-shortcuts.png)
+  ![Show keyboard shortcuts user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/keyboard-shortcuts.png)
 
   Scenario: Show Keyboard Shortcuts
     Given Data Curator is open
