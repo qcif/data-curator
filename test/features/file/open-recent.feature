@@ -14,8 +14,7 @@ Feature: Open Recent
   USER INTERFACE
   ==============
   
-  ![Open recent user interface](  https://user-images.githubusercontent.com/9379524/30209739-dce985f4-94dc-11e7-8ca7-a4667e5662d9.png
-)
+  ![Open recent user interface](https://user-images.githubusercontent.com/9379524/30209739-dce985f4-94dc-11e7-8ca7-a4667e5662d9.png)
 
   Scenario: Open a recently opened file
     Given Data Curator is open
