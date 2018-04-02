@@ -9,7 +9,7 @@ Feature: Open a Data Package
   - data package files can be opened from a URL or local path
   - A [data package](http://frictionlessdata.io/specs/data-package/) can be stored in `.zip` or `.json` format.
   - The `datapackage.zip` typically contains:
-    - The data resources (e.g. one or more `.csv` files)
+    - The data resources (e.g. one or more `.csv` files or url references)
     - a datapackage.json file (that contains a schema and dialect for each resource)
     - a `README.md` file (containing the provenance information)
   - The datapackage.json:
@@ -17,6 +17,12 @@ Feature: Open a Data Package
     - the schema and dialect for each resource either inline or via a url reference
     - doesn't contain the `README.md` (however this may have been converted a json property that is not defined in the Frictionless Data specification)
   - "Open Data Package" can be invoked from the Menu
+  
+  LATER
+  =====
+  
+  - Open data package from url
+  - Open data using url reference
 
   Scenario: Open a data package zip
     Given Data Curator is open
