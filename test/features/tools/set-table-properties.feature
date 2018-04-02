@@ -38,6 +38,11 @@ Feature: Set Table Properties
       - a table in the same data package
       - at table at a url (planned addition to the Frictionless Data specification)
     - "Table Properties" can be invoked from the menu, toolbar or shortcut
+    
+  USER INTERFACE
+  ==============
+
+  ![Table properties user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/table-properties.png)
 
   Scenario: Set Table Properties
     Given Data Curator is open
