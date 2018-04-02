@@ -12,6 +12,11 @@ Feature: About
 
   - The "About" command can be invoked using a menu item
   - The "Close About Panel" is invoked using a button on the About panel
+  
+  USER INTERFACE
+  ==============
+  
+  ![About panel user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/about.png)
 
   Scenario: Show the About panel
     Given Data Curator is open
