@@ -22,7 +22,7 @@ General Rules
 - the feature name should be some terse yet descriptive text of what is desired
 - Don't put "or" in the Given/When/Then statements - these statements should be pulled out into two different scenarios.
 - Don't put conditions in  When/Then statements. An if statement can be changed into two different scenarios and the if condition put up into the Given statement.
-- Use "quotes" arounded named things in the Application, e.g. a "Menu item name"
+- Use "quotes" around named things in the Application, e.g. a "Menu item name"
 - Use "double quotes" not 'single quotes'
 
 
