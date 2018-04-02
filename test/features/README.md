@@ -48,4 +48,4 @@ We use `@tags` to help manage features:
 
 - the [`@backlog`](https://app.cucumber.pro/projects/data-curator/search/branch/develop?q=%40backlog) tag is used to indicate that the feature is not in our [release plans](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open)
 - the [`@draft`](https://app.cucumber.pro/projects/data-curator/search/branch/develop?q=%40draft) tab is used for draft features
-- the [`@impl`](https://app.cucumber.pro/projects/data-curator/search/branch/develop?q=%40impl) tab indicates that feature tests have been automated
+- the [`@impl`](https://app.cucumber.pro/projects/data-curator/search/branch/develop?q=%40impl) tab indicates the scenario tests that have been automated
