@@ -12,6 +12,11 @@ Feature: Show Help Tags
   - Help Tags contain simple HTML. Links launch in a separate browser windows
   - Delay showing the help tag until the cursor has hovered over the target for a “help-tag-delay” period
   - Hide the help tag when the cursor moves off the target
+  
+  USER INTERFACE
+  ==============
+  
+  ![Help tags user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/help-tags.png)
 
   Scenario: Show Help Tag
     Given Data Curator is open
