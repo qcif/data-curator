@@ -6,10 +6,10 @@ Feature: Copy
   RULES
   =====
 
-    - Selected data can be some or all of the data in a cell, or one or more cells (e.g. row(s), column(s) or block of cells)
-    - The "Copy" command can be invoked using a menu item or keyboard shortcut
+  - Selected data can be some or all of the data in a cell, or one or more cells (e.g. row(s), column(s) or block of cells)
+  - The "Copy" command can be invoked using a menu item or keyboard shortcut
 
   Scenario: Copy data
     Given some data is selected
     When "Copy" is invoked
-    Then copy the data to the clipboard for use in the "Paste" command
+    Then the data should be copied to the clipboard for use in the "Paste" command

@@ -5,12 +5,16 @@
   - quit.feature
 - file:
   - new.feature
+  - open-file.feature
+  - open-file-using-drag-n-drop.feature
+  - open-recent.feature
   - open-comma-separated-file.feature
   - open-tab-separated-file.feature
   - open-semi-colon-separated-file.feature
   - open-excel-sheet.feature
   - open-datapackage.feature
   - save.feature
+  - save-as.feature
   - save-as-comma-separated-file.feature
   - save-as-tab-separated-file.feature
   - save-as-semi-colon-separated-file.feature
@@ -24,17 +28,14 @@
   - insert-row-below.feature
   - insert-column-before.feature
   - insert-column-after.feature
-  - delete-rows.feature
-  - delete-columns.feature
+  - remove-rows.feature
+  - remove-columns.feature
   - data-entry.feature
-  - find.feature
-  - replace-in-column.feature
-  - replace-in-table.feature
 - find:
   - find.feature
   - replace.feature
 - tools:
-  - freeze-header-row.feature
+  - header-row.feature
   - case-sensitive-header-row.feature
   - guess-column-properties.feature
   - set-column-properties.feature
@@ -51,6 +52,7 @@
   - show-next-tab.feature
   - show-previous-tab.feature
 - help:
+  - show-keyboard-shortcuts.feature
   - support-forum.feature
   - report-issues.feature
 - other:
@@ -62,36 +64,4 @@
   - move-to-next-previous-column-property.feature
   - show-help-tags.feature
   - menu-keyboard-shortcuts.feature (Menu keyboard shortcuts)
-  - edit-keyboard-shortcuts.feature (Edit Keyboard Shortcuts)
-
-- version-2 (Version 2):
-  - check-for-update.feature
-  - set-preferences.feature
-  - set-preferences-configuration-file.feature
-  - import-column-properties.feature
-  - create-constraint-from-column.feature
-  - create-lookup-table-from-column.feature
-  - validate-column.feature
-  - publish-data-package.feature
-  - help.feature
-- backlog:
-  - set-preferences.feature
-  - open-custom-csv.feature
-  - open-csv-using-drag-n-drop.feature
-  - open-google-sheet.feature
-  - open-recent.feature
-  - open-with.feature
-  - close-all-tabs.feature
-  - print.feature
-  - read-only-mode.feature
-  - data-quality-information.feature
-  - sample-data-quality-information.md
-  - set-view-properties.feature
-  - export-closed-datapackage.feature
-- drafts:
-  - save-all.feature
-  - sort-column.feature
-  - filter-column.feature
-  - validate-as-you-type.feature
-  - welcome-guide.feature
-  - menu.feature
+  - edit-keyboard-shortcuts.feature (Edit keyboard shortcuts)
