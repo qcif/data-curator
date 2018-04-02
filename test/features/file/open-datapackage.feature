@@ -21,8 +21,10 @@ Feature: Open a Data Package
   LATER
   =====
   
-  - Open data package from url
-  - Open data using url reference
+  - Open data package from url - [test data](https://raw.githubusercontent.com/frictionlessdata/example-data-packages/master/donation-codes-via-url/datapackage.json)
+  - Open data using url reference - [test data](https://github.com/frictionlessdata/example-data-packages/blob/master/zip/donation-codes-via-url.zip)
+  - Open data package that references a Table Schema from URL
+  - Open data package that references a Open CSV Dialect from URL 
 
   Scenario: Open a data package zip
     Given Data Curator is open
