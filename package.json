@@ -189,7 +189,7 @@
     "webpack-fix-default-import-plugin": "^1.0.3",
     "webpack-hot-middleware": "^2.21.2",
     "webpack-merge": "^4.1.2",
-    "webpack-node-externals": "^1.6.0",
+    "webpack-node-externals": "^1.7.2",
     "webpack-shell-plugin": "^0.5.0"
   }
 }
