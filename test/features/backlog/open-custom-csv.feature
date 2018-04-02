@@ -1,4 +1,4 @@
-@backlog
+@backlog @draft
 
 Feature: Open an Custom CSV Dialect file
   As a Data Packager

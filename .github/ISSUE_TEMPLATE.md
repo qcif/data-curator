@@ -23,4 +23,4 @@
 > Include details about the environment you experienced the problem - this will help us fix the bug quicker.
 
 * Data Curator version: 0.Y.Z
-* Operating System and version: e.g. macOS High Sierra 10.13.3
+* Operating System and version: e.g. macOS High Sierra 10.13.4

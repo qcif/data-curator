@@ -37,18 +37,14 @@ Using data from any of these sources, you can:
 
 - automatically create a [schema](http://frictionlessdata.io/specs/table-schema/) that describes the data fields
 - refine the schema to include extra [data validation rules](http://frictionlessdata.io/specs/table-schema/#constraints)
+- validate the data against the schema
 - describe the provenance of your data
 - save data as a valid CSV file in various [CSV dialects](http://frictionlessdata.io/specs/csv-dialect/)
 
-The schema enables you to:
-
-- validate the whole table at once
-- validate a column at a time (planned)
-
 Once the data is described and validated, you can share the data and its description by exporting a [Data Package](http://frictionlessdata.io/data-packages/) to:
 
-- [publish](http://okfnlabs.org/blog/2016/07/25/publish-data-packages-to-datahub-ckan.html) on your [open data portal](https://ckan.org)
-- use as a template for others to make similar data
+- publish the data on a CKAN open data portal
+- use it as a template for others to make similar data
 
 Open data consumers can use published Data Packages to:
 
@@ -60,7 +56,7 @@ Open data consumers can use published Data Packages to:
 
 ## Follow our progress
 
-Interested in this project? Subscribe to [Data Curator News](https://github.com/ODIQueensland/data-curator/issues/15) to get occasional updates on our progress and hear about [each release](https://github.com/ODIQueensland/data-curator/releases).
+Interested in this project? Subscribe to [Data Curator News](https://github.com/ODIQueensland/data-curator/issues/15) to get occasional updates on our progress and hear about [each release](https://github.com/ODIQueensland/data-curator/releases). [Ask a question](https://ask.theodi.org.au/c/projects/data-curator) on the forum.
 
 ## Contributions
 

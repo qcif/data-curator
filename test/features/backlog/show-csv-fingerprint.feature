@@ -1,4 +1,4 @@
-@backlog
+@backlog @draft
 
 Feature: Show validation results as a graphic
   As a Data Packager
