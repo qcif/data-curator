@@ -6,25 +6,25 @@ Feature: Open a Data Package
   RULES
   =====
 
-  - data package files can be opened from a URL or local path
+  - Data package files can be opened from a URL or local path
   - A [data package](http://frictionlessdata.io/specs/data-package/) can be stored in `.zip` or `.json` format.
   - The `datapackage.zip` typically contains:
     - The data resources (e.g. one or more `.csv` files or url references)
     - a datapackage.json file (that contains a schema and dialect for each resource)
     - a `README.md` file (containing the provenance information)
   - The datapackage.json:
-    - contains the `.csv` data resources via a url reference
-    - the schema and dialect for each resource either inline or via a url reference
+    - references the `.csv` data resources via a url reference
+    - contains the `schema` and `dialect` for each resource inline or referenced via a url 
     - doesn't contain the `README.md` (however this may have been converted a json property that is not defined in the Frictionless Data specification)
   - "Open Data Package" can be invoked from the Menu
   
   LATER
   =====
   
-  - Open data package from url - [test data](https://raw.githubusercontent.com/frictionlessdata/example-data-packages/master/donation-codes-via-url/datapackage.json)
-  - Open data using url reference - [test data](https://github.com/frictionlessdata/example-data-packages/blob/master/zip/donation-codes-via-url.zip)
-  - Open data package that references a Table Schema from URL
-  - Open data package that references a Open CSV Dialect from URL 
+  - Open datapackage.json from url - [test data](https://raw.githubusercontent.com/frictionlessdata/example-data-packages/master/donation-codes-via-url/datapackage.json)
+  - Open a datapackage.zip that references data at a URL - [test data](https://github.com/frictionlessdata/example-data-packages/blob/master/zip/donation-codes-via-url.zip)
+  - Open a datapackage.zip that references a Table Schema at URL - [test data](https://github.com/frictionlessdata/example-data-packages/raw/master/zip/donation-codes-via-url.zip)
+  - Open a datapackage.zip that references a CSV Dialect at URL - [test data](https://github.com/frictionlessdata/example-data-packages/raw/master/zip/donation-codes-via-url.zip)
 
   Scenario: Open a data package zip
     Given Data Curator is open
