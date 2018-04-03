@@ -373,10 +373,12 @@ export default {
       return this.formatPropertyValue
     },
     onMouseUp: function(e) {
-      // select current cell then return focus here
-      let selectElement = document.querySelector('select')
-      if (e.target == selectElement) {
-      } else {
+      // ensure that all select elements are captured for possible match
+      let isSelectElement = _.find(document.querySelectorAll('select'), function(el) {
+        return e.target == el
+      })
+      if (!isSelectElement) {
+        // select current cell then return focus here
         this.reselectHotCell()
         e.target.focus()
       }
