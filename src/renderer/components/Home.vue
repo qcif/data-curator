@@ -480,6 +480,7 @@ export default {
       // with deselectOutsideHot set to true, we need to track last selection.
       let hot = HotRegister.getActiveInstance()
       let selected = hot.getSelected()
+      console.log('in selection listener')
       this.pushHotSelection({hotId: hot.guid, selected: selected})
       this.updateActiveColumn(selected)
       // this.resetSideNavArrows()
@@ -734,11 +735,15 @@ export default {
     },
     sideNavLeft: function() {
       let activeHot = HotRegister.getActiveInstance()
+      console.log('active hot in left is')
+      console.log(activeHot)
       let selection = this.getHotSelection(activeHot.guid)
       activeHot.selectCell(selection[0], selection[1] - 1)
     },
     sideNavRight: function() {
       let activeHot = HotRegister.getActiveInstance()
+      console.log('active hot in right is')
+      console.log(activeHot)
       let selection = this.getHotSelection(activeHot.guid)
       activeHot.selectCell(selection[0], selection[1] + 1)
     },
@@ -873,6 +878,7 @@ export default {
     },
     reselectHotCell: function() {
       let hot = HotRegister.getActiveInstance()
+      console.log('reselecting cell')
       let selection = this.getHotSelection(hot.guid)
       if (selection) {
         hot.selectCell(selection[0], selection[1], selection[2], selection[3])
