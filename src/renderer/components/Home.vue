@@ -748,7 +748,7 @@ export default {
     triggerSideNav: function(properties) {
       this.toolbarIndex = -1
       this.sideNavPosition = properties.sideNavPosition || 'left'
-      this.sideNavTransition = properties.sideNavTransition || 'left'
+      this.sideNavTransition = properties.sideNavTransition || 'sideNav-left'
       this.sideNavView = properties.sideNavView
       this.sideNavViewTitle = properties.name || properties.sideNavView
       this.enableTransition = properties.enableTransition || false
