@@ -8,7 +8,7 @@ export function resetHotStore() {
   }
 }
 
-export function stubSimpleTabStore() {
+export function stubSimpleTabStore(hot) {
   const stubbedStore = {
     state: {
       tabs: [],
@@ -16,7 +16,8 @@ export function stubSimpleTabStore() {
       tabObjects: {},
       tabIndex: -1,
       activeTitle: '',
-      hotTabs: {}
+      hotTabs: {},
+      hot: hot
     },
 
     getters: {
@@ -31,6 +32,19 @@ export function stubSimpleTabStore() {
       },
       getTabIndex: state => {
         return 0
+      },
+      getHotSelection: (state, getters) => (hotId) => {
+        return [0, 0, 0, 0]
+      },
+      getHotColumnProperty: (state, getters) => (property) => {
+        let hotColumnProperties = {}
+        return hotColumnProperties[property.key]
+      },
+      getHotIdFromTabId: (state, getters) => (tabId) => {
+        return state.hot
+      },
+      getAllHotTablesColumnNames: (state, getters) => () => {
+        return ['stubbed Column names']
       }
     },
     mutations: {
@@ -54,6 +68,12 @@ export function stubSimpleTabStore() {
       },
       pushTableProperty(state, property) {
         _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
+      },
+      pushHotSelection(state, property) {
+        _.set(state.hotTabs, `${property.hotId}.selected`, property.selected)
+      },
+      pushColumnProperty(state, property) {
+        _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
       }
     }
   }
