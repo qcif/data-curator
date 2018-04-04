@@ -20,6 +20,7 @@ Feature: Replace data
     And the "in column" constraint is set
     When "Replace Next" is invoked
     Then the first value in the current column that matches the search value after the current cursor position should be replaced with the replacement value
+    And the cursor should be moved to that cell
 
   Scenario: Replace All in column
     Given Data Curator is open
@@ -34,6 +35,7 @@ Feature: Replace data
     And the "in table" constraint is set
     When "Replace Next" is invoked
     Then the first value in the table that matches the search value after the current cursor position should be replaced with the replacement value
+    And the cursor should be moved to that cell
 
   Scenario: Replace All in table
     Given Data Curator is open
