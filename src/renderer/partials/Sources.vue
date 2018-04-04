@@ -132,7 +132,6 @@ export default {
       })
       isValid = await this.$validator.validate(field, value)
       this.$validator.detach(field)
-      // console.log(isValid)
       return isValid
     },
     sourceValidationRules: function(prop, index) {

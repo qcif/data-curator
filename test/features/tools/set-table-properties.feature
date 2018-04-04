@@ -38,12 +38,17 @@ Feature: Set Table Properties
       - a table in the same data package
       - at table at a url (planned addition to the Frictionless Data specification)
     - "Table Properties" can be invoked from the menu, toolbar or shortcut
+    
+  USER INTERFACE
+  ==============
+
+  ![Table properties user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/table-properties.png)
 
   Scenario: Set Table Properties
     Given Data Curator is open
     And a data tab is open
     When "Table Properties" is invoked
-    Then display a panel that allows properties to be entered for the current Tab
-    And default, accept and validate Table property values
-    And save the values as they are entered
-    And assign the 'name' property to the Data Tab Name
+    Then a panel that allows properties to be set for the current Tab should be displayed
+    And property values should be accepted and validated 
+    And the values should be saved as they are entered
+    And the 'name' property should be assign to the Data Tab name

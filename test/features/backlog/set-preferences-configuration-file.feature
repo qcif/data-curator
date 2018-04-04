@@ -1,4 +1,4 @@
-@backlog
+@backlog @draft
 
 Feature: Set Preferences using Configuration File
   As a Open Data leader in my organisation

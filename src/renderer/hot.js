@@ -63,6 +63,11 @@ const HotRegister = {
           listeners.selectionListener()
         }
       },
+      afterDeselect() {
+        if (typeof listeners.deselectionListener !== 'undefined') {
+          listeners.deselectionListener()
+        }
+      },
       enterMoves({shiftKey}) {
         if (!shiftKey) {
           const selection = hot.getSelected()

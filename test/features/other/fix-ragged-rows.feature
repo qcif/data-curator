@@ -6,4 +6,5 @@ Feature: Fix Ragged Rows
   Scenario: Fix Ragged Rows
     Given Data Curator is open
     When a data file is opened 
-    Then find the maximum number of columns in the data and append empty cells to all rows with less columns
+    Then find the maximum number of columns in the data 
+    And empty cells should be appended to all rows with less columns

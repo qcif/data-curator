@@ -16,7 +16,7 @@ The best way to contribute financially to this project is to [join the ODI Austr
 
 ## Contribute Ideas and Feature Requests
 
-Your idea for a feature addition may already exist on our [issues backlog](https://github.com/ODIQueensland/data-curator/issues) or [feature backlog](https://github.com/ODIQueensland/data-curator/tree/master/test/features/backlog). If a similar idea is in the backlog, please join the conversation.
+Your idea for a feature addition may already exist on our [issues backlog](https://github.com/ODIQueensland/data-curator/issues) or [feature backlog](https://app.cucumber.pro/projects/data-curator/search/branch/develop?q=%40backlog). If a similar idea is in the backlog, please join the conversation.
 
 If the gist of your idea isn't there:
 - [request a feature](https://github.com/ODIQueensland/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=Stephen-Gates)

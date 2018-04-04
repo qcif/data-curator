@@ -1,4 +1,4 @@
-@backlog
+@backlog @draft
 
 Feature: Select all
   As a Data Packager

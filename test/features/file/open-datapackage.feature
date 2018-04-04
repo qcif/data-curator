@@ -6,33 +6,38 @@ Feature: Open a Data Package
   RULES
   =====
 
-    - A [Data package](http://frictionlessdata.io/specs/data-package/) can be stored in `.zip` or `.json` format.
-    - The `datapackage.zip` typically contains:
-      - The data resources (e.g. one or more `.csv` files)
-      - a datapackage.json file (that contains a schema and dialect for each resource)
-      - a `README.md` file (containing the provenance information)
-    -  The datapackage.json:
-      - contains the `.csv` data resources via a url reference
-      - the schema and dialect for each resource either inline or via a url reference
-      - doesn't contain the `README.md` (however this may have been converted a json property that is not defined in the Frictionless Data specification)
-    - "Open Data Package" can be invoked from the Menu. The user can select a `.zip` or `.json` file
+  - Data packages can be opened from a URL or local path
+  - A [data package](http://frictionlessdata.io/specs/data-package/) can be stored in `.zip` or `.json` format.
+  - The `datapackage.zip` typically contains:
+    - data resources (e.g. one or more `.csv` files located via a local path or url reference)
+    - a datapackage.json file (that describes the data package and contains a [table schema](http://frictionlessdata.io/specs/table-schema/) and [CSV dialect](http://frictionlessdata.io/specs/csv-dialect/) for each resource)
+      - the `schema` and `dialect` for each resource may be in-line or referenced via a url 
+    - a `README.md` file (containing the provenance information)
+  - The datapackage.json file not in a zip file:
+    - references the data resources via a url 
+    - describes the data package and contains the `schema` and `dialect` for each resource, either inline or referenced via a url
+    - doesn't include or reference and README.md or README.txt
+  - "Open Data Package" can be invoked from the Menu
+  
+  LATER
+  =====
+  
+  - Open a data package that references a Table Schema at a URL 
+  - Open a data package that references a CSV Dialect at a URL
 
-  Scenario: Open a data package zip
+  Scenario Outline: Open a data package 
     Given Data Curator is open
     When "Open Data Package" is invoked
-    And a .zip file is selected
-    Then the selected file is unzipped
-    And each data resource is opened (from a URL or local) in a new data tab to the right of any other open data tabs
-    And for each data resource header row is set using the `dialect`
-    And the corresponding column, table and package properties are loaded from datapackage.json into the Properties Panels
-    And the provenance information is loaded from the README.md or README.txt
-    And each Data tab is named using the data resource `name`
+    And a data package file <location> is selected
+    Then the properties from datapackage.json and internal URL references should be loaded into the property panels
+    And each data resource (at a URL or path) should be opened in a new data tab to the right of any other open data tabs
+    And each Data tab should be named using the data resource `name`
+    And each data resource header row should be set using the `dialect`  
+    And text in any associated README.md or README.txt should be loaded into the provenance information
 
-  Scenario: Open a data package json
-    Given Data Curator is open
-    When "Open Data Package" is invoked
-    And a .json file is selected
-    Then each data resource is opened (from a URL or local) in a new data tab to the right of any other open data tabs
-    And for each data resource header row is set using the `dialect`
-    And the corresponding column, table and package properties are loaded from datapackage.json into the Properties Panels
-    And each Data tab is named using the data resource `name`
+    Examples:
+      | location                                                                                                          | notes                                                                   |
+      | cpi.zip                                                                                                           | local datapackage.zip file, data in package, schema and dialect in-line |
+      | https://github.com/frictionlessdata/example-data-packages/raw/master/zip/cpi.zip                                  | datapackage.zip at url, data in package, schema and dialect in-line            |
+      | https://raw.githubusercontent.com/frictionlessdata/example-data-packages/master/cpi-data-via-url/datapackage.json | datapackage.json at url, data at url, schema and dialect in-line               |
+      | https://github.com/frictionlessdata/example-data-packages/raw/master/zip/donation-codes-via-url.zip               | datapackage.zip at url, data, schema and dialect at url                        |

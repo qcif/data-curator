@@ -1,6 +1,7 @@
 import {HotRegister} from '@/hot.js'
 
 let hotRegisterActiveQueryStub
+let hotRegisterActiveInstanceStub
 let hotElementClassName = 'stubbedHot'
 
 export function stubHotInDocumentDom() {
@@ -32,7 +33,12 @@ function stubActiveQuery() {
 
 export function resetHot() {
   HotRegister.destroyAllHots()
-  hotRegisterActiveQueryStub.restore()
+  if (hotRegisterActiveQueryStub) {
+    hotRegisterActiveQueryStub.restore()
+  }
+  if (hotRegisterActiveInstanceStub) {
+    hotRegisterActiveInstanceStub.restore()
+  }
 }
 
 export function registerHot() {
@@ -40,4 +46,15 @@ export function registerHot() {
   let hotId = HotRegister.register(container)
   let hot = HotRegister.getInstance(hotId)
   return hot
+}
+
+export function registerHotWithContainer(container) {
+  let hotId = HotRegister.register(container)
+  let hot = HotRegister.getInstance(hotId)
+  return hot
+}
+
+export function stubHotRegisterActiveInstance(hot) {
+  hotRegisterActiveInstanceStub = sinon.stub(HotRegister, 'getActiveInstance')
+  hotRegisterActiveInstanceStub.withArgs().returns(hot)
 }

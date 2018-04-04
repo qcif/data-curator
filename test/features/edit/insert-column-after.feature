@@ -6,9 +6,9 @@ Feature: Insert Column After
   RULES
   =====
 
-    - The "Insert Column After" command can be invoked using a menu item or keyboard shortcut
+  - The "Insert Column After" command can be invoked using a menu item, keyboard shortcut or a context menu in the data tab
 
   Scenario: Insert Column After
     Given the cursor is in a data table
     When "Insert Column After" is invoked
-    Then insert a column after the current column
+    Then a column should be inserted after the current column
