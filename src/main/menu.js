@@ -285,7 +285,7 @@ const template = [
         type: 'separator'
       }, {
         label: 'Set Column Properties',
-        accelerator: 'Shift+CmdOrCtrl+C',
+        accelerator: process.env.NODE_ENV !== 'development' ? 'Shift+CmdOrCtrl+C' : 'Alt+CmdOrCtrl+C',
         click() {
           webContents().send('triggerMenuButton', 'Column')
         }
