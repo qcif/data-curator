@@ -112,7 +112,6 @@ export default {
     }
   },
   mounted: function() {
-    console.log('mounted errors')
     const vueSetErrorMessages = this.setErrorMessages
     const vueResetErrorMessages = this.resetErrorMessages
     ipc.on('errorMessages', function(event, arg) {

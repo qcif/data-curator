@@ -62,7 +62,7 @@
                 </li>
               </ul>
             </li>
-            <li class="tab-add" @click="addTab" v-tooltip="tooltip('tooltip-add-tab')">
+            <li class="tab-add" @click="addTab" v-tooltip.right="tooltip('tooltip-add-tab')">
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
             <component is="tooltipAddTab" />
@@ -476,14 +476,30 @@ export default {
       let columnIndex = this.transformCountToIndex(column)
       hot.selectCell(rowIndex, columnIndex)
     },
-    selectionListener: function() {
-      // with deselectOutsideHot set to true, we need to track last selection.
+    deselectionListener: function() {
       let hot = HotRegister.getActiveInstance()
+      this.highlightPersistedSelection(hot)
+    },
+    selectionListener: function() {
+      let hot = HotRegister.getActiveInstance()
+      this.unhighlightPersistedSelection(hot)
       let selected = hot.getSelected()
-      console.log('in selection listener')
+      // with deselectOutsideHot set to true, we need to track last selection.
       this.pushHotSelection({hotId: hot.guid, selected: selected})
       this.updateActiveColumn(selected)
-      // this.resetSideNavArrows()
+    },
+    highlightPersistedSelection: function(hot) {
+      this.updatePersistedSelectionHighlight(hot, 'rgba(181, 209, 255, 0.30)')
+    },
+    unhighlightPersistedSelection: function(hot) {
+      this.updatePersistedSelectionHighlight(hot, '')
+    },
+    updatePersistedSelectionHighlight: function(hot, color) {
+      let selection = this.getHotSelection(hot.guid)
+      if (selection) {
+        let element = hot.getCell(selection[0], selection[1])
+        element.style.backgroundColor = color
+      }
     },
     inferColumnProperties: async function() {
       try {
@@ -610,6 +626,7 @@ export default {
     loadFormattedDataIntoContainer: function(container, data, format) {
       HotRegister.register(container, {
         selectionListener: this.selectionListener,
+        deselectionListener: this.deselectionListener,
         loadingStartListener: this.showLoadingScreen,
         loadingFinishListener: this.closeLoadingScreen
       })
@@ -735,15 +752,11 @@ export default {
     },
     sideNavLeft: function() {
       let activeHot = HotRegister.getActiveInstance()
-      console.log('active hot in left is')
-      console.log(activeHot)
       let selection = this.getHotSelection(activeHot.guid)
       activeHot.selectCell(selection[0], selection[1] - 1)
     },
     sideNavRight: function() {
       let activeHot = HotRegister.getActiveInstance()
-      console.log('active hot in right is')
-      console.log(activeHot)
       let selection = this.getHotSelection(activeHot.guid)
       activeHot.selectCell(selection[0], selection[1] + 1)
     },
@@ -878,7 +891,6 @@ export default {
     },
     reselectHotCell: function() {
       let hot = HotRegister.getActiveInstance()
-      console.log('reselecting cell')
       let selection = this.getHotSelection(hot.guid)
       if (selection) {
         hot.selectCell(selection[0], selection[1], selection[2], selection[3])
