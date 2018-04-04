@@ -34,8 +34,9 @@ Feature: Find data
     Given Data Curator is open
     And a search value and optionally search constraints have been entered
     When "Find Next" is invoked
-    Then all values that match the search value and comply with the search constraints should be highlighted
-    And the cursor should be moved to next value after the current active cell that matches the search value and complies with the search constraints 
+    Then all the cells with values that match the search value and comply with the search constraints should be shaded green
+    And the cursor should be moved to next cell after the current active cell that matches the search value and complies with the search constraints 
+    And that cell's border should be highlighted
     And a count of all the values that match the search value and comply with the search constraints should be displayed
     And a number representing which instance of the data that has been found value should be displayed
 
@@ -43,7 +44,8 @@ Feature: Find data
     Given Data Curator is open
     And a search value and optionally search constraints have been entered
     When "Find Previous" is invoked
-    Then all values that match the search value and comply with the search constraints should be highlighted
-    And the cursor should be moved to previous value after the current active cell that matches the search value and complies with the search constraints 
+    Then all cells with values that match the search value and comply with the search constraints should be highlighted
+    And the cursor should be moved to next cell after the current active cell that matches the search value and complies with the search constraints 
+    And that cell's border should be highlighted
     And a count of all the values that match the search value and comply with the search constraints should be displayed
     And a number representing which instance of the data that has been found value should be displayed
