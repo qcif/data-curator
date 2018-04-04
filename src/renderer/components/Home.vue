@@ -250,6 +250,7 @@ export default {
       previousComments: [],
       errorsWindowId: null,
       activeSelected: [],
+      persistColorFn: this.highlightPersistedSelection,
       toolbarMenus: [{
         name: 'Guess',
         id: 'guess-column-properties',
@@ -353,6 +354,12 @@ export default {
     },
     mainBottomPanelStatus() {
       return `${this.messageStatus} ${this.sideNavPropertiesForMain}`
+    },
+    errorColor() {
+      return 'rgba(245, 186, 186, 0.3)'
+    },
+    highlightColor() {
+      return 'rgba(181, 209, 255, 0.3)'
     }
   },
   methods: {
@@ -427,10 +434,12 @@ export default {
       }, 500)
     },
     hoverToSelectErrorCell: function(row, column) {
+      this.persistColorFn = false
       this.updateCellsFromCount(row, column, this.addErrorHoverStyle)
     },
     exitHoverToSelectErrorCell: function(row, column) {
       this.updateCellsFromCount(row, column, this.removeErrorHoverStyle)
+      this.persistColorFn = this.highlightPersistedSelection
     },
     addErrorHoverStyle: function(element) {
       element.style.border = 'solid 1px #ff3860'
@@ -443,10 +452,34 @@ export default {
       element.style.boxShadow = ''
     },
     addErrorHighlightStyle: function(element) {
-      element.style.backgroundColor = 'rgb(245, 186, 186)'
+      element.style.backgroundColor = this.errorColor
     },
     removeErrorHighlightStyle: function(element) {
       element.style.backgroundColor = ''
+    },
+    highlightPersistedSelection: function(hot) {
+      let element = this.getHotSelectionElement(hot)
+      // only highlight if no existing color
+      if (element) {
+        element.style.backgroundColor = this.highlightColor
+      }
+    },
+    unhighlightPersistedSelection: function(hot) {
+      let element = this.getHotSelectionElement(hot)
+      // only remove color if it is 'highlight'
+      if (element) {
+        if (element.style && element.style.backgroundColor === this.highlightColor) {
+          element.style.backgroundColor = ''
+        }
+      }
+    },
+    getHotSelectionElement: function(hot) {
+      let element
+      let selection = this.getHotSelection(hot.guid)
+      if (selection) {
+        element = hot.getCell(selection[0], selection[1])
+      }
+      return element
     },
     updateCellsFromCount: function(row, column, fn) {
       let hot = HotRegister.getActiveInstance()
@@ -459,12 +492,14 @@ export default {
       this.updateCellsFromHotRange(hot, range, fn)
     },
     updateCellsFromHotRange: function(hot, range, fn) {
+      // before we select cell for errors, check if there is a current selection made
       hot.selectCell(range.from.row, range.from.col, range.to.row, range.to.col)
       let elements = this.getHighlightedAreaOrCellSelectors()
+      hot.deselectCell()
       for (let element of elements) {
         fn(element)
       }
-      hot.deselectCell()
+      // hot.deselectCell()
     },
     getHighlightedAreaOrCellSelectors: function() {
       let elements = document.querySelectorAll('.highlight')
@@ -478,7 +513,9 @@ export default {
     },
     deselectionListener: function() {
       let hot = HotRegister.getActiveInstance()
-      this.highlightPersistedSelection(hot)
+      if (this.persistColorFn) {
+        this.persistColorFn(hot)
+      }
     },
     selectionListener: function() {
       let hot = HotRegister.getActiveInstance()
@@ -487,19 +524,6 @@ export default {
       // with deselectOutsideHot set to true, we need to track last selection.
       this.pushHotSelection({hotId: hot.guid, selected: selected})
       this.updateActiveColumn(selected)
-    },
-    highlightPersistedSelection: function(hot) {
-      this.updatePersistedSelectionHighlight(hot, 'rgba(181, 209, 255, 0.30)')
-    },
-    unhighlightPersistedSelection: function(hot) {
-      this.updatePersistedSelectionHighlight(hot, '')
-    },
-    updatePersistedSelectionHighlight: function(hot, color) {
-      let selection = this.getHotSelection(hot.guid)
-      if (selection) {
-        let element = hot.getCell(selection[0], selection[1])
-        element.style.backgroundColor = color
-      }
     },
     inferColumnProperties: async function() {
       try {
@@ -804,14 +828,14 @@ export default {
         this.closeMessages()
       }
     },
-    setHotComments: function() {
-      let hot = HotRegister.getActiveInstance()
-      let commentsPlugin = hot.getPlugin('comments')
+    removePreviousHotComments: function(commentsPlugin) {
       for (const previousComment of this.previousComments) {
         commentsPlugin.removeCommentAtCell(previousComment.row, previousComment.col)
         this.updateCellsFromIndex(previousComment.row, previousComment.col, this.removeErrorHighlightStyle)
       }
       this.previousComments = []
+    },
+    setHotComments: function(commentsPlugin, hot) {
       for (const errorMessage of this.messages) {
         let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
         commentsPlugin.setRange(range)
@@ -933,8 +957,11 @@ export default {
       this.testBottomMain()
     },
     messages: function() {
+      let hot = HotRegister.getActiveInstance()
+      let commentsPlugin = hot.getPlugin('comments')
+      this.removePreviousHotComments(commentsPlugin)
       if (this.messagesType === 'error') {
-        this.setHotComments()
+        this.setHotComments(commentsPlugin, hot)
       }
       if (this.messages) {
         this.sendErrorsToErrorsWindow()
