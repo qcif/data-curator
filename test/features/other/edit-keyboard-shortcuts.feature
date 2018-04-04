@@ -6,7 +6,7 @@ Feature: Initiate an editor command using a keyboard shortcut
   Scenario Outline: Initiate an editor command using a keyboard shortcut
     Given Data Curator is open in an <operating system>
      When <operating system> <shortcut> is used
-     Then the <editor command> is invoked
+     Then the <editor command> should be invoked
 
     Examples:
     | Editor command                                                   | Windows / Linux     | macOS      |

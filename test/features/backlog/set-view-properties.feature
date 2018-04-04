@@ -1,4 +1,4 @@
-@backlog
+@backlog @draft
 
 Feature: Set View Properties
   As a Data Packager

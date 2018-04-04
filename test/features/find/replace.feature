@@ -1,42 +1,46 @@
 Feature: Replace data
   As a Data Packager  
-  I want to replace one or more values that have been found  
-  So that I correct data errors quickly  
+  I want to replace one or more values with another  
+  So that I can correct data errors quickly  
 
   RULES
   =====
 
-    - "Replace" can be invoked from a menu item, a keyboard shortcut, or button
-    - "Replace All" can be invoked from a button
+  - "Replace Next" can be invoked from a menu item, a keyboard shortcut, or button
+  - "Replace All" can be invoked from a button
+  
+  USER INTERFACE
+  ==============
+  
+  ![Data Curator Find and Replace User Interface](https://github.com/ODIQueensland/data-curator/raw/develop/static/img/ui/find-and-replace.png)
 
-  Scenario: Replace in column
+  Scenario: Replace Next in column
     Given Data Curator is open
-    And one or more values have been found using the "Find Next" or "Find Previous" command
-    And a replacement value has been provided
+    And a search and replacement value has been provided
     And the "in column" constraint is set
-    When "Replace" is invoked
-    Then replace the first value found in the column after the current cursor position with the replacement value
+    When "Replace Next" is invoked
+    Then the first value in the current column that matches the search value after the current cursor position should be replaced with the replacement value
+    And the cursor should be moved to that cell
 
   Scenario: Replace All in column
     Given Data Curator is open
-    And one or more values have been found using the "Find Next" or "Find Previous" command
-    And a replacement value has been provided
+    And a search and replacement value has been provided
     And the "in column" constraint is set
     When "Replace All" is invoked
-    Then replace the all found values in the column with the replacement value
+    Then all the values in the current column that match the search value should be replaced with the replacement value
 
-  Scenario: Replace in table
+  Scenario: Replace Next in table
     Given Data Curator is open
-    And one or more values have been found using the "Find Next" or "Find Previous" command
-    And a replacement value has been provided
+    And a search and replacement value has been provided
     And the "in table" constraint is set
-    When "Replace" is invoked
-    Then replace the first value found in the table after the current cursor position with the replacement value
+    When "Replace Next" is invoked
+    Then the first value in the table that matches the search value after the current cursor position should be replaced with the replacement value
+    And the cursor should be moved to that cell
 
   Scenario: Replace All in table
     Given Data Curator is open
-    And one or more values have been found using the "Find Next" or "Find Previous" command
+    And a search and replacement value has been provided
     And a replacement value has been provided
     And the "in table" constraint is set
     When "Replace All" is invoked
-    Then replace the all found values in the table with the replacement value
+    Then all the values in the table that match the search value should be replaced with the replacement value

@@ -6,11 +6,11 @@ Feature: Support Forum
   RULES
   =====
 
-    - "Support Forum" can be invoked from a menu item
-    - Support will be launched in a separate browser window that will require access to the internet
-    - The Support URL will be on https://ask.theodi.org.au/c/projects/data-curator
+  - "Support Forum" can be invoked from a menu item
+  - Support will be launched in a separate browser window that will require access to the internet
+  - The Support URL will be on https://ask.theodi.org.au/c/projects/data-curator
 
   Scenario: Support Forum
     Given Data Curator is open
     When "Support Forum" is invoked
-    Then Open the Support web-site in a separate browser window
+    Then the Support URL should be opened in a separate browser window

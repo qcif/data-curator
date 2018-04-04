@@ -11,12 +11,17 @@ Feature: Set Data Package Properties
   - All other properties should be defaulted were possible or read from Preferences/Settings (when implemented)
   - "Set Data Package Properties" command can be invoked by a menu item, toolbar, or shortcut
 
+  USER INTERFACE
+  ==============
+
+  ![Data package user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/data-package.png)
+
   Background:
     Given Data Curator is open
     And a data tab is open
 
   Scenario: Set Data Package Properties
     When "Set Data Package Properties" is invoked
-    Then display a panel that allows properties to be entered
-    And accept and validate property values
-    And save the values as they are entered
+    Then a panel that allows properties to be set should be displayed
+    And property values should be accepted and validated 
+    And the values should be saved as they are entered
