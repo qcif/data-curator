@@ -4889,9 +4889,9 @@ handlebars@^4.0.1, handlebars@^4.0.3:
   optionalDependencies:
     uglify-js "^2.6"
 
-handsontable@^0.35.1:
-  version "0.35.1"
-  resolved "https://registry.yarnpkg.com/handsontable/-/handsontable-0.35.1.tgz#e976aa568824b250f2f475309db8db9a8ef1b1d9"
+handsontable@^0.38.1:
+  version "0.38.1"
+  resolved "https://registry.yarnpkg.com/handsontable/-/handsontable-0.38.1.tgz#b8829ef4a82c4aad7d09472b71b6b6aa19baa6ce"
   dependencies:
     moment "2.20.1"
     numbro "1.11.0"
