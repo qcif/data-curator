@@ -6,14 +6,15 @@ Feature: Open a Data Package
   RULES
   =====
 
-  - Data package files can be opened from a URL or local path
+  - Data packages can be opened from a URL or local path
   - A [data package](http://frictionlessdata.io/specs/data-package/) can be stored in `.zip` or `.json` format.
   - The `datapackage.zip` typically contains:
-    - The data resources (e.g. one or more `.csv` files or url references)
+    - The data resources (e.g. one or more `.csv` files located via a local path or url reference)
     - a datapackage.json file (that contains a schema and dialect for each resource)
+      - the `schema` and/or `dialect` for each resource may be in-line or referenced via a url - [test data](https://github.com/frictionlessdata/example-data-packages/raw/master/zip/donation-codes-via-url.zip)
     - a `README.md` file (containing the provenance information)
   - The datapackage.json:
-    - references the `.csv` data resources via a url reference
+    - references the `.csv` data resources via a url reference - [test data](https://raw.githubusercontent.com/frictionlessdata/example-data-packages/master/donation-codes-via-url/datapackage.json)
     - contains the `schema` and `dialect` for each resource inline or referenced via a url 
     - doesn't contain the `README.md` (however this may have been converted a json property that is not defined in the Frictionless Data specification)
   - "Open Data Package" can be invoked from the Menu
@@ -21,27 +22,25 @@ Feature: Open a Data Package
   LATER
   =====
   
-  - Open datapackage.json from url - [test data](https://raw.githubusercontent.com/frictionlessdata/example-data-packages/master/donation-codes-via-url/datapackage.json)
-  - Open a datapackage.zip that references data at a URL - [test data](https://github.com/frictionlessdata/example-data-packages/blob/master/zip/donation-codes-via-url.zip)
-  - Open a datapackage.zip that references a Table Schema at URL - [test data](https://github.com/frictionlessdata/example-data-packages/raw/master/zip/donation-codes-via-url.zip)
-  - Open a datapackage.zip that references a CSV Dialect at URL - [test data](https://github.com/frictionlessdata/example-data-packages/raw/master/zip/donation-codes-via-url.zip)
+  - Open a data package that references a Table Schema at a URL 
+  - Open a data package that references a CSV Dialect at a URL
 
   Scenario: Open a data package zip
     Given Data Curator is open
     When "Open Data Package" is invoked
     And a .zip file is selected
     Then the selected file should be unzipped
-    And each data resource should be opened (from a URL or local) in a new data tab to the right of any other open data tabs
-    And each data resource header row should be set using the `dialect`
-    And the corresponding column, table and package properties should be loaded from datapackage.json into the Properties Panels
-    And the provenance information should be loaded from the README.md or README.txt
+    And each data resource should be opened (from a URL or local path) in a new data tab to the right of any other open data tabs
     And each Data tab should be named using the data resource `name`
+    And each data resource header row should be set using the `dialect`
+    And the corresponding column, table and package properties should be loaded from datapackage.json into the property panels
+    And the provenance information should be loaded from the README.md or README.txt
 
   Scenario: Open a data package json
     Given Data Curator is open
     When "Open Data Package" is invoked
     And a .json file is selected
     Then each data resource should be opened (from a URL or local) in a new data tab to the right of any other open data tabs
-    And for each data resource header row should be set using the `dialect`
-    And the corresponding column, table and package properties should be loaded from datapackage.json into the Properties Panels
     And each Data tab should be named using the data resource `name`
+    And for each data resource header row should be set using the `dialect`
+    And the corresponding column, table and package properties should be loaded from datapackage.json into the property panels
