@@ -14,8 +14,8 @@ Feature: Open a Data Package
       - the `schema` and/or `dialect` for each resource may be in-line or referenced via a url - [test data](https://github.com/frictionlessdata/example-data-packages/raw/master/zip/donation-codes-via-url.zip)
     - a `README.md` file (containing the provenance information)
   - The datapackage.json:
-    - references the `.csv` data resources via a url reference - [test data](https://raw.githubusercontent.com/frictionlessdata/example-data-packages/master/donation-codes-via-url/datapackage.json)
-    - contains the `schema` and `dialect` for each resource inline or referenced via a url 
+    - references the `.csv` data resources via a url reference 
+    - contains the `schema` and `dialect` for each resource inline or referenced via a url - [test data](https://raw.githubusercontent.com/frictionlessdata/example-data-packages/master/donation-codes-via-url/datapackage.json)
     - doesn't contain the `README.md` (however this may have been converted a json property that is not defined in the Frictionless Data specification)
   - "Open Data Package" can be invoked from the Menu
   
@@ -25,22 +25,19 @@ Feature: Open a Data Package
   - Open a data package that references a Table Schema at a URL 
   - Open a data package that references a CSV Dialect at a URL
 
-  Scenario: Open a data package zip
+  Scenario Outline: Open a data package 
     Given Data Curator is open
     When "Open Data Package" is invoked
-    And a .zip file is selected
-    Then the selected file should be unzipped
-    And each data resource should be opened (from a URL or local path) in a new data tab to the right of any other open data tabs
+    And a data package file <location> is selected
+    Then the properties from datapackage.json and URL references should be loaded into the property panels
+    And each data resource (at a URL or path) should be opened in a new data tab to the right of any other open data tabs
     And each Data tab should be named using the data resource `name`
-    And each data resource header row should be set using the `dialect`
-    And the corresponding column, table and package properties should be loaded from datapackage.json into the property panels
-    And the provenance information should be loaded from the README.md or README.txt
+    And each data resource header row should be set using the `dialect`  
+    And text in any associated README.md or README.txt should be loaded into the provenance information
 
-  Scenario: Open a data package json
-    Given Data Curator is open
-    When "Open Data Package" is invoked
-    And a .json file is selected
-    Then each data resource should be opened (from a URL or local) in a new data tab to the right of any other open data tabs
-    And each Data tab should be named using the data resource `name`
-    And for each data resource header row should be set using the `dialect`
-    And the corresponding column, table and package properties should be loaded from datapackage.json into the property panels
+    Examples:
+      | location                                                                                                          | notes                                                                   |
+      | cpi.zip                                                                                                           | local datapackage.zip file, data in package, schema and dialect in-line |
+      | https://github.com/frictionlessdata/example-data-packages/raw/master/zip/cpi.zip                                  | datapackage.zip at url, data in package, schema and dialect in-line            |
+      | https://raw.githubusercontent.com/frictionlessdata/example-data-packages/master/cpi-data-via-url/datapackage.json | datapackage.json at url, data at url, schema and dialect in-line               |
+      | https://github.com/frictionlessdata/example-data-packages/raw/master/zip/donation-codes-via-url.zip               | datapackage.zip at url, data, schema and dialect at url                        |
