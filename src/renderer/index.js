@@ -32,11 +32,8 @@ export function addHotContainerListeners(container) {
 }
 
 export function getWindow(id) {
-  console.log(`getting window: ${id}`)
   let browserWindow
-  console.log(remote.getGlobal('windows'))
   let windowId = remote.getGlobal('windows')[id]
-  console.log(`windowId is ${windowId}`)
   if (windowId) {
     browserWindow = remote.BrowserWindow.fromId(windowId)
   }
