@@ -205,37 +205,31 @@ const template = [
       }
     ]
   }, {
-    // Placeholder for future features
-    //    label: 'Find',
-    //    submenu: [
-    //      {
-    //        label: 'Find',
-    //        accelerator: 'CmdOrCtrl+F',
-    //        enabled: false
-    //      }, {
-    //        label: 'Find Next',
-    //        accelerator: 'CmdOrCtrl+G',
-    //        enabled: false
-    //      }, {
-    //        label: 'Find Previous',
-    //        accelerator: 'Shift+CmdOrCtrl+G',
-    //        enabled: false
-    //      }, {
-    //        type: 'separator'
-    //      }, {
-    //        label: 'Replace',
-    //        accelerator: 'Alt+CmdOrCtrl+F',
-    //        enabled: false
-    //      }, {
-    //        label: 'Replace Next',
-    //        accelerator: 'Alt+CmdOrCtrl+E',
-    //        enabled: false
-    //      }, {
-    //        label: 'Replace All',
-    //        enabled: false
-    //      }
-    //    ]
-    //  }, {
+    label: 'Find',
+    submenu: [
+      {
+        label: 'Find',
+        accelerator: 'CmdOrCtrl+F'
+      }, {
+        label: 'Find Next',
+        accelerator: 'CmdOrCtrl+G',
+        enabled: false
+      }, {
+        label: 'Find Previous',
+        accelerator: 'Shift+CmdOrCtrl+G',
+        enabled: false
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Replace Next',
+        accelerator: 'Alt+CmdOrCtrl+E',
+        enabled: false
+      }, {
+        label: 'Replace All',
+        enabled: false
+      }
+    ]
+  }, {
     label: 'Tools',
     submenu: [
       {
@@ -466,7 +460,7 @@ if (process.platform === 'darwin') {
   })
 
   // overwrite Window menu
-  template[4].submenu = [
+  template[5].submenu = [
     {
       role: 'minimize'
     }, {
