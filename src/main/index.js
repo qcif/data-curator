@@ -4,7 +4,7 @@
  */
 import {app, Menu, BrowserWindow, dialog} from 'electron'
 import {createWindowTab, focusMainWindow} from './windows'
-import {template} from './menu'
+import {AppMenu} from './menu'
 import './rendererToMain.js'
 
 if (process.env.NODE_ENV !== 'development') {
@@ -33,8 +33,8 @@ if (isSecondInstance) {
 }
 
 app.on('ready', () => {
-  var menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
+  let appMenu = new AppMenu()
+  Menu.setApplicationMenu(appMenu.menu)
   let browserWindow = createWindowTab()
   // don't allow prompt in development as slows dev process down when trying to hot-reload
   if (process.env.NODE_ENV === 'production') {
