@@ -736,13 +736,23 @@ export default {
     },
     updateSideNavState: function() {
       let toolbarMenu = this.toolbarMenus[this.toolbarIndex]
-      this.sideNavPosition = toolbarMenu.sideNavPosition
-      this.sideNavView = toolbarMenu.sideNavView
-      this.sideNavViewTitle = toolbarMenu.name
-      this.openSideNav()
+      if (toolbarMenu) {
+        this.sideNavPosition = toolbarMenu.sideNavPosition
+        this.sideNavView = toolbarMenu.sideNavView
+        this.sideNavViewTitle = toolbarMenu.name
+        this.openSideNav()
+      }
     },
     updateToolbarMenuForSideNav: function(index) {
-      if (this.sideNavStatus === 'closed' || this.toolbarIndex === -1) {
+      let menuName
+      if (index !== -1) {
+        menuName = this.toolbarMenus[index].name
+      }
+      if (this.sideNavStatus === 'closed') {
+        this.enableTransition = false
+      } else if (this.sideNavPosition === 'left' && (index !== -1 && menuName !== 'Find')) {
+        this.enableTransition = false
+      } else if (this.sideNavPosition === 'right' && (index === -1 || menuName === 'Find')) {
         this.enableTransition = false
       } else {
         this.updateTransitions(index)
@@ -750,6 +760,9 @@ export default {
       }
       this.toolbarIndex = index
       this.updateSideNavState()
+    },
+    findMenuByName: function(name) {
+      return this.toolbarMenus.find(x => x.name === name)
     },
     updateActiveColumn: function(selected) {
       if (selected) {
@@ -797,12 +810,10 @@ export default {
       return `tab${tabId}`
     },
     triggerSideNav: function(properties) {
-      this.toolbarIndex = -1
+      this.updateToolbarMenuForSideNav(-1)
       this.sideNavPosition = properties.sideNavPosition || 'left'
-      this.sideNavTransition = properties.sideNavTransition || 'sideNav-left'
       this.sideNavView = properties.sideNavView
-      this.sideNavViewTitle = properties.name || properties.sideNavView
-      this.enableTransition = properties.enableTransition || false
+      this.sideNavViewTitle = properties.title || properties.sideNavView
       this.openSideNav()
     },
     triggerMenuButton: function(menuName) {
