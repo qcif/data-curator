@@ -302,6 +302,13 @@ export default {
         tooltipView: 'tooltipValidate'
       },
       {
+        name: 'Find',
+        id: 'find',
+        image: 'static/img/find.svg',
+        tooltipId: 'tooltip-find',
+        tooltipView: 'tooltipFind'
+      },
+      {
         name: 'Export',
         id: 'export-package',
         image: 'static/img/export.svg',
