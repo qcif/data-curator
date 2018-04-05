@@ -172,6 +172,7 @@ import column from '../partials/ColumnProperties'
 import tabular from '../partials/TableProperties'
 import packager from '../partials/PackageProperties'
 import provenance from '../partials/ProvenanceProperties'
+import findReplace from '../partials/FindReplace'
 import {
   guessColumnProperties,
   validateActiveDataAgainstSchema
@@ -184,7 +185,6 @@ import {
 } from '../file-formats.js'
 import {ipcRenderer as ipc} from 'electron'
 import 'lodash/lodash.min.js'
-import '../menu.js'
 import {unzipFile} from '@/importPackage.js'
 import {toggleHeaderWithFeedback} from '@/headerRow.js'
 import {onNextHotIdFromTabRx, hotIdFromTab$, provenanceErrors$} from '@/rxSubject.js'
@@ -306,7 +306,9 @@ export default {
         id: 'find',
         image: 'static/img/find.svg',
         tooltipId: 'tooltip-find',
-        tooltipView: 'tooltipFind'
+        tooltipView: 'tooltipFind',
+        sideNavPosition: 'left',
+        sideNavView: 'findReplace'
       },
       {
         name: 'Export',
@@ -942,7 +944,8 @@ export default {
     column,
     tabular,
     packager,
-    provenance
+    provenance,
+    findReplace
   },
   watch: {
     activeTab: async function(tabId) {
