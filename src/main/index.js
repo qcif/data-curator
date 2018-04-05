@@ -36,6 +36,7 @@ app.on('ready', () => {
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
   let browserWindow = createWindowTab()
+  // don't allow prompt in development as slows dev process down when trying to hot-reload
   if (process.env.NODE_ENV === 'production') {
     browserWindow.on('close', (event) => {
       quitDialog(event, closeWindowNoPrompt)
@@ -47,11 +48,11 @@ function closeAppNoPrompt() {
   app.exit()
 }
 
-// app.on('window-all-closed', () => {
-//   if (process.platform !== 'darwin') {
-//     app.quit()
-//   }
-// })
+// This is needed as without it, production will still follow the darwin vs windows behaviour - dev env won't
+app.on('window-all-closed', () => {
+  // keep behaviour consistent - always close (no leaving app open with no windows in MacOSX)
+  app.quit()
+})
 
 export function quitDialog(event, callback) {
   event.preventDefault()
