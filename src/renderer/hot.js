@@ -34,6 +34,7 @@ const HotRegister = {
         displayDelay: 1000
       },
       undo: true,
+      search: true,
       tabMoves({shiftKey}) {
         if (!shiftKey) {
           const selection = hot.getSelected()
