@@ -31,6 +31,9 @@
       </span>
     </div>
   </div>
+  <div id="searchCounter">
+    {{getCount}}
+  </div>
 </form>
 </template>
 <script>
@@ -92,14 +95,21 @@ export default {
     }
   },
   asyncComputed: {
+    getCount: {
+      async get() {
+        console.log('getting')
+        let hotId = await this.currentHotId()
+        return this.getLatestSearchResult(hotId)
+      }
+    }
   },
   computed: {
-    ...mapGetters(['getActiveTab', 'getHotTabs'])
+    ...mapGetters(['getLatestSearchResult'])
   },
   methods: {
-    // ...mapMutations([
-    //   'pushTableProperty'
-    // ]),
+    ...mapMutations([
+      'resetSearchResult'
+    ]),
     getText: function(key) {
       return key === 'find' ? this.findTextValue : this.replaceTextValue
     },
@@ -131,7 +141,9 @@ export default {
       })
     }
   },
-  mounted: function() {
+  mounted: async function() {
+    let hotId = await this.currentHotId()
+    this.resetSearchResult(hotId)
   }
 }
 </script>

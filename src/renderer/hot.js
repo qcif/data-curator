@@ -6,8 +6,15 @@ const Dialog = remote.dialog
 
 const _hots = {}
 
+function searchResultCounter(instance, row, col, value, result) {
+  Handsontable.plugins.Search.DEFAULT_CALLBACK.apply(this, arguments)
+  if (result) {
+    store.mutations.incrementSearchResult(store.state, instance.guid)
+  }
+}
+
 const HotRegister = {
-  register(container, listeners={}) {
+  register(container, listeners={}, searchCallBack = false) {
     let hot = new Handsontable(container, {
       // do not allow headers on initialisation - no default headers unless toggled
       colHeaders: false,
@@ -35,7 +42,8 @@ const HotRegister = {
       },
       undo: true,
       search: {
-        searchResultClass: 'search-result-hot'
+        searchResultClass: 'search-result-hot',
+        callback: searchResultCounter
       },
       tabMoves({shiftKey}) {
         if (!shiftKey) {
