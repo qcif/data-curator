@@ -25,8 +25,8 @@ const HotRegister = {
       manualRowMove: true,
       enterBeginsEditing: false,
       persistentState: true,
-      currentRowClassName: 'currentRow',
-      currentColClassName: 'currentCol',
+      // currentRowClassName: 'currentRow',
+      // currentColClassName: 'currentCol',
       // outsideClickDeselects: must be set to true -
       // -otherwise visibleRows will include ALL rows (even for large datasets), which will affect performance when switching tabs (https://github.com/ODIQueensland/data-curator/issues/387)
       outsideClickDeselects: true,
@@ -34,7 +34,9 @@ const HotRegister = {
         displayDelay: 1000
       },
       undo: true,
-      search: true,
+      search: {
+        searchResultClass: 'search-result-hot'
+      },
       tabMoves({shiftKey}) {
         if (!shiftKey) {
           const selection = hot.getSelected()
