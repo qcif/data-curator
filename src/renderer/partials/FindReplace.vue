@@ -48,7 +48,8 @@ import AsyncComputed from 'vue-async-computed'
 import {
   HotRegister,
   searchCallback,
-  hotDom
+  searchQueryMethod,
+  getActiveSelectedOrHotSelectionOrMin
 } from '../hot.js'
 import VueRx from 'vue-rx'
 import {
@@ -68,11 +69,34 @@ Vue.use(VueRx, {
 })
 let _searchAction = function() {}
 const _searchCallback = function(instance, row, col, value, result) {
-  searchCallback.apply(this, arguments)
+  if (value === 'door') {
+    instance.getCellMeta(row, col).isSearchResult = false
+  //   result = false
+  } else {
+    searchCallback.apply(this, arguments)
+  }
+  console.log(`row is ${row}`)
+  console.log(`col is ${col}`)
+  console.log(`value is`)
+  console.log(value)
+  console.log(`result is ${result}`)
   if (result) {
     _searchAction(instance.guid)
   }
 }
+let _currentHotPos = function() {}
+const _queryMethod = function(queryStr, value) {
+  console.log('query string')
+  console.log(queryStr)
+  console.log('value')
+  console.log(value)
+  // check current position
+  console.log('current pos')
+  _currentHotPos()
+  return searchQueryMethod(queryStr, value)
+  // return queryStr.toString() === value.toString()
+}
+
 export default {
   extends: SideNav,
   name: 'findReplace',
@@ -91,7 +115,8 @@ export default {
       },
       hotParameters: {
         searchResultClass: 'search-result-hot',
-        callback: _searchCallback
+        callback: _searchCallback,
+        queryMethod: _queryMethod
       },
       formprops: [{
         label: 'Find',
@@ -173,6 +198,10 @@ export default {
       this.incrementSearchResult(this.activeHotId)
       this.latestSearchResult = this.getLatestSearchResult(this.activeHotId)
     },
+    getActiveHotPosition: function() {
+      let pos = getActiveSelectedOrHotSelectionOrMin()
+      console.log(pos)
+    },
     resetSearchResultWrapper: function() {
       this.resetSearchResult(this.activeHotId)
       this.latestSearchResult = this.getLatestSearchResult(this.activeHotId)
@@ -190,6 +219,7 @@ export default {
   },
   created: function() {
     _searchAction = this.incrementSearchResultWrapper
+    _currentHotPos = this.getActiveHotPosition
   }
 }
 </script>

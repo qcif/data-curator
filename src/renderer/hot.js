@@ -6,7 +6,7 @@ const Dialog = remote.dialog
 
 const _hots = {}
 const searchCallback = Handsontable.plugins.Search.DEFAULT_CALLBACK
-const hotDom = Handsontable.dom
+const searchQueryMethod = Handsontable.plugins.Search.DEFAULT_QUERY_METHOD
 
 const HotRegister = {
   register(container, listeners={}, searchParameters = false) {
@@ -134,6 +134,19 @@ const HotRegister = {
 export function getActiveSelected() {
   let activeHot = HotRegister.getActiveInstance()
   return activeHot.getSelected()
+}
+
+export function getActiveSelectedOrHotSelectionOrMin() {
+  let activeHot = HotRegister.getActiveInstance()
+  let currentCell = activeHot.getSelected()
+  if (!currentCell) {
+    currentCell = store.getters.getHotSelection(store.state, store.getters)(activeHot.guid)
+  }
+  if (!currentCell) {
+    activeHot.selectCell(0, 0)
+    currentCell = activeHot.getSelected()
+  }
+  return currentCell
 }
 
 export function getCurrentColumnIndexOrMin() {
@@ -324,5 +337,5 @@ ipc.on('selectHotCell', function(event, rowCountNumber, ColCountNumber) {
 export {
   HotRegister,
   searchCallback,
-  hotDom
+  searchQueryMethod
 }
