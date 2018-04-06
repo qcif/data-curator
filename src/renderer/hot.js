@@ -5,16 +5,10 @@ import {allTablesAllColumnsFromSchema$, allTablesAllColumnNames$} from '@/rxSubj
 const Dialog = remote.dialog
 
 const _hots = {}
-
-function searchResultCounter(instance, row, col, value, result) {
-  Handsontable.plugins.Search.DEFAULT_CALLBACK.apply(this, arguments)
-  if (result) {
-    store.mutations.incrementSearchResult(store.state, instance.guid)
-  }
-}
+const searchCallback = Handsontable.plugins.Search.DEFAULT_CALLBACK
 
 const HotRegister = {
-  register(container, listeners={}, searchCallBack = false) {
+  register(container, listeners={}, searchParameters = false) {
     let hot = new Handsontable(container, {
       // do not allow headers on initialisation - no default headers unless toggled
       colHeaders: false,
@@ -41,10 +35,7 @@ const HotRegister = {
         displayDelay: 1000
       },
       undo: true,
-      search: {
-        searchResultClass: 'search-result-hot',
-        callback: searchResultCounter
-      },
+      search: searchParameters,
       tabMoves({shiftKey}) {
         if (!shiftKey) {
           const selection = hot.getSelected()
@@ -330,5 +321,6 @@ ipc.on('selectHotCell', function(event, rowCountNumber, ColCountNumber) {
 })
 
 export {
-  HotRegister
+  HotRegister,
+  searchCallback
 }

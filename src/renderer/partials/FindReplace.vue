@@ -46,14 +46,26 @@ import SideNav from './SideNav'
 import Vue from 'vue'
 import AsyncComputed from 'vue-async-computed'
 import {
-  HotRegister
+  HotRegister,
+  searchCallback
 } from '../hot.js'
+import {
+  searchCounter$
+} from '@/rxSubject.js'
 // import TableTooltip from '../mixins/TableTooltip'
 // import ValidationRules from '../mixins/ValidationRules'
 // import {
 //   Validator
 // } from 'vee-validate'
 Vue.use(AsyncComputed)
+let _searchAction = function() {}
+const _searchCallback = function(instance, row, col, value, result) {
+  console.log('search callback')
+  searchCallback.apply(this, arguments)
+  if (result) {
+    _searchAction(instance.guid)
+  }
+}
 export default {
   extends: SideNav,
   name: 'findReplace',
@@ -62,10 +74,18 @@ export default {
   },
   data() {
     return {
+      hotId: null,
       findTypePicked: 'findInTable',
       findTextValue: '',
       replaceTextValue: '',
-      foundColor: 'rgba(70, 237, 70, 0.3)',
+      getCount: 0,
+      foundStyle: {
+        backgroundColor: 'rgba(70, 237, 70, 0.3)'
+      },
+      hotParameters: {
+        searchResultClass: 'search-result-hot',
+        callback: _searchCallback
+      },
       formprops: [{
         label: 'Find',
         key: 'find',
@@ -94,21 +114,20 @@ export default {
       }]
     }
   },
-  asyncComputed: {
-    getCount: {
-      async get() {
-        console.log('getting')
-        let hotId = await this.currentHotId()
-        return this.getLatestSearchResult(hotId)
-      }
-    }
-  },
+  // asyncComputed: {
+  //   getCount: {
+  //     async get() {
+  //       console.log('getting')
+  //       return this.getLatestSearchResult(this.hotId)
+  //     }
+  //   }
+  // },
   computed: {
     ...mapGetters(['getLatestSearchResult'])
   },
   methods: {
     ...mapMutations([
-      'resetSearchResult'
+      'resetSearchResult', 'incrementSearchResult'
     ]),
     getText: function(key) {
       return key === 'find' ? this.findTextValue : this.replaceTextValue
@@ -122,6 +141,8 @@ export default {
     },
     findText: function(direction) {
       let hot = HotRegister.getActiveInstance()
+      this.hotId = hot.guid
+      this.resetSearchResult(this.hotId)
       hot.search.query(this.findTextValue)
       // render will add the search class to all relevant cells
       hot.render()
@@ -135,15 +156,32 @@ export default {
       console.log(this.replaceTextValue)
     },
     updateFoundStyle: function() {
-      const foundColor = this.foundColor
+      const style = this.foundStyle
       document.querySelectorAll('.search-result-hot').forEach(function(el) {
-        el.style.backgroundColor = foundColor
+        for (const property of _.keys(style)) {
+          el.style[property] = style[property]
+        }
       })
+    },
+    incrementSearchResultWrapper: function() {
+      this.incrementSearchResult(this.hotId)
+      this.getCount = this.getLatestSearchResult(this.hotId)
+      // searchCounter$.next(this.getLatestSearchResult)
     }
+    // updateLatestCounter: function() {
+    //
+    // }
   },
   mounted: async function() {
-    let hotId = await this.currentHotId()
-    this.resetSearchResult(hotId)
+    console.log('mounted')
+    // this.hotId = await this.currentHotId()
+    // this.resetSearchResult(this.hotId)
+    // this.$subscribeTo(searchCounter$, function(result) {
+    //   vueUpdateAllTablesAllColumnsNames(result)
+    // })
+  },
+  created: function() {
+    _searchAction = this.incrementSearchResultWrapper
   }
 }
 </script>

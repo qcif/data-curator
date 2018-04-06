@@ -662,7 +662,8 @@ export default {
         deselectionListener: this.deselectionListener,
         loadingStartListener: this.showLoadingScreen,
         loadingFinishListener: this.closeLoadingScreen
-      })
+      },
+      findReplace.data().hotParameters)
       addHotContainerListeners(container)
       let hot = HotRegister.getActiveInstance()
       let activeHotId = hot.guid
@@ -990,6 +991,7 @@ export default {
     }
   },
   mounted: function() {
+    console.log(findReplace.data().hotParameters)
     const vueGoToCell = this.goToCell
     const vueNextTick = this.$nextTick
     // request may be coming from another page - get focus first
