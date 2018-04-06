@@ -82,7 +82,7 @@ Feature: Validate Table
     And a paragraph "This data is published with the following data errors. Other errors may be present and could be detected after these errors are resolved." should be appended to the end of the provenance information
     And each error message should be appended as a numbered bullet item to the end of the provenance information
 
-  Scenario: Set different missing values across columns
+  Scenario: Validate different missing values across columns
     Given Data Curator is open
     And this data has been entered:
     
