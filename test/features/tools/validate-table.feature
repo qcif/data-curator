@@ -35,9 +35,12 @@ Feature: Validate Table
   LATER
   =====
   
-  - Different `missingValues` can be validated per column
+  - foreign key validation across data packages
+  - different `missingValues` can be validated per column
+  - trueValues and falseValues
   - bareNumber
-  - 
+  - decimalChar
+  - groupChar
 
   Scenario: Validate Table
     Given Data Curator is open
@@ -117,7 +120,7 @@ Feature: Validate Table
       | 2  | US $2 | 2    | 2% |
       | 3  | 3     | 3 KG | 3  |
     
-      And the following properties have been set for each column:
+    And the following properties have been set for each column:
     
       | column | type    | bareNumber |
       | H1     | integer | true       |
@@ -148,7 +151,7 @@ Feature: Validate Table
       | false | no    | 
       | 0     | 0     | 
     
-      And the following properties have been set or defaulted for each column:
+    And the following properties have been set or defaulted for each column:
     
       | column | type    | trueValues                  | falseValues                    |
       | H1     | boolean | "true", "True", "TRUE", "1" | "false", "False", "FALSE", "0" |
@@ -173,7 +176,7 @@ Scenario: validate number with groupChar
     |   1000000 |    1000000 | 
     | 1,000,000 |  1,000,000 | 
   
-    And the following properties have been set or defaulted for each column:
+  And the following properties have been set or defaulted for each column:
   
     | column | type   | groupChar |
     | H1     | number |           |
@@ -195,7 +198,7 @@ Scenario: validate number with decimalChar
     |  12.3 |       12.3 | 
     | 123,4 |      123,4 | 
   
-    And the following properties have been set or defaulted for each column:
+  And the following properties have been set or defaulted for each column:
   
     | column | type   | decimalChar |
     | H1     | number | "."         |
@@ -208,3 +211,27 @@ Scenario: validate number with decimalChar
     | H1     | error in row 3       |
     | H2     | error in row 1 and 2 |
   
+    
+    Scenario: validate foreign keys across data packages  
+    Given Data Curator is open
+    And  this data in Table "One" in Data Package "Alpha" has been entered:
+
+      | Id | Code | 
+      | 1  |    A |
+      | 2  |    B | 
+      | 3  |    C | 
+      | 4  |    D |
+      
+    And this data in Table "Two" in Data Package "Beta" has been entered:
+
+      | Code | Description | 
+      |    A | Apple       |
+      |    B | Banana      |
+      |    C | Carrot      |
+
+    And a foreignKeys relationship across the data packages has been established using the Code fields 
+    When "Validate Table" is invoked
+    Then the following errors should be reported for Table "Alpha":
+
+      | column | errors reported      |
+      | Code   | error in row 4       |
