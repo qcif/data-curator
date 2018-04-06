@@ -7,22 +7,28 @@
       <div class="inputrow">
         <input type="text" :class="{ 'form-control input-sm col-sm-9': true}" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" :name="formprop.key"/>
         <span class="btn-group">
-          <button type="button" class="btn btn-default btn-sm" >
+          <button type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'">
             <span v-if="formprop.buttonClass" :class="formprop.buttonClass"/>
             <template v-if="formprop.buttonText">
               {{formprop.buttonText}}
             </template>
           </button>
-          <button v-show="formprop.label === 'Find'" type="button" class="btn btn-default btn-sm" >
+          <button v-show="formprop.buttonRight" type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'">
             <span class="fa fa-chevron-right"/>
           </button>
         </span>
       </div>
-      <span v-if="formprop.buttonExtra" class="btn-group">
-        <button type="button" class="button-extra btn btn-default btn-sm" >
-          <span>{{formprop.buttonExtra}}</span>
+      <span v-if="formprop.buttonBelowText" class="btn-group">
+        <button type="button" class="button-below btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" >
+          <span>{{formprop.buttonBelowText}}</span>
         </button>
       </span>
+    </div>
+    <div class="pickrow">
+      <template v-for="(radioprop, index) in radioprops">
+        <input type="radio" :id="radioprop.key" :value="radioprop.value" v-model="findTypePicked">
+        <label for="find-in-column">{{radioprop.label}}</label>
+      </template>
     </div>
   </div>
 </form>
@@ -53,21 +59,29 @@ export default {
   },
   data() {
     return {
+      findTypePicked: 'findInTable',
       formprops: [{
         label: 'Find',
         key: 'find',
-        buttonClass: 'fa fa-chevron-left'
-        // tooltipId: 'tooltip-table-name',
-        // tooltipView: 'tooltipTableName'
+        buttonTypeClass: 'btn-primary',
+        buttonClass: 'fa fa-chevron-left',
+        buttonRight: true
       }, {
         label: 'Replace',
         key: 'replace',
         buttonText: 'Replace',
-        buttonExtra: 'Replace All'
-        // tooltipId: 'tooltip-table-title',
-        // tooltipView: 'tooltipTableTitle'
-      }
-      ]
+        buttonTypeClass: 'btn-primary',
+        buttonBelowText: 'Replace All'
+      }],
+      radioprops: [{
+        label: 'in Column',
+        key: 'find-in-column',
+        value: 'findInColumn'
+      }, {
+        label: 'in Table',
+        key: 'find-in-table',
+        value: 'findInTable'
+      }]
     }
   },
   asyncComputed: {
