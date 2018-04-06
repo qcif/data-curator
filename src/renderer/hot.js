@@ -6,6 +6,7 @@ const Dialog = remote.dialog
 
 const _hots = {}
 const searchCallback = Handsontable.plugins.Search.DEFAULT_CALLBACK
+const hotDom = Handsontable.dom
 
 const HotRegister = {
   register(container, listeners={}, searchParameters = false) {
@@ -322,5 +323,6 @@ ipc.on('selectHotCell', function(event, rowCountNumber, ColCountNumber) {
 
 export {
   HotRegister,
-  searchCallback
+  searchCallback,
+  hotDom
 }

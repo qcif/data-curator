@@ -32,7 +32,7 @@
     </div>
   </div>
   <div id="searchCounter">
-    {{getCount}}
+    {{latestSearchResult}}
   </div>
 </form>
 </template>
@@ -47,10 +47,15 @@ import Vue from 'vue'
 import AsyncComputed from 'vue-async-computed'
 import {
   HotRegister,
-  searchCallback
+  searchCallback,
+  hotDom
 } from '../hot.js'
+import VueRx from 'vue-rx'
 import {
-  searchCounter$
+  Subscription
+} from 'rxjs/Subscription'
+import {
+  hotIdFromTab$
 } from '@/rxSubject.js'
 // import TableTooltip from '../mixins/TableTooltip'
 // import ValidationRules from '../mixins/ValidationRules'
@@ -58,9 +63,11 @@ import {
 //   Validator
 // } from 'vee-validate'
 Vue.use(AsyncComputed)
+Vue.use(VueRx, {
+  Subscription
+})
 let _searchAction = function() {}
 const _searchCallback = function(instance, row, col, value, result) {
-  console.log('search callback')
   searchCallback.apply(this, arguments)
   if (result) {
     _searchAction(instance.guid)
@@ -78,7 +85,7 @@ export default {
       findTypePicked: 'findInTable',
       findTextValue: '',
       replaceTextValue: '',
-      getCount: 0,
+      latestSearchResult: 0,
       foundStyle: {
         backgroundColor: 'rgba(70, 237, 70, 0.3)'
       },
@@ -114,14 +121,6 @@ export default {
       }]
     }
   },
-  // asyncComputed: {
-  //   getCount: {
-  //     async get() {
-  //       console.log('getting')
-  //       return this.getLatestSearchResult(this.hotId)
-  //     }
-  //   }
-  // },
   computed: {
     ...mapGetters(['getLatestSearchResult'])
   },
@@ -140,9 +139,8 @@ export default {
       }
     },
     findText: function(direction) {
-      let hot = HotRegister.getActiveInstance()
-      this.hotId = hot.guid
-      this.resetSearchResult(this.hotId)
+      this.resetSearchResultWrapper()
+      const hot = HotRegister.getInstance(this.activeHotId)
       hot.search.query(this.findTextValue)
       // render will add the search class to all relevant cells
       hot.render()
@@ -163,22 +161,32 @@ export default {
         }
       })
     },
+    removeFoundStyle: function() {
+      document.querySelectorAll('.search-result-hot').forEach(function(el) {
+        el.style = {}
+      })
+    },
+    updateActiveHotId: function(hotId) {
+      this.activeHotId = hotId
+    },
     incrementSearchResultWrapper: function() {
-      this.incrementSearchResult(this.hotId)
-      this.getCount = this.getLatestSearchResult(this.hotId)
-      // searchCounter$.next(this.getLatestSearchResult)
+      this.incrementSearchResult(this.activeHotId)
+      this.latestSearchResult = this.getLatestSearchResult(this.activeHotId)
+    },
+    resetSearchResultWrapper: function() {
+      this.resetSearchResult(this.activeHotId)
+      this.latestSearchResult = this.getLatestSearchResult(this.activeHotId)
+      this.removeFoundStyle()
     }
-    // updateLatestCounter: function() {
-    //
-    // }
   },
   mounted: async function() {
-    console.log('mounted')
-    // this.hotId = await this.currentHotId()
-    // this.resetSearchResult(this.hotId)
-    // this.$subscribeTo(searchCounter$, function(result) {
-    //   vueUpdateAllTablesAllColumnsNames(result)
-    // })
+    this.activeHotId = await this.currentHotId()
+    const vueUpdateActiveHotId = this.updateActiveHotId
+    const vueResetSearchResult = this.resetSearchResultWrapper
+    this.$subscribeTo(hotIdFromTab$, function(hotId) {
+      vueUpdateActiveHotId(hotId)
+      vueResetSearchResult()
+    })
   },
   created: function() {
     _searchAction = this.incrementSearchResultWrapper
