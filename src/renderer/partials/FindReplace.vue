@@ -5,21 +5,21 @@
       <label v-show="formprop.label" v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label" :for="formprop.label">{{formprop.label}}</label>
       <component :is="formprop.tooltipView"/>
       <div class="inputrow">
-        <input type="text" :class="{ 'form-control input-sm col-sm-9': true}" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" :name="formprop.key"/>
+        <input type="text" :class="{ 'form-control input-sm col-sm-9': true}" :id="formprop.key" :value="getText(formprop.key)" @input="setText(formprop.key, $event.target.value)" :name="formprop.key"/>
         <span class="btn-group">
-          <button type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'">
-            <span v-if="formprop.buttonClass" :class="formprop.buttonClass"/>
-            <template v-if="formprop.buttonText">
-              {{formprop.buttonText}}
+          <button type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" @click="formprop.fn('previous')">
+            <span v-if="formprop.buttonLeftClass" :class="formprop.buttonLeftClass"/>
+            <template v-if="formprop.buttonLeftText">
+              {{formprop.buttonLeftText}}
             </template>
           </button>
-          <button v-show="formprop.buttonRight" type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'">
-            <span class="fa fa-chevron-right"/>
+          <button v-show="formprop.buttonRightClass" type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" @click="formprop.fn('next')">
+            <span :class="formprop.buttonRightClass"/>
           </button>
         </span>
       </div>
       <span v-if="formprop.buttonBelowText" class="btn-group">
-        <button type="button" class="button-below btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" >
+        <button type="button" class="button-below btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" @click="formprop.fn('next')">
           <span>{{formprop.buttonBelowText}}</span>
         </button>
       </span>
@@ -60,18 +60,24 @@ export default {
   data() {
     return {
       findTypePicked: 'findInTable',
+      findTextValue: '',
+      replaceTextValue: '',
       formprops: [{
         label: 'Find',
         key: 'find',
         buttonTypeClass: 'btn-primary',
-        buttonClass: 'fa fa-chevron-left',
-        buttonRight: true
+        buttonLeftClass: 'fa fa-chevron-left',
+        buttonRightClass: 'fa fa-chevron-right',
+        textModel: this.findTextValue,
+        fn: this.findText
       }, {
         label: 'Replace',
         key: 'replace',
-        buttonText: 'Replace',
         buttonTypeClass: 'btn-primary',
-        buttonBelowText: 'Replace All'
+        buttonLeftText: 'Replace',
+        buttonBelowText: 'Replace All',
+        textModel: this.replaceTextValue,
+        fn: this.replaceText
       }],
       radioprops: [{
         label: 'in Column',
@@ -97,18 +103,26 @@ export default {
     // ...mapMutations([
     //   'pushTableProperty'
     // ]),
-    getProperty: function(key) {
-      // return this.getTableProperty(this.propertyGetObject(key))
+    getText: function(key) {
+      return key === 'find' ? this.findTextValue : this.replaceTextValue
     },
-    getPropertyGivenHotId: function(key, hotId) {
-      // return this.getTableProperty(this.propertyGetObjectGivenHotId(key, hotId))
+    setText: function(key, value) {
+      if (key === 'find') {
+        this.findTextValue = value
+      } else {
+        this.replaceTextValue = value
+      }
     },
-    setProperty: function(key, value) {
-      // this.pushTableProperty(this.propertySetObject(key, value))
+    findText: function(direction) {
+      console.log(this.findTypePicked)
+      console.log(direction)
+      console.log(this.findTextValue)
     },
-    removeValue: function(key) {
-      // this.pushTableProperty(this.propertySetObject(key, ''))
-      return true
+    replaceText: function(direction) {
+      console.log(this.findTypePicked)
+      console.log(direction)
+      console.log(this.findTextValue)
+      console.log(this.replaceTextValue)
     }
   },
   mounted: function() {
