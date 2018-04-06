@@ -21,11 +21,21 @@ Feature: Validate Table
       - the same table
       - another table in the same data package
       - another table in a data package at a url (not in specification [yet](https://gitter.im/frictionlessdata/chat?at=59eaed08f7299e8f53142845))
-      
+
+  QUESTION
+  ========
+
+  - How can we support writing validation errors for two tables to provenance information?
+  
   USER INTERFACE
   ==============
 
   ![Validate user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/validate.png)
+  
+  LATER
+  =====
+  
+  - Different `missingValues` can be validated per column
 
   Scenario: Validate Table
     Given Data Curator is open
@@ -71,3 +81,25 @@ Feature: Validate Table
     Then a heading "### Known Data Errors" should be appended to the end of the provenance information
     And a paragraph "This data is published with the following data errors. Other errors may be present and could be detected after these errors are resolved." should be appended to the end of the provenance information
     And each error message should be appended as a numbered bullet item to the end of the provenance information
+
+  Scenario: Set different missing values across columns
+    Given Data Curator is open
+    And this data has been entered
+    H1 | H2  | H3
+    ---|-----|---
+    1  | 1   | 1
+       | tba | tba
+    3  |     | na
+    And the following missingValues properties have been set
+    Column | missingValues
+    -------|--------------
+    H1     | ""
+    H2     | "tba"
+    H3     | "tba","na"
+    When Validate is invoked
+    Then the following errors should be reported for each columns
+    Column | errors reported
+    -------|--------------
+    H1     | none
+    H2     | error in row 3
+    H3     | none
