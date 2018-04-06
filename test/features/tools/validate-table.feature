@@ -84,19 +84,24 @@ Feature: Validate Table
 
   Scenario: Set different missing values across columns
     Given Data Curator is open
-    And this data has been entered
-    H1 | H2  | H3
-    1  | 1   | 1
-       | tba | tba
-    3  |     | na
-    And the following missingValues properties have been set
-    Column | missingValues
-    H1     | ""
-    H2     | "tba"
-    H3     | "tba","na"
-    When Validate is invoked
-    Then the following errors should be reported for each columns
-    Column | errors reported
-    H1     | none
-    H2     | error in row 3
-    H3     | none
+    And this data has been entered:
+    
+      | H1 | H2  | H3  |
+      | 1  | 1   | 1   |
+      |    | tba | tba |
+      |    |     | na  |
+    
+    And the following missingValues properties have been set for each column:
+    
+      | Column | missingValues |
+      | H1     | ""            |
+      | H2     | "tba"         |
+      | H3     | "tba","na"    |
+    
+    When "Validate Table" is invoked
+    Then the following errors should be reported for each columns:
+    
+      | Column | errors reported |
+      | H1     | none            |
+      | H2     | error in row 3  |
+      | H3     | none            |
