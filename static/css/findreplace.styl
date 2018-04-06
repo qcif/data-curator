@@ -1,5 +1,9 @@
 form#findAndReplace
   overflow-y hidden
+  .propertyrow:after
+    clear both
+    content: ""
+    display: table
   .propertyrow
   .inputrow
     display block
@@ -25,3 +29,16 @@ form#findAndReplace
       padding-right 15px
   .button-below
     margin-top 2px
+  .pickrow
+    margin-top 20px
+    display flex
+    flex-direction row
+    justify-content center
+    span
+      @extend form#findAndReplace .pickrow
+      width 30%
+      input
+        width 7%
+        margin-right 3px
+      label
+        width auto
