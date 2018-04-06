@@ -25,10 +25,10 @@
       </span>
     </div>
     <div class="pickrow">
-      <template v-for="(radioprop, index) in radioprops">
+      <span v-for="(radioprop, index) in radioprops">
         <input type="radio" :id="radioprop.key" :value="radioprop.value" v-model="findTypePicked">
         <label for="find-in-column">{{radioprop.label}}</label>
-      </template>
+      </span>
     </div>
   </div>
 </form>
