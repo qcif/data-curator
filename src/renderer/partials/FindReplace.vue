@@ -91,10 +91,6 @@ export default {
     }
   },
   asyncComputed: {
-    // async missingValues() {
-    //   let values = await this.getArrayValues('missingValues')
-    //   return values
-    // }
   },
   computed: {
     ...mapGetters(['getActiveTab', 'getHotTabs'])
@@ -117,6 +113,10 @@ export default {
       console.log(this.findTypePicked)
       console.log(direction)
       console.log(this.findTextValue)
+      let hot = HotRegister.getActiveInstance()
+      console.log(hot.guid)
+      hot.search.query(this.findTextValue)
+      hot.render()
     },
     replaceText: function(direction) {
       console.log(this.findTypePicked)
