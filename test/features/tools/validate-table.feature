@@ -36,6 +36,8 @@ Feature: Validate Table
   =====
   
   - Different `missingValues` can be validated per column
+  - bareNumber
+  - 
 
   Scenario: Validate Table
     Given Data Curator is open
@@ -91,7 +93,7 @@ Feature: Validate Table
       |    | tba | tba |
       |    |     | na  |
     
-    And the following missingValues properties have been set for each column:
+    And the following "missingValues" properties have been set for each column:
     
       | Column | missingValues |
       | H1     | ""            |
@@ -99,9 +101,110 @@ Feature: Validate Table
       | H3     | "tba","na"    |
     
     When "Validate Table" is invoked
-    Then the following errors should be reported for each columns:
+    Then the following errors should be reported for each column:
     
       | Column | errors reported |
       | H1     | none            |
       | H2     | error in row 3  |
       | H3     | none            |
+
+  Scenario: validate integer bareNumber
+    Given Data Curator is open
+    And this data has been entered:
+    
+      | H1 | H2    | H3   | H4 |
+      | 1  | $1    | 1%   | $1 |
+      | 2  | US $2 | 2    | 2% |
+      | 3  | 3     | 3 KG | 3  |
+    
+      And the following properties have been set for each column:
+    
+      | column | type    | bareNumber |
+      | H1     | integer | true       |
+      | H2     | integer | true       |
+      | H3     | integer | true       |
+      | H4     | integer | false      |
+    
+    When "Validate Table" is invoked
+    Then the following errors should be reported for each column:
+    
+      | column | errors reported      |
+      | H1     | none                 |
+      | H2     | none                 |
+      | H3     | none                 |
+      | H4     | error in row 1 and 2 |
+  
+  Scenario: validate boolean trueValues and falseValues 
+    Given Data Curator is open
+    And this data has been entered:
+    
+      | H1    | H2    | 
+      | TRUE  | YES   | 
+      | True  | Yes   | 
+      | true  | yes   | 
+      | 1     | maybe | 
+      | FALSE | NO    | 
+      | False | No    | 
+      | false | no    | 
+      | 0     | 0     | 
+    
+      And the following properties have been set or defaulted for each column:
+    
+      | column | type    | trueValues                  | falseValues                    |
+      | H1     | boolean | "true", "True", "TRUE", "1" | "false", "False", "FALSE", "0" |
+      | H2     | boolean | "YES", "Yes"                | "NO", "No"                     |
+    
+    When "Validate Table" is invoked
+    Then the following errors should be reported for each column:
+    
+      | column | errors reported           |
+      | H1     | none                      |
+      | H2     | error in row 3,4, 7 and 8 |
+    
+Scenario: validate number with groupChar  
+  Given Data Curator is open
+  And this data has been entered:
+  
+    | H1        | H2         | 
+    |       1.0 |        1.0 |
+    |       100 |        100 | 
+    |      1000 |       1000 | 
+    |     1,000 |      1,000 | 
+    |   1000000 |    1000000 | 
+    | 1,000,000 |  1,000,000 | 
+  
+    And the following properties have been set or defaulted for each column:
+  
+    | column | type   | groupChar |
+    | H1     | number |           |
+    | H2     | number | ","       |
+    
+  When "Validate Table" is invoked
+  Then the following errors should be reported for each column:
+  
+    | column | errors reported      |
+    | H1     | error in row 4 and 6 |
+    | H2     | none                 |
+  
+Scenario: validate number with decimalChar  
+  Given Data Curator is open
+  And this data has been entered:
+  
+    | H1    | H2         | 
+    |   1.0 |        1.0 |
+    |  12.3 |       12.3 | 
+    | 123,4 |      123,4 | 
+  
+    And the following properties have been set or defaulted for each column:
+  
+    | column | type   | decimalChar |
+    | H1     | number | "."         |
+    | H2     | number | ","         |
+    
+  When "Validate Table" is invoked
+  Then the following errors should be reported for each column:
+  
+    | column | errors reported      |
+    | H1     | error in row 3       |
+    | H2     | error in row 1 and 2 |
+  
