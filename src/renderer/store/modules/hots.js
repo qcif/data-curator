@@ -30,6 +30,17 @@ const getters = {
   getHotTabs: state => {
     return state.hotTabs
   },
+  getLatestSearchResult: (state, getters) => (hotId) => {
+    console.log(`hot id is: ${hotId}`)
+    const result = state.hotTabs[hotId].searchResult
+    if (result) {
+      console.log(`returning result: ${result}`)
+      return result
+    } else {
+      console.log(`returning result: 0`)
+      return 0
+    }
+  },
   getHotSelection: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].selected
   },
@@ -132,6 +143,14 @@ const getters = {
 }
 
 const mutations = {
+  resetSearchResult(state, hotId) {
+    _.set(state.hotTabs, `${hotId}.searchResult`, 0)
+  },
+  incrementSearchResult(state, hotId) {
+    state.hotTabs[hotId].searchResult++
+    console.log(`result is:`)
+    console.log(state.hotTabs[hotId].searchResult)
+  },
   pushProvenance(state, value) {
     _.set(state.provenanceProperties, 'markdown', value)
   },
