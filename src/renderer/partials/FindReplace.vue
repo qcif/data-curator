@@ -62,6 +62,7 @@ export default {
       findTypePicked: 'findInTable',
       findTextValue: '',
       replaceTextValue: '',
+      foundColor: 'rgba(70, 237, 70, 0.3)',
       formprops: [{
         label: 'Find',
         key: 'find',
@@ -110,19 +111,24 @@ export default {
       }
     },
     findText: function(direction) {
-      console.log(this.findTypePicked)
-      console.log(direction)
-      console.log(this.findTextValue)
       let hot = HotRegister.getActiveInstance()
-      console.log(hot.guid)
       hot.search.query(this.findTextValue)
+      // render will add the search class to all relevant cells
       hot.render()
+      // update search class style
+      this.updateFoundStyle()
     },
     replaceText: function(direction) {
       console.log(this.findTypePicked)
       console.log(direction)
       console.log(this.findTextValue)
       console.log(this.replaceTextValue)
+    },
+    updateFoundStyle: function() {
+      const foundColor = this.foundColor
+      document.querySelectorAll('.search-result-hot').forEach(function(el) {
+        el.style.backgroundColor = foundColor
+      })
     }
   },
   mounted: function() {
