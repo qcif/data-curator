@@ -1,14 +1,14 @@
 <template>
 <form class="navbar-form form-horizontal" id="findAndReplace">
   <div class="form-group-sm row container-fluid">
-    <div  class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
-      <label v-show="formprop.label" v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label" :for="formprop.label">{{formprop.label}}</label>
+    <div  class="propertyrow clearfix" v-for="(formprop, index) in formprops" :key="index">
+      <label v-show="formprop.label" v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label pull-left" :for="formprop.label">{{formprop.label}}</label>
       <component :is="formprop.tooltipView"/>
       <div class="inputrow">
         <div class="placeholder text-muted" :data-placeholder="formprop.key === 'find' ? findResult : replaceResult">
-          <input type="text" :class="{ 'form-control input-sm col-sm-9': true}" :id="formprop.key" :value="getText(formprop.key)" @input="setText(formprop.key, $event.target.value)" :name="formprop.key"/>
+          <input class="pull-left" type="text" :class="{ 'form-control input-sm col-sm-9': true}" :id="formprop.key" :value="getText(formprop.key)" @input="setText(formprop.key, $event.target.value)" :name="formprop.key"/>
         </div>
-        <span class="btn-group">
+        <span class="btn-group pull-right">
           <button type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" @click="formprop.fn('previous')">
             <span v-if="formprop.buttonLeftClass" :class="formprop.buttonLeftClass"/>
             <template v-if="formprop.buttonLeftText">
