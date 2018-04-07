@@ -42,3 +42,15 @@ form#findAndReplace
         margin-right 3px
       label
         width auto
+
+.placeholder
+  position relative
+  text-align right
+.placeholder::after
+  position: absolute
+  right: 100px
+  top: 30px
+  content: attr(data-placeholder)
+  pointer-events: none
+  opacity: 0.6
+  text-align right
