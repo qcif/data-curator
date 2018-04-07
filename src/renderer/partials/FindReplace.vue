@@ -68,33 +68,33 @@ Vue.use(VueRx, {
   Subscription
 })
 let _searchAction = function() {}
+let _isInDirection = function() {}
+let _currentHotPos = getActiveSelectedOrHotSelectionOrMin
 const _searchCallback = function(instance, row, col, value, result) {
-  if (value === 'door') {
+  if (!_isInDirection(row, col, _currentHotPos())) {
     instance.getCellMeta(row, col).isSearchResult = false
-  //   result = false
-  } else {
-    searchCallback.apply(this, arguments)
+    return
   }
-  console.log(`row is ${row}`)
-  console.log(`col is ${col}`)
-  console.log(`value is`)
-  console.log(value)
-  console.log(`result is ${result}`)
+  searchCallback.apply(this, arguments)
   if (result) {
     _searchAction(instance.guid)
   }
 }
-let _currentHotPos = function() {}
+// expose query method to potentially manipulate later
 const _queryMethod = function(queryStr, value) {
-  console.log('query string')
-  console.log(queryStr)
-  console.log('value')
-  console.log(value)
-  // check current position
-  console.log('current pos')
-  _currentHotPos()
   return searchQueryMethod(queryStr, value)
-  // return queryStr.toString() === value.toString()
+}
+
+const isNext = function(row, col, currentPos) {
+  let isNext = (row > currentPos[0] || (row === currentPos[0] && col >= currentPos[1]))
+  console.log(`is Next is: ${isNext}`)
+  return isNext
+}
+
+const isPrevious = function(row, col, currentPos) {
+  let isPrevious = (row < currentPos[0] || (row === currentPos[0] && col <= currentPos[1]))
+  console.log(`is Previous is: ${isPrevious}`)
+  return isPrevious
 }
 
 export default {
@@ -166,6 +166,11 @@ export default {
     findText: function(direction) {
       this.resetSearchResultWrapper()
       const hot = HotRegister.getInstance(this.activeHotId)
+      if (direction === 'previous') {
+        _isInDirection = isPrevious
+      } else {
+        _isInDirection = isNext
+      }
       hot.search.query(this.findTextValue)
       // render will add the search class to all relevant cells
       hot.render()
@@ -198,10 +203,6 @@ export default {
       this.incrementSearchResult(this.activeHotId)
       this.latestSearchResult = this.getLatestSearchResult(this.activeHotId)
     },
-    getActiveHotPosition: function() {
-      let pos = getActiveSelectedOrHotSelectionOrMin()
-      console.log(pos)
-    },
     resetSearchResultWrapper: function() {
       this.resetSearchResult(this.activeHotId)
       this.latestSearchResult = this.getLatestSearchResult(this.activeHotId)
@@ -219,7 +220,6 @@ export default {
   },
   created: function() {
     _searchAction = this.incrementSearchResultWrapper
-    _currentHotPos = this.getActiveHotPosition
   }
 }
 </script>
