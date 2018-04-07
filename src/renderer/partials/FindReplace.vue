@@ -5,7 +5,9 @@
       <label v-show="formprop.label" v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label" :for="formprop.label">{{formprop.label}}</label>
       <component :is="formprop.tooltipView"/>
       <div class="inputrow">
-        <input type="text" :class="{ 'form-control input-sm col-sm-9': true}" :id="formprop.key" :value="getText(formprop.key)" @input="setText(formprop.key, $event.target.value)" :name="formprop.key"/>
+        <div class="placeholder text-muted" :data-placeholder="formprop.key === 'find' ? findResult : replaceResult">
+          <input type="text" :class="{ 'form-control input-sm col-sm-9': true}" :id="formprop.key" :value="getText(formprop.key)" @input="setText(formprop.key, $event.target.value)" :name="formprop.key"/>
+        </div>
         <span class="btn-group">
           <button type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" @click="formprop.fn('previous')">
             <span v-if="formprop.buttonLeftClass" :class="formprop.buttonLeftClass"/>
@@ -30,9 +32,6 @@
         <label for="find-in-column">{{radioprop.label}}</label>
       </span>
     </div>
-  </div>
-  <div id="searchCounter">
-    {{latestSearchResult}}
   </div>
 </form>
 </template>
@@ -109,7 +108,8 @@ export default {
       findTypePicked: 'findInTable',
       findTextValue: '',
       replaceTextValue: '',
-      latestSearchResult: 0,
+      findResult: null,
+      replaceResult: null,
       foundStyle: {
         backgroundColor: 'rgba(70, 237, 70, 0.3)'
       },
@@ -201,12 +201,14 @@ export default {
     },
     incrementSearchResultWrapper: function() {
       this.incrementSearchResult(this.activeHotId)
-      this.latestSearchResult = this.getLatestSearchResult(this.activeHotId)
+      this.findResult = this.getLatestSearchResult(this.activeHotId)
     },
     resetSearchResultWrapper: function() {
       this.resetSearchResult(this.activeHotId)
-      this.latestSearchResult = this.getLatestSearchResult(this.activeHotId)
+      this.findResult = this.getLatestSearchResult(this.activeHotId)
       this.removeFoundStyle()
+      this.findResult = null
+      this.replaceResult = null
     }
   },
   mounted: async function() {
