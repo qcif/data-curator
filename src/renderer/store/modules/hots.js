@@ -1,3 +1,5 @@
+import {currentPos$} from '@/rxSubject.js'
+
 const state = {
   hotTabs: {},
   packageProperties: {},
@@ -148,7 +150,7 @@ const mutations = {
   },
   incrementSearchResult(state, hotId) {
     state.hotTabs[hotId].searchResult++
-    console.log(`result is:`)
+    console.log(`after incrementing, result is:`)
     console.log(state.hotTabs[hotId].searchResult)
   },
   pushProvenance(state, value) {
@@ -173,6 +175,7 @@ const mutations = {
   },
   pushHotSelection(state, property) {
     _.set(state.hotTabs, `${property.hotId}.selected`, property.selected)
+    currentPos$.next(property.selected)
   },
   pushAllColumnsProperty(state, properties) {
     for (const [index, value] of properties.values.entries()) {
