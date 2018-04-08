@@ -26,6 +26,7 @@ Feature: Validate Table
   ========
 
   - How can we support writing validation errors for two tables to provenance information?
+  - How is -$1.00 handled by `bareNumber` - error or -1.00?
   
   USER INTERFACE
   ==============
