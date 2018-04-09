@@ -272,6 +272,11 @@ export default {
       // console.log(`match count during: ${_matchCount}`)
       // match count -1 = index
       if (!_.isEmpty(foundResultElements)) {
+        if (_isInDirection == isPrevious) {
+          // need to start at the last element of sameDirectionArray then match count backwards
+        } else {
+          // need to start at first element of sameDirectionArray then match count forwards
+        }
         let elementToSelect = foundResultElements[_matchCount - 1]
         const hotId = this.activeHotId
         let hot = HotRegister.getInstance(hotId)
