@@ -76,6 +76,8 @@ let _totalFinds = 0
 let _totalDirectionFinds = 0
 let isSameDirectionArrayCalculated = false
 let _sameDirectionArray = []
+
+// TODO: may only need to call this once on initial find on reset (and move isSameDirectionArrayCalculated logic to parent Fn)
 const _searchCallback = function(instance, row, col, value, result) {
   // if (!_isInDirection(row, col, _currentHotPos)) {
   //   instance.getCellMeta(row, col).isSearchResult = false
@@ -85,7 +87,7 @@ const _searchCallback = function(instance, row, col, value, result) {
   if (result) {
     // only calculate same direction array once until reset
     if (!isSameDirectionArrayCalculated && _isInDirection(row, col, _currentHotPos)) {
-      console.log('calculating array...')
+      // console.log('calculating array...')
       // if (++_callbackCount === _matchCount) {
       // console.log(`callback count is ${_callbackCount}`)
       // console.log(`match count in search callback is ${_matchCount}`)
@@ -137,6 +139,7 @@ export default {
       replaceTextValue: '',
       findResult: null,
       replaceResult: null,
+      sameDirectionArray: [],
       foundStyle: {
         backgroundColor: 'rgba(70, 237, 70, 0.3)'
       },
@@ -231,6 +234,18 @@ export default {
       this.updateAllFound()
       // ensure same direction toggled after any cell reselection triggers reset
       isSameDirectionArrayCalculated = true
+      if (!_.isEmpty(_sameDirectionArray)) {
+        this.sameDirectionArray.length = 0
+        console.log('same direction array')
+        console.log(_sameDirectionArray)
+        console.log(this.sameDirectionArray)
+        this.sameDirectionArray = _.clone(_sameDirectionArray)
+      }
+      _sameDirectionArray.length = 0
+      console.log('same direction array after')
+      console.log(_sameDirectionArray)
+      console.log(this.sameDirectionArray)
+
       // console.log(`match count before: ${_matchCount}`)
       // if (_matchCount >= _totalFinds) {
       //   // console.log(`match count during: ${_matchCount}`)
@@ -256,18 +271,20 @@ export default {
       }
       // console.log(`match count during: ${_matchCount}`)
       // match count -1 = index
-      let elementToSelect = foundResultElements[_matchCount - 1]
-      const hotId = this.activeHotId
-      let hot = HotRegister.getInstance(hotId)
-      let coordsToSelect = hot.getCoords(elementToSelect)
-      const tempMatchCount = _matchCount
-      hot.selectCell(coordsToSelect.row, coordsToSelect.col)
-      // if (_isInDirection(row, col, _currentHotPos)) { hot.selectCell(coordsToSelect.row, coordsToSelect.col) }
-      // console.log(`match count temp is ${_matchCount}`)
-      // workaround when match count reset if say user clicks in cell
-      _matchCount = tempMatchCount
-      // console.log(`match count now is ${_matchCount}`)
-      this.updateFoundStyle(foundResultElements)
+      if (!_.isEmpty(foundResultElements)) {
+        let elementToSelect = foundResultElements[_matchCount - 1]
+        const hotId = this.activeHotId
+        let hot = HotRegister.getInstance(hotId)
+        let coordsToSelect = hot.getCoords(elementToSelect)
+        const tempMatchCount = _matchCount
+        hot.selectCell(coordsToSelect.row, coordsToSelect.col)
+        // if (_isInDirection(row, col, _currentHotPos)) { hot.selectCell(coordsToSelect.row, coordsToSelect.col) }
+        // console.log(`match count temp is ${_matchCount}`)
+        // workaround when match count reset if say user clicks in cell
+        _matchCount = tempMatchCount
+        // console.log(`match count now is ${_matchCount}`)
+        this.updateFoundStyle(foundResultElements)
+      }
     },
     updateFoundStyle: function(foundResultElements) {
       const style = this.foundStyle
