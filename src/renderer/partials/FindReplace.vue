@@ -74,6 +74,8 @@ let _callbackCount = 0
 let _matchCount = 0
 let _totalFinds = 0
 let _totalDirectionFinds = 0
+let isSameDirectionArrayCalculated = false
+let _sameDirectionArray = []
 const _searchCallback = function(instance, row, col, value, result) {
   // if (!_isInDirection(row, col, _currentHotPos)) {
   //   instance.getCellMeta(row, col).isSearchResult = false
@@ -81,14 +83,16 @@ const _searchCallback = function(instance, row, col, value, result) {
   // }
   searchCallback.apply(this, arguments)
   if (result) {
-    if (_isInDirection(row, col, _currentHotPos)) {
+    // only calculate same direction array once until reset
+    if (!isSameDirectionArrayCalculated && _isInDirection(row, col, _currentHotPos)) {
+      console.log('calculating array...')
       // if (++_callbackCount === _matchCount) {
       // console.log(`callback count is ${_callbackCount}`)
       // console.log(`match count in search callback is ${_matchCount}`)
       // instance.selectCell(row, col)
       // }
       // console.log(`match count in search callback is ${_matchCount}`)
-      _totalDirectionFinds++
+      _sameDirectionArray.push({row: row, col: col})
     }
     // console.log(`match count before search counter is ${_matchCount}`)
     _searchAction(instance.guid)
@@ -102,15 +106,21 @@ const _queryMethod = function(queryStr, value) {
 }
 
 const isNext = function(row, col, currentPos) {
+  // let distance = getDistance(row, col, currentPos)
   let isNext = (row > currentPos[0] || (row === currentPos[0] && col >= currentPos[1]))
   // console.log(`is Next is: ${isNext}`)
   return isNext
 }
 
 const isPrevious = function(row, col, currentPos) {
+  // let distance = getDistance(row, col, currentPos)
   let isPrevious = (row < currentPos[0] || (row === currentPos[0] && col <= currentPos[1]))
   // console.log(`is Previous is: ${isPrevious}`)
   return isPrevious
+}
+
+const getDistance = function(row, col, currentPos) {
+  return math.distance([currentPos[0], currentPos[1]], [row, col])
 }
 
 export default {
@@ -219,6 +229,8 @@ export default {
       // update search class style
       // console.log(`match count before update: ${_matchCount}`)
       this.updateAllFound()
+      // ensure same direction toggled after any cell reselection triggers reset
+      isSameDirectionArrayCalculated = true
       // console.log(`match count before: ${_matchCount}`)
       // if (_matchCount >= _totalFinds) {
       //   // console.log(`match count during: ${_matchCount}`)
@@ -242,7 +254,7 @@ export default {
         // console.log(`match count during: ${_matchCount}`)
         _matchCount = 1
       }
-      console.log(`match count during: ${_matchCount}`)
+      // console.log(`match count during: ${_matchCount}`)
       // match count -1 = index
       let elementToSelect = foundResultElements[_matchCount - 1]
       const hotId = this.activeHotId
@@ -250,10 +262,11 @@ export default {
       let coordsToSelect = hot.getCoords(elementToSelect)
       const tempMatchCount = _matchCount
       hot.selectCell(coordsToSelect.row, coordsToSelect.col)
-      console.log(`match count temp is ${_matchCount}`)
+      // if (_isInDirection(row, col, _currentHotPos)) { hot.selectCell(coordsToSelect.row, coordsToSelect.col) }
+      // console.log(`match count temp is ${_matchCount}`)
       // workaround when match count reset if say user clicks in cell
       _matchCount = tempMatchCount
-      console.log(`match count now is ${_matchCount}`)
+      // console.log(`match count now is ${_matchCount}`)
       this.updateFoundStyle(foundResultElements)
     },
     updateFoundStyle: function(foundResultElements) {
@@ -267,7 +280,7 @@ export default {
     },
     updateDirection: function(directionFn) {
       if (directionFn != _isInDirection) {
-        // console.log('direction has changed. resetting...')
+        console.log('direction has changed. resetting...')
         this.resetSearchResultWrapper()
       }
       return directionFn
@@ -285,6 +298,7 @@ export default {
       this.findResult = this.getLatestSearchResult(this.activeHotId)
     },
     resetSearchResultWrapper: function() {
+      console.log('resetting...')
       this.resetSearchResult(this.activeHotId)
       // console.log(`find result reset is: ${this.findResult}`)
       this.removeFoundStyle()
@@ -298,6 +312,7 @@ export default {
       _callbackCount = 0
       _totalFinds = 0
       _totalDirectionFinds = 0
+      isSameDirectionArrayCalculated = false
     }
   },
   mounted: async function() {
