@@ -21,7 +21,7 @@
         </span>
       </div>
       <span v-if="formprop.buttonBelowText" class="btn-group">
-        <button type="button" class="button-below btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" @click="formprop.fn('next')">
+        <button type="button" class="button-below btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" @click="formprop.belowFn('next')">
           <span>{{formprop.buttonBelowText}}</span>
         </button>
       </span>
@@ -142,7 +142,8 @@ export default {
         buttonRightClass: 'fa fa-chevron-right',
         // buttonLeftText: 'Replace',
         buttonBelowText: 'Replace All',
-        fn: this.replaceText
+        fn: this.replaceText,
+        belowFn: this.replaceAllText
       }],
       radioprops: [{
         label: 'in Column',
@@ -186,7 +187,6 @@ export default {
       this.resetSearchResultWrapper()
     },
     replaceText: function(direction) {
-      console.log(direction)
       this.findText(direction)
       const hot = HotRegister.getInstance(this.activeHotId)
       const selectedCoords = hot.getSelected()
@@ -195,11 +195,12 @@ export default {
       }
     },
     replaceAllText: function(direction) {
-      const foundResultElements = document.querySelectorAll('.search-result-hot')
+      this.findText(direction)
+      const hot = HotRegister.getInstance(this.activeHotId)
       const replaceTextValue = this.replaceTextValue
-      _.forEach(foundResultElements, function(el, index) {
-        el.innerText = replaceTextValue
-        console.log(el.innerText)
+      _.forEach(document.querySelectorAll('.search-result-hot'), function(el, index) {
+        const selectedCoords = hot.getCoords(el)
+        hot.setDataAtCell(selectedCoords.row, selectedCoords.col, replaceTextValue)
       })
     },
     findText: function(direction) {
