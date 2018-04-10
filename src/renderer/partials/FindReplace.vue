@@ -324,15 +324,21 @@ export default {
       _currentHotPos = this.getHotSelection(this.activeHotId)
       isSameDirectionArrayCalculated = false
       this.sameDirectionStartElement = null
+    },
+    resetTotalFound: function() {
+      this.totalFound = null
+      this.clickedFindOrReplace = null
     }
   },
   mounted: async function() {
     this.activeHotId = await this.currentHotId()
     const vueUpdateActiveHotId = this.updateActiveHotId
     const vueResetSearchResult = this.resetSearchResultWrapper
+    const vueResetTotalFound = this.resetTotalFound
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
       vueUpdateActiveHotId(hotId)
       vueResetSearchResult()
+      vueResetTotalFound()
     })
     this.$subscribeTo(currentPos$, function(currentPos) {
       vueResetSearchResult()
