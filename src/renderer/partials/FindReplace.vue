@@ -5,8 +5,8 @@
       <label v-show="formprop.label" v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label pull-left" :for="formprop.label">{{formprop.label}}</label>
       <component :is="formprop.tooltipView"/>
       <div class="inputrow">
-        <div class="placeholder text-muted small" :data-placeholder="getResult(formprop.key)">
-          <input class="pull-left" type="text" :class="{ 'form-control input-sm col-sm-9': true}" :id="formprop.key" :value="getText(formprop.key)" @input="setText(formprop.key, $event.target.value)" :name="formprop.key" />
+        <div class="placeholder text-muted small" :class="formprop.key" :data-placeholder="getResult(formprop.key)">
+          <input class="pull-left form-control input-sm col-sm-9" type="text" :id="formprop.key" :value="getText(formprop.key)" @input="setText(formprop.key, $event.target.value)" :name="formprop.key" />
           <span v-show="getResult(formprop.key)" :class="totalFound > 0 ? 'glyphicon-ok' : 'glyphicon-remove'" class="glyphicon form-control-feedback"/>
         </div>
         <span class="btn-group pull-right">
@@ -163,16 +163,32 @@ export default {
       if (key === this.clickedFindOrReplace) {
         const count = this.previousOrNextIndex + 1
         if (count >= 1) {
-          this.inputFoundFeedback(key)
+          this.inputFoundSuccessFeedback(key)
           return `${count} of ${this.totalFound}`
           // return `${count} of ${this.totalFound} ${key === 'find' ? 'found' : 'replaced'}`
         } else {
+          this.inputFoundFailureFeedback(key)
           return 'No result'
         }
       }
     },
-    inputFoundFeedback: function(key) {
-
+    inputFoundSuccessFeedback: function(key) {
+      let element = this.initFeedbackContainer(key)
+      element.classList.add('has-success')
+    },
+    inputFoundFailureFeedback: function(key) {
+      let element = this.initFeedbackContainer(key)
+      element.classList.add('has-error')
+    },
+    initFeedbackContainer: function(key) {
+      this.inputFoundRemoveFeedback()
+      return document.querySelector(`#findAndReplace .placeholder.${key}`)
+    },
+    inputFoundRemoveFeedback: function() {
+      _.forEach(document.querySelectorAll('#findAndReplace .placeholder'), function(el, index) {
+        el.classList.remove('has-success')
+        el.classList.remove('has-error')
+      })
     },
     getText: function(key) {
       return key === 'find' ? this.findTextValue : this.replaceTextValue
@@ -328,6 +344,7 @@ export default {
     resetTotalFound: function() {
       this.totalFound = null
       this.clickedFindOrReplace = null
+      this.inputFoundRemoveFeedback()
     }
   },
   mounted: async function() {
