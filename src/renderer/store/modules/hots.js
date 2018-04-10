@@ -33,13 +33,13 @@ const getters = {
     return state.hotTabs
   },
   getLatestSearchResult: (state, getters) => (hotId) => {
-    console.log(`hot id is: ${hotId}`)
+    // console.log(`hot id is: ${hotId}`)
     const result = state.hotTabs[hotId].searchResult
     if (result) {
-      console.log(`returning result: ${result}`)
+      // console.log(`returning result: ${result}`)
       return result
     } else {
-      console.log(`returning result: 0`)
+      // console.log(`returning result: 0`)
       return 0
     }
   },
@@ -150,8 +150,8 @@ const mutations = {
   },
   incrementSearchResult(state, hotId) {
     state.hotTabs[hotId].searchResult++
-    console.log(`after incrementing, result is:`)
-    console.log(state.hotTabs[hotId].searchResult)
+    // console.log(`after incrementing, result is:`)
+    // console.log(state.hotTabs[hotId].searchResult)
   },
   pushProvenance(state, value) {
     _.set(state.provenanceProperties, 'markdown', value)
