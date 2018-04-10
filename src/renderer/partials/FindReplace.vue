@@ -70,7 +70,6 @@ Vue.use(VueRx, {
 let _searchAction = function() {}
 let _isInDirection = function() {}
 let _currentHotPos = function() {}
-let _totalDirectionFinds = 0
 let isSameDirectionArrayCalculated = false
 let _sameDirectionArray = []
 
@@ -90,20 +89,6 @@ const _queryMethod = function(queryStr, value) {
   return searchQueryMethod(queryStr, value)
 }
 
-const isNext = function(row, col, currentPos) {
-  let isNext = (row > currentPos[0] || (row === currentPos[0] && col >= currentPos[1]))
-  return isNext
-}
-
-const isPrevious = function(row, col, currentPos) {
-  let isPrevious = (row < currentPos[0] || (row === currentPos[0] && col <= currentPos[1]))
-  return isPrevious
-}
-
-const getDistance = function(row, col, currentPos) {
-  return math.distance([currentPos[0], currentPos[1]], [row, col])
-}
-
 export default {
   extends: SideNav,
   name: 'findReplace',
@@ -116,8 +101,9 @@ export default {
       findTypePicked: 'findInTable',
       findTextValue: '',
       replaceTextValue: '',
-      findResult: null,
-      replaceResult: null,
+      totalFound: null,
+      clickedFindOrReplace: null,
+      previousOrNextIndex: -1,
       sameDirectionStartElement: null,
       foundStyle: {
         backgroundColor: 'rgba(70, 237, 70, 0.3)'
@@ -163,16 +149,23 @@ export default {
     ...mapMutations([
       'resetSearchResult', 'incrementSearchResult'
     ]),
+    isNext: function(row, col, currentPos) {
+      let isNext = (row > currentPos[0] || (row === currentPos[0] && col >= currentPos[1]))
+      return isNext
+    },
+    isPrevious: function(row, col, currentPos) {
+      let isPrevious = (row < currentPos[0] || (row === currentPos[0] && col <= currentPos[1]))
+      return isPrevious
+    },
     getResult: function(key) {
-      const count = key === 'find' ? this.findResult : this.replaceResult
-      if (count > 1) {
-        return `${count} matches`
-      } else if (count === 1) {
-        return `${count} match`
-      } else if (count === 0) {
-        return 'No matches'
-      } else {
-        return null
+      // show result at either find or replace view
+      if (key === this.clickedFindOrReplace) {
+        const count = this.previousOrNextIndex + 1
+        if (count >= 1) {
+          return `${count} of ${this.totalFound}`
+        } else {
+          return 'No matches'
+        }
       }
     },
     getText: function(key) {
@@ -187,7 +180,8 @@ export default {
       this.resetSearchResultWrapper()
     },
     replaceText: function(direction) {
-      this.findText(direction)
+      this.clickedFindOrReplace = 'replace'
+      this.findNextOrPrevious(direction)
       const hot = HotRegister.getInstance(this.activeHotId)
       const selectedCoords = hot.getSelected()
       if (selectedCoords) {
@@ -195,7 +189,8 @@ export default {
       }
     },
     replaceAllText: function(direction) {
-      this.findText(direction)
+      this.clickedFindOrReplace = 'replace'
+      this.findNextOrPrevious(direction)
       const hot = HotRegister.getInstance(this.activeHotId)
       const replaceTextFn = this.replacefindTextOnceWithinCell
       _.forEach(document.querySelectorAll('.search-result-hot'), function(el, index) {
@@ -212,26 +207,30 @@ export default {
       hot.setDataAtCell(row, col, this.replaceTextValue)
     },
     findText: function(direction) {
-      _totalDirectionFinds = 0
-      this.findResult = 0
+      this.clickedFindOrReplace = 'find'
+      this.findNextOrPrevious(direction)
+    },
+    findNextOrPrevious: function(direction) {
+      this.totalFound = 0
       const hot = HotRegister.getInstance(this.activeHotId)
       if (direction === 'previous') {
-        _isInDirection = this.updateDirection(isPrevious)
+        _isInDirection = this.updateDirection(this.isPrevious)
       } else {
-        _isInDirection = this.updateDirection(isNext)
+        _isInDirection = this.updateDirection(this.isNext)
       }
       hot.search.query(this.findTextValue)
       hot.render()
       this.initStartingElement(hot)
       const foundResultElements = document.querySelectorAll('.search-result-hot')
+      this.totalFound = foundResultElements.length
       const coordsToSelect = this.getPreviousOrNextCoords(foundResultElements)
       // capture the index after capturing previous/next element, as element will be reset once selected
-      let previousOrNextIndex = this.getPreviousOrNextIndex(foundResultElements)
-      if (previousOrNextIndex > -1) {
+      this.previousOrNextIndex = this.getPreviousOrNextIndex(foundResultElements)
+      if (this.previousOrNextIndex > -1) {
         hot.selectCell(coordsToSelect.row, coordsToSelect.col)
         // must update style after selection as affects style background
         this.updateAllFoundStyle(foundResultElements)
-        this.pickPreviousOrNextElement(foundResultElements, previousOrNextIndex)
+        this.pickPreviousOrNextElement(foundResultElements, this.previousOrNextIndex)
       }
       _sameDirectionArray.length = 0
       isSameDirectionArrayCalculated = true
@@ -239,7 +238,7 @@ export default {
     initStartingElement: function(hot) {
       if (!_.isEmpty(_sameDirectionArray)) {
         let sameDirectionStartCoords
-        if (_isInDirection == isPrevious) {
+        if (_isInDirection == this.isPrevious) {
           // need to start at the last element of sameDirectionArray
           sameDirectionStartCoords = _sameDirectionArray[_sameDirectionArray.length - 1]
         } else {
@@ -260,7 +259,7 @@ export default {
       if (!_.isEmpty(foundResultElements)) {
         // current cursor may be beyond limits of previous/next start elements, but there are still result
         if (_.isEmpty(_sameDirectionArray) && !this.sameDirectionStartElement) {
-          if (_isInDirection == isPrevious) {
+          if (_isInDirection == this.isPrevious) {
             this.sameDirectionStartElement = foundResultElements[foundResultElements.length - 1]
           } else {
             this.sameDirectionStartElement = foundResultElements[0]
@@ -281,7 +280,7 @@ export default {
       })
     },
     pickPreviousOrNextElement: function(foundResultElements, matchingIndex) {
-      if (_isInDirection == isPrevious) {
+      if (_isInDirection == this.isPrevious) {
         matchingIndex--
         if (matchingIndex < 0) {
           matchingIndex = foundResultElements.length - 1
@@ -310,17 +309,13 @@ export default {
     },
     incrementSearchResultWrapper: function() {
       this.incrementSearchResult(this.activeHotId)
-      this.findResult = this.getLatestSearchResult(this.activeHotId)
+      this.totalFound = this.getLatestSearchResult(this.activeHotId)
     },
     resetSearchResultWrapper: function() {
-      console.log('resetting...')
       this.resetSearchResult(this.activeHotId)
       this.removeFoundStyle()
-      this.findResult = null
-      this.replaceResult = null
       // on text entry reset current cursor position
       _currentHotPos = this.getHotSelection(this.activeHotId)
-      _totalDirectionFinds = 0
       isSameDirectionArrayCalculated = false
       this.sameDirectionStartElement = null
     }
