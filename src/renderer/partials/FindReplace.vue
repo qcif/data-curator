@@ -6,7 +6,8 @@
       <component :is="formprop.tooltipView"/>
       <div class="inputrow">
         <div class="placeholder text-muted small" :data-placeholder="getResult(formprop.key)">
-          <input class="pull-left" type="text" :class="{ 'form-control input-sm col-sm-9': true}" :id="formprop.key" :value="getText(formprop.key)" @input="setText(formprop.key, $event.target.value)" :name="formprop.key"/>
+          <input class="pull-left" type="text" :class="{ 'form-control input-sm col-sm-9': true}" :id="formprop.key" :value="getText(formprop.key)" @input="setText(formprop.key, $event.target.value)" :name="formprop.key" />
+          <span v-show="getResult(formprop.key)" :class="totalFound > 0 ? 'glyphicon-ok' : 'glyphicon-remove'" class="glyphicon form-control-feedback"/>
         </div>
         <span class="btn-group pull-right">
           <button type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" @click="formprop.fn('previous')">
@@ -162,11 +163,16 @@ export default {
       if (key === this.clickedFindOrReplace) {
         const count = this.previousOrNextIndex + 1
         if (count >= 1) {
+          this.inputFoundFeedback(key)
           return `${count} of ${this.totalFound}`
+          // return `${count} of ${this.totalFound} ${key === 'find' ? 'found' : 'replaced'}`
         } else {
-          return 'No matches'
+          return 'No result'
         }
       }
+    },
+    inputFoundFeedback: function(key) {
+
     },
     getText: function(key) {
       return key === 'find' ? this.findTextValue : this.replaceTextValue
