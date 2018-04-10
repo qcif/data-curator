@@ -138,7 +138,9 @@ export default {
         label: 'Replace',
         key: 'replace',
         buttonTypeClass: 'btn-primary',
-        buttonLeftText: 'Replace',
+        buttonLeftClass: 'fa fa-chevron-left',
+        buttonRightClass: 'fa fa-chevron-right',
+        // buttonLeftText: 'Replace',
         buttonBelowText: 'Replace All',
         fn: this.replaceText
       }],
@@ -183,6 +185,23 @@ export default {
       }
       this.resetSearchResultWrapper()
     },
+    replaceText: function(direction) {
+      console.log(direction)
+      this.findText(direction)
+      const hot = HotRegister.getInstance(this.activeHotId)
+      const selectedCoords = hot.getSelected()
+      if (selectedCoords) {
+        hot.setDataAtCell(selectedCoords[0], selectedCoords[1], this.replaceTextValue)
+      }
+    },
+    replaceAllText: function(direction) {
+      const foundResultElements = document.querySelectorAll('.search-result-hot')
+      const replaceTextValue = this.replaceTextValue
+      _.forEach(foundResultElements, function(el, index) {
+        el.innerText = replaceTextValue
+        console.log(el.innerText)
+      })
+    },
     findText: function(direction) {
       _totalDirectionFinds = 0
       this.findResult = 0
@@ -220,13 +239,6 @@ export default {
         }
         this.sameDirectionStartElement = hot.getCell(sameDirectionStartCoords.row, sameDirectionStartCoords.col)
       }
-    },
-    replaceText: function(direction) {
-      // console.log(`triggered replace text`)
-      // console.log(this.findTypePicked)
-      // console.log(direction)
-      // console.log(this.findTextValue)
-      // console.log(this.replaceTextValue)
     },
     getPreviousOrNextIndex: function(foundResultElements) {
       let matchingIndex = _.indexOf(foundResultElements, this.sameDirectionStartElement)
