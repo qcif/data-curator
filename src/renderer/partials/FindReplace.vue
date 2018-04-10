@@ -194,6 +194,21 @@ export default {
       }
       hot.search.query(this.findTextValue)
       hot.render()
+      this.initStartingElement(hot)
+      const foundResultElements = document.querySelectorAll('.search-result-hot')
+      const coordsToSelect = this.getPreviousOrNextCoords(foundResultElements)
+      // capture the index after capturing previous/next element, as element will be reset once selected
+      let previousOrNextIndex = this.getPreviousOrNextIndex(foundResultElements)
+      if (previousOrNextIndex > -1) {
+        hot.selectCell(coordsToSelect.row, coordsToSelect.col)
+        // must update style after selection as affects style background
+        this.updateAllFoundStyle(foundResultElements)
+        this.pickPreviousOrNextElement(foundResultElements, previousOrNextIndex)
+      }
+      _sameDirectionArray.length = 0
+      isSameDirectionArrayCalculated = true
+    },
+    initStartingElement: function(hot) {
       if (!_.isEmpty(_sameDirectionArray)) {
         let sameDirectionStartCoords
         if (_isInDirection == isPrevious) {
@@ -205,9 +220,6 @@ export default {
         }
         this.sameDirectionStartElement = hot.getCell(sameDirectionStartCoords.row, sameDirectionStartCoords.col)
       }
-      this.updateAllFound()
-      _sameDirectionArray.length = 0
-      isSameDirectionArrayCalculated = true
     },
     replaceText: function(direction) {
       // console.log(`triggered replace text`)
@@ -216,8 +228,14 @@ export default {
       // console.log(this.findTextValue)
       // console.log(this.replaceTextValue)
     },
-    updateAllFound: function() {
-      const foundResultElements = document.querySelectorAll('.search-result-hot')
+    getPreviousOrNextIndex: function(foundResultElements) {
+      let matchingIndex = _.indexOf(foundResultElements, this.sameDirectionStartElement)
+      if (matchingIndex === -1) {
+        console.log('Unable to find starting element for find.')
+      }
+      return matchingIndex
+    },
+    getPreviousOrNextCoords: function(foundResultElements) {
       if (!_.isEmpty(foundResultElements)) {
         // current cursor may be beyond limits of previous/next start elements, but there are still result
         if (_.isEmpty(_sameDirectionArray) && !this.sameDirectionStartElement) {
@@ -227,37 +245,33 @@ export default {
             this.sameDirectionStartElement = foundResultElements[0]
           }
         }
-        let matchingIndex = _.indexOf(foundResultElements, this.sameDirectionStartElement)
-        if (matchingIndex === -1) {
-          console.log('Unable to find starting element for find.')
-        }
         const hotId = this.activeHotId
-        let hot = HotRegister.getInstance(hotId)
-        let coordsToSelect = hot.getCoords(this.sameDirectionStartElement)
-        hot.selectCell(coordsToSelect.row, coordsToSelect.col)
-        this.updateFoundStyle(foundResultElements)
-        // now pick next element
-        if (_isInDirection == isPrevious) {
-          matchingIndex--
-          if (matchingIndex < 0) {
-            matchingIndex = foundResultElements.length - 1
-          }
-        } else {
-          matchingIndex++
-          if (matchingIndex >= foundResultElements.length) {
-            matchingIndex = 0
-          }
-        }
-        this.sameDirectionStartElement = foundResultElements[matchingIndex]
+        const hot = HotRegister.getInstance(hotId)
+        const coordsToSelect = hot.getCoords(this.sameDirectionStartElement)
+        return coordsToSelect
       }
     },
-    updateFoundStyle: function(foundResultElements) {
+    updateAllFoundStyle: function(foundResultElements) {
       const style = this.foundStyle
       _.forEach(foundResultElements, function(el, index) {
         for (const property of _.keys(style)) {
           el.style[property] = style[property]
         }
       })
+    },
+    pickPreviousOrNextElement: function(foundResultElements, matchingIndex) {
+      if (_isInDirection == isPrevious) {
+        matchingIndex--
+        if (matchingIndex < 0) {
+          matchingIndex = foundResultElements.length - 1
+        }
+      } else {
+        matchingIndex++
+        if (matchingIndex >= foundResultElements.length) {
+          matchingIndex = 0
+        }
+      }
+      this.sameDirectionStartElement = foundResultElements[matchingIndex]
     },
     updateDirection: function(directionFn) {
       if (directionFn != _isInDirection) {
@@ -278,6 +292,7 @@ export default {
       this.findResult = this.getLatestSearchResult(this.activeHotId)
     },
     resetSearchResultWrapper: function() {
+      console.log('resetting...')
       this.resetSearchResult(this.activeHotId)
       this.removeFoundStyle()
       this.findResult = null
