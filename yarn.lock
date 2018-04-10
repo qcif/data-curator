@@ -3010,9 +3010,9 @@ cucumber-tag-expressions@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/cucumber-tag-expressions/-/cucumber-tag-expressions-1.1.1.tgz#7f5c7b70009bc2b666591bfe64854578bedee85a"
 
-cucumber@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/cucumber/-/cucumber-4.1.0.tgz#d93af1de8a05bf6428ae9d4021e0b0d406683518"
+cucumber@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/cucumber/-/cucumber-4.2.1.tgz#64cfff6150bbe6b5e94b173470057353d6206719"
   dependencies:
     assertion-error-formatter "^2.0.1"
     babel-runtime "^6.11.6"
@@ -3030,6 +3030,7 @@ cucumber@^4.1.0:
     indent-string "^3.1.0"
     is-generator "^1.0.2"
     is-stream "^1.1.0"
+    knuth-shuffle-seeded "^1.0.6"
     lodash "^4.17.4"
     mz "^2.4.0"
     progress "^2.0.0"
@@ -6134,6 +6135,12 @@ klaw@^1.0.0:
   optionalDependencies:
     graceful-fs "^4.1.9"
 
+knuth-shuffle-seeded@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/knuth-shuffle-seeded/-/knuth-shuffle-seeded-1.0.6.tgz#01f1b65733aa7540ee08d8b0174164d22081e4e1"
+  dependencies:
+    seed-random "~2.2.0"
+
 labeled-stream-splicer@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/labeled-stream-splicer/-/labeled-stream-splicer-2.0.1.tgz#9cffa32fd99e1612fd1d86a8db962416d5292926"
@@ -8800,6 +8807,10 @@ schema-utils@^0.4.3, schema-utils@^0.4.5:
   dependencies:
     ajv "^6.1.0"
     ajv-keywords "^3.1.0"
+
+seed-random@~2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/seed-random/-/seed-random-2.2.0.tgz#2a9b19e250a817099231a5b99a4daf80b7fbed54"
 
 select-hose@^2.0.0:
   version "2.0.0"
