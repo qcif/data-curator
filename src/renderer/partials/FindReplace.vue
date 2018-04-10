@@ -191,17 +191,25 @@ export default {
       const hot = HotRegister.getInstance(this.activeHotId)
       const selectedCoords = hot.getSelected()
       if (selectedCoords) {
-        hot.setDataAtCell(selectedCoords[0], selectedCoords[1], this.replaceTextValue)
+        this.replacefindTextOnceWithinCell(hot, selectedCoords[0], selectedCoords[1])
       }
     },
     replaceAllText: function(direction) {
       this.findText(direction)
       const hot = HotRegister.getInstance(this.activeHotId)
-      const replaceTextValue = this.replaceTextValue
+      const replaceTextFn = this.replacefindTextOnceWithinCell
       _.forEach(document.querySelectorAll('.search-result-hot'), function(el, index) {
         const selectedCoords = hot.getCoords(el)
-        hot.setDataAtCell(selectedCoords.row, selectedCoords.col, replaceTextValue)
+        replaceTextFn(hot, selectedCoords.row, selectedCoords.col)
       })
+    },
+    replacefindTextOnceWithinCell: function(hot, row, col) {
+      let cellText = hot.getDataAtCell(row, col)
+      let updatedCellText = _.replace(cellText, this.findTextValue, this.replaceTextValue)
+      hot.setDataAtCell(row, col, updatedCellText)
+    },
+    replaceEntireCellText: function(hot, row, col) {
+      hot.setDataAtCell(row, col, this.replaceTextValue)
     },
     findText: function(direction) {
       _totalDirectionFinds = 0
