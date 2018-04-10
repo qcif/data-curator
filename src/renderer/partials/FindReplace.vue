@@ -5,8 +5,9 @@
       <label v-show="formprop.label" v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label pull-left" :for="formprop.label">{{formprop.label}}</label>
       <component :is="formprop.tooltipView"/>
       <div class="inputrow">
-        <div class="placeholder text-muted small" :data-placeholder="getResult(formprop.key)">
-          <input class="pull-left" type="text" :class="{ 'form-control input-sm col-sm-9': true}" :id="formprop.key" :value="getText(formprop.key)" @input="setText(formprop.key, $event.target.value)" :name="formprop.key"/>
+        <div class="placeholder text-muted small" :class="formprop.key" :data-placeholder="getResult(formprop.key)">
+          <input class="pull-left form-control input-sm col-sm-9" type="text" :id="formprop.key" :value="getText(formprop.key)" @input="setText(formprop.key, $event.target.value)" :name="formprop.key" />
+          <span v-show="getResult(formprop.key)" :class="totalFound > 0 ? 'glyphicon-ok' : 'glyphicon-remove'" class="glyphicon form-control-feedback"/>
         </div>
         <span class="btn-group pull-right">
           <button type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" @click="formprop.fn('previous')">
@@ -21,7 +22,7 @@
         </span>
       </div>
       <span v-if="formprop.buttonBelowText" class="btn-group">
-        <button type="button" class="button-below btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" @click="formprop.fn('next')">
+        <button type="button" class="button-below btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" @click="formprop.belowFn('next')">
           <span>{{formprop.buttonBelowText}}</span>
         </button>
       </span>
@@ -70,7 +71,6 @@ Vue.use(VueRx, {
 let _searchAction = function() {}
 let _isInDirection = function() {}
 let _currentHotPos = function() {}
-let _totalDirectionFinds = 0
 let isSameDirectionArrayCalculated = false
 let _sameDirectionArray = []
 
@@ -90,20 +90,6 @@ const _queryMethod = function(queryStr, value) {
   return searchQueryMethod(queryStr, value)
 }
 
-const isNext = function(row, col, currentPos) {
-  let isNext = (row > currentPos[0] || (row === currentPos[0] && col >= currentPos[1]))
-  return isNext
-}
-
-const isPrevious = function(row, col, currentPos) {
-  let isPrevious = (row < currentPos[0] || (row === currentPos[0] && col <= currentPos[1]))
-  return isPrevious
-}
-
-const getDistance = function(row, col, currentPos) {
-  return math.distance([currentPos[0], currentPos[1]], [row, col])
-}
-
 export default {
   extends: SideNav,
   name: 'findReplace',
@@ -116,8 +102,9 @@ export default {
       findTypePicked: 'findInTable',
       findTextValue: '',
       replaceTextValue: '',
-      findResult: null,
-      replaceResult: null,
+      totalFound: null,
+      clickedFindOrReplace: null,
+      previousOrNextIndex: -1,
       sameDirectionStartElement: null,
       foundStyle: {
         backgroundColor: 'rgba(70, 237, 70, 0.3)'
@@ -138,9 +125,12 @@ export default {
         label: 'Replace',
         key: 'replace',
         buttonTypeClass: 'btn-primary',
-        buttonLeftText: 'Replace',
+        buttonLeftClass: 'fa fa-chevron-left',
+        buttonRightClass: 'fa fa-chevron-right',
+        // buttonLeftText: 'Replace',
         buttonBelowText: 'Replace All',
-        fn: this.replaceText
+        fn: this.replaceText,
+        belowFn: this.replaceAllText
       }],
       radioprops: [{
         label: 'in Column',
@@ -160,17 +150,45 @@ export default {
     ...mapMutations([
       'resetSearchResult', 'incrementSearchResult'
     ]),
+    isNext: function(row, col, currentPos) {
+      let isNext = (row > currentPos[0] || (row === currentPos[0] && col >= currentPos[1]))
+      return isNext
+    },
+    isPrevious: function(row, col, currentPos) {
+      let isPrevious = (row < currentPos[0] || (row === currentPos[0] && col <= currentPos[1]))
+      return isPrevious
+    },
     getResult: function(key) {
-      const count = key === 'find' ? this.findResult : this.replaceResult
-      if (count > 1) {
-        return `${count} matches`
-      } else if (count === 1) {
-        return `${count} match`
-      } else if (count === 0) {
-        return 'No matches'
-      } else {
-        return null
+      // show result at either find or replace view
+      if (key === this.clickedFindOrReplace) {
+        const count = this.previousOrNextIndex + 1
+        if (count >= 1) {
+          this.inputFoundSuccessFeedback(key)
+          return `${count} of ${this.totalFound}`
+          // return `${count} of ${this.totalFound} ${key === 'find' ? 'found' : 'replaced'}`
+        } else {
+          this.inputFoundFailureFeedback(key)
+          return 'No result'
+        }
       }
+    },
+    inputFoundSuccessFeedback: function(key) {
+      let element = this.initFeedbackContainer(key)
+      element.classList.add('has-success')
+    },
+    inputFoundFailureFeedback: function(key) {
+      let element = this.initFeedbackContainer(key)
+      element.classList.add('has-error')
+    },
+    initFeedbackContainer: function(key) {
+      this.inputFoundRemoveFeedback()
+      return document.querySelector(`#findAndReplace .placeholder.${key}`)
+    },
+    inputFoundRemoveFeedback: function() {
+      _.forEach(document.querySelectorAll('#findAndReplace .placeholder'), function(el, index) {
+        el.classList.remove('has-success')
+        el.classList.remove('has-error')
+      })
     },
     getText: function(key) {
       return key === 'find' ? this.findTextValue : this.replaceTextValue
@@ -183,27 +201,66 @@ export default {
       }
       this.resetSearchResultWrapper()
     },
+    replaceText: function(direction) {
+      this.clickedFindOrReplace = 'replace'
+      this.findNextOrPrevious(direction)
+      const hot = HotRegister.getInstance(this.activeHotId)
+      const selectedCoords = hot.getSelected()
+      if (selectedCoords) {
+        this.replaceAllFindTextWithinCell(hot, selectedCoords[0], selectedCoords[1])
+      }
+    },
+    replaceAllText: function(direction) {
+      this.clickedFindOrReplace = 'replace'
+      this.findNextOrPrevious(direction)
+      const hot = HotRegister.getInstance(this.activeHotId)
+      const replaceTextFn = this.replaceAllFindTextWithinCell
+      _.forEach(document.querySelectorAll('.search-result-hot'), function(el, index) {
+        const selectedCoords = hot.getCoords(el)
+        replaceTextFn(hot, selectedCoords.row, selectedCoords.col)
+      })
+    },
+    replacefindTextOnceWithinCell: function(hot, row, col) {
+      let cellText = hot.getDataAtCell(row, col)
+      let updatedCellText = _.replace(cellText, this.findTextValue, this.replaceTextValue)
+      hot.setDataAtCell(row, col, updatedCellText)
+    },
+    replaceAllFindTextWithinCell: function(hot, row, col) {
+      let cellText = hot.getDataAtCell(row, col)
+      // ensure any special characters in find text are treated as ordinary text
+      const escapedFindText = _.escapeRegExp(this.findTextValue)
+      const regExp = new RegExp(escapedFindText, 'g')
+      let updatedCellText = _.replace(cellText, regExp, this.replaceTextValue)
+      hot.setDataAtCell(row, col, updatedCellText)
+    },
+    replaceEntireCellText: function(hot, row, col) {
+      hot.setDataAtCell(row, col, this.replaceTextValue)
+    },
     findText: function(direction) {
-      _totalDirectionFinds = 0
-      this.findResult = 0
+      this.clickedFindOrReplace = 'find'
+      this.findNextOrPrevious(direction)
+    },
+    findNextOrPrevious: function(direction) {
+      this.totalFound = 0
       const hot = HotRegister.getInstance(this.activeHotId)
       if (direction === 'previous') {
-        _isInDirection = this.updateDirection(isPrevious)
+        _isInDirection = this.updateDirection(this.isPrevious)
       } else {
-        _isInDirection = this.updateDirection(isNext)
+        _isInDirection = this.updateDirection(this.isNext)
       }
       hot.search.query(this.findTextValue)
       hot.render()
       this.initStartingElement(hot)
       const foundResultElements = document.querySelectorAll('.search-result-hot')
+      this.totalFound = foundResultElements.length
       const coordsToSelect = this.getPreviousOrNextCoords(foundResultElements)
       // capture the index after capturing previous/next element, as element will be reset once selected
-      let previousOrNextIndex = this.getPreviousOrNextIndex(foundResultElements)
-      if (previousOrNextIndex > -1) {
+      this.previousOrNextIndex = this.getPreviousOrNextIndex(foundResultElements)
+      if (this.previousOrNextIndex > -1) {
         hot.selectCell(coordsToSelect.row, coordsToSelect.col)
         // must update style after selection as affects style background
         this.updateAllFoundStyle(foundResultElements)
-        this.pickPreviousOrNextElement(foundResultElements, previousOrNextIndex)
+        this.pickPreviousOrNextElement(foundResultElements, this.previousOrNextIndex)
       }
       _sameDirectionArray.length = 0
       isSameDirectionArrayCalculated = true
@@ -211,7 +268,7 @@ export default {
     initStartingElement: function(hot) {
       if (!_.isEmpty(_sameDirectionArray)) {
         let sameDirectionStartCoords
-        if (_isInDirection == isPrevious) {
+        if (_isInDirection == this.isPrevious) {
           // need to start at the last element of sameDirectionArray
           sameDirectionStartCoords = _sameDirectionArray[_sameDirectionArray.length - 1]
         } else {
@@ -220,13 +277,6 @@ export default {
         }
         this.sameDirectionStartElement = hot.getCell(sameDirectionStartCoords.row, sameDirectionStartCoords.col)
       }
-    },
-    replaceText: function(direction) {
-      // console.log(`triggered replace text`)
-      // console.log(this.findTypePicked)
-      // console.log(direction)
-      // console.log(this.findTextValue)
-      // console.log(this.replaceTextValue)
     },
     getPreviousOrNextIndex: function(foundResultElements) {
       let matchingIndex = _.indexOf(foundResultElements, this.sameDirectionStartElement)
@@ -239,7 +289,7 @@ export default {
       if (!_.isEmpty(foundResultElements)) {
         // current cursor may be beyond limits of previous/next start elements, but there are still result
         if (_.isEmpty(_sameDirectionArray) && !this.sameDirectionStartElement) {
-          if (_isInDirection == isPrevious) {
+          if (_isInDirection == this.isPrevious) {
             this.sameDirectionStartElement = foundResultElements[foundResultElements.length - 1]
           } else {
             this.sameDirectionStartElement = foundResultElements[0]
@@ -260,7 +310,7 @@ export default {
       })
     },
     pickPreviousOrNextElement: function(foundResultElements, matchingIndex) {
-      if (_isInDirection == isPrevious) {
+      if (_isInDirection == this.isPrevious) {
         matchingIndex--
         if (matchingIndex < 0) {
           matchingIndex = foundResultElements.length - 1
@@ -289,28 +339,31 @@ export default {
     },
     incrementSearchResultWrapper: function() {
       this.incrementSearchResult(this.activeHotId)
-      this.findResult = this.getLatestSearchResult(this.activeHotId)
+      this.totalFound = this.getLatestSearchResult(this.activeHotId)
     },
     resetSearchResultWrapper: function() {
-      console.log('resetting...')
       this.resetSearchResult(this.activeHotId)
       this.removeFoundStyle()
-      this.findResult = null
-      this.replaceResult = null
       // on text entry reset current cursor position
       _currentHotPos = this.getHotSelection(this.activeHotId)
-      _totalDirectionFinds = 0
       isSameDirectionArrayCalculated = false
       this.sameDirectionStartElement = null
+    },
+    resetTotalFound: function() {
+      this.totalFound = null
+      this.clickedFindOrReplace = null
+      this.inputFoundRemoveFeedback()
     }
   },
   mounted: async function() {
     this.activeHotId = await this.currentHotId()
     const vueUpdateActiveHotId = this.updateActiveHotId
     const vueResetSearchResult = this.resetSearchResultWrapper
+    const vueResetTotalFound = this.resetTotalFound
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
       vueUpdateActiveHotId(hotId)
       vueResetSearchResult()
+      vueResetTotalFound()
     })
     this.$subscribeTo(currentPos$, function(currentPos) {
       vueResetSearchResult()
