@@ -207,14 +207,14 @@ export default {
       const hot = HotRegister.getInstance(this.activeHotId)
       const selectedCoords = hot.getSelected()
       if (selectedCoords) {
-        this.replacefindTextOnceWithinCell(hot, selectedCoords[0], selectedCoords[1])
+        this.replaceAllFindTextWithinCell(hot, selectedCoords[0], selectedCoords[1])
       }
     },
     replaceAllText: function(direction) {
       this.clickedFindOrReplace = 'replace'
       this.findNextOrPrevious(direction)
       const hot = HotRegister.getInstance(this.activeHotId)
-      const replaceTextFn = this.replacefindTextOnceWithinCell
+      const replaceTextFn = this.replaceAllFindTextWithinCell
       _.forEach(document.querySelectorAll('.search-result-hot'), function(el, index) {
         const selectedCoords = hot.getCoords(el)
         replaceTextFn(hot, selectedCoords.row, selectedCoords.col)
@@ -223,6 +223,14 @@ export default {
     replacefindTextOnceWithinCell: function(hot, row, col) {
       let cellText = hot.getDataAtCell(row, col)
       let updatedCellText = _.replace(cellText, this.findTextValue, this.replaceTextValue)
+      hot.setDataAtCell(row, col, updatedCellText)
+    },
+    replaceAllFindTextWithinCell: function(hot, row, col) {
+      let cellText = hot.getDataAtCell(row, col)
+      // ensure any special characters in find text are treated as ordinary text
+      const escapedFindText = _.escapeRegExp(this.findTextValue)
+      const regExp = new RegExp(escapedFindText, 'g')
+      let updatedCellText = _.replace(cellText, regExp, this.replaceTextValue)
       hot.setDataAtCell(row, col, updatedCellText)
     },
     replaceEntireCellText: function(hot, row, col) {
