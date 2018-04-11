@@ -5,9 +5,11 @@ import {allTablesAllColumnsFromSchema$, allTablesAllColumnNames$} from '@/rxSubj
 const Dialog = remote.dialog
 
 const _hots = {}
+const searchCallback = Handsontable.plugins.Search.DEFAULT_CALLBACK
+const searchQueryMethod = Handsontable.plugins.Search.DEFAULT_QUERY_METHOD
 
 const HotRegister = {
-  register(container, listeners={}) {
+  register(container, listeners={}, searchParameters = false) {
     let hot = new Handsontable(container, {
       // do not allow headers on initialisation - no default headers unless toggled
       colHeaders: false,
@@ -25,8 +27,8 @@ const HotRegister = {
       manualRowMove: true,
       enterBeginsEditing: false,
       persistentState: true,
-      currentRowClassName: 'currentRow',
-      currentColClassName: 'currentCol',
+      // currentRowClassName: 'currentRow',
+      // currentColClassName: 'currentCol',
       // outsideClickDeselects: must be set to true -
       // -otherwise visibleRows will include ALL rows (even for large datasets), which will affect performance when switching tabs (https://github.com/ODIQueensland/data-curator/issues/387)
       outsideClickDeselects: true,
@@ -34,6 +36,7 @@ const HotRegister = {
         displayDelay: 1000
       },
       undo: true,
+      search: searchParameters,
       tabMoves({shiftKey}) {
         if (!shiftKey) {
           const selection = hot.getSelected()
@@ -131,6 +134,19 @@ const HotRegister = {
 export function getActiveSelected() {
   let activeHot = HotRegister.getActiveInstance()
   return activeHot.getSelected()
+}
+
+export function getActiveSelectedOrHotSelectionOrMin() {
+  let activeHot = HotRegister.getActiveInstance()
+  let currentCell = activeHot.getSelected()
+  if (!currentCell) {
+    currentCell = store.getters.getHotSelection(store.state, store.getters)(activeHot.guid)
+  }
+  if (!currentCell) {
+    activeHot.selectCell(0, 0)
+    currentCell = activeHot.getSelected()
+  }
+  return currentCell
 }
 
 export function getCurrentColumnIndexOrMin() {
@@ -319,5 +335,7 @@ ipc.on('selectHotCell', function(event, rowCountNumber, ColCountNumber) {
 })
 
 export {
-  HotRegister
+  HotRegister,
+  searchCallback,
+  searchQueryMethod
 }

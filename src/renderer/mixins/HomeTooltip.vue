@@ -21,6 +21,9 @@ export default {
     'tooltipPackage': {
       template: '<div id="tooltip-package">Set Data Package Properties</div>'
     },
+    'tooltipFind': {
+      template: '<div id="tooltip-find">Find and Replace Data</div>'
+    },
     'tooltipExport': {
       template: '<div id="tooltip-export">Export Data Package</div>'
     },

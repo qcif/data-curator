@@ -12,6 +12,13 @@ sideNavMargin = 400px
 borderColor = #e4e4e4
 sideNavColor = #337ab7
 
+// unable to influence hot style with css - need to use document....style in html
+// .editor
+//   .htSearchResult
+//   .search-result-hot
+//     background-color rgba(100, 237, 217, 0.6) !important
+//     border 5px solid black !important
+
 #header-panel
   display: block !important
   position relative
@@ -182,7 +189,7 @@ sideNavHeaderHeight = 55px
     margin-top sideNavHeaderHeight !important
     margin-bottom 70px
     overflow-x hidden
-    overflow-y scroll !important
+    overflow-y scroll
     padding 10px 10px 0 15px !important
     position relative !important
     display block !important
@@ -256,7 +263,7 @@ sideNavFooterHeight = 70px
         // display block
         // overflow-y scroll !important
     &.left #message-panel
-      padding-right sideNavMargin
+      padding-right 0px
     &.right #message-panel
       margin-right sideNavMargin
       padding-right 0

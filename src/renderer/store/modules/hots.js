@@ -1,3 +1,5 @@
+import {currentPos$} from '@/rxSubject.js'
+
 const state = {
   hotTabs: {},
   packageProperties: {},
@@ -29,6 +31,17 @@ export function getHotIdFromTabIdFunction() {
 const getters = {
   getHotTabs: state => {
     return state.hotTabs
+  },
+  getLatestSearchResult: (state, getters) => (hotId) => {
+    // console.log(`hot id is: ${hotId}`)
+    const result = state.hotTabs[hotId].searchResult
+    if (result) {
+      // console.log(`returning result: ${result}`)
+      return result
+    } else {
+      // console.log(`returning result: 0`)
+      return 0
+    }
   },
   getHotSelection: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].selected
@@ -132,6 +145,14 @@ const getters = {
 }
 
 const mutations = {
+  resetSearchResult(state, hotId) {
+    _.set(state.hotTabs, `${hotId}.searchResult`, 0)
+  },
+  incrementSearchResult(state, hotId) {
+    state.hotTabs[hotId].searchResult++
+    // console.log(`after incrementing, result is:`)
+    // console.log(state.hotTabs[hotId].searchResult)
+  },
   pushProvenance(state, value) {
     _.set(state.provenanceProperties, 'markdown', value)
   },
@@ -154,6 +175,7 @@ const mutations = {
   },
   pushHotSelection(state, property) {
     _.set(state.hotTabs, `${property.hotId}.selected`, property.selected)
+    currentPos$.next(property.selected)
   },
   pushAllColumnsProperty(state, properties) {
     for (const [index, value] of properties.values.entries()) {

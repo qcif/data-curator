@@ -68,9 +68,6 @@ import {
   allTablesAllColumnNames$,
   allTablesAllColumnsFromSchema$
 } from '@/rxSubject.js'
-import {
-  HotRegister
-} from '@/hot.js'
 import ColumnTooltip from '../mixins/ColumnTooltip'
 import ValidationRules from '../mixins/ValidationRules'
 import {isValidPatternForType} from '@/dateFormats.js'
