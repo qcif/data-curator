@@ -99,7 +99,7 @@ export default {
   data() {
     return {
       activeHotId: null,
-      findTypePicked: 'findInTable',
+      findTypePicked: 'findInColumn',
       findTextValue: '',
       replaceTextValue: '',
       totalFound: null,
