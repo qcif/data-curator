@@ -57,13 +57,15 @@ import {
 } from 'rxjs/Subscription'
 import {
   hotIdFromTab$,
-  currentPos$
+  currentPos$,
+  searchChange$
 } from '@/rxSubject.js'
 // import TableTooltip from '../mixins/TableTooltip'
 // import ValidationRules from '../mixins/ValidationRules'
 // import {
 //   Validator
 // } from 'vee-validate'
+// import {Sifter} from 'sifter'
 Vue.use(AsyncComputed)
 Vue.use(VueRx, {
   Subscription
@@ -73,6 +75,8 @@ let _isInDirection = function() {}
 let _currentHotPos = function() {}
 let isSameDirectionArrayCalculated = false
 let _sameDirectionArray = []
+var transform = require('stream-transform')
+var Sifter = require('sifter/sifter.min.js')
 
 // TODO: may only need to call this once on initial find on reset (and move isSameDirectionArrayCalculated logic to parent Fn)
 const _searchCallback = function(instance, row, col, value, result) {
@@ -120,7 +124,7 @@ export default {
         buttonTypeClass: 'btn-primary',
         buttonLeftClass: 'fa fa-chevron-left',
         buttonRightClass: 'fa fa-chevron-right',
-        fn: this.findText
+        fn: this.findTextPoc
       }, {
         label: 'Replace',
         key: 'replace',
@@ -144,11 +148,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getLatestSearchResult', 'getHotSelection'])
+    ...mapGetters(['getLatestSearchResult', 'getHotSelection', 'hasHotSearchStarted'])
   },
   methods: {
     ...mapMutations([
-      'resetSearchResult', 'incrementSearchResult'
+      'resetSearchResult', 'incrementSearchResult', 'pushHotSearchStart', 'pushHotSearchEnd'
     ]),
     isNext: function(row, col, currentPos) {
       let isNext = (row > currentPos[0] || (row === currentPos[0] && col >= currentPos[1]))
@@ -239,6 +243,178 @@ export default {
     findText: function(direction) {
       this.clickedFindOrReplace = 'find'
       this.findNextOrPrevious(direction)
+    },
+    findTextPoc: async function(direction) {
+      this.clickedFindOrReplace = 'find'
+      const hot = HotRegister.getInstance(this.activeHotId)
+      if (!hot.hasColHeaders()) {
+        throw new Error('Must set headers first')
+      }
+      this.hotSearch(hot)
+      const headers = hot.getColHeader()
+      const hotData = hot.getData()
+      const rowIndicies = this.hotSift(hotData, headers)
+      // console.log(rowIndicies)
+      _currentHotPos = this.getHotSelection(this.activeHotId)
+      // console.log('current pos')
+      // console.log(_currentHotPos)
+      // console.log(`direction is ${direction}`)
+      const currentRow = _currentHotPos[0]
+      const currentCol = _currentHotPos[1]
+      let startingRow = this.determineStartingRow(rowIndicies, currentRow, direction)
+      console.log(`starting row: ${startingRow}`)
+      // // hot will only put what's in current view into dom - must scroll to put next part of hot into dom
+      // hot.scrollViewportTo(_currentHotPos[0], _currentHotPos[1])
+      let rowData = hot.getDataAtRow(startingRow)
+      // hot will only put what's in current view into dom - must scroll to put next part of hot into dom
+      hot.scrollViewportTo(startingRow, 0)
+      // console.log('getting row data...')
+      // console.log(rowData)
+      const textToMatch = this.findTextValue
+      const regExp = new RegExp(this.findTextValue)
+      // let matches
+      // let startCol = 0s
+      // let endCol = rowData.length - 1
+      // find within same col, rather than across row
+      // let rowToFollow = null
+      // if (_currentHotPos[0] === startingRow) {
+        // let adjustedRowData
+        // if (direction === 'previous') {
+          // adjustedRowData = _.slice(rowData, 0, currentCol)
+          // let startCol = 0
+          // rowToFollow = startingRow - 1
+        // } else {
+          // adjustedRowData = _.slice(rowData, currentCol)
+          // let startCol = currentCol
+          // let endCol = rowData.length - 1
+        // }
+        // matches = _.filter(adjustedRowData, function(o) {
+        //   return regExp.exec(o)
+        // })
+      // }
+      // } else {
+      //
+      //
+      // }
+        // matches = _.filter(rowData, function(o) {
+        //   return regExp.exec(o)
+        // })
+      let matches = _.reduce(rowData, function(currentMatches, cell, index) {
+          if (regExp.exec(cell)) {
+            currentMatches.push(index)
+          }
+  return currentMatches
+}, [])
+      // }
+      console.log(matches)
+      // now that have indicies of row matches
+      // if previous start at first match, if next start at last match in row
+      let startingColIndex
+      if (matches.length > 0) {
+        let startingMatch = direction == 'previous' ? matches.length - 1 : 0
+        let startingColIndex = direction == 'previous' ? _.indexOf(rowData, matches.length - 1)
+      } else {
+        throw new Error('No matches found in what should have been a matching row.')
+      }
+      console.log(`starting col index: ${startingColIndex}`)
+      hot.selectCell(startingRow, startingColIndex)
+    },
+    hotSearch: function(hot) {
+      console.time()
+      // TODO : add loading screen here
+      this.pushHotSearchStart(hot.guid)
+      hot.search.query(this.findTextValue)
+      console.timeEnd()
+      console.time()
+      hot.render()
+      console.timeEnd()
+    },
+    hotSift: function(data, headers) {
+      console.time()
+      const transformed = this.transformHotToArrayOfObjects(data, headers)
+      let rowIndicies = this.sift(transformed, headers)
+      // sort in ascending order
+      rowIndicies.sort(function(a, b) {
+        return a - b
+      })
+      console.timeEnd()
+      return rowIndicies
+    },
+    transformHotToArrayOfObjects: function(rows, headers) {
+      const mapFn = this.mapArrayToObject
+      let result = []
+      const transformer = transform(function(row) {
+        return mapFn(row, headers)
+      })
+      transformer.on('readable', function() {
+        let row = transformer.read()
+        while (row) {
+          result.push(row)
+          row = transformer.read()
+        }
+      })
+      transformer.on('error', function(err) {
+        console.log(err.message)
+        transformer.end()
+      })
+      for (const row of rows) {
+        transformer.write(row)
+      }
+      transformer.end()
+      return result
+    },
+    mapArrayToObject: function(row, headers) {
+      let object = _.reduce(row, function(result, value, index) {
+        result[headers[index]] = value
+        return result
+      }, {})
+      // console.log(object)
+      return object
+    },
+    // Note: sift will return 1 match for multiple matches in row
+    sift: function(hotArrayOfRowObjects, headers) {
+      var sifter = new Sifter(hotArrayOfRowObjects)
+      console.log(this.findTextValue)
+      let result
+      if (_.isString(this.findTextValue) && _.trim(this.findTextValue).length > 0) {
+        result = sifter.search(this.findTextValue, {
+          fields: headers,
+          sort: [{field: 'h1', direction: 'desc'}],
+          conjunction: 'and'
+        })
+      }
+      console.log(result)
+      let ids = []
+      for (const item of result.items) {
+        ids.push(item.id)
+      }
+      // console.log(object)
+      return ids
+    },
+    determineStartingRow: function(rowIndicies, currentRow, direction) {
+      let startingRow
+      if (_.indexOf(rowIndicies, currentRow) > -1) {
+        // starting row should never be the current selected row itself
+        if (direction === 'previous') {
+          startingRow = currentRow - 1
+        } else {
+          startingRow = currentRow + 1
+        }
+      } else {
+        let index = _.sortedIndex(rowIndicies, currentRow)
+        if (direction == 'previous') {
+          index--
+        }
+        if (index < 0) {
+          index = rowIndicies.length - 1
+        } else if (index >= rowIndicies.length) {
+          index = 0
+        } else {
+          // continue as index has not reached limits yet
+        }
+        startingRow = rowIndicies[index]
+      }
+      return startingRow
     },
     findNextOrPrevious: function(direction) {
       this.totalFound = 0
@@ -355,6 +531,8 @@ export default {
       this.inputFoundRemoveFeedback()
     }
   },
+  watch: {
+  },
   mounted: async function() {
     this.activeHotId = await this.currentHotId()
     const vueUpdateActiveHotId = this.updateActiveHotId
@@ -367,6 +545,9 @@ export default {
     })
     this.$subscribeTo(currentPos$, function(currentPos) {
       vueResetSearchResult()
+    })
+    this.$subscribeTo(searchChange$, function(value) {
+      console.log(`search is running: ${value}`)
     })
   },
   created: function() {

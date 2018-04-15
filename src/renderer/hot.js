@@ -36,7 +36,8 @@ const HotRegister = {
         displayDelay: 1000
       },
       undo: true,
-      search: searchParameters,
+      // search: searchParameters,
+      search: true,
       tabMoves({shiftKey}) {
         if (!shiftKey) {
           const selection = hot.getSelected()
@@ -69,6 +70,11 @@ const HotRegister = {
       afterDeselect() {
         if (typeof listeners.deselectionListener !== 'undefined') {
           listeners.deselectionListener()
+        }
+      },
+      afterRender() {
+        if (hot) {
+          store.mutations.pushHotSearchEnd(store.state, hot.guid)
         }
       },
       enterMoves({shiftKey}) {

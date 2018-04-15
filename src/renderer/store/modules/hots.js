@@ -1,4 +1,4 @@
-import {currentPos$} from '@/rxSubject.js'
+import {currentPos$, searchChange$} from '@/rxSubject.js'
 
 const state = {
   hotTabs: {},
@@ -31,6 +31,9 @@ export function getHotIdFromTabIdFunction() {
 const getters = {
   getHotTabs: state => {
     return state.hotTabs
+  },
+  hasHotSearchStarted: (state, getters) => (hotId) => {
+    return state.hotTabs[hotId].isSearchRunning
   },
   getLatestSearchResult: (state, getters) => (hotId) => {
     // console.log(`hot id is: ${hotId}`)
@@ -145,6 +148,14 @@ const getters = {
 }
 
 const mutations = {
+  pushHotSearchStart(state, hotId) {
+    _.set(state.hotTabs, `${hotId}.isSearchRunning`, true)
+    searchChange$.next(true)
+  },
+  pushHotSearchEnd(state, hotId) {
+    _.set(state.hotTabs, `${hotId}.isSearchRunning`, false)
+    searchChange$.next(false)
+  },
   resetSearchResult(state, hotId) {
     _.set(state.hotTabs, `${hotId}.searchResult`, 0)
   },
