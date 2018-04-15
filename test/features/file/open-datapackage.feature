@@ -15,8 +15,8 @@ Feature: Open a Data Package
       - the `schema` and `dialect` for each resource may be in-line or referenced via a url 
     - a `README.md` file (containing the provenance information)
   - The datapackage.json file not in a zip file:
-    - references the data resources via a url 
-    - describes the data package and contains the `schema` and `dialect` for each resource, either inline or referenced via a url
+    - references the tabular data resources via a url 
+    - describes the tabular data package and contains the `schema` and `dialect` for each resource, either inline or referenced via a url
     - doesn't include or reference and README.md or README.txt
   - "Open Data Package" can be invoked from the Menu
   
