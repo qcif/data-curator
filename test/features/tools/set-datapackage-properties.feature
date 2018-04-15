@@ -10,7 +10,7 @@ Feature: Set Data Package Properties
   - The 'profile' must be set to 'tabular-data-package'.
   - All other properties should be defaulted were possible or read from Preferences/Settings (when implemented)
   - "Set Data Package Properties" command can be invoked by a menu item, toolbar, or shortcut
-
+  
   USER INTERFACE
   ==============
 
