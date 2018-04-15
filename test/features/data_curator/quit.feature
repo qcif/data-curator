@@ -16,7 +16,6 @@ Feature: Quit
   =====
   
   - check for unsaved data changes. If all changes are saved, quit Data Curator
-  - save properties across sessions 
 
   Scenario: Quit the application and all data changes are saved
     Given Data Curator is open
