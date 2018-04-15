@@ -6,11 +6,12 @@ Feature: Open a Data Package
   RULES
   =====
 
-  - Data packages can be opened from a URL or local path
-  - A [data package](http://frictionlessdata.io/specs/data-package/) can be stored in `.zip` or `.json` format.
+  - [Tabular data packages](https://frictionlessdata.io/specs/tabular-data-package/) can be opened from a URL or local path
+  - A tabular data package can be stored in `.zip` or `.json` format
   - The `datapackage.zip` typically contains:
-    - data resources (e.g. one or more `.csv` files located via a local path or url reference)
-    - a datapackage.json file (that describes the data package and contains a [table schema](http://frictionlessdata.io/specs/table-schema/) and [CSV dialect](http://frictionlessdata.io/specs/csv-dialect/) for each resource)
+    - [tabular data resources](https://frictionlessdata.io/specs/tabular-data-resource/) (e.g. one or more `.csv` files located via a local path or url reference)
+      - JSON Tabular Data is not supported
+    - a datapackage.json file (that describes the data package and contains a [table schema](http://frictionlessdata.io/specs/table-schema/) and may contain a [CSV dialect](http://frictionlessdata.io/specs/csv-dialect/) for each resource)
       - the `schema` and `dialect` for each resource may be in-line or referenced via a url 
     - a `README.md` file (containing the provenance information)
   - The datapackage.json file not in a zip file:
