@@ -11,6 +11,12 @@ Feature: Open Data Curator
     - opening a file and specifying to use the application
   - The application can only be opened once
   - If the application is opened using the icon, an an empty 2x3 data tab is presented
+  
+  LATER
+  =====
+  
+  - remember properties across sessions 
+
 
   Scenario: Open the application using the icon, app not already running
     Given Data Curator is not open

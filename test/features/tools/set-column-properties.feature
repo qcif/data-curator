@@ -19,6 +19,7 @@ Feature: Set Column Properties
   =====
   
   - `missingValues` can be set per column 
+  - indicate that properties are progressively saved
 
   Background:
     Given Data Curator is open
