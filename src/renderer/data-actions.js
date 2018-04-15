@@ -4,9 +4,6 @@ import {fixRaggedRows} from '@/ragged-rows.js'
 import {includeHeadersInData} from '@/frictionlessUtilities.js'
 import {toggleHeaderNoFeedback} from '@/headerRow.js'
 import {pushCsvFormat} from '@/dialect.js'
-// import parse from 'csv-parse/lib/sync'
-// import stringify from 'csv-stringify'
-// TODO : replace jQuery with node 'csv' library's stringify and transform
 var parse = require('csv-parse/lib/sync')
 var stringify = require('csv-stringify/lib/sync')
 
