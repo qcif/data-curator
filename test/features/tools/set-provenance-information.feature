@@ -15,7 +15,7 @@ Feature: Set Provenance Information
   LATER
   =====
 
-  - a toolbar will be provided to support [markdown features](http://commonmark.org/help/)
+  - A toolbar will be provided to support [markdown features](http://commonmark.org/help/)
     - headings
     - lists
     - bold, italics
