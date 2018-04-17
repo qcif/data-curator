@@ -299,6 +299,7 @@ export default {
       // console.log(colData.length)
       // console.timeEnd()
       console.log('starting get col data 2')
+      // performance: 96ms
       console.time()
       let colData2 = []
       for (let row of hotData) {
@@ -312,6 +313,7 @@ export default {
       let result = this.hotSift(colData2, [headers[currentCol]])
       console.timeEnd()
       console.log('starting get col data 3')
+      // only slightly slower (36ms) than col data 3 so running with this :)
       console.time()
       let colData3 = []
       let currentColName = headers[currentCol]
@@ -325,6 +327,24 @@ export default {
       console.log(colData3.length)
       let result3 = this.hotSiftWithoutTransform(colData3, [currentColName])
       console.timeEnd()
+      console.log(result3)
+      console.log('starting get col data 4')
+      // col data 4 is fastest (20ms), but we need sort by index returned not alphabetical returned so result no good
+      console.time()
+      let colData4 = []
+      let currentColName2= headers[currentCol]
+      for (let row of hotData) {
+        let nextRow = {}
+        nextRow[currentColName2] = row[currentCol]
+        colData4.push(nextRow)
+        // colData2.push([row[currentCol]])
+      }
+      console.log(colData4)
+      console.log(colData4.length)
+      let result4 = this.hotSiftWithoutTransformAndNoSort(colData4, [currentColName2], currentColName)
+      console.timeEnd()
+      console.log(result4)
+      // way too slow if no matches found
       console.log('starting while loop')
       console.time()
       let counter = 0
@@ -403,6 +423,18 @@ export default {
       // console.timeEnd()
       return rowIndicies
     },
+    hotSiftWithoutTransformAndNoSort: function(transformed, headers, sortHeader) {
+      // console.time()
+      // const transformed = this.transformHotToArrayOfObjects(data, headers)
+      // console.log(transformed)
+      let rowIndicies = this.siftAndSort(transformed, headers, sortHeader)
+      // sort in ascending order
+      // rowIndicies.sort(function(a, b) {
+      //   return a - b
+      // })
+      // console.timeEnd()
+      return rowIndicies
+    },
     transformHotToArrayOfObjects: function(rows, headers) {
       const mapFn = this.mapArrayToObject
       let result = []
@@ -443,6 +475,25 @@ export default {
         result = sifter.search(this.findTextValue, {
           fields: headers,
           sort: [{field: 'h1', direction: 'desc'}],
+          conjunction: 'and'
+        })
+      }
+      console.log(result)
+      let ids = []
+      for (const item of result.items) {
+        ids.push(item.id)
+      }
+      // console.log(object)
+      return ids
+    },
+    siftAndSort: function(hotArrayOfRowObjects, headers, sortHeader) {
+      var sifter = new Sifter(hotArrayOfRowObjects)
+      console.log(this.findTextValue)
+      let result
+      if (_.isString(this.findTextValue) && _.trim(this.findTextValue).length > 0) {
+        result = sifter.search(this.findTextValue, {
+          fields: headers,
+          sort: [{field: sortHeader, direction: 'desc'}],
           conjunction: 'and'
         })
       }
