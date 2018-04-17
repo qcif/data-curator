@@ -991,7 +991,6 @@ export default {
     }
   },
   mounted: function() {
-    console.log(findReplace.data().hotParameters)
     const vueGoToCell = this.goToCell
     const vueNextTick = this.$nextTick
     // request may be coming from another page - get focus first
