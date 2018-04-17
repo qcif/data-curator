@@ -111,6 +111,7 @@ export default {
       previousOrNextIndex: -1,
       sameDirectionStartElement: null,
       rowIndicies: null,
+      currentCol: null,
       updatedRowIndex: null,
       foundStyle: {
         backgroundColor: 'rgba(70, 237, 70, 0.3)'
@@ -273,8 +274,11 @@ export default {
         throw new Error('Must set headers first')
       }
       this.hotSearch(hot)
-      const headers = hot.getColHeader()
-      const hotData = hot.getData()
+      // const headers = hot.getColHeader()
+      // console.log('timing hot get data')
+      // console.time()
+      // const hotData = hot.getData()
+      // console.timeEnd()
       _currentHotPos = this.getHotSelection(this.activeHotId)
       const currentRow = _currentHotPos[0]
       const currentCol = _currentHotPos[1]
@@ -293,28 +297,29 @@ export default {
       // const textToMatch = this.findTextValue
       const regExp = new RegExp(this.findTextValue)
       // HOT method too slow (by about 5 times)
-      // console.log('starting get col data 1')
-      // console.time()
-      // let colData = hot.getDataAtCol(currentCol)
-      // console.log(colData.length)
-      // console.timeEnd()
-      console.log('starting get col data 2')
-      // performance: 96ms
+      console.log('starting get col data alone')
       console.time()
-      let colData2 = []
-      for (let row of hotData) {
-        // let nextRow = {}
-        // nextRow[headers[currentCol]] = row[currentCol]
-        // colData2.push(nextRow)
-        colData2.push([row[currentCol]])
-      }
-      console.log(colData2)
-      console.log(colData2.length)
-      let result = this.hotSift(colData2, [headers[currentCol]])
+      let colData = hot.getDataAtCol(currentCol)
+      // console.log(colData.length)
       console.timeEnd()
+      // console.log('starting get col data 2')
+      // // performance: 96ms
+      // console.time()
+      // let colData2 = []
+      // for (let row of hotData) {
+      //   // let nextRow = {}
+      //   // nextRow[headers[currentCol]] = row[currentCol]
+      //   // colData2.push(nextRow)
+      //   colData2.push([row[currentCol]])
+      // }
+      // console.log(colData2)
+      // console.log(colData2.length)
+      // let result = this.hotSift(colData2, [headers[currentCol]])
+      // console.timeEnd()
       console.log('starting get col data 3')
       // only slightly slower (36ms) than col data 3 so running with this :)
       console.time()
+      let colData = hot.getDataAtCol(currentCol)
       let colData3 = []
       let currentColName = headers[currentCol]
       for (let row of hotData) {
@@ -323,42 +328,49 @@ export default {
         colData3.push(nextRow)
         // colData2.push([row[currentCol]])
       }
+      if (!this.rowIndicies || this.currentCol != currentCol) {
+        this.rowIndicies = this.hotSift(hotData, headers)
+        this.updatedRowIndex = this.determineStartingRowIndex(currentRow, direction, directionFn)
+        console.log(`starting row index: ${this.updatedRowIndex}`)
+      } else {
+        this.updatedRowIndex = directionFn(this.updatedRowIndex, this.rowIndicies.length)
+      }
       console.log(colData3)
       console.log(colData3.length)
       let result3 = this.hotSiftWithoutTransform(colData3, [currentColName])
       console.timeEnd()
       console.log(result3)
-      console.log('starting get col data 4')
-      // col data 4 is fastest (20ms), but we need sort by index returned not alphabetical returned so result no good
-      console.time()
-      let colData4 = []
-      let currentColName2= headers[currentCol]
-      for (let row of hotData) {
-        let nextRow = {}
-        nextRow[currentColName2] = row[currentCol]
-        colData4.push(nextRow)
-        // colData2.push([row[currentCol]])
-      }
-      console.log(colData4)
-      console.log(colData4.length)
-      let result4 = this.hotSiftWithoutTransformAndNoSort(colData4, [currentColName2], currentColName)
-      console.timeEnd()
-      console.log(result4)
+      // console.log('starting get col data 4')
+      // // col data 4 is fastest (20ms), but we need sort by index returned not alphabetical returned so result no good
+      // console.time()
+      // let colData4 = []
+      // let currentColName2= headers[currentCol]
+      // for (let row of hotData) {
+      //   let nextRow = {}
+      //   nextRow[currentColName2] = row[currentCol]
+      //   colData4.push(nextRow)
+      //   // colData2.push([row[currentCol]])
+      // }
+      // console.log(colData4)
+      // console.log(colData4.length)
+      // let result4 = this.hotSiftWithoutTransformAndNoSort(colData4, [currentColName2], currentColName)
+      // console.timeEnd()
+      // console.log(result4)
       // way too slow if no matches found
       console.log('starting while loop')
       console.time()
       let counter = 0
-      while (!regExp.exec(rowData[currentCol])) {
-        counter++
-        console.log(counter)
-        if (counter > this.rowIndicies.length) {
-          break
-        }
-        console.log('looping')
-        this.updatedRowIndex = directionFn(this.updatedRowIndex, this.rowIndicies.length)
-        updatedRow = this.rowIndicies[this.updatedRowIndex]
-        rowData = hot.getDataAtRow(updatedRow)
-      }
+      // while (!regExp.exec(rowData[currentCol])) {
+      //   counter++
+      //   console.log(counter)
+      //   if (counter > this.rowIndicies.length) {
+      //     break
+      //   }
+      //   console.log('looping')
+      //   this.updatedRowIndex = directionFn(this.updatedRowIndex, this.rowIndicies.length)
+      //   updatedRow = this.rowIndicies[this.updatedRowIndex]
+      //   rowData = hot.getDataAtRow(updatedRow)
+      // }
       console.timeEnd()
       console.log('end time loop')
       hot.scrollViewportTo(updatedRow, currentCol)
@@ -467,6 +479,7 @@ export default {
       return object
     },
     // Note: sift will return 1 match for multiple matches in row
+    // sift gives flexibility for reasonably fast access, but allows to search across table too if needed later
     sift: function(hotArrayOfRowObjects, headers) {
       var sifter = new Sifter(hotArrayOfRowObjects)
       console.log(this.findTextValue)
@@ -474,7 +487,7 @@ export default {
       if (_.isString(this.findTextValue) && _.trim(this.findTextValue).length > 0) {
         result = sifter.search(this.findTextValue, {
           fields: headers,
-          sort: [{field: 'h1', direction: 'desc'}],
+          // sort: [{field: 'h1', direction: 'desc'}],
           conjunction: 'and'
         })
       }
@@ -643,6 +656,7 @@ export default {
       this.sameDirectionStartElement = null
       this.rowIndicies = null
       this.updatedRowIndex = null
+      this.currentCol = null
     },
     resetTotalFound: function() {
       this.totalFound = null
