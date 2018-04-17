@@ -292,11 +292,55 @@ export default {
       // hot.scrollViewportTo(updatedRow, 0)
       // const textToMatch = this.findTextValue
       const regExp = new RegExp(this.findTextValue)
+      // HOT method too slow (by about 5 times)
+      // console.log('starting get col data 1')
+      // console.time()
+      // let colData = hot.getDataAtCol(currentCol)
+      // console.log(colData.length)
+      // console.timeEnd()
+      console.log('starting get col data 2')
+      console.time()
+      let colData2 = []
+      for (let row of hotData) {
+        // let nextRow = {}
+        // nextRow[headers[currentCol]] = row[currentCol]
+        // colData2.push(nextRow)
+        colData2.push([row[currentCol]])
+      }
+      console.log(colData2)
+      console.log(colData2.length)
+      let result = this.hotSift(colData2, [headers[currentCol]])
+      console.timeEnd()
+      console.log('starting get col data 3')
+      console.time()
+      let colData3 = []
+      let currentColName = headers[currentCol]
+      for (let row of hotData) {
+        let nextRow = {}
+        nextRow[currentColName] = row[currentCol]
+        colData3.push(nextRow)
+        // colData2.push([row[currentCol]])
+      }
+      console.log(colData3)
+      console.log(colData3.length)
+      let result3 = this.hotSiftWithoutTransform(colData3, [currentColName])
+      console.timeEnd()
+      console.log('starting while loop')
+      console.time()
+      let counter = 0
       while (!regExp.exec(rowData[currentCol])) {
+        counter++
+        console.log(counter)
+        if (counter > this.rowIndicies.length) {
+          break
+        }
+        console.log('looping')
         this.updatedRowIndex = directionFn(this.updatedRowIndex, this.rowIndicies.length)
         updatedRow = this.rowIndicies[this.updatedRowIndex]
         rowData = hot.getDataAtRow(updatedRow)
       }
+      console.timeEnd()
+      console.log('end time loop')
       hot.scrollViewportTo(updatedRow, currentCol)
       hot.selectCell(updatedRow, currentCol)
       // _.findIndex(rowData, function(cell, index) {
@@ -338,12 +382,25 @@ export default {
     hotSift: function(data, headers) {
       console.time()
       const transformed = this.transformHotToArrayOfObjects(data, headers)
+      console.log(transformed)
       let rowIndicies = this.sift(transformed, headers)
       // sort in ascending order
       rowIndicies.sort(function(a, b) {
         return a - b
       })
       console.timeEnd()
+      return rowIndicies
+    },
+    hotSiftWithoutTransform: function(transformed, headers) {
+      // console.time()
+      // const transformed = this.transformHotToArrayOfObjects(data, headers)
+      // console.log(transformed)
+      let rowIndicies = this.sift(transformed, headers)
+      // sort in ascending order
+      rowIndicies.sort(function(a, b) {
+        return a - b
+      })
+      // console.timeEnd()
       return rowIndicies
     },
     transformHotToArrayOfObjects: function(rows, headers) {
