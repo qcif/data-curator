@@ -16,6 +16,8 @@ export function loadDataIntoHot(hot, data, format) {
     arrays = parse(data)
   } else {
     let csvOptions = dialectToCsvOptions(format.dialect)
+    // let csv parser handle the line terminators
+    _.unset(csvOptions, 'rowDelimiter')
     // TODO: update to stream
     arrays = parse(data, csvOptions)
     pushCsvFormat(hot.guid, format)
@@ -27,6 +29,27 @@ export function loadDataIntoHot(hot, data, format) {
   // frictionless csv header default = true
   toggleHeaderNoFeedback(hot)
 }
+
+// poc : debug line terminators
+// export function checkLineTerminators() {
+//   let rNMatch = false
+//   _.mapKeys({'\r\n': '\\r\\n', '\r': '\\r', '\n': '\\n'}, function(output, lineT) {
+//     // console.log(encodeURIComponent(lineT))
+//     let match = 0
+//     if (!rNMatch) {
+//       const regExp = new RegExp(lineT, 'g')
+//       match = data.match(regExp) || 0
+//     }
+//     const matchCount = match && match.length
+//     const isMatch = !!(match.length > 0)
+//
+//     console.log(`Is the line terminator: ${output}`)
+//     console.log(`${isMatch}: ${matchCount}`)
+//     if (output === '\\r\\n') {
+//       rNMatch = true
+//     }
+//   })
+// }
 
 export function saveDataToFile(hot, format, filename, callback) {
   let tabId = tabStore.state.activeTab

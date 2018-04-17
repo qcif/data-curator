@@ -38,7 +38,7 @@ Feature: Set Table Properties
       - a table in the same data package
       - at table at a url (planned addition to the Frictionless Data specification)
     - "Table Properties" can be invoked from the menu, toolbar or shortcut
-    
+
   USER INTERFACE
   ==============
 

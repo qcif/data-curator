@@ -36,7 +36,6 @@ Feature: Validate Table
   LATER
   =====
   
-  - foreign key validation across data packages
   - different `missingValues` can be validated per column
   - trueValues and falseValues
   - bareNumber
