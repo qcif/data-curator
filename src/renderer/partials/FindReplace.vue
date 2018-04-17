@@ -60,23 +60,15 @@ import {
   currentPos$,
   searchChange$
 } from '@/rxSubject.js'
-// import TableTooltip from '../mixins/TableTooltip'
-// import ValidationRules from '../mixins/ValidationRules'
-// import {
-//   Validator
-// } from 'vee-validate'
-// import {Sifter} from 'sifter'
+import Sifter from 'sifter/sifter.min.js'
+import transform from 'stream-transform'
 Vue.use(AsyncComputed)
 Vue.use(VueRx, {
   Subscription
 })
-var transform = require('stream-transform')
-var Sifter = require('sifter/sifter.min.js')
-
 export default {
   extends: SideNav,
   name: 'findReplace',
-  // mixins: [ValidationRules, TableTooltip],
   components: {
   },
   data() {
@@ -85,10 +77,7 @@ export default {
       findTypePicked: 'findInColumn',
       findTextValue: '',
       replaceTextValue: '',
-      // totalFound: null,
       clickedFindOrReplace: null,
-      // previousOrNextIndex: -1,
-      // sameDirectionStartElement: null,
       rowIndicies: null,
       currentCol: null,
       updatedRowIndex: -1,
@@ -96,11 +85,6 @@ export default {
       foundStyle: {
         backgroundColor: 'rgba(70, 237, 70, 0.3)'
       },
-      // hotParameters: {
-      //   searchResultClass: 'search-result-hot',
-      //   callback: _searchCallback,
-      //   queryMethod: _queryMethod
-      // },
       formprops: [{
         label: 'Find',
         key: 'find',
@@ -138,15 +122,14 @@ export default {
       'resetSearchResult', 'incrementSearchResult', 'pushHotSearchStart', 'pushHotSearchEnd'
     ]),
     getResult: function(key) {
+      console.log(`key is ${key}`)
+      console.log(this.clickedFindOrReplace)
       // show result at either find or replace view
       if (key === this.clickedFindOrReplace) {
-        // const count = this.previousOrNextIndex + 1
         const count = this.updatedCount + 1
         if (count >= 1 && this.rowIndicies.length > 0) {
           this.inputFoundSuccessFeedback(key)
-          // return `${count} of ${this.totalFound}`
           return `${count} of ${this.rowIndicies.length}`
-          // return `${count} of ${this.totalFound} ${key === 'find' ? 'found' : 'replaced'}`
         } else {
           this.inputFoundFailureFeedback(key)
           return 'No result'
@@ -218,10 +201,6 @@ export default {
     replaceEntireCellText: function(hot, row, col) {
       hot.setDataAtCell(row, col, this.replaceTextValue)
     },
-    findText: function(direction) {
-      this.clickedFindOrReplace = 'find'
-      this.findNextOrPrevious(direction)
-    },
     previousFn: function(index, arrayLength) {
       console.log(`array length is ${arrayLength}`)
       console.log(`before previous, index is ${index}`)
@@ -253,20 +232,25 @@ export default {
       }
       // console.time()
       let colData = hot.getDataAtCol(currentCol)
+      console.log(colData)
+      // indexer won't work with a header labelled: 0
+      let tempHeader = currentCol + 1
       let colObject = _.map(colData, function(item) {
-        return {[currentCol]: item}
+        return {[tempHeader]: item}
       })
+      console.log(colObject)
       if (!this.rowIndicies || this.currentCol != currentCol) {
         this.currentCol = currentCol
-        this.rowIndicies = this.hotSiftWithoutTransform(colObject, [currentCol])
+        this.rowIndicies = this.hotSiftWithoutTransform(colObject, [tempHeader])
       }
       if (this.updatedRowIndex >= 0) {
         this.updatedRowIndex = directionFn(this.updatedRowIndex, this.rowIndicies.length)
       } else {
         this.updatedRowIndex = this.determineStartingRowIndex(currentRow, direction, directionFn)
       }
+      console.log(this.rowIndicies)
+      // workaround until updatedRowIndex reset for every case
       this.updatedCount = this.updatedRowIndex
-      // console.log(`starting row index: ${this.updatedRowIndex}`)
       let updatedRow = this.rowIndicies[this.updatedRowIndex]
       // console.timeEnd()
       // console.time()
@@ -298,6 +282,7 @@ export default {
     // },
     hotSiftWithoutTransform: function(arrayOfObjects, headers) {
       let rowIndicies = this.sift(arrayOfObjects, headers)
+      console.log(rowIndicies)
       // sort in ascending order
       rowIndicies.sort(function(a, b) {
         return a - b
@@ -338,7 +323,6 @@ export default {
     // sift gives flexibility for reasonably fast access, but allows to search across table rows too if needed later + diacritics support
     sift: function(arrayOfObjects, headers) {
       var sifter = new Sifter(arrayOfObjects)
-      // console.log(this.findTextValue)
       let result
       if (this.findTextValue) {
         result = sifter.search(this.findTextValue, {
@@ -346,7 +330,6 @@ export default {
           conjunction: 'and'
         })
       }
-      // console.log(result)
       let ids = []
       for (const item of result.items) {
         ids.push(item.id)
@@ -355,7 +338,6 @@ export default {
     },
     determineStartingRowIndex: function(currentRow, direction, directionFn) {
       let startingRow
-      // console.log(`current row: ${currentRow}`)
       let index = _.sortedIndex(this.rowIndicies, currentRow)
       if (this.rowIndicies[index] === currentRow) {
         // starting row should never be the current selected row itself
@@ -374,107 +356,9 @@ export default {
       }
       return index
     },
-    // findNextOrPrevious: function(direction) {
-    //   this.totalFound = 0
-    //   const hot = HotRegister.getInstance(this.activeHotId)
-    //   if (direction === 'previous') {
-    //     _isInDirection = this.updateDirection(this.isPrevious)
-    //   } else {
-    //     _isInDirection = this.updateDirection(this.isNext)
-    //   }
-    //   hot.search.query(this.findTextValue)
-    //   hot.render()
-    //   this.initStartingElement(hot)
-    //   const foundResultElements = document.querySelectorAll('.search-result-hot')
-    //   this.totalFound = foundResultElements.length
-    //   const coordsToSelect = this.getPreviousOrNextCoords(foundResultElements)
-    //   // capture the index after capturing previous/next element, as element will be reset once selected
-    //   this.previousOrNextIndex = this.getPreviousOrNextIndex(foundResultElements)
-    //   if (this.previousOrNextIndex > -1) {
-    //     hot.selectCell(coordsToSelect.row, coordsToSelect.col)
-    //     // must update style after selection as affects style background
-    //     this.updateAllFoundStyle(foundResultElements)
-    //     this.pickPreviousOrNextElement(foundResultElements, this.previousOrNextIndex)
-    //   }
-    //   _sameDirectionArray.length = 0
-    //   isSameDirectionArrayCalculated = true
-    // },
-    // initStartingElement: function(hot) {
-    //   if (!_.isEmpty(_sameDirectionArray)) {
-    //     let sameDirectionStartCoords
-    //     if (_isInDirection == this.isPrevious) {
-    //       // need to start at the last element of sameDirectionArray
-    //       sameDirectionStartCoords = _sameDirectionArray[_sameDirectionArray.length - 1]
-    //     } else {
-    //       // need to start at first element of sameDirectionArray
-    //       sameDirectionStartCoords = _sameDirectionArray[0]
-    //     }
-    //     this.sameDirectionStartElement = hot.getCell(sameDirectionStartCoords.row, sameDirectionStartCoords.col)
-    //   }
-    // },
-    // getPreviousOrNextIndex: function(foundResultElements) {
-    //   let matchingIndex = _.indexOf(foundResultElements, this.sameDirectionStartElement)
-    //   if (matchingIndex === -1) {
-    //     console.log('Unable to find starting element for find.')
-    //   }
-    //   return matchingIndex
-    // },
-    // getPreviousOrNextCoords: function(foundResultElements) {
-    //   if (!_.isEmpty(foundResultElements)) {
-    //     // current cursor may be beyond limits of previous/next start elements, but there are still result
-    //     if (_.isEmpty(_sameDirectionArray) && !this.sameDirectionStartElement) {
-    //       if (_isInDirection == this.isPrevious) {
-    //         this.sameDirectionStartElement = foundResultElements[foundResultElements.length - 1]
-    //       } else {
-    //         this.sameDirectionStartElement = foundResultElements[0]
-    //       }
-    //     }
-    //     const hotId = this.activeHotId
-    //     const hot = HotRegister.getInstance(hotId)
-    //     const coordsToSelect = hot.getCoords(this.sameDirectionStartElement)
-    //     return coordsToSelect
-    //   }
-    // },
-    // updateAllFoundStyle: function(foundResultElements) {
-    //   const style = this.foundStyle
-    //   _.forEach(foundResultElements, function(el, index) {
-    //     for (const property of _.keys(style)) {
-    //       el.style[property] = style[property]
-    //     }
-    //   })
-    // },
-    // pickPreviousOrNextElement: function(foundResultElements, matchingIndex) {
-    //   if (_isInDirection == this.isPrevious) {
-    //     matchingIndex--
-    //     if (matchingIndex < 0) {
-    //       matchingIndex = foundResultElements.length - 1
-    //     }
-    //   } else {
-    //     matchingIndex++
-    //     if (matchingIndex >= foundResultElements.length) {
-    //       matchingIndex = 0
-    //     }
-    //   }
-    //   this.sameDirectionStartElement = foundResultElements[matchingIndex]
-    // },
-    // updateDirection: function(directionFn) {
-    //   if (directionFn != _isInDirection) {
-    //     this.resetSearchResultWrapper()
-    //   }
-    //   return directionFn
-    // },
-    // removeFoundStyle: function() {
-    //   document.querySelectorAll('.search-result-hot').forEach(function(el) {
-    //     el.style = {}
-    //   })
-    // },
     updateActiveHotId: function(hotId) {
       this.activeHotId = hotId
     },
-    // incrementSearchResultWrapper: function() {
-    //   this.incrementSearchResult(this.activeHotId)
-    //   this.totalFound = this.getLatestSearchResult(this.activeHotId)
-    // },
     resetSearchResultWrapper: function(hasActiveIdChanged) {
       console.log('checking resetting...')
       if (hasActiveIdChanged || this.getHotSelection(this.activeHotId)[1] != this.currentCol) {
@@ -492,6 +376,7 @@ export default {
     this.activeHotId = await this.currentHotId()
     const vueUpdateActiveHotId = this.updateActiveHotId
     const vueResetSearchResult = this.resetSearchResultWrapper
+    // const vueResetTotalFound = this.resetTotalFound
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
       vueUpdateActiveHotId(hotId)
       vueResetSearchResult(true)
