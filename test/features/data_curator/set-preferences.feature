@@ -37,6 +37,9 @@ Feature: Set Preferences
     - open CSV (shortcut adjusted to default CSV Dialect `delimiter`)
     - save as CSV (shortcut adjusted to default CSV Dialect `delimiter`)
   - if "Open file" and "Save As" are implemented, above is not needed.
+  - should guess on open a setting?
+  - are the non-secure values that should be saved for the publish command? e.g. http://demo.ckan.org/api/3/action/
+  - API key (only stored for session, not kept between sessions )
 
   Scenario: Set Preferences
     Given Data Curator is open
