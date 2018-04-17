@@ -154,3 +154,7 @@ error message,Column property names cannot be empty - set a Header Row,
 error message,At least 1  source does not have a title.,
 error message,At least 1 contributor does not have a title.,
 error message,Foreign keys cannot be empty.,
+find panel, in column,
+find panel, in table,
+find panel, found,
+
