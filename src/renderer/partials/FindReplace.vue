@@ -67,9 +67,13 @@ Vue.use(VueRx, {
   Subscription
 })
 
+let _lastRowIndicies = []
 let _currentHotPos = [-1, -1]
+let _previousSearchClear = true
 const _searchCallback = function(instance, row, col, value, result) {
-  if (col === _currentHotPos[1]) {
+  if (!_previousSearchClear && _.indexOf(_lastRowIndicies, row) > -1) {
+    searchCallback.apply(this, arguments)
+  } else if (col === _currentHotPos[1]) {
     searchCallback.apply(this, arguments)
   }
 }
@@ -222,13 +226,25 @@ export default {
       this.clickedFindOrReplace = 'replace'
       this.replaceMessageText = 'replaced'
       this.findNextOrPrevious(direction)
+      console.log(`in replace all: ${this.updatedRowIndex}`)
       this.replacesRemaining = this.rowIndicies.length
       const hot = HotRegister.getInstance(this.activeHotId)
       const replaceTextFn = this.replaceAllFindTextWithinCell
-      _.forEach(document.querySelectorAll('.htSearchResult'), function(el, index) {
-        const selectedCoords = hot.getCoords(el)
-        replaceTextFn(hot, selectedCoords.row, selectedCoords.col)
-      })
+      console.log(document.querySelector('.htSearchResult'))
+      this.updatedRowIndex = this.foundCounter
+      while (document.querySelector('.htSearchResult')) {
+        console.log('found some')
+        let latest
+        _.forEach(document.querySelectorAll('.htSearchResult'), function(el, index) {
+          const selectedCoords = hot.getCoords(el)
+          replaceTextFn(hot, selectedCoords.row, selectedCoords.col)
+          latest = selectedCoords
+        })
+        console.log(`in replace all: ${this.updatedRowIndex}`)
+        let updatedRow = this.rowIndicies[this.updatedRowIndex]
+        hot.scrollViewportTo(updatedRow, currentCol)
+        // hot.scrollViewportTo(latest.row, latest.col)
+      }
       this.clickedFindOrReplace = 'replace'
     },
     replacefindTextOnceWithinCell: function(hot, row, col) {
@@ -278,6 +294,7 @@ export default {
       const currentRow = currentHotPos[0]
       const currentCol = currentHotPos[1]
       if (!this.rowIndicies || _.isEmpty(this.rowIndicies)) {
+        this.clearPreviousHotSearch(hot)
         this.hotSearch(hot)
       }
       let colData = hot.getDataAtCol(currentCol)
@@ -310,6 +327,11 @@ export default {
       // TODO : add loading screen here
       hot.search.query(this.findTextValue)
       hot.render()
+    },
+    clearPreviousHotSearch: function(hot) {
+      _previousSearchClear = false
+      hot.search.query()
+      _previousSearchClear = true
     },
     // hotSift: function(data, headers) {
     //   console.time()
@@ -402,7 +424,13 @@ export default {
       this.activeHotId = hotId
     },
     resetSearchResultWrapper: function(hasActiveIdChanged) {
-      if (hasActiveIdChanged || this.getHotSelection(this.activeHotId)[1] != this.currentCol) {
+      let newCurrentCol
+      let coords = this.getHotSelection(this.activeHotId)
+      if (coords) {
+        newCurrentCol = coords[1]
+      }
+      if (hasActiveIdChanged || newCurrentCol != this.currentCol) {
+        _lastRowIndicies = this.rowIndicies
         this.rowIndicies = null
         this.currentCol = null
         this.inputFoundRemoveFeedback()
