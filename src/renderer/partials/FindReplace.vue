@@ -7,7 +7,6 @@
       <div class="inputrow">
         <div class="placeholder text-muted small" :class="formprop.key" :data-placeholder="formprop.resultFn(formprop.key)">
           <input class="pull-left form-control input-sm col-sm-9" type="text" :id="formprop.key" :value="getText(formprop.key)" @input="setText(formprop.key, $event.target.value)" :name="formprop.key" />
-          <!-- <span :class="formprop.resultIconFn()" class="glyphicon form-control-feedback"/> -->
           <span v-show="formprop.resultFn(formprop.key)" :class="formprop.resultIconFn()" class="glyphicon form-control-feedback"/>
         </div>
         <span class="btn-group pull-right">
@@ -69,9 +68,7 @@ Vue.use(VueRx, {
 })
 
 let _currentHotPos = [-1, -1]
-
 const _searchCallback = function(instance, row, col, value, result) {
-  console.log(`current pos: ${_currentHotPos}`)
   if (col === _currentHotPos[1]) {
     searchCallback.apply(this, arguments)
   }
@@ -141,103 +138,52 @@ export default {
   },
   methods: {
     getReplaceResultIcon: function() {
-      console.log(`replaces remaining: ${this.replacesRemaining}`)
       return (this.replacesRemaining > 0) ? 'glyphicon-ok' : 'glyphicon-remove'
     },
     getFindResultIcon: function() {
-      console.log(`in get find result icon`)
-      console.log(this.foundCount)
       return (this.foundCount && this.foundCount.length > 0) ? 'glyphicon-ok' : 'glyphicon-remove'
-      // console.log(this.rowIndicies)
-      // return (this.rowIndicies && this.rowIndicies.length > 0) ? 'glyphicon-ok' : 'glyphicon-remove'
     },
     findResults: function(key) {
-      console.log(`key is ${key}`)
-      console.log(this.clickedFindOrReplace)
       // show result at either find or replace view
       if (key === this.clickedFindOrReplace) {
         // TODO: tidy use cases for updatedRowIndex, so updatedCount not needed
         const count = this.foundCounter + 1
-        // const count = this.updatedRowIndex + 1
-        console.log(`count is ${count}`)
-        // if (key === 'find') {
-        // if (count > 0 && this.rowIndicies.length > 0) {
         if (count > 0 && this.foundCount.length > 0) {
           this.inputFoundSuccessFeedback(key)
-          // return `${count} of ${this.rowIndicies.length}`
           return `${count} of ${this.foundCount.length}`
         } else {
           this.inputFoundFailureFeedback(key)
           return 'No result'
         }
-        // }
       }
     },
     replaceResults: function(key) {
-      console.log(`triggering replace results`)
-      console.log(`key is ${key}`)
-      console.log(this.clickedFindOrReplace)
       // show result at either find or replace view
       if (key === this.clickedFindOrReplace) {
-        // TODO: tidy use cases for updatedRowIndex, so updatedCount not needed
-        // const count = this.foundCounter + 1
-        // console.log(`count is ${count}`)
         if (key === 'replace') {
           if (this.replacesRemaining > -1) {
             this.inputFoundSuccessFeedback(key)
             return `${this.replacesRemaining} remaining.`
           } else {
-            console.log('updating from replace...')
             this.inputFoundFailureFeedback(key)
             return 'No result'
           }
         }
       }
     },
-    // getResult: function(key) {
-    //   console.log(`key is ${key}`)
-    //   console.log(this.clickedFindOrReplace)
-    //   // show result at either find or replace view
-    //   if (key === this.clickedFindOrReplace) {
-    //     // TODO: tidy use cases for updatedRowIndex, so updatedCount not needed
-    //     const count = this.updatedRowIndex + 1
-    //     console.log(`count is ${this.updatedRowIndex}`)
-    //     if (key === 'find') {
-    //       if (this.updatedRowIndex >= 0 && this.rowIndicies.length > 0) {
-    //         this.inputFoundSuccessFeedback(key)
-    //         return `${count} of ${this.rowIndicies.length}`
-    //       } else {
-    //         this.inputFoundFailureFeedback(key)
-    //         return 'No result'
-    //       }
-    //     } else if (key === 'replace') {
-    //       if (this.replacesRemaining > -1) {
-    //         this.inputFoundSuccessFeedback(key)
-    //         return `${this.replacesRemaining} remaining.`
-    //       } else {
-    //         this.inputFoundFailureFeedback(key)
-    //         return 'No result'
-    //       }
-    //     }
-    //   }
-    // },
     inputFoundSuccessFeedback: function(key) {
       let element = this.initFeedbackContainer(key)
       element.classList.add('has-success')
-      console.log('adding success feedback')
     },
     inputFoundFailureFeedback: function(key) {
       let element = this.initFeedbackContainer(key)
       element.classList.add('has-error')
-      console.log('adding error feedback')
     },
     initFeedbackContainer: function(key) {
-      console.log('trigger init feedback container...')
       this.inputFoundRemoveFeedback()
       return document.querySelector(`#findAndReplace .placeholder.${key}`)
     },
     inputFoundRemoveFeedback: function() {
-      console.log('removing feedback')
       _.forEach(document.querySelectorAll('#findAndReplace .placeholder'), function(el, index) {
         el.classList.remove('has-success')
         el.classList.remove('has-error')
@@ -252,50 +198,30 @@ export default {
       } else {
         this.replaceTextValue = value
       }
-      console.log('text set')
       this.foundCounter = -1
       this.foundCount = -1
       this.resetSearchResultWrapper()
       this.clickedFindOrReplace = null
-      // TODO: this triggers too early - wait for the css to update from resetting counters then remove all
+      // wait for the css to update from resetting counters then remove all
       const vueInputFoundRemoveFeedback = this.inputFoundRemoveFeedback
       _.delay(function() {
         vueInputFoundRemoveFeedback()
       }, 10)
-
-      // this.resetSearchResultWrapper(true)
     },
     replaceText: function(direction) {
       this.clickedFindOrReplace = 'replace'
-      // TODO: tidy this - there's a better way to track this for replace
-      // this.updatedRowIndex = -1
-      // if (this.colObject && this.tempHeader) {
-      //   this.rowIndicies = this.hotSiftWithoutTransform(this.colObject, [this.tempHeader])
-      // }
       this.findNextOrPrevious(direction)
       const hot = HotRegister.getInstance(this.activeHotId)
       const selectedCoords = hot.getSelected()
       if (selectedCoords) {
-        console.log(`before, row indicies is ${this.rowIndicies.length}`)
         this.replacesRemaining = this.rowIndicies.length
-        console.log(`in replace before: ${this.replacesRemaining}`)
         this.replaceAllFindTextWithinCell(hot, selectedCoords[0], selectedCoords[1])
-        // console.log(preReplaceCount)
-        // if (this.colObject && this.tempHeader) {
-        //   this.rowIndicies = this.hotSiftWithoutTransform(this.colObject, [this.tempHeader])
-        // }
       }
       this.replacesRemaining--
-      console.log(`in replace after: ${this.replacesRemaining}`)
       this.clickedFindOrReplace = 'replace'
     },
     replaceAllText: function(direction) {
       this.clickedFindOrReplace = 'replace'
-      // TODO: tidy this - there's a better way to track this for replace all
-      // if (this.colObject && this.tempHeader) {
-      //   this.updatedRowIndex = -1
-      //   this.rowIndicies = this.hotSiftWithoutTransform(this.colObject, [this.tempHeader])
-      // }
       this.findNextOrPrevious(direction)
       const hot = HotRegister.getInstance(this.activeHotId)
       const replaceTextFn = this.replaceAllFindTextWithinCell
@@ -339,7 +265,6 @@ export default {
       this.findNextOrPrevious(direction)
     },
     findNextOrPrevious: function(direction) {
-      console.log('finding...')
       let directionFn
       if (direction === 'previous') {
         directionFn = this.previousFn
@@ -351,9 +276,7 @@ export default {
       _currentHotPos = currentHotPos
       const currentRow = currentHotPos[0]
       const currentCol = currentHotPos[1]
-      console.log(this.rowIndicies)
       if (!this.rowIndicies || _.isEmpty(this.rowIndicies)) {
-        console.log('triggering hot search...')
         this.hotSearch(hot)
       }
       // console.log('dc:')
@@ -365,11 +288,8 @@ export default {
       let colObject = _.map(colData, function(item) {
         return {[tempHeader]: item}
       })
-      // this.tempHeader = tempHeader
-      // this.colObject = colObject
       if (!this.rowIndicies || _.isEmpty(this.rowIndicies) || this.currentCol != currentCol) {
         this.currentCol = currentCol
-        console.log(`current col is ${this.currentCol}`)
         // to avoid whether headers are set or not, can just use index for now
         this.rowIndicies = this.hotSiftWithoutTransform(colObject, [tempHeader])
       }
@@ -380,10 +300,6 @@ export default {
         this.updatedRowIndex = this.determineStartingRowIndex(currentRow, direction, directionFn)
       }
       this.foundCounter = this.updatedRowIndex
-      console.log(`updated row index in find:`)
-      console.log(this.updatedRowIndex)
-      // workaround until updatedRowIndex reset for every case
-      // this.updatedCount = this.updatedRowIndex
       let updatedRow = this.rowIndicies[this.updatedRowIndex]
       // console.timeEnd()
       // console.log('handsontable:')
@@ -398,7 +314,6 @@ export default {
     },
     hotSearch: function(hot) {
       // TODO : add loading screen here
-      console.log(`find text is: ${this.findTextValue}`)
       hot.search.query(this.findTextValue)
       hot.render()
     },
@@ -493,30 +408,20 @@ export default {
       this.activeHotId = hotId
     },
     resetSearchResultWrapper: function(hasActiveIdChanged) {
-      console.log('about to reset')
       if (hasActiveIdChanged || this.getHotSelection(this.activeHotId)[1] != this.currentCol) {
-        console.log('resetting...')
         this.rowIndicies = null
         this.currentCol = null
         this.inputFoundRemoveFeedback()
         // this turns off feedback functions
         this.clickedFindOrReplace = null
-        // this.inputFoundRemoveFeedback()
-
-        // this.updatedCount = -1
-        // this.inputFoundRemoveFeedback()
       }
       this.updatedRowIndex = -1
-      // this.updatedRowIndex = -1
-      // TODO: probably not needed
-      // this.$forceUpdate()
     }
   },
   mounted: async function() {
     this.activeHotId = await this.currentHotId()
     const vueUpdateActiveHotId = this.updateActiveHotId
     const vueResetSearchResult = this.resetSearchResultWrapper
-    // const vueResetTotalFound = this.resetTotalFound
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
       vueUpdateActiveHotId(hotId)
       vueResetSearchResult(true)
@@ -525,7 +430,6 @@ export default {
       vueResetSearchResult(false)
     })
     this.$subscribeTo(afterSetDataAtCell$, function(value) {
-      console.log('cell update received')
       vueResetSearchResult(true)
     })
   }
