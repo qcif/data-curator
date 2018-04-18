@@ -27,12 +27,12 @@
         </button>
       </span>
     </div>
-    <div class="pickrow">
+    <!-- <div class="pickrow">
       <span v-for="(radioprop, index) in radioprops">
         <input type="radio" :id="radioprop.key" :value="radioprop.value" v-model="findTypePicked">
         <label for="find-in-column">{{radioprop.label}}</label>
       </span>
-    </div>
+    </div> -->
   </div>
 </form>
 </template>
@@ -100,7 +100,7 @@ export default {
         callback: _searchCallback
       },
       formprops: [{
-        label: 'Find',
+        label: 'Find in column',
         key: 'find',
         buttonTypeClass: 'btn-primary',
         buttonLeftClass: 'fa fa-chevron-left',
@@ -109,7 +109,7 @@ export default {
         resultFn: this.findResults,
         resultIconFn: this.getFindResultIcon
       }, {
-        label: 'Replace',
+        label: 'Replace in column',
         key: 'replace',
         buttonTypeClass: 'btn-primary',
         buttonLeftClass: 'fa fa-chevron-left',
@@ -280,10 +280,7 @@ export default {
       if (!this.rowIndicies || _.isEmpty(this.rowIndicies)) {
         this.hotSearch(hot)
       }
-      // console.log('dc:')
-      // console.time()
       let colData = hot.getDataAtCol(currentCol)
-      // console.log(colData)
       // indexer won't work with a header labelled: 0
       let tempHeader = currentCol + 1
       let colObject = _.map(colData, function(item) {
@@ -302,16 +299,12 @@ export default {
       }
       this.foundCounter = this.updatedRowIndex
       let updatedRow = this.rowIndicies[this.updatedRowIndex]
-      // console.timeEnd()
-      // console.log('handsontable:')
-      // console.time()
       hot.scrollViewportTo(updatedRow, currentCol)
       // preserve rowIndicies and currentCol on reset
       let tempRowIndicies = this.rowIndicies
       hot.selectCell(updatedRow, currentCol)
       this.rowIndicies = tempRowIndicies
       this.currentCol = currentCol
-      // console.timeEnd()
     },
     hotSearch: function(hot) {
       // TODO : add loading screen here
