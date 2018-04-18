@@ -226,42 +226,26 @@ export default {
       this.clickedFindOrReplace = 'replace'
       this.replaceMessageText = 'replaced'
       this.findNextOrPrevious(direction)
-      console.log(`in replace all: ${this.updatedRowIndex}`)
       this.replacesRemaining = this.rowIndicies.length
       const hot = HotRegister.getInstance(this.activeHotId)
       const replaceTextFn = this.replaceAllFindTextWithinCell
-      console.log(document.querySelector('.htSearchResult'))
-      this.updatedRowIndex = this.foundCounter
-      while (document.querySelector('.htSearchResult')) {
-        console.log('found some')
-        let latest
-        _.forEach(document.querySelectorAll('.htSearchResult'), function(el, index) {
-          const selectedCoords = hot.getCoords(el)
-          replaceTextFn(hot, selectedCoords.row, selectedCoords.col)
-          latest = selectedCoords
-        })
-        console.log(`in replace all: ${this.updatedRowIndex}`)
-        let updatedRow = this.rowIndicies[this.updatedRowIndex]
-        hot.scrollViewportTo(updatedRow, currentCol)
-        // hot.scrollViewportTo(latest.row, latest.col)
+      let replaceCol = this.currentCol
+      console.log(this.rowIndicies.length)
+      let data = hot.getData()
+      for (let rowIndex of this.rowIndicies) {
+        replaceTextFn(data, rowIndex, replaceCol)
       }
+      // bulk change data
+      hot.loadData(data)
       this.clickedFindOrReplace = 'replace'
     },
-    replacefindTextOnceWithinCell: function(hot, row, col) {
-      let cellText = hot.getDataAtCell(row, col)
-      let updatedCellText = _.replace(cellText, this.findTextValue, this.replaceTextValue)
-      hot.setDataAtCell(row, col, updatedCellText)
-    },
-    replaceAllFindTextWithinCell: function(hot, row, col) {
-      let cellText = hot.getDataAtCell(row, col)
+    replaceAllFindTextWithinCell: function(data, row, col) {
+      let cellText = data[row][col]
       // ensure any special characters in find text are treated as ordinary text
       const escapedFindText = _.escapeRegExp(this.findTextValue)
       const regExp = new RegExp(escapedFindText, 'g')
       let updatedCellText = _.replace(cellText, regExp, this.replaceTextValue)
-      hot.setDataAtCell(row, col, updatedCellText)
-    },
-    replaceEntireCellText: function(hot, row, col) {
-      hot.setDataAtCell(row, col, this.replaceTextValue)
+      data[row][col] = updatedCellText
     },
     previousFn: function(index, arrayLength) {
       // console.log(`array length is ${arrayLength}`)
