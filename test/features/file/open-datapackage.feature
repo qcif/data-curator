@@ -68,10 +68,6 @@ Feature: Open a Data Package
     And each Data tab should be named using the data resource `name`
     And each data resource header row should be set using the `dialect`  
   
-    Examples:
-      | location                                                                                                          | notes                                                                   |
-      | https://raw.githubusercontent.com/frictionlessdata/example-data-packages/master/cpi-data-via-url/datapackage.json | datapackage.json at url, data at url, schema and dialect in-line               |
-
   Scenario: Open an invalid datapackage.json from URL
     Given Data Curator is open
     And an invalid datapackage.json file is stored at a URL
@@ -90,10 +86,6 @@ Feature: Open a Data Package
     And each data resource header row should be set using the `dialect`
     And a warning should be displayed stating that some unsupported properties were not imported  
 
-    Examples:
-      | location                                                                                                                  | notes                                                      |
-      | https://raw.githubusercontent.com/frictionlessdata/example-data-packages/master/iso-639-1-language-codes/datapackage.json | This data package implements the Language support pattern. |
-
   Scenario: Open a valid datapackage.zip 
     Given Data Curator is open
     And a valid datapackage.zip file is stored at a URL or local file
@@ -104,9 +96,3 @@ Feature: Open a Data Package
     And each Data tab should be named using the data resource `name`
     And each data resource header row should be set using the `dialect`
     And the README.md should be displayed in the provenance information panel  
-
-    Examples:
-      | location                                                                                                          | notes                                                                   |
-      | cpi.zip                                                                                                           | local datapackage.zip file, data in package, schema and dialect in-line |
-      | https://github.com/frictionlessdata/example-data-packages/raw/master/zip/cpi.zip                                  | datapackage.zip at url, data in package, schema and dialect in-line            |
-      | https://github.com/frictionlessdata/example-data-packages/raw/master/zip/donation-codes-via-url.zip               | datapackage.zip at url, data, schema and dialect at url                        |
