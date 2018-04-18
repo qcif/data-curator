@@ -92,8 +92,7 @@ export default {
       replacesRemaining: -1,
       foundCount: 0,
       foundCounter: 0,
-      // colObject: null,
-      // tempHeader: null,
+      replaceMessageText: '',
       // foundStyle: {
       //   backgroundColor: 'rgba(70, 237, 70, 0.3)'
       // },
@@ -160,14 +159,12 @@ export default {
     replaceResults: function(key) {
       // show result at either find or replace view
       if (key === this.clickedFindOrReplace) {
-        if (key === 'replace') {
-          if (this.replacesRemaining > -1) {
-            this.inputFoundSuccessFeedback(key)
-            return `${this.replacesRemaining} remaining.`
-          } else {
-            this.inputFoundFailureFeedback(key)
-            return 'No result'
-          }
+        if (this.replacesRemaining > -1) {
+          this.inputFoundSuccessFeedback(key)
+          return `${this.replacesRemaining} ${this.replaceMessageText}.`
+        } else {
+          this.inputFoundFailureFeedback(key)
+          return 'No result'
         }
       }
     },
@@ -210,6 +207,7 @@ export default {
     },
     replaceText: function(direction) {
       this.clickedFindOrReplace = 'replace'
+      this.replaceMessageText = 'remaining'
       this.findNextOrPrevious(direction)
       const hot = HotRegister.getInstance(this.activeHotId)
       const selectedCoords = hot.getSelected()
@@ -222,13 +220,16 @@ export default {
     },
     replaceAllText: function(direction) {
       this.clickedFindOrReplace = 'replace'
+      this.replaceMessageText = 'replaced'
       this.findNextOrPrevious(direction)
+      this.replacesRemaining = this.rowIndicies.length
       const hot = HotRegister.getInstance(this.activeHotId)
       const replaceTextFn = this.replaceAllFindTextWithinCell
       _.forEach(document.querySelectorAll('.htSearchResult'), function(el, index) {
         const selectedCoords = hot.getCoords(el)
         replaceTextFn(hot, selectedCoords.row, selectedCoords.col)
       })
+      this.clickedFindOrReplace = 'replace'
     },
     replacefindTextOnceWithinCell: function(hot, row, col) {
       let cellText = hot.getDataAtCell(row, col)
