@@ -1,0 +1,54 @@
+form#findAndReplace
+  overflow-y hidden
+  .propertyrow
+  .inputrow
+    display block
+    height 100%
+    min-height 100%
+    width 100%
+    label
+      display block
+      width 100%
+      // float left
+    input
+      // float left
+      display block
+      width 75%
+      margin-bottom 15px
+  .btn-group
+    // float right
+    display inline-block
+    height 100% !important
+    min-height 100% !important
+    .btn
+      padding-left 15px
+      padding-right 15px
+  .button-below
+    margin-top 2px
+  .pickrow
+    margin-top 20px
+    display flex
+    flex-direction row
+    justify-content center
+    span
+      @extend form#findAndReplace .pickrow
+      width 30%
+      input
+        width 7%
+        margin-right 3px
+      label
+        width auto
+  .form-control-feedback
+    right: 88px
+    top: 22px
+.placeholder
+  position relative
+  // text-align right
+.placeholder::after
+  position: absolute
+  right: 115px
+  top: 30px
+  content: attr(data-placeholder)
+  pointer-events: none
+  opacity: 0.6
+  // text-align right

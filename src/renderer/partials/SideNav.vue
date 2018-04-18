@@ -53,6 +53,7 @@ export default {
           hotId = await this.getHotIdFromTabId(this.getActiveTab)
         } catch (err) {
           if (err) {
+            console.log('ERROR: Could not get hot id.', err)
           }
         }
       }

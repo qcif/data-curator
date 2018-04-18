@@ -16,7 +16,7 @@ Feature: Set Header Row
 
   Scenario: Freeze Header Row
     Given Data Curator is open
-    When "Header Row" in enabled
+    When "Header Row" is enabled
     Then the menu item should be checked
     And the first row should be frozen so that it does not scroll
     And each header row value should allow the "Sort Column" to be invoked
