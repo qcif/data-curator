@@ -1,7 +1,7 @@
 import Handsontable from 'handsontable/dist/handsontable.full.min.js'
 import {remote, ipcRenderer as ipc} from 'electron'
 import store from '@/store/modules/hots.js'
-import {allTablesAllColumnsFromSchema$, allTablesAllColumnNames$} from '@/rxSubject.js'
+import {allTablesAllColumnsFromSchema$, allTablesAllColumnNames$, afterSetDataAtCell$} from '@/rxSubject.js'
 const Dialog = remote.dialog
 
 const _hots = {}
@@ -36,8 +36,8 @@ const HotRegister = {
         displayDelay: 1000
       },
       undo: true,
-      // search: searchParameters,
-      search: true,
+      search: searchParameters,
+      // search: true,
       tabMoves({shiftKey}) {
         if (!shiftKey) {
           const selection = hot.getSelected()
@@ -72,10 +72,8 @@ const HotRegister = {
           listeners.deselectionListener()
         }
       },
-      afterRender() {
-        if (hot) {
-          store.mutations.pushHotSearchEnd(store.state, hot.guid)
-        }
+      afterSetDataAtCell() {
+        afterSetDataAtCell$.next(true)
       },
       enterMoves({shiftKey}) {
         if (!shiftKey) {
