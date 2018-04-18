@@ -11,6 +11,8 @@ let activeTab$ = new Subject()
 let hotIdFromTab$ = new Subject()
 let allTabsTitles$ = new Subject()
 let provenanceErrors$ = new ReplaySubject(1)
+let currentPos$ = new Subject()
+let afterSetDataAtCell$ = new Subject()
 // let selectedForeignTable$ = new Subject()
 // let getSelectedLocalKeys$ = new Subject()
 
@@ -37,5 +39,7 @@ export {
   allTablesAllColumnNames$,
   allTablesAllColumnsFromSchema$,
   allTabsTitles$,
-  provenanceErrors$
+  provenanceErrors$,
+  currentPos$,
+  afterSetDataAtCell$
 }
