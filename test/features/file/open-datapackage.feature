@@ -25,8 +25,30 @@ Feature: Open a Data Package
   
   - Open a data package that references a Table Schema at a URL 
   - Open a data package that references a CSV Dialect at a URL
-
-  Scenario Outline: Open a data package 
+  
+  QUESTIONS
+  =========
+  
+  - What properties could be lost on opening a valid tabular data package?
+    - data package:
+      - homepage
+      - image
+      - keywords
+      - created
+    - data resource:
+      - data
+      - hash
+      - bytes 
+    - dialect: (this may result in invalid results)
+      - quoteChar 
+      - doubleQuote
+      - escapeChar
+      - nullSequence
+      - skipInitialSpace
+      - csvddfVersion 
+    - [pattern properties](https://frictionlessdata.io/specs/patterns) except `package` in the [Table Schema: Foreign Keys to Data Packages pattern](https://frictionlessdata.io/specs/patterns/#table-schema:-foreign-keys-to-data-packages)
+    
+  Scenario: Open a data package 
     Given Data Curator is open
     When "Open Data Package" is invoked
     And a data package file <location> is selected
@@ -36,9 +58,41 @@ Feature: Open a Data Package
     And each data resource header row should be set using the `dialect`  
     And text in any associated README.md or README.txt should be loaded into the provenance information
 
-    Examples:
-      | location                                                                                                          | notes                                                                   |
-      | cpi.zip                                                                                                           | local datapackage.zip file, data in package, schema and dialect in-line |
-      | https://github.com/frictionlessdata/example-data-packages/raw/master/zip/cpi.zip                                  | datapackage.zip at url, data in package, schema and dialect in-line            |
-      | https://raw.githubusercontent.com/frictionlessdata/example-data-packages/master/cpi-data-via-url/datapackage.json | datapackage.json at url, data at url, schema and dialect in-line               |
-      | https://github.com/frictionlessdata/example-data-packages/raw/master/zip/donation-codes-via-url.zip               | datapackage.zip at url, data, schema and dialect at url                        |
+  Scenario: Open a valid datapackage.json from URL
+    Given Data Curator is open
+    And a valid datapackage.json file is stored at a URL
+    When "Open Data Package" is invoked
+    And the datapackage.json file at the URL is specified
+    Then the properties from datapackage.json should be displayed in the property panels
+    And the data at the `path` of each data resource should open in a new data tab to the right of any other open data tabs
+    And each Data tab should be named using the data resource `name`
+    And each data resource header row should be set using the `dialect`  
+  
+  Scenario: Open an invalid datapackage.json from URL
+    Given Data Curator is open
+    And an invalid datapackage.json file is stored at a URL
+    When "Open Data Package" is invoked
+    And the datapackage.json file at the URL is specified
+    Then an error should be displayed 
+  
+  Scenario: Open datapackage.json from URL with properties unsupported by Data Curator
+    Given Data Curator is open
+    And a valid datapackage.json file is stored at a URL
+    When "Open Data Package" is invoked
+    And the datapackage.json file at the URL is specified
+    Then the properties from datapackage.json should be displayed in the property panels
+    And the data at the `path` of each data resource should open in a new data tab to the right of any other open data tabs
+    And each Data tab should be named using the data resource `name`
+    And each data resource header row should be set using the `dialect`
+    And a warning should be displayed stating that some unsupported properties were not imported  
+
+  Scenario: Open a valid datapackage.zip 
+    Given Data Curator is open
+    And a valid datapackage.zip file is stored at a URL or local file
+    When "Open Data Package" is invoked
+    And the datapackage.zip file is specified
+    Then the properties from datapackage.json file should be displayed in the property panels
+    And the data at the `path` of each data resource should open in a new data tab to the right of any other open data tabs
+    And each Data tab should be named using the data resource `name`
+    And each data resource header row should be set using the `dialect`
+    And the README.md should be displayed in the provenance information panel  
