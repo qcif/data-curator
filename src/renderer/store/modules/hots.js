@@ -1,4 +1,4 @@
-import {currentPos$, searchChange$} from '@/rxSubject.js'
+import {currentPos$} from '@/rxSubject.js'
 
 const state = {
   hotTabs: {},
@@ -31,9 +31,6 @@ export function getHotIdFromTabIdFunction() {
 const getters = {
   getHotTabs: state => {
     return state.hotTabs
-  },
-  hasHotSearchStarted: (state, getters) => (hotId) => {
-    return state.hotTabs[hotId].isSearchRunning
   },
   getLatestSearchResult: (state, getters) => (hotId) => {
     // console.log(`hot id is: ${hotId}`)
@@ -148,21 +145,8 @@ const getters = {
 }
 
 const mutations = {
-  pushHotSearchStart(state, hotId) {
-    _.set(state.hotTabs, `${hotId}.isSearchRunning`, true)
-    searchChange$.next(true)
-  },
-  pushHotSearchEnd(state, hotId) {
-    _.set(state.hotTabs, `${hotId}.isSearchRunning`, false)
-    searchChange$.next(false)
-  },
   resetSearchResult(state, hotId) {
     _.set(state.hotTabs, `${hotId}.searchResult`, 0)
-  },
-  incrementSearchResult(state, hotId) {
-    state.hotTabs[hotId].searchResult++
-    // console.log(`after incrementing, result is:`)
-    // console.log(state.hotTabs[hotId].searchResult)
   },
   pushProvenance(state, value) {
     _.set(state.provenanceProperties, 'markdown', value)
