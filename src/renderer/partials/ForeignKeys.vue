@@ -9,6 +9,18 @@
     <button type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)">
       <span class="glyphicon glyphicon-minus"/>
     </button>
+    <div id="fk-package" class="clearfix">
+      <label class="control-label">Package</label>
+      <div class="fk-package">
+        <input class="form-control input-sm" type="text" id="fk-package" name="fk-package" :value="getFkPackage()" @input="setFkPackage($event.target.value)" />
+        <button type="button" class="btn btn-danger btn-sm" @click="removeFkPackage(index)">
+          <span class="glyphicon glyphicon-minus"/>
+        </button>
+        <button type="button" class="add-foreign btn btn-primary btn-sm" @click="addFkPackage()">
+          <span class="glyphicon glyphicon-plus"/>
+        </button>
+      </div>
+    </div>
   </div>
   <div class="button-container">
     <button type="button" class="add-foreign btn btn-primary btn-sm" @click="addForeignKey()">
@@ -87,6 +99,12 @@ export default {
     }
   },
   methods: {
+    getFkPackage: function() {
+
+    },
+    setFkPackage: function(value) {
+
+    },
     getAllForeignKeysFromCurrentHotId: function() {
       let currentHotId = this.currentLocalHotId
       let allForeignKeys = this.getAllForeignKeys()
