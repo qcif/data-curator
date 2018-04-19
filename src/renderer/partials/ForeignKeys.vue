@@ -10,14 +10,14 @@
       <span class="glyphicon glyphicon-minus"/>
     </button>
     <div id="fk-package" class="clearfix">
-      <label class="control-label">Package</label>
-      <div class="fk-package">
-        <input class="form-control input-sm" type="text" id="fk-package" name="fk-package" :value="getFkPackage()" @input="setFkPackage($event.target.value)" />
-        <button type="button" class="btn btn-danger btn-sm" @click="removeFkPackage(index)">
+      <label v-show="showPackage" class="control-label">Package</label>
+      <div class="fk-package" :class="{ 'right': !showPackage}">
+        <input v-show="showPackage" class="form-control input-sm" type="text" id="fk-package" name="fk-package" :value="getFkPackage()" @input="setFkPackage($event.target.value)" />
+        <button v-show="showPackage" type="button" class="btn btn-danger btn-sm" @click="removeFkPackage(index)">
           <span class="glyphicon glyphicon-minus"/>
         </button>
-        <button type="button" class="add-foreign btn btn-primary btn-sm" @click="addFkPackage()">
-          <span class="glyphicon glyphicon-plus"/>
+        <button v-if="!showPackage" type="button" class="add-foreign btn btn-primary btn-sm" @click="addFkPackage()">
+          <span class="glyphicon glyphicon-plus"/>Add FK Package URL
         </button>
       </div>
     </div>
@@ -84,7 +84,8 @@ export default {
       allForeignKeys: {},
       allTableNames: [],
       allTabTableNames: [],
-      allTableNamesHeaderNames: {}
+      allTableNamesHeaderNames: {},
+      showPackage: false
     }
   },
   computed: {
@@ -99,6 +100,12 @@ export default {
     }
   },
   methods: {
+    addFkPackage: function() {
+      this.showPackage = true
+    },
+    removeFkPackage: function() {
+      this.showPackage = false
+    },
     getFkPackage: function() {
 
     },
