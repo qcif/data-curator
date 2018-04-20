@@ -12,7 +12,7 @@
     <div id="fk-package" class="clearfix">
       <label v-if="fkPackages[index] === true" class="control-label">Reference Package</label>
       <div class="fk-package" :class="{ 'right': !fkPackages[index]}">
-        <input v-if="fkPackages[index] === true" class="form-control input-sm" type="text" id="fk-package" name="fk-package" :value="getFkPackage(index)" @input="setFkPackage(index, $event.target.value)" />
+        <input v-if="fkPackages[index] === true" class="form-control input-sm" type="text" id="fk-package" name="fk-package" :value="getFkPackage(index)" @input="setFkPackage(index, currentLocalHotId, $event.target.value)" />
         <button v-if="fkPackages[index] === true" type="button" class="btn btn-danger btn-sm" @click="removeFkPackage(index)">
           <span class="glyphicon glyphicon-minus"/>
         </button>
@@ -22,9 +22,9 @@
       </div>
       <div v-if="fkPackages[index] === true">
         <label class="control-label">Reference Table</label>
-        <input class="form-control input-sm" type="text" id="fk-package-table" name="fk-package-table" :value="getFkPackageTable(index)" @input="setFkPackageTable(index, $event.target.value)" />
+        <input class="form-control input-sm" type="text" id="fk-package-table" name="fk-package-table" :value="getFkPackageTable(index)" @input="setFkPackageTable(index, currentLocalHotId, $event.target.value)" />
         <label class="control-label">Reference Column(s)</label>
-        <input class="form-control input-sm" type="text" id="fk-package-columns" name="fk-package-columns" :value="getFkPackageColumns(index)" @input="setFkPackageColumns(index, $event.target.value)" />
+        <input class="form-control input-sm" type="text" id="fk-package-columns" name="fk-package-columns" :value="getFkPackageColumns(index)" @input="setFkPackageColumns(index, currentLocalHotId, $event.target.value)" />
       </div>
     </div>
   </div>
@@ -106,13 +106,30 @@ export default {
     }
   },
   methods: {
-    getFkPackageColumns: function() {
+    ...mapMutations([
+      'pushForeignKeysForeignPackageForTable'
+    ]),
+    getFkPackageColumns: function(index) {
+      let columnArray = this.getSelectedForeignKeys(index)
+      return _.join(columnArray)
     },
-    setFkPackageColumns: function() {
+    setFkPackageColumns: function(index, hotId, value) {
+      let columnArray = _.split(value, ',')
+      this.pushForeignKeysForeignFieldsForTable({ hotId: hotId, index: index, fields: columnArray })
     },
-    getFkPackageTable: function() {
+    getFkPackageTable: function(index) {
+      let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
+      let foreignKey = foreignKeys[index] || {}
+      console.log(foreignKey.reference)
+      let reference = foreignKey.reference || {}
+      let table = reference.resource
+      return table
     },
-    setFkPackageTable: function() {
+    setFkPackageTable: function(index, hotId, value) {
+      console.log(`index is ${index}`)
+      console.log(`hot id is ${hotId}`)
+      console.log(`value is ${value}`)
+      this.pushForeignKeysForeignTableForTable({ hotId: hotId, index: index, resource: value })
     },
     addFkPackage: function(index) {
       this.fkPackages[index] = true
@@ -122,11 +139,14 @@ export default {
       this.fkPackages[index] = false
       this.$forceUpdate()
     },
-    getFkPackage: function() {
-
+    getFkPackage: function(index) {
+      let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
+      let foreignKey = foreignKeys[index] || {}
+      let reference = foreignKey.reference || {}
+      return reference.package
     },
-    setFkPackage: function(value) {
-
+    setFkPackage: function(index, hotId, value) {
+      this.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: value })
     },
     getAllForeignKeysFromCurrentHotId: function() {
       let currentHotId = this.currentLocalHotId
@@ -247,6 +267,7 @@ export default {
     pushSelectedForeignKeys: function(index, hotId) {
       let vueSetProperty = this.pushForeignKeysForeignFieldsForTable
       return function(headers) {
+        console.log(headers)
         let object = { hotId: hotId, index: index, fields: headers }
         vueSetProperty(object)
       }
