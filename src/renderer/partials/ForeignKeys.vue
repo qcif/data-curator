@@ -3,22 +3,28 @@
   <div v-for="(foreignKey,index) in hotForeignKeys"  class="foreign col-sm-12">
     <div class="inputs-container">
       <component :key="getLocalComponentKey(index)" is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="getSelectedLocalKeys(index)" :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)" labelName="Foreign key(s)" tooltipId="tooltip-foreignkey" tooltipView="tooltipForeignkey" />
-      <component v-show="isHeadersSelected" :key="getTableComponentKey(index)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="getSelectedTable(index)" :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)" labelName="Reference Table" tooltipId="tooltip-foreignkey-table" tooltipView="tooltipForeignkeyTable"/>
-      <component v-show="isHeadersSelected" :key="getForeignComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" tooltipId="tooltip-foreignkey-tablekey" tooltipView="tooltipForeignkeyTablekey" />
+      <component v-show="isHeadersSelected && !showPackage" :key="getTableComponentKey(index)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="getSelectedTable(index)" :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)" labelName="Reference Table" tooltipId="tooltip-foreignkey-table" tooltipView="tooltipForeignkeyTable"/>
+      <component v-show="isHeadersSelected && !showPackage" :key="getForeignComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" tooltipId="tooltip-foreignkey-tablekey" tooltipView="tooltipForeignkeyTablekey" />
     </div>
     <button type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)">
       <span class="glyphicon glyphicon-minus"/>
     </button>
     <div id="fk-package" class="clearfix">
-      <label v-show="showPackage" class="control-label">Package</label>
+      <label v-show="showPackage" class="control-label">Reference Package</label>
       <div class="fk-package" :class="{ 'right': !showPackage}">
         <input v-show="showPackage" class="form-control input-sm" type="text" id="fk-package" name="fk-package" :value="getFkPackage()" @input="setFkPackage($event.target.value)" />
         <button v-show="showPackage" type="button" class="btn btn-danger btn-sm" @click="removeFkPackage(index)">
           <span class="glyphicon glyphicon-minus"/>
         </button>
         <button v-if="!showPackage" type="button" class="add-foreign btn btn-primary btn-sm" @click="addFkPackage()">
-          <span class="glyphicon glyphicon-plus"/>Add FK Package URL
+          <span class="fas fa-exchange-alt"/>Switch to FK Package URL
         </button>
+      </div>
+      <div v-show="showPackage">
+        <label class="control-label">Reference Table</label>
+        <input class="form-control input-sm" type="text" id="fk-package-table" name="fk-package-table" :value="getFkPackageTable()" @input="setFkPackageTable($event.target.value)" />
+        <label class="control-label">Reference Column(s)</label>
+        <input class="form-control input-sm" type="text" id="fk-package-columns" name="fk-package-columns" :value="getFkPackageColumns()" @input="setFkPackageColumns($event.target.value)" />
       </div>
     </div>
   </div>
@@ -100,6 +106,14 @@ export default {
     }
   },
   methods: {
+    getFkPackageColumns: function() {
+    },
+    setFkPackageColumns: function() {
+    },
+    getFkPackageTable: function() {
+    },
+    setFkPackageTable: function() {
+    },
     addFkPackage: function() {
       this.showPackage = true
     },
