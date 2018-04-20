@@ -204,6 +204,23 @@ const mutations = {
     foreignKeys[property.index].fields = property.fields
     state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
   },
+  pushForeignKeysForeignPackageForTable(state, property) {
+    let tableProperties = _.assign({}, state.hotTabs[property.hotId].tableProperties) || {}
+    let foreignKeys = tableProperties.foreignKeys || []
+    if (!foreignKeys[property.index]) {
+      foreignKeys[property.index] = {
+        fields: [],
+        reference: {
+          package: '',
+          resource: '',
+          fields: []
+        }
+      }
+    }
+    foreignKeys[property.index].reference.package = property.package
+    state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
+    // _.set(state.hotTabs, `${property.hotId}.tableProperties.foreignKeys`, property.foreignKeys)
+  },
   pushForeignKeysForeignTableForTable(state, property) {
     let tableProperties = _.assign({}, state.hotTabs[property.hotId].tableProperties) || {}
     let foreignKeys = tableProperties.foreignKeys || []
