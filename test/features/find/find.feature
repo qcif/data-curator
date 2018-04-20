@@ -21,6 +21,7 @@ Feature: Find data
   - The column that cursor is in should be displayed in the search panel 
   - The table that is active should be displayed in the search panel 
   - The search order is down columns and then across rows 
+  - Find in Table
   
   USER INTERFACE
   ==============
@@ -41,7 +42,7 @@ Feature: Find data
     And a search value and optionally search constraints have been entered
     When "Find Next" is invoked
     Then all the cells with values that match the search value and comply with the search constraints should be shaded green
-    And the cursor should be moved to first cell at or after the current cell that matches the search value and complies with the search constraints  
+    And the cursor should be moved to first cell after the current cell that matches the search value and complies with the search constraints  
     And that cell's border should be highlighted
     And a count of all the values that match the search value and comply with the search constraints should be displayed
     And a number representing which instance of the data that has been found value should be displayed
@@ -51,7 +52,7 @@ Feature: Find data
     And a search value and optionally search constraints have been entered
     When "Find Previous" is invoked
     Then all cells with values that match the search value and comply with the search constraints should be highlighted
-    And the cursor should be moved to previous cell at or after the current cell that matches the search value and complies with the search constraints  
+    And the cursor should be moved to previous cell after the current cell that matches the search value and complies with the search constraints  
     And that cell's border should be highlighted
     And a count of all the values that match the search value and comply with the search constraints should be displayed
     And a number representing which instance of the data that has been found value should be displayed
