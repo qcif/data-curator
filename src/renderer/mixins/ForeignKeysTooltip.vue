@@ -7,16 +7,19 @@ export default {
     externalLink,
     'tooltipForeignkey': {
       components: {externalLink},
-      template: `<div id="tooltip-foreignkey">A
+      props: ['index'],
+      template: `<div :id="'tooltip-foreignkey' + index">A
       <externalLink text="Foreign Key" url="http://frictionlessdata.io/specs/table-schema/#foreign-keys"/> must exist in the referenced table and column(s)</div>`
     },
     'tooltipForeignkeyTable': {
       components: {externalLink},
-      template: `<div id="tooltip-foreignkey-table">The table used to reference the foreign key(s).</div>`
+      props: ['index'],
+      template: `<div :id="'tooltip-foreignkey-table' + index">The table used to reference the foreign key(s).</div>`
     },
     'tooltipForeignkeyTablekey': {
       components: {externalLink},
-      template: `<div id="tooltip-foreignkey-tablekey">The table columnn header(s) used to reference the foreign key(s).</div>`
+      props: ['index'],
+      template: `<div :id="'tooltip-foreignkey-tablekey' + index">The table columnn header(s) used to reference the foreign key(s).</div>`
     }
   }
 }

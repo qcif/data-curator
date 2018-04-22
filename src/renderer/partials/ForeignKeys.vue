@@ -2,9 +2,9 @@
 <div id="foreignKeyFields">
   <div v-for="(foreignKey,index) in hotForeignKeys"  class="foreign col-sm-12">
     <div class="inputs-container">
-      <component :key="getLocalComponentKey(index)" is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="getSelectedLocalKeys(index)" :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)" labelName="Foreign key(s)" tooltipId="tooltip-foreignkey" tooltipView="tooltipForeignkey" />
-      <component v-if="isHeadersSelected && fkPackages[index] === false" :key="getTableComponentKey(index)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="getSelectedTable(index)" :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)" labelName="Reference Table" tooltipId="tooltip-foreignkey-table" tooltipView="tooltipForeignkeyTable"/>
-      <component v-if="isHeadersSelected && fkPackages[index] === false" :key="getForeignComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" tooltipId="tooltip-foreignkey-tablekey" tooltipView="tooltipForeignkeyTablekey" />
+      <component :key="getLocalComponentKey(index)" is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="getSelectedLocalKeys(index)" :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)" labelName="Foreign key(s)" :tooltipId="'tooltip-foreignkey' + index" tooltipView="tooltipForeignkey" :index="index" />
+      <component v-if="isHeadersSelected && fkPackages[index] === false" :key="getTableComponentKey(index)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="getSelectedTable(index)" :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)" labelName="Reference Table" :tooltipId="'tooltip-foreignkey-table' + index" tooltipView="tooltipForeignkeyTable" :index="index" />
+      <component v-if="isHeadersSelected && fkPackages[index] === false" :key="getForeignComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" :tooltipId="'tooltip-foreignkey-tablekey' + index" tooltipView="tooltipForeignkeyTablekey" :index="index"/>
     </div>
     <button type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)">
       <span class="glyphicon glyphicon-minus"/>
@@ -13,12 +13,6 @@
       <label v-if="fkPackages[index] === true" class="control-label">Reference Package</label>
       <div class="fk-package" :class="{ 'right': !fkPackages[index]}">
         <input v-if="fkPackages[index] === true" class="form-control input-sm" type="text" id="fk-package" name="fk-package" :value="getFkPackage(index)" @input="setFkPackage(index, currentLocalHotId, $event.target.value)" />
-        <button v-if="fkPackages[index] === true" type="button" class="btn btn-danger btn-sm" @click="removeFkPackage(index)">
-          <span class="glyphicon glyphicon-minus"/>
-        </button>
-        <button v-if="fkPackages[index] === false" type="button" class="add-foreign btn btn-primary btn-sm" @click="addFkPackage(index)">
-          <span class="fas fa-exchange-alt"/>Switch to FK Package URL
-        </button>
       </div>
       <div v-if="fkPackages[index] === true">
         <label class="control-label">Reference Table</label>
@@ -26,6 +20,9 @@
         <label class="control-label">Reference Column(s)</label>
         <input class="form-control input-sm" type="text" id="fk-package-columns" name="fk-package-columns" :value="getFkPackageColumns(index)" @input="setFkPackageColumns(index, currentLocalHotId, $event.target.value)" />
       </div>
+      <button type="button" class="add-foreign btn btn-primary btn-sm" @click="toggleFkPackage(index)">
+        <span class="fas fa-exchange-alt"/>{{fkButtonMessage(index)}}
+      </button>
     </div>
   </div>
   <div class="button-container">
@@ -74,6 +71,7 @@ export default {
         this.currentLocalHotId = hotId
         this.allForeignKeys = this.getAllForeignKeys()
         let foreignKeys = this.allForeignKeys[hotId]
+        this.updateFkType(foreignKeys)
         return foreignKeys
       },
       watch() {
@@ -85,7 +83,6 @@ export default {
   data() {
     return {
       localHeaderNames: [],
-      foreignTableNames: [],
       currentLocalHotId: '',
       allForeignKeys: {},
       allTableNames: [],
@@ -109,6 +106,15 @@ export default {
     ...mapMutations([
       'pushForeignKeysForeignPackageForTable'
     ]),
+    updateFkType: function(foreignKeys) {
+      for (const [index, foreignKey] of foreignKeys.entries()) {
+        let reference = foreignKey && foreignKey.reference
+        this.fkPackages[index] = !!(reference && reference.package && reference.package.trim().length > 0)
+      }
+    },
+    fkButtonMessage(index) {
+      return this.fkPackages[index] ? 'Switch to FK Local Table' : 'Switch to FK Package URL'
+    },
     getFkPackageColumns: function(index) {
       let columnArray = this.getSelectedForeignKeys(index)
       return _.join(columnArray)
@@ -126,13 +132,10 @@ export default {
       return table
     },
     setFkPackageTable: function(index, hotId, value) {
-      console.log(`index is ${index}`)
-      console.log(`hot id is ${hotId}`)
-      console.log(`value is ${value}`)
       this.pushForeignKeysForeignTableForTable({ hotId: hotId, index: index, resource: value })
     },
-    addFkPackage: function(index) {
-      this.fkPackages[index] = true
+    toggleFkPackage: function(index) {
+      this.fkPackages[index] = !this.fkPackages[index]
       this.$forceUpdate()
     },
     removeFkPackage: function(index) {
@@ -234,6 +237,9 @@ export default {
       let foreignKey = foreignKeys[index] || {}
       let reference = foreignKey.reference || {}
       let table = reference.resource || this.getCurrentTitle()
+      if (_.indexOf(this.allTableNames, table) === -1) {
+        table = this.allTableNames[0]
+      }
       return function() {
         return table
       }
@@ -267,7 +273,6 @@ export default {
     pushSelectedForeignKeys: function(index, hotId) {
       let vueSetProperty = this.pushForeignKeysForeignFieldsForTable
       return function(headers) {
-        console.log(headers)
         let object = { hotId: hotId, index: index, fields: headers }
         vueSetProperty(object)
       }
