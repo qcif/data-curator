@@ -12,7 +12,7 @@
     <div id="fk-package" class="clearfix">
       <label v-if="fkPackages[index] === true" class="control-label">Reference Package</label>
       <div class="fk-package" :class="{ 'right': !fkPackages[index]}">
-        <input v-if="fkPackages[index] === true" class="form-control input-sm" type="text" :id="'fk-package' + index" :value="getFkPackage(index)" @input="setFkPackage(index, currentLocalHotId, $event.target.value)" :name="'fk-package' + index"/>
+        <input v-if="fkPackages[index] === true" class="form-control input-sm" type="text" :id="'fk-package' + index" :value="getFkPackage(index)" @input="setFkPackage(index, currentLocalHotId, $event.target.value)" :name="'fk-package' + index" @blur="removeFkPackageForErrors(index, currentLocalHotId)" />
       </div>
       <div v-if="fkPackages[index] === true && errors.has('fk-package' + index)" class="row help validate-danger">
         {{ errors.first('fk-package' + index)}}
@@ -75,7 +75,7 @@ export default {
         this.currentLocalHotId = hotId
         this.allForeignKeys = this.getAllForeignKeys()
         let foreignKeys = this.allForeignKeys[hotId]
-        this.updateFkType(foreignKeys)
+        this.updateFkType(foreignKeys, hotId)
         return foreignKeys
       },
       watch() {
@@ -108,9 +108,9 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'pushForeignKeysForeignPackageForTable', 'removeForeignKeysForeignPackageForTable'
+      'pushForeignKeysForeignPackageForTable', 'removeForeignKeysForeignPackageForTable', 'resetForeignKeysForeignTableForTable'
     ]),
-    updateFkType: function(foreignKeys) {
+    updateFkType: function(foreignKeys, hotId) {
       for (const [index, foreignKey] of foreignKeys.entries()) {
         let reference = foreignKey && foreignKey.reference
         this.fkPackages[index] = !!(reference && reference.package && reference.package.trim().length > 0)
@@ -130,7 +130,6 @@ export default {
     getFkPackageTable: function(index) {
       let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
       let foreignKey = foreignKeys[index] || {}
-      console.log(foreignKey.reference)
       let reference = foreignKey.reference || {}
       let table = reference.resource
       return table
@@ -139,7 +138,12 @@ export default {
       this.pushForeignKeysForeignTableForTable({ hotId: hotId, index: index, resource: value })
     },
     toggleFkPackage: function(index) {
-      this.fkPackages[index] = !this.fkPackages[index]
+      let hasPackage = !this.fkPackages[index]
+      this.fkPackages[index] = hasPackage
+      if (!hasPackage) {
+        this.removeForeignKeysForeignPackageForTable({ index: index, hotId: this.currentLocalHotId })
+        this.resetForeignKeysForeignTableForTable({ index: index, hotId: this.currentLocalHotId })
+      }
       this.$forceUpdate()
     },
     getFkPackage: function(index) {
@@ -148,12 +152,14 @@ export default {
       let reference = foreignKey.reference || {}
       return reference.package
     },
-    setFkPackage: function(index, hotId, value) {
-      this.validatePackageUrl({field: `fk-package${index}`, value: value, rules: 'url:true', index: index})
+    setFkPackage: async function(index, hotId, value) {
       this.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: value })
+      this.validatePackageUrl(`fk-package${index}`, index, hotId, value)
     },
-    removeFkPackage: function(index, hotId) {
-      this.removeForeignKeysForeignPackageForTable({ hotId: hotId, index: index })
+    removeFkPackageForErrors: function(index, hotId) {
+      if (this.errors.has('fk-package' + index)) {
+        this.removeForeignKeysForeignPackageForTable({ index: index, hotId: hotId })
+      }
     },
     getAllForeignKeysFromCurrentHotId: function() {
       let currentHotId = this.currentLocalHotId
@@ -242,7 +248,8 @@ export default {
       let reference = foreignKey.reference || {}
       let table = reference.resource || this.getCurrentTitle()
       if (_.indexOf(this.allTableNames, table) === -1) {
-        table = this.allTableNames[0]
+        this.resetForeignKeysForeignTableForTable({ hotId: this.currentLocalHotId, index: index })
+        table = this.getCurrentTitle()
       }
       return function() {
         return table
@@ -284,13 +291,12 @@ export default {
     getCurrentTitle: function() {
       return this.tabTitle(this.getActiveTab)
     },
-    validatePackageUrl: async function(field, value) {
+    validatePackageUrl: async function(field, index, hotId, value) {
       // keep url:true as string for validation to work correctly
       try {
         let hasValidUrl = await this.validate(field, value, 'url:true')
         if (!hasValidUrl) {
           this.$validator.errors.add({field: field, msg: 'The package field must be a valid url.'})
-          this.removeFkPackage(field)
         }
       } catch (err) {
         console.log('Problem with validation', err)
