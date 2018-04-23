@@ -107,7 +107,7 @@ export default {
         let hasValidPath = await this.validatePath(field, value)
         this.$validator.detach(field)
         if (!hasValidUrl && !hasValidPath) {
-          this.$validator.errors.add({field: field, msg: 'The path field must be a valid email or path.'})
+          this.$validator.errors.add({field: field, msg: 'The path field must be a valid url or path.'})
         }
       } catch (err) {
         console.log('Problem with validation', err)
@@ -121,18 +121,6 @@ export default {
       return this.validate(field, value, {
         regex: this.regexForPath
       })
-    },
-    validate: async function(field, value, rules) {
-      let isValid = true
-      // ensure there are no other fields by this name
-      this.$validator.detach(field)
-      await this.$validator.attach({
-        name: field,
-        rules: rules
-      })
-      isValid = await this.$validator.validate(field, value)
-      this.$validator.detach(field)
-      return isValid
     },
     sourceValidationRules: function(prop, index) {
       switch (prop) {
