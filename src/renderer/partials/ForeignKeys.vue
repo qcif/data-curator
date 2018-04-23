@@ -12,7 +12,10 @@
     <div id="fk-package" class="clearfix">
       <label v-if="fkPackages[index] === true" class="control-label">Reference Package</label>
       <div class="fk-package" :class="{ 'right': !fkPackages[index]}">
-        <input v-if="fkPackages[index] === true" class="form-control input-sm" type="text" id="fk-package" name="fk-package" :value="getFkPackage(index)" @input="setFkPackage(index, currentLocalHotId, $event.target.value)" />
+        <input v-if="fkPackages[index] === true" class="form-control input-sm" type="text" :id="'fk-package' + index" :value="getFkPackage(index)" @input="setFkPackage(index, currentLocalHotId, $event.target.value)" :name="'fk-package' + index"/>
+      </div>
+      <div v-if="fkPackages[index] === true && errors.has('fk-package' + index)" class="row help validate-danger">
+        {{ errors.first('fk-package' + index)}}
       </div>
       <div v-if="fkPackages[index] === true">
         <label class="control-label">Reference Table</label>
@@ -51,6 +54,7 @@ import {
   allTabsTitles$,
   allTablesAllColumnNames$
 } from '@/rxSubject.js'
+import ValidationRules from '../mixins/ValidationRules'
 import VueRx from 'vue-rx'
 import Vue from 'vue'
 Vue.use(VueRx, {
@@ -61,7 +65,7 @@ export default {
     tablekeys,
     tableheaderkeys
   },
-  mixins: [RelationKeys],
+  mixins: [RelationKeys, ValidationRules],
   name: 'foreignkeys',
   props: ['setProperty', 'getPropertyGivenHotId', 'propertyName', 'currentHotId'],
   asyncComputed: {
@@ -149,6 +153,7 @@ export default {
       return reference.package
     },
     setFkPackage: function(index, hotId, value) {
+      this.validatePackageUrl(`fk-package${index}`, value, 'url:true')
       this.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: value })
     },
     getAllForeignKeysFromCurrentHotId: function() {
@@ -279,6 +284,17 @@ export default {
     },
     getCurrentTitle: function() {
       return this.tabTitle(this.getActiveTab)
+    },
+    validatePackageUrl: async function(field, value) {
+      // keep url:true as string for validation to work correctly
+      try {
+        let hasValidUrl = await this.validate(field, value, 'url:true')
+        if (!hasValidUrl) {
+          this.$validator.errors.add({field: field, msg: 'The package field must be a valid url.'})
+        }
+      } catch (err) {
+        console.log('Problem with validation', err)
+      }
     }
   },
   created: function() {
@@ -294,4 +310,7 @@ export default {
 </script>
 <style lang="styl" scoped>
 @import '~static/css/foreignkeys'
+</style>
+<style lang="styl" scoped>
+@import '~static/css/validationrules'
 </style>
