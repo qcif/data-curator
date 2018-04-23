@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'pushForeignKeysForeignPackageForTable'
+      'pushForeignKeysForeignPackageForTable', 'removeForeignKeysForeignPackageForTable'
     ]),
     updateFkType: function(foreignKeys) {
       for (const [index, foreignKey] of foreignKeys.entries()) {
@@ -142,10 +142,6 @@ export default {
       this.fkPackages[index] = !this.fkPackages[index]
       this.$forceUpdate()
     },
-    removeFkPackage: function(index) {
-      this.fkPackages[index] = false
-      this.$forceUpdate()
-    },
     getFkPackage: function(index) {
       let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
       let foreignKey = foreignKeys[index] || {}
@@ -153,8 +149,11 @@ export default {
       return reference.package
     },
     setFkPackage: function(index, hotId, value) {
-      this.validatePackageUrl(`fk-package${index}`, value, 'url:true')
+      this.validatePackageUrl({field: `fk-package${index}`, value: value, rules: 'url:true', index: index})
       this.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: value })
+    },
+    removeFkPackage: function(index, hotId) {
+      this.removeForeignKeysForeignPackageForTable({ hotId: hotId, index: index })
     },
     getAllForeignKeysFromCurrentHotId: function() {
       let currentHotId = this.currentLocalHotId
@@ -291,6 +290,7 @@ export default {
         let hasValidUrl = await this.validate(field, value, 'url:true')
         if (!hasValidUrl) {
           this.$validator.errors.add({field: field, msg: 'The package field must be a valid url.'})
+          this.removeFkPackage(field)
         }
       } catch (err) {
         console.log('Problem with validation', err)
