@@ -35,6 +35,7 @@ async function loadPackageJson(json, mainWindow) {
   try {
     const dataPackage = await Package.load(json)
     console.log(dataPackage)
+    return dataPackage
   } catch (error) {
     // console.log(`There was a problem loading the package: ${json}`, error)
     dialog.showMessageBox(mainWindow, {
@@ -46,5 +47,4 @@ async function loadPackageJson(json, mainWindow) {
 If the data package is a URL, please check that the URL exists.`
     })
   }
-  return dataPackage
 }
