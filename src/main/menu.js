@@ -1,4 +1,5 @@
 import {openFile, saveFileAs, saveFile, importDataPackage} from './file.js'
+import {showUrlDialog} from './url.js'
 import {createWindowTab, focusMainWindow} from './windows.js'
 import {importExcel} from './excel.js'
 import {showKeyboardHelp} from './help.js'
@@ -34,11 +35,10 @@ class AppMenu {
             //        label: 'Open Google Sheet...',
             //        enabled: false
           }, {
-            label: 'Open Data Package...',
-            enabled: true,
-            click() {
-              importDataPackage()
-            }
+            label: 'Open Data Package',
+            submenu: this.openDataPackageSubMenu,
+            enabled: true
+          }, {
             // Placeholder for future feature
             //      }, {
             //        label: 'Open Recent',
@@ -59,7 +59,7 @@ class AppMenu {
             //      }, {
             //        label: 'Settings',
             //        enabled: false
-          }, {
+          // }, {
             type: 'separator'
           }, {
             label: 'Save',
@@ -393,6 +393,23 @@ class AppMenu {
     return option
   }
 
+  buildOpenDataPackageMenu() {
+    this.openDataPackageSubMenu = [{
+      label: 'Zip File...',
+      enabled: true,
+      click() {
+        importDataPackage()
+      }
+    }, {
+      label: 'URL...',
+      enabled: true,
+      click() {
+        // downloadDataPackageJson()
+        showUrlDialog()
+      }
+    }]
+  }
+
   updateMenuForDarwin() {
     const webContents = this.webContents
     if (process.platform === 'darwin') {
@@ -487,6 +504,7 @@ class AppMenu {
   constructor() {
     this.initContainers()
     this.buildAllMenusForFileFormats()
+    this.buildOpenDataPackageMenu()
     this.initTemplate()
     this.updateMenuForDarwin()
     this.updateMenuForNonDarwin()
@@ -504,6 +522,20 @@ export function getSubMenuFromMenu(menuLabel, subMenuLabel) {
   let menu = Menu.getApplicationMenu().items.find(x => x.label === menuLabel)
   let subMenu = menu.submenu.items.find(x => x.label === subMenuLabel)
   return subMenu
+}
+
+export function enableSubMenuItemsFromMenuObject(menu, labels) {
+  for (const label of labels) {
+    const subMenu = menu.submenu.items.find(x => x.label === label)
+    subMenu.enabled = true
+  }
+}
+
+export function disableSubMenuItemsFromMenuObject(menu, labels) {
+  for (const label of labels) {
+    const subMenu = menu.submenu.items.find(x => x.label === label)
+    subMenu.enabled = false
+  }
 }
 
 export function clickLabelsOnMenu(args) {
