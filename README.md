@@ -2,8 +2,8 @@
 [![Travis Build Status](https://travis-ci.org/ODIQueensland/data-curator.svg)](https://travis-ci.org/ODIQueensland/data-curator)
 [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/?svg=true)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
 
- :sparkles: [Download Data Curator](https://github.com/ODIQueensland/data-curator/releases/latest) for Windows or macOS.
-:bulb:[Request a new feature](https://github.com/ODIQueensland/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=Stephen-Gates) :beetle: [Report a bug](https://github.com/ODIQueensland/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=Stephen-Gates) :rocket: [View our plans](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open)
+ :sparkles: [Download Data Curator](https://github.com/ODIQueensland/data-curator/releases/latest) for Windows or macOS. :sparkles: 
+[Request a new feature](https://github.com/ODIQueensland/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=Stephen-Gates) :bulb: [Report a bug](https://github.com/ODIQueensland/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=Stephen-Gates) :beetle: [View our plans](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open) :rocket: 
 
 # Data Curator
 
