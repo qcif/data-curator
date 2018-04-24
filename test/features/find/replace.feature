@@ -28,7 +28,7 @@ Feature: Replace data
     And a search and replacement value has been provided
     And the "in column" constraint is set
     When "Replace Next" is invoked
-    Then the first value in the current column that matches the search value at or after the current cursor position should be replaced with the replacement value
+    Then the first value in the current column that matches the search value after the current cursor position should be replaced with the replacement value
     And the cursor should be moved to that cell
 
   Scenario: Replace Previous in column
@@ -36,7 +36,7 @@ Feature: Replace data
     And a search and replacement value has been provided
     And the "in column" constraint is set
     When "Replace Previous" is invoked
-    Then the first value in the current column that matches the search value at or before the current cursor position should be replaced with the replacement value
+    Then the first value in the current column that matches the search value before the current cursor position should be replaced with the replacement value
     And the cursor should be moved to that cell
 
   Scenario: Replace All in column
@@ -51,7 +51,7 @@ Feature: Replace data
     And a search and replacement value has been provided
     And the "in table" constraint is set
     When "Replace Next" is invoked
-    Then the first value in the table that matches the search value at or after the current cursor position should be replaced with the replacement value
+    Then the first value in the table that matches the search value after the current cursor position should be replaced with the replacement value
     And the cursor should be moved to that cell
   
   Scenario: Replace Previous in table
@@ -59,7 +59,7 @@ Feature: Replace data
     And a search and replacement value has been provided
     And the "in table" constraint is set
     When "Replace Next" is invoked
-    Then the first value in the table that matches the search value at or before the current cursor position should be replaced with the replacement value
+    Then the first value in the table that matches the search value before the current cursor position should be replaced with the replacement value
     And the cursor should be moved to that cell
 
   Scenario: Replace All in table
