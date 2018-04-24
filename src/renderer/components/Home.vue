@@ -404,8 +404,8 @@ export default {
     calculatePanelDiff: function() {
       this.panelWidthDiff = this.widthMain1 - this.widthInner1
       this.panelHeightDiff = this.heightMain1 - this.heightInner1
-      console.log(`panel diff: ${this.panelWidthDiff}`)
-      console.log(`panel diff: ${this.panelHeightDiff}`)
+      // console.log(`panel diff: ${this.panelWidthDiff}`)
+      // console.log(`panel diff: ${this.panelHeightDiff}`)
     },
     testSideMain: function() {
       // TODO : refactor this as an event that plays once only rather than a continuous condition-check
@@ -414,7 +414,7 @@ export default {
         this.saveHotPanelDimensions()
         this.calculatePanelDiff()
       }
-      console.log(`diff: ${this.panelWidthDiff}`)
+      // console.log(`diff: ${this.panelWidthDiff}`)
       let panelWidthDiff = this.panelWidthDiff
       window.setTimeout(function() {
         document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
@@ -432,7 +432,7 @@ export default {
         this.saveHotPanelDimensions()
         this.calculatePanelDiff()
       }
-      console.log(`diff: ${this.panelHeightDiff}`)
+      // console.log(`diff: ${this.panelHeightDiff}`)
       let panelHeightDiff = this.panelHeightDiff
       window.setTimeout(function() {
         document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
