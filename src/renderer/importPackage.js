@@ -5,6 +5,7 @@ import unzipper from 'unzipper'
 import etl from 'etl'
 import {ipcRenderer as ipc} from 'electron'
 import {Resource, Package} from 'datapackage'
+import {dataResourceToFormat} from '@/file-formats.js'
 
 export async function unzipFile(zipSource, storeCallback) {
   try {
@@ -112,20 +113,11 @@ async function getAllResourcePaths(dataPackageJson, unzipDestination) {
   let resourcePaths = []
   for (let dataResource of dataPackageJson.resources) {
     let fileDestination = `${unzipDestination}/${dataResource.path}`
-    let format = dataResourcetoFormat(dataResource)
+    let format = dataResourceToFormat(dataResource)
     await ipc.send('openFileIntoTab', fileDestination, format)
     resourcePaths.push(dataResource.path)
   }
   return resourcePaths
-}
-
-function dataResourcetoFormat(dataResource) {
-  let format = {}
-  _.assign(format, dataResource)
-  for (const key of ['missingValues', 'name', 'path', 'profile', 'schema']) {
-    _.unset(format, key)
-  }
-  return format
 }
 
 function validateResourcesAndDataFiles(resourcePaths, csvPaths) {
