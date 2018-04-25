@@ -29,14 +29,19 @@ export function showUrlDialog() {
       if (browserWindow) {
         browserWindow.close()
       }
-      loadPackage(urlText)
-      // mainWindow.webContents.send('importDataPackageJsonUrl', urlText)
+      try {
+        loadPackage(urlText)
+      } catch (error) {
+        console.log(`There was a problem loading package or resource(s)`, error)
+        mainWindow.webContents.send('closeLoadingScreen')
+      }
     })
   })
 }
 
 async function loadPackage(urlText) {
   const mainWindow = focusMainWindow()
+  mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading package URL..')
   const dataPackageJson = await loadPackageJson(urlText, mainWindow)
   console.log(dataPackageJson.descriptor)
   console.log(dataPackageJson.errors)
@@ -78,23 +83,29 @@ async function loadPackageJson(json, mainWindow) {
 `The data package, ${json}, could not be loaded.
 If the data package is a URL, please check that the URL exists.`
     })
+    throw new Error(`Unable to find URL: ${json}`)
   }
 }
 
 async function loadResources(dataPackageJson, mainWindow) {
-  try {
-    for (const resource of dataPackageJson.resourceNames) {
-      console.log(`loading resource ${resource}`)
-      const dataResource = dataPackageJson.getResource(resource)
-      console.log(dataResource)
-      console.log(dataResource.descriptor)
-      const format = dataResourceToFormat(dataResource.descriptor)
-      console.log('format is: ', format)
-      let data = await dataResource.read()
-      console.log(data)
-      mainWindow.webContents.send('addTabWithFormattedData', data, format)
-    }
-  } catch (error) {
-    console.log(`There was a problem loading the package`, error)
+  for (const resource of dataPackageJson.resourceNames) {
+    mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading next resource...')
+    console.log(`loading resource ${resource}`)
+    const dataResource = dataPackageJson.getResource(resource)
+    console.log(dataResource)
+    console.log(dataResource.descriptor)
+    console.log(dataResource.descriptor.schema)
+    console.log(dataResource.descriptor.schema.fields)
+    const format = dataResourceToFormat(dataResource.descriptor)
+    console.log('format is: ', format)
+    let data = await dataResource.read()
+    mainWindow.webContents.send('closeLoadingScreen')
+    // datapackage-js separates headers - add back to use default DC behaviour
+    let dataWithHeaders = _.concat([dataResource.headers], data)
+    console.log(dataWithHeaders)
+    // ipc.once('loadingScreenIsClosed', () => {
+    // console.log('close message received')
+    mainWindow.webContents.send('addTabWithFormattedDataAndSchema', dataWithHeaders, format, dataResource.descriptor.schema)
+    // })
   }
 }

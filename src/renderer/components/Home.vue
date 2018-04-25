@@ -62,7 +62,7 @@
                 </li>
               </ul>
             </li>
-            <li class="tab-add" @click="addTab" v-tooltip.right="tooltip('tooltip-add-tab')">
+            <li class="tab-add" @click="addTab()" v-tooltip.right="tooltip('tooltip-add-tab')">
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
             <component is="tooltipAddTab" />
@@ -319,22 +319,12 @@ export default {
         sideNavView: 'export'
       }
       ],
-      defaultTableProperties: [{
-        key: 'profile',
-        value: 'tabular-data-resource'
+      defaultTableProperties: {
+        profile: 'tabular-data-resource',
+        format: 'csv',
+        mediatype: 'text/csv',
+        encoding: 'utf-8'
       },
-      {
-        key: 'format',
-        value: 'csv'
-      },
-      {
-        key: 'mediatype',
-        value: 'text/csv'
-      },
-      {
-        key: 'encoding',
-        value: 'utf-8'
-      }],
       defaultPackageProperties: [{
         key: 'profile',
         value: 'tabular-data-package'
@@ -601,34 +591,37 @@ export default {
       let allEditors = document.querySelectorAll('#csvContent .editor')
       return allEditors[allEditors.length - 1]
     },
-    addTabWithFormattedDataFile: function(data, format, filename) {
-      this.initTab()
-      let vueLatestHotContainer = this.latestHotContainer
+    addTabWithFilename: function(data, format, filename, schema={}) {
+      this.createHotDataContainer(data, format, schema)
       this.$nextTick(function() {
-        this.loadDataIntoContainer(vueLatestHotContainer(), data, format)
         this.pushTabObject({id: this.activeTab, filename: filename})
       })
     },
-    addTabWithFormattedData: function(data, format) {
-      this.initTab()
-      let vueLatestHotContainer = this.latestHotContainer
-      this.$nextTick(function() {
-        this.loadDataIntoContainer(vueLatestHotContainer(), data, format)
-      })
+    addTab: function(data = '"","",""', format, schema) {
+      this.createHotDataContainer(data, format, schema)
     },
-    addTabWithData: function(data) {
-      this.initTab()
-      let vueLatestHotContainer = this.latestHotContainer
-      this.$nextTick(function() {
-        this.loadDataIntoContainer(vueLatestHotContainer(), data)
-      })
+    setActiveTabWrapper: function(tabId) {
+      let hot = HotRegister.getActiveInstance()
+      if (hot) {
+        hot.deselectCell()
+      }
+      this.setActiveTab(tabId)
     },
-    addTab: function() {
+    showLoadingScreen: function(message) {
+      this.loadingDataMessage = message
+    },
+    closeLoadingScreen: function() {
+      this.loadingDataMessage = false
+      console.log(`loading data message: ${this.loadingDataMessage}`)
+    },
+    createHotDataContainer: function(data, format={}, schema={}) {
       this.initTab()
       let vueLatestHotContainer = this.latestHotContainer
       this.$nextTick(function() {
-        // update latest tab object with content
-        this.loadDefaultDataIntoContainer(vueLatestHotContainer())
+        this.registerContainer(vueLatestHotContainer())
+        const updatedFormat = this.mergeOntoCsvFormat(format)
+        const hotId = this.loadDataIntoLatestHot(data, updatedFormat)
+        this.initHotProperties(hotId, schema)
       })
     },
     initTab: function() {
@@ -642,55 +635,55 @@ export default {
       this.setActiveTabWrapper(nextTabId)
       this.pushTab(nextTabId)
     },
-    setActiveTabWrapper: function(tabId) {
-      let hot = HotRegister.getActiveInstance()
-      if (hot) {
-        hot.deselectCell()
-      }
-      this.setActiveTab(tabId)
-    },
-    loadDefaultDataIntoContainer: function(container) {
-      let defaultData = '"","",""'
-      this.loadDataIntoContainer(container, defaultData)
-    },
-    showLoadingScreen: function(message) {
-      this.loadingDataMessage = message
-    },
-    closeLoadingScreen: function() {
-      this.loadingDataMessage = false
-    },
-    loadDataIntoContainer: function(container, data, format = {}) {
-      let defaultFormat = _.assign({}, fileFormats.csv)
-      let updatedFormat = _.assign(defaultFormat, format)
-      console.log('updated formt')
-      console.log(updatedFormat)
-      console.log(fileFormats.csv)
+    registerContainer: function(container) {
       HotRegister.register(container, {
         selectionListener: this.selectionListener,
         deselectionListener: this.deselectionListener,
         loadingStartListener: this.showLoadingScreen,
         loadingFinishListener: this.closeLoadingScreen
-      },
-      findReplace.data().hotParameters)
+      }, findReplace.data().hotParameters
+      )
       addHotContainerListeners(container)
+    },
+    mergeOntoCsvFormat: function(format) {
+      let defaultFormat = _.assign({}, fileFormats.csv)
+      let updatedFormat = _.assign(defaultFormat, format)
+      console.log('updated formt')
+      console.log(updatedFormat)
+      console.log(fileFormats.csv)
+      return updatedFormat
+    },
+    loadDataIntoLatestHot: function(data, format) {
       let hot = HotRegister.getActiveInstance()
       let activeHotId = hot.guid
       let activeTabId = this.activeTab
       // hack! - force data to wait for latest render e.g, for loader message
       window.setTimeout(function() {
-        loadData(activeHotId, data, updatedFormat)
+        loadData(activeHotId, data, format)
         getCurrentColumnIndexOrMin()
       }, 1)
       this.pushHotTab({
         'hotId': activeHotId,
         'tabId': activeTabId
       })
-      this.pushDefaultTableProperties(hot.guid)
+      return activeHotId
     },
-    pushDefaultTableProperties: function(hotId) {
-      this.defaultTableProperties.forEach(x => {
-        this.pushTableProperty({hotId: hotId, key: x.key, value: x.value})
-      })
+    initHotProperties: function(hotId, schema) {
+      // TODO : move this to similar logic in importDataPackage to tidy up
+      if (!_.isEmpty(schema)) {
+        let columnHotIdProperties = {}
+        columnHotIdProperties[hotId] = [...schema.fields]
+        this.resetColumnPropertiesToObject(columnHotIdProperties)
+        let tableHotIdProperties = {}
+        let tableProperties = _.assign({}, this.defaultTableProperties)
+        for (let property in schema) {
+          if (property !== 'fields') {
+            tableProperties[property] = schema[property]
+          }
+        }
+        tableHotIdProperties[hotId] = tableProperties
+        this.resetTablePropertiesToObject(tableHotIdProperties)
+      }
     },
     pushDefaultPackageProperties: function() {
       this.defaultPackageProperties.forEach(x => {
@@ -1029,21 +1022,23 @@ export default {
     ipc.on('toggleActiveHeaderRow', function() {
       vueToggleHeader()
     })
-    const vueAddTabWithData = this.addTabWithData
-    ipc.on('addTabWithData', function(e, data) {
-      vueAddTabWithData(data)
-    })
-    const vueAddTabWithFormattedData = this.addTabWithFormattedData
-    ipc.on('addTabWithFormattedData', function(e, data, format) {
-      vueAddTabWithFormattedData(data)
-    })
-    const vueAddTabWithFormattedDataFile = this.addTabWithFormattedDataFile
-    ipc.on('addTabWithFormattedDataFile', function(e, data, format, filename) {
-      vueAddTabWithFormattedDataFile(data, format, filename)
-    })
     const vueAddTab = this.addTab
     ipc.on('addTab', function() {
       vueAddTab()
+    })
+    ipc.on('addTabWithData', function(e, data) {
+      vueAddTab(data)
+    })
+    ipc.on('addTabWithFormattedData', function(e, data, format) {
+      vueAddTab(data, format)
+    })
+    ipc.on('addTabWithFormattedDataAndSchema', function(e, data, format, schema) {
+      console.log('adding tab...')
+      vueAddTab(data, format, schema)
+    })
+    const vueAddTabWithFilename = this.addTabWithFilename
+    ipc.on('addTabWithFormattedDataFile', function(e, data, format, filename) {
+      vueAddTabWithFilename(data, format, filename)
     })
     const vueTriggerSideNav = this.triggerSideNav
     ipc.on('showSidePanel', function(event, arg) {
@@ -1080,6 +1075,20 @@ export default {
     const vueShowProvenanceErrors = this.showProvenanceErrors
     ipc.on('showProvenanceErrors', function(event, arg) {
       vueShowProvenanceErrors()
+    })
+    const vueShowLoadingScreen = this.showLoadingScreen
+    const vueCloseLoadingScreen = this.closeLoadingScreen
+    ipc.on('closeAndshowLoadingScreen', function(event, message) {
+      vueCloseLoadingScreen()
+      vueShowLoadingScreen(message)
+    })
+    ipc.on('closeLoadingScreen', function(event, isReplyRequired = false) {
+      vueCloseLoadingScreen()
+      console.log(`is reply required: ${isReplyRequired}`)
+      if (isReplyRequired) {
+        console.log('sending closed message')
+        ipc.sendSync('loadingScreenIsClosed')
+      }
     })
   },
   beforeCreate: function() {
