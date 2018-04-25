@@ -10,6 +10,17 @@ var stringify = require('csv-stringify/lib/sync')
 // { delimiter: ',', lineTerminator, quoteChar, doubleQuote, escapeChar, nullSequence, skipInitialSpace, header, caseSensitiveHeader, csvddfVersion }
 const frictionlessToCsvmapper = {delimiter: 'delimiter', lineTerminator: 'rowDelimiter', quoteChar: 'quote', escapeChar: 'escape', skipInitialSpace: 'ltrim'}
 export function loadDataIntoHot(hot, data, format) {
+  if (_.isArray(data)) {
+    loadArrayDataIntoHot(hot, data, format)
+  } else {
+    loadCsvDataIntoHot(hot, data, format)
+  }
+}
+
+export function loadCsvDataIntoHot(hot, data, format) {
+  console.time()
+  console.log(_.isArray(data))
+  console.timeEnd()
   let arrays
   // if no format specified, default to csv
   if (typeof format === 'undefined' || !format) {
@@ -17,11 +28,23 @@ export function loadDataIntoHot(hot, data, format) {
   } else {
     let csvOptions = dialectToCsvOptions(format.dialect)
     // let csv parser handle the line terminators
+    console.log('before loading...')
+    console.log(csvOptions)
     _.unset(csvOptions, 'rowDelimiter')
     // TODO: update to stream
     arrays = parse(data, csvOptions)
     pushCsvFormat(hot.guid, format)
   }
+
+  fixRaggedRows(arrays)
+  hot.loadData(arrays)
+  hot.render()
+  // frictionless csv header default = true
+  toggleHeaderNoFeedback(hot)
+}
+
+export function loadArrayDataIntoHot(hot, arrays, format) {
+  pushCsvFormat(hot.guid, format)
 
   fixRaggedRows(arrays)
   hot.loadData(arrays)

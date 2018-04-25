@@ -38,18 +38,19 @@ export function showUrlDialog() {
 async function loadPackage(urlText) {
   const mainWindow = focusMainWindow()
   const dataPackageJson = await loadPackageJson(urlText, mainWindow)
+  console.log(dataPackageJson.descriptor)
+  console.log(dataPackageJson.errors)
   if (!dataPackageJson.valid) {
     showInvalidMessage(urlText, mainWindow)
     return
   }
-  console.log(dataPackageJson.descriptor)
   tmp.file({ mode: '0644', prefix: 'datapackage-', postfix: '.json' }, function _tempFileCreated(err, path, fd) {
     if (err) throw err
 
     console.log('File: ', path)
     // console.log('Filedescriptor: ', fd);
   })
-  await loadResources(dataPackageJson)
+  await loadResources(dataPackageJson, mainWindow)
 }
 
 function showInvalidMessage(urlText, mainWindow) {
@@ -80,7 +81,7 @@ If the data package is a URL, please check that the URL exists.`
   }
 }
 
-async function loadResources(dataPackageJson) {
+async function loadResources(dataPackageJson, mainWindow) {
   try {
     for (const resource of dataPackageJson.resourceNames) {
       console.log(`loading resource ${resource}`)
@@ -91,6 +92,7 @@ async function loadResources(dataPackageJson) {
       console.log('format is: ', format)
       let data = await dataResource.read()
       console.log(data)
+      mainWindow.webContents.send('addTabWithFormattedData', data, format)
     }
   } catch (error) {
     console.log(`There was a problem loading the package`, error)

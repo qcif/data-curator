@@ -605,8 +605,15 @@ export default {
       this.initTab()
       let vueLatestHotContainer = this.latestHotContainer
       this.$nextTick(function() {
-        this.loadFormattedDataIntoContainer(vueLatestHotContainer(), data, format)
+        this.loadDataIntoContainer(vueLatestHotContainer(), data, format)
         this.pushTabObject({id: this.activeTab, filename: filename})
+      })
+    },
+    addTabWithFormattedData: function(data, format) {
+      this.initTab()
+      let vueLatestHotContainer = this.latestHotContainer
+      this.$nextTick(function() {
+        this.loadDataIntoContainer(vueLatestHotContainer(), data, format)
       })
     },
     addTabWithData: function(data) {
@@ -646,17 +653,18 @@ export default {
       let defaultData = '"","",""'
       this.loadDataIntoContainer(container, defaultData)
     },
-    loadDataIntoContainer: function(container, data) {
-      let defaultFormat = fileFormats.csv
-      this.loadFormattedDataIntoContainer(container, data, defaultFormat)
-    },
     showLoadingScreen: function(message) {
       this.loadingDataMessage = message
     },
     closeLoadingScreen: function() {
       this.loadingDataMessage = false
     },
-    loadFormattedDataIntoContainer: function(container, data, format) {
+    loadDataIntoContainer: function(container, data, format = {}) {
+      let defaultFormat = _.assign({}, fileFormats.csv)
+      let updatedFormat = _.assign(defaultFormat, format)
+      console.log('updated formt')
+      console.log(updatedFormat)
+      console.log(fileFormats.csv)
       HotRegister.register(container, {
         selectionListener: this.selectionListener,
         deselectionListener: this.deselectionListener,
@@ -670,7 +678,7 @@ export default {
       let activeTabId = this.activeTab
       // hack! - force data to wait for latest render e.g, for loader message
       window.setTimeout(function() {
-        loadData(activeHotId, data, format)
+        loadData(activeHotId, data, updatedFormat)
         getCurrentColumnIndexOrMin()
       }, 1)
       this.pushHotTab({
@@ -1024,6 +1032,10 @@ export default {
     const vueAddTabWithData = this.addTabWithData
     ipc.on('addTabWithData', function(e, data) {
       vueAddTabWithData(data)
+    })
+    const vueAddTabWithFormattedData = this.addTabWithFormattedData
+    ipc.on('addTabWithFormattedData', function(e, data, format) {
+      vueAddTabWithFormattedData(data)
     })
     const vueAddTabWithFormattedDataFile = this.addTabWithFormattedDataFile
     ipc.on('addTabWithFormattedDataFile', function(e, data, format, filename) {
