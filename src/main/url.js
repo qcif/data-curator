@@ -43,10 +43,15 @@ async function loadPackage(urlText) {
   const mainWindow = focusMainWindow()
   mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading package URL..')
   const dataPackageJson = await loadPackageJson(urlText, mainWindow)
+  if (!dataPackageJson) {
+    mainWindow.webContents.send('closeLoadingScreen')
+    return
+  }
   console.log(dataPackageJson.descriptor)
   console.log(dataPackageJson.errors)
   if (!dataPackageJson.valid) {
     showInvalidMessage(urlText, mainWindow)
+    mainWindow.webContents.send('closeLoadingScreen')
     return
   }
   tmp.file({ mode: '0644', prefix: 'datapackage-', postfix: '.json' }, function _tempFileCreated(err, path, fd) {
@@ -83,7 +88,8 @@ async function loadPackageJson(json, mainWindow) {
 `The data package, ${json}, could not be loaded.
 If the data package is a URL, please check that the URL exists.`
     })
-    throw new Error(`Unable to find URL: ${json}`)
+    // throw new Error()
+    // return Promise.reject(error)
   }
 }
 
