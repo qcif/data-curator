@@ -164,6 +164,7 @@ const mutations = {
     if (hotTab.tabId) {
       _.set(state.hotTabs, `${hotId}.tabId`, hotTab.tabId)
     }
+    console.log(state.hotTabs)
   },
   pushHotSelection(state, property) {
     _.set(state.hotTabs, `${property.hotId}.selected`, property.selected)
