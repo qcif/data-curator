@@ -12,6 +12,7 @@ import {dataResourceToFormat} from '../renderer/file-formats.js'
 // auto cleanup
 tmp.setGracefulCleanup()
 
+// TODO: handle errors by rejecting promises and throwing back up stack
 export function showUrlDialog() {
   let labels = ['Zip File...', 'URL...']
   let menu = getSubMenuFromMenu('File', 'Open Data Package')
@@ -25,7 +26,6 @@ export function showUrlDialog() {
       closeWindowSafely(browserWindow)
     })
     ipc.once('urlSubmitted', (e, urlText) => {
-      console.log(`text is ${urlText}`)
       closeWindowSafely(browserWindow)
       try {
         handleZipOrJson(urlText)
@@ -51,28 +51,21 @@ function handleZipOrJson(urlText) {
 export async function importDataPackageZipFromUrl(urlText) {
   const mainWindow = focusMainWindow()
   mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading zip URL..')
-  let response
   try {
-    response = await axios({
+    let response = await axios({
       method: 'get',
       url: urlText,
       responseType: 'stream'
-    })
-    let tmpZip = tmp.fileSync({
-      mode: '0644',
-      prefix: 'datapackage-',
-      postfix: '.zip'
     })
     const tmpDir = tmp.dirSync({ mode: '0750', prefix: 'DC_', unsafeCleanup: true })
     const zipDir = tmpDir.name
     // importPackage dependent on creating folder using basename zip
     const basename = path.basename(urlText)
-    // console.log(basename)
     const zipPath = path.join(zipDir, basename)
-    console.log('File: ', zipPath)
     fs.ensureFileSync(zipPath)
     const writable = fs.createWriteStream(zipPath)
     let errors = false
+    // close will be called automatically - just need to ensure close on error
     response.data.on('error', (error) => {
       response.data.end()
       writable.end()
@@ -85,23 +78,17 @@ export async function importDataPackageZipFromUrl(urlText) {
       console.log(`Problem with write stream`, error)
       errors = true
     })
-    // close will be called automatically - just need to ensure close on error
-    console.log('about to call')
-    // console.time()
     await response.data.pipe(writable)
-    // console.timeEnd()
-    console.log('completed')
     mainWindow.webContents.send('closeLoadingScreen')
     if (!errors) {
       handleDownloadedZip(zipPath, mainWindow)
     }
   } catch (error) {
-    console.log(`Unable to download ${urlText}`, error)
+    console.log(`Unable to download zip: ${urlText}`, error)
   }
 }
 
 function handleDownloadedZip(zipPath, mainWindow) {
-  console.log(`about to send to renderer: ${zipPath}`)
   mainWindow.webContents.send('importDataPackage', zipPath)
 }
 
@@ -113,8 +100,6 @@ async function loadPackageFromJsonUrl(urlText) {
     mainWindow.webContents.send('closeLoadingScreen')
     return
   }
-  console.log(dataPackageJson.descriptor)
-  console.log(dataPackageJson.errors)
   if (!dataPackageJson.valid) {
     showInvalidMessage(urlText, mainWindow)
     mainWindow.webContents.send('closeLoadingScreen')
@@ -165,22 +150,12 @@ If the data package is a URL, please check that the URL exists.`
 async function loadResources(dataPackageJson, mainWindow) {
   for (const resource of dataPackageJson.resourceNames) {
     mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading next resource...')
-    console.log(`loading resource ${resource}`)
     const dataResource = dataPackageJson.getResource(resource)
-    console.log(dataResource)
-    console.log(dataResource.descriptor)
-    console.log(dataResource.descriptor.schema)
-    console.log(dataResource.descriptor.schema.fields)
     const format = dataResourceToFormat(dataResource.descriptor)
-    console.log('format is: ', format)
     let data = await dataResource.read()
     mainWindow.webContents.send('closeLoadingScreen')
     // datapackage-js separates headers - add back to use default DC behaviour
     let dataWithHeaders = _.concat([dataResource.headers], data)
-    console.log(dataWithHeaders)
-    // ipc.once('loadingScreenIsClosed', () => {
-    // console.log('close message received')
     mainWindow.webContents.send('addTabWithFormattedDataAndSchema', dataWithHeaders, format, dataResource.descriptor.schema)
-    // })
   }
 }

@@ -612,7 +612,6 @@ export default {
     },
     closeLoadingScreen: function() {
       this.loadingDataMessage = false
-      console.log(`loading data message: ${this.loadingDataMessage}`)
     },
     createHotDataContainer: function(data, format={}, schema={}) {
       this.initTab()
@@ -648,9 +647,6 @@ export default {
     mergeOntoCsvFormat: function(format) {
       let defaultFormat = _.assign({}, fileFormats.csv)
       let updatedFormat = _.assign(defaultFormat, format)
-      console.log('updated formt')
-      console.log(updatedFormat)
-      console.log(fileFormats.csv)
       return updatedFormat
     },
     loadDataIntoLatestHot: function(data, format) {
@@ -1033,7 +1029,6 @@ export default {
       vueAddTab(data, format)
     })
     ipc.on('addTabWithFormattedDataAndSchema', function(e, data, format, schema) {
-      console.log('adding tab...')
       vueAddTab(data, format, schema)
     })
     const vueAddTabWithFilename = this.addTabWithFilename
@@ -1084,9 +1079,7 @@ export default {
     })
     ipc.on('closeLoadingScreen', function(event, isReplyRequired = false) {
       vueCloseLoadingScreen()
-      console.log(`is reply required: ${isReplyRequired}`)
       if (isReplyRequired) {
-        console.log('sending closed message')
         ipc.sendSync('loadingScreenIsClosed')
       }
     })
