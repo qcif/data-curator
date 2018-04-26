@@ -39,13 +39,13 @@ Feature: Open a Data Package
       - data
       - hash
       - bytes 
-    - ~dialect: (this may result in invalid results)~
-      - ~quoteChar~
-      - ~doubleQuote~
-      - ~escapeChar~
-      - ~nullSequence~
-      - ~skipInitialSpace~
-      - ~csvddfVersion~ 
+    - ~~dialect: (this may result in invalid results)~~
+      - ~~quoteChar~~
+      - ~~doubleQuote~~
+      - ~~escapeChar~~
+      - ~~nullSequence~~
+      - ~~skipInitialSpace~~
+      - ~~csvddfVersion~~ 
     - [pattern properties](https://frictionlessdata.io/specs/patterns) except `package` in the [Table Schema: Foreign Keys to Data Packages pattern](https://frictionlessdata.io/specs/patterns/#table-schema:-foreign-keys-to-data-packages)
     
   Scenario: Open a valid datapackage.json from a local file  
