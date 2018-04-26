@@ -395,13 +395,20 @@ class AppMenu {
 
   buildOpenDataPackageMenu() {
     this.openDataPackageSubMenu = [{
-      label: 'Zip File...',
+      label: 'zip from URL....',
+      enabled: true,
+      click() {
+        // downloadDataPackageJson()
+        showUrlDialog()
+      }
+    }, {
+      label: 'zip from file...',
       enabled: true,
       click() {
         importDataPackage()
       }
     }, {
-      label: 'URL...',
+      label: 'json from URL...',
       enabled: true,
       click() {
         // downloadDataPackageJson()
