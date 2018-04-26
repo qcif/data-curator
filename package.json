@@ -118,7 +118,7 @@
   },
   "devDependencies": {
     "@vue/test-utils": "^1.0.0-beta.13",
-    "babel-core": "^6.22.1",
+    "babel-core": "^6.26.2",
     "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.4",
     "babel-plugin-istanbul": "^4.1.5",
