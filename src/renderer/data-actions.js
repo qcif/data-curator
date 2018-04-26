@@ -18,9 +18,6 @@ export function loadDataIntoHot(hot, data, format) {
 }
 
 export function loadCsvDataIntoHot(hot, data, format) {
-  console.time()
-  console.log(_.isArray(data))
-  console.timeEnd()
   let arrays
   // if no format specified, default to csv
   if (typeof format === 'undefined' || !format) {
@@ -28,8 +25,6 @@ export function loadCsvDataIntoHot(hot, data, format) {
   } else {
     let csvOptions = dialectToCsvOptions(format.dialect)
     // let csv parser handle the line terminators
-    console.log('before loading...')
-    console.log(csvOptions)
     _.unset(csvOptions, 'rowDelimiter')
     // TODO: update to stream
     arrays = parse(data, csvOptions)
