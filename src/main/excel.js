@@ -15,8 +15,8 @@ export function importExcel() {
     if (fileNames === undefined) { return }
     var fileName = fileNames[0]
     var workbook = XLSX.readFile(fileName)
-    var first_sheet_name = workbook.SheetNames[0]
-    var worksheet = workbook.Sheets[first_sheet_name]
+    // var first_sheet_name = workbook.SheetNames[0]
+    // var worksheet = workbook.Sheets[first_sheet_name]
 
     let shortcutsSubMenu = getSubMenuFromMenu('File', 'Open Excel Sheet...')
     shortcutsSubMenu.enabled = false
@@ -30,7 +30,12 @@ export function importExcel() {
         closeWindowSafely(browserWindow)
       })
       ipc.once('worksheetSelected', function(e, sheet_name) {
+        var data2 = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name], {header: 1})
+        console.log('json')
+        console.log(data2)
         let data = XLSX.utils.sheet_to_csv(workbook.Sheets[sheet_name])
+        console.log('csv')
+        console.log(data)
         closeWindowSafely(browserWindow)
         createWindowTabWithData(data)
       })
