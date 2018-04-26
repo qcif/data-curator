@@ -1,6 +1,6 @@
 // import axios from 'axios'
 import {ipcMain as ipc, dialog} from 'electron'
-import {focusOrNewSecondaryWindow, focusMainWindow} from './windows'
+import {focusOrNewSecondaryWindow, focusMainWindow, closeWindowSafely} from './windows'
 import {getSubMenuFromMenu, disableSubMenuItemsFromMenuObject, enableSubMenuItemsFromMenuObject} from './menu.js'
 import {Package} from 'datapackage'
 import tmp from 'tmp'
@@ -20,15 +20,11 @@ export function showUrlDialog() {
   })
   browserWindow.webContents.on('did-finish-load', () => {
     ipc.once('urlCancelled', () => {
-      if (browserWindow) {
-        browserWindow.close()
-      }
+      closeWindowSafely(browserWindow)
     })
     ipc.once('urlSubmitted', (e, urlText) => {
       console.log(`text is ${urlText}`)
-      if (browserWindow) {
-        browserWindow.close()
-      }
+      closeWindowSafely(browserWindow)
       try {
         loadPackage(urlText)
       } catch (error) {

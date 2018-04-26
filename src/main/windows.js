@@ -41,7 +41,7 @@ export function createWindowTabWithFormattedDataFile(data, format, filename) {
 
 export function closeSecondaryWindow(windowName) {
   let browserWindow = focusWindow(windowName)
-  browserWindow.close()
+  closeWindowSafely(browserWindow)
   focusMainWindow()
 }
 
@@ -89,4 +89,10 @@ export function newWindow(id, dimensions, url) {
     browserWindow = null
   })
   return browserWindow
+}
+
+export function closeWindowSafely(browserWindow) {
+  if (browserWindow && !browserWindow.isDestroyed()) {
+    browserWindow.close()
+  }
 }
