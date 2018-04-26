@@ -667,11 +667,7 @@ export default {
     },
     initHotTablePropertiesFromDescriptor: function(hotId, descriptor) {
       let tableProperties = _.assign({}, this.defaultTableProperties, descriptor)
-      console.log(descriptor)
       _.unset(tableProperties, 'schema')
-      console.log(descriptor)
-      console.log('table props')
-      console.log(tableProperties)
       for (let property in descriptor.schema) {
         if (property !== 'fields') {
           tableProperties[property] = descriptor.schema[property]
@@ -679,7 +675,6 @@ export default {
       }
       let tableHotIdProperties = {}
       tableHotIdProperties[hotId] = tableProperties
-      console.log(tableProperties)
       this.resetTablePropertiesToObject(tableHotIdProperties)
     },
     initHotColumnPropertiesFromSchema: function(hotId, schema) {
