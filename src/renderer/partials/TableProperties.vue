@@ -146,7 +146,7 @@ export default {
     },
     removeEmptyMissingValueMarkersFromString: function(string) {
       let withoutInternalEmpties = string.replace(/[,]+/g, ',')
-      // also remove 'empty' it at start or end
+      // also remove 'empty' if at start or end
       let trimmed = _.trim(withoutInternalEmpties, ',')
       return trimmed
     },

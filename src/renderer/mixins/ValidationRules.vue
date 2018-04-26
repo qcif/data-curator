@@ -34,6 +34,18 @@ export default {
         default:
           return ''
       }
+    },
+    validate: async function(field, value, rules) {
+      let isValid = true
+      // ensure there are no other fields by this name
+      this.$validator.detach(field)
+      await this.$validator.attach({
+        name: field,
+        rules: rules
+      })
+      isValid = await this.$validator.validate(field, value)
+      this.$validator.detach(field)
+      return isValid
     }
   },
   mounted: function() {

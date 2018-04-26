@@ -5,12 +5,14 @@ import unzipper from 'unzipper'
 import etl from 'etl'
 import {ipcRenderer as ipc} from 'electron'
 import {Resource, Package} from 'datapackage'
+import {dataResourceToFormat} from '@/file-formats.js'
 
-export async function unzipFile(zipSource, storeCallback) {
+// TODO: clean up isTransient logic
+export async function unzipFile(zipSource, storeCallback, isTransient) {
   try {
     let destination = createUnzipDestination(zipSource)
     await fs.ensureDir(destination)
-    let processedProperties = await unzipFileToDir(zipSource, destination)
+    let processedProperties = await unzipFileToDir(zipSource, destination, isTransient)
     storeCallback(processedProperties)
   } catch (err) {
     console.log(`Error processing zip source: ${zipSource}`, err)
@@ -19,11 +21,10 @@ export async function unzipFile(zipSource, storeCallback) {
 }
 
 function createUnzipDestination(zipSource) {
-  let parentDirectory = path.basename(zipSource, '.zip')
   return path.join(path.dirname(zipSource), path.basename(zipSource, '.zip'))
 }
 
-async function unzipFileToDir(zipSource, unzipDestination) {
+async function unzipFileToDir(zipSource, unzipDestination, isTransient) {
   let processed = {json: [], resource: [], md: []}
   await fs.createReadStream(zipSource).pipe(unzipper.Parse()).pipe(etl.map(async entry => {
     let fileDestination = `${unzipDestination}/${entry.path}`
@@ -35,9 +36,13 @@ async function unzipFileToDir(zipSource, unzipDestination) {
     throw new Error('There must be 1, and only 1, json file.')
   }
   let dataPackageJson = await getDataPackageJson(processed)
-  let csvPathHotIds = await processResources(dataPackageJson, unzipDestination, processed)
+  let csvPathHotIds = await processResources(dataPackageJson, unzipDestination, processed, isTransient)
   let processedProperties = await processJson(dataPackageJson, csvPathHotIds, unzipDestination)
   return processedProperties
+}
+
+function handleZippedFolder() {
+
 }
 
 async function getDataPackageJson(processed) {
@@ -101,31 +106,28 @@ function setProvenance(text) {
   store.commit('pushProvenance', text)
 }
 
-async function processResources(dataPackageJson, unzipDestination, processed) {
-  let resourcePaths = await getAllResourcePaths(dataPackageJson, unzipDestination)
-  let csvPathHotIds = await getHotIdsFromFilenames(processed, unzipDestination)
+async function processResources(dataPackageJson, unzipDestination, processed, isTransient) {
+  let resourcePaths = await getAllResourcePaths(dataPackageJson, unzipDestination, processed)
+  let csvPathHotIds = await getHotIdsFromFilenames(processed, unzipDestination, isTransient)
   validateResourcesAndDataFiles(resourcePaths, _.keys(csvPathHotIds))
   return csvPathHotIds
 }
 
-async function getAllResourcePaths(dataPackageJson, unzipDestination) {
+async function getAllResourcePaths(dataPackageJson, unzipDestination, processed) {
   let resourcePaths = []
   for (let dataResource of dataPackageJson.resources) {
-    let fileDestination = `${unzipDestination}/${dataResource.path}`
-    let format = dataResourcetoFormat(dataResource)
+    let fileDestination
+    if (processed.parentFolders) {
+      fileDestination = path.join(unzipDestination, processed.parentFolders, dataResource.path)
+    } else {
+      fileDestination = path.join(unzipDestination, dataResource.path)
+    }
+    console.log(`file destination is ${fileDestination}`)
+    let format = dataResourceToFormat(dataResource)
     await ipc.send('openFileIntoTab', fileDestination, format)
     resourcePaths.push(dataResource.path)
   }
   return resourcePaths
-}
-
-function dataResourcetoFormat(dataResource) {
-  let format = {}
-  _.assign(format, dataResource)
-  for (const key of ['missingValues', 'name', 'path', 'profile', 'schema']) {
-    _.unset(format, key)
-  }
-  return format
 }
 
 function validateResourcesAndDataFiles(resourcePaths, csvPaths) {
@@ -136,7 +138,7 @@ function validateResourcesAndDataFiles(resourcePaths, csvPaths) {
   }
 }
 
-async function getHotIdsFromFilenames(processed, unzipDestination) {
+async function getHotIdsFromFilenames(processed, unzipDestination, isTransient = false) {
   let dataPackageJson = processed.json[0]
   let csvTabs = {}
   for (let pathname of processed.resource) {
@@ -151,6 +153,10 @@ async function getHotIdsFromFilenames(processed, unzipDestination) {
     let re = new RegExp('^' + processed.parentFolders + '/')
     let resourcePathname = _.replace(pathname, re, '')
     csvTabs[`${resourcePathname}`] = hotId
+    console.log(`is transient: ${isTransient}`)
+    if (isTransient) {
+      store.commit('resetTabFilename', tabId)
+    }
   }
   return csvTabs
 }

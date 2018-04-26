@@ -22,6 +22,8 @@ if (document.querySelector('#app')) {
   compileVue('#openexcel', 'openexcel')
 } else if (document.querySelector('#errors')) {
   compileVue('#errors', 'errors')
+} else if (document.querySelector('#urldialog')) {
+  compileVue('#urldialog', 'urldialog')
 } else {
   console.log('No match found for root id on incoming page.')
 }

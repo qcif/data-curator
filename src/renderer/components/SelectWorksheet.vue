@@ -8,7 +8,7 @@
         </option>
       </select>
     </p>
-    <div class="well">
+    <div class="submit-container">
       <button id="submit" class="btn btn-default" @click.prevent="submit">Open Sheet</button> <button id="cancel" class="btn btn-default" @click.prevent="cancel">Cancel</button>
     </div>
   </form>

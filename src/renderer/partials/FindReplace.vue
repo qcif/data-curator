@@ -230,7 +230,7 @@ export default {
       const hot = HotRegister.getInstance(this.activeHotId)
       const replaceTextFn = this.replaceAllFindTextWithinCell
       let replaceCol = this.currentCol
-      console.log(this.rowIndicies.length)
+      // console.log(this.rowIndicies.length)
       let data = hot.getData()
       for (let rowIndex of this.rowIndicies) {
         replaceTextFn(data, rowIndex, replaceCol)

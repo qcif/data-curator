@@ -115,6 +115,9 @@ export function importDataPackage() {
     if (filename === undefined) {
       return
     }
+    if (_.isArray(filename)) {
+      filename = filename[0]
+    }
     window.webContents.send('importDataPackage', filename)
   })
 }
