@@ -2,6 +2,7 @@ import _ from 'lodash'
 import {DEFAULT_DIALECT as _dialectDefaults} from 'datapackage/lib/config.js'
 /**
  * Definitions for supported file types
+ * No renderer shortcuts in here (e.g., @) as used by main and renderer
  *
  * Add more objects here to support additional formats
  */
@@ -55,6 +56,15 @@ const fileFormats = {
     mediatype: 'text/csv',
     format: 'csv'
   }
+}
+
+export function dataResourceToFormat(dataResource) {
+  let format = {}
+  _.assign(format, dataResource)
+  for (const key of ['missingValues', 'name', 'path', 'profile', 'schema']) {
+    _.unset(format, key)
+  }
+  return format
 }
 
 export {

@@ -62,7 +62,7 @@
                 </li>
               </ul>
             </li>
-            <li class="tab-add" @click="addTab" v-tooltip.right="tooltip('tooltip-add-tab')">
+            <li class="tab-add" @click="addTab()" v-tooltip.right="tooltip('tooltip-add-tab')">
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
             <component is="tooltipAddTab" />
@@ -319,22 +319,12 @@ export default {
         sideNavView: 'export'
       }
       ],
-      defaultTableProperties: [{
-        key: 'profile',
-        value: 'tabular-data-resource'
+      defaultTableProperties: {
+        profile: 'tabular-data-resource',
+        format: 'csv',
+        mediatype: 'text/csv',
+        encoding: 'utf-8'
       },
-      {
-        key: 'format',
-        value: 'csv'
-      },
-      {
-        key: 'mediatype',
-        value: 'text/csv'
-      },
-      {
-        key: 'encoding',
-        value: 'utf-8'
-      }],
       defaultPackageProperties: [{
         key: 'profile',
         value: 'tabular-data-package'
@@ -404,8 +394,8 @@ export default {
     calculatePanelDiff: function() {
       this.panelWidthDiff = this.widthMain1 - this.widthInner1
       this.panelHeightDiff = this.heightMain1 - this.heightInner1
-      console.log(`panel diff: ${this.panelWidthDiff}`)
-      console.log(`panel diff: ${this.panelHeightDiff}`)
+      // console.log(`panel diff: ${this.panelWidthDiff}`)
+      // console.log(`panel diff: ${this.panelHeightDiff}`)
     },
     testSideMain: function() {
       // TODO : refactor this as an event that plays once only rather than a continuous condition-check
@@ -414,7 +404,7 @@ export default {
         this.saveHotPanelDimensions()
         this.calculatePanelDiff()
       }
-      console.log(`diff: ${this.panelWidthDiff}`)
+      // console.log(`diff: ${this.panelWidthDiff}`)
       let panelWidthDiff = this.panelWidthDiff
       window.setTimeout(function() {
         document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
@@ -432,7 +422,7 @@ export default {
         this.saveHotPanelDimensions()
         this.calculatePanelDiff()
       }
-      console.log(`diff: ${this.panelHeightDiff}`)
+      // console.log(`diff: ${this.panelHeightDiff}`)
       let panelHeightDiff = this.panelHeightDiff
       window.setTimeout(function() {
         document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
@@ -567,8 +557,8 @@ export default {
       this.resetTablePropertiesToObject(allProperties.tables)
       this.resetColumnPropertiesToObject(allProperties.columns)
     },
-    importDataPackage: async function(filename) {
-      let message = await unzipFile(filename, this.storeResetCallback)
+    importDataPackage: async function(filename, isTransient) {
+      let message = await unzipFile(filename, this.storeResetCallback, isTransient)
       this.messagesTitle = message ? 'Open Data Package Error' : 'Open Data Package Success'
       this.messages = message || 'All Properties have been imported.'
       this.messagesType = 'feedback'
@@ -601,27 +591,37 @@ export default {
       let allEditors = document.querySelectorAll('#csvContent .editor')
       return allEditors[allEditors.length - 1]
     },
-    addTabWithFormattedDataFile: function(data, format, filename) {
-      this.initTab()
-      let vueLatestHotContainer = this.latestHotContainer
+    addTabWithFilename: function(data, format, filename, descriptor={}) {
+      this.createHotDataContainer(data, format, descriptor)
       this.$nextTick(function() {
-        this.loadFormattedDataIntoContainer(vueLatestHotContainer(), data, format)
         this.pushTabObject({id: this.activeTab, filename: filename})
       })
     },
-    addTabWithData: function(data) {
-      this.initTab()
-      let vueLatestHotContainer = this.latestHotContainer
-      this.$nextTick(function() {
-        this.loadDataIntoContainer(vueLatestHotContainer(), data)
-      })
+    addTab: function(data = '"","",""', format, descriptor) {
+      this.createHotDataContainer(data, format, descriptor)
     },
-    addTab: function() {
+    setActiveTabWrapper: function(tabId) {
+      let hot = HotRegister.getActiveInstance()
+      if (hot) {
+        hot.deselectCell()
+      }
+      this.setActiveTab(tabId)
+    },
+    showLoadingScreen: function(message) {
+      this.loadingDataMessage = message
+    },
+    closeLoadingScreen: function() {
+      this.loadingDataMessage = false
+    },
+    createHotDataContainer: function(data, format={}, descriptor={}) {
       this.initTab()
       let vueLatestHotContainer = this.latestHotContainer
       this.$nextTick(function() {
-        // update latest tab object with content
-        this.loadDefaultDataIntoContainer(vueLatestHotContainer())
+        this.registerContainer(vueLatestHotContainer())
+        const updatedFormat = this.mergeOntoCsvFormat(format)
+        const hotId = this.loadDataIntoLatestHot(data, updatedFormat)
+        this.initHotTablePropertiesFromDescriptor(hotId, descriptor)
+        this.initHotColumnPropertiesFromSchema(hotId, descriptor.schema)
       })
     },
     initTab: function() {
@@ -635,36 +635,22 @@ export default {
       this.setActiveTabWrapper(nextTabId)
       this.pushTab(nextTabId)
     },
-    setActiveTabWrapper: function(tabId) {
-      let hot = HotRegister.getActiveInstance()
-      if (hot) {
-        hot.deselectCell()
-      }
-      this.setActiveTab(tabId)
-    },
-    loadDefaultDataIntoContainer: function(container) {
-      let defaultData = '"","",""'
-      this.loadDataIntoContainer(container, defaultData)
-    },
-    loadDataIntoContainer: function(container, data) {
-      let defaultFormat = fileFormats.csv
-      this.loadFormattedDataIntoContainer(container, data, defaultFormat)
-    },
-    showLoadingScreen: function(message) {
-      this.loadingDataMessage = message
-    },
-    closeLoadingScreen: function() {
-      this.loadingDataMessage = false
-    },
-    loadFormattedDataIntoContainer: function(container, data, format) {
+    registerContainer: function(container) {
       HotRegister.register(container, {
         selectionListener: this.selectionListener,
         deselectionListener: this.deselectionListener,
         loadingStartListener: this.showLoadingScreen,
         loadingFinishListener: this.closeLoadingScreen
-      },
-      findReplace.data().hotParameters)
+      }, findReplace.data().hotParameters
+      )
       addHotContainerListeners(container)
+    },
+    mergeOntoCsvFormat: function(format) {
+      let defaultFormat = _.assign({}, fileFormats.csv)
+      let updatedFormat = _.assign(defaultFormat, format)
+      return updatedFormat
+    },
+    loadDataIntoLatestHot: function(data, format) {
       let hot = HotRegister.getActiveInstance()
       let activeHotId = hot.guid
       let activeTabId = this.activeTab
@@ -677,12 +663,27 @@ export default {
         'hotId': activeHotId,
         'tabId': activeTabId
       })
-      this.pushDefaultTableProperties(hot.guid)
+      return activeHotId
     },
-    pushDefaultTableProperties: function(hotId) {
-      this.defaultTableProperties.forEach(x => {
-        this.pushTableProperty({hotId: hotId, key: x.key, value: x.value})
-      })
+    initHotTablePropertiesFromDescriptor: function(hotId, descriptor) {
+      let tableProperties = _.assign({}, this.defaultTableProperties, descriptor)
+      _.unset(tableProperties, 'schema')
+      for (let property in descriptor.schema) {
+        if (property !== 'fields') {
+          tableProperties[property] = descriptor.schema[property]
+        }
+      }
+      let tableHotIdProperties = {}
+      tableHotIdProperties[hotId] = tableProperties
+      this.resetTablePropertiesToObject(tableHotIdProperties)
+    },
+    initHotColumnPropertiesFromSchema: function(hotId, schema) {
+      // TODO : move this to similar logic in importDataPackage to tidy up
+      if (!_.isEmpty(schema)) {
+        let columnHotIdProperties = {}
+        columnHotIdProperties[hotId] = [...schema.fields]
+        this.resetColumnPropertiesToObject(columnHotIdProperties)
+      }
     },
     pushDefaultPackageProperties: function() {
       this.defaultPackageProperties.forEach(x => {
@@ -1021,17 +1022,22 @@ export default {
     ipc.on('toggleActiveHeaderRow', function() {
       vueToggleHeader()
     })
-    const vueAddTabWithData = this.addTabWithData
-    ipc.on('addTabWithData', function(e, data) {
-      vueAddTabWithData(data)
-    })
-    const vueAddTabWithFormattedDataFile = this.addTabWithFormattedDataFile
-    ipc.on('addTabWithFormattedDataFile', function(e, data, format, filename) {
-      vueAddTabWithFormattedDataFile(data, format, filename)
-    })
     const vueAddTab = this.addTab
     ipc.on('addTab', function() {
       vueAddTab()
+    })
+    ipc.on('addTabWithData', function(e, data) {
+      vueAddTab(data)
+    })
+    ipc.on('addTabWithFormattedData', function(e, data, format) {
+      vueAddTab(data, format)
+    })
+    ipc.on('addTabWithFormattedDataAndDescriptor', function(e, data, format, descriptor) {
+      vueAddTab(data, format, descriptor)
+    })
+    const vueAddTabWithFilename = this.addTabWithFilename
+    ipc.on('addTabWithFormattedDataFile', function(e, data, format, filename) {
+      vueAddTabWithFilename(data, format, filename)
     })
     const vueTriggerSideNav = this.triggerSideNav
     ipc.on('showSidePanel', function(event, arg) {
@@ -1069,6 +1075,22 @@ export default {
     ipc.on('showProvenanceErrors', function(event, arg) {
       vueShowProvenanceErrors()
     })
+    const vueShowLoadingScreen = this.showLoadingScreen
+    const vueCloseLoadingScreen = this.closeLoadingScreen
+    ipc.on('closeAndshowLoadingScreen', function(event, message) {
+      vueCloseLoadingScreen()
+      vueShowLoadingScreen(message)
+    })
+    ipc.on('closeLoadingScreen', function(event, isReplyRequired = false) {
+      vueCloseLoadingScreen()
+      if (isReplyRequired) {
+        ipc.sendSync('loadingScreenIsClosed')
+      }
+    })
+    const vueResetPackagePropertiesToObject = this.resetPackagePropertiesToObject
+    ipc.on('resetPackagePropertiesToObject', function(event, packageProperties) {
+      vueResetPackagePropertiesToObject(packageProperties)
+    })
   },
   beforeCreate: function() {
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
@@ -1090,8 +1112,8 @@ export default {
       vueGuessProperties()
     })
     const vueImportDataPackage = this.importDataPackage
-    ipc.on('importDataPackage', function(event, arg) {
-      vueImportDataPackage(arg[0])
+    ipc.on('importDataPackage', function(event, filePath, isTransient = false) {
+      vueImportDataPackage(filePath, isTransient)
     })
     const vueValidateTable = this.validateTable
     ipc.on('validateTable', function(event, arg) {

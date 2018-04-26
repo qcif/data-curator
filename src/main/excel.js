@@ -1,6 +1,6 @@
 import {ipcMain as ipc, dialog as Dialog} from 'electron'
 import XLSX from 'xlsx'
-import {createWindowTabWithData, focusOrNewSecondaryWindow} from './windows'
+import {createWindowTabWithData, focusOrNewSecondaryWindow, closeWindowSafely} from './windows'
 import {getSubMenuFromMenu} from './menu.js'
 
 export function importExcel() {
@@ -27,15 +27,11 @@ export function importExcel() {
     browserWindow.webContents.on('did-finish-load', function() {
       browserWindow.webContents.send('loadSheets', workbook.SheetNames)
       ipc.once('worksheetCanceled', function() {
-        if (browserWindow) {
-          browserWindow.close()
-        }
+        closeWindowSafely(browserWindow)
       })
       ipc.once('worksheetSelected', function(e, sheet_name) {
         let data = XLSX.utils.sheet_to_csv(workbook.Sheets[sheet_name])
-        if (browserWindow) {
-          browserWindow.close()
-        }
+        closeWindowSafely(browserWindow)
         createWindowTabWithData(data)
       })
     })

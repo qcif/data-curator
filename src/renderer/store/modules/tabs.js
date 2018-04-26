@@ -80,6 +80,12 @@ const mutations = {
       pushAllTabTitlesSubscription()
     }
   },
+  resetTabFilename(state, tabId) {
+    _.unset(state.tabObjects[tabId], 'filename')
+    resetGlobalFilenames(getters.getTabFilenames(state))
+    ipc.send('toggleSaveMenu')
+    pushAllTabTitlesSubscription()
+  },
   removeTab (state, tabId) {
     // keep check for index in this function to ensure tabid still exists
     let index = _.indexOf(state.tabs, tabId)

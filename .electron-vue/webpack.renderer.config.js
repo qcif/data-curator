@@ -20,6 +20,15 @@ var FixDefaultImportPlugin = require('webpack-fix-default-import-plugin')
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/webpack-configurations.html#white-listing-externals
  */
 let whiteListedModules = ['vue']
+const defaultMinify =  {
+  collapseWhitespace: true,
+  removeAttributeQuotes: true,
+  removeComments: true
+}
+
+const defaultNodeModules = process.env.NODE_ENV !== 'production'
+  ? path.resolve(__dirname, '../node_modules')
+  : false
 
 let rendererConfig = {
   devtool: '#cheap-module-eval-source-map',
@@ -112,54 +121,11 @@ let rendererConfig = {
   },
   plugins: [
     new ExtractTextPlugin('styles.css'),
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: path.resolve(__dirname, '../src/index.ejs'),
-      minify: {
-        collapseWhitespace: true,
-        removeAttributeQuotes: true,
-        removeComments: true
-      },
-      nodeModules: process.env.NODE_ENV !== 'production'
-        ? path.resolve(__dirname, '../node_modules')
-        : false
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'keyboardhelp.html',
-      template: path.resolve(__dirname, '../src/keyboardhelp.ejs'),
-      minify: {
-        collapseWhitespace: true,
-        removeAttributeQuotes: true,
-        removeComments: true
-      },
-      nodeModules: process.env.NODE_ENV !== 'production'
-        ? path.resolve(__dirname, '../node_modules')
-        : false
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'openexcel.html',
-      template: path.resolve(__dirname, '../src/openexcel.ejs'),
-      minify: {
-        collapseWhitespace: true,
-        removeAttributeQuotes: true,
-        removeComments: true
-      },
-      nodeModules: process.env.NODE_ENV !== 'production'
-        ? path.resolve(__dirname, '../node_modules')
-        : false
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'errors.html',
-      template: path.resolve(__dirname, '../src/errors.ejs'),
-      minify: {
-        collapseWhitespace: true,
-        removeAttributeQuotes: true,
-        removeComments: true
-      },
-      nodeModules: process.env.NODE_ENV !== 'production'
-        ? path.resolve(__dirname, '../node_modules')
-        : false
-    }),
+    createHtmlPlugin('index'),
+    createHtmlPlugin('keyboardhelp'),
+    createHtmlPlugin('urldialog'),
+    createHtmlPlugin('openexcel'),
+    createHtmlPlugin('errors'),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new FixDefaultImportPlugin()
@@ -180,6 +146,14 @@ let rendererConfig = {
   target: 'electron-renderer'
 }
 
+function createHtmlPlugin(pageName) {
+  return new HtmlWebpackPlugin({
+    filename: `${pageName}.html`,
+    template: path.resolve(__dirname, `../src/${pageName}.ejs`),
+    minify: defaultMinify,
+    nodeModules: defaultNodeModules
+  })
+}
 /**
  * Adjust rendererConfig for development settings
  */
