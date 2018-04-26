@@ -591,14 +591,14 @@ export default {
       let allEditors = document.querySelectorAll('#csvContent .editor')
       return allEditors[allEditors.length - 1]
     },
-    addTabWithFilename: function(data, format, filename, schema={}) {
-      this.createHotDataContainer(data, format, schema)
+    addTabWithFilename: function(data, format, filename, descriptor={}) {
+      this.createHotDataContainer(data, format, descriptor)
       this.$nextTick(function() {
         this.pushTabObject({id: this.activeTab, filename: filename})
       })
     },
-    addTab: function(data = '"","",""', format, schema) {
-      this.createHotDataContainer(data, format, schema)
+    addTab: function(data = '"","",""', format, descriptor) {
+      this.createHotDataContainer(data, format, descriptor)
     },
     setActiveTabWrapper: function(tabId) {
       let hot = HotRegister.getActiveInstance()
@@ -613,14 +613,15 @@ export default {
     closeLoadingScreen: function() {
       this.loadingDataMessage = false
     },
-    createHotDataContainer: function(data, format={}, schema={}) {
+    createHotDataContainer: function(data, format={}, descriptor={}) {
       this.initTab()
       let vueLatestHotContainer = this.latestHotContainer
       this.$nextTick(function() {
         this.registerContainer(vueLatestHotContainer())
         const updatedFormat = this.mergeOntoCsvFormat(format)
         const hotId = this.loadDataIntoLatestHot(data, updatedFormat)
-        this.initHotProperties(hotId, schema)
+        this.initHotTablePropertiesFromDescriptor(hotId, descriptor)
+        this.initHotColumnPropertiesFromSchema(hotId, descriptor.schema)
       })
     },
     initTab: function() {
@@ -664,21 +665,29 @@ export default {
       })
       return activeHotId
     },
-    initHotProperties: function(hotId, schema) {
+    initHotTablePropertiesFromDescriptor: function(hotId, descriptor) {
+      let tableProperties = _.assign({}, this.defaultTableProperties, descriptor)
+      console.log(descriptor)
+      _.unset(tableProperties, 'schema')
+      console.log(descriptor)
+      console.log('table props')
+      console.log(tableProperties)
+      for (let property in descriptor.schema) {
+        if (property !== 'fields') {
+          tableProperties[property] = descriptor.schema[property]
+        }
+      }
+      let tableHotIdProperties = {}
+      tableHotIdProperties[hotId] = tableProperties
+      console.log(tableProperties)
+      this.resetTablePropertiesToObject(tableHotIdProperties)
+    },
+    initHotColumnPropertiesFromSchema: function(hotId, schema) {
       // TODO : move this to similar logic in importDataPackage to tidy up
       if (!_.isEmpty(schema)) {
         let columnHotIdProperties = {}
         columnHotIdProperties[hotId] = [...schema.fields]
         this.resetColumnPropertiesToObject(columnHotIdProperties)
-        let tableHotIdProperties = {}
-        let tableProperties = _.assign({}, this.defaultTableProperties)
-        for (let property in schema) {
-          if (property !== 'fields') {
-            tableProperties[property] = schema[property]
-          }
-        }
-        tableHotIdProperties[hotId] = tableProperties
-        this.resetTablePropertiesToObject(tableHotIdProperties)
       }
     },
     pushDefaultPackageProperties: function() {
@@ -1028,8 +1037,8 @@ export default {
     ipc.on('addTabWithFormattedData', function(e, data, format) {
       vueAddTab(data, format)
     })
-    ipc.on('addTabWithFormattedDataAndSchema', function(e, data, format, schema) {
-      vueAddTab(data, format, schema)
+    ipc.on('addTabWithFormattedDataAndDescriptor', function(e, data, format, descriptor) {
+      vueAddTab(data, format, descriptor)
     })
     const vueAddTabWithFilename = this.addTabWithFilename
     ipc.on('addTabWithFormattedDataFile', function(e, data, format, filename) {
@@ -1082,6 +1091,10 @@ export default {
       if (isReplyRequired) {
         ipc.sendSync('loadingScreenIsClosed')
       }
+    })
+    const vueResetPackagePropertiesToObject = this.resetPackagePropertiesToObject
+    ipc.on('resetPackagePropertiesToObject', function(event, packageProperties) {
+      vueResetPackagePropertiesToObject(packageProperties)
     })
   },
   beforeCreate: function() {

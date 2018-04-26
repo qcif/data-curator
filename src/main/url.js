@@ -149,14 +149,24 @@ If the data package is a URL, please check that the URL exists.`
 }
 
 async function loadResources(dataPackageJson, mainWindow) {
+  console.log(`data package json`)
+  console.log(dataPackageJson)
+  console.log(dataPackageJson.descriptor)
+  let packageProperties = _.assign({}, dataPackageJson.descriptor)
+  _.unset(packageProperties, 'resources')
+  console.log('sending package properties')
+  console.log(packageProperties)
+  mainWindow.webContents.send('resetPackagePropertiesToObject', packageProperties)
   for (const resource of dataPackageJson.resourceNames) {
     mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading next resource...')
     const dataResource = dataPackageJson.getResource(resource)
+    console.log(dataResource)
+    console.log(dataResource.descriptor)
     const format = dataResourceToFormat(dataResource.descriptor)
     let data = await dataResource.read()
     mainWindow.webContents.send('closeLoadingScreen')
     // datapackage-js separates headers - add back to use default DC behaviour
     let dataWithHeaders = _.concat([dataResource.headers], data)
-    mainWindow.webContents.send('addTabWithFormattedDataAndSchema', dataWithHeaders, format, dataResource.descriptor.schema)
+    mainWindow.webContents.send('addTabWithFormattedDataAndDescriptor', dataWithHeaders, format, dataResource.descriptor)
   }
 }
