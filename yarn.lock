@@ -3099,7 +3099,7 @@ data-uri-to-buffer@1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-1.2.0.tgz#77163ea9c20d8641b4707e8f18abdf9a78f34835"
 
-datapackage@^1.0.5:
+datapackage@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/datapackage/-/datapackage-1.0.6.tgz#75f8e0466041fa0123f335cf440d5088cc6160c7"
   dependencies:
@@ -9750,7 +9750,23 @@ table@4.0.2:
     slice-ansi "1.0.0"
     string-width "^2.1.1"
 
-tableschema@^1.2.1, tableschema@^1.7.0:
+tableschema@^1.2.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.9.1.tgz#4814e1b6ca7b81b94dc8e5d7ea197e3d84c212f3"
+  dependencies:
+    axios "^0.17.1"
+    csv "^1.1.1"
+    csv-sniffer "^0.1.1"
+    d3-time-format "^0.3.2"
+    es6-error "^4.0.2"
+    lodash "^4.13.1"
+    moment "~2.21.0"
+    regenerator-runtime "^0.11.0"
+    stream-to-async-iterator "^0.2.0"
+    tv4 "^1.2.7"
+    validator "^9.2.0"
+
+tableschema@^1.7.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/tableschema/-/tableschema-1.9.0.tgz#afc67dd3893028bc3445feb66e52f4f90b6e473c"
   dependencies:

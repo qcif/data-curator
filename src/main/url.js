@@ -50,12 +50,14 @@ async function loadPackage(urlText) {
     mainWindow.webContents.send('closeLoadingScreen')
     return
   }
-  tmp.file({ mode: '0644', prefix: 'datapackage-', postfix: '.json' }, function _tempFileCreated(err, path, fd) {
-    if (err) throw err
+  if (urlText.endsWith('.json')) {
+    tmp.file({ mode: '0644', prefix: 'datapackage-', postfix: '.json' }, function _tempFileCreated(err, path, fd) {
+      if (err) throw err
 
-    console.log('File: ', path)
+      console.log('File: ', path)
     // console.log('Filedescriptor: ', fd);
-  })
+    })
+  }
   await loadResources(dataPackageJson, mainWindow)
 }
 
@@ -76,7 +78,7 @@ async function loadPackageJson(json, mainWindow) {
     const dataPackage = await Package.load(json)
     return dataPackage
   } catch (error) {
-    // console.log(`There was a problem loading the package: ${json}`, error)
+    console.log(`There was a problem loading the package: ${json}`, error)
     dialog.showMessageBox(mainWindow, {
       type: 'warning',
       title: `Unable to load Data Package`,
