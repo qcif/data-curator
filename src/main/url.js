@@ -1,4 +1,6 @@
-// import axios from 'axios'
+import axios from 'axios'
+import fs from 'fs-extra'
+import path from 'path'
 import {ipcMain as ipc, dialog} from 'electron'
 import {focusOrNewSecondaryWindow, focusMainWindow, closeWindowSafely} from './windows'
 import {getSubMenuFromMenu, disableSubMenuItemsFromMenuObject, enableSubMenuItemsFromMenuObject} from './menu.js'
@@ -26,16 +28,84 @@ export function showUrlDialog() {
       console.log(`text is ${urlText}`)
       closeWindowSafely(browserWindow)
       try {
-        loadPackage(urlText)
+        handleZipOrJson(urlText)
       } catch (error) {
         console.log(`There was a problem loading package or resource(s)`, error)
+        const mainWindow = focusMainWindow()
         mainWindow.webContents.send('closeLoadingScreen')
       }
     })
   })
 }
 
-async function loadPackage(urlText) {
+function handleZipOrJson(urlText) {
+  if (_.endsWith(urlText, '.json')) {
+    loadPackageFromJsonUrl(urlText)
+  } else if (_.endsWith(urlText, '.zip')) {
+    importDataPackageZipFromUrl(urlText)
+  } else {
+    showUrlPathNotSupportedMessage()
+  }
+}
+
+export async function importDataPackageZipFromUrl(urlText) {
+  const mainWindow = focusMainWindow()
+  mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading zip URL..')
+  let response
+  try {
+    response = await axios({
+      method: 'get',
+      url: urlText,
+      responseType: 'stream'
+    })
+    let tmpZip = tmp.fileSync({
+      mode: '0644',
+      prefix: 'datapackage-',
+      postfix: '.zip'
+    })
+    const tmpDir = tmp.dirSync({ mode: '0750', prefix: 'DC_', unsafeCleanup: true })
+    const zipDir = tmpDir.name
+    // importPackage dependent on creating folder using basename zip
+    const basename = path.basename(urlText)
+    // console.log(basename)
+    const zipPath = path.join(zipDir, basename)
+    console.log('File: ', zipPath)
+    fs.ensureFileSync(zipPath)
+    const writable = fs.createWriteStream(zipPath)
+    let errors = false
+    response.data.on('error', (error) => {
+      response.data.end()
+      writable.end()
+      console.log(`Problem with read stream`, error)
+      errors = true
+    })
+    writable.on('error', (error) => {
+      response.data.end()
+      writable.end()
+      console.log(`Problem with write stream`, error)
+      errors = true
+    })
+    // close will be called automatically - just need to ensure close on error
+    console.log('about to call')
+    // console.time()
+    await response.data.pipe(writable)
+    // console.timeEnd()
+    console.log('completed')
+    mainWindow.webContents.send('closeLoadingScreen')
+    if (!errors) {
+      handleDownloadedZip(zipPath, mainWindow)
+    }
+  } catch (error) {
+    console.log(`Unable to download ${urlText}`, error)
+  }
+}
+
+function handleDownloadedZip(zipPath, mainWindow) {
+  console.log(`about to send to renderer: ${zipPath}`)
+  mainWindow.webContents.send('importDataPackage', zipPath)
+}
+
+async function loadPackageFromJsonUrl(urlText) {
   const mainWindow = focusMainWindow()
   mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading package URL..')
   const dataPackageJson = await loadPackageJson(urlText, mainWindow)
@@ -50,14 +120,6 @@ async function loadPackage(urlText) {
     mainWindow.webContents.send('closeLoadingScreen')
     return
   }
-  if (urlText.endsWith('.json')) {
-    tmp.file({ mode: '0644', prefix: 'datapackage-', postfix: '.json' }, function _tempFileCreated(err, path, fd) {
-      if (err) throw err
-
-      console.log('File: ', path)
-    // console.log('Filedescriptor: ', fd);
-    })
-  }
   await loadResources(dataPackageJson, mainWindow)
 }
 
@@ -69,6 +131,15 @@ function showInvalidMessage(urlText, mainWindow) {
   `The data package, at ${urlText}, is not valid. Please refer to
   https://frictionlessdata.io/specs/
   for more information.`
+  })
+}
+
+function showUrlPathNotSupportedMessage(urlText, mainWindow) {
+  dialog.showMessageBox(mainWindow, {
+    type: 'warning',
+    title: `Unsupported URL Path extension`,
+    message:
+  `Data Curator, does not support downloading ${urlText}, as the path does not end in ".zip" or ".json"`
   })
 }
 
