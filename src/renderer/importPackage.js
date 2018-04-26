@@ -20,7 +20,6 @@ export async function unzipFile(zipSource, storeCallback) {
 }
 
 function createUnzipDestination(zipSource) {
-  let parentDirectory = path.basename(zipSource, '.zip')
   return path.join(path.dirname(zipSource), path.basename(zipSource, '.zip'))
 }
 
@@ -39,6 +38,10 @@ async function unzipFileToDir(zipSource, unzipDestination) {
   let csvPathHotIds = await processResources(dataPackageJson, unzipDestination, processed)
   let processedProperties = await processJson(dataPackageJson, csvPathHotIds, unzipDestination)
   return processedProperties
+}
+
+function handleZippedFolder() {
+
 }
 
 async function getDataPackageJson(processed) {
@@ -103,16 +106,22 @@ function setProvenance(text) {
 }
 
 async function processResources(dataPackageJson, unzipDestination, processed) {
-  let resourcePaths = await getAllResourcePaths(dataPackageJson, unzipDestination)
+  let resourcePaths = await getAllResourcePaths(dataPackageJson, unzipDestination, processed)
   let csvPathHotIds = await getHotIdsFromFilenames(processed, unzipDestination)
   validateResourcesAndDataFiles(resourcePaths, _.keys(csvPathHotIds))
   return csvPathHotIds
 }
 
-async function getAllResourcePaths(dataPackageJson, unzipDestination) {
+async function getAllResourcePaths(dataPackageJson, unzipDestination, processed) {
   let resourcePaths = []
   for (let dataResource of dataPackageJson.resources) {
-    let fileDestination = `${unzipDestination}/${dataResource.path}`
+    let fileDestination
+    if (processed.parentFolders) {
+      fileDestination = path.join(unzipDestination, processed.parentFolders, dataResource.path)
+    } else {
+      fileDestination = path.join(unzipDestination, dataResource.path)
+    }
+    console.log(`file destination is ${fileDestination}`)
     let format = dataResourceToFormat(dataResource)
     await ipc.send('openFileIntoTab', fileDestination, format)
     resourcePaths.push(dataResource.path)

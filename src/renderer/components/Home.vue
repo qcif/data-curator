@@ -1112,7 +1112,7 @@ export default {
     })
     const vueImportDataPackage = this.importDataPackage
     ipc.on('importDataPackage', function(event, arg) {
-      vueImportDataPackage(arg[0])
+      vueImportDataPackage(arg)
     })
     const vueValidateTable = this.validateTable
     ipc.on('validateTable', function(event, arg) {
