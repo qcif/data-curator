@@ -557,8 +557,8 @@ export default {
       this.resetTablePropertiesToObject(allProperties.tables)
       this.resetColumnPropertiesToObject(allProperties.columns)
     },
-    importDataPackage: async function(filename) {
-      let message = await unzipFile(filename, this.storeResetCallback)
+    importDataPackage: async function(filename, isTransient) {
+      let message = await unzipFile(filename, this.storeResetCallback, isTransient)
       this.messagesTitle = message ? 'Open Data Package Error' : 'Open Data Package Success'
       this.messages = message || 'All Properties have been imported.'
       this.messagesType = 'feedback'
@@ -1104,8 +1104,8 @@ export default {
       vueGuessProperties()
     })
     const vueImportDataPackage = this.importDataPackage
-    ipc.on('importDataPackage', function(event, arg) {
-      vueImportDataPackage(arg)
+    ipc.on('importDataPackage', function(event, filePath, isTransient = false) {
+      vueImportDataPackage(filePath, isTransient)
     })
     const vueValidateTable = this.validateTable
     ipc.on('validateTable', function(event, arg) {
