@@ -14,7 +14,7 @@ tmp.setGracefulCleanup()
 
 // TODO: handle errors by rejecting promises and throwing back up stack
 export function showUrlDialog() {
-  let labels = ['Zip File...', 'URL...']
+  let labels = ['zip from URL....', 'zip from file...', 'json from URL...']
   let menu = getSubMenuFromMenu('File', 'Open Data Package')
   disableSubMenuItemsFromMenuObject(menu, labels)
   let browserWindow = focusOrNewSecondaryWindow('urldialog', {width: 300, height: 150, modal: true, alwaysOnTop: true})
