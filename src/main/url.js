@@ -85,11 +85,12 @@ export async function importDataPackageZipFromUrl(urlText) {
     }
   } catch (error) {
     console.log(`Unable to download zip: ${urlText}`, error)
+    mainWindow.webContents.send('closeLoadingScreen')
   }
 }
 
 function handleDownloadedZip(zipPath, mainWindow) {
-  mainWindow.webContents.send('importDataPackage', zipPath)
+  mainWindow.webContents.send('importDataPackage', zipPath, true)
 }
 
 async function loadPackageFromJsonUrl(urlText) {
