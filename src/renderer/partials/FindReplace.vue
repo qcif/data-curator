@@ -72,6 +72,11 @@ let _lastRowIndicies = []
 let _currentHotPos = [-1, -1]
 let _previousSearchClear = true
 const _searchCallback = function(instance, row, col, value, result) {
+  // console.log(`previous Seach Clear is:`)
+  // console.log(_previousSearchClear)
+  // console.log('last indicies:')
+  // console.log(_lastRowIndicies)
+  // console.log(row)
   if (!_previousSearchClear && _.indexOf(_lastRowIndicies, row) > -1) {
     searchCallback.apply(this, arguments)
   } else if (col === _currentHotPos[1]) {
@@ -201,7 +206,7 @@ export default {
       }
       this.foundCounter = -1
       this.foundCount = -1
-      this.resetSearchResultWrapper()
+      this.resetSearchResultWrapper(true)
       this.clickedFindOrReplace = null
       // wait for the css to update from resetting counters then remove all
       const vueInputFoundRemoveFeedback = this.inputFoundRemoveFeedback
@@ -408,15 +413,24 @@ export default {
       this.activeHotId = hotId
     },
     resetSearchResultWrapper: function(hasActiveIdChanged) {
+      // console.log('resetting wrapper...')
       let newCurrentCol
       let coords = this.getHotSelection(this.activeHotId)
       if (coords) {
         newCurrentCol = coords[1]
       }
       if (hasActiveIdChanged || newCurrentCol != this.currentCol) {
-        _lastRowIndicies = this.rowIndicies
+        // console.log('this row indicies to change:')
+        // console.log(this.rowIndicies)
+        // console.log(_lastRowIndicies)
+        // reset can be called for multiple behaviours - ensure don't overwrite with previously reset/null rowIndicies
+        if (!_.isEmpty(this.rowIndicies)) {
+          _lastRowIndicies = this.rowIndicies
+        }
+        // console.log(_lastRowIndicies)
         this.rowIndicies = null
         this.currentCol = null
+        // console.log(_lastRowIndicies)
         this.inputFoundRemoveFeedback()
         // this turns off feedback functions
         this.clickedFindOrReplace = null
@@ -435,7 +449,9 @@ export default {
     this.$subscribeTo(currentPos$, function(currentPos) {
       vueResetSearchResult(false)
     })
+    // triggered when text replaced
     this.$subscribeTo(afterSetDataAtCell$, function(value) {
+      // console.log('after set data at cell')
       vueResetSearchResult(true)
     })
     ipc.on('clickFindButton', function(event, arg) {

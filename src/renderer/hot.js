@@ -74,6 +74,7 @@ const HotRegister = {
         }
       },
       afterSetDataAtCell() {
+        // console.log('data set at cell.')
         afterSetDataAtCell$.next(true)
       },
       enterMoves({shiftKey}) {
