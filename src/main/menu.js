@@ -173,24 +173,39 @@ class AppMenu {
         submenu: [
           {
             label: 'Find',
-            accelerator: 'CmdOrCtrl+F'
+            accelerator: 'CmdOrCtrl+F',
+            click: function() {
+              webContents().send('showSidePanel', 'findReplace')
+            }
           }, {
             label: 'Find Next',
             accelerator: 'CmdOrCtrl+G',
-            enabled: false
+            enabled: false,
+            click: function() {
+              webContents().send('findNext')
+            }
           }, {
             label: 'Find Previous',
             accelerator: 'Shift+CmdOrCtrl+G',
-            enabled: false
+            enabled: false,
+            click: function() {
+              webContents().send('findPrevious')
+            }
           }, {
             type: 'separator'
           }, {
             label: 'Replace Next',
             accelerator: 'Alt+CmdOrCtrl+E',
-            enabled: false
+            enabled: false,
+            click: function() {
+              webContents().send('replaceNext')
+            }
           }, {
             label: 'Replace All',
-            enabled: false
+            enabled: false,
+            click: function() {
+              webContents().send('replaceAll')
+            }
           }
         ]
       },
@@ -525,8 +540,38 @@ export function getMenu(menuLabel) {
   return menu
 }
 
+export function enableAllSubMenuItemsFromMenuLabel(menuLabel) {
+  let menu = getMenu(menuLabel)
+  enableAllSubMenuItemsFromMenuObject(menu)
+}
+
+export function enableAllSubMenuItemsFromMenuObject(menu) {
+  menu.submenu.items.forEach(function(x) {
+    x.enabled = !!x.label
+  })
+}
+
+export function disableAllSubMenuItemsFromMenuLabel(menuLabel) {
+  let menu = getMenu(menuLabel)
+  disableAllSubMenuItemsFromMenuObject(menu)
+}
+
+export function disableAllSubMenuItemsFromMenuObject(menu) {
+  menu.submenu.items.forEach(function(x) {
+    if (typeof x.label !== 'undefined') {
+      x.enabled = false
+    }
+  })
+}
+
+export function getSubMenuLabelsFromMenu(menuLabel) {
+  let menu = getMenu(menuLabel)
+  let subMenuLabels = menu.submenu.items.map(x => x.label)
+  return subMenuLabels
+}
+
 export function getSubMenuFromMenu(menuLabel, subMenuLabel) {
-  let menu = Menu.getApplicationMenu().items.find(x => x.label === menuLabel)
+  let menu = getMenu(menuLabel)
   let subMenu = menu.submenu.items.find(x => x.label === subMenuLabel)
   return subMenu
 }

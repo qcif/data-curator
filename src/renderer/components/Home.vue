@@ -302,7 +302,7 @@ export default {
         tooltipView: 'tooltipValidate'
       },
       {
-        name: 'Find',
+        name: 'Find or Replace',
         id: 'find',
         image: 'static/img/find.svg',
         tooltipId: 'tooltip-find',
@@ -713,6 +713,9 @@ export default {
     closeSideNav: function() {
       this.enableTransition = false
       this.sideNavStatus = 'closed'
+      if (this.sideNavView == 'findReplace') {
+        ipc.send('closedFindReplace')
+      }
       this.sideNavView = ''
     },
     openSideNav: function() {
@@ -741,6 +744,11 @@ export default {
       if (toolbarMenu) {
         this.sideNavPosition = toolbarMenu.sideNavPosition
         this.sideNavView = toolbarMenu.sideNavView
+        if (this.sideNavView !== 'findReplace') {
+          ipc.send('closedFindReplace')
+        } else {
+          ipc.send('openedFindReplace')
+        }
         this.sideNavViewTitle = toolbarMenu.name
         this.openSideNav()
       }
@@ -752,9 +760,9 @@ export default {
       }
       if (this.sideNavStatus === 'closed') {
         this.enableTransition = false
-      } else if (this.sideNavPosition === 'left' && (index !== -1 && menuName !== 'Find')) {
+      } else if (this.sideNavPosition === 'left' && (index !== -1 && menuName !== 'Find or Replace')) {
         this.enableTransition = false
-      } else if (this.sideNavPosition === 'right' && (index === -1 || menuName === 'Find')) {
+      } else if (this.sideNavPosition === 'right' && (index === -1 || menuName === 'Find or Replace')) {
         this.enableTransition = false
       } else {
         this.updateTransitions(index)
@@ -765,6 +773,9 @@ export default {
     },
     findMenuByName: function(name) {
       return this.toolbarMenus.find(x => x.name === name)
+    },
+    findMenuBySideNavView: function(sideNavView) {
+      return this.toolbarMenus.find(x => typeof x.sideNavView !== 'undefined' && x.sideNavView === sideNavView)
     },
     updateActiveColumn: function(selected) {
       if (selected) {
@@ -812,11 +823,18 @@ export default {
       return `tab${tabId}`
     },
     triggerSideNav: function(properties) {
-      this.updateToolbarMenuForSideNav(-1)
-      this.sideNavPosition = properties.sideNavPosition || 'left'
-      this.sideNavView = properties.sideNavView
-      this.sideNavViewTitle = properties.title || properties.sideNavView
-      this.openSideNav()
+      const menu = this.findMenuBySideNavView(properties.sideNavView)
+      if (menu) {
+        this.triggerMenuButton(menu.name)
+      } else {
+        this.updateToolbarMenuForSideNav(-1)
+        // Find is a menu button so ensure closed signal fires
+        ipc.send('closedFindReplace')
+        this.sideNavPosition = properties.sideNavPosition || 'left'
+        this.sideNavView = properties.sideNavView
+        this.sideNavViewTitle = properties.title || properties.sideNavView
+        this.openSideNav()
+      }
     },
     triggerMenuButton: function(menuName) {
       let index = _.findIndex(this.toolbarMenus, function(o) {
