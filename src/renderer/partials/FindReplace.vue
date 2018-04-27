@@ -10,20 +10,20 @@
           <span v-show="formprop.resultFn(formprop.key)" :class="formprop.resultIconFn()" class="glyphicon form-control-feedback"/>
         </div>
         <span class="btn-group pull-right">
-          <button type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" @click="formprop.fn('previous')">
+          <button type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-primary'" @click="formprop.fn('previous')">
             <span v-if="formprop.buttonLeftClass" :class="formprop.buttonLeftClass"/>
             <template v-if="formprop.buttonLeftText">
               {{formprop.buttonLeftText}}
             </template>
           </button>
-          <button v-show="formprop.buttonRightClass" type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" @click="formprop.fn('next')">
+          <button v-show="formprop.buttonRightClass" type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-primary'" @click="formprop.fn('next')">
             <span :class="formprop.buttonRightClass"/>
           </button>
         </span>
       </div>
       <span v-if="formprop.buttonBelowText" class="btn-group">
-        <button type="button" class="button-below btn btn-sm" :class="formprop.buttonTypeClass || 'btn-default'" @click="formprop.belowFn('next')">
-          <span>{{formprop.buttonBelowText}}</span>
+        <button type="button" class="button-below btn btn-sm" :class="formprop.buttonTypeClass || 'btn-primary'" @click="formprop.belowFn('next')">
+          <span :class="formprop.buttonBelowClass">{{formprop.buttonBelowText}}</span>
         </button>
       </span>
     </div>
@@ -62,6 +62,7 @@ import {
 } from '@/rxSubject.js'
 import Sifter from 'sifter/sifter.min.js'
 import transform from 'stream-transform'
+import {ipcRenderer as ipc} from 'electron'
 Vue.use(AsyncComputed)
 Vue.use(VueRx, {
   Subscription
@@ -106,20 +107,19 @@ export default {
       formprops: [{
         label: 'Find in column',
         key: 'find',
-        buttonTypeClass: 'btn-primary',
-        buttonLeftClass: 'fa fa-chevron-left',
-        buttonRightClass: 'fa fa-chevron-right',
+        buttonLeftClass: 'fa fa-chevron-left findPrevious',
+        buttonRightClass: 'fa fa-chevron-right findNext',
         fn: this.findText,
         resultFn: this.findResults,
         resultIconFn: this.getFindResultIcon
       }, {
         label: 'Replace in column',
         key: 'replace',
-        buttonTypeClass: 'btn-primary',
-        buttonLeftClass: 'fa fa-chevron-left',
-        buttonRightClass: 'fa fa-chevron-right',
+        buttonLeftClass: 'fa fa-chevron-left replacePrevious',
+        buttonRightClass: 'fa fa-chevron-right replaceNext',
         // buttonLeftText: 'Replace',
         buttonBelowText: 'Replace All',
+        buttonBelowClass: 'replaceAll',
         fn: this.replaceText,
         belowFn: this.replaceAllText,
         resultFn: this.replaceResults,
@@ -437,6 +437,11 @@ export default {
     })
     this.$subscribeTo(afterSetDataAtCell$, function(value) {
       vueResetSearchResult(true)
+    })
+    ipc.on('clickFindButton', function(event, arg) {
+      let el = document.querySelector(`button .${arg}`).parentNode
+      el.click()
+      el.classList.add('active', 'focus')
     })
   }
 }

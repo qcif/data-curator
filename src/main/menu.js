@@ -182,29 +182,36 @@ class AppMenu {
             accelerator: 'CmdOrCtrl+G',
             enabled: false,
             click: function() {
-              webContents().send('findNext')
+              webContents().send('clickFindButton', 'findNext')
             }
           }, {
             label: 'Find Previous',
             accelerator: 'Shift+CmdOrCtrl+G',
             enabled: false,
             click: function() {
-              webContents().send('findPrevious')
+              webContents().send('clickFindButton', 'findPrevious')
             }
           }, {
             type: 'separator'
+          }, {
+            label: 'Replace Previous',
+            accelerator: 'CmdOrCtrl+E',
+            enabled: false,
+            click: function() {
+              webContents().send('clickFindButton', 'replacePrevious')
+            }
           }, {
             label: 'Replace Next',
             accelerator: 'Alt+CmdOrCtrl+E',
             enabled: false,
             click: function() {
-              webContents().send('replaceNext')
+              webContents().send('clickFindButton', 'replaceNext')
             }
           }, {
             label: 'Replace All',
             enabled: false,
             click: function() {
-              webContents().send('replaceAll')
+              webContents().send('clickFindButton', 'replaceAll')
             }
           }
         ]
