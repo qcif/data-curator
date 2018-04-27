@@ -1138,6 +1138,7 @@ export default {
       vueValidateTable()
     })
     this.pushDefaultPackageProperties()
+    ipc.send('closedFindReplace')
   },
   updated: function() {
     if (this.loadingDataMessage && this.loadingDataMessage.length > 0) {
