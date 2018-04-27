@@ -103,6 +103,7 @@ export default {
       foundCount: 0,
       foundCounter: 0,
       replaceMessageText: '',
+      replaceData: [],
       // foundStyle: {
       //   backgroundColor: 'rgba(70, 237, 70, 0.3)'
       // },
@@ -167,11 +168,16 @@ export default {
     },
     replaceResults: function(key) {
       // show result at either find or replace view
+      console.log(`key is ${key}`)
+      console.log(`clickedFindOrReplace is ${this.clickedFindOrReplace}`)
       if (key === this.clickedFindOrReplace) {
         if (this.replacesRemaining > -1) {
+          console.log('reporting success')
           this.inputFoundSuccessFeedback(key)
+          console.log(`replaces remaining: ${this.replacesRemaining}`)
           return `${this.replacesRemaining} ${this.replaceMessageText}.`
         } else {
+          console.log('reporting failure')
           this.inputFoundFailureFeedback(key)
           return 'No result'
         }
@@ -215,16 +221,32 @@ export default {
       }, 10)
     },
     replaceText: function(direction) {
+      this.inputFoundRemoveFeedback()
       this.clickedFindOrReplace = 'replace'
       this.replaceMessageText = 'remaining'
       this.findNextOrPrevious(direction)
+      console.time()
       const hot = HotRegister.getInstance(this.activeHotId)
+      if (_.isEmpty(this.replaceData)) {
+        // TODO: check if caching data can also improve performance on large data sets
+
+        this.replaceData = hot.getData()
+        this.replacesRemaining = this.rowIndicies.length
+      }
+      console.timeEnd()
       const selectedCoords = hot.getSelected()
       if (selectedCoords) {
-        this.replacesRemaining = this.rowIndicies.length
-        this.replaceAllFindTextWithinCell(hot, selectedCoords[0], selectedCoords[1])
+        const row = selectedCoords[0]
+        const col = selectedCoords[1]
+        let updatedCellText = this.getReplacedAllFindTextFromCell(this.replaceData, row, col)
+        hot.setDataAtCell(row, col, updatedCellText)
       }
-      this.replacesRemaining--
+      this.clickedFindOrReplace = 'replace'
+      console.log('decrementing count')
+      console.log(`replaces remaining in replace fn before: ${this.replacesRemaining}`)
+      this.replacesRemaining = this.replacesRemaining - 1
+      console.log(`replaces remaining in replace fn: ${this.replacesRemaining}`)
+      this.resetSearchResultWrapper(false)
       this.clickedFindOrReplace = 'replace'
     },
     replaceAllText: function(direction) {
@@ -234,23 +256,24 @@ export default {
       this.replacesRemaining = this.rowIndicies.length
       const hot = HotRegister.getInstance(this.activeHotId)
       const replaceTextFn = this.replaceAllFindTextWithinCell
-      let replaceCol = this.currentCol
+      const col = this.currentCol
       // console.log(this.rowIndicies.length)
       let data = hot.getData()
-      for (let rowIndex of this.rowIndicies) {
-        replaceTextFn(data, rowIndex, replaceCol)
+      for (const row of this.rowIndicies) {
+        data[row][col] = this.getReplacedAllFindTextFromCell(data, row, col)
       }
       // bulk change data
       hot.loadData(data)
+      this.resetSearchResultWrapper(true)
       this.clickedFindOrReplace = 'replace'
     },
-    replaceAllFindTextWithinCell: function(data, row, col) {
+    getReplacedAllFindTextFromCell: function(data, row, col) {
       let cellText = data[row][col]
       // ensure any special characters in find text are treated as ordinary text
       const escapedFindText = _.escapeRegExp(this.findTextValue)
       const regExp = new RegExp(escapedFindText, 'g')
       let updatedCellText = _.replace(cellText, regExp, this.replaceTextValue)
-      data[row][col] = updatedCellText
+      return updatedCellText
     },
     previousFn: function(index, arrayLength) {
       // console.log(`array length is ${arrayLength}`)
@@ -271,6 +294,7 @@ export default {
       this.findNextOrPrevious(direction)
     },
     findNextOrPrevious: function(direction) {
+      console.time()
       let directionFn
       if (direction === 'previous') {
         directionFn = this.previousFn
@@ -305,10 +329,13 @@ export default {
       }
       this.foundCounter = this.updatedRowIndex
       let updatedRow = this.rowIndicies[this.updatedRowIndex]
+      console.timeEnd()
+      console.time()
       hot.scrollViewportTo(updatedRow, currentCol)
       // preserve rowIndicies and currentCol on reset
       let tempRowIndicies = this.rowIndicies
       hot.selectCell(updatedRow, currentCol)
+      console.timeEnd()
       this.rowIndicies = tempRowIndicies
       this.currentCol = currentCol
     },
@@ -413,14 +440,14 @@ export default {
       this.activeHotId = hotId
     },
     resetSearchResultWrapper: function(hasActiveIdChanged) {
-      // console.log('resetting wrapper...')
+      console.log('resetting wrapper...')
       let newCurrentCol
       let coords = this.getHotSelection(this.activeHotId)
       if (coords) {
         newCurrentCol = coords[1]
       }
       if (hasActiveIdChanged || newCurrentCol != this.currentCol) {
-        // console.log('this row indicies to change:')
+        console.log('this row indicies to change:')
         // console.log(this.rowIndicies)
         // console.log(_lastRowIndicies)
         // reset can be called for multiple behaviours - ensure don't overwrite with previously reset/null rowIndicies
@@ -430,10 +457,12 @@ export default {
         // console.log(_lastRowIndicies)
         this.rowIndicies = null
         this.currentCol = null
+        this.replaceData.length = 0
         // console.log(_lastRowIndicies)
         this.inputFoundRemoveFeedback()
         // this turns off feedback functions
         this.clickedFindOrReplace = null
+        this.replacesRemaining = -1
       }
       this.updatedRowIndex = -1
     }
@@ -451,8 +480,8 @@ export default {
     })
     // triggered when text replaced
     this.$subscribeTo(afterSetDataAtCell$, function(value) {
-      // console.log('after set data at cell')
-      vueResetSearchResult(true)
+      console.log('after set data at cell')
+      // vueResetSearchResult(true)
     })
     ipc.on('clickFindButton', function(event, arg) {
       let el = document.querySelector(`button .${arg}`).parentNode
