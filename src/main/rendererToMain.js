@@ -1,6 +1,13 @@
 import {ipcMain as ipc} from 'electron'
 import {showErrors} from './errors.js'
-import {getSubMenuFromMenu, clickLabelsOnMenu} from './menu'
+import {
+  getMenu,
+  getSubMenuFromMenu,
+  clickLabelsOnMenu,
+  disableAllSubMenuItemsFromMenuObject,
+  enableSubMenuItemsFromMenuObject,
+  enableAllSubMenuItemsFromMenuLabel
+} from './menu'
 import {focusMainWindow, closeSecondaryWindow} from './windows.js'
 
 ipc.on('toggleSaveMenu', (event, arg) => {
@@ -38,4 +45,14 @@ ipc.on('focusMainWindow', (event, arg) => {
 
 ipc.on('closeSecondaryWindow', (event, arg) => {
   closeSecondaryWindow(arg)
+})
+
+ipc.on('closedFindReplace', (event, arg) => {
+  let menu = getMenu('Find')
+  disableAllSubMenuItemsFromMenuObject(menu)
+  enableSubMenuItemsFromMenuObject(menu, ['Find'])
+})
+
+ipc.on('openedFindReplace', (event, arg) => {
+  enableAllSubMenuItemsFromMenuLabel('Find')
 })

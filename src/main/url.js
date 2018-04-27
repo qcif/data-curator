@@ -3,7 +3,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import {ipcMain as ipc, dialog} from 'electron'
 import {focusOrNewSecondaryWindow, focusMainWindow, closeWindowSafely} from './windows'
-import {getSubMenuFromMenu, disableSubMenuItemsFromMenuObject, enableSubMenuItemsFromMenuObject} from './menu.js'
+import {getSubMenuFromMenu, disableAllSubMenuItemsFromMenuObject, enableAllSubMenuItemsFromMenuObject} from './menu.js'
 import {Package} from 'datapackage'
 import tmp from 'tmp'
 import _ from 'lodash'
@@ -14,12 +14,12 @@ tmp.setGracefulCleanup()
 
 // TODO: handle errors by rejecting promises and throwing back up stack
 export function showUrlDialog() {
-  let labels = ['zip from URL....', 'zip from file...', 'json from URL...']
+  // let labels = ['zip from URL....', 'zip from file...', 'json from URL...']
   let menu = getSubMenuFromMenu('File', 'Open Data Package')
-  disableSubMenuItemsFromMenuObject(menu, labels)
+  disableAllSubMenuItemsFromMenuObject(menu)
   let browserWindow = focusOrNewSecondaryWindow('urldialog', {width: 300, height: 150, modal: true, alwaysOnTop: true})
   browserWindow.on('closed', () => {
-    enableSubMenuItemsFromMenuObject(menu, labels)
+    enableAllSubMenuItemsFromMenuObject(menu)
   })
   browserWindow.webContents.on('did-finish-load', () => {
     ipc.once('urlCancelled', () => {
