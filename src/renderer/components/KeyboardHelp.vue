@@ -420,7 +420,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><b>Minimize</b> - create a new table of data</td>
+        <td><b>Minimize</b> - minimize the Data Curator window</td>
         <td></td>
         <td><kbd>Command &#8984;</kbd> <kbd>M</kbd></td>
       </tr>
@@ -449,11 +449,13 @@
       </tr>
     </thead>
     <tbody>
+<!--    
       <tr>
-        <td><b>Data Curator Help</b> - create a new table of data</td>
+        <td><b>Data Curator Help</b> - display help in a separate window</td>
         <td><kbd>F1</kbd></td>
         <td></td>
       </tr>
+-->       
       <tr>
         <td><b>Keyboard Shortcuts</b></td>
         <td><kbd>Ctrl</kbd> <kbd>/</kbd></td>
