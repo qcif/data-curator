@@ -366,7 +366,7 @@ export default {
         console.log(`row index is now ${this.updatedRowIndex}`)
       }
       console.log(`is found count still?: ${this.foundCount}`)
-      this.foundCounter = this.updatedRowIndexs
+      this.foundCounter = this.updatedRowIndex
       console.log(`found counter = ${this.foundCounter}`)
       let updatedRow = this.rowIndicies[this.updatedRowIndex]
       console.log(`updated row is now: ${updatedRow}`)
@@ -488,6 +488,9 @@ export default {
         this.resetSearchResultWrapper()
       }
     },
+    resetRowIndex: function() {
+      this.updatedRowIndex = -1
+    },
     resetSearchResultWrapper: function() {
       console.log('resetting wrapper...')
       console.log('this row indicies to change:')
@@ -520,9 +523,11 @@ export default {
       vueUpdateActiveHotId(hotId)
       vueResetSearchResult()
     })
+    const vueResetRowIndex = this.resetRowIndex
     this.$subscribeTo(currentPos$, function(currentPos) {
       console.log(`subscribed currentPos is ${currentPos}`)
       vueResetOnColumnChange()
+      vueResetRowIndex()
     })
     // triggered when text replaced
     this.$subscribeTo(afterSetDataAtCell$, function(value) {
