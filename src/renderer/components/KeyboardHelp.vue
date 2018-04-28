@@ -266,7 +266,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><b>Undo</b> the last edit command</td>
+        <td><b>Undo</b> the last edit command. Replace commands cannot be undone</td>
         <td><kbd>Ctrl</kbd> <kbd>Z</kbd></td>
         <td><kbd>Command &#8984;</kbd> <kbd>Z</kbd></td>
       </tr>
