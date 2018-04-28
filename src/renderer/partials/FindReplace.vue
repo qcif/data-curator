@@ -153,8 +153,11 @@ export default {
       return (this.foundCount && this.foundCount.length > 0) ? 'glyphicon-ok' : 'glyphicon-remove'
     },
     findResults: function(key) {
+      console.log('checking find results')
       // show result at either find or replace view
+      console.log(`find or replace is: ${this.clickedFindOrReplace}`)
       if (key === this.clickedFindOrReplace) {
+        console.log(`checking for ${key}`)
         // TODO: tidy use cases for updatedRowIndex, so updatedCount not needed
         const count = this.foundCounter + 1
         if (count > 0 && this.foundCount.length > 0) {
@@ -250,7 +253,7 @@ export default {
         this.replacesRemaining = this.rowIndicies.length
         // }
       }
-      this.clickedFindOrReplace = 'replace'
+      // this.clickedFindOrReplace = 'replace'
       console.log(`replaces remaining in replace fn: ${this.replacesRemaining}`)
       // this.resetOnColumnChange()
       this.clickedFindOrReplace = 'replace'
@@ -318,6 +321,8 @@ export default {
       }
       this.clickedFindOrReplace = 'find'
       this.findNextOrPrevious(direction)
+      // a new index calculation will reset this.clickedFindOrReplace so ensure for first run it is referenced again for feedback
+      this.clickedFindOrReplace = 'find'
     },
     findNextOrPrevious: function(direction) {
       console.time()
