@@ -66,3 +66,13 @@ ipc.on('loadingScreenTimeout', (event, arg) => {
     message: message
   })
 })
+
+ipc.on('dataParsingError', (event, arg) => {
+  const mainWindow = focusMainWindow()
+  const message = arg || 'Unable to parse data. There could be a problem with the data format.'
+  dialog.showMessageBox(mainWindow, {
+    type: 'error',
+    title: `Data parsing Error`,
+    message: message
+  })
+})
