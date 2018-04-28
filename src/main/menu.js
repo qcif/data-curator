@@ -72,16 +72,13 @@ class AppMenu {
           }, {
             label: 'Save As',
             submenu: this.saveSubMenu
+          }, {
+            type: 'separator'
+          }, {
+            label: 'Close Tab',
+            accelerator: 'CmdOrCtrl+W'
+          // , TODO: insert command
           }
-          // hide until needed
-          //, {
-          //  type: 'separator'
-          // }
-          // hide until implemened
-          //, {
-          //  label: 'Close Tab',
-          //  accelerator: 'CmdOrCtrl+W'
-          // }
         ]
       },
       {
@@ -318,15 +315,16 @@ class AppMenu {
             role: 'minimize'
           }, {
             role: 'zoom'
-            // hide until implemented
-            // }, {
-            //   type: 'separator'
-            // }, {
-            //   label: 'Next Tab',
-            //   accelerator: 'CmdOrCtrl+Right'
-            // }, {
-            //   label: 'Previous Tab',
-            //   accelerator: 'CmdOrCtrl+Left'
+          }, {
+            type: 'separator'
+          }, {
+            label: 'Next Tab',
+            accelerator: 'CmdOrCtrl+Right'
+            // , TODO: insert command
+          }, {
+            label: 'Previous Tab',
+            accelerator: 'CmdOrCtrl+Left'
+            // , TODO: insert command
           }, {
             type: 'separator'
           }, {
