@@ -607,11 +607,26 @@ export default {
       }
       this.setActiveTab(tabId)
     },
-    showLoadingScreen: function(message) {
+    showLoadingScreen: function(message, errorMessage) {
       this.loadingDataMessage = message
+      // set timeout for loading screen
+      this.initLoadingScreenTimeout(errorMessage)
+    },
+    initLoadingScreenTimeout: function(errorMessage) {
+      const vueCloseLoadingScreen = this.closeLoadingScreen
+      const vueIsLoadingMessageRunning = this.isLoadingMessageRunning
+      _.delay(function() {
+        if (vueIsLoadingMessageRunning()) {
+          vueCloseLoadingScreen()
+          ipc.send('loadingScreenTimeout', errorMessage)
+        }
+      }, 30000)
     },
     closeLoadingScreen: function() {
       this.loadingDataMessage = false
+    },
+    isLoadingMessageRunning: function() {
+      return this.loadingDataMessage
     },
     createHotDataContainer: function(data, format={}, descriptor={}) {
       this.initTab()

@@ -1,4 +1,4 @@
-import {ipcMain as ipc} from 'electron'
+import {ipcMain as ipc, dialog} from 'electron'
 import {showErrors} from './errors.js'
 import {
   getMenu,
@@ -55,4 +55,14 @@ ipc.on('closedFindReplace', (event, arg) => {
 
 ipc.on('openedFindReplace', (event, arg) => {
   enableAllSubMenuItemsFromMenuLabel('Find')
+})
+
+ipc.on('loadingScreenTimeout', (event, arg) => {
+  const mainWindow = focusMainWindow()
+  const message = arg || 'There was a problem with loading. There could a problem with the source.'
+  dialog.showMessageBox(mainWindow, {
+    type: 'error',
+    title: `Loading Timeout`,
+    message: message
+  })
 })

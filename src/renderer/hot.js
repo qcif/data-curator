@@ -51,7 +51,7 @@ const HotRegister = {
       },
       afterInit() {
         if (typeof listeners.loadingStartListener !== 'undefined') {
-          listeners.loadingStartListener('Loading data. Please wait...')
+          listeners.loadingStartListener('Loading data. Please wait...', 'There was a problem loading data. Please check that the data is valid.')
         }
       },
       afterLoadData(firstTime) {
