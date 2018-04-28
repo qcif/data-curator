@@ -175,6 +175,8 @@ class AppMenu {
             label: 'Find',
             accelerator: 'CmdOrCtrl+F'
           }, {
+            type: 'separator'
+          }, {
             label: 'Find Next',
             accelerator: 'CmdOrCtrl+G',
             enabled: false
@@ -187,6 +189,9 @@ class AppMenu {
           }, {
             label: 'Replace Next',
             accelerator: 'Alt+CmdOrCtrl+E',
+            enabled: false
+          }, {
+            label: 'Replace Previous',
             enabled: false
           }, {
             label: 'Replace All',
