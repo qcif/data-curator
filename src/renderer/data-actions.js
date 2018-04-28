@@ -30,7 +30,6 @@ export function loadCsvDataIntoHot(hot, data, format) {
     arrays = parse(data, csvOptions)
     pushCsvFormat(hot.guid, format)
   }
-
   fixRaggedRows(arrays)
   hot.loadData(arrays)
   hot.render()
