@@ -23,6 +23,7 @@ Feature: Open a Data Package
   LATER
   =====
   
+  - Open datapackage.json from a local file 
   - Open a data package that references a Table Schema at a URL 
   - Open a data package that references a CSV Dialect at a URL
   
