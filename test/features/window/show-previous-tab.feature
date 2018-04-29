@@ -21,10 +21,15 @@ Feature:  Show Previous Tab
   Scenario: left-most tab selected
     Given Data Curator is open
     When the left-most tab is selected
-    Then the "Show Previous Tab" command should be made unavailable
+    Then the "Show Previous Tab" command should be unavailable
 
   Scenario: left-most tab not selected
     Given Data Curator is open
     And more than one tab is open
     When the left-most tab is not selected
-    Then the "Show Previous Tab" command should be made available
+    Then the "Show Previous Tab" command should be available
+
+  Scenario: Only one tab open
+    Given Data Curator is open
+    And only one tab is open
+    Then the "Show Previous Tab" command should be unavailable
