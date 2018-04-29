@@ -302,7 +302,7 @@ export default {
         tooltipView: 'tooltipValidate'
       },
       {
-        name: 'Find or Replace',
+        name: 'Find and Replace',
         id: 'find',
         image: 'static/img/find.svg',
         tooltipId: 'tooltip-find',
@@ -760,9 +760,9 @@ export default {
       }
       if (this.sideNavStatus === 'closed') {
         this.enableTransition = false
-      } else if (this.sideNavPosition === 'left' && (index !== -1 && menuName !== 'Find or Replace')) {
+      } else if (this.sideNavPosition === 'left' && (index !== -1 && menuName !== 'Find and Replace')) {
         this.enableTransition = false
-      } else if (this.sideNavPosition === 'right' && (index === -1 || menuName === 'Find or Replace')) {
+      } else if (this.sideNavPosition === 'right' && (index === -1 || menuName === 'Find and Replace')) {
         this.enableTransition = false
       } else {
         this.updateTransitions(index)
