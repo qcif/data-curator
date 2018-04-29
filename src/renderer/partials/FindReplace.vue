@@ -153,11 +153,11 @@ export default {
       return (this.foundCount && this.foundCount.length > 0) ? 'glyphicon-ok' : 'glyphicon-remove'
     },
     findResults: function(key) {
-      console.log('checking find results')
+      // console.log('checking find results')
       // show result at either find or replace view
-      console.log(`find or replace is: ${this.clickedFindOrReplace}`)
+      // console.log(`find or replace is: ${this.clickedFindOrReplace}`)
       if (key === this.clickedFindOrReplace) {
-        console.log(`checking for ${key}`)
+        // console.log(`checking for ${key}`)
         // TODO: tidy use cases for updatedRowIndex, so updatedCount not needed
         const count = this.foundCounter + 1
         if (count > 0 && this.foundCount.length > 0) {
@@ -171,16 +171,16 @@ export default {
     },
     replaceResults: function(key) {
       // show result at either find or replace view
-      console.log(`key is ${key}`)
-      console.log(`clickedFindOrReplace is ${this.clickedFindOrReplace}`)
+      // console.log(`key is ${key}`)
+      // console.log(`clickedFindOrReplace is ${this.clickedFindOrReplace}`)
       if (key === this.clickedFindOrReplace) {
         if (this.replacesRemaining > -1) {
-          console.log('reporting success')
+          // console.log('reporting success')
           this.inputFoundSuccessFeedback(key)
-          console.log(`replaces remaining: ${this.replacesRemaining}`)
+          // console.log(`replaces remaining: ${this.replacesRemaining}`)
           return `${this.replacesRemaining} ${this.replaceMessageText}.`
         } else {
-          console.log('reporting failure')
+          // console.log('reporting failure')
           this.inputFoundFailureFeedback(key)
           return 'No result'
         }
@@ -215,7 +215,7 @@ export default {
       }
       this.foundCounter = -1
       this.foundCount = -1
-      console.log('about to reset from set text...')
+      // console.log('about to reset from set text...')
       this.resetSearchResultWrapper()
       // this.clickedFindOrReplace = null
       // wait for the css to update from resetting counters then remove all
@@ -229,6 +229,11 @@ export default {
       if (this.clickedFindOrReplace === 'find') {
         this.resetSearchResultWrapper()
       }
+      if (this.clickedFindOrReplace === 'replace') {
+        if (direction === 'next') {
+          this.updatedRowIndex--
+        }
+      }
       this.clickedFindOrReplace = 'replace'
       this.replaceMessageText = 'remaining'
       this.findNextOrPrevious(direction)
@@ -238,7 +243,7 @@ export default {
         // TODO: check if caching data can also improve performance on large data sets
 
         this.replaceData = hot.getData()
-        console.log(this.rowIndicies)
+        // console.log(this.rowIndicies)
       }
       // console.timeEnd()
       const selectedCoords = hot.getSelected()
@@ -248,13 +253,16 @@ export default {
         let updatedCellText = this.getReplacedAllFindTextFromCell(this.replaceData, row, col)
         // if (updatedCellText) {
         hot.setDataAtCell(row, col, updatedCellText)
-        console.log(`updated row index to take: ${this.updatedRowIndex}`)
+        // console.log(`updated row index to take: ${this.updatedRowIndex}`)
+        // console.log(this.rowIndicies[this.updatedRowIndex])
+        // console.log(this.rowIndicies)
         this.rowIndicies.splice(this.updatedRowIndex, 1)
         this.replacesRemaining = this.rowIndicies.length
+        // console.log(this.rowIndicies)
         // }
       }
       // this.clickedFindOrReplace = 'replace'
-      console.log(`replaces remaining in replace fn: ${this.replacesRemaining}`)
+      // console.log(`replaces remaining in replace fn: ${this.replacesRemaining}`)
       // this.resetOnColumnChange()
       this.clickedFindOrReplace = 'replace'
     },
@@ -299,9 +307,10 @@ export default {
       // console.log(`before next, index is ${index}`)
       if (index >= arrayLength - 1) {
         index = 0
-      } else if (this.clickedFindOrReplace === 'find') {
-        index = index + 1
       } else {
+      // } else if (this.clickedFindOrReplace === 'find') {
+        index = index + 1
+      // } else {
         // for replace don't increment counter as we are removing indexes
       }
       // if (index < arrayLength - 1) {
@@ -334,6 +343,8 @@ export default {
       }
       const hot = HotRegister.getInstance(this.activeHotId)
       const currentHotPos = this.getHotSelection(this.activeHotId)
+      // console.log(`current hot pos is`)
+      // console.log(currentHotPos)
       _currentHotPos = currentHotPos
       const currentRow = currentHotPos[0]
       const currentCol = currentHotPos[1]
@@ -356,34 +367,37 @@ export default {
         this.rowIndicies = this.hotSiftWithoutTransform(colObject, [tempHeader])
       }
       this.foundCount = this.rowIndicies
-      console.log(`found count is: ${this.foundCount}`)
-      console.log(`updated row index: ${this.updatedRowIndex}`)
-      console.log(`current updated row is: ${this.rowIndicies[this.updatedRowIndex]}`)
+      // console.log(`found count is: ${this.foundCount}`)
+      // console.log(`in find fn updated row index: ${this.updatedRowIndex}`)
+      // console.log(`current updated row is: ${this.rowIndicies[this.updatedRowIndex]}`)
       if (this.updatedRowIndex >= 0) {
-        console.log('continuing...')
-        console.log(`current updated row index: ${this.updatedRowIndex}`)
-        console.log(this.rowIndicies)
+        // console.log('continuing...')
+        // console.log(`current updated row index: ${this.updatedRowIndex}`)
+        // console.log(this.rowIndicies)
         this.updatedRowIndex = directionFn(this.updatedRowIndex, this.rowIndicies.length)
-        console.log(`updated row now: ${this.updatedRowIndex}`)
+        // console.log(`updated row now: ${this.updatedRowIndex}`)
       } else {
-        console.log('resetting row index...')
+        // console.log('resetting row index...')
         this.updatedRowIndex = this.determineStartingRowIndex(currentRow, direction, directionFn)
-        console.log(`row index is now ${this.updatedRowIndex}`)
+        // console.log(`row index is now ${this.updatedRowIndex}`)
       }
-      console.log(`is found count still?: ${this.foundCount}`)
+      // console.log(`is found count still?: ${this.foundCount}`)
       this.foundCounter = this.updatedRowIndex
-      console.log(`found counter = ${this.foundCounter}`)
+      // console.log(`found counter = ${this.foundCounter}`)
       let updatedRow = this.rowIndicies[this.updatedRowIndex]
-      console.log(`updated row is now: ${updatedRow}`)
-      console.timeEnd()
-      console.time()
+      // console.log(`updated row is now: ${updatedRow}`)
+      // console.timeEnd()
+      // console.time()
       hot.scrollViewportTo(updatedRow, currentCol)
       // preserve rowIndicies and currentCol on reset
       let tempRowIndicies = this.rowIndicies
+      let tempUpdatedRowIndex = this.updatedRowIndex
       hot.selectCell(updatedRow, currentCol)
-      console.timeEnd()
+      // console.timeEnd()
       this.rowIndicies = tempRowIndicies
       this.currentCol = currentCol
+      this.updatedRowIndex = tempUpdatedRowIndex
+      // console.log(`this updated row index is: ${this.updatedRowIndex}`)
     },
     hotSearch: function(hot) {
       // TODO : add loading screen here
@@ -486,19 +500,16 @@ export default {
       this.activeHotId = hotId
     },
     resetOnColumnChange: function() {
-      console.log('checking for column change...')
+      // console.log('checking for column change...')
       let newCurrentCol
       let coords = this.getHotSelection(this.activeHotId)
       if (coords && coords[1] != this.currentCol) {
         this.resetSearchResultWrapper()
       }
     },
-    resetRowIndex: function() {
-      this.updatedRowIndex = -1
-    },
     resetSearchResultWrapper: function() {
-      console.log('resetting wrapper...')
-      console.log('this row indicies to change:')
+      // console.log('resetting wrapper...')
+      // console.log('this row indicies to change:')
       // console.log(this.rowIndicies)
       // console.log(_lastRowIndicies)
       // reset can be called for multiple behaviours - ensure don't overwrite with previously reset/null rowIndicies
@@ -516,6 +527,9 @@ export default {
       this.replacesRemaining = -1
       console.log('resetting updated row index')
       this.updatedRowIndex = -1
+    },
+    resetRowIndex() {
+      this.updatedRowIndex = -1
     }
   },
   mounted: async function() {
@@ -523,22 +537,22 @@ export default {
     const vueUpdateActiveHotId = this.updateActiveHotId
     const vueResetOnColumnChange = this.resetOnColumnChange
     const vueResetSearchResult = this.resetSearchResultWrapper
+    const vueResetRowIndex = this.resetRowIndex
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
-      console.log('subscribed for hot id from tab')
+      // console.log('subscribed for hot id from tab')
       vueUpdateActiveHotId(hotId)
       vueResetSearchResult()
     })
-    const vueResetRowIndex = this.resetRowIndex
     this.$subscribeTo(currentPos$, function(currentPos) {
-      console.log(`subscribed currentPos is ${currentPos}`)
+      // console.log(`subscribed currentPos is ${currentPos}`)
       vueResetOnColumnChange()
       vueResetRowIndex()
     })
     // triggered when text replaced
-    this.$subscribeTo(afterSetDataAtCell$, function(value) {
-      console.log('after set data at cell')
-      // vueResetSearchResult(true)
-    })
+    // this.$subscribeTo(afterSetDataAtCell$, function(value) {
+    //   // console.log('after set data at cell')
+    //   // vueResetSearchResult(true)
+    // })
     ipc.on('clickFindButton', function(event, arg) {
       let el = document.querySelector(`button .${arg}`).parentNode
       el.click()
