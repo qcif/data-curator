@@ -77,7 +77,7 @@ class AppMenu {
           }, {
             label: 'Close Tab',
             accelerator: 'CmdOrCtrl+W'
-          // , TODO: insert command
+          // , TODO: insert command to close tab if not the only tab open. Disable menu item if only one tab is open
           }
         ]
       },
@@ -320,11 +320,11 @@ class AppMenu {
           }, {
             label: 'Next Tab',
             accelerator: 'CmdOrCtrl+Right'
-            // , TODO: insert command
+            // , TODO: insert command to move to next tab if one exists. Disable menu item if last tab is active
           }, {
             label: 'Previous Tab',
             accelerator: 'CmdOrCtrl+Left'
-            // , TODO: insert command
+            // , TODO: insert command to move to previous tab if one exists. Disable menu item if first tab is active
           }, {
             type: 'separator'
           }, {
