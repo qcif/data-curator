@@ -4,7 +4,7 @@
     <div  class="propertyrow clearfix" v-for="(formprop, index) in formprops" :key="index">
       <label v-show="formprop.label" v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label pull-left" :for="formprop.label">{{formprop.label}}</label>
       <component :is="formprop.tooltipView"/>
-      <div class="inputrow">
+      <div class="inputrow clearfix">
         <div class="placeholder text-muted small" :class="formprop.key" :data-placeholder="formprop.resultFn(formprop.key)">
           <input class="pull-left form-control input-sm col-sm-9" type="text" :id="formprop.key" :value="getText(formprop.key)" @input="setText(formprop.key, $event.target.value)" :name="formprop.key" />
           <span v-show="formprop.resultFn(formprop.key)" :class="formprop.resultIconFn()" class="glyphicon form-control-feedback"/>
@@ -21,11 +21,11 @@
           </button>
         </span>
       </div>
-      <span v-if="formprop.buttonBelowText" class="btn-group">
+      <div v-if="formprop.buttonBelowText" class="btn-group pull-right">
         <button type="button" class="button-below btn btn-sm" :class="formprop.buttonTypeClass || 'btn-primary'" @click="formprop.belowFn('next')">
           <span :class="formprop.buttonBelowClass">{{formprop.buttonBelowText}}</span>
         </button>
-      </span>
+      </div>
     </div>
     <!-- <div class="pickrow">
       <span v-for="(radioprop, index) in radioprops">
