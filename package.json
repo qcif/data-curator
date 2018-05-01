@@ -77,7 +77,7 @@
   },
   "dependencies": {
     "archiver": "^2.1.1",
-    "autosize": "^4.0.1",
+    "autosize": "^4.0.2",
     "axios": "^0.18.0",
     "bootstrap": "3.3.7",
     "components-font-awesome": "^5.0.6",
