@@ -9,6 +9,7 @@ import {
   enableAllSubMenuItemsFromMenuLabel
 } from './menu'
 import {focusMainWindow, closeSecondaryWindow} from './windows.js'
+import {loadPackageJson} from './url.js'
 
 ipc.on('toggleSaveMenu', (event, arg) => {
   let saveSubMenu = getSubMenuFromMenu('File', 'Save')
@@ -55,4 +56,13 @@ ipc.on('closedFindReplace', (event, arg) => {
 
 ipc.on('openedFindReplace', (event, arg) => {
   enableAllSubMenuItemsFromMenuLabel('Find')
+})
+
+ipc.on('loadPackageUrl', async function(event, index, hotId, url) {
+  const mainWindow = focusMainWindow()
+  const dataPackage = await loadPackageJson(url)
+  if (dataPackage) {
+    console.log(dataPackage)
+    mainWindow.webContents.send('packageUrlLoaded', index, hotId, url, dataPackage.descriptor)
+  }
 })

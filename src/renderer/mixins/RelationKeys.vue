@@ -29,12 +29,14 @@ export default {
       allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
     },
     getHotIdHeaderNames: function(allTablesAllNames, hotId) {
+      console.log('triggered get hot id header names...')
       return _.without(allTablesAllNames[hotId], '', null, undefined)
     }
   },
   mounted: async function() {
     let vueUpdateSubscriptions = this.updateSubscriptions
     this.$subscribeTo(allTablesAllColumnNames$, async function(allTablesAllColumnNames) {
+      console.log('subscription for all tables all column names triggered...')
       await vueUpdateSubscriptions(allTablesAllColumnNames)
     })
     this.initTableHeaderKeys()
