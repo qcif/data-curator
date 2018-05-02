@@ -98,6 +98,13 @@ async function loadPackageFromJsonUrl(urlText) {
   mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading package URL..')
   const dataPackageJson = await loadPackageJson(urlText, mainWindow)
   if (!dataPackageJson) {
+    dialog.showMessageBox(mainWindow, {
+      type: 'warning',
+      title: `Unable to load Data Package`,
+      message:
+  `The data package, ${urlText}, could not be loaded.
+  If the data package is a URL, please check that the URL exists.`
+    })
     mainWindow.webContents.send('closeLoadingScreen')
     return
   }
@@ -106,7 +113,11 @@ async function loadPackageFromJsonUrl(urlText) {
     mainWindow.webContents.send('closeLoadingScreen')
     return
   }
-  await loadResources(dataPackageJson, mainWindow)
+  try {
+    await loadResources(dataPackageJson, mainWindow)
+  } catch (error) {
+    console.log('There was a problem loading package from json', error)
+  }
 }
 
 function showInvalidMessage(urlText, mainWindow) {
@@ -130,21 +141,12 @@ function showUrlPathNotSupportedMessage(urlText, mainWindow) {
 }
 
 // datapackage-js does not support loading url in browser
-async function loadPackageJson(json, mainWindow) {
+export async function loadPackageJson(json) {
   try {
     const dataPackage = await Package.load(json)
     return dataPackage
   } catch (error) {
     console.log(`There was a problem loading the package: ${json}`, error)
-    dialog.showMessageBox(mainWindow, {
-      type: 'warning',
-      title: `Unable to load Data Package`,
-      message:
-`The data package, ${json}, could not be loaded.
-If the data package is a URL, please check that the URL exists.`
-    })
-    // throw new Error()
-    // return Promise.reject(error)
   }
 }
 
@@ -154,12 +156,19 @@ async function loadResources(dataPackageJson, mainWindow) {
   mainWindow.webContents.send('resetPackagePropertiesToObject', packageProperties)
   for (const resource of dataPackageJson.resourceNames) {
     mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading next resource...')
+    console.log(`loading next resource...`)
+    console.log(resource)
     const dataResource = dataPackageJson.getResource(resource)
+    console.log(dataResource)
     const format = dataResourceToFormat(dataResource.descriptor)
+    console.log(`reading`, resource)
+    console.log(dataResource)
     let data = await dataResource.read()
+    console.log(`completed read. sending close...`)
     mainWindow.webContents.send('closeLoadingScreen')
     // datapackage-js separates headers - add back to use default DC behaviour
     let dataWithHeaders = _.concat([dataResource.headers], data)
+    console.log(`completed read. sending add tab...`)
     mainWindow.webContents.send('addTabWithFormattedDataAndDescriptor', dataWithHeaders, format, dataResource.descriptor)
   }
 }

@@ -598,6 +598,10 @@ export default {
       })
     },
     addTab: function(data = '"","",""', format, descriptor) {
+      console.log('adding tab...')
+      console.log(data)
+      console.log(format)
+      console.log(descriptor)
       this.createHotDataContainer(data, format, descriptor)
     },
     setActiveTabWrapper: function(tabId) {
