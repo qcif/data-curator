@@ -1,5 +1,3 @@
-@backlog
-
 Feature: Set Preferences
   As a Data Packager  
   I want to set default values and behaviours  
@@ -15,36 +13,27 @@ Feature: Set Preferences
       - CKAN (in the future add DataHub.io, Data.World, OctoPub)
       - Portal URL e.g. https/data.qld.gov.au
     - Default Data Package properties
-      - [`Licenses`](http://frictionlessdata.io/specs/data-package/#licenses):
+      - One [`Licenses`](http://frictionlessdata.io/specs/data-package/#licenses):
         - `license name` - pick from list of valid open licences. See [Open Definition](http://opendefinition.org/licenses/) for a list of licenses
         - `license path` - default from licence name
         - `license title` - default from licence name
-      - [`Sources`](http://frictionlessdata.io/specs/data-package/#sources):
-        - `title` (mandatory if other values exist)
-        - `path`
-        - `email`
-      - [`Contributors`](http://frictionlessdata.io/specs/data-package/#contributors), allow multiple entries (e.g. Author and Maintainer for CKAN)
+      - One or more [`Contributors`](http://frictionlessdata.io/specs/data-package/#contributors), allow multiple entries (e.g. Author and Maintainer for CKAN)
         - `organization`
         - `title` (mandatory if other values exist)
         - `email`
         - `path`
         - `role` - one of the standard values in a drop down list
-
-  QUESTIONS
-  =========
-
-  - will preferences influence command shortcuts, e.g.
-    - open CSV (shortcut adjusted to default CSV Dialect `delimiter`)
-    - save as CSV (shortcut adjusted to default CSV Dialect `delimiter`)
-  - if "Open file" and "Save As" are implemented, above is not needed.
-  - should guess on open a setting?
-  - are the non-secure values that should be saved for the publish command? e.g. http://demo.ckan.org/api/3/action/
-  - API key (only stored for session, not kept between sessions )
-
+  
   Scenario: Set Preferences
     Given Data Curator is open
     When "Set Preferences" is invoked
     Then the preferences panel should be displayed
     And preference values should be accepted and validated 
-    And the values should be saved as they are entered
     And values should be stored so they are reapplied next time Data Curator is opened
+
+  Scenario: Use Preferences
+    Given Data Curator is open
+    And preference values have been set
+    When "Set Data Package Properties" is invoked
+    Then the preferences values should be displayed in the Properties Panel
+ 
