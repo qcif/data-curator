@@ -65,4 +65,15 @@ ipc.on('loadPackageUrl', async function(event, index, hotId, url) {
     console.log(dataPackage)
     mainWindow.webContents.send('packageUrlLoaded', index, hotId, url, dataPackage.descriptor)
   }
+  // return new Promise((resolve, reject) => {
+  // const vueStopLoadingPackageFeedback = this.sendStopLoadingPackageFeedback
+  // _.delay(function() {
+  //   vueStopLoadingPackageFeedback()
+  //   // resolve(true)
+  // }, 10000)
+  // })
 })
+
+function sendStopLoadingPackageFeedback() {
+  mainWindow.webContents.send('stopLoadingPackageFeedback')
+}

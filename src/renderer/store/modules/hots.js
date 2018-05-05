@@ -3,12 +3,9 @@ import {currentPos$} from '@/rxSubject.js'
 const state = {
   hotTabs: {},
   packageProperties: {},
-  provenanceProperties: { markdown: '', errors: [] }
+  provenanceProperties: { markdown: '', errors: [] },
+  fkPackageComponents: {}
 }
-
-const tableFields = ['encoding', 'format', 'mediatype', 'missingValues', 'name', 'path', 'profile', 'sources', 'title', 'primaryKeys', 'description', 'licenses']
-const packageFields = ['description', 'id', 'licenses', 'name', 'profile', 'sources', 'title', 'version']
-const columnFields = ['constraints', 'format', 'name', 'type', 'title', 'description', 'rdfType']
 
 export function getHotColumnPropertiesFromPropertyObject(property) {
   let allHotColumnProperties = state.hotTabs[property.hotId].columnProperties
@@ -29,6 +26,10 @@ export function getHotIdFromTabIdFunction() {
 }
 
 const getters = {
+  getFkPackageComponents: (state, getters) => (url) => {
+    console.log('returning get fk components...')
+    return state.fkPackageComponents[url]
+  },
   getHotTabs: state => {
     return state.hotTabs
   },
@@ -142,6 +143,9 @@ const getters = {
 }
 
 const mutations = {
+  pushFkPackageComponents(state, property) {
+    _.set(state.fkPackageComponents[property.url], property.tableName, property.fields)
+  },
   resetSearchResult(state, hotId) {
     _.set(state.hotTabs, `${hotId}.searchResult`, 0)
   },
@@ -187,6 +191,7 @@ const mutations = {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
   },
   pushForeignKeysLocalFieldsForTable(state, property) {
+    console.log('pushing foreign local keys')
     let tableProperties = _.assign({}, state.hotTabs[property.hotId].tableProperties) || {}
     let foreignKeys = tableProperties.foreignKeys || []
     if (!foreignKeys[property.index]) {
@@ -202,6 +207,7 @@ const mutations = {
     state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
   },
   pushForeignKeysForeignPackageForTable(state, property) {
+    console.log('pushing foreign keys foreign package')
     let tableProperties = _.assign({}, state.hotTabs[property.hotId].tableProperties) || {}
     let foreignKeys = tableProperties.foreignKeys || []
     if (!foreignKeys[property.index]) {
@@ -214,11 +220,17 @@ const mutations = {
         }
       }
     }
-    foreignKeys[property.index].reference.package = property.package
+    const dataPackage = property.package
+    // console.log('datapackage is:')
+    // console.log(dataPackage)
+    foreignKeys[property.index].reference.package = dataPackage
     state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
-    // _.set(state.hotTabs, `${property.hotId}.tableProperties.foreignKeys`, property.foreignKeys)
+    // reset package tables and columns cache
+    state.fkPackageComponents[dataPackage] = {}
+    // console.log(state.fkPackageComponents)
   },
   removeForeignKeysForeignPackageForTable(state, property) {
+    console.log('removing foreign keys foreign package')
     let hotId = state.hotTabs[property.hotId]
     if (typeof hotId !== 'undefined') {
       let tableProperties = _.assign({}, hotId.tableProperties) || {}
@@ -238,6 +250,7 @@ const mutations = {
     }
   },
   resetForeignKeysForeignTableForTable(state, property) {
+    console.log('resetting foreign table...')
     let hotId = state.hotTabs[property.hotId]
     if (typeof hotId !== 'undefined') {
       let tableProperties = _.assign({}, hotId.tableProperties) || {}
@@ -257,6 +270,7 @@ const mutations = {
     }
   },
   pushForeignKeysForeignTableForTable(state, property) {
+    console.log('pushing foreign table keys')
     let tableProperties = _.assign({}, state.hotTabs[property.hotId].tableProperties) || {}
     let foreignKeys = tableProperties.foreignKeys || []
     if (!foreignKeys[property.index]) {
@@ -270,10 +284,12 @@ const mutations = {
     }
     foreignKeys[property.index].reference.resource = property.resource
     state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
+    console.log('foreign table pushed')
     console.log(state.hotTabs[property.hotId].tableProperties.foreignKeys)
     // _.set(state.hotTabs, `${property.hotId}.tableProperties.foreignKeys`, property.foreignKeys)
   },
   resetForeignKeysForeignFieldsForTable(state, property) {
+    console.log('resetting foreign fields...')
     let hotId = state.hotTabs[property.hotId]
     if (typeof hotId !== 'undefined') {
       let tableProperties = _.assign({}, hotId.tableProperties) || {}
@@ -293,6 +309,8 @@ const mutations = {
     }
   },
   pushForeignKeysForeignFieldsForTable(state, property) {
+    console.log('pushing foreign pk field keys')
+    // console.log('incoming', property)
     let tableProperties = _.assign({}, state.hotTabs[property.hotId].tableProperties) || {}
     let foreignKeys = tableProperties.foreignKeys || []
     if (!foreignKeys[property.index]) {
@@ -306,8 +324,8 @@ const mutations = {
     }
     foreignKeys[property.index].reference.fields = property.fields
     state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
-    console.log(`pushed foreign fields`)
-    console.log(state.hotTabs[property.hotId].tableProperties.foreignKeys)
+    // console.log(`pushed foreign fields`)
+    // console.log(state.hotTabs[property.hotId].tableProperties.foreignKeys)
   },
   pushPackageProperty(state, property) {
     _.set(state.packageProperties, property.key, property.value)

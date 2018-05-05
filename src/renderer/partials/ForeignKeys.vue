@@ -3,32 +3,32 @@
   <div v-for="(foreignKey,index) in hotForeignKeys"  class="foreign col-sm-12">
     <div class="inputs-container">
       <component :key="getLocalComponentKey(index)" is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="getSelectedLocalKeys(index)" :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)" labelName="Foreign key(s)" :tooltipId="'tooltip-foreignkey' + index" tooltipView="tooltipForeignkey" :index="index" />
-      <component v-if="isHeadersSelected && !isFkPackageVisible && fkPackages[index] === false" :key="getTableComponentKey(index)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="getSelectedTable(index)" :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)" labelName="Reference Table" :tooltipId="'tooltip-foreignkey-table' + index" tooltipView="tooltipForeignkeyTable" :index="index" />
-      <component v-if="isHeadersSelected && !isFkPackageVisible && fkPackages[index] === false" :key="getForeignComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" :tooltipId="'tooltip-foreignkey-tablekey' + index" tooltipView="tooltipForeignkeyTablekey" :index="index"/>
+      <component v-if="isHeadersSelected && !fkPackages[index]" :key="getTableComponentKey(index)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="getSelectedTable(index)" :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)" labelName="Reference Table" :tooltipId="'tooltip-foreignkey-table' + index" tooltipView="tooltipForeignkeyTable" :index="index" />
+      <component v-if="isHeadersSelected && !fkPackages[index]" :key="getForeignComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" :tooltipId="'tooltip-foreignkey-tablekey' + index" tooltipView="tooltipForeignkeyTablekey" :index="index" :currentHotId="currentHotId"/>
     </div>
     <button type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)">
       <span class="glyphicon glyphicon-minus"/>
     </button>
     <div id="fk-package" class="clearfix">
-      <template v-if="isHeadersSelected && isFkPackageVisible">
-        <label class="control-label">Reference Package</label>
+      <template v-if="isHeadersSelected && fkPackages[index]">
+        <label class="control-label">Reference Package</label><span v-if="loadingPackage" class="glyphicon glyphicon-refresh spinning"/>
         <div class="fk-package" :class="{ 'right': !fkPackages[index]}">
-          <input class="form-control input-sm" type="text" :id="'fk-package' + index" :value="getFkPackage(index)" @input="setFkPackage(index, currentLocalHotId, $event.target.value)" :name="'fk-package' + index" @blur="removeFkPackageForErrors(index, currentLocalHotId)" />
+          <input :key="getForeignPackageKey(index)" class="form-control input-sm" type="text" :id="'fk-package' + index" :value="getFkPackage(index)" @input="setFkPackage(index, currentLocalHotId, $event.target.value)" :name="'fk-package' + index" @blur="removeFkPackageForErrors(index, currentLocalHotId)" />
         </div>
-        <div v-if="fkPackages[index] === true && errors.has('fk-package' + index)" class="row help validate-danger">
+        <div v-if="fkPackages[index] && errors.has('fk-package' + index)" class="row help validate-danger">
           {{ errors.first('fk-package' + index)}}
         </div>
-        <div v-show="fkPackages[index]">
+        <div v-if="fkPackages[index]">
           <!-- <label class="control-label">Reference Table</label> -->
-          <component :key="getTableComponentKey(index)" is="tablekeys" :allTableNames="allFkTableNames" :getSelectedTable.lazy="getFkPackageTable(index)" :pushSelectedTable.lazy="setFkPackageTable(index,currentLocalHotId)" labelName="Reference Table" :tooltipId="'tooltip-foreignkey-table' + index" tooltipView="tooltipForeignkeyTable" :index="index" />
+          <component :key="getPackageTableComponentKey(index)" is="tablekeys" :allTableNames="allFkTableNames" :getSelectedTable="getFkPackageTable(index)" :pushSelectedTable="setFkPackageTable(index,currentLocalHotId)" labelName="Reference Table" :tooltipId="'tooltip-foreignkey-table' + index" tooltipView="tooltipForeignkeyTable" :index="index" />
           <!-- <input class="form-control input-sm" type="text" id="fk-package-table" name="fk-package-table" :value="getFkPackageTable(index)" @input="setFkPackageTable(index, currentLocalHotId, $event.target.value)" /> -->
           <!-- <label class="control-label">Reference Column(s)</label> -->
           <!-- <input class="form-control input-sm" type="text" id="fk-package-columns" name="fk-package-columns" :value="getFkPackageColumns(index)" @input="setFkPackageColumns(index, currentLocalHotId, $event.target.value)" /> -->
-          <component :key="getForeignComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentPackageForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" :tooltipId="'tooltip-foreignkey-tablekey' + index" tooltipView="tooltipForeignkeyTablekey" :index="index"/>
+          <component :key="getForeignPackageComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentPackageForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" :tooltipId="'tooltip-foreignkey-tablekey' + index" tooltipView="tooltipForeignkeyTablekey" :index="index" :currentHotId="currentHotId"/>
         </div>
       </template>
       <button type="button" class="add-foreign btn btn-primary btn-sm" @click="toggleFkPackage(index)">
-        <span class="fas fa-exchange-alt"/>{{fkButtonMessage(index)}}
+        <span class="fas fa-exchange-alt"/>{{toggleText[index]}}
       </button>
     </div>
   </div>
@@ -58,7 +58,8 @@ import {
 } from 'rxjs/Subscription'
 import {
   allTabsTitles$,
-  allTablesAllColumnNames$
+  allTablesAllColumnNames$,
+  fkPackagesButtonText$
 } from '@/rxSubject.js'
 import ValidationRules from '../mixins/ValidationRules'
 import VueRx from 'vue-rx'
@@ -77,27 +78,27 @@ export default {
   asyncComputed: {
     hotForeignKeys: {
       async get() {
-        console.log(`getting hot foreign keys...`)
+        // console.log(`getting hot foreign keys...`)
         let hotId = await this.currentHotId()
         this.currentLocalHotId = hotId
         this.allForeignKeys = this.getAllForeignKeys()
         let foreignKeys = this.allForeignKeys[hotId]
-        console.log('updating fk type..')
-        this.updateFkType(foreignKeys, hotId)
+        // console.log('updating fk type..')
+        this.updateFkType(foreignKeys)
         return foreignKeys
       },
       watch() {
         let dummy = this.localHeaderNames
         let dummy2 = this.getActiveTab
-        let dummy3 = this.isFkPackageVisible
-        // let dummy4 = this.fkPackages
+        // let dummy3 = this.isFkPackageVisible
+        let dummy4 = this.fkPackages
         // let dummy4 = this.pushForeignKeysForeignPackageForTable
       }
     },
     isHeadersSelected: {
       async get() {
         let isSelected = this.localHeaderNames.length > 0
-        console.log(`is headers selected: ${isSelected}`)
+        // console.log(`is headers selected: ${isSelected}`)
         return !!isSelected
       },
       watch() {
@@ -105,6 +106,23 @@ export default {
         let dummy2 = this.allForeignKeys
       }
     }
+    // startLoadingPackageFeedbackCheck: {
+    //   async get() {
+    //     let self = this
+    //     console.log('initial async')
+    //     // this.loadingPackage = true
+    //     // this.$nextTick(function() {
+    //     _.delay(function() {
+    //       console.log('activating delay')
+    //       self.stopLoadingPackageFeedback()
+    //       // resolve(true)
+    //     }, 10000)
+    //     // })
+    //   },
+    //   watch() {
+    //     let dummy = this.loadingPackage
+    //   }
+    // }
   },
   data() {
     return {
@@ -117,71 +135,154 @@ export default {
       allTableNamesHeaderNames: {},
       allFkTableNamesHeaderNames: {},
       fkPackages: [],
-      isFkPackageVisible: false
+      loadingPackage: false
+      // toggleText: []
+      // isFkPackageVisible: false
     }
   },
   computed: {
+    ...mapGetters(['getFkPackageComponents'])
   },
   subscriptions() {
     return {
-      allColumns: allTablesAllColumnNames$
+      allColumns: allTablesAllColumnNames$,
+      toggleText: fkPackagesButtonText$
     }
   },
   methods: {
     ...mapMutations([
-      'pushForeignKeysForeignPackageForTable', 'removeForeignKeysForeignPackageForTable', 'resetForeignKeysForeignTableForTable', 'resetForeignKeysForeignFieldsForTable'
+      'pushForeignKeysForeignPackageForTable', 'removeForeignKeysForeignPackageForTable', 'resetForeignKeysForeignTableForTable', 'resetForeignKeysForeignFieldsForTable', 'pushFkPackageComponents'
     ]),
-    updateFkType: function(foreignKeys, hotId) {
-      console.log('entered update fk type...')
+    updateFkType: function(foreignKeys) {
+      // console.log('entered update fk type...')
+      // console.log('all fk table names is:')
+      // console.log(this.allFkTableNames)
+      // console.log(this.allFkTableNamesHeaderNames)
+      // ensure each tab keeps track of only its own fkPackages
+      this.fkPackages.length = 0
       for (const [index, foreignKey] of foreignKeys.entries()) {
         let reference = foreignKey && foreignKey.reference
-        console.log(`reference is`, reference)
-        console.log(reference.package)
+        // console.log(`reference is`)
+        // console.log(reference)
         this.fkPackages[index] = !!(reference && reference.package && reference.package.trim().length > 0)
-        console.log(this.fkPackages[index])
+        // this.updateToggleTextIndex(index)
       }
+      this.updateToggleText()
     },
-    fkButtonMessage: function(index) {
-      console.log('in button message, fk package index...')
-      console.log(this.fkPackages[index])
-      return this.isFkPackageVisible ? 'Switch to FK Local Table' : 'Switch to FK Package URL'
-    },
+    // fkButtonMessage: function(index) {
+    //   // console.log('in button message, fk package index...')
+    //   // console.log(this.fkPackages[index])
+    //   return this.fkPackages[index] ? 'Switch to FK Local Table' : 'Switch to FK Package URL'
+    // },
     getFkPackageTableOrDefault: function(table, index) {
-      if (_.indexOf(this.allFkTableNames, table) === -1 && !_.isEmpty(this.allFkTableNames)) {
+      // console.log('...getting fk package table or default...')
+      if (_.isEmpty(this.allFkTableNames)) {
+        this.populateFkPackageComponents(index)
+      }
+      if (_.indexOf(this.allFkTableNames, table) === -1) {
         // console.log('resetting...')
         table = this.allFkTableNames[0]
         // console.log(`table now is ${table}`)
         // this.setFkPackageTable(index, this.currentLocalHotId, table)
-        this.pushForeignKeysForeignTableForTable({ hotId: this.currentLocalHotId, index: index, resource: table })
+        // TODO: check for loop.
+        // this.pushForeignKeysForeignTableForTable({ hotId: this.currentLocalHotId, index: index, resource: table })
       }
       return table
     },
     toggleFkPackage: function(index) {
-      this.isFkPackageVisible = !this.isFkPackageVisible
-      console.log('toggling...')
-      console.log(this.isFkPackageVisible)
-      this.fkPackages[index] = !this.fkPackages[index]
-      // package will always be reset, so ensure that its table and fields are too
-      if (!this.isFkPackageVisible) {
-        this.allFkTableNames = []
-        this.allFkTableNamesHeaderNames = {}
-      }
+      // this.isFkPackageVisible = !this.isFkPackageVisible
+      // console.log('toggling...')
+      // console.log(this.isFkPackageVisible)
+      this.updateFkPackageIndex(index, !this.fkPackages[index])
+      // this.toggleText[index] = this.fkPackages[index] ? 'Switch to FK Local Table' : 'Switch to FK Package URL'
+      // console.log(this.fkPackages)
+      // fkPackages$.next(this.fkPackages)
+      // this.fkPackages[index] = !this.fkPackages[index]
+      // if (!this.fkPackages[index]) {
+      //   this.allFkTableNames.length = 0
+      //   this.allFkTableNamesHeaderNames = {}
+      // }
       this.removeForeignKeysForeignPackageForTable({ index: index, hotId: this.currentLocalHotId })
       this.resetForeignKeysForeignTableForTable({ index: index, hotId: this.currentLocalHotId })
       this.resetForeignKeysForeignFieldsForTable({ index: index, hotId: this.currentLocalHotId })
+      // button text won't re-render on its own
+      // this.$forceUpdate()
     },
     getFkPackage: function(index) {
+      // console.log(this.currentLocalHotId)
+      // console.log('getting fk package...')
       let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
       let foreignKey = foreignKeys[index] || {}
       let reference = foreignKey.reference || {}
-      return reference.package
+      // let dataPackage
+      if (typeof reference.package !== 'undefined') {
+        // let dataPackage = reference.package
+        // if (_.isEmpty(this.allFkTableNamesHeaderNames)) {
+        //   this.allFkTableNamesHeaderNames = this.getFkPackageComponents(dataPackage)
+        //   if (!_.isEmpty(this.allFkTableNamesHeaderNames)) {
+        //     this.allFkTableNames = _.keys(this.allFkTableNamesHeaderNames)
+        //   }
+        // }
+        return reference.package
+      }
+      // let dataPackage = this.populateFkPackageComponents(index)
+      // if (!dataPackage) {
+      // TODO: resetting causes infinite loop
+      // this.removeForeignKeysForeignPackageForTable({ index: index, hotId: this.currentLocalHotId })
+      // this.resetForeignKeysForeignTableForTable({ index: index, hotId: this.currentLocalHotId })
+      // this.resetForeignKeysForeignFieldsForTable({ index: index, hotId: this.currentLocalHotId })
+      // } else {
+      //   return dataPackage
+      // }
+    },
+    populateFkPackageComponents: function(index) {
+      // console.log('populating fk package components...')
+      let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
+      let foreignKey = foreignKeys[index] || {}
+      let reference = foreignKey.reference || {}
+      let dataPackage
+      if (typeof reference.package !== 'undefined') {
+        dataPackage = reference.package
+        if (_.isEmpty(this.allFkTableNamesHeaderNames)) {
+          // console.log(`about to get fk package components as headers are empty...`)
+          this.allFkTableNamesHeaderNames = this.getFkPackageComponents(dataPackage)
+          // console.log('...populating table names')
+          this.allFkTableNames = _.keys(this.allFkTableNamesHeaderNames)
+        }
+      }
+      return dataPackage
     },
     setFkPackage: async function(index, hotId, value) {
-      this.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: value })
+      // this.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: value })
       let isValid = await this.validatePackageUrl(`fk-package${index}`, index, hotId, value)
       if (isValid) {
         ipc.send('loadPackageUrl', index, hotId, value)
+        // this.loadingPackage = true
+        // return true
+        // let temp = this.startLoadingPackageFeedback
       }
+    },
+    // startLoadingPackageFeedback: async function() {
+    //   let self = this
+    //   this.loadingPackage = true
+    //   return new Promise((resolve, reject) => {
+    //   // const vueStopLoadingPackageFeedback = this.stopLoadingPackageFeedback
+    //   // let timerId = setTimeout(function() {
+    //   //   vueStopLoadingPackageFeedback()
+    //   // }, 10000)
+    //   // resolve(
+    //     setTimeout(function() { resolve(self.stopLoadingPackageFeedback()) }, 10000)
+    //   // this.$nextTick(function() {
+    //   //   _.delay(function() {
+    //   //     self.stopLoadingPackageFeedback()
+    //   //     // resolve(true)
+    //   //   }, 10000)
+    //   // })
+    //   // )
+    //   })
+    // },
+    stopLoadingPackageFeedback: function() {
+      this.loadingPackage = false
     },
     removeFkPackageForErrors: function(index, hotId) {
       if (this.errors.has('fk-package' + index)) {
@@ -199,30 +300,46 @@ export default {
       return this.allTableNamesHeaderNames[currentTable()]
     },
     getCurrentPackageForeignHeaders: function(index) {
+      // console.log('getting current package foreign headers')
       // console.log(`index is ${index}`)
       let currentTable = this.getFkPackageTable(index)
       const currentTableName = currentTable()
       // console.log(`current table is ${currentTableName}`)
       // console.log(this.allFkTableNamesHeaderNames)
       if (currentTableName) {
+        // console.log(`current table name is: ${currentTableName}`)
+        // TODO: the cached package components should already be filled when package is realised
+        // this.populateFkPackageComponents(index)
         // console.log(`returning in package foreign head${currentTableName}`)
         // this.$forceUpdate()
         return this.allFkTableNamesHeaderNames[currentTableName]
-      } else {
+      // } else {
         // console.log('returning nothing')
+        // return []
       }
     },
     getLocalComponentKey: function(index) {
-      return `local${index}`
+      return `localHeader${index}`
     },
     getTableComponentKey: function(index) {
-      return `table${index}`
+      return `foreignTable${index}`
     },
     getForeignComponentKey: function(index) {
-      return `foreign${index}`
+      return `foreignHeader${index}`
+    },
+    getPackageTableComponentKey: function(index) {
+      return `foreignPackageTable${index}`
+    },
+    getForeignPackageComponentKey: function(index) {
+      return `foreignPackageHeader${index}`
+    },
+    getForeignPackageKey: function(index) {
+      return `foreignPackage${index}`
     },
     removeForeignKey: function(index) {
       _.unset(this.fkPackages, index)
+      // _.unset(this.toggleText, index)
+      this.updateToggleText()
       let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
       foreignKeys.splice(index, 1)
       this.setProperty(this.propertyName, foreignKeys)
@@ -238,14 +355,22 @@ export default {
       })
       this.setProperty(this.propertyName, foreignKeys)
       this.fkPackages[this.fkPackages.length] = false
+      // this.toggleText[this.fkPackages.length] = false
+      this.updateToggleText()
       this.initTableHeaderKeys()
     },
-    updateSubscriptions: async function(allTablesAllColumnNames) {
+    updateSubscriptions: async function(allTablesAllColumnNames, hotId) {
+      console.log('updating subscriptions...')
       try {
         let localHotId = await this.currentHotId()
+        console.log(`local hot id`, localHotId)
+        console.log(`passed in active hot id`, hotId)
         this.localHeaderNames.length = 0
         let headerNames = this.getHotIdHeaderNames(allTablesAllColumnNames, localHotId)
         this.localHeaderNames.push(...headerNames)
+        // this.$forceUpdate(this.localHeaderNames)
+        this.$forceUpdate()
+        console.log()
       } catch (err) {
         console.log(`There was a problem updating subscriptions.`, err)
       }
@@ -264,6 +389,7 @@ export default {
         allTableNamesHeaderNames[tabTitle] = foreignHeaderNames
       })
       this.allTableNamesHeaderNames = _.assign({}, allTableNamesHeaderNames)
+      console.log(this.allTableNamesHeaderNames)
     },
     getTabsTableNames: function(allTabsTableNames) {
       let tableNames = []
@@ -280,28 +406,30 @@ export default {
       return hotId
     },
     getSelectedLocalKeys: function(index) {
-      console.log('local key get triggered...')
+      // console.log('local key get triggered...')
       let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
       let foreignKey = foreignKeys[index] || {}
       let headers = foreignKey.fields || []
       return headers
     },
     getFkPackageTable: function(index) {
+      // console.log('getting fk package table...')
       let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
-      // console.log(`foreign keys is: `)
+      // // console.log(`foreign keys is: `)
       let foreignKey = foreignKeys[index] || {}
       let reference = foreignKey.reference || {}
-      let table = reference.resource
-      // console.log(`table in fk package table is: ${table}`)
-      table = this.getFkPackageTableOrDefault(table, index)
-      // console.log(`table is in fk package table now: ${table}`)
+      // // console.log(`table in fk package table is: ${table}`)
+      // // TODO: check reference here doesn't attempt to update vuex
+      const table = this.getFkPackageTableOrDefault(reference.resource, index)
+      // // console.log(`table is in fk package table now: ${table}`)
       return function() {
         // console.log(`returning: ${table}`)
         return table
+        // return null
       }
     },
     getSelectedTable: function(index) {
-      console.log('get selected table triggered...')
+      // console.log('get selected table triggered...')
       let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
       let foreignKey = foreignKeys[index] || {}
       let reference = foreignKey.reference || {}
@@ -319,7 +447,7 @@ export default {
       let foreignKey = foreignKeys[index] || {}
       let reference = foreignKey.reference || {}
       let headers = reference.fields || []
-      console.log('returning get selected foreign keys...')
+      // console.log('returning get selected foreign keys...')
       return headers
     },
     // getSelectedFkPackageForeignKeys: function(index) {
@@ -327,8 +455,8 @@ export default {
     //   return _.join(columnArray)
     // },
     pushSelectedLocalKeys: function(index, hotId) {
-      console.log('pushing selected local keys...')
-      console.log('this fkpackagevisible:', this.isFkPackageVisible)
+      // console.log('pushing selected local keys...')
+      // console.log('this fkpackagevisible:', this.isFkPackageVisible)
       let vueSetProperty = this.pushForeignKeysLocalFieldsForTable
       return function(headers) {
         let object = { hotId: hotId, index: index, fields: headers }
@@ -359,17 +487,27 @@ export default {
           table = ''
         }
         let object = { hotId: hotId, index: index, resource: table }
+        console.log('pushing table...')
         vueSetProperty(object)
       }
     },
     pushSelectedForeignKeys: function(index, hotId) {
+      console.log(`hot id:`, hotId)
+      // const testHotId = await this.currentHotId()
+      // console.log(`current hot id`, testHotId)
       let vueSetProperty = this.pushForeignKeysForeignFieldsForTable
-      return function(headers) {
+      return async function(headers) {
         console.log(`pushing headers`)
         console.log(headers)
-        let object = { hotId: hotId, index: index, fields: headers }
-        vueSetProperty(object)
-        this.$forceUpdate()
+        const activeHotId = await this.currentHotId()
+        console.log(`current hot id in push:`, activeHotId)
+
+        // switching tab may misalign setter trigger - ensure active tab has not changed
+        if (activeHotId === hotId) {
+          let object = { hotId: hotId, index: index, fields: headers }
+          vueSetProperty(object)
+        }
+        // this.$forceUpdate()
       }
     },
     // setFkPackageColumns: function(index, hotId, value) {
@@ -377,7 +515,7 @@ export default {
     //   this.pushForeignKeysForeignFieldsForTable({ hotId: hotId, index: index, fields: columnArray })
     // },
     getCurrentTitle: function() {
-      console.log('getting current title...')
+      // console.log('getting current title...')
       return this.tabTitle(this.getActiveTab)
     },
     validatePackageUrl: async function(field, index, hotId, value) {
@@ -396,9 +534,18 @@ export default {
     },
     updateFkPackageIndex: function(index, hasPackage) {
       this.fkPackages[index] = !!hasPackage
+      this.updateToggleText()
     },
-    updateFkComponents: async function(dataPackage) {
-      this.allFkTableNames = []
+    updateToggleText: function() {
+      // console.log('updating toggle text...')
+      const toggleText = []
+      for (const [index, value] of this.fkPackages.entries()) {
+        toggleText[index] = value ? 'Switch to FK Local Table' : 'Switch to FK Package URL'
+      }
+      fkPackagesButtonText$.next(toggleText)
+    },
+    updateFkComponents: async function(dataPackage, url) {
+      this.allFkTableNames.length = 0
       this.allFkTableNamesHeaderNames = {}
       for (const resource of dataPackage.resources) {
         // console.log(resource)
@@ -406,35 +553,49 @@ export default {
         // console.log(resource.name)
         // console.log(resource.schema.fieldNames)
         this.allFkTableNamesHeaderNames[resource.name] = resource.schema.fieldNames
+        this.pushFkPackageComponents({
+          url: url,
+          tableName: resource.name,
+          fields: resource.schema.fieldNames
+        })
       }
-      console.log('after updating fk components')
-      console.log(this.fkPackages)
-      const allHotForeignKeys = await this.hotForeignKeys
-      console.log(allHotForeignKeys)
-      console.log(this.currentLocalHotId)
+      // console.log('after updating fk components')
+      // console.log(this.fkPackages)
+      // const allHotForeignKeys = await this.hotForeignKeys
+      // console.log(allHotForeignKeys)
+      // console.log(this.currentLocalHotId)
       // this.updateFkType(allHotForeignKeys, this.currentLocalHotId)
       // console.log(this.allFkTableNames)
       // console.log(this.allFkTableNamesHeaderNames)
     }
+    // refreshFkComponents: function() {
+    //   const fkComponents = getFkPackageComponents
+    //   console.log('current fk packages', this.fkPackages)
+    //   this.fkPackages[index]
+    // }
   },
   created: async function() {
-    let vueUpdateTableSubscriptions = this.updateTableSubscriptions
+    const vueUpdateTableSubscriptions = this.updateTableSubscriptions
+    // const vueRefreshFkComponents = this.refreshFkComponents
     this.$subscribeTo(allTabsTitles$, function(allTabsTitles) {
-      console.log('subscription triggered...')
+      // console.log('subscription triggered...')
       vueUpdateTableSubscriptions(allTabsTitles)
+      // vueRefreshFkComponents()
     })
     const vuePushForeignKeysForeignPackageForTable = this.pushForeignKeysForeignPackageForTable
     const vueUpdateFkComponents = this.updateFkComponents
     const vueUpdateFkPackageIndex = this.updateFkPackageIndex
-    const hasDataPackage = false
+    // const vueStopLoadingPackageFeedback = this.stopLoadingPackageFeedback
+    // const hasDataPackage = false
     ipc.on('packageUrlLoaded', async function(event, index, hotId, url, descriptor) {
+      // vueStopLoadingPackageFeedback()
       // dataPackage once sent from main is a string - need to load again to get 'Package' instance
       const dataPackage = await Package.load(descriptor)
       if (dataPackage && dataPackage.valid) {
-        console.log(dataPackage)
+        // console.log(dataPackage)
         vueUpdateFkPackageIndex(index, true)
         vuePushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: url })
-        await vueUpdateFkComponents(dataPackage)
+        await vueUpdateFkComponents(dataPackage, url)
       }
     })
   },

@@ -1123,7 +1123,9 @@ export default {
       // console.log(`sync calc: ${plugin.getSyncCalculationLimit()}`)
       // console.log(`first row: ${plugin.getFirstVisibleRow()}`)
       // console.log(`second row: ${plugin.getLastVisibleRow()}`)
-      ipc.send('hasHeaderRow', hot.hasColHeaders())
+      if (hot) {
+        ipc.send('hasHeaderRow', hot.hasColHeaders())
+      }
       ipc.send('hasCaseSensitiveHeader', isCaseSensitive(hotId))
     })
     onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
