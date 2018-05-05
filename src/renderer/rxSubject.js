@@ -13,6 +13,7 @@ let allTabsTitles$ = new Subject()
 let provenanceErrors$ = new ReplaySubject(1)
 let currentPos$ = new Subject()
 let afterSetDataAtCell$ = new Subject()
+let fkPackagesButtonText$ = new Subject()
 // let selectedForeignTable$ = new Subject()
 // let getSelectedLocalKeys$ = new Subject()
 
@@ -41,5 +42,6 @@ export {
   allTabsTitles$,
   provenanceErrors$,
   currentPos$,
-  afterSetDataAtCell$
+  afterSetDataAtCell$,
+  fkPackagesButtonText$
 }

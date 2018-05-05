@@ -18,9 +18,9 @@ export function loadDataIntoHot(hot, data, format) {
 }
 
 export function loadCsvDataIntoHot(hot, data, format) {
-  console.log(`hot is ${hot}`)
-  console.log('data is', data)
-  console.log('format is', format)
+  // console.log(`hot is ${hot}`)
+  // console.log('data is', data)
+  // console.log('format is', format)
   try {
     let arrays
     // if no format specified, default to csv
