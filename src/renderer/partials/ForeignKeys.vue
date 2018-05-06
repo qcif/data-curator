@@ -257,7 +257,6 @@ export default {
       this.initTableHeaderKeys()
     },
     updateSubscriptions: async function(allTablesAllColumnNames, hotId) {
-      console.log('updating subscriptions...')
       try {
         let localHotId = await this.currentHotId()
         this.localHeaderNames.length = 0
@@ -411,20 +410,21 @@ export default {
     }
   },
   created: async function() {
-    const vueUpdateTableSubscriptions = this.updateTableSubscriptions
+    let self = this
     this.$subscribeTo(allTabsTitles$, function(allTabsTitles) {
-      vueUpdateTableSubscriptions(allTabsTitles)
+      self.updateTableSubscriptions(allTabsTitles)
     })
-    const vuePushForeignKeysForeignPackageForTable = this.pushForeignKeysForeignPackageForTable
-    const vueUpdateFkComponents = this.updateFkComponents
-    const vueUpdateFkPackageIndex = this.updateFkPackageIndex
-    const vueStopLoadingPackageFeedback = this.stopLoadingPackageFeedback
+    // occasionally fkpackage table getter doesn't arrive on tab change - update to ensure all received
+    _.delay(function() {
+      self.$forceUpdate()
+    }, 200)
     ipc.on('packageUrlLoaded', async function(event, index, hotId, url, descriptor) {
       const dataPackage = await Package.load(descriptor)
       if (dataPackage && dataPackage.valid) {
-        vueUpdateFkPackageIndex(index, true)
-        vuePushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: url })
-        await vueUpdateFkComponents(dataPackage, url)
+        self.stopLoadingPackageFeedback()
+        self.updateFkPackageIndex(index, true)
+        self.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: url })
+        await self.updateFkComponents(dataPackage, url)
       }
     })
   },
