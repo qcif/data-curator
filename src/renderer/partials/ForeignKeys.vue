@@ -103,17 +103,17 @@ export default {
         let dummy = this.allTableNames
         let dummy2 = this.allForeignKeys
       }
-    },
-    startLoadingPackageFeedbackCheck: {
-      async get() {
-        // let self = this
-        console.log('initial async')
-        return this.loadingPackage
-      },
-      watch() {
-        let dummy = this.loadingPackage
-      }
     }
+    // startLoadingPackageFeedbackCheck: {
+    //   async get() {
+    //     // let self = this
+    //     console.log('initial async')
+    //     return this.loadingPackage
+    //   },
+    //   watch() {
+    //     let dummy = this.loadingPackage
+    //   }
+    // }
   },
   data() {
     return {
@@ -258,6 +258,12 @@ export default {
     setFkPackage: async function(index, hotId, value) {
       this.loadingPackage[index] = value
       loadingPackage$.next(index)
+      let self = this
+      // set timeout on spinner
+      _.delay(function() {
+        self.loadingPackage.length = 0
+        loadingPackage$.next(-1)
+      }, 10000)
       // this.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: value })
       let isValid = await this.validatePackageUrl(`fk-package${index}`, index, hotId, value)
       if (isValid) {
@@ -585,7 +591,7 @@ export default {
     const vueStopLoadingPackageFeedback = this.stopLoadingPackageFeedback
     // const hasDataPackage = false
     ipc.on('packageUrlLoaded', async function(event, index, hotId, url, descriptor) {
-      vueStopLoadingPackageFeedback(index)
+      // vueStopLoadingPackageFeedback(index)
       // loadingPackage$.next(-1)
       // dataPackage once sent from main is a string - need to load again to get 'Package' instance
       const dataPackage = await Package.load(descriptor)
