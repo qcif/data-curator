@@ -62,7 +62,6 @@ ipc.on('loadPackageUrl', async function(event, index, hotId, url) {
   const mainWindow = focusMainWindow()
   const dataPackage = await loadPackageJson(url)
   if (dataPackage) {
-    console.log(dataPackage)
     mainWindow.webContents.send('packageUrlLoaded', index, hotId, url, dataPackage.descriptor)
   }
   // return new Promise((resolve, reject) => {

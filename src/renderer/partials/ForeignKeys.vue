@@ -11,7 +11,7 @@
     </button>
     <div id="fk-package" class="clearfix">
       <template v-if="isHeadersSelected && fkPackages[index]">
-        <label class="control-label">Reference Package</label><span v-if="loadingPackage" class="glyphicon glyphicon-refresh spinning"/>
+        <label class="control-label">Reference Package</label><span v-if="testLoadingPackage == index && loadingPackage[testLoadingPackage]" class="glyphicon glyphicon-refresh spinning"/>
         <div class="fk-package" :class="{ 'right': !fkPackages[index]}">
           <input :key="getForeignPackageKey(index)" class="form-control input-sm" type="text" :id="'fk-package' + index" :value="getFkPackage(index)" @input="setFkPackage(index, currentLocalHotId, $event.target.value)" :name="'fk-package' + index" @blur="removeFkPackageForErrors(index, currentLocalHotId)" />
         </div>
@@ -19,11 +19,7 @@
           {{ errors.first('fk-package' + index)}}
         </div>
         <div v-if="fkPackages[index]">
-          <!-- <label class="control-label">Reference Table</label> -->
           <component :key="getPackageTableComponentKey(index)" is="tablekeys" :allTableNames="allFkTableNames" :getSelectedTable="getFkPackageTable(index)" :pushSelectedTable="setFkPackageTable(index,currentLocalHotId)" labelName="Reference Table" :tooltipId="'tooltip-foreignkey-table' + index" tooltipView="tooltipForeignkeyTable" :index="index" />
-          <!-- <input class="form-control input-sm" type="text" id="fk-package-table" name="fk-package-table" :value="getFkPackageTable(index)" @input="setFkPackageTable(index, currentLocalHotId, $event.target.value)" /> -->
-          <!-- <label class="control-label">Reference Column(s)</label> -->
-          <!-- <input class="form-control input-sm" type="text" id="fk-package-columns" name="fk-package-columns" :value="getFkPackageColumns(index)" @input="setFkPackageColumns(index, currentLocalHotId, $event.target.value)" /> -->
           <component :key="getForeignPackageComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentPackageForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" :tooltipId="'tooltip-foreignkey-tablekey' + index" tooltipView="tooltipForeignkeyTablekey" :index="index" :currentHotId="currentHotId"/>
         </div>
       </template>
@@ -59,7 +55,8 @@ import {
 import {
   allTabsTitles$,
   allTablesAllColumnNames$,
-  fkPackagesButtonText$
+  fkPackagesButtonText$,
+  loadingPackage$
 } from '@/rxSubject.js'
 import ValidationRules from '../mixins/ValidationRules'
 import VueRx from 'vue-rx'
@@ -78,7 +75,7 @@ export default {
   asyncComputed: {
     hotForeignKeys: {
       async get() {
-        // console.log(`getting hot foreign keys...`)
+        console.log(`getting hot foreign keys...`)
         let hotId = await this.currentHotId()
         this.currentLocalHotId = hotId
         this.allForeignKeys = this.getAllForeignKeys()
@@ -88,6 +85,7 @@ export default {
         return foreignKeys
       },
       watch() {
+        console.log('watching...')
         let dummy = this.localHeaderNames
         let dummy2 = this.getActiveTab
         // let dummy3 = this.isFkPackageVisible
@@ -105,24 +103,17 @@ export default {
         let dummy = this.allTableNames
         let dummy2 = this.allForeignKeys
       }
+    },
+    startLoadingPackageFeedbackCheck: {
+      async get() {
+        // let self = this
+        console.log('initial async')
+        return this.loadingPackage
+      },
+      watch() {
+        let dummy = this.loadingPackage
+      }
     }
-    // startLoadingPackageFeedbackCheck: {
-    //   async get() {
-    //     let self = this
-    //     console.log('initial async')
-    //     // this.loadingPackage = true
-    //     // this.$nextTick(function() {
-    //     _.delay(function() {
-    //       console.log('activating delay')
-    //       self.stopLoadingPackageFeedback()
-    //       // resolve(true)
-    //     }, 10000)
-    //     // })
-    //   },
-    //   watch() {
-    //     let dummy = this.loadingPackage
-    //   }
-    // }
   },
   data() {
     return {
@@ -135,7 +126,7 @@ export default {
       allTableNamesHeaderNames: {},
       allFkTableNamesHeaderNames: {},
       fkPackages: [],
-      loadingPackage: false
+      loadingPackage: []
       // toggleText: []
       // isFkPackageVisible: false
     }
@@ -146,15 +137,21 @@ export default {
   subscriptions() {
     return {
       allColumns: allTablesAllColumnNames$,
-      toggleText: fkPackagesButtonText$
+      toggleText: fkPackagesButtonText$,
+      testLoadingPackage: loadingPackage$
     }
   },
   methods: {
     ...mapMutations([
       'pushForeignKeysForeignPackageForTable', 'removeForeignKeysForeignPackageForTable', 'resetForeignKeysForeignTableForTable', 'resetForeignKeysForeignFieldsForTable', 'pushFkPackageComponents'
     ]),
+    // checkLoadingPackage: function(index) {
+    //   console.log('checking loading package')
+    //   console.log(this.loadingPackage)
+    //   return this.loadingPackage[index]
+    // },
     updateFkType: function(foreignKeys) {
-      // console.log('entered update fk type...')
+      console.log('entered update fk type...')
       // console.log('all fk table names is:')
       // console.log(this.allFkTableNames)
       // console.log(this.allFkTableNamesHeaderNames)
@@ -175,7 +172,7 @@ export default {
     //   return this.fkPackages[index] ? 'Switch to FK Local Table' : 'Switch to FK Package URL'
     // },
     getFkPackageTableOrDefault: function(table, index) {
-      // console.log('...getting fk package table or default...')
+      console.log('...getting fk package table or default...')
       if (_.isEmpty(this.allFkTableNames)) {
         this.populateFkPackageComponents(index)
       }
@@ -213,6 +210,10 @@ export default {
     getFkPackage: function(index) {
       // console.log(this.currentLocalHotId)
       console.log('getting fk package...')
+      if (this.loadingPackage[index]) {
+        console.log(`index is:`, index)
+        return this.loadingPackage[index]
+      }
       let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
       let foreignKey = foreignKeys[index] || {}
       let reference = foreignKey.reference || {}
@@ -255,6 +256,8 @@ export default {
       return dataPackage
     },
     setFkPackage: async function(index, hotId, value) {
+      this.loadingPackage[index] = value
+      loadingPackage$.next(index)
       // this.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: value })
       let isValid = await this.validatePackageUrl(`fk-package${index}`, index, hotId, value)
       if (isValid) {
@@ -263,28 +266,20 @@ export default {
         // return true
         // let temp = this.startLoadingPackageFeedback
       }
+      // console.log('returning from set fk package...')
+      console.log(this.loadingPackage)
     },
-    // startLoadingPackageFeedback: async function() {
-    //   let self = this
-    //   this.loadingPackage = true
-    //   return new Promise((resolve, reject) => {
-    //   // const vueStopLoadingPackageFeedback = this.stopLoadingPackageFeedback
-    //   // let timerId = setTimeout(function() {
-    //   //   vueStopLoadingPackageFeedback()
-    //   // }, 10000)
-    //   // resolve(
-    //     setTimeout(function() { resolve(self.stopLoadingPackageFeedback()) }, 10000)
-    //   // this.$nextTick(function() {
-    //   //   _.delay(function() {
-    //   //     self.stopLoadingPackageFeedback()
-    //   //     // resolve(true)
-    //   //   }, 10000)
-    //   // })
-    //   // )
-    //   })
-    // },
-    stopLoadingPackageFeedback: function() {
-      this.loadingPackage = false
+    stopLoadingPackageFeedback: function(index) {
+      console.log(`index is:`, index)
+      console.log('about to stop loading package feedback...')
+      console.log(this.loadingPackage)
+      // let self = this
+      this.loadingPackage[index] = false
+      // _.delay(function() {
+      //   console.log(`index is:`, index)
+      //   self.loadingPackage[index] = false
+      //   console.log(self.loadingPackage)
+      // }, 10000)
     },
     removeFkPackageForErrors: function(index, hotId) {
       if (this.errors.has('fk-package' + index)) {
@@ -587,10 +582,11 @@ export default {
     const vuePushForeignKeysForeignPackageForTable = this.pushForeignKeysForeignPackageForTable
     const vueUpdateFkComponents = this.updateFkComponents
     const vueUpdateFkPackageIndex = this.updateFkPackageIndex
-    // const vueStopLoadingPackageFeedback = this.stopLoadingPackageFeedback
+    const vueStopLoadingPackageFeedback = this.stopLoadingPackageFeedback
     // const hasDataPackage = false
     ipc.on('packageUrlLoaded', async function(event, index, hotId, url, descriptor) {
-      // vueStopLoadingPackageFeedback()
+      vueStopLoadingPackageFeedback(index)
+      // loadingPackage$.next(-1)
       // dataPackage once sent from main is a string - need to load again to get 'Package' instance
       const dataPackage = await Package.load(descriptor)
       if (dataPackage && dataPackage.valid) {
