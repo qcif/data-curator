@@ -191,7 +191,7 @@ export default {
     },
     toggleFkPackage: function(index) {
       // this.isFkPackageVisible = !this.isFkPackageVisible
-      // console.log('toggling...')
+      console.log('toggling...')
       // console.log(this.isFkPackageVisible)
       this.updateFkPackageIndex(index, !this.fkPackages[index])
       // this.toggleText[index] = this.fkPackages[index] ? 'Switch to FK Local Table' : 'Switch to FK Package URL'
@@ -205,12 +205,14 @@ export default {
       this.removeForeignKeysForeignPackageForTable({ index: index, hotId: this.currentLocalHotId })
       this.resetForeignKeysForeignTableForTable({ index: index, hotId: this.currentLocalHotId })
       this.resetForeignKeysForeignFieldsForTable({ index: index, hotId: this.currentLocalHotId })
+      this.allFkTableNames = []
+      this.allFkTableNamesHeaderNames = {}
       // button text won't re-render on its own
       // this.$forceUpdate()
     },
     getFkPackage: function(index) {
       // console.log(this.currentLocalHotId)
-      // console.log('getting fk package...')
+      console.log('getting fk package...')
       let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
       let foreignKey = foreignKeys[index] || {}
       let reference = foreignKey.reference || {}
@@ -413,7 +415,7 @@ export default {
       return headers
     },
     getFkPackageTable: function(index) {
-      // console.log('getting fk package table...')
+      console.log('getting fk package table...')
       let foreignKeys = this.getAllForeignKeysFromCurrentHotId()
       // // console.log(`foreign keys is: `)
       let foreignKey = foreignKeys[index] || {}
@@ -447,7 +449,7 @@ export default {
       let foreignKey = foreignKeys[index] || {}
       let reference = foreignKey.reference || {}
       let headers = reference.fields || []
-      // console.log('returning get selected foreign keys...')
+      console.log('returning get selected foreign keys...')
       return headers
     },
     // getSelectedFkPackageForeignKeys: function(index) {
