@@ -156,19 +156,12 @@ async function loadResources(dataPackageJson, mainWindow) {
   mainWindow.webContents.send('resetPackagePropertiesToObject', packageProperties)
   for (const resource of dataPackageJson.resourceNames) {
     mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading next resource...')
-    console.log(`loading next resource...`)
-    console.log(resource)
     const dataResource = dataPackageJson.getResource(resource)
-    console.log(dataResource)
     const format = dataResourceToFormat(dataResource.descriptor)
-    console.log(`reading`, resource)
-    console.log(dataResource)
     let data = await dataResource.read()
-    console.log(`completed read. sending close...`)
     mainWindow.webContents.send('closeLoadingScreen')
     // datapackage-js separates headers - add back to use default DC behaviour
     let dataWithHeaders = _.concat([dataResource.headers], data)
-    console.log(`completed read. sending add tab...`)
     mainWindow.webContents.send('addTabWithFormattedDataAndDescriptor', dataWithHeaders, format, dataResource.descriptor)
   }
 }
