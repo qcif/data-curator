@@ -178,6 +178,8 @@ class AppMenu {
               webContents().send('showSidePanel', 'findReplace')
             }
           }, {
+            type: 'separator'
+          }, {
             label: 'Find Next',
             accelerator: 'CmdOrCtrl+G',
             enabled: false,
@@ -207,6 +209,9 @@ class AppMenu {
             click: function() {
               webContents().send('clickFindButton', 'replaceNext')
             }
+          }, {
+            label: 'Replace Previous',
+            enabled: false
           }, {
             label: 'Replace All',
             enabled: false,
@@ -417,7 +422,7 @@ class AppMenu {
 
   buildOpenDataPackageMenu() {
     this.openDataPackageSubMenu = [{
-      label: 'zip from URL....',
+      label: 'zip from URL...',
       enabled: true,
       click() {
         // downloadDataPackageJson()
