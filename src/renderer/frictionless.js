@@ -4,6 +4,8 @@ import store from '@/store/modules/hots.js'
 import tabStore from '@/store/modules/tabs.js'
 import {includeHeadersInData, hasAllColumnNames, getValidNames} from '@/frictionlessUtilities.js'
 import {allTablesAllColumnsFromSchema$} from '@/rxSubject.js'
+import {ipcRenderer as ipc} from 'electron'
+import {Package} from 'datapackage'
 
 async function inferSchema(data) {
   const schema = await Schema.load({})
@@ -88,19 +90,41 @@ async function collateForeignKeys(localHotId, callback) {
   }
   let relations = {}
   for (const foreignKey of foreignKeys) {
-    let foreignHotId = getHotIdFromForeignKeyForeignTable(foreignKey.reference.resource, localHotId)
-    // foreign keys must also have column properties set
-    if (!hasColumnProperties(foreignHotId, callback)) {
-      relations = false
-      break
+    let rows
+    console.log(`next foreign key`, foreignKey)
+    if (foreignKey.reference.package) {
+      rows = await collatePackageForeignKeys(foreignKey)
+    } else {
+      let foreignHotId = getHotIdFromForeignKeyForeignTable(foreignKey.reference.resource, localHotId)
+      console.log('foreign key is', foreignKey)
+      console.log('foreign hot id is', foreignHotId)
+      // foreign keys must also have column properties set
+      if (!hasColumnProperties(foreignHotId, callback)) {
+        relations = false
+        break
+      }
+      let data = getForeignKeyData(foreignHotId)
+      let schema = await buildSchema(data, foreignHotId)
+      let table = await createFrictionlessTable(data, schema)
+      rows = await table.read({keyed: true})
     }
-    let data = getForeignKeyData(foreignHotId)
-    let schema = await buildSchema(data, foreignHotId)
-    let table = await createFrictionlessTable(data, schema)
-    let rows = await table.read({keyed: true})
     relations[foreignKey.reference.resource] = rows
   }
+  console.log(`relations so far`, relations)
   return relations
+}
+
+async function collatePackageForeignKeys(foreignKey) {
+  // let fkPackageComponents = store.getFkPackageComponents(store.state, store.getters)(foreignKey.reference.package)
+  // console.log(fkPackageComponents)
+  try {
+    console.log('collating fk foreign keys...')
+    let rows = await ipc.sendSync('loadPackageUrlResourcesAsFkRelations', foreignKey.reference.package, foreignKey.reference.resource)
+    console.log('rows are:', rows)
+    return rows
+  } catch (error) {
+    console.log('There was an error in creating package foreign keys', error)
+  }
 }
 
 function getForeignKeyData(foreignHotId) {
@@ -165,6 +189,7 @@ export async function validateActiveDataAgainstSchema(callback) {
   try {
     relations = await collateForeignKeys(hotId, callback)
   } catch (error) {
+    console.log(error)
     errorCollector.push({message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`, name: 'Invalid foreign table(s)'})
   }
   const stream = await table.iter({

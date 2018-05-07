@@ -1,4 +1,4 @@
-import {ipcMain as ipc} from 'electron'
+import {ipcMain as ipc, dialog} from 'electron'
 import {showErrors} from './errors.js'
 import {
   getMenu,
@@ -9,7 +9,7 @@ import {
   enableAllSubMenuItemsFromMenuLabel
 } from './menu'
 import {focusMainWindow, closeSecondaryWindow} from './windows.js'
-import {loadPackageJson} from './url.js'
+import {loadPackageJson, loadResourceDataFromPackageUrl} from './url.js'
 
 ipc.on('toggleSaveMenu', (event, arg) => {
   let saveSubMenu = getSubMenuFromMenu('File', 'Save')
@@ -64,13 +64,33 @@ ipc.on('loadPackageUrl', async function(event, index, hotId, url) {
   if (dataPackage) {
     mainWindow.webContents.send('packageUrlLoaded', index, hotId, url, dataPackage.descriptor)
   }
-  // return new Promise((resolve, reject) => {
-  // const vueStopLoadingPackageFeedback = this.sendStopLoadingPackageFeedback
-  // _.delay(function() {
-  //   vueStopLoadingPackageFeedback()
-  //   // resolve(true)
-  // }, 10000)
-  // })
+})
+
+// ipc.on('loadPackageUrlDescriptor', async function(event, url) {
+//   const dataPackage = await loadPackageJson(url)
+//   if (dataPackage) {
+//     event.returnValue = dataPackage.descriptor
+//   }
+// })
+
+ipc.on('loadPackageUrlResourcesAsFkRelations', async function(event, url, resourceName) {
+  try {
+    console.log(`url is`, url)
+    console.log(`resource name is`, resourceName)
+    const rows = await loadResourceDataFromPackageUrl(url, resourceName)
+    console.log(rows)
+    event.returnValue = rows
+  } catch (error) {
+    const errorMessage = 'There was a problem collating data from url resources'
+    console.log(errorMessage, error)
+    const mainWindow = focusMainWindow()
+    dialog.showMessageBox(mainWindow, {
+      type: 'error',
+      title: 'Problem loading data package url',
+      message: errorMessage
+    })
+    console.log(errorMessage, error)
+  }
 })
 
 function sendStopLoadingPackageFeedback() {

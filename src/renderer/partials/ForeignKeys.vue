@@ -424,6 +424,13 @@ export default {
         self.stopLoadingPackageFeedback()
         self.updateFkPackageIndex(index, true)
         self.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: url })
+        // persist the first table by default
+        console.log(dataPackage.resources)
+        console.log(dataPackage.resources.length)
+        if (dataPackage.resources.length > 0) {
+          console.log(dataPackage.resources[0].name)
+          self.pushForeignKeysForeignTableForTable({ hotId: hotId, index: index, resource: dataPackage.resources[0].name })
+        }
         await self.updateFkComponents(dataPackage, url)
       }
     })
