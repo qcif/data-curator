@@ -136,6 +136,32 @@ Feature: Validate Table
       | H2     | none                 |
       | H3     | none                 |
       | H4     | error in row 1 and 2 |
+
+  Scenario: validate number bareNumber
+    Given Data Curator is open
+    And this data has been entered:
+    
+      | H1    | H2       | H3       | H4    |
+      | 1.10  | $1.10    | 1.10%    | $1.10 |
+      | 2     | US $2.00 | 2        | 2.0%  |
+      | 3.12  | 3.12     | 3.12 KG  | 3.12  |
+    
+    And the following properties have been set for each column:
+    
+      | column | type    | bareNumber |
+      | H1     | number | true       |
+      | H2     | number | true       |
+      | H3     | number | true       |
+      | H4     | number | false      |
+    
+    When "Validate Table" is invoked
+    Then the following errors should be reported for each column:
+    
+      | column | errors reported      |
+      | H1     | none                 |
+      | H2     | none                 |
+      | H3     | none                 |
+      | H4     | error in row 1 and 2 |
   
   Scenario: validate boolean trueValues and falseValues 
     Given Data Curator is open
