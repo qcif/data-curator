@@ -165,3 +165,22 @@ async function loadResources(dataPackageJson, mainWindow) {
     mainWindow.webContents.send('addTabWithFormattedDataAndDescriptor', dataWithHeaders, format, dataResource.descriptor)
   }
 }
+
+export async function loadResourceDataFromPackageUrl(url, resourceName) {
+  const dataPackage = await loadPackageJson(url)
+  const rowOfObjects = []
+  if (dataPackage && _.indexOf(dataPackage.resourceNames, resourceName) > -1) {
+    // for (const resource of dataPackage.resourceNames) {
+    const dataResource = dataPackage.getResource(resourceName)
+    console.log(`data resource is`, dataResource)
+    const data = await dataResource.read()
+    const headers = dataResource.headers
+    console.log(`headers are`, headers)
+    for (const row of data) {
+      rowOfObjects.push(_.zipObject(headers, row))
+    }
+    console.log(rowOfObjects)
+    // }
+  }
+  return rowOfObjects
+}
