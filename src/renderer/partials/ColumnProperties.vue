@@ -393,23 +393,13 @@ export default {
     setTrueValues: function(values) {
       let withoutEmpties = this.removeStringEmpties(values)
       let array = this.getNoDuplicatesArrayFromString(withoutEmpties)
-      this.setProperty('trueValues', values)
+      this.setProperty('trueValues', array)
     },
     setFalseValues: function(values) {
       let withoutEmpties = this.removeStringEmpties(values)
       let array = this.getNoDuplicatesArrayFromString(withoutEmpties)
-      this.setProperty('falseValues', values)
+      this.setProperty('falseValues', array)
     },
-    // setTrueRawValues: function(values) {
-    //   // let withoutEmpties = this.removeStringEmpties(values)
-    //   // let array = this.getNoDuplicatesArrayFromString(withoutEmpties)
-    //   this.setProperty('trueRawValues', values)
-    // },
-    // setFalseRawValues: function(values) {
-    //   // let withoutEmpties = this.removeStringEmpties(values)
-    //   // let array = this.getNoDuplicatesArrayFromString(withoutEmpties)
-    //   this.setProperty('falseRawValues', values)
-    // },
     getNoDuplicatesArrayFromString: function(values) {
       return Array.from(new Set(values.split(',')))
     },
