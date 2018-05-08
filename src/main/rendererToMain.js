@@ -66,23 +66,12 @@ ipc.on('loadPackageUrl', async function(event, index, hotId, url) {
   }
 })
 
-// ipc.on('loadPackageUrlDescriptor', async function(event, url) {
-//   const dataPackage = await loadPackageJson(url)
-//   if (dataPackage) {
-//     event.returnValue = dataPackage.descriptor
-//   }
-// })
-
 ipc.on('loadPackageUrlResourcesAsFkRelations', async function(event, url, resourceName) {
   try {
-    console.log(`url is`, url)
-    console.log(`resource name is`, resourceName)
     const rows = await loadResourceDataFromPackageUrl(url, resourceName)
-    console.log(rows)
     event.returnValue = rows
   } catch (error) {
     const errorMessage = 'There was a problem collating data from url resources'
-    console.log(errorMessage, error)
     const mainWindow = focusMainWindow()
     dialog.showMessageBox(mainWindow, {
       type: 'error',

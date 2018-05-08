@@ -172,6 +172,9 @@ export default {
         dataPackage = reference.package
         if (_.isEmpty(this.allFkTableNamesHeaderNames)) {
           this.allFkTableNamesHeaderNames = this.getFkPackageComponents(dataPackage)
+        }
+        // this should be already populated, but ensure not empty to avoid code loop
+        if (!_.isEmpty(this.allFkTableNamesHeaderNames)) {
           this.allFkTableNames = _.keys(this.allFkTableNamesHeaderNames)
         }
       }
@@ -260,7 +263,7 @@ export default {
       try {
         let localHotId = await this.currentHotId()
         this.localHeaderNames.length = 0
-        let headerNames = this.getHotIdHeaderNames(allTablesAllColumnNames, localHotId)
+        const headerNames = this.getHotIdHeaderNames(allTablesAllColumnNames, localHotId)
         this.localHeaderNames.push(...headerNames)
         this.$forceUpdate()
       } catch (err) {
@@ -270,13 +273,11 @@ export default {
     updateTableSubscriptions: function(allTabsTitles) {
       this.allTableNames = this.getTabsTableNames(allTabsTitles)
       this.allTabTableNames = allTabsTitles
-      let vueGetHotIdFromTabTitle = this.getHotIdFromTabTitle
-      let vueGetHotIdHeaderNames = this.getHotIdHeaderNames
-      let vueAllColumns = this.allColumns
+      let self = this
       let allTableNamesHeaderNames = {}
       _.forEach(this.allTableNames, function(tabTitle) {
-        let hotId = vueGetHotIdFromTabTitle(tabTitle)
-        let foreignHeaderNames = vueGetHotIdHeaderNames(vueAllColumns, hotId)
+        let hotId = self.getHotIdFromTabTitle(tabTitle)
+        let foreignHeaderNames = self.getHotIdHeaderNames(self.allColumns, hotId)
         allTableNamesHeaderNames[tabTitle] = foreignHeaderNames
       })
       this.allTableNamesHeaderNames = _.assign({}, allTableNamesHeaderNames)
@@ -407,6 +408,28 @@ export default {
           fields: resource.schema.fieldNames
         })
       }
+    },
+    populateAsyncFkPackageComponents: async function() {
+      try {
+        const hotId = await this.currentHotId()
+        const foreignKeys = this.getAllForeignKeys()[hotId]
+        for (const [index, foreignKey] of foreignKeys.entries()) {
+          const reference = foreignKey.reference || {}
+          let url
+          if (typeof reference.package !== 'undefined') {
+            url = reference.package
+            // check cache first
+            if (_.isEmpty(this.allFkTableNamesHeaderNames)) {
+              this.allFkTableNamesHeaderNames = this.getFkPackageComponents(url)
+            }
+            if (_.isEmpty(this.allFkTableNamesHeaderNames)) {
+              await this.setFkPackage(index, this.currentLocalHotId, url)
+            }
+          }
+        }
+      } catch (error) {
+        console.log('There was a problem with populating fk components', error)
+      }
     }
   },
   created: async function() {
@@ -414,10 +437,6 @@ export default {
     this.$subscribeTo(allTabsTitles$, function(allTabsTitles) {
       self.updateTableSubscriptions(allTabsTitles)
     })
-    // occasionally fkpackage table getter doesn't arrive on tab change - update to ensure all received
-    _.delay(function() {
-      self.$forceUpdate()
-    }, 200)
     ipc.on('packageUrlLoaded', async function(event, index, hotId, url, descriptor) {
       const dataPackage = await Package.load(descriptor)
       if (dataPackage && dataPackage.valid) {
@@ -425,10 +444,7 @@ export default {
         self.updateFkPackageIndex(index, true)
         self.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: url })
         // persist the first table by default
-        console.log(dataPackage.resources)
-        console.log(dataPackage.resources.length)
         if (dataPackage.resources.length > 0) {
-          console.log(dataPackage.resources[0].name)
           self.pushForeignKeysForeignTableForTable({ hotId: hotId, index: index, resource: dataPackage.resources[0].name })
         }
         await self.updateFkComponents(dataPackage, url)
@@ -436,7 +452,13 @@ export default {
     })
   },
   mounted: function() {
+    let self = this
     pushAllTabTitlesSubscription()
+    this.populateAsyncFkPackageComponents()
+    // occasionally fkpackage table getter doesn't arrive on tab change - update to ensure all received
+    _.delay(function() {
+      self.$forceUpdate()
+    }, 200)
   }
 }
 </script>

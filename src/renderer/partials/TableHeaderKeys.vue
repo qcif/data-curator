@@ -21,7 +21,6 @@ export default {
         return this.getSelectedKeys
       },
       set: function(value) {
-        console.log('from table header keys', value)
         this.pushSelectedKeys(value)
       }
     }
