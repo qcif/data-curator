@@ -47,7 +47,16 @@
             {{ errors.first(formprop.key)}}
           </div>
         </template>
-        <input v-else-if="formprop.key === 'booleanTypes'" v-show="typeProperty === 'boolean'" :value="getBooleanTypes" @input="setBooleanTypes($event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
+        <template v-else-if="formprop.key === 'booleanTypes'">
+          <div class="boolean-types input-group" v-show="typeProperty === 'boolean'">
+            <label class="inline control-label col-sm-3" for="trueValues">True Values</label>
+            <input :value="getTrueValues" @input="setTrueValues($event.target.value)" type="text" class="form-control label-sm col-sm-9" id="trueValues" />
+          </div>
+          <div class="boolean-types input-group" v-show="typeProperty === 'boolean'">
+            <label class="inline control-label col-sm-3" for="falseValues">False Values</label>
+            <input :value="getFalseValues" @input="setFalseValues($event.target.value)" type="text" class="form-control label-sm col-sm-9" id="falseValues" />
+          </div>
+        </template>
         <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
       </div>
     </div>
@@ -185,9 +194,7 @@ export default {
         'geojson': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
         'any': ['required', 'unique', 'enum']
       },
-      constraintBooleanBindings: ['required', 'unique'],
-      trueValues: ['true', 'True', 'TRUE', '1'],
-      falseValues: ['false', 'False', 'FALSE', '0']
+      constraintBooleanBindings: ['required', 'unique']
     }
   },
   subscriptions() {
@@ -243,6 +250,7 @@ export default {
     },
     getBooleanTypes: {
       async get() {
+
       },
       watch() {
 
@@ -251,9 +259,12 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'pushColumnProperty'
+      'pushColumnProperty', 'pushTrueValues', 'pushFalseValues'
     ]),
-    setBooleanTypes: function(values) {
+    setTrueValues: function(values) {
+
+    },
+    setFalseValues: function(values) {
 
     },
     isBooleanConstraint: function(option) {
@@ -391,7 +402,7 @@ export default {
     },
     // we cannot access frictionless' boolean types directly, so at least offer error message if not correct
     validateBooleans: function() {
-      for (const booleanValues of [this.trueValues, this.falseValues]) {
+      for (const booleanValues of [this.getTrueValues, this.getFalseValues]) {
         for (const value of booleanValues) {
           const result = castBoolean('default', value)
           if (typeof result !== 'boolean') {
@@ -403,7 +414,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getAllHotTablesColumnNames'
+      'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getAllHotTablesColumnNames', 'getTrueValues', 'getFalseValues'
     ]),
     getNameProperty() {
       let allColumns = this.allTablesAllColumnsNames[this.activeCurrentHotId] || []
