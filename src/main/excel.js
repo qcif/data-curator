@@ -30,12 +30,7 @@ export function importExcel() {
         closeWindowSafely(browserWindow)
       })
       ipc.once('worksheetSelected', function(e, sheet_name) {
-        var data2 = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name], {header: 1})
-        console.log('json')
-        console.log(data2)
-        let data = XLSX.utils.sheet_to_csv(workbook.Sheets[sheet_name])
-        console.log('csv')
-        console.log(data)
+        var data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name], {header: 1})
         closeWindowSafely(browserWindow)
         createWindowTabWithData(data)
       })
