@@ -41,10 +41,6 @@ async function unzipFileToDir(zipSource, unzipDestination, isTransient) {
   return processedProperties
 }
 
-function handleZippedFolder() {
-
-}
-
 async function getDataPackageJson(processed) {
   let filename = processed.json[0]
   let text = await stringify(filename)
@@ -122,7 +118,6 @@ async function getAllResourcePaths(dataPackageJson, unzipDestination, processed)
     } else {
       fileDestination = path.join(unzipDestination, dataResource.path)
     }
-    console.log(`file destination is ${fileDestination}`)
     let format = dataResourceToFormat(dataResource)
     await ipc.send('openFileIntoTab', fileDestination, format)
     resourcePaths.push(dataResource.path)

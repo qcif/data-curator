@@ -29,7 +29,6 @@ export default {
       allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
     },
     getHotIdHeaderNames: function(allTablesAllNames, hotId) {
-      console.log('triggered get hot id header names...')
       return _.without(allTablesAllNames[hotId], '', null, undefined)
     }
   },
@@ -37,10 +36,7 @@ export default {
   mounted: async function() {
     let self = this
     this.$subscribeTo(allTablesAllColumnNames$, async function(allTablesAllColumnNames) {
-      // console.log('subscription for all tables all column names triggered...')
-      // console.log(allTablesAllColumnNames)
       const hotId = await self.getHotIdFromTabId(self.getActiveTab)
-      // console.log(`active hot id in subscription for all tables:`, hotId)
       await self.updateSubscriptions(allTablesAllColumnNames, hotId)
     })
     this.initTableHeaderKeys()

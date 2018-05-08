@@ -525,7 +525,6 @@ export default {
       // this turns off feedback functions
       this.clickedFindOrReplace = null
       this.replacesRemaining = -1
-      console.log('resetting updated row index')
       this.updatedRowIndex = -1
     },
     resetRowIndex() {

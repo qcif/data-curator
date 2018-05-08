@@ -91,13 +91,10 @@ async function collateForeignKeys(localHotId, callback) {
   let relations = {}
   for (const foreignKey of foreignKeys) {
     let rows
-    console.log(`next foreign key`, foreignKey)
     if (foreignKey.reference.package) {
       rows = await collatePackageForeignKeys(foreignKey)
     } else {
       let foreignHotId = getHotIdFromForeignKeyForeignTable(foreignKey.reference.resource, localHotId)
-      console.log('foreign key is', foreignKey)
-      console.log('foreign hot id is', foreignHotId)
       // foreign keys must also have column properties set
       if (!hasColumnProperties(foreignHotId, callback)) {
         relations = false
@@ -110,17 +107,12 @@ async function collateForeignKeys(localHotId, callback) {
     }
     relations[foreignKey.reference.resource] = rows
   }
-  console.log(`relations so far`, relations)
   return relations
 }
 
 async function collatePackageForeignKeys(foreignKey) {
-  // let fkPackageComponents = store.getFkPackageComponents(store.state, store.getters)(foreignKey.reference.package)
-  // console.log(fkPackageComponents)
   try {
-    console.log('collating fk foreign keys...')
     let rows = await ipc.sendSync('loadPackageUrlResourcesAsFkRelations', foreignKey.reference.package, foreignKey.reference.resource)
-    console.log('rows are:', rows)
     return rows
   } catch (error) {
     console.log('There was an error in creating package foreign keys', error)
