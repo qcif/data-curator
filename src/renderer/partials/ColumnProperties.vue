@@ -3,7 +3,7 @@
     <div class="form-group-sm row container-fluid">
       <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
         <template v-if="!isExtraPropertyKey(formprop.key) || isExtraPropertyType(typeProperty, formprop.key)">
-          <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
+          <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.key">
             {{formprop.label}}
           </label>
         </template>
@@ -48,11 +48,11 @@
           </div>
         </template>
         <template v-else-if="formprop.key === 'booleanType'">
-          <div class="boolean-types input-group" v-show="typeProperty === 'boolean'">
+          <div class="extra-types input-group" v-show="typeProperty === 'boolean'">
             <label class="inline control-label col-sm-3" for="trueValues">True Values</label>
             <input :value="getTrueValues()" @blur="setTrueValues($event.target.value)"  type="text" class="form-control label-sm col-sm-9" id="trueValues" />
           </div>
-          <div class="boolean-types input-group" v-show="typeProperty === 'boolean'">
+          <div class="extra-types input-group" v-show="typeProperty === 'boolean'">
             <label class="inline control-label col-sm-3" for="falseValues">False Values</label>
             <input :value="getFalseValues()" @blur="setFalseValues($event.target.value)" type="text" class="form-control label-sm col-sm-9" id="falseValues" />
           </div>
