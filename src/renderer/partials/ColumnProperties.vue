@@ -391,13 +391,11 @@ export default {
       return this.formatPropertyValue
     },
     setTrueValues: function(values) {
-      console.log('setting true values')
       let withoutEmpties = this.removeStringEmpties(values)
       let array = this.getNoDuplicatesArrayFromString(withoutEmpties)
       this.setProperty('trueValues', values)
     },
     setFalseValues: function(values) {
-      console.log('setting true values')
       let withoutEmpties = this.removeStringEmpties(values)
       let array = this.getNoDuplicatesArrayFromString(withoutEmpties)
       this.setProperty('falseValues', values)
@@ -423,29 +421,19 @@ export default {
     },
     getBooleanValuesOrDefaultAsString: function(booleanType) {
       let values = this.getBooleanValuesOrDefault(booleanType)
-      console.log(values instanceof Array)
-      if (values instanceof Array) {
-        return values.join()
-      }
-      return values
+      return values.join()
     },
     getBooleanValuesOrDefault: function(booleanType) {
       let values
       if (booleanType === 'trueValues') {
         values = this.getProperty('trueValues')
         if (!values) {
-          // values = this.getProperty('trueRawValues')
-          // if (!values) {
           values = this.setAndGetDefaultTrueValues()
-          // }
         }
       } else {
         values = this.getProperty('falseValues')
         if (!values) {
-          // values = this.getProperty('falseRawValues')
-          // if (!values) {
           values = this.setAndGetDefaultFalseValues()
-          // }
         }
       }
       return values
