@@ -95,7 +95,7 @@ import {
 import ColumnTooltip from '../mixins/ColumnTooltip'
 import ValidationRules from '../mixins/ValidationRules'
 import {isValidPatternForType} from '@/dateFormats.js'
-import {castBoolean} from 'tableschema/lib/types'
+import {castBoolean, castNumber, castInteger} from 'tableschema/lib/types'
 // import autosizeTextArea from '../partials/AutosizeTextArea'
 Vue.use(VueRx, {
   Subscription
@@ -219,7 +219,9 @@ export default {
       constraintBooleanBindings: ['required', 'unique'],
       trueValues: ['true', 'True', 'TRUE', '1'],
       falseValues: ['false', 'False', 'FALSE', '0'],
-      bareNumber: false
+      bareNumber: true,
+      decimalChar: '.',
+      groupChar: null
     }
   },
   subscriptions() {
@@ -484,7 +486,23 @@ export default {
       }
     },
     getExtraNumberType: function(type) {
-
+      let value = this.getProperty(type)
+      if (!value) {
+        switch (type) {
+          case 'decimalChar':
+            value = this.setAndGetDefaultDecimalChar()
+            break
+          case 'groupChar':
+            value = this.setAndGetDefaultGroupChar()
+            break
+          case 'bareNumber':
+            value = this.setAndGetDefaultBareNumber()
+            break
+          default:
+            throw new Error(`Extra property type: ${type} is not supported for number`)
+        }
+      }
+      return value
     },
     getExtraIntegerType: function(type) {
 
@@ -495,6 +513,21 @@ export default {
     setExtraIntegerType: function(type, value) {
 
     },
+    setAndGetDefaultBareNumber: function() {
+      const value = this.decimalChar
+      this.setProperty('bareNumber', value)
+      return value
+    },
+    setAndGetDefaultGroupChar: function() {
+      const value = this.groupChar
+      this.setProperty('bareNumber', value)
+      return value
+    },
+    setAndGetDefaultDecimalChar: function() {
+      const value = this.bareNumber
+      this.setProperty('bareNumber', value)
+      return value
+    },
     // we cannot access frictionless' boolean types directly, so at least offer error message if not correct
     validateBooleans: function() {
       for (const booleanValues of [this.trueValues, this.falseValues]) {
@@ -504,6 +537,31 @@ export default {
             throw new Error(`Boolean value: ${value} of ${booleanValues} is not a valid boolean type`)
           }
         }
+      }
+    },
+    validateBareNumberForNumber: function() {
+      const value = this.bareNumber === true ? '23' :'dummy23dummy'
+      const result = castNumber('default', value, {bareNumber: this.bareNumber})
+      if (typeof result !== 'number') {
+        throw new Error(`Bare Number value: ${this.bareNumber} is not a valid default`)
+      }
+    },
+    validateGroupCharForNumber: function() {
+      const result = castNumber('default', this.groupChar)
+      if (result !== 'number') {
+        throw new Error(`Group char value: ${this.groupChar} for type: 'number' is not a valid default`)
+      }
+    },
+    validateDecimalCharForNumber: function() {
+      const result = castNumber('default', this.decimalChar)
+      if (result !== 'number') {
+        throw new Error(`Group char value: ${this.decimalChar} for type: 'number' is not a valid default`)
+      }
+    },
+    validateBareNumberForInteger: function() {
+      const result = castInteger('default', this.bareNumber)
+      if (result !== 'integer') {
+        throw new Error(`Bare Integer value: ${this.bareNumber} for type: 'integer' is not a valid default`)
       }
     }
   },
@@ -567,6 +625,10 @@ export default {
       }
     })
     this.validateBooleans()
+    this.validateBareNumberForNumber()
+    this.validateBareNumberForInteger()
+    this.validateGroupCharForNumber()
+    this.validateDecimalCharForNumber()
   }
 }
 </script>
