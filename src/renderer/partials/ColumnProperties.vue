@@ -2,9 +2,11 @@
   <form class="navbar-form form-horizontal" id="columnProperties">
     <div class="form-group-sm row container-fluid">
       <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
-        <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
-          {{formprop.label}}
-        </label>
+        <template v-if="formprop.key !== 'booleanTypes' || typeProperty === 'boolean'">
+          <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
+            {{formprop.label}}
+          </label>
+        </template>
         <component :is="formprop.tooltipView"/>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
           <select v-if="formprop.key==='type'" :value="getTypeProperty" v-model="typeProperty" @input="setTypeProperty($event.target.value)" :id="formprop.key" class="form-control input-sm col-sm-9">
@@ -45,6 +47,18 @@
             {{ errors.first(formprop.key)}}
           </div>
         </template>
+        <template v-else-if="formprop.key === 'booleanTypes'">
+          <div class="boolean-types input-group" v-show="typeProperty === 'boolean'">
+            <label class="inline control-label col-sm-3" for="trueValues">True Values</label>
+            <!-- <input :value="getTrueValues()" @input="setTrueValues($event.target.value)" type="text" class="form-control label-sm col-sm-9" id="trueValues" /> -->
+            <input :value="getTrueValues()" @blur="setTrueValues($event.target.value)"  type="text" class="form-control label-sm col-sm-9" id="trueValues" />
+          </div>
+          <div class="boolean-types input-group" v-show="typeProperty === 'boolean'">
+            <label class="inline control-label col-sm-3" for="falseValues">False Values</label>
+            <!-- <input :value="getFalseValues()" @input="setFalseValues($event.target.value)" type="text" class="form-control label-sm col-sm-9" id="falseValues" /> -->
+            <input :value="getFalseValues()" @blur="setFalseValues($event.target.value)" type="text" class="form-control label-sm col-sm-9" id="falseValues" />
+          </div>
+        </template>
         <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
       </div>
     </div>
@@ -71,6 +85,7 @@ import {
 import ColumnTooltip from '../mixins/ColumnTooltip'
 import ValidationRules from '../mixins/ValidationRules'
 import {isValidPatternForType} from '@/dateFormats.js'
+import {castBoolean} from 'tableschema/lib/types'
 // import autosizeTextArea from '../partials/AutosizeTextArea'
 Vue.use(VueRx, {
   Subscription
@@ -120,6 +135,10 @@ export default {
         tooltipId: 'tooltip-column-type',
         tooltipView: 'tooltipColumnType',
         type: 'dropdown'
+      },
+      {
+        label: 'Boolean types',
+        key: 'booleanTypes'
       },
       {
         label: 'Format',
@@ -177,7 +196,9 @@ export default {
         'geojson': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
         'any': ['required', 'unique', 'enum']
       },
-      constraintBooleanBindings: ['required', 'unique']
+      constraintBooleanBindings: ['required', 'unique'],
+      trueValues: ['true', 'True', 'TRUE', '1'],
+      falseValues: ['false', 'False', 'FALSE', '0']
     }
   },
   subscriptions() {
@@ -368,6 +389,81 @@ export default {
     },
     formatPropertyValueWrapper: function() {
       return this.formatPropertyValue
+    },
+    setTrueValues: function(values) {
+      let withoutEmpties = this.removeStringEmpties(values)
+      let array = this.getNoDuplicatesArrayFromString(withoutEmpties)
+      this.setProperty('trueValues', values)
+    },
+    setFalseValues: function(values) {
+      let withoutEmpties = this.removeStringEmpties(values)
+      let array = this.getNoDuplicatesArrayFromString(withoutEmpties)
+      this.setProperty('falseValues', values)
+    },
+    // setTrueRawValues: function(values) {
+    //   // let withoutEmpties = this.removeStringEmpties(values)
+    //   // let array = this.getNoDuplicatesArrayFromString(withoutEmpties)
+    //   this.setProperty('trueRawValues', values)
+    // },
+    // setFalseRawValues: function(values) {
+    //   // let withoutEmpties = this.removeStringEmpties(values)
+    //   // let array = this.getNoDuplicatesArrayFromString(withoutEmpties)
+    //   this.setProperty('falseRawValues', values)
+    // },
+    getNoDuplicatesArrayFromString: function(values) {
+      return Array.from(new Set(values.split(',')))
+    },
+    getTrueValues: function() {
+      return this.getBooleanValuesOrDefaultAsString('trueValues')
+    },
+    getFalseValues: function() {
+      return this.getBooleanValuesOrDefaultAsString('falseValues')
+    },
+    getBooleanValuesOrDefaultAsString: function(booleanType) {
+      let values = this.getBooleanValuesOrDefault(booleanType)
+      return values.join()
+    },
+    getBooleanValuesOrDefault: function(booleanType) {
+      let values
+      if (booleanType === 'trueValues') {
+        values = this.getProperty('trueValues')
+        if (!values) {
+          values = this.setAndGetDefaultTrueValues()
+        }
+      } else {
+        values = this.getProperty('falseValues')
+        if (!values) {
+          values = this.setAndGetDefaultFalseValues()
+        }
+      }
+      return values
+    },
+    setAndGetDefaultTrueValues: function() {
+      let values = [...this.trueValues]
+      this.setProperty('trueValues', values)
+      return values
+    },
+    setAndGetDefaultFalseValues: function() {
+      let values = [...this.falseValues]
+      this.setProperty('falseValues', values)
+      return values
+    },
+    removeStringEmpties: function(string) {
+      let withoutInternalEmpties = string.replace(/[,]+/g, ',')
+      // also remove 'empty' if at start or end
+      let trimmed = _.trim(withoutInternalEmpties, ',')
+      return trimmed
+    },
+    // we cannot access frictionless' boolean types directly, so at least offer error message if not correct
+    validateBooleans: function() {
+      for (const booleanValues of [this.trueValues, this.falseValues]) {
+        for (const value of booleanValues) {
+          const result = castBoolean('default', value)
+          if (typeof result !== 'boolean') {
+            throw new Error(`Boolean value: ${value} of ${booleanValues} is not a valid boolean type`)
+          }
+        }
+      }
     }
   },
   computed: {
@@ -429,6 +525,7 @@ export default {
         })
       }
     })
+    this.validateBooleans()
   }
 }
 </script>

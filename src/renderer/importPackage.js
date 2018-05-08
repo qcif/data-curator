@@ -148,7 +148,6 @@ async function getHotIdsFromFilenames(processed, unzipDestination, isTransient =
     let re = new RegExp('^' + processed.parentFolders + '/')
     let resourcePathname = _.replace(pathname, re, '')
     csvTabs[`${resourcePathname}`] = hotId
-    console.log(`is transient: ${isTransient}`)
     if (isTransient) {
       store.commit('resetTabFilename', tabId)
     }
