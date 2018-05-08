@@ -4,7 +4,9 @@ const state = {
   hotTabs: {},
   packageProperties: {},
   provenanceProperties: { markdown: '', errors: [] },
-  fkPackageComponents: {}
+  fkPackageComponents: {},
+  trueValues: ['true', 'True', 'TRUE', '1'],
+  falseValues: ['false', 'False', 'FALSE', '0']
 }
 
 export function getHotColumnPropertiesFromPropertyObject(property) {
@@ -26,6 +28,12 @@ export function getHotIdFromTabIdFunction() {
 }
 
 const getters = {
+  getTrueValues: state => {
+    return state.trueValues
+  },
+  getFalseValues: state => {
+    return state.falseValues
+  },
   getFkPackageComponents: (state, getters) => (url) => {
     return state.fkPackageComponents[url]
   },
@@ -142,6 +150,14 @@ const getters = {
 }
 
 const mutations = {
+  pushTrueValues(state, values) {
+    state.trueValues.length = 0
+    state.trueValues.push(...values)
+  },
+  pushFalseValues(state, values) {
+    state.falseValues.length = 0
+    state.falseValues.push(...values)
+  },
   pushFkPackageComponents(state, property) {
     _.set(state.fkPackageComponents[property.url], property.tableName, property.fields)
   },
