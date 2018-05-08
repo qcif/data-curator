@@ -2,7 +2,7 @@
   <form class="navbar-form form-horizontal" id="columnProperties">
     <div class="form-group-sm row container-fluid">
       <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
-        <template v-if="formprop.key !== 'booleanTypes' || typeProperty === 'boolean'">
+        <template v-if="!isExtraPropertyKey(formprop.key) || isExtraPropertyType(typeProperty, formprop.key)">
           <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
             {{formprop.label}}
           </label>
@@ -47,16 +47,26 @@
             {{ errors.first(formprop.key)}}
           </div>
         </template>
-        <template v-else-if="formprop.key === 'booleanTypes'">
+        <template v-else-if="formprop.key === 'booleanType'">
           <div class="boolean-types input-group" v-show="typeProperty === 'boolean'">
             <label class="inline control-label col-sm-3" for="trueValues">True Values</label>
-            <!-- <input :value="getTrueValues()" @input="setTrueValues($event.target.value)" type="text" class="form-control label-sm col-sm-9" id="trueValues" /> -->
             <input :value="getTrueValues()" @blur="setTrueValues($event.target.value)"  type="text" class="form-control label-sm col-sm-9" id="trueValues" />
           </div>
           <div class="boolean-types input-group" v-show="typeProperty === 'boolean'">
             <label class="inline control-label col-sm-3" for="falseValues">False Values</label>
-            <!-- <input :value="getFalseValues()" @input="setFalseValues($event.target.value)" type="text" class="form-control label-sm col-sm-9" id="falseValues" /> -->
             <input :value="getFalseValues()" @blur="setFalseValues($event.target.value)" type="text" class="form-control label-sm col-sm-9" id="falseValues" />
+          </div>
+        </template>
+        <template v-else-if="formprop.key === 'numberType'">
+          <div v-for="(extraType, eIndex) in formprop.types" :key="'number' + eIndex" class="extra-types input-group" v-show="typeProperty === 'number'">
+            <label class="inline control-label col-sm-3" :for="formprop.key + extraType">{{getExtraPropertyLabel(extraType)}}</label>
+            <input :value="getExtraNumberType(extraType)" @blur="setExtraNumberType(extraType, $event.target.value)"  type="text" class="form-control label-sm col-sm-9" :id="formprop.key + extraType" />
+          </div>
+        </template>
+        <template v-else-if="formprop.key === 'integerType'">
+          <div v-for="(extraType, eIndex) in formprop.types" :key="'integer' + eIndex" class="extra-types input-group" v-show="typeProperty === 'integer'">
+            <label class="inline control-label col-sm-3" :for="formprop.key + extraType">{{getExtraPropertyLabel(extraType)}}</label>
+            <input :value="getExtraIntegerType(extraType)" @blur="setExtraIntegerType(extraType, $event.target.value)"  type="text" class="form-control label-sm col-sm-9" :id="formprop.key + extraType" />
           </div>
         </template>
         <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
@@ -138,7 +148,17 @@ export default {
       },
       {
         label: 'Boolean types',
-        key: 'booleanTypes'
+        key: 'booleanType'
+      },
+      {
+        label: 'Number types',
+        key: 'numberType',
+        types: ['decimalChar', 'groupChar', 'bareNumber']
+      },
+      {
+        label: 'Integer types',
+        key: 'integerType',
+        types: ['bareNumber']
       },
       {
         label: 'Format',
@@ -198,7 +218,8 @@ export default {
       },
       constraintBooleanBindings: ['required', 'unique'],
       trueValues: ['true', 'True', 'TRUE', '1'],
-      falseValues: ['false', 'False', 'FALSE', '0']
+      falseValues: ['false', 'False', 'FALSE', '0'],
+      bareNumber: false
     }
   },
   subscriptions() {
@@ -453,6 +474,36 @@ export default {
       // also remove 'empty' if at start or end
       let trimmed = _.trim(withoutInternalEmpties, ',')
       return trimmed
+    },
+    getExtraPropertyLabel: function(key) {
+      return _.upperFirst(_.lowerCase(key))
+    },
+    isExtraPropertyKey: function(key) {
+      return _.includes(['booleanType', 'integerType', 'numberType'], key)
+    },
+    isExtraPropertyType: function(type, key) {
+      switch (type) {
+        case 'boolean':
+          return key === 'booleanType'
+        case 'integer':
+          return key === 'integerType'
+        case 'number':
+          return key === 'numberType'
+        default:
+          return false
+      }
+    },
+    getExtraNumberType: function(type) {
+
+    },
+    getExtraIntegerType: function(type) {
+
+    },
+    setExtraNumberType: function(type, value) {
+
+    },
+    setExtraIntegerType: function(type, value) {
+
     },
     // we cannot access frictionless' boolean types directly, so at least offer error message if not correct
     validateBooleans: function() {
