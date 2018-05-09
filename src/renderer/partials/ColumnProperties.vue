@@ -96,6 +96,7 @@ import ColumnTooltip from '../mixins/ColumnTooltip'
 import ValidationRules from '../mixins/ValidationRules'
 import {isValidPatternForType} from '@/dateFormats.js'
 import {castBoolean, castNumber, castInteger} from 'tableschema/lib/types'
+import {ERROR as tableSchemaError} from 'tableschema/lib/config'
 // import autosizeTextArea from '../partials/AutosizeTextArea'
 Vue.use(VueRx, {
   Subscription
@@ -221,7 +222,7 @@ export default {
       falseValues: ['false', 'False', 'FALSE', '0'],
       bareNumber: true,
       decimalChar: '.',
-      groupChar: null
+      groupChar: ''
     }
   },
   subscriptions() {
@@ -528,40 +529,46 @@ export default {
       this.setProperty('bareNumber', value)
       return value
     },
-    // we cannot access frictionless' boolean types directly, so at least offer error message if not correct
+    // we cannot access frictionless' extra properties directly, so at least offer error message if not correct
+    validateDefaultExtraProperties() {
+      this.validateBooleans()
+      this.validateGroupCharForNumber()
+      this.validateDecimalCharForNumber()
+      this.validateBareNumberForNumberAndInteger()
+    },
     validateBooleans: function() {
       for (const booleanValues of [this.trueValues, this.falseValues]) {
         for (const value of booleanValues) {
           const result = castBoolean('default', value)
-          if (typeof result !== 'boolean') {
-            throw new Error(`Boolean value: ${value} of ${booleanValues} is not a valid boolean type`)
-          }
+          this.inspectDefaultExtraPropertiesResult(result, `Boolean value: ${value} of ${booleanValues}`)
         }
       }
     },
-    validateBareNumberForNumber: function() {
-      const value = this.bareNumber === true ? '23' :'dummy23dummy'
-      const result = castNumber('default', value, {bareNumber: this.bareNumber})
-      if (typeof result !== 'number') {
-        throw new Error(`Bare Number value: ${this.bareNumber} is not a valid default`)
-      }
-    },
     validateGroupCharForNumber: function() {
-      const result = castNumber('default', this.groupChar)
-      if (result !== 'number') {
-        throw new Error(`Group char value: ${this.groupChar} for type: 'number' is not a valid default`)
-      }
+      const value = `10${this.groupChar}000`
+      this.validateNumber(value, `Group char value ${this.groupChar}`)
     },
     validateDecimalCharForNumber: function() {
-      const result = castNumber('default', this.decimalChar)
-      if (result !== 'number') {
-        throw new Error(`Group char value: ${this.decimalChar} for type: 'number' is not a valid default`)
-      }
+      const value = `10${this.decimalChar}000`
+      this.validateNumber(value, `Decimal char value: ${this.decimalChar}`)
     },
-    validateBareNumberForInteger: function() {
-      const result = castInteger('default', this.bareNumber)
-      if (result !== 'integer') {
-        throw new Error(`Bare Integer value: ${this.bareNumber} for type: 'integer' is not a valid default`)
+    validateBareNumberForNumberAndInteger: function() {
+      const value = this.bareNumber === true ? '23' :'dummy23dummy'
+      const message = `Bare Number ${this.bareNumber}`
+      this.validateNumber(value, message)
+      this.validateInteger(value, message)
+    },
+    validateNumber: function(value, message) {
+      const result = castNumber('default', value)
+      this.inspectDefaultExtraPropertiesResult(result, `Number's ${message}`)
+    },
+    validateInteger: function(value, message) {
+      const result = castInteger('default', value)
+      this.inspectDefaultExtraPropertiesResult(result, `Integer's ${message}`)
+    },
+    inspectDefaultExtraPropertiesResult: function(result, message) {
+      if (result === tableSchemaError) {
+        throw new Error(`${message} is not a valid default`, result)
       }
     }
   },
@@ -624,11 +631,7 @@ export default {
         })
       }
     })
-    this.validateBooleans()
-    this.validateBareNumberForNumber()
-    this.validateBareNumberForInteger()
-    this.validateGroupCharForNumber()
-    this.validateDecimalCharForNumber()
+    this.validateDefaultExtraProperties()
   }
 }
 </script>
