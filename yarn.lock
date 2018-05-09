@@ -10165,9 +10165,9 @@ unzip-response@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/unzip-response/-/unzip-response-2.0.1.tgz#d2f0f737d16b0615e72a6935ed04214572d56f97"
 
-unzipper@^0.8.12:
-  version "0.8.12"
-  resolved "https://registry.yarnpkg.com/unzipper/-/unzipper-0.8.12.tgz#178de4e263d96a2550fb6f4804d26c06edb9c8bd"
+unzipper@^0.8.13:
+  version "0.8.13"
+  resolved "https://registry.yarnpkg.com/unzipper/-/unzipper-0.8.13.tgz#ea889ca10cdda4dcf604e632f19fc5f81871beae"
   dependencies:
     big-integer "^1.6.17"
     binary "~0.3.0"
