@@ -60,13 +60,12 @@
         <template v-else-if="formprop.key === 'numberType'">
           <div v-for="(extraType, eIndex) in formprop.types" :key="'number' + eIndex" class="extra-types input-group" v-show="typeProperty === 'number'">
             <label class="inline control-label col-sm-3" :for="formprop.key + extraType">{{getExtraPropertyLabel(extraType)}}</label>
-            <input :value="getExtraNumberType(extraType)" @blur="setExtraNumberType(extraType, $event.target.value)"  type="text" class="form-control label-sm col-sm-9" :id="formprop.key + extraType" />
-          </div>
-        </template>
-        <template v-else-if="formprop.key === 'integerType'">
-          <div v-for="(extraType, eIndex) in formprop.types" :key="'integer' + eIndex" class="extra-types input-group" v-show="typeProperty === 'integer'">
-            <label class="inline control-label col-sm-3" :for="formprop.key + extraType">{{getExtraPropertyLabel(extraType)}}</label>
-            <input :value="getExtraIntegerType(extraType)" @blur="setExtraIntegerType(extraType, $event.target.value)"  type="text" class="form-control label-sm col-sm-9" :id="formprop.key + extraType" />
+            <template>
+              <input :value="getExtraType(extraType)" @input="setExtraType(extraType, $event.target.value)" @blur="removeOnError(formprop.key + extraType, extraType)" type="text" :class="{ 'form-control label-sm col-sm-9': true,'validate-danger': errors.has(formprop.key + extraType) }"  v-validate="{min:1}" :id="formprop.key + extraType" :name="formprop.key + extraType"/>
+              <div v-show="errors.has(formprop.key + extraType)" class="row help validate-danger">
+                {{ errors.first(formprop.key + extraType)}}
+              </div>
+            </template>
           </div>
         </template>
         <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
@@ -109,7 +108,6 @@ export default {
   props: ['cIndex', 'reselectHotCell'],
   data() {
     return {
-      content1: '',
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       typeProperty: '',
       formatProperty: '',
@@ -154,12 +152,7 @@ export default {
       {
         label: 'Number types',
         key: 'numberType',
-        types: ['decimalChar', 'groupChar', 'bareNumber']
-      },
-      {
-        label: 'Integer types',
-        key: 'integerType',
-        types: ['bareNumber']
+        types: ['decimalChar', 'groupChar']
       },
       {
         label: 'Format',
@@ -279,7 +272,7 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'pushColumnProperty'
+      'pushColumnProperty', 'removeColumnProperty'
     ]),
     isBooleanConstraint: function(option) {
       return this.constraintBooleanBindings.indexOf(option) > -1
@@ -486,7 +479,7 @@ export default {
           return false
       }
     },
-    getExtraNumberType: function(type) {
+    getExtraType: function(type) {
       let value = this.getProperty(type)
       if (!value) {
         switch (type) {
@@ -496,37 +489,39 @@ export default {
           case 'groupChar':
             value = this.setAndGetDefaultGroupChar()
             break
-          case 'bareNumber':
-            value = this.setAndGetDefaultBareNumber()
-            break
+            // case 'bareNumber':
+            //   value = this.setAndGetDefaultBareNumber()
+            // break
           default:
             throw new Error(`Extra property type: ${type} is not supported for number`)
         }
       }
       return value
     },
-    getExtraIntegerType: function(type) {
-
+    setExtraType: function(type, value) {
+      switch (type) {
+        case 'decimalChar':
+        case 'groupChar':
+        // case 'bareNumber':
+          this.setProperty(type, value)
+          break
+        default:
+          throw new Error(`Extra property type: ${type} is not supported`)
+      }
     },
-    setExtraNumberType: function(type, value) {
-
-    },
-    setExtraIntegerType: function(type, value) {
-
-    },
-    setAndGetDefaultBareNumber: function() {
-      const value = this.decimalChar
-      this.setProperty('bareNumber', value)
-      return value
+    removeOnError: function(errorId, key) {
+      if (this.errors.has(errorId)) {
+        this.removeColumnProperty(this.setter(this.activeCurrentHotId, key))
+      }
     },
     setAndGetDefaultGroupChar: function() {
       const value = this.groupChar
-      this.setProperty('bareNumber', value)
+      this.setProperty('groupChar', value)
       return value
     },
     setAndGetDefaultDecimalChar: function() {
-      const value = this.bareNumber
-      this.setProperty('bareNumber', value)
+      const value = this.decimalChar
+      this.setProperty('decimalChar', value)
       return value
     },
     // we cannot access frictionless' extra properties directly, so at least offer error message if not correct
