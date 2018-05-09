@@ -60,8 +60,8 @@
         <template v-else-if="formprop.key === 'numberType'">
           <div v-for="(extraType, eIndex) in formprop.types" :key="'number' + eIndex" class="extra-types input-group" v-show="typeProperty === 'number'">
             <label class="inline control-label col-sm-3" :for="formprop.key + extraType">{{getExtraPropertyLabel(extraType)}}</label>
-              <!-- <component v-if="extraType === 'bareNumber'" is="radioTrueFalse" :getter="getBareNumber()" :setter="setBareNumber()" :radioId="formprop.key + extraType"></component> -->
-              <input :value="getExtraType(extraType)" @input="setExtraType(extraType, $event.target.value)" @blur="removeOnError(`${formprop.key}${extraType}`, extraType)" type="text" :class="{ 'form-control label-sm col-sm-9': true,'validate-danger': errors.has(formprop.key + extraType) }"  v-validate="{max:1}" :id="formprop.key + extraType" :name="formprop.key + extraType"/>
+              <input v-if="extraType === 'bareNumber'" type="checkbox" :id="formprop.key + extraType" :checked="getExtraType(extraType)" @click="setBareNumber($event.target)" />
+              <input v-else :value="getExtraType(extraType)" @input="setExtraType(extraType, $event.target.value)" @blur="removeOnError(`${formprop.key}${extraType}`, extraType)" type="text" :class="{ 'form-control label-sm col-sm-9': true,'validate-danger': errors.has(formprop.key + extraType) }"  v-validate="{max:1}" :id="formprop.key + extraType" :name="formprop.key + extraType"/>
               <div v-show="errors.has(formprop.key + extraType)" class="row help validate-danger">
                 {{ errors.first(formprop.key + extraType)}}
               </div>
@@ -69,8 +69,10 @@
         </template>
         <template v-else-if="formprop.key === 'integerType'">
           <div v-for="(extraType, eIndex) in formprop.types" :key="'integer' + eIndex" class="extra-types input-group" v-show="typeProperty === 'integer'">
-            <label class="inline control-label col-sm-3" :for="formprop.key + extraType">{{getExtraPropertyLabel(extraType)}}</label>
-            <component v-if="extraType === 'bareNumber'" is="radioTrueFalse" :getter="getBareNumber" :setter="setBareNumber" :radioId="formprop.key + extraType" />
+            <template v-if="extraType === 'bareNumber'">
+              <label class="inline control-label col-sm-3" :for="formprop.key + extraType">{{getExtraPropertyLabel(extraType)}}</label>
+              <input type="checkbox" :id="formprop.key + extraType" :checked="getExtraType(extraType)" @click="setBareNumber($event.target)" />
+            </template>
           </div>
         </template>
         <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
@@ -94,16 +96,13 @@ import {
 } from 'rxjs/Subscription'
 import {
   allTablesAllColumnNames$,
-  allTablesAllColumnsFromSchema$,
-  bareNumber$
+  allTablesAllColumnsFromSchema$
 } from '@/rxSubject.js'
 import ColumnTooltip from '../mixins/ColumnTooltip'
 import ValidationRules from '../mixins/ValidationRules'
 import {isValidPatternForType} from '@/dateFormats.js'
-import radioTrueFalse from '@/partials/RadioTrueFalse'
 import {castBoolean, castNumber, castInteger} from 'tableschema/lib/types'
 import {ERROR as tableSchemaError} from 'tableschema/lib/config'
-// import autosizeTextArea from '../partials/AutosizeTextArea'
 Vue.use(VueRx, {
   Subscription
 })
@@ -159,8 +158,7 @@ export default {
       {
         label: 'Number types',
         key: 'numberType',
-        // types: ['decimalChar', 'groupChar', 'bareNumber']
-        types: ['decimalChar', 'groupChar']
+        types: ['decimalChar', 'groupChar', 'bareNumber']
       },
       {
         label: 'Integer types',
@@ -230,9 +228,6 @@ export default {
       decimalChar: '.',
       groupChar: ''
     }
-  },
-  components: {
-    radioTrueFalse
   },
   subscriptions() {
     return {
@@ -495,19 +490,9 @@ export default {
           return false
       }
     },
-    getBareNumber: function() {
-      let value = this.getProperty('bareNumber')
-      console.log('bare number get', value)
-      if (typeof value === 'undefined') {
-        value = this.setAndGetDefaultBareNumber()
-      }
-      console.log(`getting bare number`, value)
-      console.log(typeof value)
-      return value
-    },
     getExtraType: function(type) {
       let value = this.getProperty(type)
-      if (!value) {
+      if (typeof value === 'undefined') {
         switch (type) {
           case 'decimalChar':
             value = this.setAndGetDefaultDecimalChar()
@@ -515,36 +500,24 @@ export default {
           case 'groupChar':
             value = this.setAndGetDefaultGroupChar()
             break
-          // case 'bareNumber':
-          //   value = this.setAndGetDefaultBareNumber()
-          //   break
+          case 'bareNumber':
+            value = this.setAndGetDefaultBareNumber()
+            break
           default:
             throw new Error(`Extra property type: ${type} is not supported for number`)
         }
       }
       return value
     },
-    setBareNumber: function(value) {
-      // if (value) {
-      console.log('setting bare number...')
-      console.log(typeof value)
-      let self = this
-      // return function(value) {
-      // this.setProperty(type, value)
-      const bool = value === 'true'
-      // this.bareNumberModel = bool
-      console.log(`setting bool`, bool)
-      self.setExtraType('bareNumber', bool)
-      bareNumber$.next(bool)
-      // this.$forceUpdate()
-      // }
-      // }
+    setBareNumber: function(target) {
+      let isChecked = target.checked
+      this.setExtraType('bareNumber', target.checked)
     },
     setExtraType: function(type, value) {
       switch (type) {
         case 'decimalChar':
         case 'groupChar':
-        // case 'bareNumber':
+        case 'bareNumber':
           this.setProperty(type, value)
           break
         default:
@@ -640,31 +613,6 @@ export default {
     isDropdownFormatDisabled() {
       return !this.formatPropertiesForType ? false : this.formatPropertiesForType.length < 2
     }
-    // bareNumberModel: {
-    //   get: function () {
-    //     // return this.getBareNumber()
-    //     let value = this.getProperty('bareNumber')
-    //     if (!value) {
-    //       value = this.setAndGetDefaultBareNumber()
-    //     }
-    //     console.log(`getting bare number`, value)
-    //     // console.log(typeof value)
-    //     return value
-    //     // return this.getExtraType('bareNumber')
-    //   },
-    //   set: function(value) {
-    //     console.log('setting bare number model')
-    //     console.log(value)
-    //     console.log(typeof value)
-    //     console.log(`not value?`, !value)
-    //     if (!value) {
-    //       this.setAndGetDefaultBareNumber()
-    //     } else {
-    //       this.setProperty('bareNumber', value === 'true')
-    //     }
-    //     this.$forceUpdate()
-    //   }
-    // }
   },
   watch: {
     'formatProperty': function(nextFormat) {
@@ -677,9 +625,6 @@ export default {
     'formatPropertyValue': function() {
       this.setFormatPropertyValueForPattern()
     }
-    // 'setBareNumber': function() {
-    //   this.getBareNumber()
-    // }
   },
   mounted: function() {
     let vueUpdateAllTablesAllColumnsNames = this.updateAllTablesAllColumnsNames

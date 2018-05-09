@@ -187,7 +187,7 @@ import {ipcRenderer as ipc} from 'electron'
 import 'lodash/lodash.min.js'
 import {unzipFile} from '@/importPackage.js'
 import {toggleHeaderWithFeedback} from '@/headerRow.js'
-import {onNextHotIdFromTabRx, hotIdFromTab$, provenanceErrors$, bareNumber$} from '@/rxSubject.js'
+import {onNextHotIdFromTabRx, hotIdFromTab$, provenanceErrors$} from '@/rxSubject.js'
 import VueRx from 'vue-rx'
 import {
   Subscription
@@ -780,7 +780,6 @@ export default {
     updateActiveColumn: function(selected) {
       if (selected) {
         this.currentColumnIndex = selected[1]
-        bareNumber$.next()
       } else {
         console.log('Cannot update active column without a column selected.')
       }
