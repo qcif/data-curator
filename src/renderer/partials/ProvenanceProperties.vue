@@ -97,7 +97,6 @@ export default {
     this.provenance = this.getProvenance.markdown
     const vueAddErrorsToProvenance = this.addErrorsToProvenance
     this.$subscribeTo(provenanceErrors$, function() {
-      // console.log(messages)
       vueAddErrorsToProvenance()
     })
   },
