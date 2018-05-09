@@ -15,6 +15,7 @@ let currentPos$ = new Subject()
 let afterSetDataAtCell$ = new Subject()
 let fkPackagesButtonText$ = new Subject()
 let loadingPackage$ = new Subject()
+let bareNumber$ = new Subject()
 // let selectedForeignTable$ = new Subject()
 // let getSelectedLocalKeys$ = new Subject()
 
@@ -45,5 +46,6 @@ export {
   currentPos$,
   afterSetDataAtCell$,
   fkPackagesButtonText$,
-  loadingPackage$
+  loadingPackage$,
+  bareNumber$
 }
