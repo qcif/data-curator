@@ -60,13 +60,11 @@
         <template v-else-if="formprop.key === 'numberType'">
           <div v-for="(extraType, eIndex) in formprop.types" :key="'number' + eIndex" class="extra-types input-group" v-show="typeProperty === 'number'">
             <label class="inline control-label col-sm-3" :for="formprop.key + extraType">{{getExtraPropertyLabel(extraType)}}</label>
-            <!-- <component v-if="extraType === 'bareNumber'" is="radioTrueFalse" :getter="getBareNumber()" :setter="setBareNumber()" :radioId="formprop.key + extraType"></component> -->
-            <template>
-              <input :value="getExtraType(extraType)" @input="setExtraType(extraType, $event.target.value)" @blur="removeOnError(formprop.key + extraType, extraType)" type="text" :class="{ 'form-control label-sm col-sm-9': true,'validate-danger': errors.has(formprop.key + extraType) }"  v-validate="{min:1}" :id="formprop.key + extraType" :name="formprop.key + extraType"/>
+              <!-- <component v-if="extraType === 'bareNumber'" is="radioTrueFalse" :getter="getBareNumber()" :setter="setBareNumber()" :radioId="formprop.key + extraType"></component> -->
+              <input :value="getExtraType(extraType)" @input="setExtraType(extraType, $event.target.value)" @blur="removeOnError(`${formprop.key}${extraType}`, extraType)" type="text" :class="{ 'form-control label-sm col-sm-9': true,'validate-danger': errors.has(formprop.key + extraType) }"  v-validate="{max:1}" :id="formprop.key + extraType" :name="formprop.key + extraType"/>
               <div v-show="errors.has(formprop.key + extraType)" class="row help validate-danger">
                 {{ errors.first(formprop.key + extraType)}}
               </div>
-            </template>
           </div>
         </template>
         <template v-else-if="formprop.key === 'integerType'">
@@ -230,17 +228,7 @@ export default {
       falseValues: ['false', 'False', 'FALSE', '0'],
       bareNumber: true,
       decimalChar: '.',
-      groupChar: '',
-      radioprops: [{
-        label: 'True',
-        key: 'trueBareNumber',
-        value: true
-      }, {
-        label: 'False',
-        key: 'falsebareNumber',
-        value: false
-      }]
-      // bareNumberModel: 'true'
+      groupChar: ''
     }
   },
   components: {
@@ -531,7 +519,7 @@ export default {
           //   value = this.setAndGetDefaultBareNumber()
           //   break
           default:
-            throw new Error(`Extra property type: ${type} is not supported`)
+            throw new Error(`Extra property type: ${type} is not supported for number`)
         }
       }
       return value
@@ -556,7 +544,7 @@ export default {
       switch (type) {
         case 'decimalChar':
         case 'groupChar':
-        case 'bareNumber':
+        // case 'bareNumber':
           this.setProperty(type, value)
           break
         default:
@@ -564,6 +552,8 @@ export default {
       }
     },
     removeOnError: function(errorId, key) {
+      console.log('removing on error', errorId)
+      console.log(key)
       if (this.errors.has(errorId)) {
         this.removeColumnProperty(this.setter(this.activeCurrentHotId, key))
       }
@@ -575,13 +565,11 @@ export default {
     },
     setAndGetDefaultGroupChar: function() {
       const value = this.groupChar
-      console.log('setting default group char')
       this.setProperty('groupChar', value)
       return value
     },
     setAndGetDefaultDecimalChar: function() {
       const value = this.decimalChar
-      console.log('setting default decimal char')
       this.setProperty('decimalChar', value)
       return value
     },
@@ -688,14 +676,10 @@ export default {
     },
     'formatPropertyValue': function() {
       this.setFormatPropertyValueForPattern()
-    },
-    // 'bareNumberModel': function(value) {
-    //   console.log('update bare model', value)
-    //   this.setBareNumber(value)
-    // }
-    'setBareNumber': function() {
-      this.getBareNumber()
     }
+    // 'setBareNumber': function() {
+    //   this.getBareNumber()
+    // }
   },
   mounted: function() {
     let vueUpdateAllTablesAllColumnsNames = this.updateAllTablesAllColumnsNames
