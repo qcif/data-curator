@@ -17,12 +17,13 @@ Feature: Open a Data Package
   - The datapackage.json file not in a zip file:
     - references the tabular data resources via a url 
     - describes the tabular data package and contains the `schema` and `dialect` for each resource, either inline or referenced via a url
-    - doesn't include or reference and README.md or README.txt
+    - doesn't include or reference and README.md or README.txt  
   - "Open Data Package" can be invoked from the Menu
   
   LATER
   =====
   
+  - Open datapackage.json from a local file 
   - Open a data package that references a Table Schema at a URL 
   - Open a data package that references a CSV Dialect at a URL
   
@@ -39,60 +40,114 @@ Feature: Open a Data Package
       - data
       - hash
       - bytes 
-    - dialect: (this may result in invalid results)
-      - quoteChar 
-      - doubleQuote
-      - escapeChar
-      - nullSequence
-      - skipInitialSpace
-      - csvddfVersion 
+    - table schema:
+      - bareNumber
+      - groupChar
+      - decimalChar
+      - trueValues
+      - falseValues
     - [pattern properties](https://frictionlessdata.io/specs/patterns) except `package` in the [Table Schema: Foreign Keys to Data Packages pattern](https://frictionlessdata.io/specs/patterns/#table-schema:-foreign-keys-to-data-packages)
     
-  Scenario: Open a data package 
+  Scenario: Open a valid datapackage.json from a local file  
     Given Data Curator is open
     When "Open Data Package" is invoked
-    And a data package file <location> is selected
-    Then the properties from datapackage.json and internal URL references should be loaded into the property panels
+    And a valid datapackage.json file at a local file is selected
+    Then the properties from datapackage.json should be loaded into the property panels
     And each data resource (at a URL or path) should be opened in a new data tab to the right of any other open data tabs
     And each Data tab should be named using the data resource `name`
     And each data resource header row should be set using the `dialect`  
-    And text in any associated README.md or README.txt should be loaded into the provenance information
 
-  Scenario: Open a valid datapackage.json from URL
+  Scenario: Open a valid datapackage.json with properties unsupported by Data Curator from a local file
     Given Data Curator is open
-    And a valid datapackage.json file is stored at a URL
     When "Open Data Package" is invoked
-    And the datapackage.json file at the URL is specified
-    Then the properties from datapackage.json should be displayed in the property panels
-    And the data at the `path` of each data resource should open in a new data tab to the right of any other open data tabs
-    And each Data tab should be named using the data resource `name`
-    And each data resource header row should be set using the `dialect`  
-  
-  Scenario: Open an invalid datapackage.json from URL
-    Given Data Curator is open
-    And an invalid datapackage.json file is stored at a URL
-    When "Open Data Package" is invoked
-    And the datapackage.json file at the URL is specified
-    Then an error should be displayed 
-  
-  Scenario: Open datapackage.json from URL with properties unsupported by Data Curator
-    Given Data Curator is open
-    And a valid datapackage.json file is stored at a URL
-    When "Open Data Package" is invoked
-    And the datapackage.json file at the URL is specified
+    And a valid datapackage.json file at a local file is selected
     Then the properties from datapackage.json should be displayed in the property panels
     And the data at the `path` of each data resource should open in a new data tab to the right of any other open data tabs
     And each Data tab should be named using the data resource `name`
     And each data resource header row should be set using the `dialect`
     And a warning should be displayed stating that some unsupported properties were not imported  
-
-  Scenario: Open a valid datapackage.zip 
+    
+  Scenario: Open a invalid datapackage.json from a local file  
     Given Data Curator is open
-    And a valid datapackage.zip file is stored at a URL or local file
     When "Open Data Package" is invoked
-    And the datapackage.zip file is specified
+    And an invalid datapackage.json file at a local file is selected
+    Then an error message should be displayed
+
+  Scenario: Open a valid datapackage.json from a URL
+    Given Data Curator is open
+    When "Open Data Package" is invoked
+    And a valid datapackage.json file at a URL is selected
+    Then the properties from datapackage.json should be displayed in the property panels
+    And the data at the `path` of each data resource should open in a new data tab to the right of any other open data tabs
+    And each Data tab should be named using the data resource `name`
+    And each data resource header row should be set using the `dialect`  
+  
+  Scenario: Open a datapackage.json with properties unsupported by Data Curator from a URL
+    Given Data Curator is open
+    When "Open Data Package" is invoked
+    And the datapackage.json file at the URL is selected
+    Then the properties from datapackage.json should be displayed in the property panels
+    And the data at the `path` of each data resource should open in a new data tab to the right of any other open data tabs
+    And each Data tab should be named using the data resource `name`
+    And each data resource header row should be set using the `dialect`
+    And a warning should be displayed stating that some unsupported properties were not imported  
+    
+  Scenario: Open an invalid datapackage.json from a URL
+    Given Data Curator is open
+    When "Open Data Package" is invoked
+    And an invalid datapackage.json file at a URL is selected
+    Then an error message should be displayed 
+
+  Scenario: Open a valid datapackage.zip from a local file
+    Given Data Curator is open
+    When "Open Data Package" is invoked
+    And a valid datapackage.zip file at a local file is selected
+    Then the properties from datapackage.json should be loaded into the property panels
+    And each data resource (at a URL or path) should be opened in a new data tab to the right of any other open data tabs
+    And each Data tab should be named using the data resource `name`
+    And each data resource header row should be set using the `dialect`  
+    And the README.md should be displayed in the provenance information panel  
+
+  Scenario: Open a datapackage.zip with properties unsupported by Data Curator from a local file
+    Given Data Curator is open
+    When "Open Data Package" is invoked
+    And a valid datapackage.zip file at a local file is selected
+    Then the properties from datapackage.json should be displayed in the property panels
+    And the data at the `path` of each data resource should open in a new data tab to the right of any other open data tabs
+    And each Data tab should be named using the data resource `name`
+    And each data resource header row should be set using the `dialect`
+    And the README.md should be displayed in the provenance information panel  
+    And a warning should be displayed stating that some unsupported properties were not imported  
+
+  Scenario: Open a invalid datapackage.zip from a local file  
+    Given Data Curator is open
+    When "Open Data Package" is invoked
+    And an invalid datapackage.zip file at a local file is selected
+    Then an error message should be displayed 
+  
+  Scenario: Open a valid datapackage.zip from a URL
+    Given Data Curator is open
+    When "Open Data Package" is invoked
+    And the datapackage.zip file at a URL is selected
     Then the properties from datapackage.json file should be displayed in the property panels
     And the data at the `path` of each data resource should open in a new data tab to the right of any other open data tabs
     And each Data tab should be named using the data resource `name`
     And each data resource header row should be set using the `dialect`
     And the README.md should be displayed in the provenance information panel  
+
+  Scenario: Open a datapackage.zip with properties unsupported by Data Curator from a URL
+    Given Data Curator is open
+    When "Open Data Package" is invoked
+    And the datapackage.zip file at a URL is specified
+    Then the properties from datapackage.json should be displayed in the property panels
+    And the data at the `path` of each data resource should open in a new data tab to the right of any other open data tabs
+    And each Data tab should be named using the data resource `name`
+    And each data resource header row should be set using the `dialect`
+    And the README.md should be displayed in the provenance information panel  
+    And a warning should be displayed stating that some unsupported properties were not imported  
+
+  Scenario: Open a invalid datapackage.zip from a URL  
+    Given Data Curator is open
+    When "Open Data Package" is invoked
+    And an invalid datapackage.zip file at a URL is selected
+    Then an error message should be displayed 

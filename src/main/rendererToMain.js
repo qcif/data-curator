@@ -1,7 +1,15 @@
-import {ipcMain as ipc} from 'electron'
+import {ipcMain as ipc, dialog} from 'electron'
 import {showErrors} from './errors.js'
-import {getSubMenuFromMenu, clickLabelsOnMenu} from './menu'
+import {
+  getMenu,
+  getSubMenuFromMenu,
+  clickLabelsOnMenu,
+  disableAllSubMenuItemsFromMenuObject,
+  enableSubMenuItemsFromMenuObject,
+  enableAllSubMenuItemsFromMenuLabel
+} from './menu'
 import {focusMainWindow, closeSecondaryWindow} from './windows.js'
+import {loadPackageJson, loadResourceDataFromPackageUrl} from './url.js'
 
 ipc.on('toggleSaveMenu', (event, arg) => {
   let saveSubMenu = getSubMenuFromMenu('File', 'Save')
@@ -39,3 +47,41 @@ ipc.on('focusMainWindow', (event, arg) => {
 ipc.on('closeSecondaryWindow', (event, arg) => {
   closeSecondaryWindow(arg)
 })
+
+ipc.on('closedFindReplace', (event, arg) => {
+  let menu = getMenu('Find')
+  disableAllSubMenuItemsFromMenuObject(menu)
+  enableSubMenuItemsFromMenuObject(menu, ['Find'])
+})
+
+ipc.on('openedFindReplace', (event, arg) => {
+  enableAllSubMenuItemsFromMenuLabel('Find')
+})
+
+ipc.on('loadPackageUrl', async function(event, index, hotId, url) {
+  const mainWindow = focusMainWindow()
+  const dataPackage = await loadPackageJson(url)
+  if (dataPackage) {
+    mainWindow.webContents.send('packageUrlLoaded', index, hotId, url, dataPackage.descriptor)
+  }
+})
+
+ipc.on('loadPackageUrlResourcesAsFkRelations', async function(event, url, resourceName) {
+  try {
+    const rows = await loadResourceDataFromPackageUrl(url, resourceName)
+    event.returnValue = rows
+  } catch (error) {
+    const errorMessage = 'There was a problem collating data from url resources'
+    const mainWindow = focusMainWindow()
+    dialog.showMessageBox(mainWindow, {
+      type: 'error',
+      title: 'Problem loading data package url',
+      message: errorMessage
+    })
+    console.log(errorMessage, error)
+  }
+})
+
+function sendStopLoadingPackageFeedback() {
+  mainWindow.webContents.send('stopLoadingPackageFeedback')
+}

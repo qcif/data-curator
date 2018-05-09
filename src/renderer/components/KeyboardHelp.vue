@@ -192,7 +192,7 @@
       </tr>
     </thead>
     <tbody>
-<!--
+<!-- see https://github.com/ODIQueensland/data-curator/issues/202
       <tr>
         <td><b>Settings</b> / <b>Preferences</b> - set defaults to improve productivity</td>
         <td><kbd>Ctrl</kbd> <kbd>,</kbd></td>
@@ -246,6 +246,13 @@
         <td><kbd>Shift &#8679;</kbd> <kbd>Ctrl</kbd> <kbd>S</kbd></td>
         <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>S</kbd></td>
       </tr>
+<!-- https://github.com/ODIQueensland/data-curator/issues/67
+      <tr>
+        <td><b>Close Tab</b> - close the active data tab</td>
+        <td><kbd>Ctrl</kbd> <kbd>W</kbd></td>
+        <td><kbd>Command &#8984;</kbd> <kbd>W</kbd></td>
+      </tr>
+-->      
     </tbody>
   </table>
 
@@ -259,7 +266,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><b>Undo</b> the last edit command</td>
+        <td><b>Undo</b> the last edit command. Replace commands cannot be undone</td>
         <td><kbd>Ctrl</kbd> <kbd>Z</kbd></td>
         <td><kbd>Command &#8984;</kbd> <kbd>Z</kbd></td>
       </tr>
@@ -283,7 +290,7 @@
         <td><kbd>Ctrl</kbd> <kbd>V</kbd></td>
         <td><kbd>Command &#8984;</kbd> <kbd>V</kbd></td>
       </tr>
-<!--
+<!-- see https://github.com/ODIQueensland/data-curator/issues/89
       <tr>
         <td><b>Select All</b> the data in the table</td>
         <td><kbd>Ctrl</kbd> <kbd>A</kbd> </td>
@@ -312,40 +319,16 @@
       </tr>
     </tbody>
   </table>
-
-<!--
-    <table class="table table-striped">
-<thead>
-      <tr>
-        <th style="width:50%">View menu shortcuts</th>
-        <th style="width:25%"><i class="fab fa-windows fa-lg"></i> &nbsp; <i class="fab fa-linux fa-lg"></i></th>
-        <th style="width:25%"><i class="fab fa-apple fa-lg"></i></th>
-      </tr>
-      </thead>
-<tbody>
-      <tr>
-        <td><b>Read Only Mode</b> - </td>
-        <td><kbd>Ctrl</kbd> <kbd>N</kbd></td>
-        <td><kbd>Command &#8984;</kbd> <kbd>N</kbd></td>
-      </tr>
-      <tr>
-        <td><b>Enter Full Screen</b></td>
-        <td><kbd>^</kbd> <kbd>Ctrl</kbd> <kbd>F</kbd></td>
-        <td><kbd>^</kbd> <kbd>Command &#8984;</kbd> <kbd>F</kbd></td>
-      </tr>
-      </tbody>
-    </table>
--->
-
-    <table class="table table-striped">
-<thead>
+<!-- see https://github.com/ODIQueensland/data-curator/issues/707  
+  <table class="table table-striped">
+    <thead>
       <tr>
         <th style="width:50%">Find menu shortcuts</th>
         <th style="width:25%"><i class="fab fa-windows fa-lg"></i> &nbsp; <i class="fab fa-linux fa-lg"></i></th>
         <th style="width:25%"><i class="fab fa-apple fa-lg"></i></th>
       </tr>
-      </thead>
-<tbody>
+    </thead>
+    <tbody>
       <tr>
         <td><b>Find</b> </td>
         <td><kbd>Ctrl</kbd> <kbd>F</kbd></td>
@@ -373,6 +356,7 @@
       </tr>
       </tbody>
     </table>
+-->    
 
   <table class="table table-striped">
     <thead>
@@ -436,10 +420,11 @@
     </thead>
     <tbody>
       <tr>
-        <td><b>Minimize</b> - create a new table of data</td>
+        <td><b>Minimize</b> - minimize the Data Curator window</td>
         <td></td>
         <td><kbd>Command &#8984;</kbd> <kbd>M</kbd></td>
       </tr>
+<!--  see https://github.com/ODIQueensland/data-curator/issues/273     
       <tr>
         <td><b>Next Tab</b> - make the next tab (if it exists) the active tab</td>
         <td><kbd>Ctrl</kbd> <kbd>&#8594;</kbd></td>
@@ -450,6 +435,7 @@
         <td><kbd>Ctrl</kbd> <kbd>&#8592;</kbd></td>
         <td><kbd>Command &#8984;</kbd> <kbd>&#8592;</kbd></td>
       </tr>
+-->      
     </tbody>
   </table>
 
@@ -463,11 +449,13 @@
       </tr>
     </thead>
     <tbody>
+<!--    
       <tr>
-        <td><b>Data Curator Help</b> - create a new table of data</td>
+        <td><b>Data Curator Help</b> - display help in a separate window</td>
         <td><kbd>F1</kbd></td>
         <td></td>
       </tr>
+-->       
       <tr>
         <td><b>Keyboard Shortcuts</b></td>
         <td><kbd>Ctrl</kbd> <kbd>/</kbd></td>

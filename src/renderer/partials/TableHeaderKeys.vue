@@ -14,7 +14,7 @@ import ForeignKeysTooltip from '../mixins/ForeignKeysTooltip'
 export default {
   name: 'tableheaderkeys',
   mixins: [ForeignKeysTooltip],
-  props: ['activeNames', 'getSelectedKeys', 'pushSelectedKeys', 'labelName', 'tooltipId', 'tooltipView', 'index'],
+  props: ['activeNames', 'getSelectedKeys', 'pushSelectedKeys', 'labelName', 'tooltipId', 'tooltipView', 'index', 'currentHotId'],
   computed: {
     selectedKeys: {
       get() {

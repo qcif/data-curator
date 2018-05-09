@@ -1,13 +1,13 @@
-import {openFile, saveFileAs, saveFile, importDataPackage} from './file.js'
-import {showUrlDialog} from './url.js'
-import {createWindowTab, focusMainWindow} from './windows.js'
-import {importExcel} from './excel.js'
-import {showKeyboardHelp} from './help.js'
-import {fileFormats} from '../renderer/file-formats.js'
-import {shell, BrowserWindow, Menu} from 'electron'
+import { openFile, saveFileAs, saveFile, importDataPackage } from './file.js'
+import { showUrlDialog } from './url.js'
+import { createWindowTab, focusMainWindow } from './windows.js'
+import { importExcel } from './excel.js'
+import { showKeyboardHelp } from './help.js'
+import { fileFormats } from '../renderer/file-formats.js'
+import { shell, BrowserWindow, Menu } from 'electron'
 
 class AppMenu {
-  initTemplate() {
+  initTemplate () {
     const webContents = this.webContents
     this.template = [
       {
@@ -16,7 +16,7 @@ class AppMenu {
           {
             label: 'New',
             accelerator: 'CmdOrCtrl+N',
-            click() {
+            click () {
               createWindowTab()
             }
           }, {
@@ -27,7 +27,7 @@ class AppMenu {
           }, {
             label: 'Open Excel Sheet...',
             enabled: true,
-            click() {
+            click () {
               importExcel()
             }
             // Placeholder for future feature
@@ -59,12 +59,12 @@ class AppMenu {
             //      }, {
             //        label: 'Settings',
             //        enabled: false
-          // }, {
+            // }, {
             type: 'separator'
           }, {
             label: 'Save',
             accelerator: 'CmdOrCtrl+S',
-            click() {
+            click () {
               saveFile()
             },
             id: 'save',
@@ -90,7 +90,7 @@ class AppMenu {
           {
             label: 'Undo',
             accelerator: 'CmdOrCtrl+Z',
-            click() {
+            click () {
               webContents().send('editUndo')
             }
           }, {
@@ -98,7 +98,7 @@ class AppMenu {
             accelerator: process.platform === 'darwin'
               ? 'Shift+CmdOrCtrl+Z'
               : 'CmdOrCtrl+Y',
-            click() {
+            click () {
               webContents().send('editRedo')
             }
           }, {
@@ -130,13 +130,13 @@ class AppMenu {
           }, {
             label: 'Insert Row Above',
             accelerator: 'CmdOrCtrl+I',
-            click() {
+            click () {
               webContents().send('insertRowAbove')
             }
           }, {
             label: 'Insert Row Below',
             accelerator: 'CmdOrCtrl+K',
-            click() {
+            click () {
               webContents().send('insertRowBelow')
             }
           }, {
@@ -144,25 +144,25 @@ class AppMenu {
           }, {
             label: 'Insert Column Before',
             accelerator: 'CmdOrCtrl+J',
-            click() {
+            click () {
               webContents().send('insertColumnLeft')
             }
           }, {
             label: 'Insert Column After',
             accelerator: 'CmdOrCtrl+L',
-            click() {
+            click () {
               webContents().send('insertColumnRight')
             }
           }, {
             type: 'separator'
           }, {
             label: 'Remove Row(s)',
-            click() {
+            click () {
               webContents().send('removeRows')
             }
           }, {
             label: 'Remove Column(s)',
-            click() {
+            click () {
               webContents().send('removeColumns')
             }
           }
@@ -173,24 +173,48 @@ class AppMenu {
         submenu: [
           {
             label: 'Find',
-            accelerator: 'CmdOrCtrl+F'
-          }, {
-            label: 'Find Next',
-            accelerator: 'CmdOrCtrl+G',
-            enabled: false
-          }, {
-            label: 'Find Previous',
-            accelerator: 'Shift+CmdOrCtrl+G',
-            enabled: false
+            accelerator: 'CmdOrCtrl+F',
+            click: function () {
+              webContents().send('showSidePanel', 'findReplace')
+            }
           }, {
             type: 'separator'
           }, {
+            label: 'Find Next',
+            accelerator: 'CmdOrCtrl+G',
+            enabled: false,
+            click: function () {
+              webContents().send('clickFindButton', 'findNext')
+            }
+          }, {
+            label: 'Find Previous',
+            accelerator: 'Shift+CmdOrCtrl+G',
+            enabled: false,
+            click: function () {
+              webContents().send('clickFindButton', 'findPrevious')
+            }
+          }, {
+            type: 'separator'
+          }, {
+            label: 'Replace Previous',
+            accelerator: 'CmdOrCtrl+E',
+            enabled: false,
+            click: function () {
+              webContents().send('clickFindButton', 'replacePrevious')
+            }
+          }, {
             label: 'Replace Next',
             accelerator: 'Alt+CmdOrCtrl+E',
-            enabled: false
+            enabled: false,
+            click: function () {
+              webContents().send('clickFindButton', 'replaceNext')
+            }
           }, {
             label: 'Replace All',
-            enabled: false
+            enabled: false,
+            click: function () {
+              webContents().send('clickFindButton', 'replaceAll')
+            }
           }
         ]
       },
@@ -202,7 +226,7 @@ class AppMenu {
             accelerator: 'Shift+CmdOrCtrl+H',
             type: 'checkbox',
             checked: false,
-            click(menuItem) {
+            click (menuItem) {
               // revert 'checked' toggle so only controlled by header row event
               menuItem.checked = !menuItem.checked
               webContents().send('toggleActiveHeaderRow')
@@ -212,7 +236,7 @@ class AppMenu {
             label: 'Case Sensitive Header Row',
             type: 'checkbox',
             checked: false,
-            click(menuItem) {
+            click (menuItem) {
               // revert 'checked' toggle so only controlled by event
               menuItem.checked = !menuItem.checked
               webContents().send('toggleCaseSensitiveHeader')
@@ -237,7 +261,7 @@ class AppMenu {
             // }, {
             label: 'Guess Column Properties',
             accelerator: 'Shift+CmdOrCtrl+G',
-            click: function() {
+            click: function () {
               webContents().send('guessColumnProperties')
             }
           }, {
@@ -245,25 +269,25 @@ class AppMenu {
           }, {
             label: 'Set Column Properties',
             accelerator: process.env.NODE_ENV !== 'development' ? 'Shift+CmdOrCtrl+C' : 'Alt+CmdOrCtrl+C',
-            click() {
+            click () {
               webContents().send('triggerMenuButton', 'Column')
             }
           }, {
             label: 'Set Table Properties',
             accelerator: 'Shift+CmdOrCtrl+T',
-            click() {
+            click () {
               webContents().send('triggerMenuButton', 'Table')
             }
           }, {
             label: 'Set Provenance Information',
             accelerator: 'Shift+CmdOrCtrl+P',
-            click() {
+            click () {
               webContents().send('triggerMenuButton', 'Provenance')
             }
           }, {
             label: 'Set Data Package Properties',
             accelerator: 'Shift+CmdOrCtrl+D',
-            click() {
+            click () {
               webContents().send('triggerMenuButton', 'Package')
             }
           }, {
@@ -271,7 +295,7 @@ class AppMenu {
           }, {
             label: 'Validate Table',
             accelerator: 'Shift+CmdOrCtrl+V',
-            click() {
+            click () {
               webContents().send('validateTable')
             }
           }, {
@@ -279,7 +303,7 @@ class AppMenu {
           }, {
             label: 'Export Data Package...',
             accelerator: 'Shift+CmdOrCtrl+X',
-            click() {
+            click () {
               webContents().send('triggerMenuButton', 'Export')
             }
           }
@@ -346,19 +370,19 @@ class AppMenu {
             label: 'Keyboard Shortcuts',
             accelerator: 'CmdOrCtrl+/',
             enabled: true,
-            click() {
+            click () {
               showKeyboardHelp()
             }
           }, {
             type: 'separator'
           }, {
             label: 'Support Forum',
-            click() {
+            click () {
               shell.openExternal('https://ask.theodi.org.au/c/projects/data-curator')
             }
           }, {
             label: 'Report Issues',
-            click() {
+            click () {
               shell.openExternal('https://github.com/ODIQueensland/data-curator/blob/develop/.github/CONTRIBUTING.md')
             }
           }
@@ -374,13 +398,14 @@ class AppMenu {
     ]
   }
 
-  buildAllMenusForFileFormats() {
+  buildAllMenusForFileFormats () {
     for (const format in fileFormats) {
       this.openSubMenu.push(this.buildMenuForFileFormats(format, openFile, 'CmdOrCtrl+O'))
       this.saveSubMenu.push(this.buildMenuForFileFormats(format, saveFileAs, 'Shift+CmdOrCtrl+S'))
     }
   }
-  buildMenuForFileFormats(format, clickFn, csvAccelerator) {
+
+  buildMenuForFileFormats (format, clickFn, csvAccelerator) {
     const option = {
       label: fileFormats[format].label,
       click: ((format => () => {
@@ -393,31 +418,31 @@ class AppMenu {
     return option
   }
 
-  buildOpenDataPackageMenu() {
+  buildOpenDataPackageMenu () {
     this.openDataPackageSubMenu = [{
-      label: 'zip from URL....',
+      label: 'zip from URL...',
       enabled: true,
-      click() {
+      click () {
         // downloadDataPackageJson()
         showUrlDialog()
       }
     }, {
       label: 'zip from file...',
       enabled: true,
-      click() {
+      click () {
         importDataPackage()
       }
     }, {
       label: 'json from URL...',
       enabled: true,
-      click() {
+      click () {
         // downloadDataPackageJson()
         showUrlDialog()
       }
     }]
   }
 
-  updateMenuForDarwin() {
+  updateMenuForDarwin () {
     const webContents = this.webContents
     if (process.platform === 'darwin') {
       this.template.unshift({
@@ -425,7 +450,7 @@ class AppMenu {
         submenu: [
           {
             label: 'About Data Curator',
-            click: function() {
+            click: function () {
               webContents().send('showSidePanel', 'about')
             }
             // Placeholder for future feature
@@ -462,7 +487,7 @@ class AppMenu {
     }
   }
 
-  updateMenuForNonDarwin() {
+  updateMenuForNonDarwin () {
     const webContents = this.webContents
     if (process.platform !== 'darwin') {
       let subTemplate = this.getSubTemplateFromLabel('Window')
@@ -470,14 +495,14 @@ class AppMenu {
         type: 'separator'
       }, {
         label: 'About Data Curator',
-        click: function() {
+        click: function () {
           webContents().send('showSidePanel', 'about')
         }
       })
     }
   }
 
-  updateMenuForProduction() {
+  updateMenuForProduction () {
     if (process.env.NODE_ENV !== 'production') {
       this.template.push({
         label: 'Developer',
@@ -492,23 +517,23 @@ class AppMenu {
     }
   }
 
-  getSubTemplateFromLabel(label) {
+  getSubTemplateFromLabel (label) {
     return this.template.find(x => x.label === label)
   }
 
-  webContents() {
+  webContents () {
     // use .fromId rather than .focusedWindow as latter does not apply if app minimized
     // use .fromId rather than .getAllWindows[0] as if child window present and main window minimized won't work
     let browserWindow = focusMainWindow()
     return browserWindow.webContents
   }
 
-  initContainers() {
+  initContainers () {
     this.openSubMenu = []
     this.saveSubMenu = []
   }
 
-  constructor() {
+  constructor () {
     this.initContainers()
     this.buildAllMenusForFileFormats()
     this.buildOpenDataPackageMenu()
@@ -520,32 +545,62 @@ class AppMenu {
   }
 }
 
-export function getMenu(menuLabel) {
+export function getMenu (menuLabel) {
   let menu = Menu.getApplicationMenu().items.find(x => x.label === menuLabel)
   return menu
 }
 
-export function getSubMenuFromMenu(menuLabel, subMenuLabel) {
-  let menu = Menu.getApplicationMenu().items.find(x => x.label === menuLabel)
+export function enableAllSubMenuItemsFromMenuLabel (menuLabel) {
+  let menu = getMenu(menuLabel)
+  enableAllSubMenuItemsFromMenuObject(menu)
+}
+
+export function enableAllSubMenuItemsFromMenuObject (menu) {
+  menu.submenu.items.forEach(function (x) {
+    x.enabled = !!x.label
+  })
+}
+
+export function disableAllSubMenuItemsFromMenuLabel (menuLabel) {
+  let menu = getMenu(menuLabel)
+  disableAllSubMenuItemsFromMenuObject(menu)
+}
+
+export function disableAllSubMenuItemsFromMenuObject (menu) {
+  menu.submenu.items.forEach(function (x) {
+    if (typeof x.label !== 'undefined') {
+      x.enabled = false
+    }
+  })
+}
+
+export function getSubMenuLabelsFromMenu (menuLabel) {
+  let menu = getMenu(menuLabel)
+  let subMenuLabels = menu.submenu.items.map(x => x.label)
+  return subMenuLabels
+}
+
+export function getSubMenuFromMenu (menuLabel, subMenuLabel) {
+  let menu = getMenu(menuLabel)
   let subMenu = menu.submenu.items.find(x => x.label === subMenuLabel)
   return subMenu
 }
 
-export function enableSubMenuItemsFromMenuObject(menu, labels) {
+export function enableSubMenuItemsFromMenuObject (menu, labels) {
   for (const label of labels) {
     const subMenu = menu.submenu.items.find(x => x.label === label)
     subMenu.enabled = true
   }
 }
 
-export function disableSubMenuItemsFromMenuObject(menu, labels) {
+export function disableSubMenuItemsFromMenuObject (menu, labels) {
   for (const label of labels) {
     const subMenu = menu.submenu.items.find(x => x.label === label)
     subMenu.enabled = false
   }
 }
 
-export function clickLabelsOnMenu(args) {
+export function clickLabelsOnMenu (args) {
   let menu = Menu.getApplicationMenu().items.find(x => x.label === args[0])
   menu.click()
   let returnLabel = menu.label

@@ -32,10 +32,12 @@ export default {
       return _.without(allTablesAllNames[hotId], '', null, undefined)
     }
   },
+
   mounted: async function() {
-    let vueUpdateSubscriptions = this.updateSubscriptions
+    let self = this
     this.$subscribeTo(allTablesAllColumnNames$, async function(allTablesAllColumnNames) {
-      await vueUpdateSubscriptions(allTablesAllColumnNames)
+      const hotId = await self.getHotIdFromTabId(self.getActiveTab)
+      await self.updateSubscriptions(allTablesAllColumnNames, hotId)
     })
     this.initTableHeaderKeys()
   }
