@@ -2,9 +2,11 @@
   <form class="navbar-form form-horizontal" id="columnProperties">
     <div class="form-group-sm row container-fluid">
       <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
-        <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">
-          {{formprop.label}}
-        </label>
+        <template v-if="!isExtraPropertyKey(formprop.key) || isExtraPropertyType(typeProperty, formprop.key)">
+          <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.key">
+            {{formprop.label}}
+          </label>
+        </template>
         <component :is="formprop.tooltipView"/>
         <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
           <select v-if="formprop.key==='type'" :value="getTypeProperty" v-model="typeProperty" @input="setTypeProperty($event.target.value)" :id="formprop.key" class="form-control input-sm col-sm-9">
@@ -45,6 +47,27 @@
             {{ errors.first(formprop.key)}}
           </div>
         </template>
+        <template v-else-if="formprop.key === 'booleanType'">
+          <div class="extra-types input-group" v-show="typeProperty === 'boolean'">
+            <label class="inline control-label col-sm-3" for="trueValues">True Values</label>
+            <input :value="getTrueValues()" @blur="setTrueValues($event.target.value)"  type="text" class="form-control label-sm col-sm-9" id="trueValues" />
+          </div>
+          <div class="extra-types input-group" v-show="typeProperty === 'boolean'">
+            <label class="inline control-label col-sm-3" for="falseValues">False Values</label>
+            <input :value="getFalseValues()" @blur="setFalseValues($event.target.value)" type="text" class="form-control label-sm col-sm-9" id="falseValues" />
+          </div>
+        </template>
+        <template v-else-if="formprop.key === 'numberType'">
+          <div v-for="(extraType, eIndex) in formprop.types" :key="'number' + eIndex" class="extra-types input-group" v-show="typeProperty === 'number'">
+            <label class="inline control-label col-sm-3" :for="formprop.key + extraType">{{getExtraPropertyLabel(extraType)}}</label>
+            <template>
+              <input :value="getExtraType(extraType)" @input="setExtraType(extraType, $event.target.value)" @blur="removeOnError(formprop.key + extraType, extraType)" type="text" :class="{ 'form-control label-sm col-sm-9': true,'validate-danger': errors.has(formprop.key + extraType) }"  v-validate="{min:1}" :id="formprop.key + extraType" :name="formprop.key + extraType"/>
+              <div v-show="errors.has(formprop.key + extraType)" class="row help validate-danger">
+                {{ errors.first(formprop.key + extraType)}}
+              </div>
+            </template>
+          </div>
+        </template>
         <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
       </div>
     </div>
@@ -71,6 +94,8 @@ import {
 import ColumnTooltip from '../mixins/ColumnTooltip'
 import ValidationRules from '../mixins/ValidationRules'
 import {isValidPatternForType} from '@/dateFormats.js'
+import {castBoolean, castNumber, castInteger} from 'tableschema/lib/types'
+import {ERROR as tableSchemaError} from 'tableschema/lib/config'
 // import autosizeTextArea from '../partials/AutosizeTextArea'
 Vue.use(VueRx, {
   Subscription
@@ -83,7 +108,6 @@ export default {
   props: ['cIndex', 'reselectHotCell'],
   data() {
     return {
-      content1: '',
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       typeProperty: '',
       formatProperty: '',
@@ -120,6 +144,15 @@ export default {
         tooltipId: 'tooltip-column-type',
         tooltipView: 'tooltipColumnType',
         type: 'dropdown'
+      },
+      {
+        label: 'Boolean types',
+        key: 'booleanType'
+      },
+      {
+        label: 'Number types',
+        key: 'numberType',
+        types: ['decimalChar', 'groupChar']
       },
       {
         label: 'Format',
@@ -177,7 +210,12 @@ export default {
         'geojson': ['required', 'unique', 'minLength', 'maxLength', 'enum'],
         'any': ['required', 'unique', 'enum']
       },
-      constraintBooleanBindings: ['required', 'unique']
+      constraintBooleanBindings: ['required', 'unique'],
+      trueValues: ['true', 'True', 'TRUE', '1'],
+      falseValues: ['false', 'False', 'FALSE', '0'],
+      bareNumber: true,
+      decimalChar: '.',
+      groupChar: ''
     }
   },
   subscriptions() {
@@ -234,7 +272,7 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'pushColumnProperty'
+      'pushColumnProperty', 'removeColumnProperty'
     ]),
     isBooleanConstraint: function(option) {
       return this.constraintBooleanBindings.indexOf(option) > -1
@@ -368,6 +406,165 @@ export default {
     },
     formatPropertyValueWrapper: function() {
       return this.formatPropertyValue
+    },
+    setTrueValues: function(values) {
+      let withoutEmpties = this.removeStringEmpties(values)
+      let array = this.getNoDuplicatesArrayFromString(withoutEmpties)
+      this.setProperty('trueValues', array)
+    },
+    setFalseValues: function(values) {
+      let withoutEmpties = this.removeStringEmpties(values)
+      let array = this.getNoDuplicatesArrayFromString(withoutEmpties)
+      this.setProperty('falseValues', array)
+    },
+    getNoDuplicatesArrayFromString: function(values) {
+      return Array.from(new Set(values.split(',')))
+    },
+    getTrueValues: function() {
+      return this.getBooleanValuesOrDefaultAsString('trueValues')
+    },
+    getFalseValues: function() {
+      return this.getBooleanValuesOrDefaultAsString('falseValues')
+    },
+    getBooleanValuesOrDefaultAsString: function(booleanType) {
+      let values = this.getBooleanValuesOrDefault(booleanType)
+      return values.join()
+    },
+    getBooleanValuesOrDefault: function(booleanType) {
+      let values
+      if (booleanType === 'trueValues') {
+        values = this.getProperty('trueValues')
+        if (!values) {
+          values = this.setAndGetDefaultTrueValues()
+        }
+      } else {
+        values = this.getProperty('falseValues')
+        if (!values) {
+          values = this.setAndGetDefaultFalseValues()
+        }
+      }
+      return values
+    },
+    setAndGetDefaultTrueValues: function() {
+      let values = [...this.trueValues]
+      this.setProperty('trueValues', values)
+      return values
+    },
+    setAndGetDefaultFalseValues: function() {
+      let values = [...this.falseValues]
+      this.setProperty('falseValues', values)
+      return values
+    },
+    removeStringEmpties: function(string) {
+      let withoutInternalEmpties = string.replace(/[,]+/g, ',')
+      // also remove 'empty' if at start or end
+      let trimmed = _.trim(withoutInternalEmpties, ',')
+      return trimmed
+    },
+    getExtraPropertyLabel: function(key) {
+      return _.upperFirst(_.lowerCase(key))
+    },
+    isExtraPropertyKey: function(key) {
+      return _.includes(['booleanType', 'integerType', 'numberType'], key)
+    },
+    isExtraPropertyType: function(type, key) {
+      switch (type) {
+        case 'boolean':
+          return key === 'booleanType'
+        case 'integer':
+          return key === 'integerType'
+        case 'number':
+          return key === 'numberType'
+        default:
+          return false
+      }
+    },
+    getExtraType: function(type) {
+      let value = this.getProperty(type)
+      if (!value) {
+        switch (type) {
+          case 'decimalChar':
+            value = this.setAndGetDefaultDecimalChar()
+            break
+          case 'groupChar':
+            value = this.setAndGetDefaultGroupChar()
+            break
+            // case 'bareNumber':
+            //   value = this.setAndGetDefaultBareNumber()
+            // break
+          default:
+            throw new Error(`Extra property type: ${type} is not supported for number`)
+        }
+      }
+      return value
+    },
+    setExtraType: function(type, value) {
+      switch (type) {
+        case 'decimalChar':
+        case 'groupChar':
+        // case 'bareNumber':
+          this.setProperty(type, value)
+          break
+        default:
+          throw new Error(`Extra property type: ${type} is not supported`)
+      }
+    },
+    removeOnError: function(errorId, key) {
+      if (this.errors.has(errorId)) {
+        this.removeColumnProperty(this.setter(this.activeCurrentHotId, key))
+      }
+    },
+    setAndGetDefaultGroupChar: function() {
+      const value = this.groupChar
+      this.setProperty('groupChar', value)
+      return value
+    },
+    setAndGetDefaultDecimalChar: function() {
+      const value = this.decimalChar
+      this.setProperty('decimalChar', value)
+      return value
+    },
+    // we cannot access frictionless' extra properties directly, so at least offer error message if not correct
+    validateDefaultExtraProperties() {
+      this.validateBooleans()
+      this.validateGroupCharForNumber()
+      this.validateDecimalCharForNumber()
+      this.validateBareNumberForNumberAndInteger()
+    },
+    validateBooleans: function() {
+      for (const booleanValues of [this.trueValues, this.falseValues]) {
+        for (const value of booleanValues) {
+          const result = castBoolean('default', value)
+          this.inspectDefaultExtraPropertiesResult(result, `Boolean value: ${value} of ${booleanValues}`)
+        }
+      }
+    },
+    validateGroupCharForNumber: function() {
+      const value = `10${this.groupChar}000`
+      this.validateNumber(value, `Group char value ${this.groupChar}`)
+    },
+    validateDecimalCharForNumber: function() {
+      const value = `10${this.decimalChar}000`
+      this.validateNumber(value, `Decimal char value: ${this.decimalChar}`)
+    },
+    validateBareNumberForNumberAndInteger: function() {
+      const value = this.bareNumber === true ? '23' :'dummy23dummy'
+      const message = `Bare Number ${this.bareNumber}`
+      this.validateNumber(value, message)
+      this.validateInteger(value, message)
+    },
+    validateNumber: function(value, message) {
+      const result = castNumber('default', value)
+      this.inspectDefaultExtraPropertiesResult(result, `Number's ${message}`)
+    },
+    validateInteger: function(value, message) {
+      const result = castInteger('default', value)
+      this.inspectDefaultExtraPropertiesResult(result, `Integer's ${message}`)
+    },
+    inspectDefaultExtraPropertiesResult: function(result, message) {
+      if (result === tableSchemaError) {
+        throw new Error(`${message} is not a valid default`, result)
+      }
     }
   },
   computed: {
@@ -429,6 +626,7 @@ export default {
         })
       }
     })
+    this.validateDefaultExtraProperties()
   }
 }
 </script>

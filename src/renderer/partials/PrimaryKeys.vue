@@ -25,7 +25,7 @@ export default {
     }
   },
   methods: {
-    updateSubscriptions: async function(allTablesAllColumns) {
+    updateSubscriptions: async function(allTablesAllColumns, hotId) {
       let localHotId = await this.currentHotId()
       this.localHeaderNames.length = 0
       this.localHeaderNames.push(...this.getHotIdHeaderNames(allTablesAllColumns, localHotId))

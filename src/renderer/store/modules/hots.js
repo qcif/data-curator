@@ -3,12 +3,9 @@ import {currentPos$} from '@/rxSubject.js'
 const state = {
   hotTabs: {},
   packageProperties: {},
-  provenanceProperties: { markdown: '', errors: [] }
+  provenanceProperties: { markdown: '', errors: [] },
+  fkPackageComponents: {}
 }
-
-const tableFields = ['encoding', 'format', 'mediatype', 'missingValues', 'name', 'path', 'profile', 'sources', 'title', 'primaryKeys', 'description', 'licenses']
-const packageFields = ['description', 'id', 'licenses', 'name', 'profile', 'sources', 'title', 'version']
-const columnFields = ['constraints', 'format', 'name', 'type', 'title', 'description', 'rdfType']
 
 export function getHotColumnPropertiesFromPropertyObject(property) {
   let allHotColumnProperties = state.hotTabs[property.hotId].columnProperties
@@ -29,6 +26,9 @@ export function getHotIdFromTabIdFunction() {
 }
 
 const getters = {
+  getFkPackageComponents: (state, getters) => (url) => {
+    return state.fkPackageComponents[url]
+  },
   getHotTabs: state => {
     return state.hotTabs
   },
@@ -142,6 +142,9 @@ const getters = {
 }
 
 const mutations = {
+  pushFkPackageComponents(state, property) {
+    _.set(state.fkPackageComponents[property.url], property.tableName, property.fields)
+  },
   resetSearchResult(state, hotId) {
     _.set(state.hotTabs, `${hotId}.searchResult`, 0)
   },
@@ -183,6 +186,12 @@ const mutations = {
   pushColumnProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
   },
+  // change this to remove column property
+  removeColumnProperty(state, property) {
+    let currentColumnProperties = _.assign({}, state.hotTabs[property.hotId].columnProperties[property.columnIndex])
+    _.unset(currentColumnProperties, property.key)
+    state.hotTabs[property.hotId].columnProperties[property.columnIndex] = currentColumnProperties
+  },
   pushTableProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
   },
@@ -214,9 +223,11 @@ const mutations = {
         }
       }
     }
-    foreignKeys[property.index].reference.package = property.package
+    const dataPackage = property.package
+    foreignKeys[property.index].reference.package = dataPackage
     state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
-    // _.set(state.hotTabs, `${property.hotId}.tableProperties.foreignKeys`, property.foreignKeys)
+    // reset package tables and columns cache
+    state.fkPackageComponents[dataPackage] = {}
   },
   removeForeignKeysForeignPackageForTable(state, property) {
     let hotId = state.hotTabs[property.hotId]
@@ -270,7 +281,25 @@ const mutations = {
     }
     foreignKeys[property.index].reference.resource = property.resource
     state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
-    // _.set(state.hotTabs, `${property.hotId}.tableProperties.foreignKeys`, property.foreignKeys)
+  },
+  resetForeignKeysForeignFieldsForTable(state, property) {
+    let hotId = state.hotTabs[property.hotId]
+    if (typeof hotId !== 'undefined') {
+      let tableProperties = _.assign({}, hotId.tableProperties) || {}
+      let foreignKeys = tableProperties.foreignKeys || []
+      if (!foreignKeys[property.index]) {
+        foreignKeys[property.index] = {
+          fields: [],
+          reference: {
+            resource: '',
+            fields: []
+          }
+        }
+      } else {
+        foreignKeys[property.index].reference.fields = []
+      }
+      state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys
+    }
   },
   pushForeignKeysForeignFieldsForTable(state, property) {
     let tableProperties = _.assign({}, state.hotTabs[property.hotId].tableProperties) || {}

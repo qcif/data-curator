@@ -3,7 +3,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import {ipcMain as ipc, dialog} from 'electron'
 import {focusOrNewSecondaryWindow, focusMainWindow, closeWindowSafely} from './windows'
-import {getSubMenuFromMenu, disableSubMenuItemsFromMenuObject, enableSubMenuItemsFromMenuObject} from './menu.js'
+import {getSubMenuFromMenu, disableAllSubMenuItemsFromMenuObject, enableAllSubMenuItemsFromMenuObject} from './menu.js'
 import {Package} from 'datapackage'
 import tmp from 'tmp'
 import _ from 'lodash'
@@ -14,12 +14,12 @@ tmp.setGracefulCleanup()
 
 // TODO: handle errors by rejecting promises and throwing back up stack
 export function showUrlDialog() {
-  let labels = ['zip from URL....', 'zip from file...', 'json from URL...']
+  // let labels = ['zip from URL....', 'zip from file...', 'json from URL...']
   let menu = getSubMenuFromMenu('File', 'Open Data Package')
-  disableSubMenuItemsFromMenuObject(menu, labels)
+  disableAllSubMenuItemsFromMenuObject(menu)
   let browserWindow = focusOrNewSecondaryWindow('urldialog', {width: 300, height: 150, modal: true, alwaysOnTop: true})
   browserWindow.on('closed', () => {
-    enableSubMenuItemsFromMenuObject(menu, labels)
+    enableAllSubMenuItemsFromMenuObject(menu)
   })
   browserWindow.webContents.on('did-finish-load', () => {
     ipc.once('urlCancelled', () => {
@@ -98,6 +98,13 @@ async function loadPackageFromJsonUrl(urlText) {
   mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading package URL..')
   const dataPackageJson = await loadPackageJson(urlText, mainWindow)
   if (!dataPackageJson) {
+    dialog.showMessageBox(mainWindow, {
+      type: 'warning',
+      title: `Unable to load Data Package`,
+      message:
+  `The data package, ${urlText}, could not be loaded.
+  If the data package is a URL, please check that the URL exists.`
+    })
     mainWindow.webContents.send('closeLoadingScreen')
     return
   }
@@ -106,7 +113,11 @@ async function loadPackageFromJsonUrl(urlText) {
     mainWindow.webContents.send('closeLoadingScreen')
     return
   }
-  await loadResources(dataPackageJson, mainWindow)
+  try {
+    await loadResources(dataPackageJson, mainWindow)
+  } catch (error) {
+    console.log('There was a problem loading package from json', error)
+  }
 }
 
 function showInvalidMessage(urlText, mainWindow) {
@@ -130,21 +141,12 @@ function showUrlPathNotSupportedMessage(urlText, mainWindow) {
 }
 
 // datapackage-js does not support loading url in browser
-async function loadPackageJson(json, mainWindow) {
+export async function loadPackageJson(json) {
   try {
     const dataPackage = await Package.load(json)
     return dataPackage
   } catch (error) {
     console.log(`There was a problem loading the package: ${json}`, error)
-    dialog.showMessageBox(mainWindow, {
-      type: 'warning',
-      title: `Unable to load Data Package`,
-      message:
-`The data package, ${json}, could not be loaded.
-If the data package is a URL, please check that the URL exists.`
-    })
-    // throw new Error()
-    // return Promise.reject(error)
   }
 }
 
@@ -162,4 +164,18 @@ async function loadResources(dataPackageJson, mainWindow) {
     let dataWithHeaders = _.concat([dataResource.headers], data)
     mainWindow.webContents.send('addTabWithFormattedDataAndDescriptor', dataWithHeaders, format, dataResource.descriptor)
   }
+}
+
+export async function loadResourceDataFromPackageUrl(url, resourceName) {
+  const dataPackage = await loadPackageJson(url)
+  const rowOfObjects = []
+  if (dataPackage && _.indexOf(dataPackage.resourceNames, resourceName) > -1) {
+    const dataResource = dataPackage.getResource(resourceName)
+    const data = await dataResource.read()
+    const headers = dataResource.headers
+    for (const row of data) {
+      rowOfObjects.push(_.zipObject(headers, row))
+    }
+  }
+  return rowOfObjects
 }
