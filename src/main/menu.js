@@ -496,8 +496,8 @@ class AppMenu {
         label: 'Settings'
         //        click: function() {
         //          webContents().send('showSidePanel', 'preferences')
-        //        } 
-      }
+        //        }
+      })
     }
   }
 
