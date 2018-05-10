@@ -192,13 +192,11 @@
       </tr>
     </thead>
     <tbody>
-<!-- see https://github.com/ODIQueensland/data-curator/issues/202
       <tr>
-        <td><b>Settings</b> / <b>Preferences</b> - set defaults to improve productivity</td>
-        <td><kbd>Ctrl</kbd> <kbd>,</kbd></td>
+        <td><b>Preferences</b> - set defaults to improve productivity</td>
+        <td></td>
         <td><kbd>Command &#8984;</kbd> <kbd>,</kbd></td>
       </tr>
--->
       <tr>
         <td><b>Hide</b> the application</td>
         <td></td>
@@ -319,7 +317,6 @@
       </tr>
     </tbody>
   </table>
-<!-- see https://github.com/ODIQueensland/data-curator/issues/707  
   <table class="table table-striped">
     <thead>
       <tr>
@@ -341,23 +338,21 @@
       </tr>
       <tr>
         <td><b>Find Previous</b></td>
-        <td><kbd>Ctrl</kbd> <kbd>G</kbd></td>
-        <td><kbd>Command &#8984;</kbd> <kbd>G</kbd></td>
-      </tr>
-      <tr>
-        <td><b>Replace</b></td>
-        <td><kbd>Ctrl</kbd> <kbd>F</kbd></td>
-        <td><kbd>Command &#8984;</kbd> <kbd>F</kbd></td>
+        <td><kbd>Alt</kbd> <kbd>Ctrl</kbd> <kbd>G</kbd></td>
+        <td><kbd>Option &#8997;</kbd> <kbd>Command &#8984;</kbd> <kbd>G</kbd></td>
       </tr>
       <tr>
         <td><b>Replace Next</b></td>
+        <td><kbd>Ctrl</kbd> <kbd>E</kbd></td>
+        <td><kbd>Command &#8984;</kbd> <kbd>E</kbd></td>
+      </tr>
+      <tr>
+        <td><b>Replace Previous</b></td>
         <td><kbd>Alt</kbd> <kbd>Ctrl</kbd> <kbd>E</kbd></td>
         <td><kbd>Option &#8997;</kbd> <kbd>Command &#8984;</kbd> <kbd>E</kbd></td>
       </tr>
       </tbody>
-    </table>
--->    
-
+    </table> 
   <table class="table table-striped">
     <thead>
       <tr>
