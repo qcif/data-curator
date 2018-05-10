@@ -103,7 +103,7 @@ export default {
       // closeSecondaryWindow('errors')
     },
     writeErrorsToProvenance: function() {
-      this.pushProvenanceErrors(this.messages)
+      this.homeWindow.webContents.send('pushErrorMessages', this.messages)
       this.showProvenanceErrors()
       provenanceErrors$.next()
     },
@@ -112,13 +112,12 @@ export default {
     }
   },
   mounted: function() {
-    const vueSetErrorMessages = this.setErrorMessages
-    const vueResetErrorMessages = this.resetErrorMessages
+    let self = this
     ipc.on('errorMessages', function(event, arg) {
       if (!arg) {
-        vueResetErrorMessages()
+        self.resetErrorMessages()
       } else {
-        vueSetErrorMessages(arg)
+        self.setErrorMessages(arg)
       }
     })
     // Initial window open, we need to trigger errors call
