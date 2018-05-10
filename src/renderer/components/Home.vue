@@ -957,7 +957,7 @@ export default {
       }
     },
     writeErrorsToProvenance: function() {
-      this.pushProvenanceErrors(this.messages)
+      this.pushProvenanceErrors({hotId: this.currentHotId, errors: this.messages})
       this.showProvenanceErrors()
     },
     showProvenanceErrors: function() {
@@ -1006,72 +1006,73 @@ export default {
     }
   },
   mounted: function() {
-    const vueGoToCell = this.goToCell
-    const vueNextTick = this.$nextTick
+    let self = this
+    // const vueGoToCell = this.goToCell
+    // const vueNextTick = this.$nextTick
     // request may be coming from another page - get focus first
     ipc.on('showErrorCell', async function(event, arg) {
       await ipc.send('focusMainWindow')
       // ensure cell select occurs after main window focus
       _.delay(function(arg) {
-        vueGoToCell(arg.row, arg.column)
+        self.goToCell(arg.row, arg.column)
       }, 100, arg)
     })
-    const vueSendErrorsToErrorsWindow = this.sendErrorsToErrorsWindow
+    // const vueSendErrorsToErrorsWindow = this.sendErrorsToErrorsWindow
     ipc.on('getErrorMessages', function(event, arg) {
-      vueSendErrorsToErrorsWindow()
+      self.sendErrorsToErrorsWindow()
     })
-    const vueHoverToSelectErrorCell = this.hoverToSelectErrorCell
+    // const vueHoverToSelectErrorCell = this.hoverToSelectErrorCell
     ipc.on('hoverToSelectErrorCell', function(event, arg) {
-      vueHoverToSelectErrorCell(arg.rowNumber, arg.columnNumber)
+      self.hoverToSelectErrorCell(arg.rowNumber, arg.columnNumber)
     })
-    const vueExitHoverToSelectErrorCell= this.exitHoverToSelectErrorCell
+    // const vueExitHoverToSelectErrorCell= this.exitHoverToSelectErrorCell
     ipc.on('exitHoverToSelectErrorCell', function(event, arg) {
-      vueExitHoverToSelectErrorCell(arg.rowNumber, arg.columnNumber)
+      self.exitHoverToSelectErrorCell(arg.rowNumber, arg.columnNumber)
     })
-    const vueTriggerMenuButton = this.triggerMenuButton
+    // const vueTriggerMenuButton = this.triggerMenuButton
     ipc.on('triggerMenuButton', function(event, arg) {
-      vueTriggerMenuButton(arg)
+      self.triggerMenuButton(arg)
     })
-    const vueToggleHeader = this.toggleHeader
+    // const vueToggleHeader = this.toggleHeader
     ipc.on('toggleActiveHeaderRow', function() {
-      vueToggleHeader()
+      self.toggleHeader()
     })
-    const vueAddTab = this.addTab
+    // const vueAddTab = this.addTab
     ipc.on('addTab', function() {
-      vueAddTab()
+      self.addTab()
     })
     ipc.on('addTabWithData', function(e, data) {
-      vueAddTab(data)
+      self.addTab(data)
     })
     ipc.on('addTabWithFormattedData', function(e, data, format) {
-      vueAddTab(data, format)
+      self.addTab(data, format)
     })
     ipc.on('addTabWithFormattedDataAndDescriptor', function(e, data, format, descriptor) {
-      vueAddTab(data, format, descriptor)
+      self.addTab(data, format, descriptor)
     })
-    const vueAddTabWithFilename = this.addTabWithFilename
+    // const vueAddTabWithFilename = this.addTabWithFilename
     ipc.on('addTabWithFormattedDataFile', function(e, data, format, filename) {
-      vueAddTabWithFilename(data, format, filename)
+      self.addTabWithFilename(data, format, filename)
     })
-    const vueTriggerSideNav = this.triggerSideNav
+    // const vueTriggerSideNav = this.triggerSideNav
     ipc.on('showSidePanel', function(event, arg) {
-      vueTriggerSideNav({
+      self.triggerSideNav({
         sideNavView: arg
       })
     })
-    const vueForceUpdate = this.forceWrapper
+    // const vueForceUpdate = this.forceWrapper
     ipc.on('saveDataSuccess', function(e, format, fileName) {
-      vueForceUpdate()
+      self.forceUpdate()
     })
-    const vueAdjustSidenavFormHeight = this.adjustSidenavFormHeight
+    // const vueAdjustSidenavFormHeight = this.adjustSidenavFormHeight
     ipc.on('resized', function() {
-      vueAdjustSidenavFormHeight()
+      self.adjustSidenavFormHeight()
       let hot = HotRegister.getActiveInstance()
       hot.render()
     })
     this.$nextTick(function() {
       require('../index.js')
-      const vueSetTabsOrder = this.setTabsOrder
+      // const vueSetTabsOrder = this.setTabsOrder
       Sortable.create(csvTab, {
         animation: 150,
         onSort: function(evt) {
@@ -1079,42 +1080,42 @@ export default {
           document.querySelectorAll('#csvTab .tab-header').forEach((el) => {
             tabIdOrder.push(el.id)
           })
-          vueSetTabsOrder(tabIdOrder)
+          self.setTabsOrder(tabIdOrder)
         }
       })
       this.closeSideNav()
       this.addTab()
     })
-    const vueShowProvenanceErrors = this.showProvenanceErrors
+    // const vueShowProvenanceErrors = this.showProvenanceErrors
     ipc.on('showProvenanceErrors', function(event, arg) {
-      vueShowProvenanceErrors()
+      self.showProvenanceErrors()
     })
-    const vueShowLoadingScreen = this.showLoadingScreen
-    const vueCloseLoadingScreen = this.closeLoadingScreen
+    // const vueShowLoadingScreen = this.showLoadingScreen
+    // const vueCloseLoadingScreen = this.closeLoadingScreen
     ipc.on('closeAndshowLoadingScreen', function(event, message) {
-      vueCloseLoadingScreen()
-      vueShowLoadingScreen(message)
+      self.closeLoadingScreen()
+      self.showLoadingScreen(message)
     })
     ipc.on('closeLoadingScreen', function(event, isReplyRequired = false) {
-      vueCloseLoadingScreen()
+      self.closeLoadingScreen()
       if (isReplyRequired) {
         ipc.sendSync('loadingScreenIsClosed')
       }
     })
-    const vueResetPackagePropertiesToObject = this.resetPackagePropertiesToObject
+    // const vueResetPackagePropertiesToObject = this.resetPackagePropertiesToObject
     ipc.on('resetPackagePropertiesToObject', function(event, packageProperties) {
-      vueResetPackagePropertiesToObject(packageProperties)
+      self.resetPackagePropertiesToObject(packageProperties)
+    })
+    ipc.on('resetPackagePropertiesToObject', function(event, packageProperties) {
+      self.resetPackagePropertiesToObject(packageProperties)
+    })
+    ipc.on('resetPackagePropertiesToObject', function(event, messages) {
+      self.pushProvenanceErrors({hotId: this.currentHotId, errors: messages})
     })
   },
   beforeCreate: function() {
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
       let hot = HotRegister.getInstance(hotId)
-      // hot.updateSettings({outsideClickDeselects: false})
-      // FOR testing: https://github.com/ODIQueensland/data-curator/issues/387
-      // let plugin = hot.getPlugin('autoRowSize')
-      // console.log(`sync calc: ${plugin.getSyncCalculationLimit()}`)
-      // console.log(`first row: ${plugin.getFirstVisibleRow()}`)
-      // console.log(`second row: ${plugin.getLastVisibleRow()}`)
       if (hot) {
         ipc.send('hasHeaderRow', hot.hasColHeaders())
       }
@@ -1123,17 +1124,17 @@ export default {
     onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
   },
   created: function() {
-    const vueGuessProperties = this.inferColumnProperties
+    // const vueGuessProperties = this.inferColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
-      vueGuessProperties()
+      self.guessProperties()
     })
-    const vueImportDataPackage = this.importDataPackage
+    // const vueImportDataPackage = this.importDataPackage
     ipc.on('importDataPackage', function(event, filePath, isTransient = false) {
-      vueImportDataPackage(filePath, isTransient)
+      self.importDataPackage(filePath, isTransient)
     })
-    const vueValidateTable = this.validateTable
+    // const vueValidateTable = this.validateTable
     ipc.on('validateTable', function(event, arg) {
-      vueValidateTable()
+      self.validateTable()
     })
     this.pushDefaultPackageProperties()
     ipc.send('closedFindReplace')
