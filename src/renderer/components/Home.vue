@@ -158,8 +158,6 @@ import {
   getCurrentColumnIndexOrMin,
   getCurrentColumnIndexOrMax,
   reselectCurrentCellOrMin,
-  // incrementColumn,
-  // decrementColumn,
   getActiveSelected,
   reselectCellOrMin,
   waitForHotInstance,
@@ -404,7 +402,6 @@ export default {
         this.saveHotPanelDimensions()
         this.calculatePanelDiff()
       }
-      // console.log(`diff: ${this.panelWidthDiff}`)
       let panelWidthDiff = this.panelWidthDiff
       window.setTimeout(function() {
         document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
@@ -422,7 +419,6 @@ export default {
         this.saveHotPanelDimensions()
         this.calculatePanelDiff()
       }
-      // console.log(`diff: ${this.panelHeightDiff}`)
       let panelHeightDiff = this.panelHeightDiff
       window.setTimeout(function() {
         document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
