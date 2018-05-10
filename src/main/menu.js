@@ -53,13 +53,6 @@ class AppMenu {
             //            enabled: false
             //          }
             //        ]
-            // Placeholder for non-macOS Settings for future feature
-            //      }, {
-            //        type: 'separator'
-            //      }, {
-            //        label: 'Settings',
-            //        enabled: false
-            // }, {
             type: 'separator'
           }, {
             label: 'Save',
@@ -188,7 +181,7 @@ class AppMenu {
             }
           }, {
             label: 'Find Previous',
-            accelerator: 'Shift+CmdOrCtrl+G',
+            accelerator: 'Alt+CmdOrCtrl+G',
             enabled: false,
             click: function () {
               webContents().send('clickFindButton', 'findPrevious')
@@ -196,18 +189,18 @@ class AppMenu {
           }, {
             type: 'separator'
           }, {
-            label: 'Replace Previous',
+            label: 'Replace Next',
             accelerator: 'CmdOrCtrl+E',
             enabled: false,
             click: function () {
-              webContents().send('clickFindButton', 'replacePrevious')
+              webContents().send('clickFindButton', 'replaceNext')
             }
           }, {
-            label: 'Replace Next',
+            label: 'Replace Previous',
             accelerator: 'Alt+CmdOrCtrl+E',
             enabled: false,
             click: function () {
-              webContents().send('clickFindButton', 'replaceNext')
+              webContents().send('clickFindButton', 'replacePrevious')
             }
           }, {
             label: 'Replace All',
@@ -453,12 +446,11 @@ class AppMenu {
             click: function () {
               webContents().send('showSidePanel', 'about')
             }
-            // Placeholder for future feature
-            //      }, {
-            //        type: 'separator'
-            //      }, {
-            //        label: 'Preferences'
-            //        accelerator: 'CmdOrCtrl+,',
+          }, {
+            type: 'separator'
+          }, {
+            label: 'Preferences',
+            accelerator: 'CmdOrCtrl+,'
             //        click: function() {
             //          webContents().send('showSidePanel', 'preferences')
             //        }
@@ -498,7 +490,14 @@ class AppMenu {
         click: function () {
           webContents().send('showSidePanel', 'about')
         }
-      })
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Settings'
+        //        click: function() {
+        //          webContents().send('showSidePanel', 'preferences')
+        //        } 
+      }
     }
   }
 
