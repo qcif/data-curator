@@ -1,6 +1,6 @@
 {
   "name": "DataCurator",
-  "version": "0.16.0",
+  "version": "0.15.0",
   "author": " <matt@redboxresearchdata.com.au>",
   "description": "Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data",
   "license": "MIT",
@@ -25,13 +25,14 @@
     "postinstall": "electron-builder install-app-deps",
     "test-main": "mocha-webpack --webpack-config .electron-vue/webpack.test.config.js --glob *_spec.js test/main/specs",
     "test": "yarn run unit && yarn run e2e",
-    "unit": "karma start test/unit/karma.conf.js",
-    "e2e": "yarn -s run pack && yarn run cucumber:postpack; yarn run cucumber:report",
-    "e2e:dev": "yarn -s run cucumber:postpack:dev; yarn run cucumber:report",
-    "lib": "./node_modules/.bin/babel src -d lib",
-    "cucumber:postpack:dev": "cross-env BABEL_ENV=test nyc --exclude-after-remap false cucumber-js --require-module babel-core/register --tags @latest test/features -f json:test/cucumber_report.json",
+    "unit": "karma start test/unit/ka`rma.conf.js",
+    "e2e": "yarn run pack && yarn run cucumber:postpack; yarn run cucumber:report",
+    "e2e:dev": "yarn run cucumber:postpack:dev; yarn run cucumber:report",
+    "cucumber:postpack:dev": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @latest test/features -f json:test/cucumber_report.json --include ['./dist/electron/renderer.js']",
     "cucumber:postpack": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @impl test/features -f json:test/cucumber_report.json",
-    "cucumber:report": "node test/cucumber-report.js"
+    "cucumber:report": "node test/cucumber-report.js",
+    "cucumber:coverage:prep": "cross-env BABEL_ENV=test ./node_modules/.bin/babel src -d lib --ignore '**/*_spec.js'",
+    "cucumber:coverage": "cross-env BABEL_ENV=test nyc node ./node_modules/.bin/cucumber-js --tags @impl test/features"
   },
   "build": {
     "productName": "DataCurator",
@@ -76,6 +77,23 @@
       "icon": "build/icons"
     }
   },
+  "nyc" : {
+    "lines": 70,
+    "check-coverage": true,
+    "all": true,
+    "include": [
+      "dist/electron/renderer.js"
+    ],
+    "extension": [
+      ".js"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "sourceMap": true,
+    "instrument": true
+  },
   "dependencies": {
     "archiver": "^2.1.1",
     "autosize": "^4.0.1",
@@ -98,10 +116,9 @@
     "sifter": "^0.5.3",
     "slug": "^0.9.1",
     "sortablejs": "^1.6.0",
-    "source-map-support": "^0.5.5",
     "spectron-fake-dialog": "^0.0.1",
     "svgo": "^1.0.5",
-    "tableschema": "^1.9.1",
+    "tableschema": "^1.7.0",
     "tmp": "^0.0.33",
     "unzipper": "^0.8.12",
     "vee-validate": "^2.0.4",
@@ -120,7 +137,6 @@
   },
   "devDependencies": {
     "@vue/test-utils": "^1.0.0-beta.13",
-    "babel-cli": "^6.26.0",
     "babel-core": "^6.22.1",
     "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.4",
