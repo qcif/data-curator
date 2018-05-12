@@ -28,15 +28,12 @@ Feature: Export Data Package
     And the data is valid for the schema
     And all the required column, table and data package properties have been completed
     When "Export Data Package" is invoked
-    Then "Validate" the data
-    And a prompt for location and name to save the file should be displayed
+    Then a prompt for location and name to save the file should be displayed
     And the data, properties and provenance information should be saved into a datapackage.zip file
 
   Scenario: Export invalid data in a Data Package
     Given Data Curator is open
     And all the required column, table and data package properties have been completed
     When "Export Data Package" is invoked
-    Then "Validate" the data
-    And a warning that the data has validation errors should be displayed
     And a prompt for location and name to save the file should be displayed
     And the data, properties and provenance information should be saved into a datapackage.zip file
