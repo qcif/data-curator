@@ -24,6 +24,7 @@ Feature: Set Table Properties
       - 'CSV Dialect'
         - 'delimiter' based on the format of the opened/saved file
         - 'header' true
+        - 'bytes' calculated from the file size
     - These properties are optional:
       - 'title'
       - 'description'
@@ -36,7 +37,7 @@ Feature: Set Table Properties
     - The 'foreign key' relationships can be to columns in:
       - the same table
       - a table in the same data package
-      - at table at a url (planned addition to the Frictionless Data specification)
+      - at table at a url 
     - "Table Properties" can be invoked from the menu, toolbar or shortcut
 
   USER INTERFACE
