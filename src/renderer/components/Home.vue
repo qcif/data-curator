@@ -303,7 +303,7 @@ export default {
       },
       {
         name: 'Find and Replace',
-        id: 'find',
+        id: 'findReplace',
         image: 'static/img/find.svg',
         tooltipId: 'tooltip-find',
         tooltipView: 'tooltipFind',
