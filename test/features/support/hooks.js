@@ -5,10 +5,10 @@ import fakeDialog from 'spectron-fake-dialog'
 import { expect, should, assert } from 'chai'
 
 After({timeout: 10000}, async function (testCase) {
-  if (testCase.result.status === Status.FAILED) {
-    const imageBuffer = await this.app.browserWindow.capturePage()
-    await this.attach(imageBuffer, 'image/png')
-  }
+  // if (testCase.result.status === Status.FAILED) {
+  const imageBuffer = await this.app.browserWindow.capturePage()
+  await this.attach(imageBuffer, 'image/png')
+  // }
   if (this.app && this.app.isRunning()) {
     await this.app.stop()
   }

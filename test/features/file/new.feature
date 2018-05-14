@@ -1,7 +1,7 @@
 Feature: New
-  As a Data Packager  
-  I want to add a data table  
-  So that I can add and edit related data  
+  As a Data Packager
+  I want to add a data table
+  So that I can add and edit related data
 
   RULES
   =====
@@ -20,7 +20,6 @@ Feature: New
     And The table should be empty
     And The cursor should be in row 1, column 1
 
-  @latest
   @impl
   Scenario: Add Tab
     Given I have opened Data Curator

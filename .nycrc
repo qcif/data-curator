@@ -6,10 +6,16 @@
     "text"
   ],
   "require": [
-     "babel-register"
+     "babel-register",
+     "babel-polyfill"
    ],
   "exclude" : [
     "node_modules"
   ],
-  "check-coverage": true
+  "include" : [
+    "src/**/*.js",
+    "test/features"
+  ],
+  "check-coverage": true,
+  "cache": true
 }
