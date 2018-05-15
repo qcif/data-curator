@@ -13,18 +13,22 @@ Feature: New
   @impl
   Scenario: Default
     When Data Curator is open
-    Then I should see 1 window opened
-    And The window should have 1 tab opened
-    And The tab should have 1 table
-    And The table should have 1 row by 3 columns
-    And The table should be empty
-    And The cursor should be in row 1, column 1
+    Then 1 window should be displayed
+    And the window should have 1 tab
+    And the tab should have 1 table
+    And the table should have 1 row by 3 columns
+    And the table should be empty
+    And the cursor should be in row 1, column 1
 
-  @impl
+  @dev
   Scenario: Add Tab
     Given Data Curator is open
-    When I click on the "File"->"New" menu
-    Then create an empty 1 row by 3 column data tab in a new tab
-    And show it the right-most position
-    And set a unique Tab name
-    And place the cursor in row 1, column 1
+    # When the "File"->"New" menu is selected
+    # Then the window should have 2 tabs
+    # And the new tab should have 1 table
+    # And the new table should have 1 row by 3 columns
+    # And the new table should be empty
+    # And the cursor should be in the new table
+    # And the cursor should be in row 1, column 1
+    # And the new tab should be in the right-most position
+    # And set a unique Tab name

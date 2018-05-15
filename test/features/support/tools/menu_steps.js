@@ -27,12 +27,12 @@ async function invokeActions (app, action) {
   }
 }
 
-When(/^I click on the "([\w]+?)" toolbar menu/, async function (toolbarMenuName) {
+When(/^the "([\w]+?)" toolbar menu is (?:selected|clicked)/, async function (toolbarMenuName) {
   let result = await clickOnToolbarMenuButton(toolbarMenuName)
   return result
 })
 
-When(/^I click on the "([\w]+?)"->"([\w]+?)" menu/, async function (menuLabel, subMenuLabel) {
+When(/^the "([\w]+?)"->"([\w]+?)" menu is (?:selected|clicked)/, async function (menuLabel, subMenuLabel) {
   const returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel])
   expect(returned).to.equal(subMenuLabel)
 })
@@ -50,7 +50,7 @@ When(/^I click on the "([\w]+?)"->"([\w]+?)" menu/, async function (menuLabel, s
 // })
 
 // 3rd menu may contain spaces, dots
-When(/^I click on the "([\w]+?)"->"([\w]+?)"->"([\w .]+?)" menu/, async function (menuLabel, subMenuLabel, subSubMenuLabel) {
+When(/^the "([\w]+?)"->"([\w]+?)"->"([\w .]+?)" menu is (?:selected|clicked)/, async function (menuLabel, subMenuLabel, subSubMenuLabel) {
   try {
     let returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel, subSubMenuLabel])
     expect(returned).to.equal(subSubMenuLabel)
@@ -59,7 +59,7 @@ When(/^I click on the "([\w]+?)"->"([\w]+?)"->"([\w .]+?)" menu/, async function
   }
 })
 
-Then('I should see the openfile dialog', async function () {
+Then('the openfile dialog should be displayed', async function () {
   let globalNames = await this.app
     .electron
     .remote
@@ -67,7 +67,7 @@ Then('I should see the openfile dialog', async function () {
   expect(globalNames).to.deep.equal(this.openFileDialogReturned)
 })
 
-Then('another tab is opened with its filename as the title', async function () {
+Then('another tab with its filename as the title should be displayed', async function () {
   let filePath = require('path').join(__dirname, '../../../fixtures/valid.csv')
   await this.app.electron.ipcRenderer.send('openFileIntoTab', filePath, fileFormats.csv)
   let text = await this.app.client

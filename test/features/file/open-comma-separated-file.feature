@@ -20,7 +20,7 @@ Feature: Open a Comma separated value file
   Scenario: Open an existing comma separated value file
     Given Data Curator is open
     When I click on the "File"->"Open"->"Comma separated..." menu
-    Then I should see the openfile dialog
+    Then the openfile dialog should be displayed
     And another tab is opened with its filename as the title
     And set the CSV Dialect in the Table Properties to "Comma Separated"
     And "Fix Ragged Rows"
