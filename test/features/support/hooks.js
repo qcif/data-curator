@@ -4,21 +4,36 @@ import { After, Before, Status, Given, When, Then } from 'cucumber'
 import fakeDialog from 'spectron-fake-dialog'
 import { expect, should, assert } from 'chai'
 
-After({timeout: 15000}, async function (testCase) {
+After({timeout: 10000}, function (testCase, callback) {
+  let world = this
   if (this.app && this.app.isRunning()) {
-    if (testCase.result.status === Status.FAILED) {
-      try {
-        const imageBuffer = await this.app.browserWindow.capturePage()
-        await this.attach(imageBuffer, 'image/png')
-      } catch (error) {
-        console.log('Unable to capture image', error)
-      }
-    }
-    await this.app.stop()
+    // if (testCase.result.status === Status.FAILED) {
+    console.log(testCase)
+    // this.app.browserWindow.capturePage().thenfunction(error, imageBuffer) {
+    //   if (error) {
+    //     console.log('There was an error with page capture', error)
+    //     callback(error)
+    //   } else {
+    //     testCase.attach(imageBuffer, 'image/png')
+    //   }
+    // })
+    this.app.browserWindow.capturePage().then(function (imageBuffer) {
+      world.attach(imageBuffer, 'image/png')
+    })
+    // try {
+    // const imageBuffer = await this.app.browserWindow.capturePage()
+    // await this.attach(imageBuffer, 'image/png')
+    // } catch (error) {
+    //   console.log('Unable to capture image', error)
+    // const imageBuffer = await this.app.browserWindow.capturePage()
+    // await this.attach(imageBuffer, 'image/png')
+    // }
+    // }
+    this.app.stop()
   }
 })
 
-Before({timeout: 15000}, async function () {
+Before({timeout: 10000}, async function () {
   this.rowNumber = null
   this.colNumber = null
   this.pageTimeout = 5000
