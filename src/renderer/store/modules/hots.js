@@ -184,13 +184,16 @@ const mutations = {
     }
   },
   pushColumnProperty(state, property) {
+    console.log(property)
     _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
+    console.log(state.hotTabs)
   },
   // change this to remove column property
   removeColumnProperty(state, property) {
     let currentColumnProperties = _.assign({}, state.hotTabs[property.hotId].columnProperties[property.columnIndex])
     _.unset(currentColumnProperties, property.key)
     state.hotTabs[property.hotId].columnProperties[property.columnIndex] = currentColumnProperties
+    console.log(state.hotTabs)
   },
   pushTableProperty(state, property) {
     _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
