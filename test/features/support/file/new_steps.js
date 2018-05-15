@@ -4,7 +4,7 @@ const _ = require('lodash')
 
 When(/^Data Curator is open$/, async function () {
   const title = await this.app.client.waitUntilWindowLoaded().getTitle()
-  expect(title).to.equal('Data Curatorp')
+  expect(title).to.equal('Data Curator')
 })
 
 Then(/^1 window should be displayed/, function () {
@@ -27,14 +27,22 @@ Then(/^the window should have (\d+) tab[s]?$/, function (numberOfTabs) {
 Then(/^the (?:new )tab should be in the right-most position$/, function () {
   return this.app.client
     .waitForVisible('#csvEditor')
-    // .elements('.tab-header')
     .getAttribute('.tab-header', 'class')
     .then(function(response) {
-      console.log(response)
-      // const selectedRowHeaderClass = 'ht__highlight'
-      // expect(response.value.length).to.equal(numberOfTabs)
-      // expect(response).to.contain(selectedRowHeaderClass)
+      let lastTab = response.length - 1
+      expect(response[lastTab]).to.contain('active')
     })
+})
+
+Then(/^the (?:new )tab should have a unique name$/, async function () {
+  const activeText = await this.app.client
+    .waitForVisible('#csvEditor')
+    .getText('.tab-header.active')
+  let allText = await this.app.client
+    .waitForVisible('#csvEditor')
+    .getText('.tab-header')
+  _.pull(allText, activeText)
+  expect(allText).to.not.contain(activeText)
 })
 
 Then(/^the (?:new )tab should have 1 table$/, function () {
@@ -50,7 +58,8 @@ Then(/^the (?:new )tab should have 1 table$/, function () {
     })
 })
 
-Then(/^the (?:new )table (?:should have|has) (\d+) row[s]? by (\d+) column[s]?$/, function (rowCount, colCount) {
+// the table should have {int} row by {int} columns
+Then(/^the (?:new |)table (?:should have |has )(\d+) row[s]? by (\d+) column[s]?$/, function (rowCount, colCount) {
   return this.app.client.element('.active .editor.handsontable')
     .elements('.ht_master table tr th')
     .then(function(response) {
@@ -82,7 +91,8 @@ Then(/^the cursor should be in the (?:new )table$/, function () {
 })
 
 Then(/^the cursor should be in row (\d+), column (\d+)$/, function (rowNumber, colNumber) {
-  return this.app.client.element('.active .editor.handsontable')
+  const parentSelector = '.tab-pane.active .editor.handsontable'
+  return this.app.client.element(parentSelector)
     .getAttribute('.ht_master table tr th', 'class')
     .then(function(response) {
       const selectedRowHeaderClass = 'ht__highlight'
@@ -95,6 +105,7 @@ Then(/^the cursor should be in row (\d+), column (\d+)$/, function (rowNumber, c
         throw new Error(`There is only 1 row in the table, but the test tried to look for row number: ${rowNumber}`)
       }
     })
+    .element(parentSelector)
     .getAttribute(`.ht_master table tr:nth-child(${rowNumber}) td`, 'class')
     .then(function(response) {
       const selectedCellClass = 'current highlight'

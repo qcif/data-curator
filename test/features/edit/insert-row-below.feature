@@ -11,7 +11,7 @@ Feature: Insert Row Below
   @impl
   Scenario: Insert Row Below
     Given Data Curator is open
-    And the table has 1 row by 3 columns
+    And the table should have 1 row by 3 columns
     When the user clicks in row 1, column 1
     And the user right-clicks
     And the user clicks on "Insert Row Below"

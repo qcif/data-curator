@@ -20,15 +20,15 @@ Feature: New
     And the table should be empty
     And the cursor should be in row 1, column 1
 
-  @dev
+  @impl
   Scenario: Add Tab
     Given Data Curator is open
-    # When the "File"->"New" menu is selected
-    # Then the window should have 2 tabs
-    # And the new tab should have 1 table
-    # And the new table should have 1 row by 3 columns
-    # And the new table should be empty
-    # And the cursor should be in the new table
-    # And the cursor should be in row 1, column 1
-    # And the new tab should be in the right-most position
-    # And set a unique Tab name
+    When the "File"->"New" menu is selected
+    Then the window should have 2 tabs
+    And the new tab should have 1 table
+    And the new table should have 1 row by 3 columns
+    And the new table should be empty
+    And the cursor should be in the new table
+    And the cursor should be in row 1, column 1
+    And the new tab should be in the right-most position
+    And the new tab should have a unique name

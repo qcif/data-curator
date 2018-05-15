@@ -11,7 +11,7 @@ Given(/^the user clicks in row (\d+), column (\d+)$/, function (rowNumber, colNu
   return this.app.webContents.send('selectHotCell', rowNumber, colNumber)
 })
 
-When(/^the user (?:performs a )right-click(?:s)?$/, function () {
+When(/^the user (?:performs a |)right-click[s]?$/, function () {
   let app = this.app
   return this.app.client
     .rightClick('.ht_master table')
@@ -22,7 +22,7 @@ Then(/^the user clicks (?:on|in) "Insert Row Below"$/, function () {
     .webContents.send('clickLabelOnContextMenu', 'Insert row below')
 })
 
-Then(/^(there should be \d+) new row[s]? below the current row$/, function (numberOfNewRows) {
+Then(/^there should be (\d+) new row[s]? below the current row$/, function (numberOfNewRows) {
   let worldRowNumber = this.rowNumber
   return this.app.client
     .element('.editor.handsontable')
