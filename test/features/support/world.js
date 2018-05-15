@@ -15,8 +15,8 @@ function CustomWorld ({attach, parameters}) {
     path: electron,
     args: ['dist/electron/main.js'],
     startTimeout: 10000,
-    waitTimeout: 10000
-    // webdriverLogPath: 'webdriver.log'
+    waitTimeout: 10000,
+    webdriverLogPath: 'webdriver.log'
   })
   this.rowNumber = null
   this.colNumber = null
