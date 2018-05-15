@@ -3052,7 +3052,7 @@ cucumber-tag-expressions@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/cucumber-tag-expressions/-/cucumber-tag-expressions-1.1.1.tgz#7f5c7b70009bc2b666591bfe64854578bedee85a"
 
-cucumber@^4.1.0:
+cucumber@^4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/cucumber/-/cucumber-4.2.1.tgz#64cfff6150bbe6b5e94b173470057353d6206719"
   dependencies:

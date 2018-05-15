@@ -2,16 +2,9 @@ import { expect, should, assert } from 'chai'
 import { Given, When, Then } from 'cucumber'
 const _ = require('lodash')
 
-When(/^Data Curator is open$/, function () {
-  return
-  this
-    .app
-    .client
-    .waitUntilWindowLoaded()
-    .getTitle()
-    .then(function(title) {
-      expect(title).to.equal('Data Curator')
-    })
+When(/^Data Curator is open$/, async function () {
+  const title = await this.app.client.waitUntilWindowLoaded().getTitle()
+  expect(title).to.equal('Data Curatorp')
 })
 
 Then(/^1 window should be displayed/, function () {
