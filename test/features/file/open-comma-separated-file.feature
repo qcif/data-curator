@@ -18,7 +18,7 @@ Feature: Open a Comma separated value file
 
   @impl
   Scenario: Open an existing comma separated value file
-    Given I have opened Data Curator
+    Given Data Curator is open
     When I click on the "File"->"Open"->"Comma separated..." menu
     Then I should see the openfile dialog
     And another tab is opened with its filename as the title

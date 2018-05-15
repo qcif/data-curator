@@ -16,12 +16,12 @@ Feature: Guess Column Properties
 
   @impl
   Scenario: Guess column properties immediately after opening Data Curator
-    Given I have opened Data Curator
+    Given Data Curator is open
     When I invoke the Guess Column Properties command
     Then I should see the failure message
 
   Scenario: Guess column properties
-    Given I have opened Data Curator
+    Given Data Curator is open
     And I have opened 1 data tab
     When I invoke the "Guess Column Properties" command
     Then set the 'name' property for each column to the value in the first row of the column
