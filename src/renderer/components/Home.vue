@@ -607,11 +607,30 @@ export default {
       }
       this.setActiveTab(tabId)
     },
-    showLoadingScreen: function(message) {
+    closeAndShowLoadingScreen: function(message, errorMessage) {
+      this.closeLoadingScreen()
+      this.showLoadingScreen(message, errorMessage)
+    },
+    showLoadingScreen: function(message, errorMessage) {
       this.loadingDataMessage = message
+      // set timeout for loading screen
+      this.initLoadingScreenTimeout(errorMessage)
+    },
+    initLoadingScreenTimeout: function(errorMessage) {
+      const vueCloseLoadingScreen = this.closeLoadingScreen
+      const vueIsLoadingMessageRunning = this.isLoadingMessageRunning
+      _.delay(function() {
+        if (vueIsLoadingMessageRunning()) {
+          vueCloseLoadingScreen()
+          ipc.send('loadingScreenTimeout', errorMessage)
+        }
+      }, 30000)
     },
     closeLoadingScreen: function() {
       this.loadingDataMessage = false
+    },
+    isLoadingMessageRunning: function() {
+      return this.loadingDataMessage
     },
     createHotDataContainer: function(data, format={}, descriptor={}) {
       this.initTab()
@@ -643,7 +662,7 @@ export default {
         loadingFinishListener: this.closeLoadingScreen
       }, findReplace.data().hotParameters
       )
-      addHotContainerListeners(container)
+      addHotContainerListeners(container, this.closeAndShowLoadingScreen, this.closeLoadingScreen)
     },
     mergeOntoCsvFormat: function(format) {
       let defaultFormat = _.assign({}, fileFormats.csv)
@@ -654,9 +673,10 @@ export default {
       let hot = HotRegister.getActiveInstance()
       let activeHotId = hot.guid
       let activeTabId = this.activeTab
+      const vueCloseLoadingScreen = this.closeLoadingScreen
       // hack! - force data to wait for latest render e.g, for loader message
       window.setTimeout(function() {
-        loadData(activeHotId, data, format)
+        loadData(activeHotId, data, format, vueCloseLoadingScreen)
         getCurrentColumnIndexOrMin()
       }, 1)
       this.pushHotTab({
@@ -1093,17 +1113,13 @@ export default {
     ipc.on('showProvenanceErrors', function(event, arg) {
       vueShowProvenanceErrors()
     })
-    const vueShowLoadingScreen = this.showLoadingScreen
+    const vueCloseAndShowLoadingScreen = this.closeAndShowLoadingScreen
     const vueCloseLoadingScreen = this.closeLoadingScreen
     ipc.on('closeAndshowLoadingScreen', function(event, message) {
-      vueCloseLoadingScreen()
-      vueShowLoadingScreen(message)
+      vueCloseAndShowLoadingScreen(message)
     })
-    ipc.on('closeLoadingScreen', function(event, isReplyRequired = false) {
+    ipc.on('closeLoadingScreen', function(event) {
       vueCloseLoadingScreen()
-      if (isReplyRequired) {
-        ipc.sendSync('loadingScreenIsClosed')
-      }
     })
     const vueResetPackagePropertiesToObject = this.resetPackagePropertiesToObject
     ipc.on('resetPackagePropertiesToObject', function(event, packageProperties) {
