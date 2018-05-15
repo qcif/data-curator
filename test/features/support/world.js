@@ -20,6 +20,7 @@ function CustomWorld ({attach, parameters}) {
   })
   this.rowNumber = null
   this.colNumber = null
+  this.latestFilePath = null
   this.openFileDialogReturned = ['stubbedFilenameForMenuSteps.txt']
   chaiAsPromised.transferPromiseness = this.app.transferPromiseness
 }

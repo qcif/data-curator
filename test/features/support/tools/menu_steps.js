@@ -1,6 +1,7 @@
 import { expect, should, assert } from 'chai'
 import { Given, When, Then, After, Before } from 'cucumber'
 import { fileFormats } from '../../../../src/renderer/file-formats.js'
+import {getFilePathFromFixtures} from '../page-objects/io.js'
 
 const _ = require('lodash')
 
@@ -68,8 +69,8 @@ Then('the openfile dialog should be displayed', async function () {
 })
 
 Then('another tab with its filename as the title should be displayed', async function () {
-  let filePath = require('path').join(__dirname, '../../../fixtures/valid.csv')
-  await this.app.electron.ipcRenderer.send('openFileIntoTab', filePath, fileFormats.csv)
+  this.latestFilePath = getFilePathFromFixtures('valid.csv')
+  await this.app.electron.ipcRenderer.send('openFileIntoTab', this.latestFilePath, fileFormats.csv)
   let text = await this.app.client
     .timeouts('implicit', 5000)
     .getText('#tab1')

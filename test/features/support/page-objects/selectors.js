@@ -1,4 +1,4 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
 export async function waitForVisibleIdFromLabel(app, parentSelector, label, timeout) {
   const kebabCase = _.kebabCase(label)

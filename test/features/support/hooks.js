@@ -9,14 +9,15 @@ After({timeout: 10000}, async function (testCase) {
     const imageBuffer = await this.app.browserWindow.capturePage()
     await this.attach(imageBuffer, 'image/png')
   }
-    if (this.app && this.app.isRunning()) {
-      await this.app.stop()
-    }
+  if (this.app && this.app.isRunning()) {
+    await this.app.stop()
+  }
 })
 
 Before({timeout: 10000}, async function () {
   this.rowNumber = null
   this.colNumber = null
+  this.latestFilePath = null
   this.pageTimeout = 5000
   fakeDialog.apply(this.app)
   await this.app.start()
