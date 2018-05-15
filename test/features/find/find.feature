@@ -28,36 +28,34 @@ Feature: Find data
 
   ![Data Curator Find and Replace user interface](https://github.com/ODIQueensland/data-curator/raw/develop/static/img/ui/find-and-replace.png)
 
-  @dev
+  @impl
   Scenario Outline: Basic Find
-    Given I have opened Data Curator
-    # When I click on the "Find"->"Find" menu
+    Given Data Curator is open
     When "<name>" is invoked using the "<type>": "<sequence>"
-    # When I click on the "Find" button on the toolbar menu
     Then I should see the "Find and Replace" panel
     And I should see an input for a "find" value
     And I should see an input for a "replace" value
     And The panel's first input box has focus
     # And I should see search constraints
-    And the column that cursor is in should be displayed
+    And the column that the cursor is in should be displayed
     # And the table that is active should be displayed
     # And a warning that the replace command cannot be undone should be displayed
     Examples:
     | name  | type                        | sequence    |
-    # | Find  | toolbar menu button         | Find        |
-    # | Find  | application menu selection  | Find->Find  |
-    | Find  | hot keys combination        | CmdOrCtrl+F   |
+    | Find  | toolbar menu button         | Find        |
+    | Find  | application menu selection  | Find->Find  |
 
-  Scenario: Find
-    Given Data Curator is open
-    When "Find" is invoked
-    Then a prompt for a search value and search constraints should be displayed
-    And a prompt for a replacement value should be displayed
-    And the column that cursor is in should be displayed
-    And the table that is active should be displayed
-    And a warning that the replace command cannot be undone should be displayed
+  # Scenario: Find
+  #   Given Data Curator is open
+  #   When "Find" is invoked
+  #   Then a prompt for a search value and search constraints should be displayed
+  #   And a prompt for a replacement value should be displayed
+  #   And the column that cursor is in should be displayed
+  #   And the table that is active should be displayed
+  #   And a warning that the replace command cannot be undone should be displayed
 
-  Scenario: Find next
+  @impl
+  Scenario Outline: Find next
     Given Data Curator is open
     And a search value and optionally search constraints have been entered
     When "Find Next" is invoked
@@ -66,6 +64,12 @@ Feature: Find data
     And that cell's border should be highlighted
     And a count of all the values that match the search value and comply with the search constraints should be displayed
     And a number representing which instance of the data that has been found value should be displayed
+    Examples:
+    | name  | type                        | sequence    |
+    # | Find  | toolbar menu button         | Find        |
+    # | Find  | application menu selection  | Find->Find  |
+    | Find  | hot keys combination        | CmdOrCtrl+F |
+
 
   Scenario: Find previous
     Given Data Curator is open

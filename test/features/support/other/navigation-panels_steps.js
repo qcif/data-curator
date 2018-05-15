@@ -1,27 +1,7 @@
 import { expect, should, assert } from 'chai'
 import { Given, When, Then, After, Before } from 'cucumber'
-const _ = require('lodash')
+import {waitForVisibleIdFromLabel} from '../page-objects/selectors.js'
 
-Then(/^I should see the "([\w ]+?)" panel/, function (panelName) {
-  console.log(`panel name is`, panelName)
-  return waitForVisibleIdFromLabel(this.app, '#sidenav', panelName)
+Then(/^I should see the "([\w ]+?)" panel/, {timeout: -1}, async function (panelName) {
+  let result = await waitForVisibleIdFromLabel(this.app, '#sidenav', panelName, this.pageTimeout)
 })
-
-export function waitForVisibleIdFromLabel(app, parentSelector, label) {
-  const kebabCase = _.kebabCase(label)
-  const camelCase = _.camelCase(label)
-  let result
-  try {
-    result = app.client.waitForVisible('${parentSelector} #${kebabCase}')
-    return result
-  } catch (error) {
-    console.log(`Unable to find via ${kebabCase} Trying ${camelCase}`, error)
-    try {
-      result = app.client.waitForVisible('${parentSelector} #${camelCase}')
-    } catch (error) {
-      console.log(`Unable to find via ${camelcase} Aborting`, error)
-    } finally {
-      return result
-    }
-  }
-}

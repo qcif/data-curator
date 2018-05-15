@@ -1,13 +1,14 @@
-import {setWorldConstructor} from 'cucumber'
-import {Application} from 'spectron'
+import { setWorldConstructor } from 'cucumber'
+import { Application } from 'spectron'
 import electron from 'electron'
 // import fakeDialog from 'spectron-fake-dialog'
 import chai from 'chai'
 import chaiAsPromised from 'chai-as-promised'
+
 chai.should()
 chai.use(chaiAsPromised)
 
-function CustomWorld({attach, parameters}) {
+function CustomWorld ({attach, parameters}) {
   this.attach = attach
   this.parameters = parameters
   this.app = new Application({
@@ -15,6 +16,7 @@ function CustomWorld({attach, parameters}) {
     args: ['dist/electron/main.js'],
     startTimeout: 10000,
     waitTimeout: 10000
+    // webdriverLogPath: 'webdriver.log'
   })
   this.rowNumber = null
   this.colNumber = null

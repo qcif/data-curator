@@ -12,7 +12,7 @@ Feature: New
 
   @impl
   Scenario: Default
-    When I have opened Data Curator
+    When Data Curator is open
     Then I should see 1 window opened
     And The window should have 1 tab opened
     And The tab should have 1 table
@@ -22,7 +22,7 @@ Feature: New
 
   @impl
   Scenario: Add Tab
-    Given I have opened Data Curator
+    Given Data Curator is open
     When I click on the "File"->"New" menu
     Then create an empty 1 row by 3 column data tab in a new tab
     And show it the right-most position

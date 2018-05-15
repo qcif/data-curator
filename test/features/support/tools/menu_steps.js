@@ -1,35 +1,30 @@
 import { expect, should, assert } from 'chai'
 import { Given, When, Then, After, Before } from 'cucumber'
-import {fileFormats} from '../../../../src/renderer/file-formats.js'
+import { fileFormats } from '../../../../src/renderer/file-formats.js'
+
 const _ = require('lodash')
 
 When('{string} is invoked using the {string}: {string}', async function (name, type, sequence) {
-  let result = await invokeActions(this.app, {name: name, type: type, sequence: sequence})
-  return result
+  try {
+    await invokeActions(this.app, {name: name, type: type, sequence: sequence})
+  } catch (error) {
+    console.log('failed', error)
+  }
 })
 
-async function invokeActions(app, action) {
-  console.log('action is', action)
-  // for (action of actions.hashes()) {
+async function invokeActions (app, action) {
   switch (action.type) {
     case 'toolbar menu button':
       await clickOnToolbarMenuButton(app, action.sequence)
       break
     case 'application menu selection':
-      console.log('will test application menu...')
       let regexp = new RegExp(/([\w ]+)->([\w ]+)/)
       let matches = action.sequence.match(regexp)
-      console.log('matchs for application menu are', matches)
       await clickOnMenuItemFromMenu(app, matches[1], matches[2])
-      break
-    case 'hot keys combination':
-      let array = action.sequence.split('+')
-      await keyPress(app, array)
       break
     default:
       throw new Error(`Action type: ${action.type} is not supported.`)
   }
-  // }
 }
 
 When(/^I click on the "([\w]+?)" toolbar menu/, async function (toolbarMenuName) {
@@ -38,10 +33,7 @@ When(/^I click on the "([\w]+?)" toolbar menu/, async function (toolbarMenuName)
 })
 
 When(/^I click on the "([\w]+?)"->"([\w]+?)" menu/, async function (menuLabel, subMenuLabel) {
-  // await clickOnMenuItemFromMenu(menuLabel, subMenuLabel)
-  console.log(`args are ${menuLabel}, ${subMenuLabel}`)
   const returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel])
-  console.log(`returned is`, returned)
   expect(returned).to.equal(subMenuLabel)
 })
 
@@ -84,12 +76,12 @@ Then('another tab is opened with its filename as the title', async function () {
   expect(text).to.equal('valid')
 })
 
-async function clickOnToolbarMenuButton(app, buttonName) {
+async function clickOnToolbarMenuButton (app, buttonName) {
   const id = await findToolBarMenuButtonElementIdContainingName(app, buttonName)
   await app.client.elementIdClick(id)
 }
 
-async function findToolBarMenuButtonElementIdContainingName(app, buttonName) {
+async function findToolBarMenuButtonElementIdContainingName (app, buttonName) {
   const selector = '#toolbar .toolbar-text'
   app.client.waitForText(selector)
   let response = await app.client.elements(selector)
@@ -119,27 +111,13 @@ async function findToolBarMenuButtonElementIdContainingName(app, buttonName) {
   return id
 }
 
-function getElementIdFromToolbarMenuName(toolbarMenuName) {
+function getElementIdFromToolbarMenuName (toolbarMenuName) {
   console.log('toolbarMenu name', toolbarMenuName)
   const menu = toolbarMenus.find(x => x.name === toolbarMenuName)
   return menu.id
 }
 
-async function clickOnMenuItemFromMenu(app, menuLabel, subMenuLabel) {
+async function clickOnMenuItemFromMenu (app, menuLabel, subMenuLabel) {
   const returned = await app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel])
   expect(returned).to.equal(subMenuLabel)
-}
-
-async function keyPress(app, keysArray) {
-  console.log(`keys are`, keysArray)
-  const mapped = keysArray.map(function(key) {
-    const replaced1 = _.replace(key, 'CmdOrCtrl', 'Control')
-    const replaced2 = _.replace(replaced1, /^([A-Z])$/, 'f')
-    return replaced2
-  })
-  console.log('mapped is', mapped)
-  return app.client.debug()
-  let result = await app.client.keys(['Control', 'F', 'NULL'])
-  // console.log(`result is`, result)
-  // return result
 }
