@@ -45,20 +45,18 @@ import {
 } from 'vuex'
 import os from 'os'
 import {provenanceErrors$} from '@/rxSubject.js'
+import {compileHotErrors, stringifyProvenance} from '@/provenance.js'
 export default {
   extends: SideNav,
   name: 'provenance',
   mixins: [ProvenanceTooltip],
   computed: {
     ...mapGetters([
-      'getProvenance', 'getTabIdFromHotId', 'tabTitle'
+      'getProvenance'
     ]),
     markProvenanceText() {
-      let stringified = ''
-      _.forEach(this.provenanceHotErrors, function(errors, hotId) {
-        stringified += `${errors}\n`
-      })
-      return markdown().render(`${this.provenance}${os.EOL}${stringified}`)
+      const stringified = stringifyProvenance(this.provenance, this.provenanceHotErrors)
+      return markdown().render(stringified)
     },
     buttonIconClass() {
       return this.isPreview ? 'glyphicon-pencil' : 'glyphicon-search'
@@ -90,26 +88,15 @@ export default {
       let self = this
       if (this.getProvenance.hotErrors) {
         _.forEach(this.getProvenance.hotErrors, function(errors, hotId) {
-          const tabTitle = self.getTabTitleFromHotId(hotId)
-          const provenanceErrors = self.compileErrors(errors, tabTitle)
+          const provenanceErrors = compileHotErrors(errors, hotId)
+          // const tabTitle = self.getTabTitleFromHotId(hotId)
+          // const provenanceErrors = self.compileErrors(errors, tabTitle)
           self.provenanceHotErrors[hotId] = provenanceErrors
         })
         this.focusErrors()
       }
     },
-    getTabTitleFromHotId: function(hotId) {
-      const tabId = this.getTabIdFromHotId(hotId)
-      return this.tabTitle(tabId)
-    },
-    compileErrors: function(errors, tabTitle) {
-      let compiled = _.template(`${this.errorsTitle} - ${tabTitle}${this.errorsPreText}<%= errorsList %>`)
-      return compiled({ 'errorsList': this.errorsListToString(errors) })
-    },
-    errorsListToString: function(errors) {
-      return _.map(errors, function(error) {
-        return `${error.message}`
-      }).join(os.EOL)
-    },
+
     focusErrors: function() {
       document.querySelector('#provenance-errors-container').focus()
     }
@@ -131,11 +118,6 @@ export default {
       isPreview: false,
       provenance: '',
       provenanceHotErrors: null,
-      errorsTitle: `#### Known Data Errors`,
-      errorsPreText: `
-This data is published with the following data errors:
-
-`,
       placeholder: `Short description of the dataset (the first sentence and first paragraph should be extractable to provide short standalone descriptions)
 
 ### Why was the dataset created?
