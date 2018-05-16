@@ -394,6 +394,8 @@ export default {
     calculatePanelDiff: function() {
       this.panelWidthDiff = this.widthMain1 - this.widthInner1
       this.panelHeightDiff = this.heightMain1 - this.heightInner1
+      // console.log(`panel diff: ${this.panelWidthDiff}`)
+      // console.log(`panel diff: ${this.panelHeightDiff}`)
     },
     testSideMain: function() {
       // TODO : refactor this as an event that plays once only rather than a continuous condition-check
@@ -402,6 +404,7 @@ export default {
         this.saveHotPanelDimensions()
         this.calculatePanelDiff()
       }
+      // console.log(`diff: ${this.panelWidthDiff}`)
       let panelWidthDiff = this.panelWidthDiff
       window.setTimeout(function() {
         document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
@@ -419,6 +422,7 @@ export default {
         this.saveHotPanelDimensions()
         this.calculatePanelDiff()
       }
+      // console.log(`diff: ${this.panelHeightDiff}`)
       let panelHeightDiff = this.panelHeightDiff
       window.setTimeout(function() {
         document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
@@ -620,7 +624,7 @@ export default {
           vueCloseLoadingScreen()
           ipc.send('loadingScreenTimeout', errorMessage)
         }
-      }, 30000)
+      }, 15000)
     },
     closeLoadingScreen: function() {
       this.loadingDataMessage = false
@@ -673,12 +677,12 @@ export default {
       // hack! - force data to wait for latest render e.g, for loader message
       window.setTimeout(function() {
         // getting current col may also trigger error if bad excel sheet, so provide user feedback
-        try {
-          loadData(activeHotId, data, format, self.closeLoadingScreen)
-          getCurrentColumnIndexOrMin()
-        } catch (error) {
-          ipc.send('dataParsingError')
-        }
+        // try {
+        loadData(activeHotId, data, format, self.closeLoadingScreen)
+        getCurrentColumnIndexOrMin()
+        // } catch (error) {
+        //   ipc.send('dataParsingError')
+        // }
       }, 1)
       this.pushHotTab({
         'hotId': activeHotId,
@@ -982,7 +986,7 @@ export default {
       }
     },
     writeErrorsToProvenance: function() {
-      this.pushProvenanceErrors(this.messages)
+      this.pushProvenanceErrors({hotId: this.currentHotId, errors: this.messages})
       this.showProvenanceErrors()
     },
     showProvenanceErrors: function() {
@@ -1124,7 +1128,13 @@ export default {
     })
     const vueResetPackagePropertiesToObject = this.resetPackagePropertiesToObject
     ipc.on('resetPackagePropertiesToObject', function(event, packageProperties) {
-      vueResetPackagePropertiesToObject(packageProperties)
+      self.resetPackagePropertiesToObject(packageProperties)
+    })
+    ipc.on('resetPackagePropertiesToObject', function(event, packageProperties) {
+      self.resetPackagePropertiesToObject(packageProperties)
+    })
+    ipc.on('resetPackagePropertiesToObject', function(event, messages) {
+      self.pushProvenanceErrors({hotId: this.currentHotId, errors: messages})
     })
   },
   beforeCreate: function() {
@@ -1141,17 +1151,18 @@ export default {
     onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
   },
   created: function() {
-    const vueGuessProperties = this.inferColumnProperties
+    let self = this
+    // const vueGuessProperties = this.inferColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
-      vueGuessProperties()
+      self.guessProperties()
     })
-    const vueImportDataPackage = this.importDataPackage
+    // const vueImportDataPackage = this.importDataPackage
     ipc.on('importDataPackage', function(event, filePath, isTransient = false) {
-      vueImportDataPackage(filePath, isTransient)
+      self.importDataPackage(filePath, isTransient)
     })
-    const vueValidateTable = this.validateTable
+    // const vueValidateTable = this.validateTable
     ipc.on('validateTable', function(event, arg) {
-      vueValidateTable()
+      self.validateTable()
     })
     this.pushDefaultPackageProperties()
     ipc.send('closedFindReplace')

@@ -3,7 +3,7 @@ import {currentPos$} from '@/rxSubject.js'
 const state = {
   hotTabs: {},
   packageProperties: {},
-  provenanceProperties: { markdown: '', errors: [] },
+  provenanceProperties: { markdown: '', hotErrors: {} },
   fkPackageComponents: {}
 }
 
@@ -42,6 +42,9 @@ const getters = {
   },
   getHotSelection: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].selected
+  },
+  getTabIdFromHotId: (state, getters) => (hotId) => {
+    return state.hotTabs[hotId].tabId
   },
   getTableProperties: (state, getters) => (hotId) => {
     return state.hotTabs[hotId].tableProperties || {}
@@ -151,13 +154,19 @@ const mutations = {
   pushProvenance(state, value) {
     _.set(state.provenanceProperties, 'markdown', value)
   },
-  pushProvenanceErrors(state, value) {
+  pushProvenanceErrors(state, property) {
     // ensure set to new object
-    _.set(state.provenanceProperties, 'errors', value)
+    _.set(state.provenanceProperties.hotErrors, property.hotId, property.errors)
   },
-  removeProvenanceErrors(state) {
+  removeProvenanceErrors(state, hotId) {
     // ensure set to new empty object
-    state.provenanceProperties.errors = []
+    let allErrors = _.assign({}, state.provenanceProperties.hotErrors)
+    _.unset(allErrors, hotId)
+    state.provenanceProperties.hotErrors = allErrors
+  },
+  removeAllProvenanceErrors(state) {
+    // ensure set to new empty object
+    state.provenanceProperties.hotErrors = {}
   },
   pushHotTab(state, hotTab) {
     let hotId = hotTab.hotId
@@ -406,7 +415,7 @@ const mutations = {
     state = {
       hotTabs: {},
       packageProperties: {},
-      provenanceProperties: { markdown: '' }
+      provenanceProperties: { markdown: '', hotErrors: {} }
     }
   }
 }
