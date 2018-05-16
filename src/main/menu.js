@@ -53,13 +53,6 @@ class AppMenu {
             //            enabled: false
             //          }
             //        ]
-            // Placeholder for non-macOS Settings for future feature
-            //      }, {
-            //        type: 'separator'
-            //      }, {
-            //        label: 'Settings',
-            //        enabled: false
-            // }, {
             type: 'separator'
           }, {
             label: 'Save',
@@ -453,12 +446,11 @@ class AppMenu {
             click: function () {
               webContents().send('showSidePanel', 'about')
             }
-            // Placeholder for future feature
-            //      }, {
-            //        type: 'separator'
-            //      }, {
-            //        label: 'Preferences'
-            //        accelerator: 'CmdOrCtrl+,',
+          }, {
+            type: 'separator'
+          }, {
+            label: 'Preferences',
+            accelerator: 'CmdOrCtrl+,'
             //        click: function() {
             //          webContents().send('showSidePanel', 'preferences')
             //        }
@@ -498,6 +490,13 @@ class AppMenu {
         click: function () {
           webContents().send('showSidePanel', 'about')
         }
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Settings'
+        //        click: function() {
+        //          webContents().send('showSidePanel', 'preferences')
+        //        }
       })
     }
   }
