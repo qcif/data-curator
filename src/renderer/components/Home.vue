@@ -669,11 +669,16 @@ export default {
       let hot = HotRegister.getActiveInstance()
       let activeHotId = hot.guid
       let activeTabId = this.activeTab
-      const vueCloseLoadingScreen = this.closeLoadingScreen
+      let self = this
       // hack! - force data to wait for latest render e.g, for loader message
       window.setTimeout(function() {
-        loadData(activeHotId, data, format, vueCloseLoadingScreen)
-        getCurrentColumnIndexOrMin()
+        // getting current col may also trigger error if bad excel sheet, so provide user feedback
+        try {
+          loadData(activeHotId, data, format, self.closeLoadingScreen)
+          getCurrentColumnIndexOrMin()
+        } catch (error) {
+          ipc.send('dataParsingError')
+        }
       }, 1)
       this.pushHotTab({
         'hotId': activeHotId,
