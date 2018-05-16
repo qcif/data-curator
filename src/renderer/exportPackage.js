@@ -2,10 +2,12 @@ import fs from 'fs-extra'
 import path from 'path'
 import archiver from 'archiver'
 import {remote} from 'electron'
-import tabStore from '@/store/modules/tabs.js'
-import hotStore from '@/store/modules/hots.js'
+import store from '@/store'
+// import tabStore from '@/store/modules/tabs.js'
+// import hotStore from '@/store/modules/hots.js'
 import {extractNameFromFile} from '@/store/tabStoreUtilities.js'
-import os from 'os'
+import {compileAndStringifyProvenance} from '@/provenance.js'
+// import os from 'os'
 const Dialog = remote.dialog
 
 export function createZipFile(text) {
@@ -59,27 +61,45 @@ function zipJson(archive, json) {
 }
 
 function zipResources(archive) {
-  for (let filename of tabStore.getters.getTabFilenames(tabStore.state)) {
+  for (let filename of store.getters.getTabFilenames) {
+  // for (let filename of tabStore.getters.getTabFilenames(tabStore.state)) {
     let name = path.basename(filename)
     archive.append(fs.createReadStream(filename), { name: name, prefix: 'data' })
   }
 }
 
 function zipProvenanceProperties(archive) {
-  let provenance = hotStore.state.provenanceProperties.markdown
-  let errors = _.map(hotStore.state.provenanceProperties.errors, function(error) {
-    return `${error.message}`
-  }).join(os.EOL)
-  let errorsPre = getErrorsPreText()
-  let pText = `${provenance}${os.EOL}${errorsPre}${errors}`
-  archive.append(pText, { name: 'README.md' })
+  // console.log('current provenance')
+  // console.log(hotStore.state.provenanceProperties)
+  // let provenance = store.getters.getProvenance
+  // let allErrors = []
+  // _.forEach(store.getters.getProvenance.hotErrors, function(errors, hotId) {
+  // // _.forEach(hotStore.state.provenanceProperties.hotErrors, function(errors, hotId) {
+  //   const tabTitle = getTabTitleFromHotId(hotId)
+  //   let errorsArray = _.map(errors, function(error) {
+  //     console.log(`next error`, error)
+  //     return `${error.name}: ${error.message}`
+  //   })
+  //   errorsArray.unshift(tabTitle)
+  //   allErrors.push(errorsArray.join(os.EOL))
+  // })
+  // let errorsPre = getErrorsPreText()
+  // let pText = `${provenance}${os.EOL}${errorsPre}${allErrors.join(os.EOL)}`
+  archive.append(compileAndStringifyProvenance(), { name: 'README.md' })
 }
+//
+// function getTabTitleFromHotId(hotId) {
+//   // const tabId = hotStore.getters.getTabIdFromHotId(hotStore.state, hotStore.getters)(hotId)
+//   const tabId = store.getters.getTabIdFromHotId(hotId)
+//   // return tabStore.getters.tabTitle(state, getters)(tabId)
+//   return store.getters.tabTitle(tabId)
+// }
 
 // TODO: refactor this and other common functions in home,errors,provenance
-function getErrorsPreText() {
-  return `### Known Data Errors
-
-This data is published with the following data errors:
-
-`
-}
+// function getErrorsPreText() {
+//   return `### Known Data Errors
+//
+// This data is published with the following data errors:
+//
+// `
+// }

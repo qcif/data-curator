@@ -9,9 +9,9 @@
             <span class="provenance-preview-icon glyphicon" :class="buttonIconClass"/>{{buttonText}}
         </button>
       </span>
-      <span class="provenance-errors">
-        <button v-show="!isPreview && provenanceErrors" type="button" class="btn btn-danger btn-sm" @click="removeAllErrorsReferences()">
-            <span class="provenance-errors-icon fas fa-times-circle"/>Remove Errors
+      <span class="provenance-errors-btn">
+        <button v-show="!isPreview && provenanceHotErrors" type="button" class="btn btn-danger btn-sm" @click="removeAllErrors()">
+            <span class="provenance-errors-icon fas fa-times-circle"/>Remove All Errors
         </button>
       </span>
       <template v-if="isPreview">
@@ -19,7 +19,16 @@
       </template>
       <template v-else>
         <textarea v-model="provenance" :placeholder="placeholder" rows="25" cols="55" class="form-control input-sm col-sm-9" id="provenance-description" />
-        <textarea ref="sidenavref" readonly="readonly" v-model="provenanceErrors" rows="10" cols="55" class="form-control input-sm col-sm-9" id="provenance-errors" />
+        <div id="provenance-errors-container">
+          <div v-for="(errors, hotId) in provenanceHotErrors">
+            <span class="provenance-errors-btn">
+              <button v-show="!isPreview && provenanceHotErrors" type="button" class="btn btn-danger btn-sm" @click="removeErrors(hotId)">
+                  <span class="provenance-errors-icon fas fa-times-circle"/>Remove Errors
+              </button>
+            </span>
+            <textarea readonly="readonly" :value="errors" rows="10" cols="55" class="provenance-errors form-control input-sm col-sm-9" :id="'provenance-errors-' + hotId" />
+          </div>
+        </div>
       </template>
     </div>
   </div>
@@ -36,6 +45,7 @@ import {
 } from 'vuex'
 import os from 'os'
 import {provenanceErrors$} from '@/rxSubject.js'
+import {compileHotErrors, stringifyProvenance} from '@/provenance.js'
 export default {
   extends: SideNav,
   name: 'provenance',
@@ -45,7 +55,8 @@ export default {
       'getProvenance'
     ]),
     markProvenanceText() {
-      return markdown().render(`${this.provenance}${os.EOL}${this.provenanceErrors}`)
+      const stringified = stringifyProvenance(this.provenance, this.provenanceHotErrors)
+      return markdown().render(stringified)
     },
     buttonIconClass() {
       return this.isPreview ? 'glyphicon-pencil' : 'glyphicon-search'
@@ -56,36 +67,38 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'pushProvenance', 'removeProvenanceErrors'
+      'pushProvenance', 'removeProvenanceErrors', 'removeAllProvenanceErrors'
     ]),
     togglePreview: function() {
       this.isPreview = !this.isPreview
     },
-    removeAllErrorsReferences: function() {
+    removeErrors: function(hotId) {
+      this.removeProvenanceErrors(hotId)
+      provenanceErrors$.next()
+    },
+    removeAllErrors: function() {
       this.resetProvenanceErrors()
-      this.removeProvenanceErrors()
+      this.removeAllProvenanceErrors()
     },
     resetProvenanceErrors: function() {
-      this.provenanceErrors = ''
+      this.provenanceHotErrors = null
     },
     addErrorsToProvenance: function() {
-      // this.resetProvenanceErrors()
-      if (this.getProvenance.errors.length > 0) {
-        this.provenanceErrors = this.compileErrors()
+      this.provenanceHotErrors = {}
+      let self = this
+      if (this.getProvenance.hotErrors) {
+        _.forEach(this.getProvenance.hotErrors, function(errors, hotId) {
+          const provenanceErrors = compileHotErrors(errors, hotId)
+          // const tabTitle = self.getTabTitleFromHotId(hotId)
+          // const provenanceErrors = self.compileErrors(errors, tabTitle)
+          self.provenanceHotErrors[hotId] = provenanceErrors
+        })
         this.focusErrors()
       }
     },
-    compileErrors: function() {
-      let compiled = _.template(`${this.errorsPreText}<%= errorsList %>`)
-      return compiled({ 'errorsList': this.errorsListToString() })
-    },
-    errorsListToString: function() {
-      return _.map(this.getProvenance.errors, function(error) {
-        return `${error.message}`
-      }).join(os.EOL)
-    },
+
     focusErrors: function() {
-      document.querySelector('#provenance-errors').focus()
+      document.querySelector('#provenance-errors-container').focus()
     }
   },
   watch: {
@@ -94,23 +107,17 @@ export default {
     }
   },
   mounted: function() {
+    let self = this
     this.provenance = this.getProvenance.markdown
-    const vueAddErrorsToProvenance = this.addErrorsToProvenance
     this.$subscribeTo(provenanceErrors$, function() {
-      // console.log(messages)
-      vueAddErrorsToProvenance()
+      self.addErrorsToProvenance()
     })
   },
   data() {
     return {
       isPreview: false,
       provenance: '',
-      provenanceErrors: '',
-      errorsPreText: `### Known Data Errors
-
-This data is published with the following data errors:
-
-`,
+      provenanceHotErrors: null,
       placeholder: `Short description of the dataset (the first sentence and first paragraph should be extractable to provide short standalone descriptions)
 
 ### Why was the dataset created?
