@@ -188,7 +188,7 @@ class AppMenu {
             }
           }, {
             label: 'Find Previous',
-            accelerator: 'Shift+CmdOrCtrl+G',
+            accelerator: 'Alt+CmdOrCtrl+G',
             enabled: false,
             click: function () {
               webContents().send('clickFindButton', 'findPrevious')
@@ -196,18 +196,18 @@ class AppMenu {
           }, {
             type: 'separator'
           }, {
-            label: 'Replace Previous',
+            label: 'Replace Next',
             accelerator: 'CmdOrCtrl+E',
             enabled: false,
             click: function () {
-              webContents().send('clickFindButton', 'replacePrevious')
+              webContents().send('clickFindButton', 'replaceNext')
             }
           }, {
-            label: 'Replace Next',
+            label: 'Replace Previous',
             accelerator: 'Alt+CmdOrCtrl+E',
             enabled: false,
             click: function () {
-              webContents().send('clickFindButton', 'replaceNext')
+              webContents().send('clickFindButton', 'replacePrevious')
             }
           }, {
             label: 'Replace All',
