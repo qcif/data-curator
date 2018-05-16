@@ -60,11 +60,18 @@
         <template v-else-if="formprop.key === 'numberType'">
           <div v-for="(extraType, eIndex) in formprop.types" :key="'number' + eIndex" class="extra-types input-group" v-show="typeProperty === 'number'">
             <label class="inline control-label col-sm-3" :for="formprop.key + extraType">{{getExtraPropertyLabel(extraType)}}</label>
-            <template>
-              <input :value="getExtraType(extraType)" @input="setExtraType(extraType, $event.target.value)" @blur="removeOnError(formprop.key + extraType, extraType)" type="text" :class="{ 'form-control label-sm col-sm-9': true,'validate-danger': errors.has(formprop.key + extraType) }"  v-validate="{min:1}" :id="formprop.key + extraType" :name="formprop.key + extraType"/>
+              <input v-if="extraType === 'bareNumber'" type="checkbox" :id="formprop.key + extraType" :checked="getExtraType(extraType)" @click="setBareNumber($event.target)" />
+              <input v-else :value="getExtraType(extraType)" @input="setExtraType(extraType, $event.target.value)" @blur="removeOnError(`${formprop.key}${extraType}`, extraType)" type="text" :class="{ 'form-control label-sm col-sm-9': true,'validate-danger': errors.has(formprop.key + extraType) }"  v-validate="{max:1}" :id="formprop.key + extraType" :name="formprop.key + extraType"/>
               <div v-show="errors.has(formprop.key + extraType)" class="row help validate-danger">
                 {{ errors.first(formprop.key + extraType)}}
               </div>
+          </div>
+        </template>
+        <template v-else-if="formprop.key === 'integerType'">
+          <div v-for="(extraType, eIndex) in formprop.types" :key="'integer' + eIndex" class="extra-types input-group" v-show="typeProperty === 'integer'">
+            <template v-if="extraType === 'bareNumber'">
+              <label class="inline control-label col-sm-3" :for="formprop.key + extraType">{{getExtraPropertyLabel(extraType)}}</label>
+              <input type="checkbox" :id="formprop.key + extraType" :checked="getExtraType(extraType)" @click="setBareNumber($event.target)" />
             </template>
           </div>
         </template>
@@ -96,7 +103,6 @@ import ValidationRules from '../mixins/ValidationRules'
 import {isValidPatternForType} from '@/dateFormats.js'
 import {castBoolean, castNumber, castInteger} from 'tableschema/lib/types'
 import {ERROR as tableSchemaError} from 'tableschema/lib/config'
-// import autosizeTextArea from '../partials/AutosizeTextArea'
 Vue.use(VueRx, {
   Subscription
 })
@@ -152,7 +158,12 @@ export default {
       {
         label: 'Number types',
         key: 'numberType',
-        types: ['decimalChar', 'groupChar']
+        types: ['decimalChar', 'groupChar', 'bareNumber']
+      },
+      {
+        label: 'Integer types',
+        key: 'integerType',
+        types: ['bareNumber']
       },
       {
         label: 'Format',
@@ -481,7 +492,7 @@ export default {
     },
     getExtraType: function(type) {
       let value = this.getProperty(type)
-      if (!value) {
+      if (typeof value === 'undefined') {
         switch (type) {
           case 'decimalChar':
             value = this.setAndGetDefaultDecimalChar()
@@ -489,20 +500,24 @@ export default {
           case 'groupChar':
             value = this.setAndGetDefaultGroupChar()
             break
-            // case 'bareNumber':
-            //   value = this.setAndGetDefaultBareNumber()
-            // break
+          case 'bareNumber':
+            value = this.setAndGetDefaultBareNumber()
+            break
           default:
             throw new Error(`Extra property type: ${type} is not supported for number`)
         }
       }
       return value
     },
+    setBareNumber: function(target) {
+      let isChecked = target.checked
+      this.setExtraType('bareNumber', target.checked)
+    },
     setExtraType: function(type, value) {
       switch (type) {
         case 'decimalChar':
         case 'groupChar':
-        // case 'bareNumber':
+        case 'bareNumber':
           this.setProperty(type, value)
           break
         default:
@@ -510,9 +525,16 @@ export default {
       }
     },
     removeOnError: function(errorId, key) {
+      // console.log('removing on error', errorId)
+      // console.log(key)
       if (this.errors.has(errorId)) {
         this.removeColumnProperty(this.setter(this.activeCurrentHotId, key))
       }
+    },
+    setAndGetDefaultBareNumber: function() {
+      const value = this.bareNumber
+      this.setProperty('bareNumber', value)
+      return value
     },
     setAndGetDefaultGroupChar: function() {
       const value = this.groupChar
