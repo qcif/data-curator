@@ -183,7 +183,7 @@ import ErrorsTooltip from '../mixins/ErrorsTooltip'
 import {
   fileFormats
 } from '../file-formats.js'
-import {ipcRenderer as ipc} from 'electron'
+import {ipcRenderer as ipc, remote} from 'electron'
 import 'lodash/lodash.min.js'
 import {unzipFile} from '@/importPackage.js'
 import {toggleHeaderWithFeedback} from '@/headerRow.js'
@@ -1138,6 +1138,7 @@ export default {
         ipc.send('hasHeaderRow', hot.hasColHeaders())
       }
       ipc.send('hasCaseSensitiveHeader', isCaseSensitive(hotId))
+      remote.getGlobal('tab').activeHotId = hotId
     })
     onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
   },

@@ -21,6 +21,7 @@ function CustomWorld ({attach, parameters}) {
   this.rowNumber = null
   this.colNumber = null
   this.latestFilePath = null
+  this.hotParentSelector = '.tab-pane.active .editor.handsontable'
   this.openFileDialogReturned = ['stubbedFilenameForMenuSteps.txt']
   chaiAsPromised.transferPromiseness = this.app.transferPromiseness
 }
