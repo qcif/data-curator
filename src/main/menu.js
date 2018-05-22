@@ -450,7 +450,7 @@ class AppMenu {
             type: 'separator'
           }, {
             label: 'Preferences',
-            accelerator: 'CmdOrCtrl+',
+            accelerator: 'CmdOrCtrl+,',
             click: function() {
               webContents().send('showSidePanel', 'preferences')
             }
@@ -494,7 +494,7 @@ class AppMenu {
         type: 'separator'
       }, {
         label: 'Settings',
-        accelerator: 'CmdOrCtrl+',
+        accelerator: 'CmdOrCtrl+,',
         click: function() {
           webContents().send('showSidePanel', 'preferences', 'settings')
         }
