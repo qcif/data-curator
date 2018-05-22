@@ -1,10 +1,34 @@
 import { expect, should, assert } from 'chai'
 import { Given, When, Then } from 'cucumber'
-const _ = require('lodash')
+import _ from 'lodash'
 
 When(/^Data Curator is open$/, async function () {
   const title = await this.app.client.waitUntilWindowLoaded().getTitle()
   expect(title).to.equal('Data Curator')
+})
+
+Given(/^the active table has "(.+)"$/, async function (data) {
+  // include headers in data sent
+  console.log(`incoming data`)
+  console.log(`.${data}.`)
+  // const dataToSend = JSON.stringify(data.raw())
+  // const dataToSend = JSON.parse(data)
+  await this.app.webContents.send('loadDataIntoCurrentHot', data)
+  // wait until hot data changes before continuing
+  const parentSelector = '.tab-pane.active .editor.handsontable'
+  const elementsSelector = '.ht_master table tr:first-of-type td'
+  let self = this
+  await this.app.client.waitUntil(async function () {
+    let actualFirstDataRow = await self.app.client.element(parentSelector)
+      .elements(elementsSelector)
+      .getText()
+    return _.difference(actualFirstDataRow, ['', '', '']).length !== 0
+  }, 5000)
+  // compare data available in hot view
+  let actualFirstDataRow = await this.app.client.element(parentSelector)
+    .elements(elementsSelector).getText()
+  console.log('first row', actualFirstDataRow)
+  // expect(actualFirstDataRow).to.deep.equal(data.rows()[0])
 })
 
 Then(/^1 window should be displayed/, function () {
@@ -24,7 +48,7 @@ Then(/^the window should have (\d+) tab[s]?$/, function (numberOfTabs) {
     })
 })
 
-Then(/^the (?:new )tab should be in the right-most position$/, function () {
+Then(/^the (?:new |)tab should be in the right-most position$/, function () {
   return this.app.client
     .waitForVisible('#csvEditor')
     .getAttribute('.tab-header', 'class')
@@ -34,7 +58,7 @@ Then(/^the (?:new )tab should be in the right-most position$/, function () {
     })
 })
 
-Then(/^the (?:new )tab should have a unique name$/, async function () {
+Then(/^the (?:new |)tab should have a unique name$/, async function () {
   const activeText = await this.app.client
     .waitForVisible('#csvEditor')
     .getText('.tab-header.active')
@@ -45,7 +69,7 @@ Then(/^the (?:new )tab should have a unique name$/, async function () {
   expect(allText).to.not.contain(activeText)
 })
 
-Then(/^the (?:new )tab should have 1 table$/, function () {
+Then(/^the (?:new |)tab should have 1 table$/, function () {
   return this.app.client
     .waitForVisible('#csvEditor')
     .elements('.tab-content')
@@ -72,7 +96,7 @@ Then(/^the (?:new |)table (?:should have |has )(\d+) row[s]? by (\d+) column[s]?
     })
 })
 
-Then(/^the (?:new )table should be empty$/, function () {
+Then(/^the (?:new |)table should be empty$/, function () {
   return this.app.client.element('.active .editor.handsontable')
     .getText('.ht_master table tr td')
     .then(function(array) {

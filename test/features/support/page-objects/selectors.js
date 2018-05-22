@@ -13,3 +13,35 @@ export async function waitForVisibleIdFromLabel(app, parentSelector, label, time
     return result
   }
 }
+
+export async function applyFnToSelectorWithLabel(app, fn, selector, label, timeout) {
+  // console.log('fn is:', fn)
+  const selectors = replaceLabelWithKebabAndCamelCase(selector, label)
+  const result = await applyFnToDualSelectors(app, fn, selectors[0], selectors[1], timeout)
+  return result
+}
+
+export async function applyFnToDualSelectors(app, fn, selector1, selector2, timeout) {
+  let result
+  try {
+    // console.log('fn is', fn)
+    result = await app.client[fn](selector1, timeout)
+    return result
+  } catch (error) {
+    console.log(`Unable to find via ${selector1} Trying ${selector2}`)
+    result = await app.client[fn](selector2, timeout)
+    return result
+  }
+}
+
+export function replaceLabelWithKebabAndCamelCase(selector, toReplace) {
+  const kebabCaseSelector = _.replace(selector, toReplace, _.kebabCase(toReplace))
+  const camelCaseSelector = _.replace(selector, toReplace, _.camelCase(toReplace))
+  return [kebabCaseSelector, camelCaseSelector]
+}
+
+export function kebabAndCamelCase(selector) {
+  const kebabCase = _.kebabCase(selector)
+  const camelCase = _.camelCase(selector)
+  return {kebabCase, camelCase}
+}

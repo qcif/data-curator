@@ -9,6 +9,7 @@ var stringify = require('csv-stringify/lib/sync')
 
 // { delimiter: ',', lineTerminator, quoteChar, doubleQuote, escapeChar, nullSequence, skipInitialSpace, header, caseSensitiveHeader, csvddfVersion }
 const frictionlessToCsvmapper = {delimiter: 'delimiter', lineTerminator: 'rowDelimiter', quoteChar: 'quote', escapeChar: 'escape', skipInitialSpace: 'ltrim'}
+
 export function loadDataIntoHot(hot, data, format) {
   if (_.isArray(data)) {
     loadArrayDataIntoHot(hot, data, format)
@@ -43,6 +44,7 @@ export function loadCsvDataIntoHot(hot, data, format) {
 }
 
 export function loadArrayDataIntoHot(hot, arrays, format) {
+  console.log('loading data arrays', arrays)
   pushCsvFormat(hot.guid, format)
 
   fixRaggedRows(arrays)

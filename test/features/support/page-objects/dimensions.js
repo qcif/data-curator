@@ -6,7 +6,7 @@ export async function tableRowAndColCount(app) {
     .elements('.ht_master table tr')
   const tableRowCount = rowResponse.value.length
   const colResponse = await app.client.element(parentSelector)
-    .elements('.ht_master table tr td')
+    .elements('.ht_master table tr:first-of-type td')
   const tableColCount = colResponse.value.length
   return {tableRowCount, tableColCount}
 }
