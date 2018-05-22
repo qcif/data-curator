@@ -83,6 +83,7 @@
     "components-font-awesome": "^5.0.6",
     "csv": "^2.0.0",
     "datapackage": "^1.0.6",
+    "electron-settings": "^3.2.0",
     "escape-regexp": "^0.0.1",
     "etl": "^0.5.8",
     "fs-extra": "~5.0.0",

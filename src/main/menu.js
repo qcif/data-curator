@@ -450,10 +450,10 @@ class AppMenu {
             type: 'separator'
           }, {
             label: 'Preferences',
-            accelerator: 'CmdOrCtrl+,'
-            //        click: function() {
-            //          webContents().send('showSidePanel', 'preferences')
-            //        }
+            accelerator: 'CmdOrCtrl+',
+            click: function() {
+              webContents().send('showSidePanel', 'preferences')
+            }
           }, {
             type: 'separator'
           }, {
@@ -493,10 +493,11 @@ class AppMenu {
       }, {
         type: 'separator'
       }, {
-        label: 'Settings'
-        //        click: function() {
-        //          webContents().send('showSidePanel', 'preferences')
-        //        }
+        label: 'Settings',
+        accelerator: 'CmdOrCtrl+',
+        click: function() {
+          webContents().send('showSidePanel', 'preferences', 'settings')
+        }
       })
     }
   }
