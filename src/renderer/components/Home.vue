@@ -1083,9 +1083,10 @@ export default {
       self.addTabWithFilename(data, format, filename)
     })
     // const vueTriggerSideNav = this.triggerSideNav
-    ipc.on('showSidePanel', function(event, arg) {
+    ipc.on('showSidePanel', function(event, arg1, arg2) {
       self.triggerSideNav({
-        sideNavView: arg
+        sideNavView: arg1,
+        title: arg2 || arg1
       })
     })
     // const vueForceUpdate = this.forceWrapper
