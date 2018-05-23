@@ -18,11 +18,6 @@ import licenses from '@/partials/Licenses'
 import contributors from '@/partials/Contributors'
 import PreferencesTooltip from '@/mixins/PreferencesTooltip'
 import ValidationRules from '@/mixins/ValidationRules'
-import {
-  mapMutations,
-  mapState,
-  mapGetters
-} from 'vuex'
 import {ipcRenderer as ipc} from 'electron'
 export default {
   extends: SideNav,
@@ -48,16 +43,9 @@ export default {
       }]
     }
   },
-  computed: {
-    parent() {
-      return 'preferences'
-    }
-  },
   methods: {
     getProperty: function(key) {
-      console.log(`key is ${key}`)
-      const preference = ipc.sendSync('getPreference', key)
-      return preference
+      return ipc.sendSync('getPreference', key)
     },
     getPropertyGivenHotId: function(key, hotId) {
       return this.getProperty(key)
@@ -65,13 +53,11 @@ export default {
     contributorsSetter: function(index, prop, value) {
       let currentContributors = ipc.sendSync('getPreference', 'contributors')
       currentContributors[index][prop] = value
-      console.log(`current contributors are now:`, currentContributors)
       this.setProperty('contributors', currentContributors)
     },
     setProperty: function(key, values) {
       if (!_.isEmpty(values)) {
         const stringified = JSON.stringify(values)
-        console.log(`sending ${key}`, stringified)
         ipc.send('setPreference', key, stringified)
       } else {
         ipc.send('removePreference', key)
