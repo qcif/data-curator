@@ -7,15 +7,7 @@ import {menu} from '../pageObjects.js'
 const _ = require('lodash')
 
 When('{string} is invoked using the {string}: {string}', async function (name, type, sequence) {
-  // try {
   await menu.invokeActions(this.app, {name: name, type: type, sequence: sequence})
-  // } catch (error) {
-  //   if (error instanceof AssertionError) {
-  //     throw new Error(error)
-  //   } else {
-  //     console.log('failed', error)
-  //   }
-  // }
 })
 
 When(/^the "([\w]+?)" toolbar menu is (?:selected|clicked)/, async function (toolbarMenuName) {
@@ -28,26 +20,10 @@ When(/^the "([\w]+?)"->"([\w]+?)" menu is (?:selected|clicked)/, async function 
   expect(returned).to.equal(subMenuLabel)
 })
 
-// When(/^I press the key[s]? "([\w]+?)"/, function (key) {
-//   return keyPress([key])
-// })
-//
-// When(/^I press the key[s]? "([\w]+?)\+([\w]+?)"/, function (key1, key2) {
-//   return keyPress([key1, key2])
-// })
-//
-// When(/^I press the key[s]? "([\w]+?)\+([\w]+?)\+([\w]+?)"/, function (key1, key2, key3) {
-//   return keyPress([key1, key2, key3])
-// })
-
 // 3rd menu may contain spaces, dots
 When(/^the "([\w]+?)"->"([\w]+?)"->"([\w .]+?)" menu is (?:selected|clicked)/, async function (menuLabel, subMenuLabel, subSubMenuLabel) {
-  try {
-    let returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel, subSubMenuLabel])
-    expect(returned).to.equal(subSubMenuLabel)
-  } catch (error) {
-    throw error
-  }
+  let returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel, subSubMenuLabel])
+  expect(returned).to.equal(subSubMenuLabel)
 })
 
 Then('the openfile dialog should be displayed', async function () {

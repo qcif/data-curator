@@ -120,6 +120,9 @@ export default {
   },
   mounted: function() {
     autosize(document.querySelector('textarea'))
+  },
+  created: function() {
+    console.log('created')
   }
 }
 </script>
