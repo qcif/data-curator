@@ -89,7 +89,8 @@ export default {
         tooltipId: 'tooltip-package-contributors',
         tooltipView: 'tooltipPackageContributors'
       }],
-      hasPreferences: ['contributors', 'licenses']
+      hasPreferences: ['contributors', 'licenses'],
+      contributorsSetter: null
     }
   },
   computed: {
@@ -105,14 +106,24 @@ export default {
         'key': key
       })
       console.log(`getter for package property`, packageProperty)
-      console.log(`.${packageProperty}.`)
+      // console.log(`.${packageProperty}.`)
       if (_.indexOf(this.hasPreferences, key) > -1) {
         // atm only arrays of objects are recorded in preferences
+        console.log(`initial get from preferences...`)
         if (typeof packageProperty === 'undefined') {
           packageProperty = ipc.sendSync('getPreference', key)
+          this.setProperty(key, packageProperty)
         }
       }
       return packageProperty
+    },
+    preferenceGetter: function(key) {
+      if (key === 'contributors') {
+        this.contributorsSetter = this.preferenceGetter
+      } else {
+        this.contributorsSetter = null
+      }
+      return ipc.sendSync('getPreference', key)
     },
     getPropertyGivenHotId: function(key, hotId) {
       return this.getProperty(key)
