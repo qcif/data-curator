@@ -14,11 +14,16 @@ Feature: Guess Column Properties
 
     - If column properties for `type`, `format` and `constraints` already exist, then prompt the user to ask if they should be over-written.
 
+  @dev
   @impl
-  Scenario: Guess column properties immediately after opening Data Curator
+  Scenario Outline: Guess column properties immediately after opening Data Curator
     Given Data Curator is open
-    When I invoke the Guess Column Properties command
-    Then I should see the failure message
+    When "<name>" is invoked using the "<type>": "<sequence>"
+    Then the failure message should be displayed
+    Examples:
+    | name                     | type                        | sequence                       |
+    | Guess Column Properties  | toolbar menu button         | Guess                          |
+    | Guess Column Properties  | application menu selection  | Tools->Guess Column Properties |
 
   Scenario: Guess column properties
     Given Data Curator is open

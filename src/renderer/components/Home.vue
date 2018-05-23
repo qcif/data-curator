@@ -1147,7 +1147,7 @@ export default {
     let self = this
     // const vueGuessProperties = this.inferColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
-      self.guessProperties()
+      self.inferColumnProperties()
     })
     // const vueImportDataPackage = this.importDataPackage
     ipc.on('importDataPackage', function(event, filePath, isTransient = false) {

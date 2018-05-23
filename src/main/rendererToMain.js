@@ -34,7 +34,9 @@ ipc.on('showErrorsWindow', (event, arg) => {
 ipc.on('clickLabelsOnMenu', (event, arg) => {
   try {
     let returned = clickLabelsOnMenu(arg)
-    event.returnValue = returned
+    if (returned) {
+      event.returnValue = returned
+    }
   } catch (error) {
     throw (error)
   }
