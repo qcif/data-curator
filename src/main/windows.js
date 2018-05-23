@@ -1,5 +1,4 @@
 import {BrowserWindow} from 'electron'
-import _ from 'lodash'
 
 export function createWindowTab() {
   let mainWindow = focusMainWindow()
