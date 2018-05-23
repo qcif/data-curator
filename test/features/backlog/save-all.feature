@@ -14,21 +14,21 @@ Feature: Save all
   - The CSV dialect selected may change the file extension e.g. tab separated values files use .tsv
 
   Scenario: Use the menu to save all data changes and all data has been saved once
-    Given I have opened Data Curator
+    Given Data Curator is open
     And I have opened 1 or more data tabs
     And I have saved all data tabs at least once
     When I select "Save All" from the menu
     Then save data changes in every tab using the CSV dialect settings
 
   Scenario: Use a keyboard shortcut to save all data changes and all data has been saved once
-    Given I have opened Data Curator
+    Given Data Curator is open
     And I have opened 1 or more data tabs
     And I have saved all data tabs at least once
     When I use the "Save All" keyboard shortcut
     Then save data changes in every tab using the CSV dialect settings
 
   Scenario: Use the menu to save all data changes but some data never saved
-    Given I have opened Data Curator
+    Given Data Curator is open
     And I have opened 1 or more data tabs
     And I have not saved every data tab at least once
     When I select "Save All" from the menu
@@ -37,7 +37,7 @@ Feature: Save all
     And for previously saved data, save changes using the CSV dialect settings
 
   Scenario: Use a keyboard shortcut to save all data changes but some data never saved
-    Given I have opened Data Curator
+    Given Data Curator is open
     And I have opened 1 or more data tabs
     And I have not saved every data tab at least once
     When I select the "Save All" keyboard shortcut

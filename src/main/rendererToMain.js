@@ -34,7 +34,9 @@ ipc.on('showErrorsWindow', (event, arg) => {
 ipc.on('clickLabelsOnMenu', (event, arg) => {
   try {
     let returned = clickLabelsOnMenu(arg)
-    event.returnValue = returned
+    if (returned) {
+      event.returnValue = returned
+    }
   } catch (error) {
     throw (error)
   }
@@ -85,3 +87,23 @@ ipc.on('loadPackageUrlResourcesAsFkRelations', async function(event, url, resour
 function sendStopLoadingPackageFeedback() {
   mainWindow.webContents.send('stopLoadingPackageFeedback')
 }
+
+ipc.on('loadingScreenTimeout', (event, arg) => {
+  const mainWindow = focusMainWindow()
+  const message = arg || 'There was a problem with loading. There could a problem with the source.'
+  dialog.showMessageBox(mainWindow, {
+    type: 'error',
+    title: `Loading Timeout`,
+    message: message
+  })
+})
+
+ipc.on('dataParsingError', (event, arg) => {
+  const mainWindow = focusMainWindow()
+  const message = arg || 'Unable to parse data. There could be a problem with the data format.'
+  dialog.showMessageBox(mainWindow, {
+    type: 'error',
+    title: `Data parsing Error`,
+    message: message
+  })
+})

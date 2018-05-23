@@ -1,7 +1,7 @@
 Feature: Find data
-  As a User  
-  I want to find data within the current column or across the current table  
-  So that I can determine if the data exists and correct it if necessary  
+  As a User
+  I want to find data within the current column or across the current table
+  So that I can determine if the data exists and correct it if necessary
 
   RULES
   =====
@@ -17,42 +17,79 @@ Feature: Find data
 
   LATER
   =====
-  
-  - The column that cursor is in should be displayed in the search panel 
-  - The table that is active should be displayed in the search panel 
-  - The search order is down columns and then across rows 
+
+  - The column that cursor is in should be displayed in the search panel
+  - The table that is active should be displayed in the search panel
+  - The search order is down columns and then across rows
   - Find in Table
-  
+
   USER INTERFACE
   ==============
-  
+
   ![Data Curator Find and Replace user interface](https://github.com/ODIQueensland/data-curator/raw/develop/static/img/ui/find-and-replace.png)
 
-  Scenario: Find 
+  @impl
+  Scenario Outline: Basic Find
     Given Data Curator is open
-    When "Find" is invoked
-    Then a prompt for a search value and search constraints should be displayed
-    And a prompt for a replacement value should be displayed
-    And the column that cursor is in should be displayed  
-    And the table that is active should be displayed
-    And a warning that the replace command cannot be undone should be displayed
+    When "<name>" is invoked using the "<type>": "<sequence>"
+    Then the "Find and Replace" panel should be displayed
+    And a prompt for a "find" value should be displayed
+    And a prompt for a "replace" value should be displayed
+    And the "Find and Replace" panel's first input should have focus
+    # And I should see search constraints
+    And the column that the cursor is in should be displayed
+    # And a warning that the replace command cannot be undone should be displayed
+    Examples:
+    | name  | type                        | sequence    |
+    | Find  | toolbar menu button         | Find        |
+    | Find  | application menu selection  | Find->Find  |
 
-  Scenario: Find next
+  @impl
+  Scenario Outline: Find next is available from invoking Find
     Given Data Curator is open
-    And a search value and optionally search constraints have been entered
-    When "Find Next" is invoked
-    Then all the cells with values that match the search value and comply with the search constraints should be shaded green
-    And the cursor should be moved to first cell after the current cell that matches the search value and complies with the search constraints  
-    And that cell's border should be highlighted
-    And a count of all the values that match the search value and comply with the search constraints should be displayed
-    And a number representing which instance of the data that has been found value should be displayed
+    When "<name1>" is invoked using the "<type>": "<sequence1>"
+    Then "<name2>" is invoked using the "application menu selection": "<sequence2>"
+    Examples:
+    | name1  | type                        | sequence1  | name2            | sequence2              |
+    | Find   | toolbar menu button         | Find       | Find Next        | Find->Find Next        |
+    | Find   | application menu selection  | Find->Find | Find Next        | Find->Find Next        |
+    | Find   | toolbar menu button         | Find       | Find Previous    | Find->Find Previous    |
+    | Find   | application menu selection  | Find->Find | Find Previous    | Find->Find Previous    |
+    | Find   | toolbar menu button         | Find       | Replace Next     | Find->Replace Next     |
+    | Find   | application menu selection  | Find->Find | Replace Next     | Find->Replace Next     |
+    | Find   | toolbar menu button         | Find       | Replace Previous | Find->Replace Previous |
+    | Find   | application menu selection  | Find->Find | Replace Previous | Find->Replace Previous |
+    | Find   | toolbar menu button         | Find       | Replace All      | Find->Replace All      |
+    | Find   | application menu selection  | Find->Find | Replace All      | Find->Replace All      |
+
+  @impl
+  Scenario Outline: Find next
+    Given Data Curator is open
+    And the active table has "<data>"
+    And "Find" is invoked
+    When "<search value>" has been entered
+    # And a search constraint has been entered
+    And "Find Next" is invoked using the "application menu selection": "Find->Find Next"
+    Then all the cells with values that match the "<search value>" should be highlighted
+    # And a count of all the values that match the search value and comply with the search constraints should be displayed
+    # And a number representing which instance of the data that has been found value should be displayed
+    Examples:
+    | search value  | data                                                                                                                                              |
+    | test          | [["h1","h2","h3"],["test","",""],["","",""],["test","test",""],["test","",""],["","","test"],["","",""],["","",""]]                               |
+    | \test\        | [["h1","h2","h3"],["\\\test\\\","",""],["","",""],["\\\test\\\","\\\test\\\",""],["\\\test\\\","",""],["","","\\\test\\\"],["","",""],["","",""]] |
+    | test123       | [["h1","h2","h3"],["test123","",""],["","",""],["test123","test123",""],["test123","",""],["","","test123"],["","",""],["","",""]]                |
+    | 'test'        | [["h1","h2","h3"],["'test'","",""],["","",""],["'test'","'test'",""],["'test'","",""],["","","'test'"],["","",""],["","",""]]                     |
+    | "test"        | [["h1","h2","h3"],["\"test\"","",""],["","",""],["\"test\"","\"test\"",""],["\"test\"","",""],["","","\"test\""],["","",""],["","",""]]           |
+    | two words     | [["h1","h2","h3"],["two words","",""],["","",""],["two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      |
+    | two           | [["h1","h2","h3"],["two words","",""],["","",""],["two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      |
+
 
   Scenario: Find previous
     Given Data Curator is open
     And a search value and optionally search constraints have been entered
     When "Find Previous" is invoked
     Then all cells with values that match the search value and comply with the search constraints should be highlighted
-    And the cursor should be moved to previous cell after the current cell that matches the search value and complies with the search constraints  
+    And the cursor should be moved to previous cell after the current cell that matches the search value and complies with the search constraints
     And that cell's border should be highlighted
     And a count of all the values that match the search value and comply with the search constraints should be displayed
     And a number representing which instance of the data that has been found value should be displayed

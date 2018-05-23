@@ -4,9 +4,10 @@ import {ipcRenderer as ipc, remote} from 'electron'
 import {isCaseSensitive} from '@/frictionlessUtilities'
 import {pushCsvDialect} from '@/dialect.js'
 import {menu} from '@/menu.js'
+import {fileFormats} from '@/file-formats.js'
 import fs from 'fs-extra'
 
-export function addHotContainerListeners(container) {
+export function addHotContainerListeners(container, loadingFn, closeLoadingFn) {
   container.ondragover = function() {
     return false
   }
@@ -16,12 +17,14 @@ export function addHotContainerListeners(container) {
   container.ondrop = function(e) {
     e.preventDefault()
     var f = e.dataTransfer.files[0]
+    loadingFn('Loading data. Please wait...')
     fs.readFile(f.path, 'utf-8', function(err, data) {
       if (err) {
         console.log(err)
       }
+      let hot = HotRegister.getActiveInstance()
       // if we're dragging a file in, default the format to comma-separated
-      loadData(hot, data, file.formats.csv)
+      loadData(hot.guid, data, fileFormats.csv, closeLoadingFn)
     })
   }
 
@@ -40,9 +43,15 @@ export function getWindow(id) {
   return browserWindow
 }
 
-export function loadData(key, data, format) {
+export function loadData(key, data, format, closeLoadingFn) {
   let hot = HotRegister.getInstance(key)
-  loadDataIntoHot(hot, data, format)
+  try {
+    loadDataIntoHot(hot, data, format)
+  } catch (error) {
+    console.log('error in parse', error)
+    ipc.send('dataParsingError')
+    closeLoadingFn()
+  }
 }
 
 ipc.on('saveData', function(e, format, fileName) {
@@ -51,18 +60,18 @@ ipc.on('saveData', function(e, format, fileName) {
 })
 
 // TODO: correct once github references re-introduced
-ipc.on('getCSV', function(e, format) {
-  let hot = HotRegister.getActiveInstance()
-  var data
-  // if no format specified, default to csv
-  // TODO: update to node csv and check dialect mappings
-  // if (typeof format === 'undefined') {
-  //   data = $.csv.fromArrays(hot.getData())
-  // } else {
-  //   data = $.csv.fromArrays(hot.getData(), format.options)
-  // }
-  ipc.send('sendCSV', data)
-})
+// ipc.on('getCSV', function(e, format) {
+//   let hot = HotRegister.getActiveInstance()
+//   var data
+//   // if no format specified, default to csv
+//   // TODO: update to node csv and check dialect mappings
+//   // if (typeof format === 'undefined') {
+//   //   data = $.csv.fromArrays(hot.getData())
+//   // } else {
+//   //   data = $.csv.fromArrays(hot.getData(), format.options)
+//   // }
+//   ipc.send('sendCSV', data)
+// })
 
 ipc.on('editUndo', function() {
   let hot = HotRegister.getActiveInstance()
@@ -128,4 +137,15 @@ ipc.on('toggleCaseSensitiveHeader', function() {
 
 export function closeSecondaryWindow(windowName) {
   ipc.sendSync('closeSecondaryWindow', windowName)
+}
+
+ipc.on('loadDataIntoCurrentHot', function(event, stringified) {
+  loadDataIntoCurrentHot(JSON.parse(stringified))
+})
+
+// convenience method for testing
+function loadDataIntoCurrentHot(data) {
+  const hot = HotRegister.getActiveInstance()
+  loadDataIntoHot(hot, data)
+  return hot
 }

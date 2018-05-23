@@ -53,13 +53,6 @@ class AppMenu {
             //            enabled: false
             //          }
             //        ]
-            // Placeholder for non-macOS Settings for future feature
-            //      }, {
-            //        type: 'separator'
-            //      }, {
-            //        label: 'Settings',
-            //        enabled: false
-            // }, {
             type: 'separator'
           }, {
             label: 'Save',
@@ -188,7 +181,8 @@ class AppMenu {
             }
           }, {
             label: 'Find Previous',
-            accelerator: 'Shift+CmdOrCtrl+G',
+            // clash with mac hotkeys
+            // accelerator: 'Alt+CmdOrCtrl+G',
             enabled: false,
             click: function () {
               webContents().send('clickFindButton', 'findPrevious')
@@ -196,18 +190,19 @@ class AppMenu {
           }, {
             type: 'separator'
           }, {
-            label: 'Replace Previous',
+            label: 'Replace Next',
             accelerator: 'CmdOrCtrl+E',
             enabled: false,
             click: function () {
-              webContents().send('clickFindButton', 'replacePrevious')
+              webContents().send('clickFindButton', 'replaceNext')
             }
           }, {
-            label: 'Replace Next',
-            accelerator: 'Alt+CmdOrCtrl+E',
+            label: 'Replace Previous',
+            // consistency with find previous
+            // accelerator: 'Alt+CmdOrCtrl+E',
             enabled: false,
             click: function () {
-              webContents().send('clickFindButton', 'replaceNext')
+              webContents().send('clickFindButton', 'replacePrevious')
             }
           }, {
             label: 'Replace All',
@@ -453,15 +448,14 @@ class AppMenu {
             click: function () {
               webContents().send('showSidePanel', 'about')
             }
-            // Placeholder for future feature
-            //      }, {
-            //        type: 'separator'
-            //      }, {
-            //        label: 'Preferences'
-            //        accelerator: 'CmdOrCtrl+,',
-            //        click: function() {
-            //          webContents().send('showSidePanel', 'preferences')
-            //        }
+          }, {
+            type: 'separator'
+          }, {
+            label: 'Preferences',
+            accelerator: 'CmdOrCtrl+,',
+            click: function() {
+              webContents().send('showSidePanel', 'preferences')
+            }
           }, {
             type: 'separator'
           }, {
@@ -497,6 +491,14 @@ class AppMenu {
         label: 'About Data Curator',
         click: function () {
           webContents().send('showSidePanel', 'about')
+        }
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Settings',
+        accelerator: 'CmdOrCtrl+,',
+        click: function() {
+          webContents().send('showSidePanel', 'preferences', 'settings')
         }
       })
     }
@@ -602,18 +604,24 @@ export function disableSubMenuItemsFromMenuObject (menu, labels) {
 
 export function clickLabelsOnMenu (args) {
   let menu = Menu.getApplicationMenu().items.find(x => x.label === args[0])
-  menu.click()
-  let returnLabel = menu.label
-  let subMenu
-  if (args.length > 1) {
-    subMenu = menu.submenu.items.find(x => x.label === args[1])
-    subMenu.click()
-    returnLabel = subMenu.label
-  }
-  if (args.length > 2) {
-    let subSubMenu = subMenu.submenu.items.find(x => x.label === args[2])
-    subSubMenu.click()
-    returnLabel = subSubMenu.label
+  let returnLabel
+  if (menu) {
+    menu.click()
+    returnLabel = menu.label
+    if (args.length > 1) {
+      let subMenu = menu.submenu.items.find(x => x.label === args[1])
+      if (subMenu && subMenu.enabled) {
+        subMenu.click()
+        returnLabel = subMenu.label
+        if (args.length > 2) {
+          let subSubMenu = subMenu.submenu.items.find(x => x.label === args[2])
+          if (subSubMenu && subSubMenu.enabled) {
+            subSubMenu.click()
+            returnLabel = subSubMenu.label
+          }
+        }
+      }
+    }
   }
   return returnLabel
 }
