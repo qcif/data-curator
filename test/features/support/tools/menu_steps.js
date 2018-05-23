@@ -6,6 +6,14 @@ import {menu} from '../pageObjects.js'
 
 const _ = require('lodash')
 
+Given(/^"Find" is invoked$/, async function () {
+  await menu.invokeActions(this.app, {name: 'Find', type: 'application menu selection', sequence: 'Find->Find'})
+})
+
+// When(/^"About" is invoked$/, async function () {
+//   await menu.invokeActions(this.app, {name: 'About', type: 'application menu selection', sequence: 'Electron->About'})
+// })
+
 When('{string} is invoked using the {string}: {string}', async function (name, type, sequence) {
   await menu.invokeActions(this.app, {name: name, type: type, sequence: sequence})
 })

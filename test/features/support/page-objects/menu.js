@@ -51,13 +51,11 @@ export async function findToolBarMenuButtonElementIdContainingName (app, buttonN
 }
 
 export function getElementIdFromToolbarMenuName (toolbarMenuName) {
-  console.log('toolbarMenu name', toolbarMenuName)
   const menu = toolbarMenus.find(x => x.name === toolbarMenuName)
   return menu.id
 }
 
 export async function clickOnMenuItemFromMenu (app, menuLabel, subMenuLabel) {
   const returned = await app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel])
-  console.log(`returned menu item is: `, returned)
   expect(returned).to.equal(subMenuLabel)
 }

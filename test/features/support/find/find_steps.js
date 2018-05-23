@@ -1,13 +1,8 @@
 import { expect, should, assert } from 'chai'
 import { Given, When, Then, After, Before } from 'cucumber'
 import { applyFnToSelectorWithLabel } from '../page-objects/selectors.js'
-import { menu } from '../pageObjects.js'
 const _ = require('lodash')
 const searchColor = 'rgba(252,237,217,1)'
-
-Given(/^"Find" is invoked$/, async function () {
-  await menu.invokeActions(this.app, {name: 'Find', type: 'application menu selection', sequence: 'Find->Find'})
-})
 
 Given(/^"(.+?)" has been entered/, async function (value) {
   await this.app.client.element('input#find').click()
