@@ -4,7 +4,7 @@
       <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
         <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}</label>
         <component :is="formprop.tooltipView"/>
-        <component v-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
+        <component v-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key" :contributorsSetter="contributorsSetter"/>
         <div v-show="errors.has(formprop.key) && removeProperty(formprop.key)" class="row help validate-danger">
           {{ errors.first(formprop.key)}}
         </div>
@@ -23,6 +23,7 @@ import {
   mapState,
   mapGetters
 } from 'vuex'
+import {ipcRenderer as ipc} from 'electron'
 export default {
   extends: SideNav,
   name: 'preferences',
@@ -47,20 +48,39 @@ export default {
       }]
     }
   },
+  computed: {
+    parent() {
+      return 'preferences'
+    }
+  },
   methods: {
     getProperty: function(key) {
-      // return this.getPackageProperty({
-      //   'key': key
-      // })
+      console.log(`key is ${key}`)
+      const preference = ipc.sendSync('getPreference', key)
+      return preference
     },
     getPropertyGivenHotId: function(key, hotId) {
       return this.getProperty(key)
     },
-    setProperty: function(key, value) {
-      // this.pushPackageProperty({
-      //   key: key,
-      //   value: value
-      // })
+    contributorsSetter: function(index, prop, value) {
+      let currentContributors = ipc.sendSync('getPreference', 'contributors')
+      currentContributors[index][prop] = value
+      console.log(`current contributors are now:`, currentContributors)
+      this.setProperty('contributors', currentContributors)
+    },
+    setProperty: function(key, values) {
+      if (!_.isEmpty(values)) {
+        const stringified = JSON.stringify(values)
+        console.log(`sending ${key}`, stringified)
+        ipc.send('setPreference', key, stringified)
+      } else {
+        ipc.send('removePreference', key)
+      }
+    },
+    validateContributors: function(values) {
+      return _.filter(values, function(value) {
+        return value.title.trim().length > 0
+      })
     },
     removeProperty: function(key) {
       let value = ''
@@ -69,9 +89,6 @@ export default {
     }
   },
   created: function() {
-    // this.$on('guessProperties', function() {
-    //   this.updateColumnProperties()
-    // })
   }
 }
 </script>
