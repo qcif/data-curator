@@ -89,8 +89,7 @@ export default {
         tooltipId: 'tooltip-package-contributors',
         tooltipView: 'tooltipPackageContributors'
       }],
-      hasPreferences: ['contributors', 'licenses'],
-      contributorsSetter: null
+      hasPreferences: ['contributors', 'licenses']
     }
   },
   computed: {
@@ -101,29 +100,20 @@ export default {
       'pushPackageProperty'
     ]),
     getProperty: function(key) {
-      console.log(`key is`, key)
       let packageProperty = this.getPackageProperty({
         'key': key
       })
-      console.log(`getter for package property`, packageProperty)
-      // console.log(`.${packageProperty}.`)
-      if (_.indexOf(this.hasPreferences, key) > -1) {
-        // atm only arrays of objects are recorded in preferences
-        console.log(`initial get from preferences...`)
-        if (typeof packageProperty === 'undefined') {
-          packageProperty = ipc.sendSync('getPreference', key)
-          this.setProperty(key, packageProperty)
-        }
+      if (typeof packageProperty === 'undefined') {
+        packageProperty = this.setPreferencesAsDefault(key)
       }
       return packageProperty
     },
-    preferenceGetter: function(key) {
-      if (key === 'contributors') {
-        this.contributorsSetter = this.preferenceGetter
-      } else {
-        this.contributorsSetter = null
+    setPreferencesAsDefault: function(key) {
+      if (_.indexOf(this.hasPreferences, key) > -1) {
+        const packageProperty = ipc.sendSync('getPreference', key)
+        this.setProperty(key, packageProperty)
+        return packageProperty
       }
-      return ipc.sendSync('getPreference', key)
     },
     getPropertyGivenHotId: function(key, hotId) {
       return this.getProperty(key)
@@ -142,9 +132,6 @@ export default {
   },
   mounted: function() {
     autosize(document.querySelector('textarea'))
-  },
-  created: function() {
-    console.log('created')
   }
 }
 </script>

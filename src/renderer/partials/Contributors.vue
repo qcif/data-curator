@@ -64,21 +64,12 @@ export default {
   asyncComputed: {
     getContributors: {
       async get() {
-        console.log(`async get`)
         let contributors = this.getContributorsFromPackageProperties() || []
         for (const [index, contributor] of contributors.entries()) {
-          console.log(`type of contributor:`, typeof contributor)
-          console.log(`role`, contributor.role)
-          console.log(`type of role`, typeof contributor.role)
-          // if (typeof contributor === 'undefined' || contributor.role.trim() === '') {
           if (contributor.role.trim() === '') {
-            // some parent components do not need to set a default
-            // if (typeof this.contributorsSetter === 'undefined') {
             this.setProperty(`contributors[${index}]role`, this.defaultRole)
-            // }
           }
         }
-        console.log(`returning async get`, contributors)
         return contributors
       },
       watch() {
@@ -110,14 +101,10 @@ export default {
     },
     getContributorsFromPackageProperties: function() {
       let contributors = this.getProperty('contributors')
-      console.log(`inside contributors`)
-      console.log(contributors)
       return contributors
     },
     initContributors: function() {
       this.contributors = this.getContributorsFromPackageProperties()
-      console.log(`this contributors is now`)
-      console.log(this.contributors)
     },
     setContributorProp: function(index, prop, value) {
       if (typeof this.contributorsSetter !== 'undefined') {
