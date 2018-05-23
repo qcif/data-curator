@@ -181,7 +181,8 @@ class AppMenu {
             }
           }, {
             label: 'Find Previous',
-            accelerator: 'Alt+CmdOrCtrl+G',
+            // clash with mac hotkeys
+            // accelerator: 'Alt+CmdOrCtrl+G',
             enabled: false,
             click: function () {
               webContents().send('clickFindButton', 'findPrevious')
@@ -197,7 +198,8 @@ class AppMenu {
             }
           }, {
             label: 'Replace Previous',
-            accelerator: 'Alt+CmdOrCtrl+E',
+            // consistency with find previous
+            // accelerator: 'Alt+CmdOrCtrl+E',
             enabled: false,
             click: function () {
               webContents().send('clickFindButton', 'replacePrevious')
