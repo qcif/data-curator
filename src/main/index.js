@@ -18,7 +18,8 @@ if (process.env.NODE_ENV !== 'development') {
 global.tab = {
   activeTitle: '',
   activeFilename: '',
-  filenames: []
+  filenames: [],
+  activeHotId: ''
 }
 global.windows = {}
 

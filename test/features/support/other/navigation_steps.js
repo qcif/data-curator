@@ -1,0 +1,20 @@
+import { expect, should, assert } from 'chai'
+import { Given, When, Then, After, Before } from 'cucumber'
+const _ = require('lodash')
+const highlightColor = 'rgba(181,209,255,0.3)'
+Then(/^the column that the cursor is in should be displayed/, async function () {
+  let found = false
+  const selector = '.editor.handsontable'
+  let responses
+  responses = await this.app.client.element(selector).getCssProperty('.ht_master table tr td', 'backgroundColor')
+  for (const next of responses) {
+    if (next.value === highlightColor) {
+      found = true
+    }
+  }
+  if (!found) {
+    console.log('Unable to find matching background color, trying class...')
+    responses = await this.app.client.waitForVisible('.current.highlight')
+  }
+  return responses
+})

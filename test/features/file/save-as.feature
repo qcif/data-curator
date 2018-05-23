@@ -20,7 +20,7 @@ Feature: Save as
   - This will replace the file type specific save as commands
 
   Scenario: Save the data 
-    Given I have opened Data Curator
+    Given Data Curator is open
     And a CSV Dialect Preference may have been set
     When "Save As..." is invoked
     Then a prompt using the defaults and requesting the file type, name and location should be displayed

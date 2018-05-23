@@ -138,3 +138,14 @@ ipc.on('toggleCaseSensitiveHeader', function() {
 export function closeSecondaryWindow(windowName) {
   ipc.sendSync('closeSecondaryWindow', windowName)
 }
+
+ipc.on('loadDataIntoCurrentHot', function(event, stringified) {
+  loadDataIntoCurrentHot(JSON.parse(stringified))
+})
+
+// convenience method for testing
+function loadDataIntoCurrentHot(data) {
+  const hot = HotRegister.getActiveInstance()
+  loadDataIntoHot(hot, data)
+  return hot
+}
