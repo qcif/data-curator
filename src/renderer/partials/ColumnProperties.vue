@@ -525,8 +525,6 @@ export default {
       }
     },
     removeOnError: function(errorId, key) {
-      // console.log('removing on error', errorId)
-      // console.log(key)
       if (this.errors.has(errorId)) {
         this.removeColumnProperty(this.setter(this.activeCurrentHotId, key))
       }
