@@ -610,12 +610,12 @@ export function clickLabelsOnMenu (args) {
       subMenu.click()
       returnLabel = subMenu.label
     }
-  }
-  if (args.length > 2) {
-    let subSubMenu = subMenu.submenu.items.find(x => x.label === args[2])
-    if (subMenu && subMenu.enabled) {
-      subSubMenu.click()
-      returnLabel = subSubMenu.label
+    if (args.length > 2) {
+      let subSubMenu = subMenu.submenu.items.find(x => x.label === args[2])
+      if (subSubMenu && subSubMenu.enabled) {
+        subSubMenu.click()
+        returnLabel = subSubMenu.label
+      }
     }
   }
   return returnLabel
