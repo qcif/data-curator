@@ -1,17 +1,17 @@
 Feature: Guess Column Properties
-  As a Data Packager  
-  I want to derive as many column properties as possible from the data and the CSV dialect  
-  So that I can quickly set the column properties  
+  As a Data Packager
+  I want to derive as many column properties as possible from the data and the CSV dialect
+  So that I can quickly set the column properties
 
   RULES
   =====
 
     - The "Guess Column Properties" command can be invoked using a menu item or a toolbar button
     - Read a sample of the data and for each column, infer the data type and format and set the 'type' and 'format' property values to the inferred values
-  
+
   LATER
   =====
-  
+
     - If column properties for `type`, `format` and `constraints` already exist, then prompt the user to ask if they should be over-written.
 
   @impl

@@ -28,6 +28,7 @@ Feature: Find data
 
   ![Data Curator Find and Replace user interface](https://github.com/ODIQueensland/data-curator/raw/develop/static/img/ui/find-and-replace.png)
 
+
   @impl
   Scenario Outline: Basic Find
     Given Data Curator is open
