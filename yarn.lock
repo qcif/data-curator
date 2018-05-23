@@ -4142,14 +4142,14 @@ etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
 
-etl@^0.5.8:
-  version "0.5.8"
-  resolved "https://registry.yarnpkg.com/etl/-/etl-0.5.8.tgz#684bf6f20a0a23d31b75e3d63f56848dfe511243"
+etl@^0.5.11:
+  version "0.5.11"
+  resolved "https://registry.yarnpkg.com/etl/-/etl-0.5.11.tgz#88e972f1fd6a2730e9edaea001778cc3f42b4472"
   dependencies:
     bluebird "~3.5.0"
     csv-parser "~1.8.0"
     duplexer2 "~0.1.4"
-    moment "~2.18.1"
+    moment "~2.21.0"
     streamz "~1.8.4"
 
 event-emitter@~0.3.5:
@@ -6935,10 +6935,6 @@ moment@2.20.1:
 moment@2.x, moment@^2.21.0, moment@~2.21.0:
   version "2.21.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.21.0.tgz#2a114b51d2a6ec9e6d83cf803f838a878d8a023a"
-
-moment@~2.18.1:
-  version "2.18.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
 
 move-concurrently@^1.0.1:
   version "1.0.1"
