@@ -66,7 +66,7 @@ export default {
       async get() {
         let contributors = this.getContributorsFromPackageProperties() || []
         for (const [index, contributor] of contributors.entries()) {
-          if (contributor.role.trim() === '') {
+          if (typeof contributor === 'undefined' || contributor.role.trim() === '') {
             // some parent components do not need to set a default
             if (typeof this.contributorsSetter === 'undefined') {
               this.setProperty(`contributors[${index}]role`, this.defaultRole)

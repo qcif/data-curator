@@ -22,6 +22,7 @@ import sources from '@/partials/Sources'
 import contributors from '@/partials/Contributors'
 import PackageTooltip from '@/mixins/PackageTooltip'
 import ValidationRules from '@/mixins/ValidationRules'
+import {ipcRenderer as ipc} from 'electron'
 import {
   mapMutations,
   mapState,
@@ -87,8 +88,8 @@ export default {
         key: 'contributors',
         tooltipId: 'tooltip-package-contributors',
         tooltipView: 'tooltipPackageContributors'
-      }
-      ]
+      }],
+      hasPreferences: ['contributors', 'licenses']
     }
   },
   computed: {
@@ -99,9 +100,19 @@ export default {
       'pushPackageProperty'
     ]),
     getProperty: function(key) {
-      return this.getPackageProperty({
+      console.log(`key is`, key)
+      let packageProperty = this.getPackageProperty({
         'key': key
       })
+      console.log(`getter for package property`, packageProperty)
+      console.log(`.${packageProperty}.`)
+      if (_.indexOf(this.hasPreferences, key) > -1) {
+        // atm only arrays of objects are recorded in preferences
+        if (typeof packageProperty === 'undefined') {
+          packageProperty = ipc.sendSync('getPreference', key)
+        }
+      }
+      return packageProperty
     },
     getPropertyGivenHotId: function(key, hotId) {
       return this.getProperty(key)
