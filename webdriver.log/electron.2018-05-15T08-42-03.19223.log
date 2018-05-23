@@ -1,0 +1,28 @@
+[18:42:03]  COMMAND	POST 	 "/wd/hub/session"
+[18:42:03]  DATA		{"desiredCapabilities":{"javascriptEnabled":true,"locationContextEnabled":true,"handlesAlerts":true,"rotatable":true,"browserName":"electron","chromeOptions":{"binary":"/Users/mulhollm/apps/electron/data-curator/node_modules/spectron/lib/launcher.js","args":["spectron-path=/Users/mulhollm/apps/electron/data-curator/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron","spectron-arg0=--require","spectron-arg1=/Users/mulhollm/apps/electron/data-curator/node_modules/spectron-fake-dialog/preload.js","spectron-arg2=dist/electron/main.js"]},"loggingPrefs":{"browser":"ALL","driver":"ALL"},"requestOrigins":{"url":"http://webdriver.io","version":"4.12.0","name":"webdriverio"}}}
+[18:42:05]  INFO	SET SESSION ID e7dfe5b9bb839253a02f8fb6ccab700a
+[18:42:05]  RESULT		{"acceptSslCerts":true,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"browserName":"chrome","chrome":{"chromedriverVersion":"2.29 (8e8216e581c512667203931f81c1a1ead47222e5)","userDataDir":"/var/folders/8m/_xtc6tcn6ql96s8kv0p20nzn2jbq9h/T/.org.chromium.Chromium.NmO8nK"},"cssSelectorsEnabled":true,"databaseEnabled":false,"handlesAlerts":true,"hasTouchScreen":false,"javascriptEnabled":true,"locationContextEnabled":true,"mobileEmulationEnabled":false,"nativeEvents":true,"networkConnectionEnabled":false,"pageLoadStrategy":"normal","platform":"Mac OS X","rotatable":false,"takesHeapSnapshot":true,"takesScreenshot":true,"unexpectedAlertBehaviour":"","version":"","webStorageEnabled":true}
+[18:42:05]  COMMAND	POST 	 "/wd/hub/session/e7dfe5b9bb839253a02f8fb6ccab700a/execute"
+[18:42:05]  DATA		{"script":"return (function (requireName) {\n    return typeof window[requireName] === 'function'\n  }).apply(null, arguments)","args":["require"]}
+[18:42:07]  RESULT		true
+[18:42:07]  COMMAND	POST 	 "/wd/hub/session/e7dfe5b9bb839253a02f8fb6ccab700a/execute"
+[18:42:07]  DATA		{"script":"return (function () {\n    if (typeof process !== 'undefined') {\n      if (process != null && process.versions != null) {\n        return process.versions.electron\n      }\n    }\n  }).apply(null, arguments)","args":[]}
+[18:42:07]  RESULT		"2.0.0"
+[18:42:07]  COMMAND	POST 	 "/wd/hub/session/e7dfe5b9bb839253a02f8fb6ccab700a/execute"
+[18:42:07]  DATA		{"script":"return (function (requireName) {\n    var electron = window[requireName]('electron')\n\n    var api = {\n      browserWindow: {},\n      electron: {},\n      rendererProcess: {},\n      webContents: {}\n    } ... (2718 more bytes)","args":["require"]}
+[18:42:07]  RESULT		{"browserWindow":{"addListener":"browserWindow.addListener","addTabbedWindow":"browserWindow.addTabbedWindow","blur":"browserWindow.blur","blurWebView":"browserWindow.blurWebView","capturePage":"brows ... (39880 more bytes)
+[18:42:07]  COMMAND	POST 	 "/wd/hub/session/e7dfe5b9bb839253a02f8fb6ccab700a/timeouts"
+[18:42:07]  DATA		{"type":"script","ms":10000}
+[18:42:07]  COMMAND	POST 	 "/wd/hub/session/e7dfe5b9bb839253a02f8fb6ccab700a/execute"
+[18:42:07]  DATA		{"script":"return (function callRenderApi(moduleName, api, args, requireName) {\n  var module = window[requireName]('electron')[moduleName]\n  if (typeof module[api] === 'function') {\n    return module[api].apply(module, args)\n  } else {\n    return module[api]\n  }\n}).apply(null, arguments)","args":["ipcRenderer","sendSync",["SPECTRON_FAKE_DIALOG/SEND",[{"method":"showMessageBox","value":1}]],"require"]}
+[18:42:07]  COMMAND	POST 	 "/wd/hub/session/e7dfe5b9bb839253a02f8fb6ccab700a/execute"
+[18:42:07]  DATA		{"script":"return (function callRenderApi(moduleName, api, args, requireName) {\n  var module = window[requireName]('electron')[moduleName]\n  if (typeof module[api] === 'function') {\n    return module[api].apply(module, args)\n  } else {\n    return module[api]\n  }\n}).apply(null, arguments)","args":["ipcRenderer","sendSync",["SPECTRON_FAKE_DIALOG/SEND",[{"method":"showOpenDialog","value":["stubbedFilenameForMenuSteps.txt"]}]],"require"]}
+[18:42:07]  COMMAND	POST 	 "/wd/hub/session/e7dfe5b9bb839253a02f8fb6ccab700a/execute"
+[18:42:07]  DATA		{"script":"return (function callWebContentsApi(name, args, requireName) {\n  var webContents = window[requireName]('electron').remote.getCurrentWebContents()\n  return webContents[name].apply(webContents, args)\n}).apply(null, arguments)","args":["isLoading",[],"require"]}
+[18:42:07]  RESULT		true
+[18:42:07]  RESULT		true
+[18:42:07]  COMMAND	GET 	 "/wd/hub/session/e7dfe5b9bb839253a02f8fb6ccab700a/title"
+[18:42:07]  DATA		{}
+[18:42:07]  RESULT		"Data Curator"
+[18:42:07]  COMMAND	POST 	 "/wd/hub/session/e7dfe5b9bb839253a02f8fb6ccab700a/execute_async"
+[18:42:07]  DATA		{"script":"return (function (rect, requireName, done) {\n      var args = []\n      if (rect != null) args.push(rect)\n      args.push(function (image) {\n        if (image != null) {\n          done(image.toPng().toString('base64'))\n        } else {\n          done(image)\n        }\n      })\n\n      var browserWindow = window[requireName]('electron').remote.getCurrentWindow()\n      browserWindow.capturePage.apply(browserWindow, args)\n    }).apply(null, arguments)","args":[null,"require"]}
