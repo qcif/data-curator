@@ -44,7 +44,6 @@ export function loadCsvDataIntoHot(hot, data, format) {
 }
 
 export function loadArrayDataIntoHot(hot, arrays, format) {
-  console.log('loading data arrays', arrays)
   pushCsvFormat(hot.guid, format)
 
   fixRaggedRows(arrays)

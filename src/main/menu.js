@@ -601,7 +601,6 @@ export function disableSubMenuItemsFromMenuObject (menu, labels) {
 }
 
 export function clickLabelsOnMenu (args) {
-  console.log('clicking on menu', args)
   let menu = Menu.getApplicationMenu().items.find(x => x.label === args[0])
   menu.click()
   let returnLabel = menu.label
