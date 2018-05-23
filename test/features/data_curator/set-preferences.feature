@@ -23,6 +23,11 @@ Feature: Set Preferences
         - `email`
         - `path`
         - `role` - one of the standard values in a drop down list
+        
+  LATER
+  =====
+  
+  - Default Publishing platform (doesn't make sense to add until Publish is implemented)
   
   Scenario: Set Preferences
     Given Data Curator is open
@@ -36,4 +41,4 @@ Feature: Set Preferences
     And preference values have been set
     When "Set Data Package Properties" is invoked
     Then the preferences values should be displayed in the Properties Panel
- 
+    And the values should be able to be changed
