@@ -49,29 +49,44 @@ async function getDataPackageJson(processed) {
 }
 
 async function processStream(entry, processed, fileDestination) {
-  switch (path.extname(entry.path)) {
-    case '.csv':
-    case '.tsv':
-      await fs.ensureFile(fileDestination)
-      await unzippedEntryToFile(entry, fileDestination)
-      processed.resource.push(entry.path)
-      break
-    case '.json':
-      await fs.ensureFile(fileDestination)
-      await unzippedEntryToFile(entry, fileDestination)
-      processed.json.push(fileDestination)
-      processed.parentFolders = path.dirname(entry.path)
-      break
-    case '.md':
-      await fs.ensureFile(fileDestination)
-      await unzippedEntryToFile(entry, fileDestination)
-      let textMd = await stringify(fileDestination)
-      setProvenance(textMd)
-      processed.md.push(fileDestination)
-      break
-    default:
-      entry.autodrain()
-      break
+  for (const ignore of ['__MACOSX']) {
+    if (fileDestination.includes(ignore)) {
+      await cleanUp(entry, fileDestination)
+    } else {
+      switch (path.extname(entry.path)) {
+        case '.csv':
+        case '.tsv':
+          await fs.ensureFile(fileDestination)
+          await unzippedEntryToFile(entry, fileDestination)
+          processed.resource.push(entry.path)
+          break
+        case '.json':
+          await fs.ensureFile(fileDestination)
+          await unzippedEntryToFile(entry, fileDestination)
+          processed.json.push(fileDestination)
+          processed.parentFolders = path.dirname(entry.path)
+          break
+        case '.md':
+          await fs.ensureFile(fileDestination)
+          await unzippedEntryToFile(entry, fileDestination)
+          let textMd = await stringify(fileDestination)
+          setProvenance(textMd)
+          processed.md.push(fileDestination)
+          break
+        default:
+          entry.autodrain()
+          break
+      }
+    }
+  }
+}
+
+async function cleanUp(entry, fileDestination) {
+  entry.autodrain()
+  try {
+    await fs.remove(fileDestination)
+  } catch (error) {
+    console.error(`Ignoring file remove error. `, error)
   }
 }
 
