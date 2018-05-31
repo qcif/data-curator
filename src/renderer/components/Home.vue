@@ -965,16 +965,26 @@ export default {
     openErrorsWindow: async function() {
       await ipc.send('showErrorsWindow')
     },
-    sendErrorsToErrorsWindow: function() {
-      const browserWindow = getWindow('errors')
+    sendErrorsToErrorsWindow: function(id) {
+      const browserWindow = getWindow('errors', id)
       if (browserWindow) {
         if (this.messages && this.messagesType === 'error') {
-          browserWindow.webContents.send('errorMessages', this.packErrorMessages())
+          // opening error window will trigger close messages, so ensure have these first
+          const errorMessages = this.packErrorMessages()
+          // if window dom is already present, send error messages
+          browserWindow.webContents.send('errorMessages', errorMessages)
+          // but the window will not receive anything if not yet dom-ready
+          browserWindow.webContents.on('dom-ready', function() {
+            browserWindow.webContents.send('errorMessages', errorMessages)
+          })
         } else {
+          // this alerts error window to close - so only needed for dom-ready error window
           browserWindow.webContents.send('errorMessages')
         }
-        // messages are to appear in 1 window or the other, not both
+        // messages are to appear in 1 window or the other, not both (get messsages first if required)
         this.closeMessages()
+      } else {
+        // console.log('no error window found. ignoring...')
       }
     },
     reselectHotCell: function() {
@@ -1047,7 +1057,7 @@ export default {
     })
     // const vueSendErrorsToErrorsWindow = this.sendErrorsToErrorsWindow
     ipc.on('getErrorMessages', function(event, arg) {
-      self.sendErrorsToErrorsWindow()
+      self.sendErrorsToErrorsWindow(arg)
     })
     // const vueHoverToSelectErrorCell = this.hoverToSelectErrorCell
     ipc.on('hoverToSelectErrorCell', function(event, arg) {
