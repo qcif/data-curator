@@ -183,7 +183,7 @@ import ErrorsTooltip from '../mixins/ErrorsTooltip'
 import {
   fileFormats
 } from '../file-formats.js'
-import {ipcRenderer as ipc} from 'electron'
+import {ipcRenderer as ipc, remote} from 'electron'
 import 'lodash/lodash.min.js'
 import {unzipFile} from '@/importPackage.js'
 import {toggleHeaderWithFeedback} from '@/headerRow.js'
@@ -303,7 +303,7 @@ export default {
       },
       {
         name: 'Find and Replace',
-        id: 'find',
+        id: 'findReplace',
         image: 'static/img/find.svg',
         tooltipId: 'tooltip-find',
         tooltipView: 'tooltipFind',
@@ -965,16 +965,26 @@ export default {
     openErrorsWindow: async function() {
       await ipc.send('showErrorsWindow')
     },
-    sendErrorsToErrorsWindow: function() {
-      const browserWindow = getWindow('errors')
+    sendErrorsToErrorsWindow: function(id) {
+      const browserWindow = getWindow('errors', id)
       if (browserWindow) {
         if (this.messages && this.messagesType === 'error') {
-          browserWindow.webContents.send('errorMessages', this.packErrorMessages())
+          // opening error window will trigger close messages, so ensure have these first
+          const errorMessages = this.packErrorMessages()
+          // if window dom is already present, send error messages
+          browserWindow.webContents.send('errorMessages', errorMessages)
+          // but the window will not receive anything if not yet dom-ready
+          browserWindow.webContents.on('dom-ready', function() {
+            browserWindow.webContents.send('errorMessages', errorMessages)
+          })
         } else {
+          // this alerts error window to close - so only needed for dom-ready error window
           browserWindow.webContents.send('errorMessages')
         }
-        // messages are to appear in 1 window or the other, not both
+        // messages are to appear in 1 window or the other, not both (get messsages first if required)
         this.closeMessages()
+      } else {
+        // console.log('no error window found. ignoring...')
       }
     },
     reselectHotCell: function() {
@@ -1047,7 +1057,7 @@ export default {
     })
     // const vueSendErrorsToErrorsWindow = this.sendErrorsToErrorsWindow
     ipc.on('getErrorMessages', function(event, arg) {
-      self.sendErrorsToErrorsWindow()
+      self.sendErrorsToErrorsWindow(arg)
     })
     // const vueHoverToSelectErrorCell = this.hoverToSelectErrorCell
     ipc.on('hoverToSelectErrorCell', function(event, arg) {
@@ -1083,9 +1093,10 @@ export default {
       self.addTabWithFilename(data, format, filename)
     })
     // const vueTriggerSideNav = this.triggerSideNav
-    ipc.on('showSidePanel', function(event, arg) {
+    ipc.on('showSidePanel', function(event, arg1, arg2) {
       self.triggerSideNav({
-        sideNavView: arg
+        sideNavView: arg1,
+        title: arg2 || arg1
       })
     })
     // const vueForceUpdate = this.forceWrapper
@@ -1138,6 +1149,7 @@ export default {
         ipc.send('hasHeaderRow', hot.hasColHeaders())
       }
       ipc.send('hasCaseSensitiveHeader', isCaseSensitive(hotId))
+      remote.getGlobal('tab').activeHotId = hotId
     })
     onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
   },
@@ -1145,7 +1157,7 @@ export default {
     let self = this
     // const vueGuessProperties = this.inferColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
-      self.guessProperties()
+      self.inferColumnProperties()
     })
     // const vueImportDataPackage = this.importDataPackage
     ipc.on('importDataPackage', function(event, filePath, isTransient = false) {

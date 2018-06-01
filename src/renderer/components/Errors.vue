@@ -89,9 +89,6 @@ export default {
     goToCell: function(error) {
       this.homeWindow.webContents.send('showErrorCell', {row: error.rowNumber, column: error.columnNumber})
     },
-    getErrorMessages: function() {
-      this.homeWindow.webContents.send('getErrorMessages')
-    },
     setErrorMessages: function(errorMessages) {
       this.messages = errorMessages.messages
       this.title = errorMessages.title
@@ -119,10 +116,6 @@ export default {
       } else {
         self.setErrorMessages(arg)
       }
-    })
-    // Initial window open, we need to trigger errors call
-    this.$nextTick(function() {
-      this.getErrorMessages()
     })
   },
   watch: {

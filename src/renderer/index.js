@@ -34,9 +34,9 @@ export function addHotContainerListeners(container, loadingFn, closeLoadingFn) {
   }, false)
 }
 
-export function getWindow(id) {
+export function getWindow(name, id) {
   let browserWindow
-  let windowId = remote.getGlobal('windows')[id]
+  let windowId = id || remote.getGlobal('windows')[name]
   if (windowId) {
     browserWindow = remote.BrowserWindow.fromId(windowId)
   }
@@ -137,4 +137,15 @@ ipc.on('toggleCaseSensitiveHeader', function() {
 
 export function closeSecondaryWindow(windowName) {
   ipc.sendSync('closeSecondaryWindow', windowName)
+}
+
+ipc.on('loadDataIntoCurrentHot', function(event, stringified) {
+  loadDataIntoCurrentHot(JSON.parse(stringified))
+})
+
+// convenience method for testing
+function loadDataIntoCurrentHot(data) {
+  const hot = HotRegister.getActiveInstance()
+  loadDataIntoHot(hot, data)
+  return hot
 }
