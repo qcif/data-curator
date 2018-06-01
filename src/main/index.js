@@ -6,6 +6,7 @@ import {app, Menu, BrowserWindow, dialog} from 'electron'
 import {createWindowTab, focusMainWindow} from './windows'
 import {AppMenu} from './menu'
 import './rendererToMain.js'
+import './preferences.js'
 
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
@@ -17,7 +18,8 @@ if (process.env.NODE_ENV !== 'development') {
 global.tab = {
   activeTitle: '',
   activeFilename: '',
-  filenames: []
+  filenames: [],
+  activeHotId: ''
 }
 global.windows = {}
 

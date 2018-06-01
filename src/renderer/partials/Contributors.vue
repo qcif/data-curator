@@ -46,7 +46,7 @@ export default {
       contributors: []
     }
   },
-  props: ['setProperty', 'getProperty', 'getPropertyGivenHotId'],
+  props: ['setProperty', 'getProperty', 'getPropertyGivenHotId', 'contributorsSetter'],
   extends: SideNav,
   computed: {
     ...mapGetters(['getActiveTab']),
@@ -107,7 +107,11 @@ export default {
       this.contributors = this.getContributorsFromPackageProperties()
     },
     setContributorProp: function(index, prop, value) {
-      this.setProperty(`contributors[${index}][${prop}]`, value)
+      if (typeof this.contributorsSetter !== 'undefined') {
+        this.contributorsSetter(index, prop, value)
+      } else {
+        this.setProperty(`contributors[${index}][${prop}]`, value)
+      }
       let contributors = this.getProperty('contributors') || []
       this.contributors = contributors
     },

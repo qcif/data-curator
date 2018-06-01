@@ -389,7 +389,16 @@ export default {
         let split = _.split(trimmed, /"[\s]?,[\s]?"/)
         constraintValues.enum = split
       }
+      this.sanitizeObjectValues(constraintValues)
       this.debounceSetConstraints(this.setter(this.activeCurrentHotId, 'constraints', constraintValues))
+    },
+    sanitizeObjectValues: function(constraintValues) {
+      const keysToNumber = ['minLength', 'maxLength']
+      for (const key of keysToNumber) {
+        if (_.has(constraintValues, key) && _.isString(constraintValues[key])) {
+          constraintValues[key] = _.toNumber(constraintValues[key])
+        }
+      }
     },
     constraintValidationRules: function(option) {
       switch (option) {
@@ -525,8 +534,6 @@ export default {
       }
     },
     removeOnError: function(errorId, key) {
-      // console.log('removing on error', errorId)
-      // console.log(key)
       if (this.errors.has(errorId)) {
         this.removeColumnProperty(this.setter(this.activeCurrentHotId, key))
       }

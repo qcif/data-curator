@@ -1,6 +1,6 @@
 {
   "name": "DataCurator",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "author": " <matt@redboxresearchdata.com.au>",
   "description": "Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data",
   "license": "MIT",
@@ -26,10 +26,11 @@
     "test-main": "mocha-webpack --webpack-config .electron-vue/webpack.test.config.js --glob *_spec.js test/main/specs",
     "test": "yarn run unit && yarn run e2e",
     "unit": "karma start test/unit/karma.conf.js",
-    "e2e": "yarn run pack && yarn run cucumber:postpack; yarn run cucumber:report",
-    "e2e:dev": "yarn run cucumber:postpack:dev; yarn run cucumber:report",
-    "cucumber:postpack:dev": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @latest test/features -f json:test/cucumber_report.json",
-    "cucumber:postpack": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @impl test/features -f json:test/cucumber_report.json",
+    "e2e": "yarn run pack && (yarn run cucumber:postpack:impl || true) && yarn run cucumber:report",
+    "e2e:dev": "(yarn run cucumber:postpack:dev || true) &&  yarn run cucumber:report",
+    "cucumber:postpack": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register test/features -f json:test/cucumber_report.json",
+    "cucumber:postpack:dev": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @dev test/features -f json:test/cucumber_report.json",
+    "cucumber:postpack:impl": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @impl test/features -f json:test/cucumber_report.json",
     "cucumber:report": "node test/cucumber-report.js"
   },
   "build": {
@@ -83,6 +84,7 @@
     "components-font-awesome": "^5.0.6",
     "csv": "^2.0.0",
     "datapackage": "^1.0.6",
+    "electron-settings": "^3.2.0",
     "escape-regexp": "^0.0.1",
     "etl": "^0.5.8",
     "fs-extra": "~5.0.0",
