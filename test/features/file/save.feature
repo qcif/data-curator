@@ -8,6 +8,11 @@ Feature: Save
 
   - The "Save" command can be invoked from a menu item or a keyboard shortcut
   - The "Save" command is only enabled after a file has been saved for the first time using "Save As"
+  
+  LATER
+  =====
+  
+  - Write the size of the file to the `bytes` table property 
 
   Scenario: Save data
     Given Data Curator is open
@@ -15,3 +20,4 @@ Feature: Save
     And the data has been saved at least once
     When "Save" is invoked
     Then the data in the active tab should be saved at its current location and filename
+    And the file size in bytes should be written to the `bytes` table property
