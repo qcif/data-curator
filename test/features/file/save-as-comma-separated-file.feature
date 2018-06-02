@@ -7,7 +7,12 @@ Feature: Save As Comma separated value file
   =====
 
   - The file extension of the saved file must be .csv
-  - The "Save As Comma separated" command can be invoked by a menu item or keyboard shortcut
+  - The "Save As Comma separated" command can be invoked by a menu item or keyboard shortcut  
+  
+  LATER
+  =====
+  
+  - Write the size of the file to the `bytes` table property 
 
   Scenario: Save As Comma separated value file
     Given Data Curator is open
@@ -15,3 +20,4 @@ Feature: Save As Comma separated value file
     When "Save As Comma separated" is invoked
     Then a prompt, requesting the filename and location should be displayed
     And the data should be saved at the filename.csv and location using the correct CSV Dialect
+    And the file size in bytes should be written to the `bytes` table property
