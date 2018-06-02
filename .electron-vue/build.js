@@ -18,11 +18,22 @@ const errorLog = chalk.bgRed.white(' ERROR ') + ' '
 const okayLog = chalk.bgBlue.white(' OKAY ') + ' '
 const isCI = process.env.CI || false
 
-if (process.env.BUILD_TARGET === 'clean') clean()
-else build()
+if (process.env.BUILD_TARGET === 'clean') {
+  clean()
+} else if (process.env.BUILD_TARGET === 'cleanAll') {
+  cleanAll()
+} else {
+  build()
+}
 
 function clean () {
   del.sync(['build/*', '!build/icons', '!build/icons/icon.*'])
+  console.log(`\n${doneLog}\n`)
+  process.exit()
+}
+
+function cleanAll () {
+  del.sync(['dist/electron/*', 'build/*', '!build/icons', '!build/icons/icon.*'])
   console.log(`\n${doneLog}\n`)
   process.exit()
 }

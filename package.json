@@ -5,15 +5,13 @@
   "description": "Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data",
   "license": "MIT",
   "main": "./dist/electron/main.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ODIQueensland/data-curator.git"
-  },
+  "repository": "https://github.com/ODIQueensland/data-curator.git",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
     "build:post": "postbuild.js",
     "build:dir": "node .electron-vue/build.js && electron-builder --dir",
     "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
+    "clean": "cross-env BUILD_TARGET=cleanAll node .electron-vue/build.js",
     "dev": "node .electron-vue/dev-runner.js",
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src test",
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src test",
@@ -26,8 +24,8 @@
     "test-main": "mocha-webpack --webpack-config .electron-vue/webpack.test.config.js --glob *_spec.js test/main/specs",
     "test": "yarn run unit && yarn run e2e",
     "unit": "karma start test/unit/karma.conf.js",
-    "e2e": "yarn run pack && yarn run cucumber:postpack:impl; yarn run cucumber:report",
-    "e2e:dev": "yarn run cucumber:postpack:dev; yarn run cucumber:report",
+    "e2e": "yarn run pack && (yarn run cucumber:postpack:impl || yarn -v) && yarn run cucumber:report",
+    "e2e:dev": "(yarn run cucumber:postpack:dev || yarn -v) && yarn run cucumber:report",
     "cucumber:postpack": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register test/features -f json:test/cucumber_report.json",
     "cucumber:postpack:dev": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @dev test/features -f json:test/cucumber_report.json",
     "cucumber:postpack:impl": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @impl test/features -f json:test/cucumber_report.json",

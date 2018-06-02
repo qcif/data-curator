@@ -12,6 +12,7 @@
   "exclude" : [
     "node_modules"
   ],
+  "lines": 75,
   "include" : [
     "src/**/*.js",
     "test/features"
