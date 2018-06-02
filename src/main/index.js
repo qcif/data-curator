@@ -2,7 +2,7 @@
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
-import {app, Menu, BrowserWindow, dialog} from 'electron'
+import {app, Menu, BrowserWindow, dialog, ipcMain as ipc} from 'electron'
 import {createWindowTab, focusMainWindow} from './windows'
 import {AppMenu} from './menu'
 import './rendererToMain.js'
@@ -43,6 +43,34 @@ app.on('ready', () => {
     browserWindow.on('close', (event) => {
       quitDialog(event, closeWindowNoPrompt)
     })
+  }
+})
+
+function unlockSingleton() {
+  app.releaseSingleInstance()
+}
+
+function forceQuit() {
+  app.exit(5)
+}
+
+ipc.on('unlockSingleton', (event, arg) => {
+  try {
+    unlockSingleton()
+    // if (returned) {
+    event.returnValue = true
+    // }
+  } catch (error) {
+    throw (error)
+  }
+})
+
+ipc.on('forceQuit', (event, arg) => {
+  try {
+    forceQuit()
+    event.returnValue = true
+  } catch (error) {
+    throw (error)
   }
 })
 
