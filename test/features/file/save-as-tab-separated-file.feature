@@ -8,6 +8,11 @@ Feature: Save As Tab separated value file
 
     - The file extension of the saved file must be .tsv
     - The "Save As Tab separated" command can be invoked by a menu item
+    
+  LATER
+  =====
+  
+  - Write the size of the file to the `bytes` table property 
 
   Scenario: Save As Comma separated value file
     Given Data Curator is open
@@ -16,3 +21,4 @@ Feature: Save As Tab separated value file
     Then a prompt, requesting the filename and location should be displayed
     And the data should be saved at the filename.tsv and location using the correct CSV Dialect
     And the 'delimiter' should be set to '\t' in the Table CSV Dialect
+    And the file size in bytes should be written to the `bytes` table property
