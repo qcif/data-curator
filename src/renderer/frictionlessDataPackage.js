@@ -251,5 +251,5 @@ function addPath(descriptor, tabId) {
   let parent = 'data'
   let filename = tabStore.state.tabObjects[tabId].filename
   let basename = path.basename(filename)
-  descriptor.path = `${parent}/${basename}`
+  descriptor.path = path.join(parent, basename)
 }
