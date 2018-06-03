@@ -64,25 +64,26 @@ export async function importDataPackageZipFromUrl(urlText) {
     const zipPath = path.join(zipDir, basename)
     fs.ensureFileSync(zipPath)
     const writable = fs.createWriteStream(zipPath)
-    let errors = false
     // close will be called automatically - just need to ensure close on error
     response.data.on('error', (error) => {
       response.data.end()
       writable.end()
       console.log(`Problem with read stream`, error)
-      errors = true
     })
     writable.on('error', (error) => {
       response.data.end()
       writable.end()
       console.log(`Problem with write stream`, error)
-      errors = true
+    })
+    // response.data.on('end', () => {
+    //   console.log('finished writing response')
+    // })
+    // do not send file path to renderer until response has completed writing
+    writable.on('close', () => {
+      mainWindow.webContents.send('closeLoadingScreen')
+      handleDownloadedZip(zipPath, mainWindow)
     })
     await response.data.pipe(writable)
-    mainWindow.webContents.send('closeLoadingScreen')
-    if (!errors) {
-      handleDownloadedZip(zipPath, mainWindow)
-    }
   } catch (error) {
     console.log(`Unable to download zip: ${urlText}`, error)
     mainWindow.webContents.send('closeLoadingScreen')
