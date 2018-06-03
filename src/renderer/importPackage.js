@@ -13,9 +13,7 @@ const _ignores = ['__MACOSX']
 export async function unzipFile(zipSource, storeCallback, isTransient) {
   try {
     let destination = createUnzipDestination(zipSource)
-    console.log(`destination is: ${destination}`)
     await fs.ensureDir(destination)
-    console.log(`directory created: ${destination}`)
     let processedProperties = await unzipFileToDir(zipSource, destination, isTransient)
     storeCallback(processedProperties)
   } catch (err) {
@@ -32,7 +30,6 @@ async function unzipFileToDir(zipSource, unzipDestination, isTransient) {
   let processed = {json: [], resource: [], md: []}
   await fs.createReadStream(zipSource).pipe(unzipper.Parse()).pipe(etl.map(async entry => {
     let fileDestination = path.join(unzipDestination, entry.path)
-    console.log(`file destination is: ${fileDestination}`)
     await processStream(entry, processed, fileDestination)
   })).promise()
   validateMdFile(processed)
@@ -54,8 +51,6 @@ async function getDataPackageJson(processed) {
 }
 
 async function processStream(entry, processed, fileDestination) {
-  console.log(`entry path is ${entry.path}`)
-  console.log(`file destination is: ${fileDestination}`)
   if (isIgnored(fileDestination)) {
     await cleanUp(entry, fileDestination)
   } else {
@@ -169,7 +164,6 @@ async function getHotIdsFromFilenames(processed, unzipDestination, isTransient =
   let csvTabs = {}
   for (let pathname of processed.resource) {
     let fileDestination = path.join(unzipDestination, pathname)
-    console.log(`next opened tab match to `, fileDestination)
     let tabId = await getTabIdFromFilename(fileDestination)
     // every processed csv should have a matching tab
     if (!tabId) {
