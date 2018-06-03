@@ -7,11 +7,15 @@ import {ipcRenderer as ipc} from 'electron'
 import {Resource, Package} from 'datapackage'
 import {dataResourceToFormat} from '@/file-formats.js'
 
+const _ignores = ['__MACOSX']
+
 // TODO: clean up isTransient logic
 export async function unzipFile(zipSource, storeCallback, isTransient) {
   try {
     let destination = createUnzipDestination(zipSource)
+    console.log(`destination is: ${destination}`)
     await fs.ensureDir(destination)
+    console.log(`directory created: ${destination}`)
     let processedProperties = await unzipFileToDir(zipSource, destination, isTransient)
     storeCallback(processedProperties)
   } catch (err) {
@@ -27,7 +31,8 @@ function createUnzipDestination(zipSource) {
 async function unzipFileToDir(zipSource, unzipDestination, isTransient) {
   let processed = {json: [], resource: [], md: []}
   await fs.createReadStream(zipSource).pipe(unzipper.Parse()).pipe(etl.map(async entry => {
-    let fileDestination = `${unzipDestination}/${entry.path}`
+    let fileDestination = path.join(unzipDestination, entry.path)
+    console.log(`file destination is: ${fileDestination}`)
     await processStream(entry, processed, fileDestination)
   })).promise()
   validateMdFile(processed)
@@ -49,36 +54,47 @@ async function getDataPackageJson(processed) {
 }
 
 async function processStream(entry, processed, fileDestination) {
-  for (const ignore of ['__MACOSX']) {
-    if (fileDestination.includes(ignore)) {
-      await cleanUp(entry, fileDestination)
-    } else {
-      switch (path.extname(entry.path)) {
-        case '.csv':
-        case '.tsv':
-          await fs.ensureFile(fileDestination)
-          await unzippedEntryToFile(entry, fileDestination)
-          processed.resource.push(entry.path)
-          break
-        case '.json':
-          await fs.ensureFile(fileDestination)
-          await unzippedEntryToFile(entry, fileDestination)
-          processed.json.push(fileDestination)
-          processed.parentFolders = path.dirname(entry.path)
-          break
-        case '.md':
-          await fs.ensureFile(fileDestination)
-          await unzippedEntryToFile(entry, fileDestination)
-          let textMd = await stringify(fileDestination)
-          setProvenance(textMd)
-          processed.md.push(fileDestination)
-          break
-        default:
-          entry.autodrain()
-          break
-      }
+  console.log(`entry path is ${entry.path}`)
+  console.log(`file destination is: ${fileDestination}`)
+  if (isIgnored(fileDestination)) {
+    await cleanUp(entry, fileDestination)
+  } else {
+    switch (path.extname(entry.path)) {
+      case '.csv':
+      case '.tsv':
+        await fs.ensureFile(fileDestination)
+        await unzippedEntryToFile(entry, fileDestination)
+        processed.resource.push(entry.path)
+        break
+      case '.json':
+        await fs.ensureFile(fileDestination)
+        await unzippedEntryToFile(entry, fileDestination)
+        processed.json.push(fileDestination)
+        processed.parentFolders = path.dirname(entry.path)
+        break
+      case '.md':
+        await fs.ensureFile(fileDestination)
+        await unzippedEntryToFile(entry, fileDestination)
+        let textMd = await stringify(fileDestination)
+        setProvenance(textMd)
+        processed.md.push(fileDestination)
+        break
+      default:
+        entry.autodrain()
+        break
     }
   }
+}
+
+function isIgnored(fileDestination) {
+  let shouldIgnore = false
+  for (const ignore of _ignores) {
+    if (fileDestination.includes(ignore)) {
+      shouldIgnore = true
+      break
+    }
+  }
+  return shouldIgnore
 }
 
 async function cleanUp(entry, fileDestination) {
@@ -152,7 +168,8 @@ async function getHotIdsFromFilenames(processed, unzipDestination, isTransient =
   let dataPackageJson = processed.json[0]
   let csvTabs = {}
   for (let pathname of processed.resource) {
-    let fileDestination = `${unzipDestination}/${pathname}`
+    let fileDestination = path.join(unzipDestination, pathname)
+    console.log(`next opened tab match to `, fileDestination)
     let tabId = await getTabIdFromFilename(fileDestination)
     // every processed csv should have a matching tab
     if (!tabId) {
@@ -160,7 +177,7 @@ async function getHotIdsFromFilenames(processed, unzipDestination, isTransient =
     }
     let hotId = _.findKey(store.getters.getHotTabs, {tabId: tabId})
     // ensure csv path accounts for parent folders zipped up
-    let re = new RegExp('^' + processed.parentFolders + '/')
+    let re = new RegExp('^' + processed.parentFolders + path.sep)
     let resourcePathname = _.replace(pathname, re, '')
     csvTabs[`${resourcePathname}`] = hotId
     if (isTransient) {
