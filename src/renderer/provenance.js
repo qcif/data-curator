@@ -43,7 +43,8 @@ function compileErrors(errors, tabTitle) {
 }
 
 function errorsListToString(errors) {
+  let counter = 1
   return _.map(errors, function(error) {
-    return `${error.message}`
+    return `${counter++}. ${error.message}`
   }).join(os.EOL)
 }
