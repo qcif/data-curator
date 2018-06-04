@@ -7,7 +7,7 @@ import {
   disableAllSubMenuItemsFromMenuObject,
   enableSubMenuItemsFromMenuObject,
   enableAllSubMenuItemsFromMenuLabel
-} from './menu'
+} from './menuUtils.js'
 import {focusMainWindow, closeSecondaryWindow} from './windows.js'
 import {loadPackageJson, loadResourceDataFromPackageUrl} from './url.js'
 

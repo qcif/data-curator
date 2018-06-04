@@ -1,7 +1,7 @@
 import {ipcMain as ipc, dialog as Dialog} from 'electron'
 import XLSX from 'xlsx'
 import {createWindowTabWithData, focusOrNewSecondaryWindow, closeWindowSafely} from './windows'
-import {getSubMenuFromMenu} from './menu.js'
+import {disableOpenFileItems, enableOpenFileItems} from './menuUtils.js'
 
 export function importExcel() {
   Dialog.showOpenDialog({
@@ -18,11 +18,10 @@ export function importExcel() {
     // var first_sheet_name = workbook.SheetNames[0]
     // var worksheet = workbook.Sheets[first_sheet_name]
 
-    let shortcutsSubMenu = getSubMenuFromMenu('File', 'Open Excel Sheet...')
-    shortcutsSubMenu.enabled = false
+    disableOpenFileItems()
     let browserWindow = focusOrNewSecondaryWindow('openexcel', {width: 300, height: 150})
     browserWindow.on('closed', function () {
-      shortcutsSubMenu.enabled = true
+      enableOpenFileItems()
     })
     browserWindow.webContents.on('did-finish-load', function() {
       browserWindow.webContents.send('loadSheets', workbook.SheetNames)
