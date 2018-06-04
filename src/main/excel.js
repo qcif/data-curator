@@ -4,6 +4,7 @@ import {createWindowTabWithData, focusOrNewSecondaryWindow, closeWindowSafely} f
 import {disableOpenFileItems, enableOpenFileItems} from './menuUtils.js'
 
 export function importExcel() {
+  disableOpenFileItems()
   Dialog.showOpenDialog({
     filters: [
       {
@@ -17,8 +18,6 @@ export function importExcel() {
     var workbook = XLSX.readFile(fileName)
     // var first_sheet_name = workbook.SheetNames[0]
     // var worksheet = workbook.Sheets[first_sheet_name]
-
-    disableOpenFileItems()
     let browserWindow = focusOrNewSecondaryWindow('openexcel', {width: 300, height: 150})
     browserWindow.on('closed', function () {
       enableOpenFileItems()
