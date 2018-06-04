@@ -105,7 +105,7 @@ export function saveFile() {
 export function importDataPackage() {
   disableOpenFileItems()
   let window = focusMainWindow()
-  Dialog.showOpenDialog({
+  const result = Dialog.showOpenDialog({
     filters: [
       {
         name: '*',
@@ -114,13 +114,13 @@ export function importDataPackage() {
     ],
     properties: ['openFile']
   }, function(filename) {
+    enableOpenFileItems()
     if (filename === undefined) {
       return
     }
     if (_.isArray(filename)) {
       filename = filename[0]
     }
-    enableOpenFileItems()
     window.webContents.send('importDataPackage', filename)
   })
 }
@@ -130,13 +130,13 @@ export function openFile(format) {
   Dialog.showOpenDialog({
     filters: format.filters
   }, function(filenames) {
+    enableOpenFileItems()
     if (process.env.BABEL_ENV === 'test') {
       global.openFileDialogReturned = filenames
     }
     if (filenames === undefined || filenames.length === 0) {
       return
     }
-    enableOpenFileItems()
     readFile(filenames[0], format)
   })
 }

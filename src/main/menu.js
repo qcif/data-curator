@@ -545,7 +545,6 @@ class AppMenu {
     this.updateMenuForProduction()
     this.menu = Menu.buildFromTemplate(this.template)
   }
-
 }
 
 export {
