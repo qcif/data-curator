@@ -62,7 +62,7 @@ const HotRegister = {
       afterUpdateSettings() {
         hot.render()
       },
-      afterSelection(r, c, r2, c2, preventScrolling) {
+      afterSelection(r, c, r2, c2, preventScrolling, selectionLayerLevel) {
       // preventScrolling.value = true
         if (typeof listeners.selectionListener !== 'undefined') {
           listeners.selectionListener()
