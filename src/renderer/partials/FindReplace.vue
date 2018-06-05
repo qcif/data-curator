@@ -70,11 +70,16 @@ Vue.use(VueRx, {
 let _lastRowIndicies = []
 let _currentHotPos = [-1, -1]
 let _previousSearchClear = true
+// cannot access DEFAULT anymore - must copy (https://docs.handsontable.com/3.0.0/demo-searching.html#page-custom-callback)
+const _defaultCallback = function(instance, row, col, data, testResult) {
+  instance.getCellMeta(row, col).isSearchResult = testResult
+}
 const _searchCallback = function(instance, row, col, value, result) {
+  // const defaultCallback = instance.getCallback()
   if (!_previousSearchClear && _.indexOf(_lastRowIndicies, row) > -1) {
-    searchCallback.apply(this, arguments)
+    _defaultCallback.apply(this, arguments)
   } else if (col === _currentHotPos[1]) {
-    searchCallback.apply(this, arguments)
+    _defaultCallback.apply(this, arguments)
   }
 }
 
@@ -339,12 +344,14 @@ export default {
     },
     hotSearch: function(hot) {
       // TODO : add loading screen here
-      hot.search.query(this.findTextValue)
+      const search = hot.getPlugin('search')
+      search.query(this.findTextValue)
       hot.render()
     },
     clearPreviousHotSearch: function(hot) {
       _previousSearchClear = false
-      hot.search.query()
+      const search = hot.getPlugin('search')
+      search.query()
       _previousSearchClear = true
     },
     // hotSift: function(data, headers) {

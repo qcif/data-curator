@@ -4943,9 +4943,9 @@ handlebars@^4.0.1, handlebars@^4.0.3:
   optionalDependencies:
     uglify-js "^2.6"
 
-handsontable@^0.38.1:
-  version "0.38.1"
-  resolved "https://registry.yarnpkg.com/handsontable/-/handsontable-0.38.1.tgz#b8829ef4a82c4aad7d09472b71b6b6aa19baa6ce"
+handsontable@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/handsontable/-/handsontable-3.0.0.tgz#3e1ac839882439fc2f4f7498f5b75c98159a59b7"
   dependencies:
     moment "2.20.1"
     numbro "1.11.0"
@@ -6961,7 +6961,11 @@ moment@2.20.1:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.20.1.tgz#d6eb1a46cbcc14a2b2f9434112c1ff8907f313fd"
 
-moment@2.x, moment@^2.21.0, moment@~2.21.0:
+moment@2.x:
+  version "2.22.2"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+
+moment@^2.21.0, moment@~2.21.0:
   version "2.21.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.21.0.tgz#2a114b51d2a6ec9e6d83cf803f838a878d8a023a"
 
