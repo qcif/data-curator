@@ -6,13 +6,7 @@ const Dialog = remote.dialog
 
 const _hots = {}
 const searchCallback = Handsontable.plugins.Search.DEFAULT_CALLBACK
-const searchQueryMethod = Handsontable.plugins.Search.DEFAULT_QUERY_METHOD
-let hDom = Handsontable.dom
 
-// getFirstSelected: https://github.com/handsontable/handsontable/releases/tag/0.36.0
-Handsontable.prototype.getFirstSelected = function() {
-  return this.getFirstSelected[0]
-}
 const HotRegister = {
   register(container, listeners={}, searchParameters = false) {
     let hot = new Handsontable(container, {
@@ -45,7 +39,7 @@ const HotRegister = {
       // search: true,
       tabMoves({shiftKey}) {
         if (!shiftKey) {
-          const selection = hot.getFirstSelected()
+          const selection = hot.getSelectedLast()
           let next = hot.getCell(selection[0], selection[1] + 1)
           if (next == null) {
             hot.alter('insert_col', selection[1] + 1)
@@ -82,7 +76,7 @@ const HotRegister = {
       },
       enterMoves({shiftKey}) {
         if (!shiftKey) {
-          const selection = hot.getFirstSelected()
+          const selection = hot.getSelectedLast()
           let next = hot.getCell(selection[0] + 1, selection[1])
           if (next == null) {
             hot.alter('insert_row', selection[0] + 1)
@@ -142,49 +136,49 @@ const HotRegister = {
 
 export function getActiveSelected() {
   let activeHot = HotRegister.getActiveInstance()
-  return activeHot.getFirstSelected()
+  return activeHot.getSelectedLast()
 }
 
 export function getActiveSelectedOrHotSelectionOrMin() {
   let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getFirstSelected()
+  let currentCell = activeHot.getSelectedLast()
   if (!currentCell) {
     currentCell = store.getters.getHotSelection(store.state, store.getters)(activeHot.guid)
   }
   if (!currentCell) {
     activeHot.selectCell(0, 0)
-    currentCell = activeHot.getFirstSelected()
+    currentCell = activeHot.getSelectedLast()
   }
   return currentCell
 }
 
 export function getCurrentColumnIndexOrMin() {
   let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getFirstSelected()
+  let currentCell = activeHot.getSelectedLast()
   if (!currentCell) {
     activeHot.selectCell(0, 0)
-    currentCell = activeHot.getFirstSelected()
+    currentCell = activeHot.getSelectedLast()
   }
   return currentCell[1]
 }
 
 export function getCurrentColumnIndexOrMax() {
   let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getFirstSelected()
+  let currentCell = activeHot.getSelectedLast()
   if (!currentCell) {
     let maxCol = getColumnCount() - 1
     activeHot.selectCell(0, maxCol)
-    currentCell = activeHot.getFirstSelected()
+    currentCell = activeHot.getSelectedLast()
   }
   return currentCell[1]
 }
 
 export function reselectCurrentCellOrMin() {
   let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getFirstSelected()
+  let currentCell = activeHot.getSelectedLast()
   if (!currentCell) {
     activeHot.selectCell(0, 0)
-    currentCell = activeHot.getFirstSelected()
+    currentCell = activeHot.getSelectedLast()
   } else {
     activeHot.selectCell(currentCell[0], currentCell[1])
   }
@@ -192,10 +186,10 @@ export function reselectCurrentCellOrMin() {
 
 export function reselectCellOrMin(hotId) {
   let activeHot = HotRegister.getInstance(hotId)
-  let currentCell = activeHot.getFirstSelected()
+  let currentCell = activeHot.getSelectedLast()
   if (!currentCell) {
     activeHot.selectCell(0, 0)
-    // currentCell = activeHot.getFirstSelected()
+    // currentCell = activeHot.getSelectedLast()
   } else {
     activeHot.selectCell(currentCell[0], currentCell[1])
   }
@@ -203,7 +197,7 @@ export function reselectCellOrMin(hotId) {
 
 export function reselectCurrentCellOrMax() {
   let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getFirstSelected()
+  let currentCell = activeHot.getSelectedLast()
   if (!currentCell) {
     let maxCol = getColumnCount() - 1
     activeHot.selectCell(0, maxCol)
@@ -255,7 +249,7 @@ export function insertRowBelow() {
 
 export function insertRow(offset, mathFn) {
   let hot = getHotToInsert()
-  const range = hot.getFirstSelectedRange()
+  const range = hot.getSelectedRangeLast()
   if (typeof range !== 'undefined') {
     const selection = mathFn(range.from.row, range.to.row) + offset
     hot.alter('insert_row', selection)
@@ -273,7 +267,7 @@ export function insertColumnRight() {
 
 export function insertColumn(offset, mathFn) {
   let hot = getHotToInsert()
-  const range = hot.getFirstSelectedRange()
+  const range = hot.getSelectedRangeLast()
   if (typeof range !== 'undefined') {
     const selection = mathFn(range.from.col, range.to.col) + offset
     hot.alter('insert_col', selection)
@@ -301,7 +295,7 @@ export function removeHeaderAtIndex(hot, index) {
 
 export function removeRows() {
   let hot = HotRegister.getActiveInstance()
-  const range = hot.getFirstSelectedRange()
+  const range = hot.getSelectedRangeLast()
   if (typeof range === 'undefined') {
     return
   }
@@ -317,7 +311,7 @@ export function removeRows() {
 
 export function removeColumns() {
   let hot = HotRegister.getActiveInstance()
-  const range = hot.getFirstSelectedRange()
+  const range = hot.getSelectedRangeLast()
   if (typeof range === 'undefined') {
     return
   }
@@ -345,7 +339,5 @@ ipc.on('selectHotCell', function(event, rowCountNumber, ColCountNumber) {
 
 export {
   HotRegister,
-  searchCallback,
-  searchQueryMethod,
-  hDom
+  searchCallback
 }
