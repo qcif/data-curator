@@ -2,6 +2,7 @@ import {dialog as Dialog, BrowserWindow, ipcMain as ipc} from 'electron'
 import Fs from 'fs'
 import {enableSave, createWindowTabWithFormattedDataFile, focusMainWindow} from './windows'
 import _ from 'lodash'
+import {disableOpenFileItems, enableOpenFileItems} from './menuUtils.js'
 let path = require('path')
 
 // function makeCustomFormat(separator, delimiter) {
@@ -102,8 +103,9 @@ export function saveFile() {
 // }
 
 export function importDataPackage() {
+  disableOpenFileItems()
   let window = focusMainWindow()
-  Dialog.showOpenDialog({
+  const result = Dialog.showOpenDialog({
     filters: [
       {
         name: '*',
@@ -112,6 +114,7 @@ export function importDataPackage() {
     ],
     properties: ['openFile']
   }, function(filename) {
+    enableOpenFileItems()
     if (filename === undefined) {
       return
     }
@@ -123,9 +126,11 @@ export function importDataPackage() {
 }
 
 export function openFile(format) {
+  disableOpenFileItems()
   Dialog.showOpenDialog({
     filters: format.filters
   }, function(filenames) {
+    enableOpenFileItems()
     if (process.env.BABEL_ENV === 'test') {
       global.openFileDialogReturned = filenames
     }

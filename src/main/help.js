@@ -1,5 +1,5 @@
 import {focusOrNewSecondaryWindow} from './windows'
-import {getSubMenuFromMenu} from './menu.js'
+import {getSubMenuFromMenu} from './menuUtils.js'
 
 export function showKeyboardHelp() {
   let shortcutsSubMenu = getSubMenuFromMenu('Help', 'Keyboard Shortcuts')

@@ -98,7 +98,13 @@ export default {
     },
 
     focusErrors: function() {
-      document.querySelector('#provenance-errors-container').focus()
+      let element = document.querySelector('#provenance-errors-container')
+      if (!element) {
+        element = document.querySelector('#provenance-preview')
+      }
+      if (element) {
+        element.focus()
+      }
     }
   },
   watch: {

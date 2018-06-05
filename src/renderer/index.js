@@ -34,9 +34,9 @@ export function addHotContainerListeners(container, loadingFn, closeLoadingFn) {
   }, false)
 }
 
-export function getWindow(id) {
+export function getWindow(name, id) {
   let browserWindow
-  let windowId = remote.getGlobal('windows')[id]
+  let windowId = id || remote.getGlobal('windows')[name]
   if (windowId) {
     browserWindow = remote.BrowserWindow.fromId(windowId)
   }

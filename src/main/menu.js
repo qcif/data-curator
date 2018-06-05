@@ -4,7 +4,7 @@ import { createWindowTab, focusMainWindow } from './windows.js'
 import { importExcel } from './excel.js'
 import { showKeyboardHelp } from './help.js'
 import { fileFormats } from '../renderer/file-formats.js'
-import { shell, BrowserWindow, Menu } from 'electron'
+import { shell, Menu } from 'electron'
 
 class AppMenu {
   initTemplate () {
@@ -545,85 +545,6 @@ class AppMenu {
     this.updateMenuForProduction()
     this.menu = Menu.buildFromTemplate(this.template)
   }
-}
-
-export function getMenu (menuLabel) {
-  let menu = Menu.getApplicationMenu().items.find(x => x.label === menuLabel)
-  return menu
-}
-
-export function enableAllSubMenuItemsFromMenuLabel (menuLabel) {
-  let menu = getMenu(menuLabel)
-  enableAllSubMenuItemsFromMenuObject(menu)
-}
-
-export function enableAllSubMenuItemsFromMenuObject (menu) {
-  menu.submenu.items.forEach(function (x) {
-    x.enabled = !!x.label
-  })
-}
-
-export function disableAllSubMenuItemsFromMenuLabel (menuLabel) {
-  let menu = getMenu(menuLabel)
-  disableAllSubMenuItemsFromMenuObject(menu)
-}
-
-export function disableAllSubMenuItemsFromMenuObject (menu) {
-  menu.submenu.items.forEach(function (x) {
-    if (typeof x.label !== 'undefined') {
-      x.enabled = false
-    }
-  })
-}
-
-export function getSubMenuLabelsFromMenu (menuLabel) {
-  let menu = getMenu(menuLabel)
-  let subMenuLabels = menu.submenu.items.map(x => x.label)
-  return subMenuLabels
-}
-
-export function getSubMenuFromMenu (menuLabel, subMenuLabel) {
-  let menu = getMenu(menuLabel)
-  let subMenu = menu.submenu.items.find(x => x.label === subMenuLabel)
-  return subMenu
-}
-
-export function enableSubMenuItemsFromMenuObject (menu, labels) {
-  for (const label of labels) {
-    const subMenu = menu.submenu.items.find(x => x.label === label)
-    subMenu.enabled = true
-  }
-}
-
-export function disableSubMenuItemsFromMenuObject (menu, labels) {
-  for (const label of labels) {
-    const subMenu = menu.submenu.items.find(x => x.label === label)
-    subMenu.enabled = false
-  }
-}
-
-export function clickLabelsOnMenu (args) {
-  let menu = Menu.getApplicationMenu().items.find(x => x.label === args[0])
-  let returnLabel
-  if (menu) {
-    menu.click()
-    returnLabel = menu.label
-    if (args.length > 1) {
-      let subMenu = menu.submenu.items.find(x => x.label === args[1])
-      if (subMenu && subMenu.enabled) {
-        subMenu.click()
-        returnLabel = subMenu.label
-        if (args.length > 2) {
-          let subSubMenu = subMenu.submenu.items.find(x => x.label === args[2])
-          if (subSubMenu && subSubMenu.enabled) {
-            subSubMenu.click()
-            returnLabel = subSubMenu.label
-          }
-        }
-      }
-    }
-  }
-  return returnLabel
 }
 
 export {

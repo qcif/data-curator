@@ -3,7 +3,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import {ipcMain as ipc, dialog} from 'electron'
 import {focusOrNewSecondaryWindow, focusMainWindow, closeWindowSafely} from './windows'
-import {getSubMenuFromMenu, disableAllSubMenuItemsFromMenuObject, enableAllSubMenuItemsFromMenuObject} from './menu.js'
+import {disableOpenFileItems, enableOpenFileItems} from './menuUtils.js'
 import {Package} from 'datapackage'
 import tmp from 'tmp'
 import _ from 'lodash'
@@ -15,11 +15,10 @@ tmp.setGracefulCleanup()
 // TODO: handle errors by rejecting promises and throwing back up stack
 export function showUrlDialog() {
   // let labels = ['zip from URL....', 'zip from file...', 'json from URL...']
-  let menu = getSubMenuFromMenu('File', 'Open Data Package')
-  disableAllSubMenuItemsFromMenuObject(menu)
+  disableOpenFileItems()
   let browserWindow = focusOrNewSecondaryWindow('urldialog', {width: 300, height: 150, modal: true, alwaysOnTop: true})
   browserWindow.on('closed', () => {
-    enableAllSubMenuItemsFromMenuObject(menu)
+    enableOpenFileItems()
   })
   browserWindow.webContents.on('did-finish-load', () => {
     ipc.once('urlCancelled', () => {
@@ -64,25 +63,26 @@ export async function importDataPackageZipFromUrl(urlText) {
     const zipPath = path.join(zipDir, basename)
     fs.ensureFileSync(zipPath)
     const writable = fs.createWriteStream(zipPath)
-    let errors = false
     // close will be called automatically - just need to ensure close on error
     response.data.on('error', (error) => {
       response.data.end()
       writable.end()
       console.log(`Problem with read stream`, error)
-      errors = true
     })
     writable.on('error', (error) => {
       response.data.end()
       writable.end()
       console.log(`Problem with write stream`, error)
-      errors = true
+    })
+    // response.data.on('end', () => {
+    //   console.log('finished writing response')
+    // })
+    // do not send file path to renderer until response has completed writing
+    writable.on('close', () => {
+      mainWindow.webContents.send('closeLoadingScreen')
+      handleDownloadedZip(zipPath, mainWindow)
     })
     await response.data.pipe(writable)
-    mainWindow.webContents.send('closeLoadingScreen')
-    if (!errors) {
-      handleDownloadedZip(zipPath, mainWindow)
-    }
   } catch (error) {
     console.log(`Unable to download zip: ${urlText}`, error)
     mainWindow.webContents.send('closeLoadingScreen')
