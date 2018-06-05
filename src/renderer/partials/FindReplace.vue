@@ -48,7 +48,6 @@ import AsyncComputed from 'vue-async-computed'
 import {
   HotRegister,
   searchCallback,
-  searchQueryMethod,
   getActiveSelectedOrHotSelectionOrMin
 } from '../hot.js'
 import VueRx from 'vue-rx'
@@ -231,7 +230,7 @@ export default {
         this.replaceData = hot.getData()
       }
       // console.timeEnd()
-      const selectedCoords = hot.getSelected()
+      const selectedCoords = hot.getSelectedLast()
       if (selectedCoords) {
         const row = selectedCoords[0]
         const col = selectedCoords[1]

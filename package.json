@@ -22,7 +22,7 @@
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "postinstall": "electron-builder install-app-deps",
     "test-main": "mocha-webpack --webpack-config .electron-vue/webpack.test.config.js --glob *_spec.js test/main/specs",
-    "test": "yarn run unit && yarn run e2e",
+    "test": "(yarn run unit || yarn -v) && yarn run e2e",
     "unit": "karma start test/unit/karma.conf.js",
     "e2e": "yarn run pack && (yarn run cucumber:postpack:impl || yarn -v) && yarn run cucumber:report",
     "e2e:dev": "(yarn run cucumber:postpack:dev || yarn -v) && yarn run cucumber:report",
