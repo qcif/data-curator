@@ -80,7 +80,7 @@ ipc.on('loadPackageUrlResourcesAsFkRelations', async function(event, url, resour
       title: 'Problem loading data package url',
       message: errorMessage
     })
-    console.log(errorMessage, error)
+    console.error(errorMessage, error)
   }
 })
 

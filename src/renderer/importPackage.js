@@ -17,7 +17,7 @@ export async function unzipFile(zipSource, storeCallback, isTransient) {
     let processedProperties = await unzipFileToDir(zipSource, destination, isTransient)
     storeCallback(processedProperties)
   } catch (err) {
-    console.log(`Error processing zip source: ${zipSource}`, err)
+    console.error(`Error processing zip source: ${zipSource}`, err)
     return err.message
   }
 }
