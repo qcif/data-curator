@@ -525,7 +525,7 @@ export default {
     selectionListener: function() {
       let hot = HotRegister.getActiveInstance()
       this.unhighlightPersistedSelection(hot)
-      let selected = hot.getSelected()
+      let selected = hot.getSelectedLast()
       // with deselectOutsideHot set to true, we need to track last selection.
       this.pushHotSelection({hotId: hot.guid, selected: selected})
       console.log(`selected is`, selected)
@@ -720,6 +720,7 @@ export default {
           loadData(activeHotId, data, format, self.closeLoadingScreen)
           getCurrentColumnIndexOrMin()
         } catch (error) {
+          console.error('ERROR: load data problem: ', error)
           ipc.send('dataParsingError')
         }
       }, 1)
