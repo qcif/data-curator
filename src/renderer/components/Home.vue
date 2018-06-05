@@ -528,6 +528,7 @@ export default {
       let selected = hot.getSelected()
       // with deselectOutsideHot set to true, we need to track last selection.
       this.pushHotSelection({hotId: hot.guid, selected: selected})
+      console.log(`selected is`, selected)
       this.updateActiveColumn(selected)
     },
     inferColumnProperties: async function() {
