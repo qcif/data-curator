@@ -20,7 +20,7 @@ export function addHotContainerListeners(container, loadingFn, closeLoadingFn) {
     loadingFn('Loading data. Please wait...')
     fs.readFile(f.path, 'utf-8', function(err, data) {
       if (err) {
-        console.log(err)
+        console.error(err)
       }
       let hot = HotRegister.getActiveInstance()
       // if we're dragging a file in, default the format to comma-separated
@@ -48,7 +48,7 @@ export function loadData(key, data, format, closeLoadingFn) {
   try {
     loadDataIntoHot(hot, data, format)
   } catch (error) {
-    console.log('error in parse', error)
+    console.error('error in parse', error)
     ipc.send('dataParsingError')
     closeLoadingFn()
   }

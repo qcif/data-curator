@@ -124,7 +124,7 @@ async function collatePackageForeignKeys(foreignKey) {
     let rows = await ipc.sendSync('loadPackageUrlResourcesAsFkRelations', foreignKey.reference.package, foreignKey.reference.resource)
     return rows
   } catch (error) {
-    console.log('There was an error in creating package foreign keys', error)
+    console.error('There was an error in creating package foreign keys', error)
   }
 }
 
@@ -214,7 +214,7 @@ export async function validateActiveDataAgainstSchema(callback) {
     relations = await collateForeignKeys(hotId, callback)
     // console.log('have relations', relations)
   } catch (error) {
-    console.log(error)
+    console.error(error)
     errorHandler({message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`, name: 'Invalid foreign table(s)'})
     // errorHandler({message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`, name: 'Invalid foreign table(s)'}, null, errorCollector)
     // errorCollector.push({message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`, name: 'Invalid foreign table(s)'})

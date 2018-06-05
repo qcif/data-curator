@@ -528,7 +528,6 @@ export default {
       let selected = hot.getSelectedLast()
       // with deselectOutsideHot set to true, we need to track last selection.
       this.pushHotSelection({hotId: hot.guid, selected: selected})
-      console.log(`selected is`, selected)
       this.updateActiveColumn(selected)
     },
     inferColumnProperties: async function() {
@@ -537,7 +536,7 @@ export default {
         this.messagesType = 'feedback'
         this.messagesTitle = 'Guess column properties'
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     },
     // TODO: tidy up message objects
@@ -583,7 +582,7 @@ export default {
         await validateActiveDataAgainstSchema(this.reportValidationSuccess)
         console.timeEnd('startIteration')
       } catch (err) {
-        console.log('There was an error(s) validating table.', err)
+        console.error('There was an error(s) validating table.', err)
       }
     },
     // resetMessagesForStreamingErrors: function() {
@@ -622,7 +621,7 @@ export default {
           this.exportPackageFeedback()
         }
       } catch (err) {
-        console.log('There was an error creating a data package.', err)
+        console.error('There was an error creating a data package.', err)
       }
     },
     latestHotContainer: function() {
@@ -847,7 +846,7 @@ export default {
       if (selected) {
         this.currentColumnIndex = selected[1]
       } else {
-        console.log('Cannot update active column without a column selected.')
+        console.error('Cannot update active column without a column selected.')
       }
     },
     updateToolbarMenuForButton: function(index) {
@@ -864,7 +863,7 @@ export default {
           this.inferColumnProperties()
           break
         default:
-          console.log(`Error: No case exists for menu index: ${index}`)
+          console.error(`Error: No case exists for menu index: ${index}`)
       }
     },
     updateToolbarMenu: function(index) {
@@ -1086,7 +1085,7 @@ export default {
         // reselectCellOrMin(hotId)
         this.reselectHotCell()
       } catch (err) {
-        console.log('Problem with getting hot id from watched tab', err)
+        console.error('Problem with getting hot id from watched tab', err)
       }
       this.closeMessages()
       this.sendErrorsToErrorsWindow()

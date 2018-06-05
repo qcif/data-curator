@@ -29,7 +29,7 @@ export function showUrlDialog() {
       try {
         handleZipOrJson(urlText)
       } catch (error) {
-        console.log(`There was a problem loading package or resource(s)`, error)
+        console.error(`There was a problem loading package or resource(s)`, error)
         const mainWindow = focusMainWindow()
         mainWindow.webContents.send('closeLoadingScreen')
       }
@@ -67,12 +67,12 @@ export async function importDataPackageZipFromUrl(urlText) {
     response.data.on('error', (error) => {
       response.data.end()
       writable.end()
-      console.log(`Problem with read stream`, error)
+      console.error(`Problem with read stream`, error)
     })
     writable.on('error', (error) => {
       response.data.end()
       writable.end()
-      console.log(`Problem with write stream`, error)
+      console.error(`Problem with write stream`, error)
     })
     // response.data.on('end', () => {
     //   console.log('finished writing response')
@@ -84,7 +84,7 @@ export async function importDataPackageZipFromUrl(urlText) {
     })
     await response.data.pipe(writable)
   } catch (error) {
-    console.log(`Unable to download zip: ${urlText}`, error)
+    console.error(`Unable to download zip: ${urlText}`, error)
     mainWindow.webContents.send('closeLoadingScreen')
   }
 }
@@ -116,7 +116,7 @@ async function loadPackageFromJsonUrl(urlText) {
   try {
     await loadResources(dataPackageJson, mainWindow)
   } catch (error) {
-    console.log('There was a problem loading package from json', error)
+    console.error('There was a problem loading package from json', error)
   }
 }
 
