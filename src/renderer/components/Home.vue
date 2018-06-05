@@ -187,7 +187,7 @@ import {ipcRenderer as ipc, remote} from 'electron'
 import 'lodash/lodash.min.js'
 import {unzipFile} from '@/importPackage.js'
 import {toggleHeaderWithFeedback} from '@/headerRow.js'
-import {onNextHotIdFromTabRx, hotIdFromTab$, provenanceErrors$} from '@/rxSubject.js'
+import {onNextHotIdFromTabRx, hotIdFromTab$, provenanceErrors$, errorFeedback$} from '@/rxSubject.js'
 import VueRx from 'vue-rx'
 import {
   Subscription
@@ -250,6 +250,7 @@ export default {
       previousComments: [],
       errorsWindowId: null,
       activeSelected: [],
+      commentsPlugin: null,
       persistColorFn: this.highlightPersistedSelection,
       toolbarMenus: [{
         name: 'Guess',
@@ -488,16 +489,24 @@ export default {
       this.updateCellsFromHotRange(hot, range, fn)
     },
     updateCellsFromHotRange: function(hot, range, fn) {
+      console.time('updateCells')
+      console.log(range)
       // before we select cell for errors, check if there is a current selection made
       hot.selectCell(range.from.row, range.from.col, range.to.row, range.to.col)
       let elements = this.getHighlightedAreaOrCellSelectors()
       hot.deselectCell()
+      console.timeEnd('updateCells')
+      // console.log('applying update cells function...', fn)
+      console.time('applyColour')
       for (let element of elements) {
         fn(element)
       }
+      console.timeEnd('applyColour')
+
       // hot.deselectCell()
     },
     getHighlightedAreaOrCellSelectors: function() {
+      console.log('getting highlights')
       let elements = document.querySelectorAll('.highlight')
       return elements
     },
@@ -532,6 +541,8 @@ export default {
     },
     // TODO: tidy up message objects
     reportValidationRowErrors: function(errorCollection) {
+      console.log(`reporting validation errors...`)
+      console.log(errorCollection)
       if (errorCollection.length > 0) {
         this.messagesTitle = 'Validation Errors'
         this.messages = errorCollection
@@ -542,13 +553,41 @@ export default {
         this.messagesType = 'feedback'
       }
     },
+    reportValidationSuccess: function() {
+      if (this.messagesType !== 'error') {
+        this.messagesTitle = 'Validation Success'
+        this.messages = 'No validation errors reported.'
+        this.messagesType = 'feedback'
+      }
+    },
     validateTable: async function() {
       try {
-        await validateActiveDataAgainstSchema(this.reportValidationRowErrors)
+        // console.time('initMessages')
+        // reset errors first
+        console.time('getError')
+        this.closeMessages()
+        this.messages = []
+        // console.timeEnd('initMessages')
+        // console.time('comments init')
+        let hot = HotRegister.getInstance(this.currentHotId)
+        this.commentsPlugin = hot.getPlugin('comments')
+        this.removePreviousHotComments(this.commentsPlugin)
+        // console.timeEnd('comments init')
+        this.messagesTitle = 'Validation Errors'
+        this.messagesType = 'error'
+        // this.messages = []
+        // this.$forceUpdate()
+        // await validateActiveDataAgainstSchema(this.reportValidationRowErrors)
+        console.time('startIteration')
+        await validateActiveDataAgainstSchema(this.reportValidationSuccess)
+        console.timeEnd('startIteration')
       } catch (err) {
         console.log('There was an error(s) validating table.', err)
       }
     },
+    // resetMessagesForStreamingErrors: function() {
+    //
+    // },
     storeResetCallback: function(allProperties) {
       this.resetPackagePropertiesToObject(allProperties.package)
       this.resetTablePropertiesToObject(allProperties.tables)
@@ -569,6 +608,7 @@ export default {
       this.messagesTitle = 'Export package error'
       this.messages = errorMessages
       this.messagesType = 'error'
+      this.updateHotComments()
     },
     createPackage: async function() {
       try {
@@ -892,6 +932,15 @@ export default {
         this.closeMessages()
       }
     },
+    updateHotComments: function() {
+      let hot = HotRegister.getActiveInstance()
+      let commentsPlugin = hot.getPlugin('comments')
+      this.removePreviousHotComments(commentsPlugin)
+      if (this.messagesType === 'error') {
+        console.log('sending to hot comments')
+        this.setHotComments(commentsPlugin, hot)
+      }
+    },
     removePreviousHotComments: function(commentsPlugin) {
       for (const previousComment of this.previousComments) {
         commentsPlugin.removeCommentAtCell(previousComment.row, previousComment.col)
@@ -900,7 +949,9 @@ export default {
       this.previousComments = []
     },
     setHotComments: function(commentsPlugin, hot) {
+      // console.log('inside hot comments setter')
       for (const errorMessage of this.messages) {
+        // console.log(`error message`, errorMessage)
         let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
         commentsPlugin.setRange(range)
         commentsPlugin.setComment(errorMessage.message)
@@ -908,6 +959,19 @@ export default {
         // wait for hot to update cells with comment class
         _.delay(this.updateCellsFromHotRange, 100, hot, range, this.addErrorHighlightStyle)
       }
+    },
+    setHotComment: function(commentsPlugin, errorMessage) {
+      const hot = HotRegister.getActiveInstance(this.currentHotId)
+      // console.log('inside hot comments single setter')
+      // for (const errorMessage of this.messages) {
+      // console.log(`error message`, errorMessage)
+      let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
+      commentsPlugin.setRange(range)
+      commentsPlugin.setComment(errorMessage.message)
+      this.previousComments.push({row: range.from.row, col: range.from.col})
+      // wait for hot to update cells with comment class
+      _.delay(this.updateCellsFromHotRange, 100, hot, range, this.addErrorHighlightStyle)
+      // }
     },
     getCellOrRowFromCount: function(hot, row, column) {
       let rowIndex = this.transformCountToIndex(row)
@@ -1032,15 +1096,14 @@ export default {
       this.testBottomMain()
     },
     messages: function() {
-      let hot = HotRegister.getActiveInstance()
-      let commentsPlugin = hot.getPlugin('comments')
-      this.removePreviousHotComments(commentsPlugin)
-      if (this.messagesType === 'error') {
-        this.setHotComments(commentsPlugin, hot)
-      }
+      console.log(`triggered watch for messages`)
+      console.log(`messages are: `, this.messages)
+      // this.updateHotComments()
       if (this.messages) {
+        console.log('sending to errors window')
         this.sendErrorsToErrorsWindow()
       }
+      console.log('completed watch')
     }
   },
   mounted: function() {
@@ -1141,6 +1204,16 @@ export default {
     ipc.on('resetPackagePropertiesToObject', function(event, packageProperties) {
       self.resetPackagePropertiesToObject(packageProperties)
     })
+    this.$subscribeTo(errorFeedback$, function(nextError) {
+      // console.time('receiveSubscription')
+      self.messages.push(nextError)
+      // console.timeEnd('receiveSubscription')
+      // console.log('comments plugin is...', self.commentsPlugin)
+      console.timeEnd('getError')
+      console.time('setComment')
+      self.setHotComment(self.commentsPlugin, nextError)
+      console.timeEnd('setComment')
+    })
   },
   beforeCreate: function() {
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
@@ -1155,15 +1228,12 @@ export default {
   },
   created: function() {
     let self = this
-    // const vueGuessProperties = this.inferColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       self.inferColumnProperties()
     })
-    // const vueImportDataPackage = this.importDataPackage
     ipc.on('importDataPackage', function(event, filePath, isTransient = false) {
       self.importDataPackage(filePath, isTransient)
     })
-    // const vueValidateTable = this.validateTable
     ipc.on('validateTable', function(event, arg) {
       self.validateTable()
     })
