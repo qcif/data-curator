@@ -136,38 +136,31 @@ function duplicatesCount(row) {
   return row.length - uniques.size
 }
 
-// function checkHeaderErrors(headers, errorCollector) {
 function checkHeaderErrors(headers) {
   // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
   if (isRowBlank(headers)) {
-    // errorHandler({message: `Headers are completely blank`, name: 'Blank Row'}, null, errorCollector)
     errorHandler({message: `Headers are completely blank`, name: 'Blank Row'})
   } else {
     let diff = blankCellCount(headers)
     if (diff > 0) {
-      // errorHandler({message: `There are ${diff} blank header(s)`, name: 'Blank Header'}, null, errorCollector)
       errorHandler({message: `There are ${diff} blank header(s)`, name: 'Blank Header'})
     }
     let diff2 = duplicatesCount(headers)
     if (diff2 > 0) {
-      // errorHandler({message: `There are ${diff2} duplicate header(s)`, name: 'Duplicate Header'}, null, errorCollector)
       errorHandler({message: `There are ${diff2} duplicate header(s)`, name: 'Duplicate Header'})
     }
   }
 }
 
 export async function validateActiveDataAgainstSchema(callback) {
-  // console.time('initValidation')
   let hot = HotRegister.getActiveInstance()
   let hotId = hot.guid
   if (!hasColumnProperties(hotId, callback)) {
     return
   }
   const data = includeHeadersInData(hot)
-  // const errorCollector = []
   // ensure headers not lost from data
   const headers = data[0]
-  // checkHeaderErrors(headers, errorCollector)
   checkHeaderErrors(headers)
   let schema = await buildSchema(data, hotId)
   let table = await createFrictionlessTable(data, schema)
@@ -189,24 +182,19 @@ export async function validateActiveDataAgainstSchema(callback) {
   })
   stream.on('data', (row) => {
     if (row instanceof Error) {
-      // errorHandler(row, row.rowNumber, errorCollector)
       errorHandler(row, row.rowNumber)
     } else {
       if (isRowBlank(row[2])) {
-        // errorHandler({message: `Row ${row[0]} is completely blank`, name: 'Blank Row'}, row[0], errorCollector)
         errorHandler({message: `Row ${row[0]} is completely blank`, name: 'Blank Row'}, row[0])
       }
     }
   })
   stream.on('error', (error) => {
-    // errorHandler(error, error.rowNumber, errorCollector)
     errorHandler(error, error.rowNumber)
     // ensure error sent back
     stream.end()
   })
   stream.on('end', () => {
-    // console.timeEnd('initValidation')
-    // callback(errorCollector)
     callback()
   })
 }
@@ -214,33 +202,25 @@ export async function validateActiveDataAgainstSchema(callback) {
 function hasColumnProperties(hotId, callb) {
   let columnProperties = store.state.hotTabs[hotId].columnProperties
   if (!columnProperties || columnProperties.length === 0) {
-    callb([
-      {
-        message: `Column properties, including the column properties of any foreign keys, must be set.`,
-        name: 'No Column Properties'
-      }
-    ])
+    errorHandler({message: `Column properties, including the column properties of any foreign keys, must be set.`,
+      name: 'No Column Properties'})
+    callb()
     return false
   }
   let names = getValidNames(hotId)
   if (!hasAllColumnNames(hotId, columnProperties, names)) {
-    callb([
-      {
-        message: `Every Column property, including the column properties of any foreign keys, must have a unique 'name'.`,
-        name: 'Missing Column Property names'
-      }
-    ])
+    errorHandler({message: `Every Column property, including the column properties of any foreign keys, must have a unique 'name'.`,
+      name: 'Missing Column Property names'})
+    callb()
     return false
   }
   return true
 }
 
-// function errorHandler(err, rowNumber, errorCollector) {
 function errorHandler(err, rowNumber) {
   if (err.multiple) {
     for (const error of err.errors) {
       errorFeedback$.next({
-      // errorCollector.push({
         columnNumber: error.columnNumber,
         rowNumber: error.rowNumber || rowNumber,
         message: error.message,
@@ -249,7 +229,6 @@ function errorHandler(err, rowNumber) {
     }
   } else {
     errorFeedback$.next({
-    // errorCollector.push({
       columnNumber: err.columnNumber,
       rowNumber: rowNumber,
       message: err.message,
