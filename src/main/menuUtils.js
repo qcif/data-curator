@@ -123,7 +123,7 @@ export function applyFnsToLabelsFromMenuLabel(menuLabel, labels, subMenuFn, menu
           menuItemFn(next)
           break
         default:
-          console.log(`skipping `, next.type)
+          // console.log(`skipping `, next.type)
       }
     }
   }
@@ -143,7 +143,7 @@ export function getSubMenusAndItemsFromMenu (menu) {
         menuItemsOnly.push(next)
         break
       default:
-        console.log(`skipping `, next.type)
+        // console.log(`skipping `, next.type)
     }
   }
   return {subMenusOnly, menuItemsOnly}

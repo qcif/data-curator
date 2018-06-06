@@ -187,7 +187,7 @@ import {ipcRenderer as ipc, remote} from 'electron'
 import 'lodash/lodash.min.js'
 import {unzipFile} from '@/importPackage.js'
 import {toggleHeaderWithFeedback} from '@/headerRow.js'
-import {onNextHotIdFromTabRx, hotIdFromTab$, provenanceErrors$} from '@/rxSubject.js'
+import {onNextHotIdFromTabRx, hotIdFromTab$, provenanceErrors$, errorFeedback$} from '@/rxSubject.js'
 import VueRx from 'vue-rx'
 import {
   Subscription
@@ -482,11 +482,6 @@ export default {
       let range = this.getCellOrRowFromCount(hot, row, column)
       this.updateCellsFromHotRange(hot, range, fn)
     },
-    updateCellsFromIndex: function(row, column, fn) {
-      let hot = HotRegister.getActiveInstance()
-      let range = this.getCellOrRowFromIndex(hot, row, column)
-      this.updateCellsFromHotRange(hot, range, fn)
-    },
     updateCellsFromHotRange: function(hot, range, fn) {
       // before we select cell for errors, check if there is a current selection made
       hot.selectCell(range.from.row, range.from.col, range.to.row, range.to.col)
@@ -516,7 +511,7 @@ export default {
     selectionListener: function() {
       let hot = HotRegister.getActiveInstance()
       this.unhighlightPersistedSelection(hot)
-      let selected = hot.getSelected()
+      let selected = hot.getSelectedLast()
       // with deselectOutsideHot set to true, we need to track last selection.
       this.pushHotSelection({hotId: hot.guid, selected: selected})
       this.updateActiveColumn(selected)
@@ -527,26 +522,45 @@ export default {
         this.messagesType = 'feedback'
         this.messagesTitle = 'Guess column properties'
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     },
-    // TODO: tidy up message objects
-    reportValidationRowErrors: function(errorCollection) {
-      if (errorCollection.length > 0) {
+    reportValidationSuccess: function() {
+      if (this.messages.length > 0) {
         this.messagesTitle = 'Validation Errors'
-        this.messages = errorCollection
         this.messagesType = 'error'
+        const hot = HotRegister.getInstance(this.currentHotId)
+        this.setHotComments(hot)
+        hot.updateSettings({cell: this.previousComments})
       } else {
         this.messagesTitle = 'Validation Success'
         this.messages = 'No validation errors reported.'
         this.messagesType = 'feedback'
       }
+      this.closeLoadingScreen()
+    },
+    errorHtmlRenderer: function(instance, td, row, col, prop, value, cellProperties) {
+      td.style.backgroundColor = this.errorColor
+      return td
     },
     validateTable: async function() {
+      this.loadingDataMessage = 'Validating Table...'
+      let self = this
+      _.delay(function() {
+        self.validateTableCore()
+      }, 100)
+    },
+    validateTableCore: async function() {
       try {
-        await validateActiveDataAgainstSchema(this.reportValidationRowErrors)
+        this.closeMessages()
+        this.messages = []
+        let hot = HotRegister.getInstance(this.currentHotId)
+        this.removePreviousHotComments(hot)
+        await validateActiveDataAgainstSchema(this.reportValidationSuccess)
       } catch (err) {
-        console.log('There was an error(s) validating table.', err)
+        console.error('There was an error(s) validating table.', err)
+      } finally {
+        this.closeLoadingScreen()
       }
     },
     storeResetCallback: function(allProperties) {
@@ -569,6 +583,7 @@ export default {
       this.messagesTitle = 'Export package error'
       this.messages = errorMessages
       this.messagesType = 'error'
+      this.updateHotComments()
     },
     createPackage: async function() {
       try {
@@ -581,7 +596,7 @@ export default {
           this.exportPackageFeedback()
         }
       } catch (err) {
-        console.log('There was an error creating a data package.', err)
+        console.error('There was an error creating a data package.', err)
       }
     },
     latestHotContainer: function() {
@@ -608,21 +623,19 @@ export default {
       this.closeLoadingScreen()
       this.showLoadingScreen(message, errorMessage)
     },
-    showLoadingScreen: function(message, errorMessage) {
+    showLoadingScreen: function(message, errorMessage, timeout) {
       this.loadingDataMessage = message
       // set timeout for loading screen
-      this.initLoadingScreenTimeout(errorMessage)
+      this.initLoadingScreenTimeout(errorMessage, timeout)
     },
-    initLoadingScreenTimeout: function(errorMessage) {
+    initLoadingScreenTimeout: function(errorMessage, timeout = 30000) {
       let self = this
-      // const vueCloseLoadingScreen = this.closeLoadingScreen
-      // const vueIsLoadingMessageRunning = this.isLoadingMessageRunning
       _.delay(function() {
         if (self.isLoadingMessageRunning()) {
           self.closeLoadingScreen()
           ipc.send('loadingScreenTimeout', errorMessage)
         }
-      }, 30000)
+      }, timeout)
     },
     closeLoadingScreen: function() {
       this.loadingDataMessage = false
@@ -679,6 +692,7 @@ export default {
           loadData(activeHotId, data, format, self.closeLoadingScreen)
           getCurrentColumnIndexOrMin()
         } catch (error) {
+          console.error('ERROR: load data problem: ', error)
           ipc.send('dataParsingError')
         }
       }, 1)
@@ -805,7 +819,7 @@ export default {
       if (selected) {
         this.currentColumnIndex = selected[1]
       } else {
-        console.log('Cannot update active column without a column selected.')
+        console.error('Cannot update active column without a column selected.')
       }
     },
     updateToolbarMenuForButton: function(index) {
@@ -822,7 +836,7 @@ export default {
           this.inferColumnProperties()
           break
         default:
-          console.log(`Error: No case exists for menu index: ${index}`)
+          console.error(`Error: No case exists for menu index: ${index}`)
       }
     },
     updateToolbarMenu: function(index) {
@@ -892,22 +906,29 @@ export default {
         this.closeMessages()
       }
     },
-    removePreviousHotComments: function(commentsPlugin) {
-      for (const previousComment of this.previousComments) {
-        commentsPlugin.removeCommentAtCell(previousComment.row, previousComment.col)
-        this.updateCellsFromIndex(previousComment.row, previousComment.col, this.removeErrorHighlightStyle)
+    updateHotComments: function() {
+      let hot = HotRegister.getActiveInstance()
+      this.removePreviousHotComments(hot)
+      if (this.messagesType === 'error') {
+        this.setHotComments(hot)
       }
+    },
+    removePreviousHotComments: function(hot) {
+      for (const previousComment of this.previousComments) {
+        _.unset(previousComment, 'comment')
+        _.unset(previousComment, 'renderer')
+      }
+      hot.updateSettings({cell: this.previousComments})
       this.previousComments = []
     },
-    setHotComments: function(commentsPlugin, hot) {
+    setHotComments: function(hot) {
       for (const errorMessage of this.messages) {
-        let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
-        commentsPlugin.setRange(range)
-        commentsPlugin.setComment(errorMessage.message)
-        this.previousComments.push({row: range.from.row, col: range.from.col})
-        // wait for hot to update cells with comment class
-        _.delay(this.updateCellsFromHotRange, 100, hot, range, this.addErrorHighlightStyle)
+        this.setHotComment(hot, errorMessage)
       }
+    },
+    setHotComment: function(hot, errorMessage) {
+      let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
+      this.previousComments.push({row: range.from.row, col: range.from.col, comment: {value: errorMessage.message}, renderer: this.errorHtmlRenderer})
     },
     getCellOrRowFromCount: function(hot, row, column) {
       let rowIndex = this.transformCountToIndex(row)
@@ -1017,10 +1038,9 @@ export default {
       try {
         let hotId = await this.getHotIdFromTabId(tabId)
         this.currentHotId = hotId
-        // reselectCellOrMin(hotId)
         this.reselectHotCell()
       } catch (err) {
-        console.log('Problem with getting hot id from watched tab', err)
+        console.error('Problem with getting hot id from watched tab', err)
       }
       this.closeMessages()
       this.sendErrorsToErrorsWindow()
@@ -1032,12 +1052,6 @@ export default {
       this.testBottomMain()
     },
     messages: function() {
-      let hot = HotRegister.getActiveInstance()
-      let commentsPlugin = hot.getPlugin('comments')
-      this.removePreviousHotComments(commentsPlugin)
-      if (this.messagesType === 'error') {
-        this.setHotComments(commentsPlugin, hot)
-      }
       if (this.messages) {
         this.sendErrorsToErrorsWindow()
       }
@@ -1045,8 +1059,6 @@ export default {
   },
   mounted: function() {
     let self = this
-    // const vueGoToCell = this.goToCell
-    // const vueNextTick = this.$nextTick
     // request may be coming from another page - get focus first
     ipc.on('showErrorCell', async function(event, arg) {
       await ipc.send('focusMainWindow')
@@ -1055,27 +1067,21 @@ export default {
         self.goToCell(arg.row, arg.column)
       }, 100, arg)
     })
-    // const vueSendErrorsToErrorsWindow = this.sendErrorsToErrorsWindow
     ipc.on('getErrorMessages', function(event, arg) {
       self.sendErrorsToErrorsWindow(arg)
     })
-    // const vueHoverToSelectErrorCell = this.hoverToSelectErrorCell
     ipc.on('hoverToSelectErrorCell', function(event, arg) {
       self.hoverToSelectErrorCell(arg.rowNumber, arg.columnNumber)
     })
-    // const vueExitHoverToSelectErrorCell= this.exitHoverToSelectErrorCell
     ipc.on('exitHoverToSelectErrorCell', function(event, arg) {
       self.exitHoverToSelectErrorCell(arg.rowNumber, arg.columnNumber)
     })
-    // const vueTriggerMenuButton = this.triggerMenuButton
     ipc.on('triggerMenuButton', function(event, arg) {
       self.triggerMenuButton(arg)
     })
-    // const vueToggleHeader = this.toggleHeader
     ipc.on('toggleActiveHeaderRow', function() {
       self.toggleHeader()
     })
-    // const vueAddTab = this.addTab
     ipc.on('addTab', function() {
       self.addTab()
     })
@@ -1088,22 +1094,18 @@ export default {
     ipc.on('addTabWithFormattedDataAndDescriptor', function(e, data, format, descriptor) {
       self.addTab(data, format, descriptor)
     })
-    // const vueAddTabWithFilename = this.addTabWithFilename
     ipc.on('addTabWithFormattedDataFile', function(e, data, format, filename) {
       self.addTabWithFilename(data, format, filename)
     })
-    // const vueTriggerSideNav = this.triggerSideNav
     ipc.on('showSidePanel', function(event, arg1, arg2) {
       self.triggerSideNav({
         sideNavView: arg1,
         title: arg2 || arg1
       })
     })
-    // const vueForceUpdate = this.forceWrapper
     ipc.on('saveDataSuccess', function(e, format, fileName) {
       self.$forceUpdate()
     })
-    // const vueAdjustSidenavFormHeight = this.adjustSidenavFormHeight
     ipc.on('resized', function() {
       self.adjustSidenavFormHeight()
       let hot = HotRegister.getActiveInstance()
@@ -1111,7 +1113,6 @@ export default {
     })
     this.$nextTick(function() {
       require('../index.js')
-      // const vueSetTabsOrder = this.setTabsOrder
       Sortable.create(csvTab, {
         animation: 150,
         onSort: function(evt) {
@@ -1125,21 +1126,20 @@ export default {
       this.closeSideNav()
       this.addTab()
     })
-    // const vueShowProvenanceErrors = this.showProvenanceErrors
     ipc.on('showProvenanceErrors', function(event, arg) {
       self.showProvenanceErrors()
     })
-    // const vueShowLoadingScreen = this.showLoadingScreen
-    // const vueCloseLoadingScreen = this.closeLoadingScreen
     ipc.on('closeAndshowLoadingScreen', function(event, message) {
       self.closeAndShowLoadingScreen(message)
     })
     ipc.on('closeLoadingScreen', function(event) {
       self.closeLoadingScreen()
     })
-    // const vueResetPackagePropertiesToObject = this.resetPackagePropertiesToObject
     ipc.on('resetPackagePropertiesToObject', function(event, packageProperties) {
       self.resetPackagePropertiesToObject(packageProperties)
+    })
+    this.$subscribeTo(errorFeedback$, function(nextError) {
+      self.messages.push(nextError)
     })
   },
   beforeCreate: function() {
@@ -1155,15 +1155,12 @@ export default {
   },
   created: function() {
     let self = this
-    // const vueGuessProperties = this.inferColumnProperties
     ipc.on('guessColumnProperties', function(event, arg) {
       self.inferColumnProperties()
     })
-    // const vueImportDataPackage = this.importDataPackage
     ipc.on('importDataPackage', function(event, filePath, isTransient = false) {
       self.importDataPackage(filePath, isTransient)
     })
-    // const vueValidateTable = this.validateTable
     ipc.on('validateTable', function(event, arg) {
       self.validateTable()
     })

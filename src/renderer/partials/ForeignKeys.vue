@@ -267,7 +267,7 @@ export default {
         this.localHeaderNames.push(...headerNames)
         this.$forceUpdate()
       } catch (err) {
-        console.log(`There was a problem updating subscriptions.`, err)
+        console.error(`There was a problem updating subscriptions.`, err)
       }
     },
     updateTableSubscriptions: function(allTabsTitles) {
@@ -381,7 +381,7 @@ export default {
         }
         return true
       } catch (err) {
-        console.log('Problem with validation', err)
+        console.error('Problem with validation', err)
         return false
       }
     },
@@ -428,7 +428,7 @@ export default {
           }
         }
       } catch (error) {
-        console.log('There was a problem with populating fk components', error)
+        console.error('There was a problem with populating fk components', error)
       }
     }
   },
