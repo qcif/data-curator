@@ -110,7 +110,7 @@ export default {
           this.$validator.errors.add({field: field, msg: 'The path field must be a valid url or path.'})
         }
       } catch (err) {
-        console.log('Problem with validation', err)
+        console.error('Problem with validation', err)
       }
     },
     validateUrl: async function(field, value) {

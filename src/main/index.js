@@ -25,12 +25,12 @@ global.windows = {}
 
 const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
   // Someone tried to run a second instance, we should focus our window.
-  console.log('Attempted to open a second instance. Disallowing...')
+  console.error('Attempted to open a second instance. Disallowing...')
   focusMainWindow()
 })
 
 if (isSecondInstance) {
-  console.log('Data curator is already open. Quitting this application.')
+  console.error('Data curator is already open. Quitting this application.')
   app.quit()
 }
 
@@ -137,7 +137,7 @@ async function saveAndExit(callback, filename) {
     await browserWindow.webContents.send('saveData', browserWindow.format, filename)
     callback()
   } catch (err) {
-    console.log(err)
+    console.error(err)
   }
 }
 
