@@ -554,6 +554,8 @@ export default {
       }
     },
     reportValidationSuccess: function() {
+      const hot = HotRegister.getInstance(this.currentHotId)
+      this.setHotComments(hot)
       if (this.messagesType !== 'error') {
         this.messagesTitle = 'Validation Success'
         this.messages = 'No validation errors reported.'
@@ -563,7 +565,7 @@ export default {
       // hot.updateSettings({cell: this.previousComments})
       // this.commentsPlugin.refreshEditor(true)
       // const previousComments = this.previousComments
-      const hot = HotRegister.getInstance(this.currentHotId)
+
       // hot.render()
       // _.delay(function(hot) {
       // console.log('executing delay...')
@@ -1015,22 +1017,24 @@ export default {
       hot.updateSettings({cell: this.previousComments})
       this.previousComments = []
     },
-    setHotComments: function(commentsPlugin, hot) {
+    setHotComments: function(hot) {
+      // const hot = HotRegister.getActiveInstance(this.currentHotId)
       // console.log('inside hot comments setter')
       for (const errorMessage of this.messages) {
         // console.log(`error message`, errorMessage)
-        let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
+        this.setHotComment(hot, errorMessage)
+        // let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
         // commentsPlugin.setRange(range)
         // commentsPlugin.setComment(errorMessage.message)
-        this.previousComments.push({row: range.from.row, col: range.from.col, comment: {value: errorMessage.message}, renderer: this.errorHtmlRenderer})
+        // this.previousComments.push({row: range.from.row, col: range.from.col, comment: {value: errorMessage.message}, renderer: this.errorHtmlRenderer})
         // wait for hot to update cells with comment class
         // _.delay(this.updateCellsFromHotRange, 100, hot, range, this.addErrorHighlightStyle)
       }
       // hot.updateSettings(cell: this.previousComments)
     },
-    setHotComment: function(commentsPlugin, errorMessage) {
+    setHotComment: function(hot, errorMessage) {
       // console.time('setupPreviousComment')
-      const hot = HotRegister.getActiveInstance(this.currentHotId)
+      // const hot = HotRegister.getActiveInstance(this.currentHotId)
       // console.timeEnd('getHot')
       // console.log('inside hot comments single setter')
       // for (const errorMessage of this.messages) {
@@ -1293,7 +1297,7 @@ export default {
       // console.log('comments plugin is...', self.commentsPlugin)
       // console.timeEnd('getError')
       // console.time('setCommentInit')
-      self.setHotComment(self.commentsPlugin, nextError)
+      // self.setHotComment(nextError)
       // console.timeEnd('setCommentInit')
     })
   },
