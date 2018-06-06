@@ -558,11 +558,14 @@ export default {
       try {
         this.closeMessages()
         this.messages = []
+        this.closeAndShowLoadingScreen('Validating...', 'Timeout Error: Validation took too long.')
         let hot = HotRegister.getInstance(this.currentHotId)
         this.removePreviousHotComments(hot)
         await validateActiveDataAgainstSchema(this.reportValidationSuccess)
       } catch (err) {
         console.error('There was an error(s) validating table.', err)
+      } finally {
+        this.closeLoadingScreen()
       }
     },
     storeResetCallback: function(allProperties) {
