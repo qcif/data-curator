@@ -250,7 +250,6 @@ export default {
       previousComments: [],
       errorsWindowId: null,
       activeSelected: [],
-      commentsPlugin: null,
       persistColorFn: this.highlightPersistedSelection,
       toolbarMenus: [{
         name: 'Guess',
@@ -478,6 +477,28 @@ export default {
       }
       return element
     },
+    // addErrorHoverCellRenderer: function(row, col) {
+    //   return this.addCellRenderer(row, col, this.errorHoverHtmlRenderer)
+    // },
+    // addErrorCellRenderer: function(row, col) {
+    //   return this.addCellRenderer(row, col, this.errorHtmlRenderer)
+    // },
+    // addCellRenderer: function(row, col, rendererFn) {
+    //   return {row: row, col: col, renderer: rendererFn}
+    // },
+    // removeCellRenderer: function(row, col) {
+    //   return {row: row, col: col}
+    // },
+    // updateCellsFromCount: function(row, column, rendererFn) {
+    //   let hot = HotRegister.getActiveInstance()
+    //   // to and from row will be equal so iterate through cols
+    //   let range = this.getCellOrRowFromCount(hot, row, column)
+    //   const updates = []
+    //   for (let index = range.from.col; index <= range.to.col; index++) {
+    //     updates.push(rendererFn(range.from.row, index))
+    //   }
+    //   hot.updateSettings({cell: updates})
+    // },
     updateCellsFromCount: function(row, column, fn) {
       let hot = HotRegister.getActiveInstance()
       let range = this.getCellOrRowFromCount(hot, row, column)
@@ -506,7 +527,6 @@ export default {
       // hot.deselectCell()
     },
     getHighlightedAreaOrCellSelectors: function() {
-      console.log('getting highlights')
       let elements = document.querySelectorAll('.highlight')
       return elements
     },
@@ -541,8 +561,6 @@ export default {
     },
     // TODO: tidy up message objects
     reportValidationRowErrors: function(errorCollection) {
-      console.log(`reporting validation errors...`)
-      console.log(errorCollection)
       if (errorCollection.length > 0) {
         this.messagesTitle = 'Validation Errors'
         this.messages = errorCollection
@@ -554,91 +572,54 @@ export default {
       }
     },
     reportValidationSuccess: function() {
-      const hot = HotRegister.getInstance(this.currentHotId)
-      this.setHotComments(hot)
-      if (this.messagesType !== 'error') {
+      if (this.messages.length > 0) {
+        this.messagesTitle = 'Validation Errors'
+        this.messagesType = 'error'
+      } else {
         this.messagesTitle = 'Validation Success'
         this.messages = 'No validation errors reported.'
         this.messagesType = 'feedback'
       }
-      // console.log(`previous comments`, this.previousComments)
-      // hot.updateSettings({cell: this.previousComments})
-      // this.commentsPlugin.refreshEditor(true)
-      // const previousComments = this.previousComments
-
-      // hot.render()
-      // _.delay(function(hot) {
-      // console.log('executing delay...')
-      console.time('set comments render')
+      const hot = HotRegister.getInstance(this.currentHotId)
+      this.setHotComments(hot)
+      // console.time('set comments render')
       hot.updateSettings({cell: this.previousComments})
-      // this.commentsPlugin.refreshEditor(true)
-      // console.time('set error style')
-      // const elementsToStyle = document.querySelectorAll('.htCommentCell')
-      // console.log('number to style is: ', elementsToStyle)
-      // for (const element of elementsToStyle) {
-      //   this.addErrorHighlightStyle(element)
-      // }
-      hot.render()
-      console.timeEnd('set comments render')
-      // console.timeEnd('set error style')
-      // let cellProperties3 = hot.getCellMeta(37, 0)
-      // console.log(`cell props at end 37, 0`, cellProperties3)
-      // }, 5000, hot)
-      console.timeEnd('startIteration')
+      // console.timeEnd('set comments render')
+      // console.timeEnd('startIteration')
     },
     errorHtmlRenderer: function(instance, td, row, col, prop, value, cellProperties) {
-      // console.log('showing td', td)
       td.style.backgroundColor = this.errorColor
+      return td
+    },
+    errorHoverHtmlRenderer: function(instance, td, row, col, prop, value, cellProperties) {
+      this.addErrorHoverStyle(td)
+      return td
+    },
+    highlightHtmlRenderer: function(instance, td, row, col, prop, value, cellProperties) {
+      td.style.backgroundColor = this.highlightColor
+      return td
+    },
+    unHighlightHtmlRenderer: function(instance, td, row, col, prop, value, cellProperties) {
+      if (td.style.backgroundColor === this.highlightColor) {
+        _.unset(td.style, 'backgroundColor')
+      // td.style.backgroundColor = ''
+      }
       return td
     },
     validateTable: async function() {
       try {
-        console.time('startIteration')
-        // console.time('initMessages')
-        // reset errors first
-        // console.time('getError')
+        // console.time('startIteration')
         this.closeMessages()
         this.messages = []
-        // console.timeEnd('initMessages')
-        // console.time('comments init')
         let hot = HotRegister.getInstance(this.currentHotId)
-        this.commentsPlugin = hot.getPlugin('comments')
-        console.time('removeComments')
+        // console.time('removeComments')
         this.removePreviousHotComments(hot)
-        console.timeEnd('removeComments')
-        // console.timeEnd('comments init')
-        this.messagesTitle = 'Validation Errors'
-        this.messagesType = 'error'
-        // this.messages = []
-        // this.$forceUpdate()
-        // await validateActiveDataAgainstSchema(this.reportValidationRowErrors)
-
+        // console.timeEnd('removeComments')
         await validateActiveDataAgainstSchema(this.reportValidationSuccess)
-
-        // console.log(`previous comments`, this.previousComments)
-        // // hot.updateSettings({cell: this.previousComments})
-        // // this.commentsPlugin.refreshEditor(true)
-        // const previousComments = this.previousComments
-        // hot.render()
-        // _.delay(function(hot) {
-        //   console.log('executing delay...')
-        //   hot.updateSettings({cell: [{col: 0, row: 37, comment: {value: 'foobar'}}]})
-        //   // this.commentsPlugin.refreshEditor(true)
-        //   hot.render()
-        //   let cellProperties3 = hot.getCellMeta(37, 0)
-        //   console.log(`cell props at end 37, 0`, cellProperties3)
-        // }, 5000, hot)
-
-        // console.log(`cell props at end for 37, 0`, cellProperties3)
-
-        // console.log(hot)
       } catch (err) {
         console.error('There was an error(s) validating table.', err)
       }
     },
-    // resetMessagesForStreamingErrors: function() {
-    //
-    // },
     storeResetCallback: function(allProperties) {
       this.resetPackagePropertiesToObject(allProperties.package)
       this.resetTablePropertiesToObject(allProperties.tables)
@@ -706,8 +687,6 @@ export default {
     },
     initLoadingScreenTimeout: function(errorMessage) {
       let self = this
-      // const vueCloseLoadingScreen = this.closeLoadingScreen
-      // const vueIsLoadingMessageRunning = this.isLoadingMessageRunning
       _.delay(function() {
         if (self.isLoadingMessageRunning()) {
           self.closeLoadingScreen()
@@ -986,78 +965,30 @@ export default {
     },
     updateHotComments: function() {
       let hot = HotRegister.getActiveInstance()
-      let commentsPlugin = hot.getPlugin('comments')
-      this.removePreviousHotComments(commentsPlugin)
+      this.removePreviousHotComments(hot)
       if (this.messagesType === 'error') {
-        console.log('sending to hot comments')
-        this.setHotComments(commentsPlugin, hot)
+        this.setHotComments(hot)
       }
     },
-    // testUpdateHotComments: function() {
-    //   if (this.messagesType === 'error') {
-    //     console.log('sending to hot comments')
-    //     hot.updateSettings(cell: this.previousComments)
-    //   }
-    // },
     removePreviousHotComments: function(hot) {
-      // first remove style additions
-      // const previous = document.querySelectorAll('.htCommentCell')
-      // console.log('previous hot comments found', previous.length)
-      for (const element of document.querySelectorAll('.htCommentCell')) {
-        this.removeErrorHighlightStyle(element)
-      }
-      // only do bulk update of remove
+      // for (const element of document.querySelectorAll('.htCommentCell')) {
+      //   this.removeErrorHighlightStyle(element)
+      // }
       for (const previousComment of this.previousComments) {
         _.unset(previousComment, 'comment')
         _.unset(previousComment, 'renderer')
-        // commentsPlugin.removeCommentAtCell(previousComment.row, previousComment.col)
-        // this.updateCellsFromIndex(previousComment.row, previousComment.col, this.removeErrorHighlightStyle)
       }
-      // const hot = HotRegister.getInstance(this.currentHotId)
       hot.updateSettings({cell: this.previousComments})
       this.previousComments = []
     },
     setHotComments: function(hot) {
-      // const hot = HotRegister.getActiveInstance(this.currentHotId)
-      // console.log('inside hot comments setter')
       for (const errorMessage of this.messages) {
-        // console.log(`error message`, errorMessage)
         this.setHotComment(hot, errorMessage)
-        // let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
-        // commentsPlugin.setRange(range)
-        // commentsPlugin.setComment(errorMessage.message)
-        // this.previousComments.push({row: range.from.row, col: range.from.col, comment: {value: errorMessage.message}, renderer: this.errorHtmlRenderer})
-        // wait for hot to update cells with comment class
-        // _.delay(this.updateCellsFromHotRange, 100, hot, range, this.addErrorHighlightStyle)
       }
-      // hot.updateSettings(cell: this.previousComments)
     },
     setHotComment: function(hot, errorMessage) {
-      // console.time('setupPreviousComment')
-      // const hot = HotRegister.getActiveInstance(this.currentHotId)
-      // console.timeEnd('getHot')
-      // console.log('inside hot comments single setter')
-      // for (const errorMessage of this.messages) {
-      // console.log(`error message`, errorMessage)
-      // console.time('getRange')
       let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
-      // let cellProperties = hot.getCellMeta(range.from.row, range.from.col)
-      // console.log(`cell props for ${range.from.row}, ${range.from.col}`, cellProperties)
-      // console.timeEnd('getRange')
-      // console.time('setRange')
-      // commentsPlugin.setRange(range)
-      // console.timeEnd('setRange')
-      // console.time('setComment')
-      // commentsPlugin.setComment(errorMessage.message)
-      // let cellProperties2 = hot.getCellMeta(range.from.row, range.from.col)
-      // console.log(`cell props now for ${range.from.row}, ${range.from.col}`, cellProperties2)
-      // console.timeEnd('setComment')
       this.previousComments.push({row: range.from.row, col: range.from.col, comment: {value: errorMessage.message}, renderer: this.errorHtmlRenderer})
-
-      // wait for hot to update cells with comment class
-      // _.delay(this.updateCellsFromHotRange, 100, hot, range, this.addErrorHighlightStyle)
-      // }
-      // console.time('setupPreviousComment')
     },
     getCellOrRowFromCount: function(hot, row, column) {
       let rowIndex = this.transformCountToIndex(row)
@@ -1167,7 +1098,6 @@ export default {
       try {
         let hotId = await this.getHotIdFromTabId(tabId)
         this.currentHotId = hotId
-        // reselectCellOrMin(hotId)
         this.reselectHotCell()
       } catch (err) {
         console.error('Problem with getting hot id from watched tab', err)
@@ -1182,20 +1112,13 @@ export default {
       this.testBottomMain()
     },
     messages: function() {
-      console.log(`triggered watch for messages`)
-      console.log(`messages are: `, this.messages)
-      // this.updateHotComments()
       if (this.messages) {
-        console.log('sending to errors window')
         this.sendErrorsToErrorsWindow()
       }
-      console.log('completed watch')
     }
   },
   mounted: function() {
     let self = this
-    // const vueGoToCell = this.goToCell
-    // const vueNextTick = this.$nextTick
     // request may be coming from another page - get focus first
     ipc.on('showErrorCell', async function(event, arg) {
       await ipc.send('focusMainWindow')
@@ -1204,27 +1127,21 @@ export default {
         self.goToCell(arg.row, arg.column)
       }, 100, arg)
     })
-    // const vueSendErrorsToErrorsWindow = this.sendErrorsToErrorsWindow
     ipc.on('getErrorMessages', function(event, arg) {
       self.sendErrorsToErrorsWindow(arg)
     })
-    // const vueHoverToSelectErrorCell = this.hoverToSelectErrorCell
     ipc.on('hoverToSelectErrorCell', function(event, arg) {
       self.hoverToSelectErrorCell(arg.rowNumber, arg.columnNumber)
     })
-    // const vueExitHoverToSelectErrorCell= this.exitHoverToSelectErrorCell
     ipc.on('exitHoverToSelectErrorCell', function(event, arg) {
       self.exitHoverToSelectErrorCell(arg.rowNumber, arg.columnNumber)
     })
-    // const vueTriggerMenuButton = this.triggerMenuButton
     ipc.on('triggerMenuButton', function(event, arg) {
       self.triggerMenuButton(arg)
     })
-    // const vueToggleHeader = this.toggleHeader
     ipc.on('toggleActiveHeaderRow', function() {
       self.toggleHeader()
     })
-    // const vueAddTab = this.addTab
     ipc.on('addTab', function() {
       self.addTab()
     })
@@ -1237,22 +1154,18 @@ export default {
     ipc.on('addTabWithFormattedDataAndDescriptor', function(e, data, format, descriptor) {
       self.addTab(data, format, descriptor)
     })
-    // const vueAddTabWithFilename = this.addTabWithFilename
     ipc.on('addTabWithFormattedDataFile', function(e, data, format, filename) {
       self.addTabWithFilename(data, format, filename)
     })
-    // const vueTriggerSideNav = this.triggerSideNav
     ipc.on('showSidePanel', function(event, arg1, arg2) {
       self.triggerSideNav({
         sideNavView: arg1,
         title: arg2 || arg1
       })
     })
-    // const vueForceUpdate = this.forceWrapper
     ipc.on('saveDataSuccess', function(e, format, fileName) {
       self.$forceUpdate()
     })
-    // const vueAdjustSidenavFormHeight = this.adjustSidenavFormHeight
     ipc.on('resized', function() {
       self.adjustSidenavFormHeight()
       let hot = HotRegister.getActiveInstance()
@@ -1260,7 +1173,6 @@ export default {
     })
     this.$nextTick(function() {
       require('../index.js')
-      // const vueSetTabsOrder = this.setTabsOrder
       Sortable.create(csvTab, {
         animation: 150,
         onSort: function(evt) {
@@ -1274,31 +1186,20 @@ export default {
       this.closeSideNav()
       this.addTab()
     })
-    // const vueShowProvenanceErrors = this.showProvenanceErrors
     ipc.on('showProvenanceErrors', function(event, arg) {
       self.showProvenanceErrors()
     })
-    // const vueShowLoadingScreen = this.showLoadingScreen
-    // const vueCloseLoadingScreen = this.closeLoadingScreen
     ipc.on('closeAndshowLoadingScreen', function(event, message) {
       self.closeAndShowLoadingScreen(message)
     })
     ipc.on('closeLoadingScreen', function(event) {
       self.closeLoadingScreen()
     })
-    // const vueResetPackagePropertiesToObject = this.resetPackagePropertiesToObject
     ipc.on('resetPackagePropertiesToObject', function(event, packageProperties) {
       self.resetPackagePropertiesToObject(packageProperties)
     })
     this.$subscribeTo(errorFeedback$, function(nextError) {
-      // console.time('receiveSubscription')
       self.messages.push(nextError)
-      // console.timeEnd('receiveSubscription')
-      // console.log('comments plugin is...', self.commentsPlugin)
-      // console.timeEnd('getError')
-      // console.time('setCommentInit')
-      // self.setHotComment(nextError)
-      // console.timeEnd('setCommentInit')
     })
   },
   beforeCreate: function() {
