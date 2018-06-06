@@ -25,5 +25,5 @@ if (document.querySelector('#app')) {
 } else if (document.querySelector('#urldialog')) {
   compileVue('#urldialog', 'urldialog')
 } else {
-  console.log('No match found for root id on incoming page.')
+  console.error('No match found for root id on incoming page.')
 }
