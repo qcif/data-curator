@@ -477,53 +477,19 @@ export default {
       }
       return element
     },
-    // addErrorHoverCellRenderer: function(row, col) {
-    //   return this.addCellRenderer(row, col, this.errorHoverHtmlRenderer)
-    // },
-    // addErrorCellRenderer: function(row, col) {
-    //   return this.addCellRenderer(row, col, this.errorHtmlRenderer)
-    // },
-    // addCellRenderer: function(row, col, rendererFn) {
-    //   return {row: row, col: col, renderer: rendererFn}
-    // },
-    // removeCellRenderer: function(row, col) {
-    //   return {row: row, col: col}
-    // },
-    // updateCellsFromCount: function(row, column, rendererFn) {
-    //   let hot = HotRegister.getActiveInstance()
-    //   // to and from row will be equal so iterate through cols
-    //   let range = this.getCellOrRowFromCount(hot, row, column)
-    //   const updates = []
-    //   for (let index = range.from.col; index <= range.to.col; index++) {
-    //     updates.push(rendererFn(range.from.row, index))
-    //   }
-    //   hot.updateSettings({cell: updates})
-    // },
     updateCellsFromCount: function(row, column, fn) {
       let hot = HotRegister.getActiveInstance()
       let range = this.getCellOrRowFromCount(hot, row, column)
       this.updateCellsFromHotRange(hot, range, fn)
     },
-    updateCellsFromIndex: function(row, column, fn) {
-      let hot = HotRegister.getActiveInstance()
-      let range = this.getCellOrRowFromIndex(hot, row, column)
-      this.updateCellsFromHotRange(hot, range, fn)
-    },
     updateCellsFromHotRange: function(hot, range, fn) {
-      console.log('inside update cells from hot range')
-      console.time('updateCells')
       // before we select cell for errors, check if there is a current selection made
       hot.selectCell(range.from.row, range.from.col, range.to.row, range.to.col)
       let elements = this.getHighlightedAreaOrCellSelectors()
       hot.deselectCell()
-      console.timeEnd('updateCells')
-      // console.log('applying update cells function...', fn)
-      console.time('applyColour')
       for (let element of elements) {
         fn(element)
       }
-      console.timeEnd('applyColour')
-
       // hot.deselectCell()
     },
     getHighlightedAreaOrCellSelectors: function() {
@@ -582,28 +548,10 @@ export default {
       }
       const hot = HotRegister.getInstance(this.currentHotId)
       this.setHotComments(hot)
-      // console.time('set comments render')
       hot.updateSettings({cell: this.previousComments})
-      // console.timeEnd('set comments render')
-      // console.timeEnd('startIteration')
     },
     errorHtmlRenderer: function(instance, td, row, col, prop, value, cellProperties) {
       td.style.backgroundColor = this.errorColor
-      return td
-    },
-    errorHoverHtmlRenderer: function(instance, td, row, col, prop, value, cellProperties) {
-      this.addErrorHoverStyle(td)
-      return td
-    },
-    highlightHtmlRenderer: function(instance, td, row, col, prop, value, cellProperties) {
-      td.style.backgroundColor = this.highlightColor
-      return td
-    },
-    unHighlightHtmlRenderer: function(instance, td, row, col, prop, value, cellProperties) {
-      if (td.style.backgroundColor === this.highlightColor) {
-        _.unset(td.style, 'backgroundColor')
-      // td.style.backgroundColor = ''
-      }
       return td
     },
     validateTable: async function() {
@@ -971,9 +919,6 @@ export default {
       }
     },
     removePreviousHotComments: function(hot) {
-      // for (const element of document.querySelectorAll('.htCommentCell')) {
-      //   this.removeErrorHighlightStyle(element)
-      // }
       for (const previousComment of this.previousComments) {
         _.unset(previousComment, 'comment')
         _.unset(previousComment, 'renderer')
