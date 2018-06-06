@@ -525,40 +525,35 @@ export default {
         console.error(err)
       }
     },
-    // TODO: tidy up message objects
-    reportValidationRowErrors: function(errorCollection) {
-      if (errorCollection.length > 0) {
-        this.messagesTitle = 'Validation Errors'
-        this.messages = errorCollection
-        this.messagesType = 'error'
-      } else {
-        this.messagesTitle = 'Validation Success'
-        this.messages = 'No validation errors reported.'
-        this.messagesType = 'feedback'
-      }
-    },
     reportValidationSuccess: function() {
       if (this.messages.length > 0) {
         this.messagesTitle = 'Validation Errors'
         this.messagesType = 'error'
+        const hot = HotRegister.getInstance(this.currentHotId)
+        this.setHotComments(hot)
+        hot.updateSettings({cell: this.previousComments})
       } else {
         this.messagesTitle = 'Validation Success'
         this.messages = 'No validation errors reported.'
         this.messagesType = 'feedback'
       }
-      const hot = HotRegister.getInstance(this.currentHotId)
-      this.setHotComments(hot)
-      hot.updateSettings({cell: this.previousComments})
+      this.closeLoadingScreen()
     },
     errorHtmlRenderer: function(instance, td, row, col, prop, value, cellProperties) {
       td.style.backgroundColor = this.errorColor
       return td
     },
     validateTable: async function() {
+      this.loadingDataMessage = 'Validating Table...'
+      let self = this
+      _.delay(function() {
+        self.validateTableCore()
+      }, 100)
+    },
+    validateTableCore: async function() {
       try {
         this.closeMessages()
         this.messages = []
-        this.closeAndShowLoadingScreen('Validating...', 'Timeout Error: Validation took too long.')
         let hot = HotRegister.getInstance(this.currentHotId)
         this.removePreviousHotComments(hot)
         await validateActiveDataAgainstSchema(this.reportValidationSuccess)
@@ -628,19 +623,19 @@ export default {
       this.closeLoadingScreen()
       this.showLoadingScreen(message, errorMessage)
     },
-    showLoadingScreen: function(message, errorMessage) {
+    showLoadingScreen: function(message, errorMessage, timeout) {
       this.loadingDataMessage = message
       // set timeout for loading screen
-      this.initLoadingScreenTimeout(errorMessage)
+      this.initLoadingScreenTimeout(errorMessage, timeout)
     },
-    initLoadingScreenTimeout: function(errorMessage) {
+    initLoadingScreenTimeout: function(errorMessage, timeout = 30000) {
       let self = this
       _.delay(function() {
         if (self.isLoadingMessageRunning()) {
           self.closeLoadingScreen()
           ipc.send('loadingScreenTimeout', errorMessage)
         }
-      }, 30000)
+      }, timeout)
     },
     closeLoadingScreen: function() {
       this.loadingDataMessage = false
