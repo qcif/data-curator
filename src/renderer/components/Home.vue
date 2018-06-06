@@ -489,8 +489,8 @@ export default {
       this.updateCellsFromHotRange(hot, range, fn)
     },
     updateCellsFromHotRange: function(hot, range, fn) {
+      console.log('inside update cells from hot range')
       console.time('updateCells')
-      console.log(range)
       // before we select cell for errors, check if there is a current selection made
       hot.selectCell(range.from.row, range.from.col, range.to.row, range.to.col)
       let elements = this.getHighlightedAreaOrCellSelectors()
@@ -559,32 +559,77 @@ export default {
         this.messages = 'No validation errors reported.'
         this.messagesType = 'feedback'
       }
+      // console.log(`previous comments`, this.previousComments)
+      // hot.updateSettings({cell: this.previousComments})
+      // this.commentsPlugin.refreshEditor(true)
+      // const previousComments = this.previousComments
+      const hot = HotRegister.getInstance(this.currentHotId)
+      // hot.render()
+      // _.delay(function(hot) {
+      // console.log('executing delay...')
+      console.time('set comments render')
+      hot.updateSettings({cell: this.previousComments})
+      // this.commentsPlugin.refreshEditor(true)
+      // console.time('set error style')
+      // const elementsToStyle = document.querySelectorAll('.htCommentCell')
+      // console.log('number to style is: ', elementsToStyle)
+      // for (const element of elementsToStyle) {
+      //   this.addErrorHighlightStyle(element)
+      // }
+      hot.render()
+      console.timeEnd('set comments render')
+      // console.timeEnd('set error style')
+      // let cellProperties3 = hot.getCellMeta(37, 0)
+      // console.log(`cell props at end 37, 0`, cellProperties3)
+      // }, 5000, hot)
+      console.timeEnd('startIteration')
+    },
+    errorHtmlRenderer: function(instance, td, row, col, prop, value, cellProperties) {
+      // console.log('showing td', td)
+      td.style.backgroundColor = this.errorColor
+      return td
     },
     validateTable: async function() {
       try {
+        console.time('startIteration')
         // console.time('initMessages')
         // reset errors first
-        console.time('getError')
+        // console.time('getError')
         this.closeMessages()
         this.messages = []
         // console.timeEnd('initMessages')
         // console.time('comments init')
         let hot = HotRegister.getInstance(this.currentHotId)
         this.commentsPlugin = hot.getPlugin('comments')
-        this.removePreviousHotComments(this.commentsPlugin)
+        console.time('removeComments')
+        this.removePreviousHotComments(hot)
+        console.timeEnd('removeComments')
         // console.timeEnd('comments init')
         this.messagesTitle = 'Validation Errors'
         this.messagesType = 'error'
         // this.messages = []
         // this.$forceUpdate()
         // await validateActiveDataAgainstSchema(this.reportValidationRowErrors)
-        console.time('startIteration')
+
         await validateActiveDataAgainstSchema(this.reportValidationSuccess)
-        console.timeEnd('startIteration')
-        console.log(`previous comments`, this.previousComments)
-        hot.updateSettings({cell: this.previousComments})
-        this.commentsPlugin.refreshEditor(true)
-        console.log(hot)
+
+        // console.log(`previous comments`, this.previousComments)
+        // // hot.updateSettings({cell: this.previousComments})
+        // // this.commentsPlugin.refreshEditor(true)
+        // const previousComments = this.previousComments
+        // hot.render()
+        // _.delay(function(hot) {
+        //   console.log('executing delay...')
+        //   hot.updateSettings({cell: [{col: 0, row: 37, comment: {value: 'foobar'}}]})
+        //   // this.commentsPlugin.refreshEditor(true)
+        //   hot.render()
+        //   let cellProperties3 = hot.getCellMeta(37, 0)
+        //   console.log(`cell props at end 37, 0`, cellProperties3)
+        // }, 5000, hot)
+
+        // console.log(`cell props at end for 37, 0`, cellProperties3)
+
+        // console.log(hot)
       } catch (err) {
         console.error('There was an error(s) validating table.', err)
       }
@@ -952,11 +997,22 @@ export default {
     //     hot.updateSettings(cell: this.previousComments)
     //   }
     // },
-    removePreviousHotComments: function(commentsPlugin) {
-      for (const previousComment of this.previousComments) {
-        commentsPlugin.removeCommentAtCell(previousComment.row, previousComment.col)
-        this.updateCellsFromIndex(previousComment.row, previousComment.col, this.removeErrorHighlightStyle)
+    removePreviousHotComments: function(hot) {
+      // first remove style additions
+      // const previous = document.querySelectorAll('.htCommentCell')
+      // console.log('previous hot comments found', previous.length)
+      for (const element of document.querySelectorAll('.htCommentCell')) {
+        this.removeErrorHighlightStyle(element)
       }
+      // only do bulk update of remove
+      for (const previousComment of this.previousComments) {
+        _.unset(previousComment, 'comment')
+        _.unset(previousComment, 'renderer')
+        // commentsPlugin.removeCommentAtCell(previousComment.row, previousComment.col)
+        // this.updateCellsFromIndex(previousComment.row, previousComment.col, this.removeErrorHighlightStyle)
+      }
+      // const hot = HotRegister.getInstance(this.currentHotId)
+      hot.updateSettings({cell: this.previousComments})
       this.previousComments = []
     },
     setHotComments: function(commentsPlugin, hot) {
@@ -966,14 +1022,14 @@ export default {
         let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
         // commentsPlugin.setRange(range)
         // commentsPlugin.setComment(errorMessage.message)
-        this.previousComments.push({row: range.from.row, col: range.from.col, comment: {value: errorMessage.message}})
+        this.previousComments.push({row: range.from.row, col: range.from.col, comment: {value: errorMessage.message}, renderer: this.errorHtmlRenderer})
         // wait for hot to update cells with comment class
         // _.delay(this.updateCellsFromHotRange, 100, hot, range, this.addErrorHighlightStyle)
       }
       // hot.updateSettings(cell: this.previousComments)
     },
     setHotComment: function(commentsPlugin, errorMessage) {
-      // console.time('getHot')
+      // console.time('setupPreviousComment')
       const hot = HotRegister.getActiveInstance(this.currentHotId)
       // console.timeEnd('getHot')
       // console.log('inside hot comments single setter')
@@ -981,17 +1037,23 @@ export default {
       // console.log(`error message`, errorMessage)
       // console.time('getRange')
       let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
+      // let cellProperties = hot.getCellMeta(range.from.row, range.from.col)
+      // console.log(`cell props for ${range.from.row}, ${range.from.col}`, cellProperties)
       // console.timeEnd('getRange')
       // console.time('setRange')
       // commentsPlugin.setRange(range)
       // console.timeEnd('setRange')
       // console.time('setComment')
       // commentsPlugin.setComment(errorMessage.message)
+      // let cellProperties2 = hot.getCellMeta(range.from.row, range.from.col)
+      // console.log(`cell props now for ${range.from.row}, ${range.from.col}`, cellProperties2)
       // console.timeEnd('setComment')
-      this.previousComments.push({row: range.from.row, col: range.from.col, comment: {value: errorMessage.message}})
+      this.previousComments.push({row: range.from.row, col: range.from.col, comment: {value: errorMessage.message}, renderer: this.errorHtmlRenderer})
+
       // wait for hot to update cells with comment class
       // _.delay(this.updateCellsFromHotRange, 100, hot, range, this.addErrorHighlightStyle)
       // }
+      // console.time('setupPreviousComment')
     },
     getCellOrRowFromCount: function(hot, row, column) {
       let rowIndex = this.transformCountToIndex(row)
@@ -1229,10 +1291,10 @@ export default {
       self.messages.push(nextError)
       // console.timeEnd('receiveSubscription')
       // console.log('comments plugin is...', self.commentsPlugin)
-      console.timeEnd('getError')
-      console.time('setCommentInit')
+      // console.timeEnd('getError')
+      // console.time('setCommentInit')
       self.setHotComment(self.commentsPlugin, nextError)
-      console.timeEnd('setCommentInit')
+      // console.timeEnd('setCommentInit')
     })
   },
   beforeCreate: function() {

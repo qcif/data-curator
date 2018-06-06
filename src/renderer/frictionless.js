@@ -252,7 +252,7 @@ export async function validateActiveDataAgainstSchema(callback) {
     stream.end()
   })
   stream.on('end', () => {
-    console.log('stream ended')
+    // console.log('stream ended')
     // callback(errorCollector)
     callback()
   })
