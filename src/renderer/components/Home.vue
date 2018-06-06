@@ -556,13 +556,10 @@ export default {
     },
     validateTable: async function() {
       try {
-        // console.time('startIteration')
         this.closeMessages()
         this.messages = []
         let hot = HotRegister.getInstance(this.currentHotId)
-        // console.time('removeComments')
         this.removePreviousHotComments(hot)
-        // console.timeEnd('removeComments')
         await validateActiveDataAgainstSchema(this.reportValidationSuccess)
       } catch (err) {
         console.error('There was an error(s) validating table.', err)
