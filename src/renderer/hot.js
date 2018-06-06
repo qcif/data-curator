@@ -31,12 +31,12 @@ const HotRegister = {
       // outsideClickDeselects: must be set to true -
       // -otherwise visibleRows will include ALL rows (even for large datasets), which will affect performance when switching tabs (https://github.com/ODIQueensland/data-curator/issues/387)
       outsideClickDeselects: true,
+      // delay to ensure no conflict with other renderer functionality
       comments: {
-        displayDelay: 1000
+        displayDelay: 100
       },
       undo: true,
       search: searchParameters,
-      // search: true,
       tabMoves({shiftKey}) {
         if (!shiftKey) {
           const selection = hot.getSelectedLast()
