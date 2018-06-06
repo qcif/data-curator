@@ -13,7 +13,6 @@ async function inferSchema(data) {
   let dataClone = [...data]
   let headers = dataClone.shift()
   // frictionless default for csv dialect is that tables DO have headers
-  // await schema.infer(data, {headers: 0})
   await schema.infer(dataClone, {headers: headers})
   return schema
 }
@@ -40,7 +39,6 @@ export async function guessColumnProperties() {
     return 'Failed: Guess column properties failed. All Column property names must be set and must be unique.'
   }
   let data = includeHeadersInData(hot)
-  // let activeHot = HotRegister.getActiveHotIdData()
   let schema = await inferSchema(data)
   let isStored = storeData(id, schema)
   allTablesAllColumnsFromSchema$.next(store.getters.getAllHotTablesColumnProperties(store.state, store.getters)())
@@ -49,24 +47,6 @@ export async function guessColumnProperties() {
     : 'Failed: Guess column properties failed.'
   return message
 }
-
-// function checkRow(rowNumber, row, schema, tableRows, errorCollector) {
-//   // if row contains foreign relation objects cast the original
-//   try {
-//     schema.castRow(row)
-//   } catch (err) {
-//     errorHandler(err, rowNumber, errorCollector)
-//   }
-// }
-
-// function checkRow(rowNumber, row, schema, tableRows) {
-//   // if row contains foreign relation objects cast the original
-//   try {
-//     schema.castRow(row)
-//   } catch (err) {
-//     errorHandler(err, rowNumber)
-//   }
-// }
 
 async function buildSchema(data, hotId) {
   let schema = await inferSchema(data)
@@ -157,37 +137,20 @@ function duplicatesCount(row) {
 }
 
 // function checkHeaderErrors(headers, errorCollector) {
-//   // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
-//   if (isRowBlank(headers)) {
-//     // errorCollector.push({message: `Headers are completely blank`, name: 'Blank Row'})
-//     errorHandler({message: `Headers are completely blank`, name: 'Blank Row'}, null, errorCollector)
-//   } else {
-//     let diff = blankCellCount(headers)
-//     if (diff > 0) {
-//       // errorCollector.push({message: `There are ${diff} blank header(s)`, name: 'Blank Header'})
-//       errorHandler({message: `There are ${diff} blank header(s)`, name: 'Blank Header'}, null, errorCollector)
-//     }
-//     let diff2 = duplicatesCount(headers)
-//     if (diff2 > 0) {
-//       // errorCollector.push({message: `There are ${diff2} duplicate header(s)`, name: 'Duplicate Header'})
-//       errorHandler({message: `There are ${diff2} duplicate header(s)`, name: 'Duplicate Header'}, null, errorCollector)
-//     }
-//   }
-// }
 function checkHeaderErrors(headers) {
   // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
   if (isRowBlank(headers)) {
-    // errorCollector.push({message: `Headers are completely blank`, name: 'Blank Row'})
+    // errorHandler({message: `Headers are completely blank`, name: 'Blank Row'}, null, errorCollector)
     errorHandler({message: `Headers are completely blank`, name: 'Blank Row'})
   } else {
     let diff = blankCellCount(headers)
     if (diff > 0) {
-      // errorCollector.push({message: `There are ${diff} blank header(s)`, name: 'Blank Header'})
+      // errorHandler({message: `There are ${diff} blank header(s)`, name: 'Blank Header'}, null, errorCollector)
       errorHandler({message: `There are ${diff} blank header(s)`, name: 'Blank Header'})
     }
     let diff2 = duplicatesCount(headers)
     if (diff2 > 0) {
-      // errorCollector.push({message: `There are ${diff2} duplicate header(s)`, name: 'Duplicate Header'})
+      // errorHandler({message: `There are ${diff2} duplicate header(s)`, name: 'Duplicate Header'}, null, errorCollector)
       errorHandler({message: `There are ${diff2} duplicate header(s)`, name: 'Duplicate Header'})
     }
   }
@@ -212,14 +175,10 @@ export async function validateActiveDataAgainstSchema(callback) {
   let relations = false
   try {
     relations = await collateForeignKeys(hotId, callback)
-    // console.log('have relations', relations)
   } catch (error) {
     console.error(error)
-    errorHandler({message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`, name: 'Invalid foreign table(s)'})
-    // errorHandler({message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`, name: 'Invalid foreign table(s)'}, null, errorCollector)
-    // errorCollector.push({message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`, name: 'Invalid foreign table(s)'})
+    errorHandler({message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`, name: 'Invalid foreign table(s)'}, null, errorCollector)
   }
-  // console.log('creating table iterator')
   const stream = await table.iter({
     keyed: false,
     extended: true,
@@ -228,31 +187,25 @@ export async function validateActiveDataAgainstSchema(callback) {
     forceCast: true,
     relations: relations
   })
-  // console.timeEnd('initValidation')
-  // console.log('streaming...')
-  console.timeEnd('getError')
   stream.on('data', (row) => {
-    // console.log(`next row`, row)
     if (row instanceof Error) {
       // errorHandler(row, row.rowNumber, errorCollector)
       errorHandler(row, row.rowNumber)
     } else {
       if (isRowBlank(row[2])) {
-        errorHandler({message: `Row ${row[0]} is completely blank`, name: 'Blank Row'}, row[0])
         // errorHandler({message: `Row ${row[0]} is completely blank`, name: 'Blank Row'}, row[0], errorCollector)
-        // errorCollector.push({rowNumber: row[0], message: `Row ${row[0]} is completely blank`, name: 'Blank Row'})
+        errorHandler({message: `Row ${row[0]} is completely blank`, name: 'Blank Row'}, row[0])
       }
     }
   })
   stream.on('error', (error) => {
-    // console.error(error)
-    errorHandler(error, error.rowNumber)
     // errorHandler(error, error.rowNumber, errorCollector)
+    errorHandler(error, error.rowNumber)
     // ensure error sent back
     stream.end()
   })
   stream.on('end', () => {
-    // console.log('stream ended')
+    // console.timeEnd('initValidation')
     // callback(errorCollector)
     callback()
   })
@@ -282,6 +235,7 @@ function hasColumnProperties(hotId, callb) {
   return true
 }
 
+// function errorHandler(err, rowNumber, errorCollector) {
 function errorHandler(err, rowNumber) {
   if (err.multiple) {
     for (const error of err.errors) {
@@ -303,25 +257,3 @@ function errorHandler(err, rowNumber) {
     })
   }
 }
-
-// function errorHandler(err, rowNumber, errorCollector) {
-//   if (err.multiple) {
-//     for (const error of err.errors) {
-//       errorFeedback$.next({
-//       // errorCollector.push({
-//         columnNumber: error.columnNumber,
-//         rowNumber: error.rowNumber || rowNumber,
-//         message: error.message,
-//         name: error.name
-//       })
-//     }
-//   } else {
-//     errorFeedback$.next({
-//     // errorCollector.push({
-//       columnNumber: err.columnNumber,
-//       rowNumber: rowNumber,
-//       message: err.message,
-//       name: err.name
-//     })
-//   }
-// }
