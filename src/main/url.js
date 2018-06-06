@@ -146,7 +146,7 @@ export async function loadPackageJson(json) {
     const dataPackage = await Package.load(json)
     return dataPackage
   } catch (error) {
-    console.log(`There was a problem loading the package: ${json}`, error)
+    console.error(`There was a problem loading the package: ${json}`, error)
   }
 }
 
