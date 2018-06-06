@@ -26,7 +26,7 @@ export async function createDataPackage() {
     }
   } catch (err) {
     if (err) {
-      console.log('There was an error creating the data package.', err)
+      console.error('There was an error creating the data package.', err)
     }
   }
   return errorMessages
@@ -93,7 +93,7 @@ async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
       dataPackage.addResource(resource.descriptor)
     } catch (err) {
       if (err) {
-        console.log('There was an error creating a resource.', err)
+        console.error('There was an error creating a resource.', err)
         return false
       }
     }
@@ -108,7 +108,7 @@ async function createValidResource(hotId, errorMessages) {
   }
   let resource = await buildResource(hotTab.tabId, hot.guid)
   if (!resource.valid) {
-    console.log(resource.errors)
+    console.error(resource.errors)
     errorMessages.push('There is a required table or column property that is missing. Please check that all required properties are entered.')
     return false
   }

@@ -62,7 +62,7 @@ export function saveDataToFile(hot, format, filename, callback) {
   if (typeof callback === 'undefined') {
     callback = (err) => {
       if (err) {
-        console.log('There was a problem saving data to file.')
+        console.error('There was a problem saving data to file.')
         throw err
       }
       // console.log('File saved successfully.')

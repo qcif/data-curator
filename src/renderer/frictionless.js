@@ -3,7 +3,7 @@ import {HotRegister} from '@/hot.js'
 import store from '@/store/modules/hots.js'
 import tabStore from '@/store/modules/tabs.js'
 import {includeHeadersInData, hasAllColumnNames, getValidNames} from '@/frictionlessUtilities.js'
-import {allTablesAllColumnsFromSchema$} from '@/rxSubject.js'
+import {allTablesAllColumnsFromSchema$, errorFeedback$} from '@/rxSubject.js'
 import {ipcRenderer as ipc} from 'electron'
 import {Package} from 'datapackage'
 
@@ -13,7 +13,6 @@ async function inferSchema(data) {
   let dataClone = [...data]
   let headers = dataClone.shift()
   // frictionless default for csv dialect is that tables DO have headers
-  // await schema.infer(data, {headers: 0})
   await schema.infer(dataClone, {headers: headers})
   return schema
 }
@@ -40,7 +39,6 @@ export async function guessColumnProperties() {
     return 'Failed: Guess column properties failed. All Column property names must be set and must be unique.'
   }
   let data = includeHeadersInData(hot)
-  // let activeHot = HotRegister.getActiveHotIdData()
   let schema = await inferSchema(data)
   let isStored = storeData(id, schema)
   allTablesAllColumnsFromSchema$.next(store.getters.getAllHotTablesColumnProperties(store.state, store.getters)())
@@ -48,15 +46,6 @@ export async function guessColumnProperties() {
     ? 'Success: Guess column properties succeeded.'
     : 'Failed: Guess column properties failed.'
   return message
-}
-
-function checkRow(rowNumber, row, schema, tableRows, errorCollector) {
-  // if row contains foreign relation objects cast the original
-  try {
-    schema.castRow(row)
-  } catch (err) {
-    errorHandler(err, rowNumber, errorCollector)
-  }
 }
 
 async function buildSchema(data, hotId) {
@@ -115,7 +104,7 @@ async function collatePackageForeignKeys(foreignKey) {
     let rows = await ipc.sendSync('loadPackageUrlResourcesAsFkRelations', foreignKey.reference.package, foreignKey.reference.resource)
     return rows
   } catch (error) {
-    console.log('There was an error in creating package foreign keys', error)
+    console.error('There was an error in creating package foreign keys', error)
   }
 }
 
@@ -147,18 +136,18 @@ function duplicatesCount(row) {
   return row.length - uniques.size
 }
 
-function checkHeaderErrors(headers, errorCollector) {
+function checkHeaderErrors(headers) {
   // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
   if (isRowBlank(headers)) {
-    errorCollector.push({message: `Headers are completely blank`, name: 'Blank Row'})
+    errorHandler({message: `Headers are completely blank`, name: 'Blank Row'})
   } else {
     let diff = blankCellCount(headers)
     if (diff > 0) {
-      errorCollector.push({message: `There are ${diff} blank header(s)`, name: 'Blank Header'})
+      errorHandler({message: `There are ${diff} blank header(s)`, name: 'Blank Header'})
     }
     let diff2 = duplicatesCount(headers)
     if (diff2 > 0) {
-      errorCollector.push({message: `There are ${diff2} duplicate header(s)`, name: 'Duplicate Header'})
+      errorHandler({message: `There are ${diff2} duplicate header(s)`, name: 'Duplicate Header'})
     }
   }
 }
@@ -170,10 +159,9 @@ export async function validateActiveDataAgainstSchema(callback) {
     return
   }
   const data = includeHeadersInData(hot)
-  const errorCollector = []
   // ensure headers not lost from data
   const headers = data[0]
-  checkHeaderErrors(headers, errorCollector)
+  checkHeaderErrors(headers)
   let schema = await buildSchema(data, hotId)
   let table = await createFrictionlessTable(data, schema)
   // wait for frictionless pr#124 and uncomment
@@ -181,8 +169,8 @@ export async function validateActiveDataAgainstSchema(callback) {
   try {
     relations = await collateForeignKeys(hotId, callback)
   } catch (error) {
-    console.log(error)
-    errorCollector.push({message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`, name: 'Invalid foreign table(s)'})
+    console.error(error)
+    errorHandler({message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`, name: 'Invalid foreign table(s)'}, null, errorCollector)
   }
   const stream = await table.iter({
     keyed: false,
@@ -194,51 +182,45 @@ export async function validateActiveDataAgainstSchema(callback) {
   })
   stream.on('data', (row) => {
     if (row instanceof Error) {
-      errorHandler(row, row.rowNumber, errorCollector)
+      errorHandler(row, row.rowNumber)
     } else {
       if (isRowBlank(row[2])) {
-        errorCollector.push({rowNumber: row[0], message: `Row ${row[0]} is completely blank`, name: 'Blank Row'})
+        errorHandler({message: `Row ${row[0]} is completely blank`, name: 'Blank Row'}, row[0])
       }
     }
   })
   stream.on('error', (error) => {
-    errorHandler(error, error.rowNumber, errorCollector)
+    errorHandler(error, error.rowNumber)
     // ensure error sent back
     stream.end()
   })
   stream.on('end', () => {
-    callback(errorCollector)
+    callback()
   })
 }
 
 function hasColumnProperties(hotId, callb) {
   let columnProperties = store.state.hotTabs[hotId].columnProperties
   if (!columnProperties || columnProperties.length === 0) {
-    callb([
-      {
-        message: `Column properties, including the column properties of any foreign keys, must be set.`,
-        name: 'No Column Properties'
-      }
-    ])
+    errorHandler({message: `Column properties, including the column properties of any foreign keys, must be set.`,
+      name: 'No Column Properties'})
+    callb()
     return false
   }
   let names = getValidNames(hotId)
   if (!hasAllColumnNames(hotId, columnProperties, names)) {
-    callb([
-      {
-        message: `Every Column property, including the column properties of any foreign keys, must have a unique 'name'.`,
-        name: 'Missing Column Property names'
-      }
-    ])
+    errorHandler({message: `Every Column property, including the column properties of any foreign keys, must have a unique 'name'.`,
+      name: 'Missing Column Property names'})
+    callb()
     return false
   }
   return true
 }
 
-function errorHandler(err, rowNumber, errorCollector) {
+function errorHandler(err, rowNumber) {
   if (err.multiple) {
     for (const error of err.errors) {
-      errorCollector.push({
+      errorFeedback$.next({
         columnNumber: error.columnNumber,
         rowNumber: error.rowNumber || rowNumber,
         message: error.message,
@@ -246,6 +228,11 @@ function errorHandler(err, rowNumber, errorCollector) {
       })
     }
   } else {
-    errorCollector.push({columnNumber: err.columnNumber, rowNumber: rowNumber, message: err.message, name: err.name})
+    errorFeedback$.next({
+      columnNumber: err.columnNumber,
+      rowNumber: rowNumber,
+      message: err.message,
+      name: err.name
+    })
   }
 }
