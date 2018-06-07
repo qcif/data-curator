@@ -80,7 +80,7 @@
     "axios": "^0.18.0",
     "bootstrap": "3.3.7",
     "components-font-awesome": "^5.0.6",
-    "csv": "^2.0.0",
+    "csv": "^3.0.2",
     "datapackage": "^1.0.6",
     "electron-settings": "^3.2.0",
     "escape-regexp": "^0.0.1",
