@@ -251,6 +251,7 @@ export default {
       errorsWindowId: null,
       activeSelected: [],
       persistColorFn: this.highlightPersistedSelection,
+      timeoutTimerId: null,
       toolbarMenus: [{
         name: 'Guess',
         id: 'guess-column-properties',
@@ -384,51 +385,51 @@ export default {
       'pushProvenanceErrors',
       'removeProvenanceErrors'
     ]),
-    saveHotPanelDimensions: function() {
-      this.widthInner1 = document.querySelector('.ht_master .wtHolder').offsetWidth
-      this.heightInner1 = document.querySelector('.ht_master .wtHolder').offsetHeight
-    },
-    saveMainMiddlePanelDimensions: function() {
-      this.widthMain1 = document.querySelector('#main-middle-panel').offsetWidth
-      this.heightMain1 = document.querySelector('.ht_master .wtHolder').offsetHeight
-    },
-    calculatePanelDiff: function() {
-      this.panelWidthDiff = this.widthMain1 - this.widthInner1
-      this.panelHeightDiff = this.heightMain1 - this.heightInner1
-    },
-    testSideMain: function() {
-      // TODO : refactor this as an event that plays once only rather than a continuous condition-check
-      if (!this.widthInner1 && !this.widthMain1 & !this.panelWidthDiff) {
-        this.saveMainMiddlePanelDimensions()
-        this.saveHotPanelDimensions()
-        this.calculatePanelDiff()
-      }
-      let panelWidthDiff = this.panelWidthDiff
-      window.setTimeout(function() {
-        document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
-          let width1 = document.querySelector('#main-middle-panel').offsetWidth
-          let updatedInner = width1 - panelWidthDiff
-          // el.style.width = `${updatedInner - 15}px`
-          el.style.width = `${updatedInner}px`
-        })
-      }, 500)
-    },
-    testBottomMain: function() {
-      // TODO : refactor this as an event that plays once only rather than a continuous condition-check
-      if (!this.heightInner1 && !this.heightMain1 & !this.panelHeightDiff) {
-        this.saveMainMiddlePanelDimensions()
-        this.saveHotPanelDimensions()
-        this.calculatePanelDiff()
-      }
-      let panelHeightDiff = this.panelHeightDiff
-      window.setTimeout(function() {
-        document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
-          let height1 = document.querySelector('#main-middle-panel').offsetHeight
-          let updatedInner = height1 - panelHeightDiff
-          el.style.height = `${updatedInner}px`
-        })
-      }, 500)
-    },
+    // saveHotPanelDimensions: function() {
+    //   this.widthInner1 = document.querySelector('.ht_master .wtHolder').offsetWidth
+    //   this.heightInner1 = document.querySelector('.ht_master .wtHolder').offsetHeight
+    // },
+    // saveMainMiddlePanelDimensions: function() {
+    //   this.widthMain1 = document.querySelector('#main-middle-panel').offsetWidth
+    //   this.heightMain1 = document.querySelector('.ht_master .wtHolder').offsetHeight
+    // },
+    // calculatePanelDiff: function() {
+    //   this.panelWidthDiff = this.widthMain1 - this.widthInner1
+    //   this.panelHeightDiff = this.heightMain1 - this.heightInner1
+    // },
+    // testSideMain: function() {
+    //   // TODO : refactor this as an event that plays once only rather than a continuous condition-check
+    //   if (!this.widthInner1 && !this.widthMain1 & !this.panelWidthDiff) {
+    //     this.saveMainMiddlePanelDimensions()
+    //     this.saveHotPanelDimensions()
+    //     this.calculatePanelDiff()
+    //   }
+    //   let panelWidthDiff = this.panelWidthDiff
+    //   window.setTimeout(function() {
+    //     document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
+    //       let width1 = document.querySelector('#main-middle-panel').offsetWidth
+    //       let updatedInner = width1 - panelWidthDiff
+    //       // el.style.width = `${updatedInner - 15}px`
+    //       el.style.width = `${updatedInner}px`
+    //     })
+    //   }, 500)
+    // },
+    // testBottomMain: function() {
+    //   // TODO : refactor this as an event that plays once only rather than a continuous condition-check
+    //   if (!this.heightInner1 && !this.heightMain1 & !this.panelHeightDiff) {
+    //     this.saveMainMiddlePanelDimensions()
+    //     this.saveHotPanelDimensions()
+    //     this.calculatePanelDiff()
+    //   }
+    //   let panelHeightDiff = this.panelHeightDiff
+    //   window.setTimeout(function() {
+    //     document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
+    //       let height1 = document.querySelector('#main-middle-panel').offsetHeight
+    //       let updatedInner = height1 - panelHeightDiff
+    //       el.style.height = `${updatedInner}px`
+    //     })
+    //   }, 500)
+    // },
     hoverToSelectErrorCell: function(row, column) {
       this.persistColorFn = false
       this.updateCellsFromCount(row, column, this.addErrorHoverStyle)
@@ -540,6 +541,8 @@ export default {
       this.closeLoadingScreen()
     },
     errorHtmlRenderer: function(instance, td, row, col, prop, value, cellProperties) {
+      // must use default renderer before adding changes
+      Handsontable.renderers.TextRenderer.apply(this, arguments)
       td.style.backgroundColor = this.errorColor
       return td
     },
@@ -629,8 +632,9 @@ export default {
       this.initLoadingScreenTimeout(errorMessage, timeout)
     },
     initLoadingScreenTimeout: function(errorMessage, timeout = 30000) {
+      this.clearLoadingTimeout()
       let self = this
-      _.delay(function() {
+      this.timeoutTimerId = _.delay(function() {
         if (self.isLoadingMessageRunning()) {
           self.closeLoadingScreen()
           ipc.send('loadingScreenTimeout', errorMessage)
@@ -639,6 +643,13 @@ export default {
     },
     closeLoadingScreen: function() {
       this.loadingDataMessage = false
+      this.clearLoadingTimeout()
+    },
+    clearLoadingTimeout: function() {
+      if (this.timeoutTimerId) {
+        clearTimeout(this.timeoutTimerId)
+        this.timeoutTimerId = null
+      }
     },
     isLoadingMessageRunning: function() {
       return this.loadingDataMessage
@@ -1044,12 +1055,6 @@ export default {
       }
       this.closeMessages()
       this.sendErrorsToErrorsWindow()
-    },
-    sideNavPropertiesForMain: function() {
-      this.testSideMain()
-    },
-    messageStatus: function() {
-      this.testBottomMain()
     },
     messages: function() {
       if (this.messages) {
