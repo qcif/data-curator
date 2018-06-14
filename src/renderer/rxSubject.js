@@ -16,6 +16,7 @@ let afterSetDataAtCell$ = new Subject()
 let fkPackagesButtonText$ = new Subject()
 let loadingPackage$ = new Subject()
 const errorFeedback$ = new Subject()
+const updateHotDimensions$ = new Subject()
 
 export function onNextHotIdFromTabRx(asyncFunction) {
   let subject = hotIdFromTab$
@@ -45,5 +46,6 @@ export {
   afterSetDataAtCell$,
   fkPackagesButtonText$,
   loadingPackage$,
-  errorFeedback$
+  errorFeedback$,
+  updateHotDimensions$
 }
