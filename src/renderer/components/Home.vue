@@ -187,7 +187,7 @@ import {ipcRenderer as ipc, remote} from 'electron'
 import 'lodash/lodash.min.js'
 import {unzipFile} from '@/importPackage.js'
 import {toggleHeaderWithFeedback} from '@/headerRow.js'
-import {onNextHotIdFromTabRx, hotIdFromTab$, provenanceErrors$, errorFeedback$} from '@/rxSubject.js'
+import {onNextHotIdFromTabRx, hotIdFromTab$, provenanceErrors$, errorFeedback$, updateHotDimensions$} from '@/rxSubject.js'
 import VueRx from 'vue-rx'
 import {
   Subscription
@@ -350,6 +350,7 @@ export default {
       return _.get(this.toolbarMenus[this.toolbarIndex], 'name')
     },
     messageStatus() {
+      updateHotDimensions$.next()
       return this.messages ? 'messages-opened' : 'messages-closed'
     },
     mainBottomPanelStatus() {
@@ -385,51 +386,6 @@ export default {
       'pushProvenanceErrors',
       'removeProvenanceErrors'
     ]),
-    // saveHotPanelDimensions: function() {
-    //   this.widthInner1 = document.querySelector('.ht_master .wtHolder').offsetWidth
-    //   this.heightInner1 = document.querySelector('.ht_master .wtHolder').offsetHeight
-    // },
-    // saveMainMiddlePanelDimensions: function() {
-    //   this.widthMain1 = document.querySelector('#main-middle-panel').offsetWidth
-    //   this.heightMain1 = document.querySelector('.ht_master .wtHolder').offsetHeight
-    // },
-    // calculatePanelDiff: function() {
-    //   this.panelWidthDiff = this.widthMain1 - this.widthInner1
-    //   this.panelHeightDiff = this.heightMain1 - this.heightInner1
-    // },
-    // testSideMain: function() {
-    //   // TODO : refactor this as an event that plays once only rather than a continuous condition-check
-    //   if (!this.widthInner1 && !this.widthMain1 & !this.panelWidthDiff) {
-    //     this.saveMainMiddlePanelDimensions()
-    //     this.saveHotPanelDimensions()
-    //     this.calculatePanelDiff()
-    //   }
-    //   let panelWidthDiff = this.panelWidthDiff
-    //   window.setTimeout(function() {
-    //     document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
-    //       let width1 = document.querySelector('#main-middle-panel').offsetWidth
-    //       let updatedInner = width1 - panelWidthDiff
-    //       // el.style.width = `${updatedInner - 15}px`
-    //       el.style.width = `${updatedInner}px`
-    //     })
-    //   }, 500)
-    // },
-    // testBottomMain: function() {
-    //   // TODO : refactor this as an event that plays once only rather than a continuous condition-check
-    //   if (!this.heightInner1 && !this.heightMain1 & !this.panelHeightDiff) {
-    //     this.saveMainMiddlePanelDimensions()
-    //     this.saveHotPanelDimensions()
-    //     this.calculatePanelDiff()
-    //   }
-    //   let panelHeightDiff = this.panelHeightDiff
-    //   window.setTimeout(function() {
-    //     document.querySelectorAll('.ht_master .wtHolder').forEach((el) => {
-    //       let height1 = document.querySelector('#main-middle-panel').offsetHeight
-    //       let updatedInner = height1 - panelHeightDiff
-    //       el.style.height = `${updatedInner}px`
-    //     })
-    //   }, 500)
-    // },
     hoverToSelectErrorCell: function(row, column) {
       this.persistColorFn = false
       this.updateCellsFromCount(row, column, this.addErrorHoverStyle)
@@ -663,6 +619,9 @@ export default {
         const hotId = this.loadDataIntoLatestHot(data, updatedFormat)
         this.initHotTablePropertiesFromDescriptor(hotId, descriptor)
         this.initHotColumnPropertiesFromSchema(hotId, descriptor.schema)
+        // hot rendering problem when tabs opened quickly - https://github.com/ODIQueensland/data-curator/issues/803- workaround as selecting table re-renders
+        getCurrentColumnIndexOrMin()
+        updateHotDimensions$.next()
       })
     },
     initTab: function() {
@@ -766,14 +725,13 @@ export default {
         ipc.send('closedFindReplace')
       }
       this.sideNavView = ''
+      updateHotDimensions$.next()
     },
     openSideNav: function() {
+      const self = this
       this.sideNavStatus = 'open'
       // ensure sidenav menu is rendered before adjusting form height
-      const vueAdjustSidenavFormHeight = this.adjustSidenavFormHeight
-      _.delay(function() {
-        vueAdjustSidenavFormHeight()
-      }, 100)
+      updateHotDimensions$.next()
     },
     updateTransitions: function(index) {
       if (index < this.toolbarIndex) {
@@ -985,9 +943,6 @@ export default {
       this.messagesType = ''
       this.messageTitle = ''
     },
-    closeMessagePanel: function() {
-      this.errorsWindowId = null
-    },
     toggleMessageView: function() {
       if (this.messagesType === 'error' && getWindow('errors')) {
         return false
@@ -1033,6 +988,15 @@ export default {
     showProvenanceErrors: function() {
       this.updateToolbarMenu(3)
       provenanceErrors$.next()
+    },
+    updateDimensions: function() {
+      const self = this
+      // provide enough time for panel to open or close before resizing
+      _.delay(function() {
+        self.adjustSidenavFormHeight()
+        let hot = HotRegister.getActiveInstance()
+        hot.render()
+      }, 500)
     }
   },
   components: {
@@ -1112,9 +1076,7 @@ export default {
       self.$forceUpdate()
     })
     ipc.on('resized', function() {
-      self.adjustSidenavFormHeight()
-      let hot = HotRegister.getActiveInstance()
-      hot.render()
+      updateHotDimensions$.next()
     })
     this.$nextTick(function() {
       require('../index.js')
@@ -1145,6 +1107,9 @@ export default {
     })
     this.$subscribeTo(errorFeedback$, function(nextError) {
       self.messages.push(nextError)
+    })
+    this.$subscribeTo(updateHotDimensions$, function(message) {
+      self.updateDimensions()
     })
   },
   beforeCreate: function() {
