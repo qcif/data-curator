@@ -70,6 +70,7 @@ Feature: Validate Table
     And a count of the number of errors detected should be displayed
     And the error message panel should be closed
 
+  @dev
   Scenario: Sort validation error messages
     Given data in a table has been validated
     And errors have been detected and displayed error messages in a table in a separate window
