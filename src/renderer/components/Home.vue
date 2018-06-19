@@ -62,7 +62,7 @@
                 </li>
               </ul>
             </li>
-            <li class="tab-add" @click="addTab()" v-tooltip.right="tooltip('tooltip-add-tab')">
+            <li class="add-tab" @click="addTab()" v-tooltip.right="tooltip('tooltip-add-tab')">
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
             <component is="tooltipAddTab" />

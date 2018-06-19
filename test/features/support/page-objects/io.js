@@ -15,3 +15,9 @@ export function getFileData(filePath) {
   const data = fs.readFileSync(filePath, 'utf-8')
   return data
 }
+
+const defaultTabData = [['', '', '']]
+
+export {
+  defaultTabData
+}

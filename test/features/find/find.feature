@@ -65,7 +65,7 @@ Feature: Find data
   @impl
   Scenario Outline: Find next
     Given Data Curator is open
-    And the active table has "<data>"
+    And the active table has data: "<data>"
     And "Find" is invoked
     When "<search value>" has been entered
     # And a search constraint has been entered

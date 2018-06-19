@@ -1,5 +1,6 @@
 import { expect, should, assert } from 'chai'
 import { Given, When, Then } from 'cucumber'
+import {defaultTabData} from '../page-objects/io.js'
 import _ from 'lodash'
 
 When(/^Data Curator is open$/, async function () {
@@ -7,12 +8,8 @@ When(/^Data Curator is open$/, async function () {
   expect(title).to.equal('Data Curator')
 })
 
-Given(/^the active table has "(.+)"$/, async function (data) {
+Given(/^the active table has data: "(.+)"$/, async function (data) {
   // include headers in data sent
-  console.log(`incoming data`)
-  console.log(`.${data}.`)
-  // const dataToSend = JSON.stringify(data.raw())
-  // const dataToSend = JSON.parse(data)
   await this.app.webContents.send('loadDataIntoCurrentHot', data)
   // wait until hot data changes before continuing
   const parentSelector = '.tab-pane.active .editor.handsontable'
@@ -22,13 +19,12 @@ Given(/^the active table has "(.+)"$/, async function (data) {
     let actualFirstDataRow = await self.app.client.element(parentSelector)
       .elements(elementsSelector)
       .getText()
-    return _.difference(actualFirstDataRow, ['', '', '']).length !== 0
+    const difference = _.difference(actualFirstDataRow, ['', '', ''])
+    if (_.difference(data, defaultTabData).length === 0) {
+      return difference.length === 0
+    }
+    return difference.length !== 0
   }, 5000)
-  // compare data available in hot view
-  let actualFirstDataRow = await this.app.client.element(parentSelector)
-    .elements(elementsSelector).getText()
-  console.log('first row', actualFirstDataRow)
-  // expect(actualFirstDataRow).to.deep.equal(data.rows()[0])
 })
 
 Then(/^1 window should be displayed/, function () {
@@ -39,12 +35,12 @@ Then(/^1 window should be displayed/, function () {
     })
 })
 
-Then(/^the window should have (\d+) tab[s]?$/, function (numberOfTabs) {
+Then(/^(the window (?:should have|has|have) (\d+) tab[s]?|(\d+) (?:data )tab[s]? is displayed)$/, function (numberOfTabs) {
   return this.app.client
     .waitForVisible('#csvEditor')
     .elements('.tab-header')
     .then(function(response) {
-      expect(response.value.length).to.equal(numberOfTabs)
+      expect(response.value.length).to.equal(_.toInteger(numberOfTabs))
     })
 })
 
@@ -96,7 +92,7 @@ Then(/^the (?:new |)table (?:should have |has )(\d+) row[s]? by (\d+) column[s]?
     })
 })
 
-Then(/^the (?:new |)table should be empty$/, function () {
+Then(/^the (?:new |)table (?:should be|is) empty$/, function () {
   return this.app.client.element('.active .editor.handsontable')
     .getText('.ht_master table tr td')
     .then(function(array) {

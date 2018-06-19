@@ -3,6 +3,7 @@ import electron from 'electron'
 import { After, Before, Status, Given, When, Then } from 'cucumber'
 import fakeDialog from 'spectron-fake-dialog'
 import { expect, should, assert } from 'chai'
+const { exec } = require('child_process')
 
 async function stopAppRunning(app) {
   try {
@@ -20,6 +21,20 @@ async function stopAppRunning(app) {
   }
 }
 
+function tallyTestAppveyor(testCase) {
+  if (process.env.APPVEYOR) {
+    console.log('appveyor tally...')
+    exec(`appveyor AddTest -Name ${testCase.pickle.name} -Framework Spectron -Filename ${testCase.sourceLocation.uri} -Outcome ${testCase.result.status} -Duration ${testCase.result.duration}`, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`)
+        return
+      }
+      console.log(`stdout: ${stdout}`)
+      console.log(`stderr: ${stderr}`)
+    })
+  }
+}
+
 After({timeout: 40000}, async function (testCase) {
   try {
     // console.log('Starting after hook....')
@@ -30,6 +45,7 @@ After({timeout: 40000}, async function (testCase) {
         // console.log('got attachment in', attachResult)
       }
     }
+    tallyTestAppveyor(testCase)
     // stopAppRunning(this.app)
   } catch (error) {
     console.log('error in after hook', error)
