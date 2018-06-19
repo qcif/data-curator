@@ -27,14 +27,32 @@ install:
   - yarn
   - node --version
 
-# before_build:
-#   - yarn run lint
-#   - yarn run lint:test
-#   - yarn run test
-
 build_script:
   #- yarn test
   # - yarn build
-  - yarn run release:predraft
-
+  - if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
 test: off
+
+
+for:
+-
+  branches:
+    only:
+      - /^master$/
+      - /^develop$/
+  test: off
+  build: off
+-
+  branches:
+    only:
+      - /^ci$/
+
+  test_script:
+    - yarn run lint
+    - yarn run lint:test
+    - yarn run clean
+    - yarn run pack
+    - yarn run cucumber:postpack:dev
+
+  build:
+    off
