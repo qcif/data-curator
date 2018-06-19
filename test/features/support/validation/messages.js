@@ -29,8 +29,8 @@ Then(/^the validation failure message should be displayed with the message(?:s|)
   expect(_.isArray(keys)).to.equal(true)
   const messages = keys.map(function(key) {
     return _.escapeRegExp(validationMessages[key])
-  }).join('\[\\\s\]')
-  let regexp = new RegExp('^.*Validation Errors\[\\\s\].*\[\\\s\]' + messages + '.*$', 'm')
+  }).join('[\\s]')
+  let regexp = new RegExp('^.*Validation Errors[\\s].*[\\s]' + messages + '.*$', 'm')
   return this.app.client.waitForText('#message-panel', 3000)
     .getText('#message-panel')
     .then(function(text) {
@@ -103,7 +103,7 @@ Then(/^a message to set column names should be displayed$/, function () {
 })
 
 Then(/^the validation errors count should be "(\d+)"$/, function (errorsCount) {
-  let regexp = new RegExp(errorsCount + ' Error\\\(s\\\)')
+  let regexp = new RegExp(errorsCount + ' Error\\(s\\)')
   return this.app.client.waitForText('#message-panel', 3000)
     .getText('#message-panel')
     .then(function(text) {
