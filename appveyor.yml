@@ -49,7 +49,6 @@ for:
       - /ci/
   test_script:
     - yarn run lint
-    - yarn run lint:test
     - yarn run clean
     - yarn run pack
     - yarn run cucumber:postpack:dev
