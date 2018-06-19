@@ -14,7 +14,6 @@ Feature: Guess Column Properties
 
     - If column properties for `type`, `format` and `constraints` already exist, then prompt the user to ask if they should be over-written.
 
-  @dev
   @impl
   Scenario Outline: Guess column properties immediately after opening Data Curator
     Given Data Curator is open
