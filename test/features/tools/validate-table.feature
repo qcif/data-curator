@@ -58,8 +58,8 @@ Feature: Validate Table
     Examples:
     | data                                                  | error keys                | count   | rows  | cols  |
     | [["","",""]]                                          | ["No Columns Properties"] | 1       | []    | []    |
-    | [["h1","h2","h3"],["","",""]]                         | ["Blank Row"]             | 1       | [1]   | []    |
-    | [["h1","h2","h3"],["","",""],["a","",""],["","",""]]  | ["Blank Row"]             | 2       | [1,3] | [0,0] |
+    # | [["h1","h2","h3"],["","",""]]                         | ["Blank Row"]             | 1       | [1]   | []    |
+    # | [["h1","h2","h3"],["","",""],["a","",""],["","",""]]  | ["Blank Row"]             | 2       | [1,3] | [0,0] |
 
   Scenario: Pop out validation error messages
     Given Data Curator is open
