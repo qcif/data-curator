@@ -109,6 +109,7 @@ Then(/^the validation errors count should be "(\d+)"$/, function (errorsCount) {
     .then(function(text) {
       console.log(`text is`, text)
       let validations = text.split(os.EOL)
+      console.log('split is', validations)
       expect(validations[1]).to.match(regexp)
     })
 })
