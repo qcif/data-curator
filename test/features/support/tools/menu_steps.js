@@ -10,6 +10,14 @@ Given(/^"Find" is invoked$/, async function () {
   await menu.invokeActions(this.app, {name: 'Find', type: 'application menu selection', sequence: 'Find->Find'})
 })
 
+Given(/^"Guess Column Properties" is invoked$/, async function () {
+  await menu.invokeActions(this.app, {name: 'Guess Column Properties', type: 'toolbar menu button', sequence: 'Guess'})
+})
+
+Given(/^"Validate Table" is invoked$/, async function () {
+  await menu.invokeActions(this.app, {name: 'Validate', type: 'toolbar menu button', sequence: 'Validate'})
+})
+
 // When(/^"About" is invoked$/, async function () {
 //   await menu.invokeActions(this.app, {name: 'About', type: 'application menu selection', sequence: 'Electron->About'})
 // })
@@ -18,18 +26,18 @@ When('{string} is invoked using the {string}: {string}', async function (name, t
   await menu.invokeActions(this.app, {name: name, type: type, sequence: sequence})
 })
 
-When(/^the "([\w]+?)" toolbar menu is (?:selected|clicked)/, async function (toolbarMenuName) {
+When(/^the "([\w]+?)" toolbar menu is (?:selected|clicked|invoked)/, async function (toolbarMenuName) {
   let result = await menu.clickOnToolbarMenuButton(toolbarMenuName)
   return result
 })
 
-When(/^the "([\w]+?)"->"([\w]+?)" menu is (?:selected|clicked)/, async function (menuLabel, subMenuLabel) {
+When(/^the "([\w]+?)"->"([\w]+?)" menu is (?:selected|clicked|invoked)/, async function (menuLabel, subMenuLabel) {
   const returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel])
   expect(returned).to.equal(subMenuLabel)
 })
 
 // 3rd menu may contain spaces, dots
-When(/^the "([\w]+?)"->"([\w]+?)"->"([\w .]+?)" menu is (?:selected|clicked)/, async function (menuLabel, subMenuLabel, subSubMenuLabel) {
+When(/^the "([\w]+?)"->"([\w]+?)"->"([\w .]+?)" menu is (?:selected|clicked|invoked)/, async function (menuLabel, subMenuLabel, subSubMenuLabel) {
   let returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel, subSubMenuLabel])
   expect(returned).to.equal(subSubMenuLabel)
 })
