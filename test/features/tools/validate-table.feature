@@ -43,6 +43,7 @@ Feature: Validate Table
   - groupChar
 
   @impl
+  @dev
   Scenario Outline: Validate Table
     Given Data Curator is open
     And 1 data tab is displayed
