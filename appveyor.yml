@@ -38,14 +38,14 @@ for:
 -
   branches:
     only:
-      - /^master$/
-      - /^develop$/
+      - /master/
+      - /develop/
   test: off
   build: off
 -
   branches:
     only:
-      - /^ci$/
+      - /ci/
 
   test_script:
     - yarn run lint
