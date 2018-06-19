@@ -107,6 +107,7 @@ Then(/^the validation errors count should be "(\d+)"$/, function (errorsCount) {
   return this.app.client.waitForText('#message-panel', 3000)
     .getText('#message-panel')
     .then(function(text) {
+      console.log(`text is`, text)
       let validations = text.split(os.EOL)
       expect(validations[1]).to.match(regexp)
     })
