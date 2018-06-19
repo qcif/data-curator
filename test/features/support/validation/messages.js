@@ -48,7 +48,7 @@ Then(/^the validation failure message should be displayed with the message(?:s|)
   return this.app.client.waitForText('#message-panel', 3000)
     .getText('#message-panel')
     .then(function(text) {
-      let actualText = text.split(os.EOL)
+      let actualText = text.split('\n')
       expect(actualText.shift()).to.match(/Validation Errors/)
       // ignore error count
       actualText.shift()
@@ -108,7 +108,7 @@ Then(/^the validation errors count should be "(\d+)"$/, function (errorsCount) {
     .getText('#message-panel')
     .then(function(text) {
       console.log(`text is`, text)
-      let validations = text.split(os.EOL)
+      let validations = text.split('\n')
       console.log('split is', validations)
       expect(validations[1]).to.match(regexp)
     })
