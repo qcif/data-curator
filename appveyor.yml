@@ -32,7 +32,7 @@ build_script:
   # - yarn build
   - if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
 test: off
-
+configuration: release
 
 for:
 -
@@ -42,6 +42,7 @@ for:
       - /develop/
   test: off
   build: off
+  configuration: debug
 -
   branches:
     only:
@@ -54,3 +55,4 @@ for:
     - yarn run cucumber:postpack:dev
   build:
     off
+  configuration: test
