@@ -16,6 +16,8 @@ cache:
 environment:
   GH_TOKEN:
     secure: 2+1HLAk/YGWqOMnjgsx5nII2huvHAlPkO24vJBqggRmcyy9FhiekaaMDTsRiRnRX
+  COVERALLS_REPO_TOKEN:
+    secure: 5CQKw1+Is8KphKjmT2emU/C7eNlZN3OEteemQZjOjJl47BVABYr1SOZ+IX82NSWy
 
 init:
   - git config --global core.autocrlf input
@@ -47,11 +49,16 @@ for:
   branches:
     only:
       - /ci/
-  test_script:
+  before_test:
     - yarn run lint
     - yarn run clean
     - yarn run pack
-    - yarn run cucumber:postpack:dev
+  test_script:
+    - yarn run unit
+    - yarn run cucumber:postpack:impl
+  after_test:
+    - ./test/postreport.js
+    - yarn run 
   build:
     off
   configuration: test
