@@ -1,7 +1,7 @@
 Feature: Set Table Properties
-  As a Data Packager  
-  I want to described the table  
-  So that it can be validated and Data Consumers can understand and use it  
+  As a Data Packager
+  I want to described the table
+  So that it can be validated and Data Consumers can understand and use it
 
   RULES
   =====
@@ -37,7 +37,7 @@ Feature: Set Table Properties
     - The 'foreign key' relationships can be to columns in:
       - the same table
       - a table in the same data package
-      - at table at a url 
+      - at table at a url
     - "Table Properties" can be invoked from the menu, toolbar or shortcut
 
   USER INTERFACE
@@ -45,11 +45,25 @@ Feature: Set Table Properties
 
   ![Table properties user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/table-properties.png)
 
+  @impl
+  Scenario Outline: Show Correct Side Navigation Panels
+    Given Data Curator is open
+    And the window has 1 tab
+    When "<selector>" is invoked
+    Then the "<panel>" panel should be displayed
+    Examples:
+    | selector                | panel                   |
+    | Table Properties        | Table Properties        |
+    | Column Properties       | Column Properties       |
+    | Provenance Information  | Provenance Properties   |
+    | Data Package Properties | Package Properties      |
+    | Find Replace            | Find and Replace        |
+
   Scenario: Set Table Properties
     Given Data Curator is open
-    And a data tab is open
+    And the window has 1 tab
     When "Table Properties" is invoked
-    Then a panel that allows properties to be set for the current Tab should be displayed
-    And property values should be accepted and validated 
+    Then the "Table Properties" panel should be displayed
+    And property values should be accepted and validated
     And the values should be saved as they are entered
     And the 'name' property should be assign to the Data Tab name

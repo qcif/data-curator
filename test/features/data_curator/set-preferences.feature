@@ -1,7 +1,7 @@
 Feature: Set Preferences
-  As a Data Packager  
-  I want to set default values and behaviours  
-  So that I can work efficiently and avoid re-keying values or repeating common actions  
+  As a Data Packager
+  I want to set default values and behaviours
+  So that I can work efficiently and avoid re-keying values or repeating common actions
 
   RULES
   =====
@@ -23,17 +23,17 @@ Feature: Set Preferences
         - `email`
         - `path`
         - `role` - one of the standard values in a drop down list
-        
+
   LATER
   =====
-  
+
   - Default Publishing platform (doesn't make sense to add until Publish is implemented)
-  
+
   Scenario: Set Preferences
     Given Data Curator is open
     When "Set Preferences" is invoked
     Then the preferences panel should be displayed
-    And preference values should be accepted and validated 
+    And preference values should be accepted and validated
     And values should be stored so they are reapplied next time Data Curator is opened
 
   Scenario: Use Preferences

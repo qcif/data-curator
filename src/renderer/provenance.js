@@ -14,7 +14,7 @@ export function compileAndStringifyProvenance() {
   let stringified = ''
   _.forEach(allHotErrors, function(errors, hotId) {
     let hotErrors = compileHotErrors(errors, hotId)
-    stringified += `${hotErrors}\n`
+    stringified += `${hotErrors}${os.EOL}`
   })
   return `${mainText}${os.EOL}${stringified}`
 }
@@ -27,7 +27,7 @@ export function compileHotErrors(errors, hotId) {
 export function stringifyProvenance(mainText, allHotErrors) {
   let stringified = ''
   _.forEach(allHotErrors, function(errors, hotId) {
-    stringified += `${errors}\n`
+    stringified += `${errors}${os.EOL}`
   })
   return `${mainText}${os.EOL}${stringified}`
 }
