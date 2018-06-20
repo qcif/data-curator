@@ -58,8 +58,8 @@ Feature: Validate Table
     Examples:
     | data                                                  | error keys                | count   | rows  | cols  |
     | [["","",""]]                                          | ["No Columns Properties"] | 1       | []    | []    |
-    | [["h1","h2","h3"],["","",""]]                         | ["Blank Row"]             | 1       | [2]   | []    |
-    # | [["h1","h2","h3"],["","",""],["a","",""],["","",""]]  | ["Blank Row"]             | 2       | [1,3] | [0,0] |
+    | [["h1","h2","h3"],["","",""]]                         | ["Blank Row"]             | 1       | [1]   | []    |
+    | [["h1","h2","h3"],["","",""],["a","",""],["","",""]]  | ["Blank Row"]             | 2       | [1,3] | [0,0] |
 
   Scenario: Pop out validation error messages
     Given Data Curator is open
@@ -70,7 +70,6 @@ Feature: Validate Table
     And a count of the number of errors detected should be displayed
     And the error message panel should be closed
 
-  @dev
   Scenario: Sort validation error messages
     Given data in a table has been validated
     And errors have been detected and displayed error messages in a table in a separate window

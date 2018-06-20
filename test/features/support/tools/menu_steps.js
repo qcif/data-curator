@@ -6,7 +6,7 @@ import {menu} from '../pageObjects.js'
 
 const _ = require('lodash')
 
-Given(/^"Find" is invoked$/, async function () {
+Given(/^"(?:Find|Find Replace)" is invoked$/, async function () {
   await menu.invokeActions(this.app, {name: 'Find', type: 'application menu selection', sequence: 'Find->Find'})
 })
 
@@ -18,11 +18,30 @@ Given(/^"Validate Table" is invoked$/, async function () {
   await menu.invokeActions(this.app, {name: 'Validate', type: 'toolbar menu button', sequence: 'Validate'})
 })
 
+Given(/^"Table Properties" is invoked$/, async function () {
+  await menu.invokeActions(this.app, {name: 'Table Properties', type: 'toolbar menu button', sequence: 'Table'})
+})
+
+Given(/^"Column Properties" is invoked$/, async function () {
+  await menu.invokeActions(this.app, {name: 'Column Properties', type: 'toolbar menu button', sequence: 'Column'})
+})
+
+Given(/^"Provenance Information" is invoked$/, async function () {
+  await menu.invokeActions(this.app, {name: 'Provenance Information', type: 'toolbar menu button', sequence: 'Provenance'})
+})
+
+Given(/^"Data Package Properties" is invoked$/, async function () {
+  await menu.invokeActions(this.app, {name: 'Data Package Properties', type: 'toolbar menu button', sequence: 'Package'})
+})
+
 // When(/^"About" is invoked$/, async function () {
 //   await menu.invokeActions(this.app, {name: 'About', type: 'application menu selection', sequence: 'Electron->About'})
 // })
 
 When('{string} is invoked using the {string}: {string}', async function (name, type, sequence) {
+  console.log(`sequence`, sequence)
+  console.log(`type`, type)
+  console.log(`name`, name)
   await menu.invokeActions(this.app, {name: name, type: type, sequence: sequence})
 })
 

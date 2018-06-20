@@ -19,8 +19,8 @@ function CustomWorld ({attach, parameters}) {
   } else {
     console.log('WARNING: app already created...')
   }
-  console.log(`at world`)
-  console.log(this)
+  // console.log(`at world`)
+  // console.log(this)
 }
 
 function createApp() {
