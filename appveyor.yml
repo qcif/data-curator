@@ -57,8 +57,7 @@ for:
     - yarn run pack
     - yarn run cucumber:postpack:dev
   after_test:
-    - ./test/postreport.js
-    - yarn run
+    - yarn run cucumber:report:badge
   build:
     off
   configuration: test
