@@ -21,6 +21,6 @@ Then(/^the column that the cursor is in should be displayed/, async function () 
   return responses
 })
 
-When(/^(?:the )?"([\w ]+?)" (?:button |panel ) is (?:clicked|invoked)$/, async function (label) {
+When(/^(?:the )?"([\w ]+?)" (?:button|panel) is (?:clicked|invoked)$/, async function (label) {
   await applyFnToIdOrClassSelectorFromLabel(this.app, 'click', label, this.pageTimeout)
 })

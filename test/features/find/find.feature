@@ -45,7 +45,7 @@ Feature: Find data
     | Find  | application menu selection  | Find->Find  |
 
   @impl
-  Scenario Outline: Find next is available from invoking Find
+  Scenario Outline: Find submenu item is available from invoking Find
     Given Data Curator is open
     When "<name1>" is invoked using the "<type>": "<sequence1>"
     Then "<name2>" is invoked using the "application menu selection": "<sequence2>"
