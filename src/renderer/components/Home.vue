@@ -62,7 +62,7 @@
                 </li>
               </ul>
             </li>
-            <li class="tab-add" @click="addTab()" v-tooltip.right="tooltip('tooltip-add-tab')">
+            <li class="add-tab" @click="addTab()" v-tooltip.right="tooltip('tooltip-add-tab')">
               <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
             </li>
             <component is="tooltipAddTab" />
@@ -78,17 +78,19 @@
       <div id="main-bottom-panel" class="panel-footer" :class="mainBottomPanelStatus">
         <div id="message-panel" class="panel-default">
           <!-- tidy up messages view with components -->
-          <div v-show="toggleMessageView()">
-            <ul class="nav navbar-right closebtn">
-              <li>
-                <a href="#" @click="closeMessages()">
-                  <span class="btn-default fa fa-times" />
-                </a>
-              </li>
-            </ul>
-            <h3 class="message-title">{{messagesTitle}}</h3>
+          <div class="message-view" v-show="toggleMessageView()">
+            <div class="message-title-container affix">
+              <ul class="nav navbar-right closebtn">
+                <li>
+                  <a href="#" @click="closeMessages()">
+                    <span class="btn-default fa fa-times"/>
+                  </a>
+                </li>
+              </ul>
+              <h3 class="message-title">{{messagesTitle}}</h3>
+            </div>
             <template  v-if="messagesType === 'error'">
-              <nav class="navbar errors">
+              <nav class="navbar errors-meta affix">
                 <div class="container-fluid">
                   <i class="navbar-text">{{messages.length}} Error(s)</i>
                   <ul class="nav navbar-nav navbar-left" >
@@ -101,7 +103,6 @@
                     <li>
                       <a href="#" v-tooltip.top="tooltip('tooltip-write-errors-provenance')" @click.prevent="writeErrorsToProvenance()">
                         <object data="static/img/validation-results.svg" type="image/svg+xml" />
-                        <!-- <span class="btn-default fas fa-file-alt"  /> -->
                       </a>
                     </li>
                     <component is="tooltipWriteErrorsProvenance" />

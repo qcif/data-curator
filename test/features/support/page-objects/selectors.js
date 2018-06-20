@@ -14,6 +14,27 @@ export async function waitForVisibleIdFromLabel(app, parentSelector, label, time
   }
 }
 
+export async function applyFnToIdOrClassSelectorFromLabel(app, fn, label, timeout) {
+  try {
+    const result = await applyFnToClassSelectorFromLabel(app, fn, label, timeout)
+    return result
+  } catch (error) {
+    console.log(`Unable to find via class. Trying id`)
+    result = await applyFnToIdSelectorFromLabel(app, fn, label, timeout)
+    return result
+  }
+}
+
+export async function applyFnToClassSelectorFromLabel(app, fn, label, timeout) {
+  const result = await applyFnToSelectorWithLabel(app, fn, '.' + label, label, timeout)
+  return result
+}
+
+export async function applyFnToIdSelectorFromLabel(app, fn, label, timeout) {
+  const result = await applyFnToSelectorWithLabel(app, fn, '#' + label, label, timeout)
+  return result
+}
+
 export async function applyFnToSelectorWithLabel(app, fn, selector, label, timeout) {
   // console.log('fn is:', fn)
   const selectors = replaceLabelWithKebabAndCamelCase(selector, label)

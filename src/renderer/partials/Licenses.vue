@@ -23,6 +23,7 @@ export default {
   props: ['getPropertyGivenHotId', 'setProperty', 'waitForHotIdFromTabId'],
   data() {
     return {
+      // sourced from: https://licenses.opendefinition.org/licenses
       licenses: [{
         'name': 'CC-BY-4.0',
         'title': 'Creative Commons Attribution 4.0',
@@ -35,28 +36,28 @@ export default {
       },
       {
         'name': 'CC0-1.0',
-        'title': 'Creative Commons CCZero 1.0',
+        'title': 'CC0 1.0',
         'path': 'https://creativecommons.org/publicdomain/zero/1.0/'
       },
       {
         'name': 'ODC-BY-1.0',
         'title': 'Open Data Commons Attribution License 1.0',
-        'path': 'http://www.opendefinition.org/licenses/odc-by'
+        'path': 'https://opendefinition.org/licenses/odc-by'
       },
       {
         'name': 'ODbL-1.0',
         'title': 'Open Data Commons Open Database License 1.0',
-        'path': 'http://www.opendefinition.org/licenses/odc-odbl'
+        'path': 'https://opendefinition.org/licenses/odc-odbl'
       },
       {
-        'name': 'ODC-PDDL-1.0',
+        'name': 'PDDL-1.0',
         'title': 'Open Data Commons Public Domain Dedication and Licence 1.0',
-        'path': 'http://www.opendefinition.org/licenses/odc-pddl'
+        'path': 'https://opendefinition.org/licenses/odc-pddl'
       },
       {
         'name': 'OGL-Canada-2.0',
         'title': 'Open Government License 2.0 (Canada)',
-        'path': 'http://data.gc.ca/eng/open-government-licence-canada'
+        'path': 'https://open.canada.ca/en/open-government-licence-canada'
       },
       {
         'name': 'OGL-UK-3.0',
@@ -69,7 +70,7 @@ export default {
         'path': 'https://data.gov.tw/license/'
       },
       {
-        'title': 'Public Domain Mark',
+        'title': 'Public Domain Mark 1.0',
         'path': 'http://creativecommons.org/publicdomain/mark/1.0/'
       }],
       selectedLicenses: []
