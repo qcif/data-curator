@@ -53,7 +53,6 @@ Before({timeout: 20000}, async function (testCase) {
     await this.app.electron.ipcRenderer.sendSync('unlockSingleton')
     await this.app.client.browserWindow.focus()
     const result = await this.app.client.browserWindow.isFocused()
-    expect(result).to.be.true
     await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{method: 'showMessageBox', value: 1}])
     await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{method: 'showOpenDialog', value: this.openFileDialogReturned}])
   } catch (error) {

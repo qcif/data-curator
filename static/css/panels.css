@@ -29,3 +29,7 @@
 .col-sm-9 {
   width: 100%;
 }
+
+#sidenav label {
+  width: 100%;
+}

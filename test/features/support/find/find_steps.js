@@ -1,8 +1,8 @@
 import { expect, should, assert } from 'chai'
 import { Given, When, Then, After, Before } from 'cucumber'
 import { applyFnToSelectorWithLabel } from '../page-objects/selectors.js'
+import { searchColor } from '../page-objects/style.js'
 const _ = require('lodash')
-const searchColor = 'rgba(252,237,217,1)'
 
 Given(/^"(.+?)" has been entered/, async function (value) {
   await this.app.client.element('input#find').click()
