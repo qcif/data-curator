@@ -52,9 +52,9 @@ for:
   before_test:
     - yarn run lint
     - yarn run clean
-    - yarn run pack
   test_script:
     - yarn run unit
+    - yarn run pack
     - yarn run cucumber:postpack:dev
   after_test:
     - ./test/postreport.js
