@@ -42,6 +42,7 @@ for:
     only:
       - /master/
       - /develop/
+      - /gh-pages/
   test: off
   build: off
   configuration: debug
@@ -58,7 +59,8 @@ for:
     - yarn run cucumber:postpack:impl
   after_test:
     - ./test/postreport.js
-    - yarn run 
+    - yarn run cucumber:report
+    - git checkout gh-pages && git checkout ci -- test/cucumber_report.html
   build:
     off
   configuration: test
