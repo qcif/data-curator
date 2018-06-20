@@ -88,7 +88,7 @@
     "fs-extra": "~5.0.0",
     "handsontable": "^3.0.0",
     "imports-loader": "^0.8.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.10",
     "markdown-it": "^8.4.1",
     "moment": "^2.21.0",
     "pikaday": "^1.6.1",
