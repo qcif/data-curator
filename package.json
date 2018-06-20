@@ -29,7 +29,8 @@
     "cucumber:postpack": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register test/features -f json:test/cucumber_report.json",
     "cucumber:postpack:dev": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @dev test/features -f json:test/cucumber_report.json",
     "cucumber:postpack:impl": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @impl test/features -f json:test/cucumber_report.json",
-    "cucumber:report": "node test/cucumber-report.js"
+    "cucumber:report": "node test/cucumber-report.js",
+    "cucumber:report:badge": "node test/postreport.js"
   },
   "build": {
     "productName": "DataCurator",
@@ -177,8 +178,6 @@
     "node-gyp": "^3.6.2",
     "node-loader": "^0.6.0",
     "nyc": "^11.4.1",
-    "readme-badger": "^0.3.0",
-    "replace-in-file": "^3.4.0",
     "require-dir": "^1.0.0",
     "sinon": "^4.4.10",
     "sinon-chai": "^3.0.0",
