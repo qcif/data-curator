@@ -55,10 +55,10 @@ for:
     - yarn run pack
   test_script:
     - yarn run unit
-    - yarn run cucumber:postpack:impl
+    - yarn run cucumber:postpack:dev
   after_test:
     - ./test/postreport.js
-    - yarn run 
+    - yarn run
   build:
     off
   configuration: test
