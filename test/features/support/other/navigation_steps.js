@@ -1,7 +1,9 @@
 import { expect, should, assert } from 'chai'
 import { Given, When, Then, After, Before } from 'cucumber'
-const _ = require('lodash')
+import { applyFnToIdOrClassSelectorFromLabel } from '../page-objects/selectors.js'
+import _ from 'lodash'
 const highlightColor = 'rgba(181,209,255,0.3)'
+
 Then(/^the column that the cursor is in should be displayed/, async function () {
   let found = false
   const selector = '.editor.handsontable'
@@ -17,4 +19,8 @@ Then(/^the column that the cursor is in should be displayed/, async function () 
     responses = await this.app.client.waitForVisible('.current.highlight')
   }
   return responses
+})
+
+When(/^(?:the )?"([\w ]+?)" (?:button|panel) is (?:clicked|invoked)$/, async function (label) {
+  await applyFnToIdOrClassSelectorFromLabel(this.app, 'click', label, this.pageTimeout)
 })

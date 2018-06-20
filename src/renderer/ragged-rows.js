@@ -1,6 +1,4 @@
-// Fills undefined cells with an empty string, keeping the table in a
-// rectangular format
-//
+// Fills undefined cells with an empty string, keeping the table in a rectangular format
 export function fixRaggedRows(arrays) {
   const maxRowLength = getMaxRowLength(arrays)
   _.forEach(arrays, (row) => {
