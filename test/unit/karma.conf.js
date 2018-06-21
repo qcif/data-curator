@@ -52,6 +52,7 @@ module.exports = config => {
     preprocessors: {
       './index.js': ['webpack', 'sourcemap']
     },
+    logLevel: config.LOG_ERROR,
     reporters: ['spec', 'coverage', 'coveralls'],
     singleRun: true,
     webpack: webpackConfig,
