@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for renderer\index.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">renderer/</a> index.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">30.88% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>21/68</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">8% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/25</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">31.34% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>21/67</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {HotRegister, insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight, removeRows, removeColumns} from '@/hot.js'
+import {loadDataIntoHot, saveDataToFile} from '@/data-actions.js'
+import {ipcRenderer as ipc, remote} from 'electron'
+import {isCaseSensitive} from '@/frictionlessUtilities'
+import {pushCsvDialect} from '@/dialect.js'
+import {menu} from '@/menu.js'
+import {fileFormats} from '@/file-formats.js'
+import fs from 'fs-extra'
+&nbsp;
+export function addHotContainerListeners(container, loadingFn, closeLoadingFn) {
+  container.ondragover = function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    return false</span>
+  }
+  container.ondragleave = container.ondragend = function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    return false</span>
+  }
+  container.ondrop = function(e) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    e.preventDefault()</span>
+    var f = <span class="cstat-no" title="statement not covered" >e.dataTransfer.files[0]</span>
+<span class="cstat-no" title="statement not covered" >    loadingFn('Loading data. Please wait...')</span>
+<span class="cstat-no" title="statement not covered" >    fs.readFile(f.path, 'utf-8', function(err, data) <span class="fstat-no" title="function not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >      if (err) {</span>
+<span class="cstat-no" title="statement not covered" >        console.log(err)</span>
+      }
+      let hot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
+      // if we're dragging a file in, default the format to comma-separated
+<span class="cstat-no" title="statement not covered" >      loadData(hot.guid, data, fileFormats.csv, closeLoadingFn)</span>
+    })
+  }
+&nbsp;
+  container.addEventListener('contextmenu', function(e) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    e.preventDefault()</span>
+<span class="cstat-no" title="statement not covered" >    menu.popup(getWindow('home'), {async: true})</span>
+  }, false)
+}
+&nbsp;
+export function getWindow(name, id) <span class="fstat-no" title="function not covered" >{</span>
+  let browserWindow
+  let windowId = <span class="cstat-no" title="statement not covered" >id || remote.getGlobal('windows')[name]</span>
+<span class="cstat-no" title="statement not covered" >  if (windowId) {</span>
+<span class="cstat-no" title="statement not covered" >    browserWindow = remote.BrowserWindow.fromId(windowId)</span>
+  }
+<span class="cstat-no" title="statement not covered" >  return browserWindow</span>
+}
+&nbsp;
+export function loadData(key, data, format, closeLoadingFn) {
+  let hot = HotRegister.getInstance(key)
+  try {
+    loadDataIntoHot(hot, data, format)
+  } catch (error) {
+<span class="cstat-no" title="statement not covered" >    console.log('error in parse', error)</span>
+<span class="cstat-no" title="statement not covered" >    ipc.send('dataParsingError')</span>
+<span class="cstat-no" title="statement not covered" >    closeLoadingFn()</span>
+  }
+}
+&nbsp;
+ipc.on('saveData', function(e, format, fileName) <span class="fstat-no" title="function not covered" >{</span>
+  let hot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
+<span class="cstat-no" title="statement not covered" >  saveDataToFile(hot, format, fileName)</span>
+})
+&nbsp;
+// TODO: correct once github references re-introduced
+// ipc.on('getCSV', function(e, format) {
+//   let hot = HotRegister.getActiveInstance()
+//   var data
+//   // if no format specified, default to csv
+//   // TODO: update to node csv and check dialect mappings
+//   // if (typeof format === 'undefined') {
+//   //   data = $.csv.fromArrays(hot.getData())
+//   // } else {
+//   //   data = $.csv.fromArrays(hot.getData(), format.options)
+//   // }
+//   ipc.send('sendCSV', data)
+// })
+&nbsp;
+ipc.on('editUndo', function() <span class="fstat-no" title="function not covered" >{</span>
+  let hot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
+<span class="cstat-no" title="statement not covered" >  if (hot.isUndoAvailable) {</span>
+<span class="cstat-no" title="statement not covered" >    hot.undo()</span>
+  } else {
+    // console.log('undo is not available')
+  }
+})
+&nbsp;
+ipc.on('editRedo', function() <span class="fstat-no" title="function not covered" >{</span>
+  let hot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
+<span class="cstat-no" title="statement not covered" >  if (hot.isRedoAvailable) {</span>
+<span class="cstat-no" title="statement not covered" >    hot.redo()</span>
+  } else {
+    // console.log('redo is not available')
+  }
+})
+&nbsp;
+ipc.on('editSelectAll', function() <span class="fstat-no" title="function not covered" >{</span>
+  let hot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
+<span class="cstat-no" title="statement not covered" >  hot.selectCell(0, 0, (hot.countRows() - 1), (hot.countCols() - 1))</span>
+})
+&nbsp;
+ipc.on('insertRowAbove', function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  insertRowAbove()</span>
+})
+&nbsp;
+ipc.on('insertRowBelow', function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  insertRowBelow()</span>
+})
+&nbsp;
+ipc.on('clickLabelOnContextMenu', function(event, arg) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  menu.items.find(x =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >x.label === arg)</span></span>.click()</span>
+})
+&nbsp;
+ipc.on('closeContextMenu', function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  menu.closePopUp(getWindow('home'))</span>
+})
+&nbsp;
+ipc.on('insertColumnLeft', function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  insertColumnLeft()</span>
+})
+&nbsp;
+ipc.on('insertColumnRight', function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  insertColumnRight()</span>
+})
+&nbsp;
+ipc.on('removeRows', function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  removeRows()</span>
+})
+&nbsp;
+ipc.on('removeColumns', function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  removeColumns()</span>
+})
+&nbsp;
+ipc.on('toggleCaseSensitiveHeader', function() <span class="fstat-no" title="function not covered" >{</span>
+  let hotId = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance().guid</span>
+  const toggledCase = <span class="cstat-no" title="statement not covered" >!isCaseSensitive(hotId)</span>
+<span class="cstat-no" title="statement not covered" >  pushCsvDialect(hotId, {caseSensitiveHeader: toggledCase})</span>
+<span class="cstat-no" title="statement not covered" >  ipc.send('hasCaseSensitiveHeader', toggledCase)</span>
+})
+&nbsp;
+export function closeSecondaryWindow(windowName) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  ipc.sendSync('closeSecondaryWindow', windowName)</span>
+}
+&nbsp;
+ipc.on('loadDataIntoCurrentHot', function(event, stringified) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  loadDataIntoCurrentHot(JSON.parse(stringified))</span>
+})
+&nbsp;
+// convenience method for testing
+function loadDataIntoCurrentHot(data) <span class="fstat-no" title="function not covered" >{</span>
+  const hot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
+<span class="cstat-no" title="statement not covered" >  loadDataIntoHot(hot, data)</span>
+<span class="cstat-no" title="statement not covered" >  return hot</span>
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu May 31 2018 13:40:14 GMT+1000 (E. Australia Standard Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
