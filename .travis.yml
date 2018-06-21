@@ -15,7 +15,7 @@ install:
 - source ~/.bashrc
 - yarn
 script:
-- yarn run release:predraft
+- yarn run unit
 branches:
   only:
   - "/^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
