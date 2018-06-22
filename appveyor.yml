@@ -1,6 +1,6 @@
 version: 1.4.{build}
 
-# skip_non_tags: true
+skip_non_tags: true
 
 image: Visual Studio 2017
 
@@ -29,35 +29,16 @@ install:
   - yarn
   - node --version
 
+before_build:
+  - yarn run lint
+  - yarn run lint:test
+  - yarn run clean
+  - yarn run pack
+  - yarn run cucumber:postpack:dev
+
 build_script:
   #- yarn test
   # - yarn build
-  - if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
-test: off
-configuration: release
+  - yarn run release:predraft
 
-for:
--
-  branches:
-    only:
-      - /master/
-      - /develop/
-  test: off
-  build: off
-  configuration: debug
--
-  branches:
-    only:
-      - /ci/
-  before_test:
-    - yarn run lint
-    - yarn run clean
-  test_script:
-    - yarn run unit
-    - yarn run pack
-    - yarn run cucumber:postpack:impl
-#  after_test:
-#    - yarn run cucumber:report:badge
-  build:
-    off
-  configuration: test
+test: off
