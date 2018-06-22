@@ -55,7 +55,7 @@ for:
   test_script:
     - yarn run unit
     - yarn run pack
-    - yarn run cucumber:postpack
+    - yarn run cucumber:postpack:impl
   after_test:
     - yarn run cucumber:report:badge
   build:
