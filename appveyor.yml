@@ -57,7 +57,7 @@ for:
     - yarn run pack
     - yarn run cucumber:postpack:impl
   after_test:
-    - yarn run cucumber:report:badge
+   # - yarn run cucumber:report:badge
   build:
     off
   configuration: test
