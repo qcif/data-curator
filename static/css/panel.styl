@@ -211,7 +211,7 @@ sideNavFooterHeight = 70px
 #main-bottom-panel
   box-sizing border-box !important
   height 55px
-  width: 100%
+  // width: 100%
   position fixed
   bottom 0
   left 0
@@ -226,19 +226,24 @@ sideNavFooterHeight = 70px
   &.messages-opened
     height 150px !important
     overflow-y scroll
+    width 100%
     &.left
       margin-left sideNavMargin
       padding-right sideNavMargin
+      width auto
     &.right
-      margin-right sideNavMargin
+      margin-right sideNavMargin !important
       margin-left 0
+      width auto
     #message-panel
       .affix
         background-color #f5f5f5
-        width 95%
-      .closebtn
-        position relative
-        right 0
+        width 97%
+        &.closebtn
+          position relative
+          margin-right 15px
+          // right 50
+          z-index 300
       .btn-default
         color #000
       .message-title
@@ -253,10 +258,17 @@ sideNavFooterHeight = 70px
         padding-top 90px
     &.left #message-panel
       padding-right 0px
+      .affix
+        margin-right sideNavMargin
+      //   margin-left sideNavMargin
+      //   margin-right sideNavMargin
     &.right #message-panel
       margin-right sideNavMargin
       padding-right 0
       margin-left 0
+      .affix
+        padding-right sideNavMargin
+        // margin-left 0
     &.closed #message-panel
       margin-left 0
       padding-right 15px
