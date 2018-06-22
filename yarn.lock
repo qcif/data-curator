@@ -8617,12 +8617,6 @@ readdirp@^2.0.0:
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
 
-readme-badger@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/readme-badger/-/readme-badger-0.3.0.tgz#87007f3c3e0c445e545134a305d8e3068fe9cd6e"
-  dependencies:
-    balanced-match "^1.0.0"
-
 recast@~0.11.12:
   version "0.11.23"
   resolved "https://registry.yarnpkg.com/recast/-/recast-0.11.23.tgz#451fd3004ab1e4df9b4e4b66376b2a21912462d3"
@@ -8809,14 +8803,6 @@ replace-ext@0.0.1:
 replace-ext@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/replace-ext/-/replace-ext-1.0.0.tgz#de63128373fcbf7c3ccfa4de5a480c45a67958eb"
-
-replace-in-file@^3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/replace-in-file/-/replace-in-file-3.4.0.tgz#b48c94567bbf4f44a2bc6fabdf21ab443e806851"
-  dependencies:
-    chalk "^2.3.2"
-    glob "^7.1.2"
-    yargs "^11.0.0"
 
 request@2, request@^2.45.0, request@^2.81.0:
   version "2.85.0"
