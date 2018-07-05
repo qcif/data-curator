@@ -1,8 +1,18 @@
 [![version][version-badge]][releases] [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 [![Travis Build Status](https://travis-ci.org/ODIQueensland/data-curator.svg)](https://travis-ci.org/ODIQueensland/data-curator)
 [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/?svg=true)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
-[![Appveyor Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2033%20%20❌failed:%204%20%20❗undefined:%20196-orange.svg)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
+[![Appveyor Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2034%20%20❌failed:%200%20%20❗undefined:%20199-orange.svg)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
+
+
+
+
+
+
+
+
+
 [![Unit Test Coverage Status](https://coveralls.io/repos/github/ODIQueensland/data-curator/badge.svg?branch=ci)](https://coveralls.io/github/ODIQueensland/data-curator?branch=ci)
+
 
 
  :sparkles: [Download Data Curator](https://github.com/ODIQueensland/data-curator/releases/latest) for Windows or macOS. :sparkles:
