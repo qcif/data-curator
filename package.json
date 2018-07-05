@@ -29,7 +29,7 @@
     "cucumber:postpack": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register test/features -f json:test/cucumber_report.json",
     "cucumber:postpack:dev": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @dev test/features -f json:test/cucumber_report.json",
     "cucumber:postpack:impl": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @impl test/features -f json:test/cucumber_report.json",
-    "cucumber:postpack:witharg": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register --tags @impl -f json:test/cucumber_report.json",
+    "cucumber:postpack:witharg": "cross-env BABEL_ENV=test cucumber-js --require-module babel-core/register --tags @impl -f json:test/cucumber_report.json",
     "cucumber:report": "node test/cucumber-report.js",
     "cucumber:report:badge": "node test/postreport.js",
     "unit:coverage": "cat test/unit/coverage/lcov.info | coveralls"
