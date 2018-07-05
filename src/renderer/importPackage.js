@@ -170,8 +170,8 @@ async function getHotIdsFromFilenames(processed, unzipDestination, isTransient =
       throw new Error(`There was a problem matching ${fileDestination} with an opened tab.`)
     }
     let hotId = _.findKey(store.getters.getHotTabs, {tabId: tabId})
-    // ensure csv path accounts for parent folders zipped up and windows path separator (as same as regexp escape)
-    const regExpPathSeparator = path.sep === '/' ? path.sep : path.sep + path.sep
+    // ensure csv path accounts for parent folders within zip - paths must be POSIX-only https://frictionlessdata.io/specs/data-resource/#url-or-path
+    const regExpPathSeparator = '/'
     let re = new RegExp('^' + processed.parentFolders + regExpPathSeparator)
     let resourcePathname = _.replace(pathname, re, '')
     csvTabs[`${resourcePathname}`] = hotId
