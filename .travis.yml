@@ -15,7 +15,7 @@ install:
 - source ~/.bashrc
 - yarn
 script:
-- ./travis_script.sh
+- xvfb-run ./travis_script.sh
 branches:
   only:
   - "/^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
