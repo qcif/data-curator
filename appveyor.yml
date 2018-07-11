@@ -16,6 +16,8 @@ cache:
 environment:
   GH_TOKEN:
     secure: 2+1HLAk/YGWqOMnjgsx5nII2huvHAlPkO24vJBqggRmcyy9FhiekaaMDTsRiRnRX
+  COVERALLS_REPO_TOKEN:
+    secure: 5CQKw1+Is8KphKjmT2emU/C7eNlZN3OEteemQZjOjJl47BVABYr1SOZ+IX82NSWy
 
 init:
   - git config --global core.autocrlf input
@@ -27,14 +29,35 @@ install:
   - yarn
   - node --version
 
-# before_build:
-#   - yarn run lint
-#   - yarn run lint:test
-#   - yarn run test
-
 build_script:
   #- yarn test
   # - yarn build
-  - yarn run release:predraft
-
+  - if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
 test: off
+configuration: release
+
+for:
+-
+  branches:
+    only:
+      - /master/
+      - /develop/
+  test: off
+  build: off
+  configuration: debug
+-
+  branches:
+    only:
+      - /ci/
+  before_test:
+    - yarn run lint
+    - yarn run clean
+  test_script:
+    - yarn run unit
+    - yarn run pack
+    - yarn run cucumber:postpack:impl
+#  after_test:
+#    - yarn run cucumber:report:badge
+  build:
+    off
+  configuration: test

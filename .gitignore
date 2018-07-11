@@ -15,15 +15,5 @@ yarn-error.log
 *.iml
 *.csv
 !help-tags.csv
-test/temp/
-test/unit/coverage/
-.eslintrc
-coverage/
-src/renderer/data
 .nyc_output/
-cucumber_report.html
-cucumber_report.json
-test/cucumber_report.html
-test/cucumber_report.json
-lib/
 webdriver.log/

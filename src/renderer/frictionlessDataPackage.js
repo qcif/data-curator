@@ -251,5 +251,7 @@ function addPath(descriptor, tabId) {
   let parent = 'data'
   let filename = tabStore.state.tabObjects[tabId].filename
   let basename = path.basename(filename)
-  descriptor.path = path.join(parent, basename)
+  let osPath = path.join(parent, basename)
+  // resource paths must be POSIX https://frictionlessdata.io/specs/data-resource/#url-or-path
+  descriptor.path = _.replace(osPath, '\\', '/')
 }

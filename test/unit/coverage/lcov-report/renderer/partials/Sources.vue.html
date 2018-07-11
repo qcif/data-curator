@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for renderer\partials\Sources.vue</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">renderer/partials/</a> Sources.vue
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">2.33% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>1/43</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/13</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">2.33% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>1/43</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
+  &lt;div id="sources"&gt;
+    &lt;div v-for="(source,index) in getSources" :key="index" class="source col-sm-12"&gt;
+      &lt;div class="inputs-container"&gt;
+        &lt;div v-for="prop in Object.keys(source)" class="input-group"&gt;
+          &lt;span class="input-group-addon input-sm"&gt;{{prop}}&lt;/span&gt;
+          &lt;input :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(prop + index) }" :value="source[prop]" @input="setSourceProp(index, prop, $event.target.value)" type="text" :id="prop + index" v-validate="sourceValidationRules(prop, index)" :name="prop + index"/&gt;
+          &lt;div v-show="errors.has(prop + index)" class="row help validate-danger"&gt;
+            {{ errors.first(prop + index)}}
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;button type="button" class="btn btn-danger btn-sm" @click="removeSource(index)"&gt;
+        &lt;span class="glyphicon glyphicon-minus"/&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="button-container"&gt;
+      &lt;button type="button" class="add-source btn btn-primary btn-sm" @click="addSource()"&gt;
+        &lt;span class="glyphicon glyphicon-plus"/&gt;Add source
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+&lt;script&gt;
+import {
+  mapMutations,
+  mapState,
+  mapGetters
+} from 'vuex'
+import SideNav from './SideNav'
+import AsyncComputed from 'vue-async-computed'
+import ValidationRules from '../mixins/ValidationRules'
+import VeeValidate from 'vee-validate'
+import Vue from 'vue'
+Vue.use(AsyncComputed)
+export default {
+  name: 'sources',
+  mixins: [ValidationRules],
+  data() {
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      sources: []
+    }
+  },
+  props: ['setProperty', 'getProperty', 'getPropertyGivenHotId'],
+  extends: SideNav,
+  computed: {
+    ...mapGetters(['getActiveTab']),
+    regexForPath() {
+      // no ../ or nulls or absolute paths allowed
+<span class="cstat-no" title="statement not covered" >      return /^(([.](?![.])|[^/.:]+)+[/]*)+$/</span>
+    }
+  },
+  asyncComputed: {
+    getSources: {
+      async get() {
+        let tab = <span class="cstat-no" title="statement not covered" >this.getActiveTab</span>
+        // TODO: may need distinction here for package vs tables
+        let sources = <span class="cstat-no" title="statement not covered" >await this.getSourcesFromTab(tab)</span>
+<span class="cstat-no" title="statement not covered" >        return sources</span>
+      },
+      watch() {
+<span class="cstat-no" title="statement not covered" >        return this.sources</span>
+      }
+    }
+  },
+  methods: {
+    ...mapMutations([
+      'pushPackageProperty'
+    ]),
+    removeSource: function(index) <span class="fstat-no" title="function not covered" >{</span>
+      let sources = <span class="cstat-no" title="statement not covered" >this.getProperty('sources')</span>
+<span class="cstat-no" title="statement not covered" >      sources.splice(index, 1)</span>
+<span class="cstat-no" title="statement not covered" >      this.setProperty('sources', sources)</span>
+<span class="cstat-no" title="statement not covered" >      this.sources = sources</span>
+    },
+    addSource: function() <span class="fstat-no" title="function not covered" >{</span>
+      let sources = <span class="cstat-no" title="statement not covered" >this.getProperty('sources') || []</span>
+<span class="cstat-no" title="statement not covered" >      sources.push(this.emptySource())</span>
+<span class="cstat-no" title="statement not covered" >      this.setProperty('sources', sources)</span>
+<span class="cstat-no" title="statement not covered" >      this.sources = sources</span>
+    },
+    emptySource: function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      return {'title': '', 'path': '', 'email': ''}</span>
+    },
+    getSourcesFromTab: async function(tab) <span class="fstat-no" title="function not covered" >{</span>
+      let hotId = <span class="cstat-no" title="statement not covered" >await this.waitForHotIdFromTabId(tab)</span>
+      let sources = <span class="cstat-no" title="statement not covered" >this.getPropertyGivenHotId('sources', hotId)</span>
+<span class="cstat-no" title="statement not covered" >      return sources</span>
+    },
+    // TODO: fix this redundant method
+    initSources: async function(tab) <span class="fstat-no" title="function not covered" >{</span>
+      let sources = <span class="cstat-no" title="statement not covered" >await this.getSourcesFromTab(tab)</span>
+    },
+    setSourceProp: function(index, prop, value) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      this.setProperty(`sources[${index}][${prop}]`, value)</span>
+      let sources = <span class="cstat-no" title="statement not covered" >this.getProperty('sources') || []</span>
+<span class="cstat-no" title="statement not covered" >      this.sources = sources</span>
+<span class="cstat-no" title="statement not covered" >      if (prop === 'path') {</span>
+<span class="cstat-no" title="statement not covered" >        this.validateUrlOrPath(index, value)</span>
+      }
+    },
+    validateUrlOrPath: async function(index, value) <span class="fstat-no" title="function not covered" >{</span>
+      let prop = <span class="cstat-no" title="statement not covered" >'path'</span>
+      let field = <span class="cstat-no" title="statement not covered" >`${prop}${index}`</span>
+<span class="cstat-no" title="statement not covered" >      try {</span>
+        let hasValidUrl = <span class="cstat-no" title="statement not covered" >await this.validateUrl(field, value)</span>
+        let hasValidPath = <span class="cstat-no" title="statement not covered" >await this.validatePath(field, value)</span>
+<span class="cstat-no" title="statement not covered" >        this.$validator.detach(field)</span>
+<span class="cstat-no" title="statement not covered" >        if (!hasValidUrl &amp;&amp; !hasValidPath) {</span>
+<span class="cstat-no" title="statement not covered" >          this.$validator.errors.add({field: field, msg: 'The path field must be a valid url or path.'})</span>
+        }
+      } catch (err) {
+<span class="cstat-no" title="statement not covered" >        console.log('Problem with validation', err)</span>
+      }
+    },
+    validateUrl: async function(field, value) <span class="fstat-no" title="function not covered" >{</span>
+      // keep url:true as string for validation to work correctly
+<span class="cstat-no" title="statement not covered" >      return this.validate(field, value, 'url:true')</span>
+    },
+    validatePath: async function(field, value) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      return this.validate(field, value, {</span>
+        regex: this.regexForPath
+      })
+    },
+    sourceValidationRules: function(prop, index) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      switch (prop) {</span>
+        case 'email':
+<span class="cstat-no" title="statement not covered" >          return 'email'</span>
+        case 'title':
+<span class="cstat-no" title="statement not covered" >          return 'required'</span>
+        default:
+<span class="cstat-no" title="statement not covered" >          return ''</span>
+      }
+    }
+  },
+  mounted: function() <span class="fstat-no" title="function not covered" >{</span>
+    let tab = <span class="cstat-no" title="statement not covered" >this.getActiveTab</span>
+<span class="cstat-no" title="statement not covered" >    this.initSources(tab)</span>
+  },
+  watch: {
+    getActiveTab: function(tab) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      this.initSources(tab)</span>
+    }
+  }
+}
+&lt;/script&gt;
+&lt;style lang="styl" scoped&gt;
+@import '~static/css/sources'
+&lt;/style&gt;
+&lt;style lang="styl" scoped&gt;
+@import '~static/css/validationrules'
+&lt;/style&gt;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu May 31 2018 13:40:14 GMT+1000 (E. Australia Standard Time)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
