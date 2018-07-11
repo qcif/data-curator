@@ -32,7 +32,7 @@ install:
 build_script:
   #- yarn test
   # - yarn build
-  - if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
+  - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
 test: off
 configuration: release
 
