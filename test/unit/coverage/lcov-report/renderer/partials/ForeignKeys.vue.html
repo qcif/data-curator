@@ -1,0 +1,1475 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for renderer\partials\ForeignKeys.vue</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">renderer/partials/</a> ForeignKeys.vue
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0.48% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>1/209</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/77</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/52</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0.48% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>1/209</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
+&lt;div id="foreignKeyFields"&gt;
+  &lt;div v-for="(foreignKey,index) in hotForeignKeys"  class="foreign col-sm-12"&gt;
+    &lt;div class="inputs-container"&gt;
+      &lt;component :key="getLocalComponentKey(index)" is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="getSelectedLocalKeys(index)" :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)" labelName="Foreign key(s)" :tooltipId="'tooltip-foreignkey' + index" tooltipView="tooltipForeignkey" :index="index" /&gt;
+      &lt;component v-if="isHeadersSelected &amp;&amp; !fkPackages[index]" :key="getTableComponentKey(index)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="getSelectedTable(index)" :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)" labelName="Reference Table" :tooltipId="'tooltip-foreignkey-table' + index" tooltipView="tooltipForeignkeyTable" :index="index" /&gt;
+      &lt;component v-if="isHeadersSelected &amp;&amp; !fkPackages[index]" :key="getForeignComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" :tooltipId="'tooltip-foreignkey-tablekey' + index" tooltipView="tooltipForeignkeyTablekey" :index="index" :currentHotId="currentHotId"/&gt;
+    &lt;/div&gt;
+    &lt;button type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)"&gt;
+      &lt;span class="glyphicon glyphicon-minus"/&gt;
+    &lt;/button&gt;
+    &lt;div id="fk-package" class="clearfix"&gt;
+      &lt;template v-if="isHeadersSelected &amp;&amp; fkPackages[index]"&gt;
+        &lt;label class="control-label"&gt;Reference Package&lt;/label&gt;&lt;span v-if="testLoadingPackage == index &amp;&amp; loadingPackage[testLoadingPackage]" class="glyphicon glyphicon-refresh spinning"/&gt;
+        &lt;div class="fk-package" :class="{ 'right': !fkPackages[index]}"&gt;
+          &lt;input :key="getForeignPackageKey(index)" class="form-control input-sm" type="text" :id="'fk-package' + index" :value="getFkPackage(index)" @input="setFkPackage(index, currentLocalHotId, $event.target.value)" :name="'fk-package' + index" @blur="removeFkPackageForErrors(index, currentLocalHotId)" /&gt;
+        &lt;/div&gt;
+        &lt;div v-if="fkPackages[index] &amp;&amp; errors.has('fk-package' + index)" class="row help validate-danger"&gt;
+          {{ errors.first('fk-package' + index)}}
+        &lt;/div&gt;
+        &lt;div v-if="fkPackages[index]"&gt;
+          &lt;component :key="getPackageTableComponentKey(index)" is="tablekeys" :allTableNames="allFkTableNames" :getSelectedTable="getFkPackageTable(index)" :pushSelectedTable="setFkPackageTable(index,currentLocalHotId)" labelName="Reference Table" :tooltipId="'tooltip-foreignkey-table' + index" tooltipView="tooltipForeignkeyTable" :index="index" /&gt;
+          &lt;component :key="getForeignPackageComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentPackageForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" :tooltipId="'tooltip-foreignkey-tablekey' + index" tooltipView="tooltipForeignkeyTablekey" :index="index" :currentHotId="currentHotId"/&gt;
+        &lt;/div&gt;
+      &lt;/template&gt;
+      &lt;button type="button" class="add-foreign btn btn-primary btn-sm" @click="toggleFkPackage(index)"&gt;
+        &lt;span class="fas fa-exchange-alt"/&gt;{{toggleText[index]}}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="button-container"&gt;
+    &lt;button type="button" class="add-foreign btn btn-primary btn-sm" @click="addForeignKey()"&gt;
+      &lt;span class="glyphicon glyphicon-plus"/&gt;Add Foreign Key
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/template&gt;
+&lt;script&gt;
+import tablekeys from '../partials/TableKeys'
+import tableheaderkeys from '../partials/TableHeaderKeys'
+import RelationKeys from '../mixins/RelationKeys'
+import ForeignKeysTooltip from '../mixins/ForeignKeysTooltip'
+import {ipcRenderer as ipc} from 'electron'
+import {Package} from 'datapackage'
+import {
+  pushAllTabTitlesSubscription
+} from '@/store/modules/tabs.js'
+import {
+  mapMutations,
+  mapGetters
+} from 'vuex'
+import {
+  Subscription
+} from 'rxjs/Subscription'
+import {
+  allTabsTitles$,
+  allTablesAllColumnNames$,
+  fkPackagesButtonText$,
+  loadingPackage$
+} from '@/rxSubject.js'
+import ValidationRules from '../mixins/ValidationRules'
+import VueRx from 'vue-rx'
+import Vue from 'vue'
+Vue.use(VueRx, {
+  Subscription
+})
+export default {
+  components: {
+    tablekeys,
+    tableheaderkeys
+  },
+  mixins: [RelationKeys, ValidationRules],
+  name: 'foreignkeys',
+  props: ['setProperty', 'getPropertyGivenHotId', 'propertyName', 'currentHotId'],
+  asyncComputed: {
+    hotForeignKeys: {
+      async get() {
+        let hotId = <span class="cstat-no" title="statement not covered" >await this.currentHotId()</span>
+<span class="cstat-no" title="statement not covered" >        this.currentLocalHotId = hotId</span>
+<span class="cstat-no" title="statement not covered" >        this.allForeignKeys = this.getAllForeignKeys()</span>
+        let foreignKeys = <span class="cstat-no" title="statement not covered" >this.allForeignKeys[hotId]</span>
+<span class="cstat-no" title="statement not covered" >        this.updateFkType(foreignKeys)</span>
+<span class="cstat-no" title="statement not covered" >        return foreignKeys</span>
+      },
+      watch() {
+        let dummy = <span class="cstat-no" title="statement not covered" >this.localHeaderNames</span>
+        let dummy2 = <span class="cstat-no" title="statement not covered" >this.getActiveTab</span>
+        let dummy4 = <span class="cstat-no" title="statement not covered" >this.fkPackages</span>
+      }
+    },
+    isHeadersSelected: {
+      async get() {
+        let isSelected = <span class="cstat-no" title="statement not covered" >this.localHeaderNames.length &gt; 0</span>
+<span class="cstat-no" title="statement not covered" >        return !!isSelected</span>
+      },
+      watch() {
+        let dummy = <span class="cstat-no" title="statement not covered" >this.allTableNames</span>
+        let dummy2 = <span class="cstat-no" title="statement not covered" >this.allForeignKeys</span>
+      }
+    }
+  },
+  data() {
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      localHeaderNames: [],
+      currentLocalHotId: '',
+      allForeignKeys: {},
+      allTableNames: [],
+      allFkTableNames: [],
+      allTabTableNames: [],
+      allTableNamesHeaderNames: {},
+      allFkTableNamesHeaderNames: {},
+      fkPackages: [],
+      loadingPackage: []
+    }
+  },
+  computed: {
+    ...mapGetters(['getFkPackageComponents'])
+  },
+  subscriptions() {
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      allColumns: allTablesAllColumnNames$,
+      toggleText: fkPackagesButtonText$,
+      testLoadingPackage: loadingPackage$
+    }
+  },
+  methods: {
+    ...mapMutations([
+      'pushForeignKeysForeignPackageForTable', 'removeForeignKeysForeignPackageForTable', 'resetForeignKeysForeignTableForTable', 'resetForeignKeysForeignFieldsForTable', 'pushFkPackageComponents'
+    ]),
+    updateFkType: function(foreignKeys) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      this.fkPackages.length = 0</span>
+<span class="cstat-no" title="statement not covered" >      for (const [index, foreignKey] of foreignKeys.entries()) {</span>
+        let reference = <span class="cstat-no" title="statement not covered" >foreignKey &amp;&amp; foreignKey.reference</span>
+<span class="cstat-no" title="statement not covered" >        this.fkPackages[index] = !!(reference &amp;&amp; reference.package &amp;&amp; reference.package.trim().length &gt; 0)</span>
+      }
+<span class="cstat-no" title="statement not covered" >      this.updateToggleText()</span>
+    },
+    getFkPackageTableOrDefault: function(table, index) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      if (_.isEmpty(this.allFkTableNames)) {</span>
+<span class="cstat-no" title="statement not covered" >        this.populateFkPackageComponents(index)</span>
+      }
+<span class="cstat-no" title="statement not covered" >      if (_.indexOf(this.allFkTableNames, table) === -1) {</span>
+<span class="cstat-no" title="statement not covered" >        table = this.allFkTableNames[0]</span>
+      }
+<span class="cstat-no" title="statement not covered" >      return table</span>
+    },
+    toggleFkPackage: function(index) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      this.updateFkPackageIndex(index, !this.fkPackages[index])</span>
+<span class="cstat-no" title="statement not covered" >      this.removeForeignKeysForeignPackageForTable({ index: index, hotId: this.currentLocalHotId })</span>
+<span class="cstat-no" title="statement not covered" >      this.resetForeignKeysForeignTableForTable({ index: index, hotId: this.currentLocalHotId })</span>
+<span class="cstat-no" title="statement not covered" >      this.resetForeignKeysForeignFieldsForTable({ index: index, hotId: this.currentLocalHotId })</span>
+<span class="cstat-no" title="statement not covered" >      this.allFkTableNames = []</span>
+<span class="cstat-no" title="statement not covered" >      this.allFkTableNamesHeaderNames = {}</span>
+    },
+    getFkPackage: function(index) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      if (this.loadingPackage[index]) {</span>
+<span class="cstat-no" title="statement not covered" >        return this.loadingPackage[index]</span>
+      }
+      let foreignKeys = <span class="cstat-no" title="statement not covered" >this.getAllForeignKeysFromCurrentHotId()</span>
+      let foreignKey = <span class="cstat-no" title="statement not covered" >foreignKeys[index] || {}</span>
+      let reference = <span class="cstat-no" title="statement not covered" >foreignKey.reference || {}</span>
+<span class="cstat-no" title="statement not covered" >      if (typeof reference.package !== 'undefined') {</span>
+<span class="cstat-no" title="statement not covered" >        return reference.package</span>
+      }
+    },
+    populateFkPackageComponents: function(index) <span class="fstat-no" title="function not covered" >{</span>
+      let foreignKeys = <span class="cstat-no" title="statement not covered" >this.getAllForeignKeysFromCurrentHotId()</span>
+      let foreignKey = <span class="cstat-no" title="statement not covered" >foreignKeys[index] || {}</span>
+      let reference = <span class="cstat-no" title="statement not covered" >foreignKey.reference || {}</span>
+      let dataPackage
+<span class="cstat-no" title="statement not covered" >      if (typeof reference.package !== 'undefined') {</span>
+<span class="cstat-no" title="statement not covered" >        dataPackage = reference.package</span>
+<span class="cstat-no" title="statement not covered" >        if (_.isEmpty(this.allFkTableNamesHeaderNames)) {</span>
+<span class="cstat-no" title="statement not covered" >          this.allFkTableNamesHeaderNames = this.getFkPackageComponents(dataPackage)</span>
+        }
+        // this should be already populated, but ensure not empty to avoid code loop
+<span class="cstat-no" title="statement not covered" >        if (!_.isEmpty(this.allFkTableNamesHeaderNames)) {</span>
+<span class="cstat-no" title="statement not covered" >          this.allFkTableNames = _.keys(this.allFkTableNamesHeaderNames)</span>
+        }
+      }
+<span class="cstat-no" title="statement not covered" >      return dataPackage</span>
+    },
+    setFkPackage: async function(index, hotId, value) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      this.loadingPackage[index] = value</span>
+<span class="cstat-no" title="statement not covered" >      loadingPackage$.next(index)</span>
+      let self = <span class="cstat-no" title="statement not covered" >this</span>
+      // set timeout on spinner
+<span class="cstat-no" title="statement not covered" >      _.delay(function() <span class="fstat-no" title="function not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >        self.loadingPackage.length = 0</span>
+<span class="cstat-no" title="statement not covered" >        loadingPackage$.next(-1)</span>
+      }, 10000)
+      let isValid = <span class="cstat-no" title="statement not covered" >await this.validatePackageUrl(`fk-package${index}`, index, hotId, value)</span>
+<span class="cstat-no" title="statement not covered" >      if (isValid) {</span>
+<span class="cstat-no" title="statement not covered" >        ipc.send('loadPackageUrl', index, hotId, value)</span>
+      }
+    },
+    stopLoadingPackageFeedback: function(index) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      this.loadingPackage[index] = false</span>
+<span class="cstat-no" title="statement not covered" >      loadingPackage$.next(-1)</span>
+    },
+    removeFkPackageForErrors: function(index, hotId) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      if (this.errors.has('fk-package' + index)) {</span>
+<span class="cstat-no" title="statement not covered" >        this.removeForeignKeysForeignPackageForTable({ index: index, hotId: hotId })</span>
+      }
+    },
+    getAllForeignKeysFromCurrentHotId: function() <span class="fstat-no" title="function not covered" >{</span>
+      let currentHotId = <span class="cstat-no" title="statement not covered" >this.currentLocalHotId</span>
+      let allForeignKeys = <span class="cstat-no" title="statement not covered" >this.getAllForeignKeys()</span>
+      let foreignKeys = <span class="cstat-no" title="statement not covered" >allForeignKeys[currentHotId]</span>
+<span class="cstat-no" title="statement not covered" >      return foreignKeys</span>
+    },
+    getCurrentForeignHeaders: function(index) <span class="fstat-no" title="function not covered" >{</span>
+      let currentTable = <span class="cstat-no" title="statement not covered" >this.getSelectedTable(index)</span>
+<span class="cstat-no" title="statement not covered" >      return this.allTableNamesHeaderNames[currentTable()]</span>
+    },
+    getCurrentPackageForeignHeaders: function(index) <span class="fstat-no" title="function not covered" >{</span>
+      let currentTable = <span class="cstat-no" title="statement not covered" >this.getFkPackageTable(index)</span>
+      const currentTableName = <span class="cstat-no" title="statement not covered" >currentTable()</span>
+<span class="cstat-no" title="statement not covered" >      if (currentTableName) {</span>
+<span class="cstat-no" title="statement not covered" >        return this.allFkTableNamesHeaderNames[currentTableName]</span>
+      }
+    },
+    getLocalComponentKey: function(index) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      return `localHeader${index}`</span>
+    },
+    getTableComponentKey: function(index) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      return `foreignTable${index}`</span>
+    },
+    getForeignComponentKey: function(index) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      return `foreignHeader${index}`</span>
+    },
+    getPackageTableComponentKey: function(index) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      return `foreignPackageTable${index}`</span>
+    },
+    getForeignPackageComponentKey: function(index) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      return `foreignPackageHeader${index}`</span>
+    },
+    getForeignPackageKey: function(index) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      return `foreignPackage${index}`</span>
+    },
+    removeForeignKey: function(index) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      _.unset(this.fkPackages, index)</span>
+<span class="cstat-no" title="statement not covered" >      this.updateToggleText()</span>
+      let foreignKeys = <span class="cstat-no" title="statement not covered" >this.getAllForeignKeysFromCurrentHotId()</span>
+<span class="cstat-no" title="statement not covered" >      foreignKeys.splice(index, 1)</span>
+<span class="cstat-no" title="statement not covered" >      this.setProperty(this.propertyName, foreignKeys)</span>
+    },
+    addForeignKey: function() <span class="fstat-no" title="function not covered" >{</span>
+      let foreignKeys = <span class="cstat-no" title="statement not covered" >this.getAllForeignKeysFromCurrentHotId()</span>
+<span class="cstat-no" title="statement not covered" >      foreignKeys.push({</span>
+        fields: [],
+        reference: {
+          resource: '',
+          fields: []
+        }
+      })
+<span class="cstat-no" title="statement not covered" >      this.setProperty(this.propertyName, foreignKeys)</span>
+<span class="cstat-no" title="statement not covered" >      this.fkPackages[this.fkPackages.length] = false</span>
+<span class="cstat-no" title="statement not covered" >      this.updateToggleText()</span>
+<span class="cstat-no" title="statement not covered" >      this.initTableHeaderKeys()</span>
+    },
+    updateSubscriptions: async function(allTablesAllColumnNames, hotId) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      try {</span>
+        let localHotId = <span class="cstat-no" title="statement not covered" >await this.currentHotId()</span>
+<span class="cstat-no" title="statement not covered" >        this.localHeaderNames.length = 0</span>
+        const headerNames = <span class="cstat-no" title="statement not covered" >this.getHotIdHeaderNames(allTablesAllColumnNames, localHotId)</span>
+<span class="cstat-no" title="statement not covered" >        this.localHeaderNames.push(...headerNames)</span>
+<span class="cstat-no" title="statement not covered" >        this.$forceUpdate()</span>
+      } catch (err) {
+<span class="cstat-no" title="statement not covered" >        console.log(`There was a problem updating subscriptions.`, err)</span>
+      }
+    },
+    updateTableSubscriptions: function(allTabsTitles) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      this.allTableNames = this.getTabsTableNames(allTabsTitles)</span>
+<span class="cstat-no" title="statement not covered" >      this.allTabTableNames = allTabsTitles</span>
+      let self = <span class="cstat-no" title="statement not covered" >this</span>
+      let allTableNamesHeaderNames = <span class="cstat-no" title="statement not covered" >{}</span>
+<span class="cstat-no" title="statement not covered" >      _.forEach(this.allTableNames, function(tabTitle) <span class="fstat-no" title="function not covered" >{</span></span>
+        let hotId = <span class="cstat-no" title="statement not covered" >self.getHotIdFromTabTitle(tabTitle)</span>
+        let foreignHeaderNames = <span class="cstat-no" title="statement not covered" >self.getHotIdHeaderNames(self.allColumns, hotId)</span>
+<span class="cstat-no" title="statement not covered" >        allTableNamesHeaderNames[tabTitle] = foreignHeaderNames</span>
+      })
+<span class="cstat-no" title="statement not covered" >      this.allTableNamesHeaderNames = _.assign({}, allTableNamesHeaderNames)</span>
+    },
+    getTabsTableNames: function(allTabsTableNames) <span class="fstat-no" title="function not covered" >{</span>
+      let tableNames = <span class="cstat-no" title="statement not covered" >[]</span>
+<span class="cstat-no" title="statement not covered" >      _.forEach(allTabsTableNames, function(name, tabId) <span class="fstat-no" title="function not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >        tableNames.push(name)</span>
+      })
+<span class="cstat-no" title="statement not covered" >      return _.pull(tableNames, '', null, undefined)</span>
+    },
+    getHotIdFromTabTitle: function(tableName) <span class="fstat-no" title="function not covered" >{</span>
+      let tabId = <span class="cstat-no" title="statement not covered" >_.findKey(this.allTabTableNames, function(o) <span class="fstat-no" title="function not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >        return o === tableName</span>
+      })
+      let hotId = <span class="cstat-no" title="statement not covered" >this.getSyncHotIdFromTabId(tabId)</span>
+<span class="cstat-no" title="statement not covered" >      return hotId</span>
+    },
+    getSelectedLocalKeys: function(index) <span class="fstat-no" title="function not covered" >{</span>
+      let foreignKeys = <span class="cstat-no" title="statement not covered" >this.getAllForeignKeysFromCurrentHotId()</span>
+      let foreignKey = <span class="cstat-no" title="statement not covered" >foreignKeys[index] || {}</span>
+      let headers = <span class="cstat-no" title="statement not covered" >foreignKey.fields || []</span>
+<span class="cstat-no" title="statement not covered" >      return headers</span>
+    },
+    getFkPackageTable: function(index) <span class="fstat-no" title="function not covered" >{</span>
+      let foreignKeys = <span class="cstat-no" title="statement not covered" >this.getAllForeignKeysFromCurrentHotId()</span>
+      let foreignKey = <span class="cstat-no" title="statement not covered" >foreignKeys[index] || {}</span>
+      let reference = <span class="cstat-no" title="statement not covered" >foreignKey.reference || {}</span>
+      const table = <span class="cstat-no" title="statement not covered" >this.getFkPackageTableOrDefault(reference.resource, index)</span>
+<span class="cstat-no" title="statement not covered" >      return function() <span class="fstat-no" title="function not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >        return table</span>
+      }
+    },
+    getSelectedTable: function(index) <span class="fstat-no" title="function not covered" >{</span>
+      let foreignKeys = <span class="cstat-no" title="statement not covered" >this.getAllForeignKeysFromCurrentHotId()</span>
+      let foreignKey = <span class="cstat-no" title="statement not covered" >foreignKeys[index] || {}</span>
+      let reference = <span class="cstat-no" title="statement not covered" >foreignKey.reference || {}</span>
+      let table = <span class="cstat-no" title="statement not covered" >reference.resource || this.getCurrentTitle()</span>
+<span class="cstat-no" title="statement not covered" >      if (_.indexOf(this.allTableNames, table) === -1) {</span>
+<span class="cstat-no" title="statement not covered" >        this.resetForeignKeysForeignTableForTable({ hotId: this.currentLocalHotId, index: index })</span>
+<span class="cstat-no" title="statement not covered" >        table = this.getCurrentTitle()</span>
+      }
+<span class="cstat-no" title="statement not covered" >      return function() <span class="fstat-no" title="function not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >        return table</span>
+      }
+    },
+    getSelectedForeignKeys: function(index) <span class="fstat-no" title="function not covered" >{</span>
+      let foreignKeys = <span class="cstat-no" title="statement not covered" >this.getAllForeignKeysFromCurrentHotId()</span>
+      let foreignKey = <span class="cstat-no" title="statement not covered" >foreignKeys[index] || {}</span>
+      let reference = <span class="cstat-no" title="statement not covered" >foreignKey.reference || {}</span>
+      let headers = <span class="cstat-no" title="statement not covered" >reference.fields || []</span>
+<span class="cstat-no" title="statement not covered" >      return headers</span>
+    },
+    pushSelectedLocalKeys: function(index, hotId) <span class="fstat-no" title="function not covered" >{</span>
+      let vueSetProperty = <span class="cstat-no" title="statement not covered" >this.pushForeignKeysLocalFieldsForTable</span>
+<span class="cstat-no" title="statement not covered" >      return function(headers) <span class="fstat-no" title="function not covered" >{</span></span>
+        let object = <span class="cstat-no" title="statement not covered" >{ hotId: hotId, index: index, fields: headers }</span>
+<span class="cstat-no" title="statement not covered" >        vueSetProperty(object)</span>
+      }
+    },
+    setFkPackageTable: function(index, hotId, table) <span class="fstat-no" title="function not covered" >{</span>
+      let vueSetProperty = <span class="cstat-no" title="statement not covered" >this.pushForeignKeysForeignTableForTable</span>
+<span class="cstat-no" title="statement not covered" >      return function(table) <span class="fstat-no" title="function not covered" >{</span></span>
+        let object = <span class="cstat-no" title="statement not covered" >{ hotId: hotId, index: index, resource: table }</span>
+<span class="cstat-no" title="statement not covered" >        vueSetProperty(object)</span>
+      }
+    },
+    pushSelectedForeignTable: function(index, hotId) <span class="fstat-no" title="function not covered" >{</span>
+      let vueSetProperty = <span class="cstat-no" title="statement not covered" >this.pushForeignKeysForeignTableForTable</span>
+      let vueGetCurrentTitle = <span class="cstat-no" title="statement not covered" >this.getCurrentTitle</span>
+<span class="cstat-no" title="statement not covered" >      return function(table) <span class="fstat-no" title="function not covered" >{</span></span>
+        let activeTitle = <span class="cstat-no" title="statement not covered" >vueGetCurrentTitle()</span>
+<span class="cstat-no" title="statement not covered" >        if (activeTitle === table) {</span>
+<span class="cstat-no" title="statement not covered" >          table = ''</span>
+        }
+        let object = <span class="cstat-no" title="statement not covered" >{ hotId: hotId, index: index, resource: table }</span>
+<span class="cstat-no" title="statement not covered" >        vueSetProperty(object)</span>
+      }
+    },
+    pushSelectedForeignKeys: function(index, hotId) <span class="fstat-no" title="function not covered" >{</span>
+      let vueSetProperty = <span class="cstat-no" title="statement not covered" >this.pushForeignKeysForeignFieldsForTable</span>
+<span class="cstat-no" title="statement not covered" >      return async function(headers) <span class="fstat-no" title="function not covered" >{</span></span>
+        const activeHotId = <span class="cstat-no" title="statement not covered" >await this.currentHotId()</span>
+        // switching tab may misalign setter trigger - ensure active tab has not changed
+<span class="cstat-no" title="statement not covered" >        if (activeHotId === hotId) {</span>
+          let object = <span class="cstat-no" title="statement not covered" >{ hotId: hotId, index: index, fields: headers }</span>
+<span class="cstat-no" title="statement not covered" >          vueSetProperty(object)</span>
+        }
+      }
+    },
+    getCurrentTitle: function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      return this.tabTitle(this.getActiveTab)</span>
+    },
+    validatePackageUrl: async function(field, index, hotId, value) <span class="fstat-no" title="function not covered" >{</span>
+      // keep url:true as string for validation to work correctly
+<span class="cstat-no" title="statement not covered" >      try {</span>
+        let hasValidUrl = <span class="cstat-no" title="statement not covered" >await this.validate(field, value, 'url:true')</span>
+<span class="cstat-no" title="statement not covered" >        if (!hasValidUrl) {</span>
+<span class="cstat-no" title="statement not covered" >          this.$validator.errors.add({field: field, msg: 'The package field must be a valid url.'})</span>
+<span class="cstat-no" title="statement not covered" >          return false</span>
+        }
+<span class="cstat-no" title="statement not covered" >        return true</span>
+      } catch (err) {
+<span class="cstat-no" title="statement not covered" >        console.log('Problem with validation', err)</span>
+<span class="cstat-no" title="statement not covered" >        return false</span>
+      }
+    },
+    updateFkPackageIndex: function(index, hasPackage) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      this.fkPackages[index] = !!hasPackage</span>
+<span class="cstat-no" title="statement not covered" >      this.updateToggleText()</span>
+    },
+    updateToggleText: function() <span class="fstat-no" title="function not covered" >{</span>
+      const toggleText = <span class="cstat-no" title="statement not covered" >[]</span>
+<span class="cstat-no" title="statement not covered" >      for (const [index, value] of this.fkPackages.entries()) {</span>
+<span class="cstat-no" title="statement not covered" >        toggleText[index] = value ? 'Switch to FK Local Table' : 'Switch to FK Package URL'</span>
+      }
+<span class="cstat-no" title="statement not covered" >      fkPackagesButtonText$.next(toggleText)</span>
+    },
+    updateFkComponents: async function(dataPackage, url) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      this.allFkTableNames.length = 0</span>
+<span class="cstat-no" title="statement not covered" >      this.allFkTableNamesHeaderNames = {}</span>
+<span class="cstat-no" title="statement not covered" >      for (const resource of dataPackage.resources) {</span>
+<span class="cstat-no" title="statement not covered" >        this.allFkTableNames.push(resource.name)</span>
+<span class="cstat-no" title="statement not covered" >        this.allFkTableNamesHeaderNames[resource.name] = resource.schema.fieldNames</span>
+<span class="cstat-no" title="statement not covered" >        this.pushFkPackageComponents({</span>
+          url: url,
+          tableName: resource.name,
+          fields: resource.schema.fieldNames
+        })
+      }
+    },
+    populateAsyncFkPackageComponents: async function() <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      try {</span>
+        const hotId = <span class="cstat-no" title="statement not covered" >await this.currentHotId()</span>
+        const foreignKeys = <span class="cstat-no" title="statement not covered" >this.getAllForeignKeys()[hotId]</span>
+<span class="cstat-no" title="statement not covered" >        for (const [index, foreignKey] of foreignKeys.entries()) {</span>
+          const reference = <span class="cstat-no" title="statement not covered" >foreignKey.reference || {}</span>
+          let url
+<span class="cstat-no" title="statement not covered" >          if (typeof reference.package !== 'undefined') {</span>
+<span class="cstat-no" title="statement not covered" >            url = reference.package</span>
+            // check cache first
+<span class="cstat-no" title="statement not covered" >            if (_.isEmpty(this.allFkTableNamesHeaderNames)) {</span>
+<span class="cstat-no" title="statement not covered" >              this.allFkTableNamesHeaderNames = this.getFkPackageComponents(url)</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (_.isEmpty(this.allFkTableNamesHeaderNames)) {</span>
+<span class="cstat-no" title="statement not covered" >              await this.setFkPackage(index, this.currentLocalHotId, url)</span>
+            }
+          }
+        }
+      } catch (error) {
+<span class="cstat-no" title="statement not covered" >        console.log('There was a problem with populating fk components', error)</span>
+      }
+    }
+  },
+  created: async function() <span class="fstat-no" title="function not covered" >{</span>
+    let self = <span class="cstat-no" title="statement not covered" >this</span>
+<span class="cstat-no" title="statement not covered" >    this.$subscribeTo(allTabsTitles$, function(allTabsTitles) <span class="fstat-no" title="function not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >      self.updateTableSubscriptions(allTabsTitles)</span>
+    })
+<span class="cstat-no" title="statement not covered" >    ipc.on('packageUrlLoaded', async function(event, index, hotId, url, descriptor) <span class="fstat-no" title="function not covered" >{</span></span>
+      const dataPackage = <span class="cstat-no" title="statement not covered" >await Package.load(descriptor)</span>
+<span class="cstat-no" title="statement not covered" >      if (dataPackage &amp;&amp; dataPackage.valid) {</span>
+<span class="cstat-no" title="statement not covered" >        self.stopLoadingPackageFeedback()</span>
+<span class="cstat-no" title="statement not covered" >        self.updateFkPackageIndex(index, true)</span>
+<span class="cstat-no" title="statement not covered" >        self.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: url })</span>
+        // persist the first table by default
+<span class="cstat-no" title="statement not covered" >        if (dataPackage.resources.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >          self.pushForeignKeysForeignTableForTable({ hotId: hotId, index: index, resource: dataPackage.resources[0].name })</span>
+        }
+<span class="cstat-no" title="statement not covered" >        await self.updateFkComponents(dataPackage, url)</span>
+      }
+    })
+  },
+  mounted: function() <span class="fstat-no" title="function not covered" >{</span>
+    let self = <span class="cstat-no" title="statement not covered" >this</span>
+<span class="cstat-no" title="statement not covered" >    pushAllTabTitlesSubscription()</span>
+<span class="cstat-no" title="statement not covered" >    this.populateAsyncFkPackageComponents()</span>
+    // occasionally fkpackage table getter doesn't arrive on tab change - update to ensure all received
+<span class="cstat-no" title="statement not covered" >    _.delay(function() <span class="fstat-no" title="function not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >      self.$forceUpdate()</span>
+    }, 200)
+  }
+}
+&lt;/script&gt;
+&lt;style lang="styl" scoped&gt;
+@import '~static/css/foreignkeys'
+&lt;/style&gt;
+&lt;style lang="styl" scoped&gt;
+@import '~static/css/validationrules'
+&lt;/style&gt;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu May 31 2018 13:40:14 GMT+1000 (E. Australia Standard Time)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

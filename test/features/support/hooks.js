@@ -3,6 +3,8 @@ import electron from 'electron'
 import { After, Before, Status, Given, When, Then } from 'cucumber'
 import fakeDialog from 'spectron-fake-dialog'
 import { expect, should, assert } from 'chai'
+import {exec} from 'child_process'
+const _ = require('lodash')
 
 async function stopAppRunning(app) {
   try {
@@ -13,16 +15,28 @@ async function stopAppRunning(app) {
     // this is just in case for slower OS/windows - catch any error and ignore
     if (app && app.electron) {
       const forceQuitResult = await this.app.electron.ipcRenderer.sendSync('forceQuit')
-    // console.log(`force quit?`, result3)
     }
   } catch (error) {
     // console.log('error caught when stopping run. ignoring')
   }
 }
 
+function tallyTestAppveyor(testCase) {
+  if (process.env.APPVEYOR) {
+    console.log('appveyor tally...')
+    exec(`appveyor AddTest -Name ${testCase.pickle.name} -Framework Spectron -Filename ${testCase.sourceLocation.uri} -Outcome ${testCase.result.status} -Duration ${testCase.result.duration}`, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`)
+        return
+      }
+      console.log(`stdout: ${stdout}`)
+      console.log(`stderr: ${stderr}`)
+    })
+  }
+}
+
 After({timeout: 40000}, async function (testCase) {
   try {
-    // console.log('Starting after hook....')
     if (testCase.result.status === Status.FAILED) {
       if (this.app && this.app.browserWindow) {
         const imageBuffer = await this.app.browserWindow.capturePage()
@@ -30,7 +44,7 @@ After({timeout: 40000}, async function (testCase) {
         // console.log('got attachment in', attachResult)
       }
     }
-    // stopAppRunning(this.app)
+    tallyTestAppveyor(testCase)
   } catch (error) {
     console.log('error in after hook', error)
   } finally {

@@ -39,6 +39,9 @@ Given(/^"Data Package Properties" is invoked$/, async function () {
 // })
 
 When('{string} is invoked using the {string}: {string}', async function (name, type, sequence) {
+  console.log(`sequence`, sequence)
+  console.log(`type`, type)
+  console.log(`name`, name)
   await menu.invokeActions(this.app, {name: name, type: type, sequence: sequence})
 })
 

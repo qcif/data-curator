@@ -1,0 +1,1337 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for renderer\store\modules\hots.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">renderer/store/modules/</a> hots.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">2.94% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>6/204</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/102</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">4.44% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/45</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">2.94% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>6/204</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {currentPos$} from '@/rxSubject.js'
+&nbsp;
+const state = {
+  hotTabs: {},
+  packageProperties: {},
+  provenanceProperties: { markdown: '', hotErrors: {} },
+  fkPackageComponents: {}
+}
+&nbsp;
+export function getHotColumnPropertiesFromPropertyObject(property) <span class="fstat-no" title="function not covered" >{</span>
+  let allHotColumnProperties = <span class="cstat-no" title="statement not covered" >state.hotTabs[property.hotId].columnProperties</span>
+<span class="cstat-no" title="statement not covered" >  if (!allHotColumnProperties) {</span>
+<span class="cstat-no" title="statement not covered" >    mutations.resetAllColumnPropertiesForHotId(state, property.hotId)</span>
+<span class="cstat-no" title="statement not covered" >    allHotColumnProperties = state.hotTabs[property.hotId].columnProperties</span>
+  }
+  let hotColumnProperties = <span class="cstat-no" title="statement not covered" >allHotColumnProperties[property.columnIndex]</span>
+<span class="cstat-no" title="statement not covered" >  if (!hotColumnProperties) {</span>
+<span class="cstat-no" title="statement not covered" >    mutations.resetColumnPropertiesForHotId(state, property)</span>
+<span class="cstat-no" title="statement not covered" >    hotColumnProperties = allHotColumnProperties[property.columnIndex]</span>
+  }
+<span class="cstat-no" title="statement not covered" >  return hotColumnProperties</span>
+}
+&nbsp;
+export function getHotIdFromTabIdFunction() {
+  return getters.getHotIdFromTabId(state, getters)
+}
+&nbsp;
+const getters = {
+  getFkPackageComponents: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(url) =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+<span class="cstat-no" title="statement not covered" >    return state.fkPackageComponents[url]</span>
+  },
+  getHotTabs: state =&gt; <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    return state.hotTabs</span>
+  },
+  getLatestSearchResult: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(hotId) =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+    const result = <span class="cstat-no" title="statement not covered" >state.hotTabs[hotId].searchResult</span>
+<span class="cstat-no" title="statement not covered" >    if (result) {</span>
+<span class="cstat-no" title="statement not covered" >      return result</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      return 0</span>
+    }
+  },
+  getHotSelection: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(hotId) =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+<span class="cstat-no" title="statement not covered" >    return state.hotTabs[hotId].selected</span>
+  },
+  getTabIdFromHotId: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(hotId) =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+<span class="cstat-no" title="statement not covered" >    return state.hotTabs[hotId].tabId</span>
+  },
+  getTableProperties: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(hotId) =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+<span class="cstat-no" title="statement not covered" >    return state.hotTabs[hotId].tableProperties || {}</span>
+  },
+  getAllHotColumnPropertiesFromHotId: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(hotId) =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+<span class="cstat-no" title="statement not covered" >    return state.hotTabs[hotId].columnProperties || []</span>
+  },
+  // ensure getter fires each time by passing in function
+  getAllHotTablesColumnNames: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+    let hotIdColumnNames = <span class="cstat-no" title="statement not covered" >{}</span>
+<span class="cstat-no" title="statement not covered" >    for (let hotId in state.hotTabs) {</span>
+      let columnProps = <span class="cstat-no" title="statement not covered" >state.hotTabs[hotId].columnProperties || []</span>
+      let columnNames = <span class="cstat-no" title="statement not covered" >columnProps.map(column =&gt; <span class="fstat-no" title="function not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >        return column.name</span>
+      })
+<span class="cstat-no" title="statement not covered" >      hotIdColumnNames[hotId] = columnNames</span>
+    }
+<span class="cstat-no" title="statement not covered" >    return hotIdColumnNames</span>
+  },
+  getAllHotTablesColumnProperties: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+    let hotIdColumnNames = <span class="cstat-no" title="statement not covered" >{}</span>
+<span class="cstat-no" title="statement not covered" >    for (let hotId in state.hotTabs) {</span>
+<span class="cstat-no" title="statement not covered" >      hotIdColumnNames[hotId] = state.hotTabs[hotId].columnProperties || []</span>
+    }
+<span class="cstat-no" title="statement not covered" >    return hotIdColumnNames</span>
+  },
+  getAllHotColumnNamesFromHotId: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(hotId) =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+<span class="cstat-no" title="statement not covered" >    return getters.getAllHotColumnPropertyFromHotId(state, getters)({hotId: hotId, key: 'name'})</span>
+  },
+  getAllHotColumnTypesFromHotId: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(hotId) =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+<span class="cstat-no" title="statement not covered" >    return getters.getAllHotColumnPropertyFromHotId(state, getters)({hotId: hotId, key: 'type'})</span>
+  },
+  getAllHotColumnPropertyFromHotId: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(property) =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+    const hotId = <span class="cstat-no" title="statement not covered" >property.hotId</span>
+    const propertyKey = <span class="cstat-no" title="statement not covered" >property.key</span>
+<span class="cstat-no" title="statement not covered" >    if (!state.hotTabs[hotId].columnProperties) {</span>
+<span class="cstat-no" title="statement not covered" >      state.hotTabs[hotId].columnProperties = []</span>
+      // return
+    }
+    let values = <span class="cstat-no" title="statement not covered" >state.hotTabs[hotId].columnProperties.map(column =&gt; <span class="fstat-no" title="function not covered" >{</span></span>
+      let value = <span class="cstat-no" title="statement not covered" >column[propertyKey]</span>
+<span class="cstat-no" title="statement not covered" >      return column[propertyKey]</span>
+    })
+<span class="cstat-no" title="statement not covered" >    return values</span>
+  },
+  getHotIdFromTabId: (state, getters) =&gt; (tabId) =&gt; <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    return new Promise((resolve, reject) =&gt; <span class="fstat-no" title="function not covered" >{</span></span>
+      let hotId = <span class="cstat-no" title="statement not covered" >_.findKey(state.hotTabs, {tabId: tabId})</span>
+<span class="cstat-no" title="statement not covered" >      if (!hotId) {</span>
+        // There is a short render wait in home page, so if hotId not first returned, just wait and try again
+<span class="cstat-no" title="statement not covered" >        _.delay(function(tabId) <span class="fstat-no" title="function not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >          resolve(_.findKey(state.hotTabs, {tabId: tabId}))</span>
+        }, 10, tabId)
+      } else {
+<span class="cstat-no" title="statement not covered" >        resolve(hotId)</span>
+      }
+    })
+  },
+  getSyncHotIdFromTabId: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(tabId) =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+    let hotId = <span class="cstat-no" title="statement not covered" >_.findKey(state.hotTabs, {tabId: tabId})</span>
+<span class="cstat-no" title="statement not covered" >    return hotId</span>
+  },
+  getProvenance: state =&gt; <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    return state.provenanceProperties</span>
+  },
+  getHotColumnProperty: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(property) =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+    let hotColumnProperties = <span class="cstat-no" title="statement not covered" >getHotColumnPropertiesFromPropertyObject(property)</span>
+<span class="cstat-no" title="statement not covered" >    return hotColumnProperties[property.key]</span>
+  },
+  getTableProperty: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(property) =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+    let tableProperties = <span class="cstat-no" title="statement not covered" >state.hotTabs[property.hotId].tableProperties || {}</span>
+<span class="cstat-no" title="statement not covered" >    return tableProperties[property.key]</span>
+  },
+  getPackageProperty: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(property) =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+<span class="cstat-no" title="statement not covered" >    return state.packageProperties[property.key]</span>
+  },
+  getPackageProperties: state =&gt; <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    return state.packageProperties</span>
+  },
+  getConstraint: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(property) =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+    let hotColumnProperties = <span class="cstat-no" title="statement not covered" >getHotColumnPropertiesFromPropertyObject(property)</span>
+    let constraints = <span class="cstat-no" title="statement not covered" >hotColumnProperties['constraints']</span>
+<span class="cstat-no" title="statement not covered" >    if (!constraints) {</span>
+<span class="cstat-no" title="statement not covered" >      constraints = state.hotTabs[property.hotId].columnProperties[property.columnIndex].constraints = {}</span>
+    }
+<span class="cstat-no" title="statement not covered" >    return constraints[property.key]</span>
+  },
+  // ensure no caching
+  getAllForeignKeys: (state, getters) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; <span class="fstat-no" title="function not covered" >{</span></span></span>
+    let allForeignKeys = <span class="cstat-no" title="statement not covered" >{}</span>
+<span class="cstat-no" title="statement not covered" >    for (let hotId in state.hotTabs) {</span>
+      let tableProperties = <span class="cstat-no" title="statement not covered" >state.hotTabs[hotId].tableProperties || {}</span>
+      let foreignKeys = <span class="cstat-no" title="statement not covered" >tableProperties.foreignKeys || []</span>
+<span class="cstat-no" title="statement not covered" >      allForeignKeys[hotId] = foreignKeys</span>
+    }
+<span class="cstat-no" title="statement not covered" >    return allForeignKeys</span>
+  }
+}
+&nbsp;
+const mutations = {
+  pushFkPackageComponents(state, property) {
+<span class="cstat-no" title="statement not covered" >    _.set(state.fkPackageComponents[property.url], property.tableName, property.fields)</span>
+  },
+  resetSearchResult(state, hotId) {
+<span class="cstat-no" title="statement not covered" >    _.set(state.hotTabs, `${hotId}.searchResult`, 0)</span>
+  },
+  pushProvenance(state, value) {
+<span class="cstat-no" title="statement not covered" >    _.set(state.provenanceProperties, 'markdown', value)</span>
+  },
+  pushProvenanceErrors(state, property) {
+    // ensure set to new object
+<span class="cstat-no" title="statement not covered" >    _.set(state.provenanceProperties.hotErrors, property.hotId, property.errors)</span>
+  },
+  removeProvenanceErrors(state, hotId) {
+    // ensure set to new empty object
+    let allErrors = <span class="cstat-no" title="statement not covered" >_.assign({}, state.provenanceProperties.hotErrors)</span>
+<span class="cstat-no" title="statement not covered" >    _.unset(allErrors, hotId)</span>
+<span class="cstat-no" title="statement not covered" >    state.provenanceProperties.hotErrors = allErrors</span>
+  },
+  removeAllProvenanceErrors(state) {
+    // ensure set to new empty object
+<span class="cstat-no" title="statement not covered" >    state.provenanceProperties.hotErrors = {}</span>
+  },
+  pushHotTab(state, hotTab) {
+    let hotId = <span class="cstat-no" title="statement not covered" >hotTab.hotId</span>
+<span class="cstat-no" title="statement not covered" >    if (!hotId) {</span>
+<span class="cstat-no" title="statement not covered" >      return</span>
+    }
+<span class="cstat-no" title="statement not covered" >    if (hotTab.tabId) {</span>
+<span class="cstat-no" title="statement not covered" >      _.set(state.hotTabs, `${hotId}.tabId`, hotTab.tabId)</span>
+    }
+  },
+  pushHotSelection(state, property) {
+<span class="cstat-no" title="statement not covered" >    _.set(state.hotTabs, `${property.hotId}.selected`, property.selected)</span>
+<span class="cstat-no" title="statement not covered" >    currentPos$.next(property.selected)</span>
+  },
+  pushAllColumnsProperty(state, properties) {
+<span class="cstat-no" title="statement not covered" >    for (const [index, value] of properties.values.entries()) {</span>
+      let property = <span class="cstat-no" title="statement not covered" >{</span>
+        hotId: properties.hotId,
+        columnIndex: index,
+        key: properties.key,
+        value: value
+      }
+<span class="cstat-no" title="statement not covered" >      mutations.pushColumnProperty(state, property)</span>
+    }
+  },
+  pushColumnProperty(state, property) {
+<span class="cstat-no" title="statement not covered" >    _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)</span>
+  },
+  // change this to remove column property
+  removeColumnProperty(state, property) {
+    let currentColumnProperties = <span class="cstat-no" title="statement not covered" >_.assign({}, state.hotTabs[property.hotId].columnProperties[property.columnIndex])</span>
+<span class="cstat-no" title="statement not covered" >    _.unset(currentColumnProperties, property.key)</span>
+<span class="cstat-no" title="statement not covered" >    state.hotTabs[property.hotId].columnProperties[property.columnIndex] = currentColumnProperties</span>
+  },
+  pushTableProperty(state, property) {
+    _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
+  },
+  pushForeignKeysLocalFieldsForTable(state, property) {
+    let tableProperties = <span class="cstat-no" title="statement not covered" >_.assign({}, state.hotTabs[property.hotId].tableProperties) || {}</span>
+    let foreignKeys = <span class="cstat-no" title="statement not covered" >tableProperties.foreignKeys || []</span>
+<span class="cstat-no" title="statement not covered" >    if (!foreignKeys[property.index]) {</span>
+<span class="cstat-no" title="statement not covered" >      foreignKeys[property.index] = {</span>
+        fields: [],
+        reference: {
+          resource: '',
+          fields: []
+        }
+      }
+    }
+<span class="cstat-no" title="statement not covered" >    foreignKeys[property.index].fields = property.fields</span>
+<span class="cstat-no" title="statement not covered" >    state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys</span>
+  },
+  pushForeignKeysForeignPackageForTable(state, property) {
+    let tableProperties = <span class="cstat-no" title="statement not covered" >_.assign({}, state.hotTabs[property.hotId].tableProperties) || {}</span>
+    let foreignKeys = <span class="cstat-no" title="statement not covered" >tableProperties.foreignKeys || []</span>
+<span class="cstat-no" title="statement not covered" >    if (!foreignKeys[property.index]) {</span>
+<span class="cstat-no" title="statement not covered" >      foreignKeys[property.index] = {</span>
+        fields: [],
+        reference: {
+          package: '',
+          resource: '',
+          fields: []
+        }
+      }
+    }
+    const dataPackage = <span class="cstat-no" title="statement not covered" >property.package</span>
+<span class="cstat-no" title="statement not covered" >    foreignKeys[property.index].reference.package = dataPackage</span>
+<span class="cstat-no" title="statement not covered" >    state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys</span>
+    // reset package tables and columns cache
+<span class="cstat-no" title="statement not covered" >    state.fkPackageComponents[dataPackage] = {}</span>
+  },
+  removeForeignKeysForeignPackageForTable(state, property) {
+    let hotId = <span class="cstat-no" title="statement not covered" >state.hotTabs[property.hotId]</span>
+<span class="cstat-no" title="statement not covered" >    if (typeof hotId !== 'undefined') {</span>
+      let tableProperties = <span class="cstat-no" title="statement not covered" >_.assign({}, hotId.tableProperties) || {}</span>
+      let foreignKeys = <span class="cstat-no" title="statement not covered" >tableProperties.foreignKeys || []</span>
+<span class="cstat-no" title="statement not covered" >      if (!foreignKeys[property.index]) {</span>
+<span class="cstat-no" title="statement not covered" >        foreignKeys[property.index] = {</span>
+          fields: [],
+          reference: {
+            package: '',
+            resource: '',
+            fields: []
+          }
+        }
+      }
+<span class="cstat-no" title="statement not covered" >      _.unset(foreignKeys[property.index].reference, 'package')</span>
+<span class="cstat-no" title="statement not covered" >      state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys</span>
+    }
+  },
+  resetForeignKeysForeignTableForTable(state, property) {
+    let hotId = <span class="cstat-no" title="statement not covered" >state.hotTabs[property.hotId]</span>
+<span class="cstat-no" title="statement not covered" >    if (typeof hotId !== 'undefined') {</span>
+      let tableProperties = <span class="cstat-no" title="statement not covered" >_.assign({}, hotId.tableProperties) || {}</span>
+      let foreignKeys = <span class="cstat-no" title="statement not covered" >tableProperties.foreignKeys || []</span>
+<span class="cstat-no" title="statement not covered" >      if (!foreignKeys[property.index]) {</span>
+<span class="cstat-no" title="statement not covered" >        foreignKeys[property.index] = {</span>
+          fields: [],
+          reference: {
+            resource: '',
+            fields: []
+          }
+        }
+      } else {
+<span class="cstat-no" title="statement not covered" >        foreignKeys[property.index].reference.resource = ''</span>
+      }
+<span class="cstat-no" title="statement not covered" >      state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys</span>
+    }
+  },
+  pushForeignKeysForeignTableForTable(state, property) {
+    let tableProperties = <span class="cstat-no" title="statement not covered" >_.assign({}, state.hotTabs[property.hotId].tableProperties) || {}</span>
+    let foreignKeys = <span class="cstat-no" title="statement not covered" >tableProperties.foreignKeys || []</span>
+<span class="cstat-no" title="statement not covered" >    if (!foreignKeys[property.index]) {</span>
+<span class="cstat-no" title="statement not covered" >      foreignKeys[property.index] = {</span>
+        fields: [],
+        reference: {
+          resource: '',
+          fields: []
+        }
+      }
+    }
+<span class="cstat-no" title="statement not covered" >    foreignKeys[property.index].reference.resource = property.resource</span>
+<span class="cstat-no" title="statement not covered" >    state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys</span>
+  },
+  resetForeignKeysForeignFieldsForTable(state, property) {
+    let hotId = <span class="cstat-no" title="statement not covered" >state.hotTabs[property.hotId]</span>
+<span class="cstat-no" title="statement not covered" >    if (typeof hotId !== 'undefined') {</span>
+      let tableProperties = <span class="cstat-no" title="statement not covered" >_.assign({}, hotId.tableProperties) || {}</span>
+      let foreignKeys = <span class="cstat-no" title="statement not covered" >tableProperties.foreignKeys || []</span>
+<span class="cstat-no" title="statement not covered" >      if (!foreignKeys[property.index]) {</span>
+<span class="cstat-no" title="statement not covered" >        foreignKeys[property.index] = {</span>
+          fields: [],
+          reference: {
+            resource: '',
+            fields: []
+          }
+        }
+      } else {
+<span class="cstat-no" title="statement not covered" >        foreignKeys[property.index].reference.fields = []</span>
+      }
+<span class="cstat-no" title="statement not covered" >      state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys</span>
+    }
+  },
+  pushForeignKeysForeignFieldsForTable(state, property) {
+    let tableProperties = <span class="cstat-no" title="statement not covered" >_.assign({}, state.hotTabs[property.hotId].tableProperties) || {}</span>
+    let foreignKeys = <span class="cstat-no" title="statement not covered" >tableProperties.foreignKeys || []</span>
+<span class="cstat-no" title="statement not covered" >    if (!foreignKeys[property.index]) {</span>
+<span class="cstat-no" title="statement not covered" >      foreignKeys[property.index] = {</span>
+        fields: [],
+        reference: {
+          resource: '',
+          fields: []
+        }
+      }
+    }
+<span class="cstat-no" title="statement not covered" >    foreignKeys[property.index].reference.fields = property.fields</span>
+<span class="cstat-no" title="statement not covered" >    state.hotTabs[property.hotId].tableProperties.foreignKeys = foreignKeys</span>
+  },
+  pushPackageProperty(state, property) {
+<span class="cstat-no" title="statement not covered" >    _.set(state.packageProperties, property.key, property.value)</span>
+  },
+  pushTableSchema(state, hotIdSchema) {
+    let hotId = <span class="cstat-no" title="statement not covered" >hotIdSchema.hotId</span>
+    let hotTab = <span class="cstat-no" title="statement not covered" >state.hotTabs[hotId]</span>
+<span class="cstat-no" title="statement not covered" >    mutations.initColumnProperties(state, hotTab)</span>
+    // we cannot mutate the vuex state itself (in lodash call) - we can only assign a new value
+    let columnProperties = <span class="cstat-no" title="statement not covered" >[]</span>
+<span class="cstat-no" title="statement not covered" >    for (let column of hotTab.columnProperties) {</span>
+      let nextObject = <span class="cstat-no" title="statement not covered" >{}</span>
+<span class="cstat-no" title="statement not covered" >      columnProperties.push(nextObject)</span>
+<span class="cstat-no" title="statement not covered" >      _.assign(nextObject, column)</span>
+    }
+<span class="cstat-no" title="statement not covered" >    _.merge(columnProperties, hotIdSchema.schema.descriptor.fields)</span>
+<span class="cstat-no" title="statement not covered" >    state.hotTabs[hotId].columnProperties = columnProperties</span>
+<span class="cstat-no" title="statement not covered" >    return state.hotTabs[hotId].columnProperties</span>
+  },
+  initColumnProperties(state, hotTab) {
+<span class="cstat-no" title="statement not covered" >    if (typeof hotTab.columnProperties === 'undefined' || !hotTab.columnProperties) {</span>
+<span class="cstat-no" title="statement not covered" >      hotTab.columnProperties = []</span>
+    }
+  },
+  initMissingValues(state, hotTab) {
+<span class="cstat-no" title="statement not covered" >    mutations.initTableProperties(state, hotTab)</span>
+<span class="cstat-no" title="statement not covered" >    if (typeof hotTab.tableProperties.missingValues === 'undefined' || !hotTab.tableProperties.missingValues) {</span>
+<span class="cstat-no" title="statement not covered" >      hotTab.tableProperties.missingValues = ['']</span>
+    }
+  },
+  initTableProperties(state, hotTab) {
+<span class="cstat-no" title="statement not covered" >    if (typeof hotTab.tableProperties === 'undefined' || !hotTab.tableProperties) {</span>
+<span class="cstat-no" title="statement not covered" >      hotTab.tableProperties = []</span>
+    }
+  },
+  destroyHotTab(state, hotId) {
+<span class="cstat-no" title="statement not covered" >    _.unset(state.hotTabs, hotId)</span>
+  },
+  async destroyHotTabFromTabId(state, tabId) {
+    let hotId = <span class="cstat-no" title="statement not covered" >await getters.getHotIdFromTabId(tabId)</span>
+<span class="cstat-no" title="statement not covered" >    _.unset(state.hotTabs, hotId)</span>
+  },
+  resetAllColumnPropertiesForHotId(state, hotId) {
+<span class="cstat-no" title="statement not covered" >    if (state.hotTabs[hotId].columnProperties) {</span>
+<span class="cstat-no" title="statement not covered" >      state.hotTabs[hotId].columnProperties.length = 0</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      state.hotTabs[hotId].columnProperties = []</span>
+    }
+  },
+  resetColumnPropertiesForHotId(state, property) {
+<span class="cstat-no" title="statement not covered" >    state.hotTabs[property.hotId].columnProperties[property.columnIndex] = {}</span>
+  },
+  removeColumnIndexForHotId(state, property) {
+    let columnProperties = <span class="cstat-no" title="statement not covered" >state.hotTabs[property.hotId].columnProperties</span>
+<span class="cstat-no" title="statement not covered" >    if (typeof columnProperties !== 'undefined' &amp;&amp; columnProperties.length &gt; property.columnIndex) {</span>
+<span class="cstat-no" title="statement not covered" >      state.hotTabs[property.hotId].columnProperties.splice(property.columnIndex, 1)</span>
+    }
+  },
+  pushColumnIndexForHotId(state, property) {
+    let columnProperties = <span class="cstat-no" title="statement not covered" >state.hotTabs[property.hotId].columnProperties</span>
+<span class="cstat-no" title="statement not covered" >    if (typeof columnProperties == 'undefined') {</span>
+<span class="cstat-no" title="statement not covered" >      state.hotTabs[property.hotId].columnProperties = []</span>
+    }
+<span class="cstat-no" title="statement not covered" >    state.hotTabs[property.hotId].columnProperties.splice(property.columnIndex, 0, {})</span>
+  },
+  resetPackagePropertiesToObject(state, properties) {
+<span class="cstat-no" title="statement not covered" >    _.set(state, 'packageProperties', properties)</span>
+  },
+  resetTablePropertiesToObject(state, hotIdTables) {
+<span class="cstat-no" title="statement not covered" >    for (let hotId in hotIdTables) {</span>
+<span class="cstat-no" title="statement not covered" >      if (!state.hotTabs[hotId]) {</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error(`Unable to find tab with hot id: ${hotId}`)</span>
+      }
+<span class="cstat-no" title="statement not covered" >      _.set(state.hotTabs[hotId], 'tableProperties', hotIdTables[hotId])</span>
+    }
+  },
+  resetColumnPropertiesToObject(state, hotIdColumns) {
+<span class="cstat-no" title="statement not covered" >    for (let hotId in hotIdColumns) {</span>
+<span class="cstat-no" title="statement not covered" >      if (!state.hotTabs[hotId]) {</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error(`Unable to find tab with hot id: ${hotId}`)</span>
+      }
+<span class="cstat-no" title="statement not covered" >      _.set(state.hotTabs[hotId], 'columnProperties', hotIdColumns[hotId])</span>
+    }
+  },
+  resetAll(state) {
+<span class="cstat-no" title="statement not covered" >    state = {</span>
+      hotTabs: {},
+      packageProperties: {},
+      provenanceProperties: { markdown: '', hotErrors: {} }
+    }
+  }
+}
+&nbsp;
+export default {
+  state,
+  getters,
+  mutations
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu May 31 2018 13:40:14 GMT+1000 (E. Australia Standard Time)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>
