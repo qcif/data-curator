@@ -140,7 +140,7 @@
     "chalk": "^2.3.1",
     "copy-webpack-plugin": "^4.2.0",
     "coveralls": "^3.0.1",
-    "cross-env": "^5.0.0",
+    "cross-env": "^5.2.0",
     "css-loader": "^0.28.10",
     "cucumber": "^4.1.0",
     "cucumber-html-reporter": "^4.0.2",
