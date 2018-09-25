@@ -244,13 +244,11 @@
         <td><kbd>Shift &#8679;</kbd> <kbd>Ctrl</kbd> <kbd>S</kbd></td>
         <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>S</kbd></td>
       </tr>
-<!-- https://github.com/ODIQueensland/data-curator/issues/67
       <tr>
         <td><b>Close Tab</b> - close the active data tab</td>
         <td><kbd>Ctrl</kbd> <kbd>W</kbd></td>
         <td><kbd>Command &#8984;</kbd> <kbd>W</kbd></td>
-      </tr>
--->      
+      </tr>    
     </tbody>
   </table>
 
@@ -418,8 +416,7 @@
         <td><b>Minimize</b> - minimize the Data Curator window</td>
         <td></td>
         <td><kbd>Command &#8984;</kbd> <kbd>M</kbd></td>
-      </tr>
-<!--  see https://github.com/ODIQueensland/data-curator/issues/273     
+      </tr>   
       <tr>
         <td><b>Next Tab</b> - make the next tab (if it exists) the active tab</td>
         <td><kbd>Ctrl</kbd> <kbd>&#8594;</kbd></td>
@@ -429,8 +426,7 @@
         <td><b>Previous Tab</b> - make the previous tab (if it exists) the active tab</td>
         <td><kbd>Ctrl</kbd> <kbd>&#8592;</kbd></td>
         <td><kbd>Command &#8984;</kbd> <kbd>&#8592;</kbd></td>
-      </tr>
--->      
+      </tr>      
     </tbody>
   </table>
 

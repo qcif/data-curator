@@ -65,16 +65,13 @@ class AppMenu {
           }, {
             label: 'Save As',
             submenu: this.saveSubMenu
+          }, {
+            type: 'separator'
+          }, {
+            label: 'Close Tab',
+            accelerator: 'CmdOrCtrl+W'
+          // , TODO: insert command to close tab if not the only tab open. Disable menu item if only one tab is open
           }
-          // hide until needed
-          //, {
-          //  type: 'separator'
-          // }
-          // hide until implemened
-          //, {
-          //  label: 'Close Tab',
-          //  accelerator: 'CmdOrCtrl+W'
-          // }
         ]
       },
       {
@@ -332,15 +329,16 @@ class AppMenu {
             role: 'minimize'
           }, {
             role: 'zoom'
-            // hide until implemented
-            // }, {
-            //   type: 'separator'
-            // }, {
-            //   label: 'Next Tab',
-            //   accelerator: 'CmdOrCtrl+Right'
-            // }, {
-            //   label: 'Previous Tab',
-            //   accelerator: 'CmdOrCtrl+Left'
+          }, {
+            type: 'separator'
+          }, {
+            label: 'Next Tab',
+            accelerator: 'CmdOrCtrl+Right'
+            // , TODO: insert command to move to next tab if one exists. Disable menu item if last tab is active
+          }, {
+            label: 'Previous Tab',
+            accelerator: 'CmdOrCtrl+Left'
+            // , TODO: insert command to move to previous tab if one exists. Disable menu item if first tab is active
           }, {
             type: 'separator'
           }, {
