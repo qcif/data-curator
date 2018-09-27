@@ -5,8 +5,16 @@
     opacity 0
   100%
     opacity 1
+
+@keyframes tohide
+  to
+    overflow hidden
+    visibility hidden
+    width 0
+    height 0
+
 .tooltip-custom
-  animation opac 1s ease-in
+  animation opac 1s ease-in, tohide 0s ease-in 8s forwards
 .tooltip-content
   color #fff !important
   div
