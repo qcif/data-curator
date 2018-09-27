@@ -19,10 +19,11 @@
                     </select>
                     <div id="format-container" v-if="formprop.key==='format'"
                          :class="{ 'format-pattern': formatValuesHasPattern }" >
-                        <span v-if="hasTypeFormatWarning" v-tooltip.left.hover.focus="tooltip(formprop.tooltipValueId)">
+                        <span v-if="hasTypeFormatWarning" v-tooltip.notrigger.left="tooltipWrap(formprop.tooltipValueId, warningVisibility)">
                             <select :value="getFormatProperty" v-model="formatProperty"
                                         @input="setFormatProperty($event.target.value)" id="format"
-                                        :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
+                                        :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9"
+                                   >
                                 <option v-for="option2 in formatPropertiesForType" :key="option2" v-bind:value="option2" >
                                     {{ option2}}
                                 </option>
@@ -154,7 +155,7 @@
   export default {
     extends: SideNav,
     name: 'column',
-  mixins: [ValidationRules, ColumnTooltip],
+    mixins: [ValidationRules, ColumnTooltip],
     props: ['cIndex', 'reselectHotCell'],
     data() {
       return {
@@ -163,9 +164,14 @@
         formatProperty: '',
         formatPropertyValue: '',
         constraintInputKeyValues: {},
+        warningVisibility: false,
         allTablesAllColumnsNames: {},
         // TODO: setup args so clear for constraints only
         debounceSetConstraints: _.debounce(this.pushColumnProperty, 300, {
+          'leading': true,
+          'trailing': false
+        }),
+        debounceCheckType: _.debounce(this.checkType, 300, {
           'leading': true,
           'trailing': false
         }),
@@ -640,6 +646,12 @@
         if (result === tableSchemaError) {
           throw new Error(`${message} is not a valid default`, result)
         }
+      },
+      isWarningVisible: function() {
+        return this.warningVisibility
+      },
+      checkType: function() {
+        this.warningVisibility = this.hasTypeFormatWarning
       }
     },
     computed: {
@@ -677,9 +689,13 @@
             this.setFormatPropertyValueForPattern()
           }
         }
+        this.debounceCheckType()
       },
       'formatPropertyValue': function () {
         this.setFormatPropertyValueForPattern()
+      },
+      'formatPropertiesForType': function() {
+        this.debounceCheckType()
       }
     },
     mounted: function () {
