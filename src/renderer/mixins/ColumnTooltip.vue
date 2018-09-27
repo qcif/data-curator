@@ -26,7 +26,7 @@ export default {
       <externalLink text="Type" url="http://frictionlessdata.io/specs/table-schema/#types-and-formats"/> for the data in the column</div>`
     },
     'tooltipColumnTypeDateDefault': {
-      template: `<div id="tooltip-column-type-date-default"><span style="color:#ff3860;">Warning:</span> Format 'default', for 'date' type, ensures that this validation will resolve dates set beyond calendar limits (e.g., 2022-22-22 will pass validation as 2023-10-22)</div>`
+      template: `<div id="tooltip-column-type-date-default"><span style="color:#ff3860;">Warning:</span> Format: 'default', for type: 'date', ensures that validation will resolve dates set beyond calendar limits (e.g., 2022-22-22 will pass validation as 2023-10-22)</div>`
     },
     'tooltipColumnFormat': {
       components: {externalLink},
