@@ -3661,12 +3661,12 @@ electron@^1.4.12:
     electron-download "^3.0.1"
     extract-zip "^1.0.3"
 
-electron@^1.8.2:
-  version "1.8.6"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-1.8.6.tgz#6d45e377b321a35b78a794b64e40b2cf8face6ae"
+electron@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-3.0.2.tgz#0aed43a331b43dfe671ddb54d75fc4102d362959"
   dependencies:
     "@types/node" "^8.0.24"
-    electron-download "^3.0.1"
+    electron-download "^4.1.0"
     extract-zip "^1.0.3"
 
 elliptic@^6.0.0:
