@@ -49,6 +49,7 @@ for:
   branches:
     only:
       - /ci/
+      - /test/
   before_test:
     - yarn run lint
     - yarn run clean

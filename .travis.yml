@@ -20,6 +20,7 @@ branches:
   only:
   - "/^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
   - ci
+  - test
 env:
   global:
     secure: F+Bn6BrNKTTybkEs4UwCl7961z7ura2zBeuw+tS/vXqswb//x9DEhEr5IJ53VyC+H2R3Wj8yJ121514FiJwNg4hUpUQ98DHyczbMLXrg+wjQI2ZYvhiAonR5LzDGNd/XLhSDezQK556+guq67SnGPP3iqnfjyu8XJ2IaynLukvLSazZTCliuqpEpwaCn99+xhaHLcGRF/Dh2Gg5+HVfQnC4S6eiYGo5Dm9RDG0hntxYHUOAxQYmnvXxf7uLNc0sfFSoVd1BZytZCVFLceY5DM0tOO8kRyMQk+LJqneAdhp9Z8pUMcTMDeJtNegqqSaBra8UAkrGv1tUrBYUQnq4fkbH0tees6mJNFkqNlOW67pj8zghYSAKwNXiazFmH/lYE2sleBKGflznLZPDD5XXLlQ/aKXF+3wAx0wMtiGkFBbGP+GoBg10+7RgKw0A+mpLaJAVwUYGGJSEfH3A0U0OEt7XRdk/sD4nFKLzL3SAx3QC57FdGu4VWdJJT9t54oX+NzM3QmBH3dNxmge4XFLR1iwN72yheB2HyGu5zafKdOfbvCz2fP1ddECm2KWu8I7NNuBIwoBUm3tVm60b3gTpblAO3RcIrLg3k+ACTSvxJuzqSIE2/YnXGnjfVPW/NaCcyD1cPFppTvmpjLNHRfwP9zeP4nBOHHgOv7grzmvCs6QY=
