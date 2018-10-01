@@ -1,6 +1,6 @@
 #!/bin/bash
 set -ev
-if [ "${TRAVIS_BRANCH}" == "ci" ] || [ "${TRAVIS_BRANCH}" == "test" ]; then
+if [ "${TRAVIS_BRANCH}" == "ci" ] || [ "${TRAVIS_BRANCH}" == "testci" ]; then
   yarn run unit
   yarn run unit:coverage
 else
