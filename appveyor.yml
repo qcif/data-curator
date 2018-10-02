@@ -38,11 +38,13 @@ configuration: release
 
 for:
 -
-  on:
-    appveyor_repo_tag: true
   test: off
   build: off
-#  configuration: release
+  deploy:
+    provider: Environment
+    name: production
+    on:
+      appveyor_repo_tag: true
 -
   branches:
     only:
@@ -60,3 +62,4 @@ for:
   build:
     off
   configuration: test
+  deploy: off
