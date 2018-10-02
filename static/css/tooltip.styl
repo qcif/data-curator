@@ -5,12 +5,20 @@
     opacity 0
   100%
     opacity 1
+
+@keyframes tohide
+  to
+    overflow hidden
+    visibility hidden
+    width 0
+    height 0
+
 .tooltip-custom
-  animation opac 1s ease-in
-div.tooltip-content
+  animation opac 1s ease-in, tohide 0s ease-in 10s forwards
+.tooltip-content
   color #fff !important
   div
-    @extend div.tooltip-content
+    @extend .tooltip-content
     a
       color #fff !important
       text-decoration underline
