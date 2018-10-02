@@ -38,13 +38,10 @@ configuration: release
 
 for:
 -
-  branches:
-    only:
-      - /master/
-      - /develop/
+  appveyor_repo_tag: true
   test: off
   build: off
-  configuration: debug
+#  configuration: release
 -
   branches:
     only:
