@@ -38,7 +38,8 @@ configuration: release
 
 for:
 -
-  appveyor_repo_tag: true
+  on:
+    appveyor_repo_tag: true
   test: off
   build: off
 #  configuration: release
