@@ -56,7 +56,7 @@ export async function importDataPackageZipFromUrl(urlText) {
       url: urlText,
       responseType: 'stream'
     })
-    const tmpDir = tmp.dirSync({ mode: '0750', prefix: 'DC_', unsafeCleanup: true })
+    const tmpDir = tmp.dirSync({mode: '0750', prefix: 'DC_', unsafeCleanup: true})
     const zipDir = tmpDir.name
     // importPackage dependent on creating folder using basename zip
     const basename = path.basename(urlText)
@@ -94,6 +94,8 @@ function handleDownloadedZip(zipPath, mainWindow) {
 }
 
 async function loadPackageFromJsonUrl(urlText) {
+  let response = await testProxy()
+  console.log(`response data was: `, response.data)
   const mainWindow = focusMainWindow()
   mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading package URL..')
   const dataPackageJson = await loadPackageJson(urlText, mainWindow)
@@ -102,7 +104,7 @@ async function loadPackageFromJsonUrl(urlText) {
       type: 'warning',
       title: `Unable to load Data Package`,
       message:
-  `The data package, ${urlText}, could not be loaded.
+        `The data package, ${urlText}, could not be loaded.
   If the data package is a URL, please check that the URL exists.`
     })
     mainWindow.webContents.send('closeLoadingScreen')
@@ -120,12 +122,37 @@ async function loadPackageFromJsonUrl(urlText) {
   }
 }
 
+async function testProxy() {
+  try {
+    // let response = await axios({
+    //   method: 'get',
+    //   url: 'http://localhost:8006/redbox/api/v1.1/info',
+    //   headers: {'Authorization': 'Bearer 2755c36b-6e5e-489a-8c61-24977f9c791b'}
+    // })
+    let response = await axios({
+      method: 'get',
+      url: 'http://raw.githubusercontent.com/frictionlessdata/example-data-packages/master/countries-and-currencies/datapackage.json',
+      proxy: {
+        host: 'localhost',
+        port: 8005,
+        auth: {
+          username: 'mikeymike',
+          password: 'rapunz3l'
+        }
+      }
+    })
+    return response
+  } catch (error) {
+    console.error(`There was a problem with the text proxy`, error)
+  }
+}
+
 function showInvalidMessage(urlText, mainWindow) {
   dialog.showMessageBox(mainWindow, {
     type: 'warning',
     title: `Invalid Data Package`,
     message:
-  `The data package, at ${urlText}, is not valid. Please refer to
+      `The data package, at ${urlText}, is not valid. Please refer to
   https://frictionlessdata.io/specs/
   for more information.`
   })
@@ -136,7 +163,7 @@ function showUrlPathNotSupportedMessage(urlText, mainWindow) {
     type: 'warning',
     title: `Unsupported URL Path extension`,
     message:
-  `Data Curator, does not support downloading ${urlText}, as the path does not end in ".zip" or ".json"`
+      `Data Curator, does not support downloading ${urlText}, as the path does not end in ".zip" or ".json"`
   })
 }
 
