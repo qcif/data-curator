@@ -15,12 +15,22 @@
             </option>
           </select>
           <div id="format-container" v-if="formprop.key==='format'" :class="{ 'format-pattern': formatValuesHasPattern }">
-            <select :value="getFormatProperty" v-model="formatProperty" @input="setFormatProperty($event.target.value)" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
-                <option v-for="option2 in formatPropertiesForType" :key="option2" v-bind:value="option2">
-                  {{ option2}}
-                </option>
-            </select>
-            <!-- <input v-if="formatValuesHasPattern" v-model="formatPropertyValue" type="text" :class="{ 'form-control input-sm col-sm-9': true}" /> -->
+            <span v-if="hasTypeFormatWarning" v-tooltip.notrigger.left="tooltipWrap(formprop.tooltipValueId, warningVisibility)">
+              <select :value="getFormatProperty" v-model="formatProperty" @input="setFormatProperty($event.target.value)" id="format" :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
+                  <option v-for="option2 in formatPropertiesForType" :key="option2" v-bind:value="option2">
+                    {{ option2}}
+                  </option>
+              </select>
+              <component :is="formprop.tooltipValueView"/>
+            </span>
+            <span v-else>
+              <select :value="getFormatProperty" v-model="formatProperty" @input="setFormatProperty($event.target.value)" id="format"
+                      :disabled="isDropdownFormatDisabled" class="form-control input-sm col-sm-9">
+                  <option v-for="option2 in formatPropertiesForType" :key="option2" v-bind:value="option2">
+                      {{ option2}}
+                  </option>
+              </select>
+            </span>
             <input v-if="formatValuesHasPattern" v-model="formatPropertyValue" type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has('formatValue') }" v-validate.initial="'formatPattern|required'" name="formatValue"/>
             <div v-show="formatValuesHasPattern && errors.has('formatValue')" class="row help validate-danger">
               {{ errors.first('formatValue')}}
@@ -29,7 +39,7 @@
         </template>
         <div v-else-if="formprop.key === 'constraints'" id="constraints" class="col-sm-9">
           <div class="input-group row" v-for="option in constraintValues" :key="option">
-            <input type="checkbox" :id="option" :checked="getConstraintCheck(option)" @click="setConstraintCheck(option, $event.target)"></input>
+            <input type="checkbox" :id="option" :checked="getConstraintCheck(option)" @click="setConstraintCheck(option, $event.target)" />
             <label :for="option" class="form-control-static">{{option}}</label>
             <template v-if="!isBooleanConstraint(option) && getConstraintCheck(option)">
               <input type="text" :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }" :value="getConstraintValue(option)" @input="setConstraintValue(option, $event.target.value)" v-validate.initial="constraintValidationRules(option)" :name="option"/>
@@ -78,7 +88,6 @@
         <input v-else :disabled="formprop.isDisabled" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" type="text" class="form-control label-sm col-sm-9" :id="formprop.key" />
       </div>
     </div>
-  </div>
 </form>
 </template>
 <script>
@@ -119,9 +128,14 @@ export default {
       formatProperty: '',
       formatPropertyValue: '',
       constraintInputKeyValues: {},
+      warningVisibility: false,
       allTablesAllColumnsNames: {},
       // TODO: setup args so clear for constraints only
       debounceSetConstraints: _.debounce(this.pushColumnProperty, 300, {
+        'leading': true,
+        'trailing': false
+      }),
+      debounceCheckType: _.debounce(this.checkType, 300, {
         'leading': true,
         'trailing': false
       }),
@@ -170,7 +184,9 @@ export default {
         key: 'format',
         tooltipId: 'tooltip-column-format',
         tooltipView: 'tooltipColumnFormat',
-        type: 'dropdown'
+        type: 'dropdown',
+        tooltipValueView: 'tooltipColumnTypeDateDefault',
+        tooltipValueId: 'tooltip-column-type-date-default'
       },
       {
         label: 'Constraints',
@@ -262,8 +278,7 @@ export default {
         let getter = this.getter(hotId, 'format')
         let property = this.getHotColumnProperty(getter)
         if (!property) {
-          property = 'default'
-          this.pushColumnProperty(this.setter(hotId, 'format', property))
+          this.pushColumnProperty(this.setter(hotId, 'format', this.getDefaultFormatProperty()))
         }
         // ensure format value model is updated if this is a pattern (important after vue destroy->create)
         if (isValidPatternForType(property, this.typeProperty) && _.indexOf(this.formatPropertiesForType, 'pattern') > -1) {
@@ -292,10 +307,12 @@ export default {
       this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), 'type', value))
       this.typeProperty = value
       // keep format up-to-date with type
-      if (_.indexOf(this.formatPropertiesForType, this.formatProperty) === -1) {
-        this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), 'format', 'default'))
+      if (_.indexOf(this.formatPropertiesForType, this.formatProperty) === -1 || this.typeProperty == 'date') {
+        this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), 'format', this.getDefaultFormatProperty()))
       }
-      // return value
+    },
+    getDefaultFormatProperty: function() {
+      return this.typeProperty == 'date' ? 'any' : 'default'
     },
     setFormatProperty: function(value) {
       // if it's a pattern, watcher will trigger appropriate method when this.formatProperty is set
@@ -577,7 +594,7 @@ export default {
       this.validateNumber(value, `Decimal char value: ${this.decimalChar}`)
     },
     validateBareNumberForNumberAndInteger: function() {
-      const value = this.bareNumber === true ? '23' :'dummy23dummy'
+      const value = this.bareNumber === true ? '23' : 'dummy23dummy'
       const message = `Bare Number ${this.bareNumber}`
       this.validateNumber(value, message)
       this.validateInteger(value, message)
@@ -594,12 +611,21 @@ export default {
       if (result === tableSchemaError) {
         throw new Error(`${message} is not a valid default`, result)
       }
+    },
+    isWarningVisible: function() {
+      return this.warningVisibility
+    },
+    checkType: function() {
+      this.warningVisibility = this.hasTypeFormatWarning
     }
   },
   computed: {
     ...mapGetters([
       'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getAllHotTablesColumnNames'
     ]),
+    hasTypeFormatWarning() {
+      return (this.typeProperty == 'date' && this.formatProperty == 'default')
+    },
     getNameProperty() {
       let allColumns = this.allTablesAllColumnsNames[this.activeCurrentHotId] || []
       return allColumns[this.cIndex] || ''
@@ -628,9 +654,13 @@ export default {
           this.setFormatPropertyValueForPattern()
         }
       }
+      this.debounceCheckType()
     },
     'formatPropertyValue': function() {
       this.setFormatPropertyValueForPattern()
+    },
+    'formatPropertiesForType': function() {
+      this.debounceCheckType()
     }
   },
   mounted: function() {
@@ -645,7 +675,9 @@ export default {
     let vueType = this.typePropertyWrapper
     let vueFormat = this.formatPropertyValueWrapper
     this.$validator.extend('formatPattern', {
-      getMessage: function(field) { return `The format pattern is not supported.` },
+      getMessage: function(field) {
+        return `The format pattern is not supported.`
+      },
       validate: function(value) {
         return new Promise((resolve) => {
           let isValid = isValidPatternForType(vueFormat(), vueType())
@@ -660,11 +692,11 @@ export default {
 }
 </script>
 <style lang="styl" scoped>
-@import '~static/css/columnprops'
+    @import '~static/css/columnprops'
 </style>
 <style lang="styl" scoped>
-@import '~static/css/validationrules'
+    @import '~static/css/validationrules'
 </style>
 <style lang="styl" scoped>
-@import '~static/css/tooltip'
+    @import '~static/css/tooltip'
 </style>
