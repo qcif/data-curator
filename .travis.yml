@@ -14,8 +14,32 @@ install:
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
 - yarn
-script:
-- ./travis_script.sh
+stages:
+  - unittest
+  - test
+  - build
+jobs:
+  include:
+    - name: unittest
+      if: branch IN (ci, testci)
+      script:
+      - yarn run unit
+      - yarn run unit:coverage
+    - name: test
+      if: branch IN (ci, testci)
+      script: ./travis_script.sh test/features/backlog
+    - script: ./travis_script.sh test/features/data_curator
+    - script: ./travis_script.sh test/features/edit
+    - script: ./travis_script.sh test/features/file
+    - script: ./travis_script.sh test/features/find
+    - script: ./travis_script.sh test/features/help
+    - script: ./travis_script.sh test/features/other
+    - script: ./travis_script.sh test/features/support
+    - script: ./travis_script.sh test/features/tools
+    - script: ./travis_script.sh test/features/window
+    - name: build
+      if: branch NOT IN (ci, testci)
+      script: yarn run release:predraft
 branches:
   only:
   - "/^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
