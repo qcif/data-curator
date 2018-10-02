@@ -21,8 +21,16 @@ stages:
 jobs:
   include:
     - name: unittest
+      if: branch IN (master)
+      script:
+      - yarn run lint
+      - yarn run clean
+      - yarn run unit
+    - name: unittestandcoverage
       if: branch IN (ci, testci)
       script:
+      - yarn run lint
+      - yarn run clean
       - yarn run unit
       - yarn run unit:coverage
     - name: test
