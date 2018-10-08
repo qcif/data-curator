@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for renderer\hot.js</title>
+    <title>Code coverage report for renderer/hot.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">21.66% </span>
+        <span class="strong">21.94% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>34/157</span>
+        <span class='fraction'>34/155</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">24% </span>
+        <span class="strong">26% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>12/50</span>
+        <span class='fraction'>13/50</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">11.54% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>3/26</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">21.66% </span>
+        <span class="strong">21.94% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>34/157</span>
+        <span class='fraction'>34/155</span>
       </div>
     </div>
   </div>
@@ -386,18 +386,12 @@
 341
 342
 343
-344
-345
-346
-347
-348</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+344</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -452,11 +446,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">7×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">9×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -490,8 +484,8 @@
 <span class="cline-any cline-yes">9×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">16×</span>
-<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-yes">17×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -547,13 +541,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -735,8 +729,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Handsontable from 'handsontable/dist/handsontable.full.min.js'
 import {remote, ipcRenderer as ipc} from 'electron'
 import store from '@/store/modules/hots.js'
@@ -745,8 +737,6 @@ const Dialog = remote.dialog
 &nbsp;
 const _hots = {}
 const searchCallback = Handsontable.plugins.Search.DEFAULT_CALLBACK
-const searchQueryMethod = Handsontable.plugins.Search.DEFAULT_QUERY_METHOD
-let hDom = Handsontable.dom
 &nbsp;
 const HotRegister = {
   register(container, listeners={}, searchParameters = false) {
@@ -772,15 +762,15 @@ const HotRegister = {
       // outsideClickDeselects: must be set to true -
       // -otherwise visibleRows will include ALL rows (even for large datasets), which will affect performance when switching tabs (https://github.com/ODIQueensland/data-curator/issues/387)
       outsideClickDeselects: true,
+      // delay to ensure no conflict with other renderer functionality
       comments: {
-        displayDelay: 1000
+        displayDelay: 100
       },
       undo: true,
       search: searchParameters,
-      // search: true,
       tabMoves({shiftKey}) {
 <span class="cstat-no" title="statement not covered" >        if (!shiftKey) {</span>
-          const selection = <span class="cstat-no" title="statement not covered" >hot.getSelected()</span>
+          const selection = <span class="cstat-no" title="statement not covered" >hot.getSelectedLast()</span>
           let next = <span class="cstat-no" title="statement not covered" >hot.getCell(selection[0], selection[1] + 1)</span>
 <span class="cstat-no" title="statement not covered" >          if (next == null) {</span>
 <span class="cstat-no" title="statement not covered" >            hot.alter('insert_col', selection[1] + 1)</span>
@@ -801,7 +791,7 @@ const HotRegister = {
       afterUpdateSettings() {
         hot.render()
       },
-      afterSelection(r, c, r2, c2, preventScrolling) {
+      afterSelection(r, c, r2, c2, preventScrolling, selectionLayerLevel) {
       // preventScrolling.value = true
         <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof listeners.selectionListener !== 'undefined') {
 <span class="cstat-no" title="statement not covered" >          listeners.selectionListener()</span>
@@ -817,7 +807,7 @@ const HotRegister = {
       },
       enterMoves({shiftKey}) {
 <span class="cstat-no" title="statement not covered" >        if (!shiftKey) {</span>
-          const selection = <span class="cstat-no" title="statement not covered" >hot.getSelected()</span>
+          const selection = <span class="cstat-no" title="statement not covered" >hot.getSelectedLast()</span>
           let next = <span class="cstat-no" title="statement not covered" >hot.getCell(selection[0] + 1, selection[1])</span>
 <span class="cstat-no" title="statement not covered" >          if (next == null) {</span>
 <span class="cstat-no" title="statement not covered" >            hot.alter('insert_row', selection[0] + 1)</span>
@@ -877,49 +867,49 @@ const HotRegister = {
 &nbsp;
 export function getActiveSelected() <span class="fstat-no" title="function not covered" >{</span>
   let activeHot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
-<span class="cstat-no" title="statement not covered" >  return activeHot.getSelected()</span>
+<span class="cstat-no" title="statement not covered" >  return activeHot.getSelectedLast()</span>
 }
 &nbsp;
 export function getActiveSelectedOrHotSelectionOrMin() <span class="fstat-no" title="function not covered" >{</span>
   let activeHot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
-  let currentCell = <span class="cstat-no" title="statement not covered" >activeHot.getSelected()</span>
+  let currentCell = <span class="cstat-no" title="statement not covered" >activeHot.getSelectedLast()</span>
 <span class="cstat-no" title="statement not covered" >  if (!currentCell) {</span>
 <span class="cstat-no" title="statement not covered" >    currentCell = store.getters.getHotSelection(store.state, store.getters)(activeHot.guid)</span>
   }
 <span class="cstat-no" title="statement not covered" >  if (!currentCell) {</span>
 <span class="cstat-no" title="statement not covered" >    activeHot.selectCell(0, 0)</span>
-<span class="cstat-no" title="statement not covered" >    currentCell = activeHot.getSelected()</span>
+<span class="cstat-no" title="statement not covered" >    currentCell = activeHot.getSelectedLast()</span>
   }
 <span class="cstat-no" title="statement not covered" >  return currentCell</span>
 }
 &nbsp;
 export function getCurrentColumnIndexOrMin() {
   let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getSelected()
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (!currentCell) {
-<span class="cstat-no" title="statement not covered" >    activeHot.selectCell(0, 0)</span>
-<span class="cstat-no" title="statement not covered" >    currentCell = activeHot.getSelected()</span>
+  let currentCell = activeHot.getSelectedLast()
+  if (!currentCell) {
+    activeHot.selectCell(0, 0)
+    currentCell = activeHot.getSelectedLast()
   }
   return currentCell[1]
 }
 &nbsp;
 export function getCurrentColumnIndexOrMax() <span class="fstat-no" title="function not covered" >{</span>
   let activeHot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
-  let currentCell = <span class="cstat-no" title="statement not covered" >activeHot.getSelected()</span>
+  let currentCell = <span class="cstat-no" title="statement not covered" >activeHot.getSelectedLast()</span>
 <span class="cstat-no" title="statement not covered" >  if (!currentCell) {</span>
     let maxCol = <span class="cstat-no" title="statement not covered" >getColumnCount() - 1</span>
 <span class="cstat-no" title="statement not covered" >    activeHot.selectCell(0, maxCol)</span>
-<span class="cstat-no" title="statement not covered" >    currentCell = activeHot.getSelected()</span>
+<span class="cstat-no" title="statement not covered" >    currentCell = activeHot.getSelectedLast()</span>
   }
 <span class="cstat-no" title="statement not covered" >  return currentCell[1]</span>
 }
 &nbsp;
 export function reselectCurrentCellOrMin() <span class="fstat-no" title="function not covered" >{</span>
   let activeHot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
-  let currentCell = <span class="cstat-no" title="statement not covered" >activeHot.getSelected()</span>
+  let currentCell = <span class="cstat-no" title="statement not covered" >activeHot.getSelectedLast()</span>
 <span class="cstat-no" title="statement not covered" >  if (!currentCell) {</span>
 <span class="cstat-no" title="statement not covered" >    activeHot.selectCell(0, 0)</span>
-<span class="cstat-no" title="statement not covered" >    currentCell = activeHot.getSelected()</span>
+<span class="cstat-no" title="statement not covered" >    currentCell = activeHot.getSelectedLast()</span>
   } else {
 <span class="cstat-no" title="statement not covered" >    activeHot.selectCell(currentCell[0], currentCell[1])</span>
   }
@@ -927,10 +917,10 @@ export function reselectCurrentCellOrMin() <span class="fstat-no" title="functio
 &nbsp;
 export function reselectCellOrMin(hotId) <span class="fstat-no" title="function not covered" >{</span>
   let activeHot = <span class="cstat-no" title="statement not covered" >HotRegister.getInstance(hotId)</span>
-  let currentCell = <span class="cstat-no" title="statement not covered" >activeHot.getSelected()</span>
+  let currentCell = <span class="cstat-no" title="statement not covered" >activeHot.getSelectedLast()</span>
 <span class="cstat-no" title="statement not covered" >  if (!currentCell) {</span>
 <span class="cstat-no" title="statement not covered" >    activeHot.selectCell(0, 0)</span>
-    // currentCell = activeHot.getSelected()
+    // currentCell = activeHot.getSelectedLast()
   } else {
 <span class="cstat-no" title="statement not covered" >    activeHot.selectCell(currentCell[0], currentCell[1])</span>
   }
@@ -938,7 +928,7 @@ export function reselectCellOrMin(hotId) <span class="fstat-no" title="function 
 &nbsp;
 export function reselectCurrentCellOrMax() <span class="fstat-no" title="function not covered" >{</span>
   let activeHot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
-  let currentCell = <span class="cstat-no" title="statement not covered" >activeHot.getSelected()</span>
+  let currentCell = <span class="cstat-no" title="statement not covered" >activeHot.getSelectedLast()</span>
 <span class="cstat-no" title="statement not covered" >  if (!currentCell) {</span>
     let maxCol = <span class="cstat-no" title="statement not covered" >getColumnCount() - 1</span>
 <span class="cstat-no" title="statement not covered" >    activeHot.selectCell(0, maxCol)</span>
@@ -990,7 +980,7 @@ export function insertRowBelow() <span class="fstat-no" title="function not cove
 &nbsp;
 export function insertRow(offset, mathFn) <span class="fstat-no" title="function not covered" >{</span>
   let hot = <span class="cstat-no" title="statement not covered" >getHotToInsert()</span>
-  const range = <span class="cstat-no" title="statement not covered" >hot.getSelectedRange()</span>
+  const range = <span class="cstat-no" title="statement not covered" >hot.getSelectedRangeLast()</span>
 <span class="cstat-no" title="statement not covered" >  if (typeof range !== 'undefined') {</span>
     const selection = <span class="cstat-no" title="statement not covered" >mathFn(range.from.row, range.to.row) + offset</span>
 <span class="cstat-no" title="statement not covered" >    hot.alter('insert_row', selection)</span>
@@ -1008,7 +998,7 @@ export function insertColumnRight() <span class="fstat-no" title="function not c
 &nbsp;
 export function insertColumn(offset, mathFn) <span class="fstat-no" title="function not covered" >{</span>
   let hot = <span class="cstat-no" title="statement not covered" >getHotToInsert()</span>
-  const range = <span class="cstat-no" title="statement not covered" >hot.getSelectedRange()</span>
+  const range = <span class="cstat-no" title="statement not covered" >hot.getSelectedRangeLast()</span>
 <span class="cstat-no" title="statement not covered" >  if (typeof range !== 'undefined') {</span>
     const selection = <span class="cstat-no" title="statement not covered" >mathFn(range.from.col, range.to.col) + offset</span>
 <span class="cstat-no" title="statement not covered" >    hot.alter('insert_col', selection)</span>
@@ -1036,7 +1026,7 @@ export function removeHeaderAtIndex(hot, index) <span class="fstat-no" title="fu
 &nbsp;
 export function removeRows() <span class="fstat-no" title="function not covered" >{</span>
   let hot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
-  const range = <span class="cstat-no" title="statement not covered" >hot.getSelectedRange()</span>
+  const range = <span class="cstat-no" title="statement not covered" >hot.getSelectedRangeLast()</span>
 <span class="cstat-no" title="statement not covered" >  if (typeof range === 'undefined') {</span>
 <span class="cstat-no" title="statement not covered" >    return</span>
   }
@@ -1052,7 +1042,7 @@ export function removeRows() <span class="fstat-no" title="function not covered"
 &nbsp;
 export function removeColumns() <span class="fstat-no" title="function not covered" >{</span>
   let hot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
-  const range = <span class="cstat-no" title="statement not covered" >hot.getSelectedRange()</span>
+  const range = <span class="cstat-no" title="statement not covered" >hot.getSelectedRangeLast()</span>
 <span class="cstat-no" title="statement not covered" >  if (typeof range === 'undefined') {</span>
 <span class="cstat-no" title="statement not covered" >    return</span>
   }
@@ -1080,9 +1070,7 @@ ipc.on('selectHotCell', function(event, rowCountNumber, ColCountNumber) <span cl
 &nbsp;
 export {
   HotRegister,
-  searchCallback,
-  searchQueryMethod,
-  hDom
+  searchCallback
 }
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -1090,7 +1078,7 @@ export {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu May 31 2018 13:40:14 GMT+1000 (E. Australia Standard Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Oct 08 2018 14:11:56 GMT+1000 (AEST)
 </div>
 </div>
 <script src="../prettify.js"></script>

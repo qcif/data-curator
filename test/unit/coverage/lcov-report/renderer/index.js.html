@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for renderer\index.js</title>
+    <title>Code coverage report for renderer/index.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">30.88% </span>
+        <span class="strong">31.43% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>21/68</span>
+        <span class='fraction'>22/70</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">20% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/10</span>
+        <span class='fraction'>2/10</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">8% </span>
+        <span class="strong">12% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/25</span>
+        <span class='fraction'>3/25</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">31.34% </span>
+        <span class="strong">31.88% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>21/67</span>
+        <span class='fraction'>22/69</span>
       </div>
     </div>
   </div>
@@ -194,7 +194,11 @@
 149
 150
 151
-152</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+152
+153
+154
+155
+156</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -203,36 +207,40 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -353,6 +361,7 @@ import {pushCsvDialect} from '@/dialect.js'
 import {menu} from '@/menu.js'
 import {fileFormats} from '@/file-formats.js'
 import fs from 'fs-extra'
+import store from '@/store'
 &nbsp;
 export function addHotContainerListeners(container, loadingFn, closeLoadingFn) {
   container.ondragover = function() <span class="fstat-no" title="function not covered" >{</span>
@@ -367,11 +376,14 @@ export function addHotContainerListeners(container, loadingFn, closeLoadingFn) {
 <span class="cstat-no" title="statement not covered" >    loadingFn('Loading data. Please wait...')</span>
 <span class="cstat-no" title="statement not covered" >    fs.readFile(f.path, 'utf-8', function(err, data) <span class="fstat-no" title="function not covered" >{</span></span>
 <span class="cstat-no" title="statement not covered" >      if (err) {</span>
-<span class="cstat-no" title="statement not covered" >        console.log(err)</span>
+<span class="cstat-no" title="statement not covered" >        console.error(err)</span>
+      } else {
+        let hot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
+        const tabId = <span class="cstat-no" title="statement not covered" >store.getters.getTabIdFromHotId(hot.guid)</span>
+        // if we're dragging a file in, default the format to comma-separated
+<span class="cstat-no" title="statement not covered" >        loadData(hot.guid, data, fileFormats.csv, closeLoadingFn)</span>
+<span class="cstat-no" title="statement not covered" >        store.commit('pushTabObject', {id: tabId, filename: f.path})</span>
       }
-      let hot = <span class="cstat-no" title="statement not covered" >HotRegister.getActiveInstance()</span>
-      // if we're dragging a file in, default the format to comma-separated
-<span class="cstat-no" title="statement not covered" >      loadData(hot.guid, data, fileFormats.csv, closeLoadingFn)</span>
     })
   }
 &nbsp;
@@ -381,9 +393,9 @@ export function addHotContainerListeners(container, loadingFn, closeLoadingFn) {
   }, false)
 }
 &nbsp;
-export function getWindow(name, id) <span class="fstat-no" title="function not covered" >{</span>
+export function getWindow(name, id) {
   let browserWindow
-  let windowId = <span class="cstat-no" title="statement not covered" >id || remote.getGlobal('windows')[name]</span>
+  let windowId = id || remote.getGlobal('windows')[name]
 <span class="cstat-no" title="statement not covered" >  if (windowId) {</span>
 <span class="cstat-no" title="statement not covered" >    browserWindow = remote.BrowserWindow.fromId(windowId)</span>
   }
@@ -395,7 +407,7 @@ export function loadData(key, data, format, closeLoadingFn) {
   try {
     loadDataIntoHot(hot, data, format)
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    console.log('error in parse', error)</span>
+<span class="cstat-no" title="statement not covered" >    console.error('error in parse', error)</span>
 <span class="cstat-no" title="statement not covered" >    ipc.send('dataParsingError')</span>
 <span class="cstat-no" title="statement not covered" >    closeLoadingFn()</span>
   }
@@ -502,7 +514,7 @@ function loadDataIntoCurrentHot(data) <span class="fstat-no" title="function not
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu May 31 2018 13:40:14 GMT+1000 (E. Australia Standard Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Oct 08 2018 14:11:56 GMT+1000 (AEST)
 </div>
 </div>
 <script src="../prettify.js"></script>
