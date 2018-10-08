@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for renderer\partials\FindReplace.vue</title>
+    <title>Code coverage report for renderer/partials/FindReplace.vue</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">10.99% </span>
+        <span class="strong">11.29% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>20/182</span>
+        <span class='fraction'>21/186</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">10.14% </span>
@@ -30,14 +30,14 @@
         <span class='fraction'>7/69</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">17.65% </span>
+        <span class="strong">17.14% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>6/34</span>
+        <span class='fraction'>6/35</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">10.99% </span>
+        <span class="strong">11.29% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>20/182</span>
+        <span class='fraction'>21/186</span>
       </div>
     </div>
   </div>
@@ -533,8 +533,13 @@
 488
 489
 490
-491</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+491
+492
+493
+494
+495
+496
+497</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -606,7 +611,12 @@
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -877,8 +887,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1073,7 +1085,6 @@ import AsyncComputed from 'vue-async-computed'
 import {
   HotRegister,
   searchCallback,
-  searchQueryMethod,
   getActiveSelectedOrHotSelectionOrMin
 } from '../hot.js'
 import VueRx from 'vue-rx'
@@ -1096,11 +1107,16 @@ Vue.use(VueRx, {
 let _lastRowIndicies = []
 let _currentHotPos = [-1, -1]
 let _previousSearchClear = true
+// cannot access DEFAULT anymore - must copy (https://docs.handsontable.com/3.0.0/demo-searching.html#page-custom-callback)
+const _defaultCallback = function(instance, row, col, data, testResult) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  instance.getCellMeta(row, col).isSearchResult = testResult</span>
+}
 const _searchCallback = function(instance, row, col, value, result) <span class="fstat-no" title="function not covered" >{</span>
+  // const defaultCallback = instance.getCallback()
 <span class="cstat-no" title="statement not covered" >  if (!_previousSearchClear &amp;&amp; _.indexOf(_lastRowIndicies, row) &gt; -1) {</span>
-<span class="cstat-no" title="statement not covered" >    searchCallback.apply(this, arguments)</span>
+<span class="cstat-no" title="statement not covered" >    _defaultCallback.apply(this, arguments)</span>
   } else <span class="cstat-no" title="statement not covered" >if (col === _currentHotPos[1]) {</span>
-<span class="cstat-no" title="statement not covered" >    searchCallback.apply(this, arguments)</span>
+<span class="cstat-no" title="statement not covered" >    _defaultCallback.apply(this, arguments)</span>
   }
 }
 &nbsp;
@@ -1256,7 +1272,7 @@ export default {
 <span class="cstat-no" title="statement not covered" >        this.replaceData = hot.getData()</span>
       }
       // console.timeEnd()
-      const selectedCoords = <span class="cstat-no" title="statement not covered" >hot.getSelected()</span>
+      const selectedCoords = <span class="cstat-no" title="statement not covered" >hot.getSelectedLast()</span>
 <span class="cstat-no" title="statement not covered" >      if (selectedCoords) {</span>
         const row = <span class="cstat-no" title="statement not covered" >selectedCoords[0]</span>
         const col = <span class="cstat-no" title="statement not covered" >selectedCoords[1]</span>
@@ -1365,12 +1381,14 @@ export default {
     },
     hotSearch: function(hot) <span class="fstat-no" title="function not covered" >{</span>
       // TODO : add loading screen here
-<span class="cstat-no" title="statement not covered" >      hot.search.query(this.findTextValue)</span>
+      const search = <span class="cstat-no" title="statement not covered" >hot.getPlugin('search')</span>
+<span class="cstat-no" title="statement not covered" >      search.query(this.findTextValue)</span>
 <span class="cstat-no" title="statement not covered" >      hot.render()</span>
     },
     clearPreviousHotSearch: function(hot) <span class="fstat-no" title="function not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >      _previousSearchClear = false</span>
-<span class="cstat-no" title="statement not covered" >      hot.search.query()</span>
+      const search = <span class="cstat-no" title="statement not covered" >hot.getPlugin('search')</span>
+<span class="cstat-no" title="statement not covered" >      search.query()</span>
 <span class="cstat-no" title="statement not covered" >      _previousSearchClear = true</span>
     },
     // hotSift: function(data, headers) {
@@ -1519,7 +1537,7 @@ export default {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu May 31 2018 13:40:14 GMT+1000 (E. Australia Standard Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Oct 08 2018 14:11:56 GMT+1000 (AEST)
 </div>
 </div>
 <script src="../../prettify.js"></script>

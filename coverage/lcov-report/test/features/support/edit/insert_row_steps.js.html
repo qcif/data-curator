@@ -3,12 +3,12 @@
 <head>
     <title>Code coverage report for test/features/support/edit/insert_row_steps.js</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="..\..\..\..\prettify.css" />
-    <link rel="stylesheet" href="..\..\..\..\base.css" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(..\..\..\..\sort-arrow-sprite.png);
+            background-image: url(../../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -16,13 +16,13 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="..\..\..\..\index.html">All files</a> / <a href="index.html">test/features/support/edit</a> insert_row_steps.js
+      <a href="../../../../index.html">All files</a> / <a href="index.html">test/features/support/edit</a> insert_row_steps.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">35.29% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>17/17</span>
+        <span class='fraction'>6/17</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -30,21 +30,21 @@
         <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>7/7</span>
+        <span class='fraction'>0/7</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">35.29% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>17/17</span>
+        <span class='fraction'>6/17</span>
       </div>
     </div>
     <p class="quiet">
       Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
     </p>
   </div>
-  <div class='status-line high'></div>
+  <div class='status-line low'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -96,38 +96,38 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { expect, should, assert } from 'chai'
@@ -137,39 +137,39 @@ const _ = require('lodash')
 // chai.should()
 // chai.use(chaiAsPromised)
 &nbsp;
-Given(/^the user clicks in row (\d+), column (\d+)$/, function (rowNumber, colNumber) {
-  this.rowNumber = rowNumber
-  this.colNumber = colNumber
-  return this.app.webContents.send('selectHotCell', rowNumber, colNumber)
+Given(/^the user clicks in row (\d+), column (\d+)$/, <span class="fstat-no" title="function not covered" >fu</span>nction (rowNumber, colNumber) {
+<span class="cstat-no" title="statement not covered" >  this.rowNumber = rowNumber</span>
+<span class="cstat-no" title="statement not covered" >  this.colNumber = colNumber</span>
+<span class="cstat-no" title="statement not covered" >  return this.app.webContents.send('selectHotCell', rowNumber, colNumber)</span>
 })
 &nbsp;
-When(/^the user (?:performs a |)right-click[s]?$/, function () {
-  let app = this.app
-  return this.app.client
+When(/^the user (?:performs a |)right-click[s]?$/, <span class="fstat-no" title="function not covered" >fu</span>nction () {
+  let app = <span class="cstat-no" title="statement not covered" >this.app</span>
+<span class="cstat-no" title="statement not covered" >  return this.app.client</span>
     .rightClick('.ht_master table')
 })
 &nbsp;
-Then(/^the user clicks (?:on|in) "Insert Row Below"$/, function () {
-  return this.app
+Then(/^the user clicks (?:on|in) "Insert Row Below"$/, <span class="fstat-no" title="function not covered" >fu</span>nction () {
+<span class="cstat-no" title="statement not covered" >  return this.app</span>
     .webContents.send('clickLabelOnContextMenu', 'Insert row below')
 })
 &nbsp;
-Then(/^there should be (\d+) new row[s]? below the current row$/, function (numberOfNewRows) {
-  let worldRowNumber = this.rowNumber
-  return this.app.client
+Then(/^there should be (\d+) new row[s]? below the current row$/, <span class="fstat-no" title="function not covered" >fu</span>nction (numberOfNewRows) {
+  let worldRowNumber = <span class="cstat-no" title="statement not covered" >this.rowNumber</span>
+<span class="cstat-no" title="statement not covered" >  return this.app.client</span>
     .element('.editor.handsontable')
     .elements('.ht_master table tr th')
-    .then(function(response) {
-      expect(response.value.length).to.equal(worldRowNumber + numberOfNewRows)
+    .then(<span class="fstat-no" title="function not covered" >fu</span>nction(response) {
+<span class="cstat-no" title="statement not covered" >      expect(response.value.length).to.equal(worldRowNumber + numberOfNewRows)</span>
     })
 })
 &nbsp;
-Then(/^there should be (\d+) column(?:s)$/, function (numberOfColumns) {
-  return this.app.client
+Then(/^there should be (\d+) column(?:s)$/, <span class="fstat-no" title="function not covered" >fu</span>nction (numberOfColumns) {
+<span class="cstat-no" title="statement not covered" >  return this.app.client</span>
     .element('.editor.handsontable')
     .elements('.ht_master table tr:first-child td')
-    .then(function(response) {
-      expect(response.value.length).to.equal(numberOfColumns)
+    .then(<span class="fstat-no" title="function not covered" >fu</span>nction(response) {
+<span class="cstat-no" title="statement not covered" >      expect(response.value.length).to.equal(numberOfColumns)</span>
     })
 })
 &nbsp;</pre></td></tr>
@@ -178,10 +178,10 @@ Then(/^there should be (\d+) column(?:s)$/, function (numberOfColumns) {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jun 22 2018 11:52:28 GMT+1000 (E. Australia Standard Time)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Oct 08 2018 16:27:45 GMT+1000 (AEST)
 </div>
 </div>
-<script src="..\..\..\..\prettify.js"></script>
+<script src="../../../../prettify.js"></script>
 <script>
 window.onload = function () {
         if (typeof prettyPrint === 'function') {
@@ -189,7 +189,7 @@ window.onload = function () {
         }
 };
 </script>
-<script src="..\..\..\..\sorter.js"></script>
-<script src="..\..\..\..\block-navigation.js"></script>
+<script src="../../../../sorter.js"></script>
+<script src="../../../../block-navigation.js"></script>
 </body>
 </html>

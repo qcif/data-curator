@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for renderer\frictionlessDataPackage.js</title>
+    <title>Code coverage report for renderer/frictionlessDataPackage.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">10.71% </span>
+        <span class="strong">10.64% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>15/140</span>
+        <span class='fraction'>15/141</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">11.84% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>4/22</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">10.71% </span>
+        <span class="strong">10.64% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>15/140</span>
+        <span class='fraction'>15/141</span>
       </div>
     </div>
   </div>
@@ -298,7 +298,9 @@
 253
 254
 255
-256</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+256
+257
+258</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -551,6 +553,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {Resource, Package} from 'datapackage'
@@ -581,7 +585,7 @@ export async function createDataPackage() {
     }
   } catch (err) {
 <span class="cstat-no" title="statement not covered" >    if (err) {</span>
-<span class="cstat-no" title="statement not covered" >      console.log('There was an error creating the data package.', err)</span>
+<span class="cstat-no" title="statement not covered" >      console.error('There was an error creating the data package.', err)</span>
     }
   }
 <span class="cstat-no" title="statement not covered" >  return errorMessages</span>
@@ -648,7 +652,7 @@ async function buildAllResourcesForDataPackage(dataPackage, errorMessages) <span
 <span class="cstat-no" title="statement not covered" >      dataPackage.addResource(resource.descriptor)</span>
     } catch (err) {
 <span class="cstat-no" title="statement not covered" >      if (err) {</span>
-<span class="cstat-no" title="statement not covered" >        console.log('There was an error creating a resource.', err)</span>
+<span class="cstat-no" title="statement not covered" >        console.error('There was an error creating a resource.', err)</span>
 <span class="cstat-no" title="statement not covered" >        return false</span>
       }
     }
@@ -663,7 +667,7 @@ async function createValidResource(hotId, errorMessages) <span class="fstat-no" 
   }
   let resource = <span class="cstat-no" title="statement not covered" >await buildResource(hotTab.tabId, hot.guid)</span>
 <span class="cstat-no" title="statement not covered" >  if (!resource.valid) {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(resource.errors)</span>
+<span class="cstat-no" title="statement not covered" >    console.error(resource.errors)</span>
 <span class="cstat-no" title="statement not covered" >    errorMessages.push('There is a required table or column property that is missing. Please check that all required properties are entered.')</span>
 <span class="cstat-no" title="statement not covered" >    return false</span>
   }
@@ -806,7 +810,9 @@ function addPath(descriptor, tabId) <span class="fstat-no" title="function not c
   let parent = <span class="cstat-no" title="statement not covered" >'data'</span>
   let filename = <span class="cstat-no" title="statement not covered" >tabStore.state.tabObjects[tabId].filename</span>
   let basename = <span class="cstat-no" title="statement not covered" >path.basename(filename)</span>
-<span class="cstat-no" title="statement not covered" >  descriptor.path = `${parent}/${basename}`</span>
+  let osPath = <span class="cstat-no" title="statement not covered" >path.join(parent, basename)</span>
+  // resource paths must be POSIX https://frictionlessdata.io/specs/data-resource/#url-or-path
+<span class="cstat-no" title="statement not covered" >  descriptor.path = _.replace(osPath, '\\', '/')</span>
 }
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -814,7 +820,7 @@ function addPath(descriptor, tabId) <span class="fstat-no" title="function not c
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu May 31 2018 13:40:14 GMT+1000 (E. Australia Standard Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Oct 08 2018 14:11:56 GMT+1000 (AEST)
 </div>
 </div>
 <script src="../prettify.js"></script>

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for renderer\partials\Preferences.vue</title>
+    <title>Code coverage report for renderer/partials/Preferences.vue</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -129,7 +129,17 @@
 84
 85
 86
-87</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+87
+88
+89
+90
+91
+92</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -216,90 +226,95 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
-  &lt;form class="navbar-form form-horizontal" id="preferenceProperties"&gt;
-    &lt;div class="form-group-sm row container-fluid"&gt;
-      &lt;div class="propertyrow" v-for="(formprop, index) in formprops" :key="index"&gt;
-        &lt;label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3" :for="formprop.label"&gt;{{formprop.label}}&lt;/label&gt;
-        &lt;component :is="formprop.tooltipView"/&gt;
-        &lt;component v-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key" :contributorsSetter="contributorsSetter"/&gt;
-        &lt;div v-show="errors.has(formprop.key) &amp;&amp; removeProperty(formprop.key)" class="row help validate-danger"&gt;
-          {{ errors.first(formprop.key)}}
+    &lt;form class="navbar-form form-horizontal" id="preferenceProperties"&gt;
+        &lt;div class="form-group-sm row container-fluid"&gt;
+            &lt;div class="propertyrow" v-for="(formprop, index) in formprops" :key="index"&gt;
+                &lt;label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3"
+                       :for="formprop.label"&gt;{{formprop.label}}&lt;/label&gt;
+                &lt;component :is="formprop.tooltipView"/&gt;
+                &lt;component v-if="isSharedComponent(formprop.key)" :propertyName="formprop.key"
+                           :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId"
+                           :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId"
+                           :currentHotId="currentHotId" :is="formprop.key" :contributorsSetter="contributorsSetter"/&gt;
+                &lt;div v-show="errors.has(formprop.key) &amp;&amp; removeProperty(formprop.key)" class="row help validate-danger"&gt;
+                    {{ errors.first(formprop.key)}}
+                &lt;/div&gt;
+            &lt;/div&gt;
         &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/form&gt;
+    &lt;/form&gt;
 &lt;/template&gt;
 &lt;script&gt;
-import SideNav from '@/partials/SideNav'
-import licenses from '@/partials/Licenses'
-import contributors from '@/partials/Contributors'
-import PreferencesTooltip from '@/mixins/PreferencesTooltip'
-import ValidationRules from '@/mixins/ValidationRules'
-import {ipcRenderer as ipc} from 'electron'
-export default {
-  extends: SideNav,
-  name: 'preferences',
-  mixins: [ValidationRules, PreferencesTooltip],
-  components: {
-    licenses,
-    contributors
-  },
-  data() {
-<span class="cstat-no" title="statement not covered" >    return {</span>
-      formprops: [{
-        label: 'License(s)',
-        key: 'licenses',
-        tooltipId: 'tooltip-preferences-licenses',
-        tooltipView: 'tooltipPreferencesLicenses'
-      },
-      {
-        label: 'Contributor(s)',
-        key: 'contributors',
-        tooltipId: 'tooltip-preferences-contributors',
-        tooltipView: 'tooltipPreferencesContributors'
-      }]
-    }
-  },
-  methods: {
-    getProperty: function(key) <span class="fstat-no" title="function not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >      return ipc.sendSync('getPreference', key)</span>
+  import SideNav from '@/partials/SideNav'
+  import licenses from '@/partials/Licenses'
+  import contributors from '@/partials/Contributors'
+  import PreferencesTooltip from '@/mixins/PreferencesTooltip'
+  import ValidationRules from '@/mixins/ValidationRules'
+  import {ipcRenderer as ipc} from 'electron'
+&nbsp;
+  export default {
+    extends: SideNav,
+    name: 'preferences',
+    mixins: [ValidationRules, PreferencesTooltip],
+    components: {
+      licenses,
+      contributors
     },
-    getPropertyGivenHotId: function(key, hotId) <span class="fstat-no" title="function not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >      return this.getProperty(key)</span>
-    },
-    contributorsSetter: function(index, prop, value) <span class="fstat-no" title="function not covered" >{</span>
-      let currentContributors = <span class="cstat-no" title="statement not covered" >ipc.sendSync('getPreference', 'contributors')</span>
-<span class="cstat-no" title="statement not covered" >      currentContributors[index][prop] = value</span>
-<span class="cstat-no" title="statement not covered" >      this.setProperty('contributors', currentContributors)</span>
-    },
-    setProperty: function(key, values) <span class="fstat-no" title="function not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >      if (!_.isEmpty(values)) {</span>
-        const stringified = <span class="cstat-no" title="statement not covered" >JSON.stringify(values)</span>
-<span class="cstat-no" title="statement not covered" >        ipc.send('setPreference', key, stringified)</span>
-      } else {
-<span class="cstat-no" title="statement not covered" >        ipc.send('removePreference', key)</span>
+    data() {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        formprops: [{
+          label: 'License(s)',
+          key: 'licenses',
+          tooltipId: 'tooltip-preferences-licenses',
+          tooltipView: 'tooltipPreferencesLicenses'
+        },
+        {
+          label: 'Contributor(s)',
+          key: 'contributors',
+          tooltipId: 'tooltip-preferences-contributors',
+          tooltipView: 'tooltipPreferencesContributors'
+        }]
       }
     },
-    validateContributors: function(values) <span class="fstat-no" title="function not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >      return _.filter(values, function(value) <span class="fstat-no" title="function not covered" >{</span></span>
-<span class="cstat-no" title="statement not covered" >        return value.title.trim().length &gt; 0</span>
-      })
+    methods: {
+      getProperty: function (key<span class="fstat-no" title="function not covered" >) {</span>
+<span class="cstat-no" title="statement not covered" >        return ipc.sendSync('getPreference', key</span>)
+      },
+      getPropertyGivenHotId: function (key, hotId<span class="fstat-no" title="function not covered" >) {</span>
+<span class="cstat-no" title="statement not covered" >        return this.getProperty(key</span>)
+      },
+      contributorsSetter: function (index, prop, value<span class="fstat-no" title="function not covered" >) {</span>
+        let currentContributors <span class="cstat-no" title="statement not covered" >= ipc.sendSync('getPreference', 'contributors'</span>)
+<span class="cstat-no" title="statement not covered" >        currentContributors[index][prop] = valu</span>e
+<span class="cstat-no" title="statement not covered" >        this.setProperty('contributors', currentContributors</span>)
+      },
+      setProperty: function (key, values<span class="fstat-no" title="function not covered" >) {</span>
+<span class="cstat-no" title="statement not covered" >        if (!_.isEmpty(values)) {</span>
+          const stringified <span class="cstat-no" title="statement not covered" >= JSON.stringify(values</span>)
+<span class="cstat-no" title="statement not covered" >          ipc.send('setPreference', key, stringified</span>)
+        } else {
+<span class="cstat-no" title="statement not covered" >          ipc.send('removePreference', key</span>)
+        }
+      },
+      validateContributors: function (values<span class="fstat-no" title="function not covered" >) {</span>
+<span class="cstat-no" title="statement not covered" >        return _.filter(values, function (value<span class="fstat-no" title="function not covered" >) {</span></span>
+<span class="cstat-no" title="statement not covered" >          return value.title.trim().length &gt; </span>0
+        })
+      },
+      removeProperty: function (key<span class="fstat-no" title="function not covered" >) {</span>
+        let value <span class="cstat-no" title="statement not covered" >= '</span>'
+<span class="cstat-no" title="statement not covered" >        this.setProperty(key, value</span>)
+<span class="cstat-no" title="statement not covered" >        return tru</span>e
+      }
     },
-    removeProperty: function(key) <span class="fstat-no" title="function not covered" >{</span>
-      let value = <span class="cstat-no" title="statement not covered" >''</span>
-<span class="cstat-no" title="statement not covered" >      this.setProperty(key, value)</span>
-<span class="cstat-no" title="statement not covered" >      return true</span>
+    created: function (<span class="fstat-no" title="function not covered" >) {</span>
     }
-  },
-  created: function() <span class="fstat-no" title="function not covered" >{</span>
   }
-}
 &lt;/script&gt;
 &lt;style lang="styl" scoped&gt;
-@import '~static/css/validationrules'
+    @import '~static/css/validationrules'
 &lt;/style&gt;
 &lt;style lang="styl" scoped&gt;
-@import '~static/css/sidenav'
+    @import '~static/css/sidenav'
 &lt;/style&gt;
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -307,7 +322,7 @@ export default {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu May 31 2018 13:40:14 GMT+1000 (E. Australia Standard Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Oct 08 2018 14:11:56 GMT+1000 (AEST)
 </div>
 </div>
 <script src="../../prettify.js"></script>
