@@ -27,7 +27,7 @@
     "test-main": "mocha-webpack --webpack-config .electron-vue/webpack.test.config.js --glob *_spec.js test/main/specs",
     "test-renderer": "mocha-webpack --webpack-config .electron-vue/webpack.renderer.config.js --glob *.dev.js --recursive test/unit/specs",
     "test": "(yarn run unit || yarn -v) && yarn run e2e",
-    "unit": "karma start test/unit/karma.conf.js",
+    "unit": "yarn run clean && karma start test/unit/karma.conf.js",
     "e2e": "yarn run clean && yarn run pack && yarn run cucumber:postpack",
     "e2e:dev": "yarn run cucumber:postpack:dev && yarn run cucumber:report",
     "cucumber:postpack": "cross-env BABEL_ENV=test nyc cucumber-js --require-module babel-core/register test/features -f json:test/cucumber_report.json",
