@@ -94,7 +94,6 @@ function handleDownloadedZip(zipPath, mainWindow) {
 }
 
 async function loadPackageFromJsonUrl(urlText) {
-  console.log(`response data was: `, response.data)
   const mainWindow = focusMainWindow()
   mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading package URL..')
   const dataPackageJson = await loadPackageJson(urlText, mainWindow)
