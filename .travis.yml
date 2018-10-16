@@ -15,26 +15,13 @@ install:
 - source ~/.bashrc
 - yarn
 stages:
-<<<<<<< HEAD
-  - unittest
-=======
   - lint
   - unittest
   - unittestandcoverage
->>>>>>> testci
   - test
   - build
 jobs:
   include:
-<<<<<<< HEAD
-    - name: unittest
-      if: branch = ci
-      script:
-      - yarn run unit
-      - yarn run unit:coverage
-    - name: test
-      if: branch = ci
-=======
     - name: lint
       if: branch IN (master, ci, testci)
       script:
@@ -52,7 +39,6 @@ jobs:
       - yarn run unit:coverage
     - name: test
       if: branch IN (ci, testci)
->>>>>>> testci
       script: ./travis_script.sh test/features/backlog
     - script: ./travis_script.sh test/features/data_curator
     - script: ./travis_script.sh test/features/edit
@@ -64,11 +50,7 @@ jobs:
     - script: ./travis_script.sh test/features/tools
     - script: ./travis_script.sh test/features/window
     - name: build
-<<<<<<< HEAD
-      if: branch != ci
-=======
       if: branch NOT IN (master, ci, testci)
->>>>>>> testci
       script: yarn run release:predraft
 branches:
   only:

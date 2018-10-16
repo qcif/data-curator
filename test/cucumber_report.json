@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 [
   {
     "description": "  As a Data Packager\n  I want to validate the data for common errors and against the [schema](https://frictionlessdata.io/specs/table-schema/) I have defined\n  So that I can correct errors and share validated data with Data Consumers\n\n  RULES\n  =====\n\n  - The \"Validate Table\" command can be invoked using a menu item, toolbar button or shortcut\n  - [Structural data checks](https://github.com/frictionlessdata/goodtables-py#validation-against-structure-checks) include:\n    - blank header\n    - duplicate header\n    - blank row\n    - duplicate row\n    - ragged rows (extra/missing value compared to header row)\n  - Schema validation checks include the:\n    - data is the same \"type\" and \"format\" as defined in the schema, ignoring \"missing values\"\n    - data conforms with the \"constraints\"\n    - \"primary keys\" are unique\n    - \"foreign key\" relationships to one or more columns in:\n      - the same table\n      - another table in the same data package\n      - another table in a data package at a url (not in specification [yet](https://gitter.im/frictionlessdata/chat?at=59eaed08f7299e8f53142845))\n\n  QUESTION\n  ========\n\n  - How can we support writing validation errors for two tables to provenance information?\n  - How is -$1.00 handled by `bareNumber` - error or -1.00?\n\n  USER INTERFACE\n  ==============\n\n  ![Validate user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/validate.png)\n\n  LATER\n  =====\n\n  - different `missingValues` can be validated per column\n  - trueValues and falseValues\n  - bareNumber\n  - decimalChar\n  - groupChar",
@@ -409,4 +407,3 @@
     ]
   }
 ]
->>>>>>> testci
