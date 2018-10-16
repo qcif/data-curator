@@ -46,7 +46,7 @@ export default {
       {
         items: [
           {
-            label: `Beta version ${this.getApplicationVersion()} - Access the support forum or report issues via the Help menu`
+            label: `Version ${this.getApplicationVersion()} - Access the support forum or report issues via the Help menu`
           }
         ]
       },
