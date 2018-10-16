@@ -1,13 +1,12 @@
 'use strict'
 
 process.env.BABEL_ENV = 'main'
-
+// process.traceDeprecation = true
 const path = require('path')
 const {dependencies} = require('../package.json')
 const webpack = require('webpack')
 
 const BabiliWebpackPlugin = require('babili-webpack-plugin')
-const FixDefaultImportPlugin = require('webpack-fix-default-import-plugin')
 
 let mainConfig = {
   entry: {
@@ -55,8 +54,7 @@ let mainConfig = {
     ]
   },
   plugins: [
-    new webpack.NoEmitOnErrorsPlugin(),
-    new FixDefaultImportPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   ],
   target: 'electron-main'
 }

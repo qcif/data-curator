@@ -6,6 +6,7 @@ import {pushCsvDialect} from '@/dialect.js'
 import {menu} from '@/menu.js'
 import {fileFormats} from '@/file-formats.js'
 import fs from 'fs-extra'
+import store from '@/store'
 
 export function addHotContainerListeners(container, loadingFn, closeLoadingFn) {
   container.ondragover = function() {
@@ -21,10 +22,13 @@ export function addHotContainerListeners(container, loadingFn, closeLoadingFn) {
     fs.readFile(f.path, 'utf-8', function(err, data) {
       if (err) {
         console.error(err)
+      } else {
+        let hot = HotRegister.getActiveInstance()
+        const tabId = store.getters.getTabIdFromHotId(hot.guid)
+        // if we're dragging a file in, default the format to comma-separated
+        loadData(hot.guid, data, fileFormats.csv, closeLoadingFn)
+        store.commit('pushTabObject', {id: tabId, filename: f.path})
       }
-      let hot = HotRegister.getActiveInstance()
-      // if we're dragging a file in, default the format to comma-separated
-      loadData(hot.guid, data, fileFormats.csv, closeLoadingFn)
     })
   }
 

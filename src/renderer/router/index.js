@@ -8,11 +8,11 @@ export default new Router({
       path: '/',
       name: 'home',
       components: {
-        default: require('@/components/Home'),
-        keyboardhelp: require('@/components/KeyboardHelp'),
-        urldialog: require('@/components/UrlDialog'),
-        openexcel: require('@/components/SelectWorksheet'),
-        errors: require('@/components/Errors')
+        default: require('@/components/Home').default,
+        keyboardhelp: require('@/components/KeyboardHelp').default,
+        urldialog: require('@/components/UrlDialog').default,
+        openexcel: require('@/components/SelectWorksheet').default,
+        errors: require('@/components/Errors').default
       }
     },
     {
