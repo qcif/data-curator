@@ -79,15 +79,7 @@
     },
     "linux": {
       "icon": "build/icons",
-      "target": [
-        {
-          "target": "AppImage",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        }
-      ]
+      "target": "AppImage"
     }
   },
   "dependencies": {
