@@ -79,7 +79,7 @@
         this.setProperty(key, value)
         return true
       }
-      },
+    },
     created: function () {
     }
   }
