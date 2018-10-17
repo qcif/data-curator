@@ -15,7 +15,7 @@ module.exports = {
   },
   plugins: [
     'html',
-    "eslint-plugin-html"
+    'eslint-plugin-html'
   ],
   'rules': {
     // allow paren-less arrow functions

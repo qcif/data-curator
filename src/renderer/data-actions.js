@@ -1,4 +1,4 @@
-import tabStore from '@/store/modules/tabs.js'
+import store from '@/store'
 import fs from 'fs'
 import {fixRaggedRows} from '@/ragged-rows.js'
 import {includeHeadersInData} from '@/frictionlessUtilities.js'
@@ -50,11 +50,11 @@ export function loadArrayDataIntoHot(hot, arrays, format) {
 }
 
 export function saveDataToFile(hot, format, filename, callback) {
-  let tabId = tabStore.state.activeTab
+  let tabId = store.getters.getActiveTab()
   if (typeof filename === 'string') {
-    tabStore.mutations.pushTabObject(tabStore.state, {id: tabId, filename: filename})
+    store.commit('pushTabObject', {id: tabId, filename: filename})
   } else {
-    filename = _.get(tabStore.state.tabObjects, `${tabId}.filename`)
+    filename = store.getters.getTabObjects(`${tabId}.filename`)
   }
   if (!filename) {
     return
