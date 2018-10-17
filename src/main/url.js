@@ -8,8 +8,6 @@ import {Package} from 'datapackage'
 import tmp from 'tmp'
 import _ from 'lodash'
 import {dataResourceToFormat} from '../renderer/file-formats.js'
-import {getRequestProxy} from './proxy.js'
-import settings from 'electron-settings'
 
 // auto cleanup
 tmp.setGracefulCleanup()
@@ -53,17 +51,11 @@ export async function importDataPackageZipFromUrl(urlText) {
   const mainWindow = focusMainWindow()
   mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading zip URL..')
   try {
-    let urlRequest = {
+    let response = await axios({
       method: 'get',
       url: urlText,
       responseType: 'stream'
-    }
-    console.log('has proxy: ', settings.has('proxy'))
-    if (settings.has('proxy')) {
-      urlRequest.proxy = getRequestProxy()
-    }
-    console.log(`request is`, urlRequest)
-    let response = await axios(urlRequest)
+    })
     const tmpDir = tmp.dirSync({mode: '0750', prefix: 'DC_', unsafeCleanup: true})
     const zipDir = tmpDir.name
     // importPackage dependent on creating folder using basename zip
