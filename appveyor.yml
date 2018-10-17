@@ -31,7 +31,6 @@ install:
 
 before_test:
   - yarn run lint
-  - yarn run clean
 build_script:
   - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
 test: off
@@ -51,6 +50,7 @@ for:
     only:
       - /master/
   test_script:
+    - yarn run clean
     - yarn run unit
   build: off
   configuration: master
@@ -60,6 +60,7 @@ for:
     only:
       - /ci/
   test_script:
+    - yarn run clean
     - yarn run unit
     - yarn run pack
     - yarn run cucumber:postpack:impl
@@ -73,6 +74,7 @@ for:
     only:
       - /testci/
   test_script:
+    - yarn run clean
     - yarn run unit
     - yarn run pack
     - yarn run cucumber:postpack:impl
