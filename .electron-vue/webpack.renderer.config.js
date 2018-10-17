@@ -3,7 +3,7 @@
 process.env.BABEL_ENV = 'renderer'
 // process.traceDeprecation = true
 const path = require('path')
-const { dependencies } = require('../package.json')
+const {dependencies} = require('../package.json')
 const webpack = require('webpack')
 
 const BabiliWebpackPlugin = require('babili-webpack-plugin')
@@ -20,7 +20,7 @@ const {VueLoaderPlugin} = require('vue-loader')
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/webpack-configurations.html#white-listing-externals
  */
 let whiteListedModules = ['vue']
-const defaultMinify =  {
+const defaultMinify = {
   collapseWhitespace: true,
   removeAttributeQuotes: true,
   removeComments: true
@@ -190,6 +190,7 @@ function createHtmlPlugin(pageName) {
     nodeModules: defaultNodeModules
   })
 }
+
 /**
  * Adjust rendererConfig for development settings
  */
