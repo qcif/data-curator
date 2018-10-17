@@ -4,19 +4,23 @@ const path = require('path')
 const merge = require('webpack-merge')
 const webpack = require('webpack')
 
+process.env.KARMA = true
 const baseConfig = require('../../.electron-vue/webpack.renderer.config')
 const projectRoot = path.resolve(__dirname, '../../src/renderer')
 
 // Set BABEL_ENV to use proper preset config
 process.env.BABEL_ENV = 'test'
+// process.env.NODE_ENV = 'testing'
 
 let webpackConfig = merge(baseConfig, {
   devtool: '#inline-source-map',
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"testing"'
-    })
-  ]
+  optimization: {},
+  // plugins: [
+  //   new webpack.DefinePlugin({
+  //     'process.env.NODE_ENV': '"testing"'
+  //   })
+  // ],
+  mode: 'none'
 })
 
 // don't treat dependencies as externals
@@ -31,6 +35,7 @@ webpackConfig.module.rules
 module.exports = config => {
   config.set({
     browsers: ['Electron'],
+    autoWatch: false,
     client: {
       useIframe: false
     },
@@ -41,12 +46,12 @@ module.exports = config => {
         { type: 'text-summary' }
       ]
     },
-    customLaunchers: {
-      'visibleElectron': {
-        base: 'Electron',
-        flags: ['--show']
-      }
-    },
+    // customLaunchers: {
+    //   'visibleElectron': {
+    //     base: 'Electron'
+    // flags: ['--show']
+    //   }
+    // },
     frameworks: ['mocha', 'sinon-chai'],
     files: ['./index.js'],
     preprocessors: {
