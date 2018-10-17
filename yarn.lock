@@ -6699,10 +6699,6 @@ lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
 
-lodash.clone@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.clone/-/lodash.clone-4.5.0.tgz#195870450f5a13192478df4bc3d23d2dea1907b6"
-
 lodash.clonedeep@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-3.0.2.tgz#a0a1e40d82a5ea89ff5b147b8444ed63d92827db"
@@ -6738,7 +6734,7 @@ lodash.isarray@^3.0.0:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/lodash.isarray/-/lodash.isarray-3.0.4.tgz#79e4eb88c36a8122af86f844aa9bcd851b5fbb55"
 
-lodash.isequal@^4.0.0:
+lodash.isequal@^4.0.0, lodash.isequal@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
 
@@ -11118,17 +11114,17 @@ vue-focus@^2.1.0:
   dependencies:
     loose-envify "^1.2.0"
 
-vue-good-table@^2.8.0:
-  version "2.14.6"
-  resolved "https://registry.yarnpkg.com/vue-good-table/-/vue-good-table-2.14.6.tgz#06f2265b68fb97413cfec624c2fad0458907484e"
+vue-good-table@^2.15.3:
+  version "2.15.3"
+  resolved "https://registry.yarnpkg.com/vue-good-table/-/vue-good-table-2.15.3.tgz#d399298a1cb6541d130b34bef0f67b9f0b45ff44"
   dependencies:
     date-fns "2.0.0-alpha.7"
     diacriticless "1.0.1"
     lodash.assign "^4.2.0"
-    lodash.clone "^4.5.0"
     lodash.clonedeep "^4.5.0"
     lodash.filter "^4.6.0"
     lodash.foreach "^4.5.0"
+    lodash.isequal "^4.5.0"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.1"
