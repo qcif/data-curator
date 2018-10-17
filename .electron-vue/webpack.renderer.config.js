@@ -1,16 +1,16 @@
 'use strict'
 
 process.env.BABEL_ENV = 'renderer'
-
+// process.traceDeprecation = true
 const path = require('path')
 const { dependencies } = require('../package.json')
 const webpack = require('webpack')
 
 const BabiliWebpackPlugin = require('babili-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-var FixDefaultImportPlugin = require('webpack-fix-default-import-plugin')
+const {VueLoaderPlugin} = require('vue-loader')
 
 /**
  * List of node_modules to include in webpack bundle
@@ -38,6 +38,31 @@ let rendererConfig = {
   externals: [
     ...Object.keys(dependencies || {}).filter(d => !whiteListedModules.includes(d))
   ],
+  optimization: !process.env.KARMA ? {
+    minimize: false,
+    runtimeChunk: {
+      name: 'vendor'
+    },
+    splitChunks: {
+      cacheGroups: {
+        default: false,
+        commons: {
+          test: /node_modules/,
+          name: "vendor",
+          chunks: "initial",
+          minSize: 1
+        },
+        styles: {
+          name: 'styles',
+          test: /\.s?css$/,
+          chunks: 'initial',
+          minChunks: 1,
+          reuseExistingChunk: true,
+          enforce: true,
+        },
+      }
+    }
+  } : {},
   module: {
     rules: [
       {
@@ -53,10 +78,20 @@ let rendererConfig = {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader'
-        })
+        use: [
+          // MiniCssExtractPlugin.loader,
+          'vue-style-loader',
+          'css-loader'
+        ]
+      },
+      {
+        test: /\.styl(us)?$/,
+        use: [
+          // MiniCssExtractPlugin.loader,
+          'vue-style-loader',
+          'css-loader',
+          'stylus-loader'
+        ]
       },
       {
         test: /\.html$/,
@@ -81,6 +116,7 @@ let rendererConfig = {
               sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
               scss: 'vue-style-loader!css-loader!sass-loader',
               styl: 'vue-style-loader!css-loader!stylus-loader'
+              // styl: 'MiniCssExtractPlugin.loader!css-loader!stylus-loader'
             }
           }
         }
@@ -89,7 +125,7 @@ let rendererConfig = {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         use: {
           loader: 'url-loader',
-          query: {
+          options: {
             limit: 10000,
             name: 'imgs/[name]--[folder].[ext]'
           }
@@ -107,7 +143,7 @@ let rendererConfig = {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         use: {
           loader: 'url-loader',
-          query: {
+          options: {
             limit: 10000,
             name: 'fonts/[name]--[folder].[ext]'
           }
@@ -120,15 +156,15 @@ let rendererConfig = {
     __filename: process.env.NODE_ENV !== 'production'
   },
   plugins: [
-    new ExtractTextPlugin('styles.css'),
+    new VueLoaderPlugin(),
+    new MiniCssExtractPlugin({filename: 'styles.css'}),
     createHtmlPlugin('index'),
     createHtmlPlugin('keyboardhelp'),
     createHtmlPlugin('urldialog'),
     createHtmlPlugin('openexcel'),
     createHtmlPlugin('errors'),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new FixDefaultImportPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   ],
   output: {
     filename: '[name].js',
@@ -141,7 +177,7 @@ let rendererConfig = {
       'vue$': 'vue/dist/vue.esm.js',
       'static': path.resolve(__dirname, '../static')
     },
-    extensions: ['.js', '.vue', '.json', '.css', '.node']
+    extensions: ['.js', '.vue', '.json', '.css', '.node', '.styl']
   },
   target: 'electron-renderer'
 }
@@ -157,7 +193,7 @@ function createHtmlPlugin(pageName) {
 /**
  * Adjust rendererConfig for development settings
  */
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' || process.env.KARMA) {
   rendererConfig.plugins.push(
     new webpack.DefinePlugin({
       '__static': `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`
@@ -168,7 +204,7 @@ if (process.env.NODE_ENV !== 'production') {
 /**
  * Adjust rendererConfig for production settings
  */
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' && !process.env.KARMA) {
   rendererConfig.devtool = ''
 
   rendererConfig.plugins.push(
@@ -187,6 +223,7 @@ if (process.env.NODE_ENV === 'production') {
       minimize: true
     })
   )
+  rendererConfig.optimization.minimize = true
 }
 
 module.exports = rendererConfig

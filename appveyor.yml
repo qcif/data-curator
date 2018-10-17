@@ -38,14 +38,44 @@ configuration: release
 
 for:
 -
-  appveyor_repo_tag: true
   test: off
   build: off
-#  configuration: release
+  deploy:
+    provider: Environment
+    name: production
+    on:
+      appveyor_repo_tag: true
+-
+  branches:
+    only:
+      - /master/
+  before_test:
+    - yarn run lint
+    - yarn run clean
+  test_script:
+    - yarn run unit
+  build: off
+  configuration: master
+  deploy: off
 -
   branches:
     only:
       - /ci/
+  before_test:
+    - yarn run lint
+    - yarn run clean
+  test_script:
+    - yarn run unit
+    - yarn run pack
+    - yarn run cucumber:postpack:impl
+  after_test:
+    - yarn run cucumber:report:badge
+  build: off
+  configuration: test
+  deploy: off
+-
+  branches:
+    only:
       - /testci/
   before_test:
     - yarn run lint
@@ -54,8 +84,7 @@ for:
     - yarn run unit
     - yarn run pack
     - yarn run cucumber:postpack:impl
-#  after_test:
-#    - yarn run cucumber:report:badge
   build:
     off
   configuration: test
+  deploy: off
