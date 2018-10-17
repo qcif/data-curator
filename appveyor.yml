@@ -29,9 +29,10 @@ install:
   - yarn
   - node --version
 
+before_test:
+  - yarn run lint
+  - yarn run clean
 build_script:
-  #- yarn test
-  # - yarn build
   - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
 test: off
 configuration: release
@@ -49,9 +50,6 @@ for:
   branches:
     only:
       - /master/
-  before_test:
-    - yarn run lint
-    - yarn run clean
   test_script:
     - yarn run unit
   build: off
@@ -61,9 +59,6 @@ for:
   branches:
     only:
       - /ci/
-  before_test:
-    - yarn run lint
-    - yarn run clean
   test_script:
     - yarn run unit
     - yarn run pack
@@ -77,9 +72,6 @@ for:
   branches:
     only:
       - /testci/
-  before_test:
-    - yarn run lint
-    - yarn run clean
   test_script:
     - yarn run unit
     - yarn run pack
