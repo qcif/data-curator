@@ -28,18 +28,17 @@ install:
   - git reset --hard HEAD
   - yarn
   - node --version
-
-before_test:
   - yarn run lint
-build_script:
-  - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
+build: off
 test: off
-configuration: release
+configuration: default
 
 for:
 -
   test: off
-  build: off
+  build_script:
+    - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
+  configuration: release
   deploy:
     provider: Environment
     name: production
