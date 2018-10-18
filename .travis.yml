@@ -2,7 +2,6 @@ sudo: required
 dist: trusty
 language: c
 os: osx
-
 cache:
   directories:
   - node_modules
@@ -24,7 +23,7 @@ stages:
 jobs:
   include:
     - name: lint
-      if: branch IN (master, ci, testci, develop) OR type == pull_request OR tag =~ "/^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
+      if: branch IN (master, ci, testci, develop) OR type == pull_request OR tag =~ /^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/
       script:
       - yarn run lint
     - name: unittest
@@ -41,15 +40,15 @@ jobs:
     - name: test
       if: branch IN (ci, testci) OR type IN (pull_request)
       script: ./travis_script.sh test/features/backlog
-      - script: ./travis_script.sh test/features/data_curator
-      - script: ./travis_script.sh test/features/edit
-      - script: ./travis_script.sh test/features/file
-      - script: ./travis_script.sh test/features/find
-      - script: ./travis_script.sh test/features/help
-      - script: ./travis_script.sh test/features/other
-      - script: ./travis_script.sh test/features/support
-      - script: ./travis_script.sh test/features/tools
-      - script: ./travis_script.sh test/features/window
+    - script: ./travis_script.sh test/features/data_curator
+    - script: ./travis_script.sh test/features/edit
+    - script: ./travis_script.sh test/features/file
+    - script: ./travis_script.sh test/features/find
+    - script: ./travis_script.sh test/features/help
+    - script: ./travis_script.sh test/features/other
+    - script: ./travis_script.sh test/features/support
+    - script: ./travis_script.sh test/features/tools
+    - script: ./travis_script.sh test/features/window
     - name: build
       if: tag =~ /^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/
       script:
