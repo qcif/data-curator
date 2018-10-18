@@ -1,6 +1,6 @@
-import { expect, should, assert } from 'chai'
+import { expect } from 'chai'
 import { Given, When, Then } from 'cucumber'
-import {defaultTabData, isDataEqualToDefaultData} from '../page-objects/io.js'
+import { defaultTabData, isDataEqualToDefaultData } from '../page-objects/io.js'
 import _ from 'lodash'
 
 When(/^Data Curator is open$/, async function () {

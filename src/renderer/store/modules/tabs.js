@@ -1,6 +1,6 @@
-import {ipcRenderer as ipc} from 'electron'
-import {setActiveGlobal, extractNameFromFile, resetGlobalFilenames} from '@/store/tabStoreUtilities'
-import {activeTab$, allTabsTitles$} from '@/rxSubject.js'
+import { ipcRenderer as ipc } from 'electron'
+import { setActiveGlobal, extractNameFromFile, resetGlobalFilenames } from '@/store/tabStoreUtilities'
+import { activeTab$, allTabsTitles$ } from '@/rxSubject.js'
 
 export function pushAllTabTitlesSubscription() {
   allTabsTitles$.next(getters.getAllTabTitles(state))

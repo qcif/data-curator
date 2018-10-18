@@ -1,10 +1,9 @@
 import fs from 'fs-extra'
 import path from 'path'
 import archiver from 'archiver'
-import {remote} from 'electron'
+import { remote } from 'electron'
 import store from '@/store'
-import {extractNameFromFile} from '@/store/tabStoreUtilities.js'
-import {compileAndStringifyProvenance} from '@/provenance.js'
+import { compileAndStringifyProvenance } from '@/provenance.js'
 // import os from 'os'
 const Dialog = remote.dialog
 

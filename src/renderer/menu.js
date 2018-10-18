@@ -1,5 +1,5 @@
-import {insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight, removeRows, removeColumns} from '@/hot.js'
-import {remote} from 'electron'
+import { insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight, removeRows, removeColumns } from '@/hot.js'
+import { remote } from 'electron'
 const Menu = remote.Menu
 const MenuItem = remote.MenuItem
 
@@ -47,13 +47,13 @@ var removeCol = new MenuItem({
   }
 })
 
-menu.append(new MenuItem({type: 'separator'}))
+menu.append(new MenuItem({ type: 'separator' }))
 menu.append(rowAbove)
 menu.append(rowBelow)
-menu.append(new MenuItem({type: 'separator'}))
+menu.append(new MenuItem({ type: 'separator' }))
 menu.append(columnLeft)
 menu.append(columnRight)
-menu.append(new MenuItem({type: 'separator'}))
+menu.append(new MenuItem({ type: 'separator' }))
 menu.append(removeRow)
 menu.append(removeCol)
 

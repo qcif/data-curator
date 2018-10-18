@@ -1,12 +1,10 @@
 import * as sut from '@/frictionlessUtilities'
 import store from '@/store/modules/hots'
-import Handsontable from 'handsontable/dist/handsontable.full.js'
-import {DEFAULT_DIALECT} from 'datapackage/lib/config.js'
 
-import {resetHotStore} from '../helpers/storeHelper.js'
-import {stubHotInDocumentDom, resetHot, registerHot} from '../helpers/basicHotHelper.js'
-import {globalBefore} from '../helpers/globalHelper.js'
-import {loadDataIntoHot} from '@/data-actions'
+import { resetHotStore } from '../helpers/storeHelper.js'
+import { stubHotInDocumentDom, resetHot, registerHot } from '../helpers/basicHotHelper.js'
+import { globalBefore } from '../helpers/globalHelper.js'
+import { loadDataIntoHot } from '@/data-actions'
 import os from 'os'
 
 describe('frictionless utilities', () => {
@@ -21,11 +19,11 @@ describe('frictionless utilities', () => {
     resetHotStore()
   })
   describe('is case sensitive', () => {
-    [ {hotTab: {}, expected: false},
-      {hotTab: {tableProperties: {}}, expected: false},
-      {hotTab: {tableProperties: {dialect: {}}}, expected: false},
-      {hotTab: {tableProperties: {dialect: {caseSensitiveHeader: false}}}, expected: false},
-      {hotTab: {tableProperties: {dialect: {caseSensitiveHeader: true}}}, expected: true}
+    [ { hotTab: {}, expected: false },
+      { hotTab: { tableProperties: {} }, expected: false },
+      { hotTab: { tableProperties: { dialect: {} } }, expected: false },
+      { hotTab: { tableProperties: { dialect: { caseSensitiveHeader: false } } }, expected: false },
+      { hotTab: { tableProperties: { dialect: { caseSensitiveHeader: true } } }, expected: true }
     ].forEach(function(test) {
       it(`when table properties is ${JSON.stringify(test.hotTabs)}`, sinonTest(function() {
         let hot = registerHot()
@@ -49,14 +47,14 @@ describe('frictionless utilities', () => {
 
   describe('include headers in data', () => {
     [
-      {data: `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`,
+      { data: `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`,
         hasHeaders: false,
         expected: [
           ['1', '2', '3'],
           ['4', '5', '6']
         ]
       },
-      {data: `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`,
+      { data: `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`,
         hasHeaders: true,
         expected: [
           ['foo', 'bar', 'baz'],

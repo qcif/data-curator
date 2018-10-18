@@ -1,13 +1,13 @@
 import axios from 'axios'
 import fs from 'fs-extra'
 import path from 'path'
-import {ipcMain as ipc, dialog} from 'electron'
-import {focusOrNewSecondaryWindow, focusMainWindow, closeWindowSafely} from './windows'
-import {disableOpenFileItems, enableOpenFileItems} from './menuUtils.js'
-import {Package} from 'datapackage'
+import { ipcMain as ipc, dialog } from 'electron'
+import { focusOrNewSecondaryWindow, focusMainWindow, closeWindowSafely } from './windows'
+import { disableOpenFileItems, enableOpenFileItems } from './menuUtils.js'
+import { Package } from 'datapackage'
 import tmp from 'tmp'
 import _ from 'lodash'
-import {dataResourceToFormat} from '../renderer/file-formats.js'
+import { dataResourceToFormat } from '../renderer/file-formats.js'
 
 // auto cleanup
 tmp.setGracefulCleanup()
@@ -16,7 +16,7 @@ tmp.setGracefulCleanup()
 export function showUrlDialog() {
   // let labels = ['zip from URL....', 'zip from file...', 'json from URL...']
   disableOpenFileItems()
-  let browserWindow = focusOrNewSecondaryWindow('urldialog', {width: 300, height: 150, modal: true, alwaysOnTop: true})
+  let browserWindow = focusOrNewSecondaryWindow('urldialog', { width: 300, height: 150, modal: true, alwaysOnTop: true })
   browserWindow.on('closed', () => {
     enableOpenFileItems()
   })
@@ -56,7 +56,7 @@ export async function importDataPackageZipFromUrl(urlText) {
       url: urlText,
       responseType: 'stream'
     })
-    const tmpDir = tmp.dirSync({mode: '0750', prefix: 'DC_', unsafeCleanup: true})
+    const tmpDir = tmp.dirSync({ mode: '0750', prefix: 'DC_', unsafeCleanup: true })
     const zipDir = tmpDir.name
     // importPackage dependent on creating folder using basename zip
     const basename = path.basename(urlText)

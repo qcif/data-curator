@@ -1,4 +1,4 @@
-import {currentPos$} from '@/rxSubject.js'
+import { currentPos$ } from '@/rxSubject.js'
 
 const state = {
   hotTabs: {},
@@ -72,10 +72,10 @@ const getters = {
     return hotIdColumnNames
   },
   getAllHotColumnNamesFromHotId: (state, getters) => (hotId) => {
-    return getters.getAllHotColumnPropertyFromHotId(state, getters)({hotId: hotId, key: 'name'})
+    return getters.getAllHotColumnPropertyFromHotId(state, getters)({ hotId: hotId, key: 'name' })
   },
   getAllHotColumnTypesFromHotId: (state, getters) => (hotId) => {
-    return getters.getAllHotColumnPropertyFromHotId(state, getters)({hotId: hotId, key: 'type'})
+    return getters.getAllHotColumnPropertyFromHotId(state, getters)({ hotId: hotId, key: 'type' })
   },
   getAllHotColumnPropertyFromHotId: (state, getters) => (property) => {
     const hotId = property.hotId
@@ -85,18 +85,17 @@ const getters = {
       // return
     }
     let values = state.hotTabs[hotId].columnProperties.map(column => {
-      let value = column[propertyKey]
       return column[propertyKey]
     })
     return values
   },
   getHotIdFromTabId: (state, getters) => (tabId) => {
     return new Promise((resolve, reject) => {
-      let hotId = _.findKey(state.hotTabs, {tabId: tabId})
+      let hotId = _.findKey(state.hotTabs, { tabId: tabId })
       if (!hotId) {
         // There is a short render wait in home page, so if hotId not first returned, just wait and try again
         _.delay(function(tabId) {
-          resolve(_.findKey(state.hotTabs, {tabId: tabId}))
+          resolve(_.findKey(state.hotTabs, { tabId: tabId }))
         }, 10, tabId)
       } else {
         resolve(hotId)
@@ -104,7 +103,7 @@ const getters = {
     })
   },
   getSyncHotIdFromTabId: (state, getters) => (tabId) => {
-    let hotId = _.findKey(state.hotTabs, {tabId: tabId})
+    let hotId = _.findKey(state.hotTabs, { tabId: tabId })
     return hotId
   },
   getProvenance: state => {

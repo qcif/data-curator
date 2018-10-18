@@ -2,7 +2,7 @@
 <a href="#" @click="openLink()">{{text}}</a>
 </template>
 <script>
-import {shell} from 'electron'
+import { shell } from 'electron'
 export default {
   props: ['text', 'url'],
   name: 'externalLink',

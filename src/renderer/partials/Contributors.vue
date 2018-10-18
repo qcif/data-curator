@@ -29,13 +29,11 @@
 <script>
 import {
   mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
 import SideNav from './SideNav'
 import AsyncComputed from 'vue-async-computed'
 import ValidationRules from '../mixins/ValidationRules'
-import VeeValidate from 'vee-validate'
 import Vue from 'vue'
 Vue.use(AsyncComputed)
 export default {
@@ -97,7 +95,7 @@ export default {
       this.contributors = contributors
     },
     emptyContributor: function() {
-      return {'title': '', 'path': '', 'email': '', 'role': '', 'organization': ''}
+      return { 'title': '', 'path': '', 'email': '', 'role': '', 'organization': '' }
     },
     getContributorsFromPackageProperties: function() {
       let contributors = this.getProperty('contributors')

@@ -11,13 +11,8 @@
 </template>
 <script>
 import {
-  mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
-import {
-  HotRegister
-} from '../hot.js'
 export default {
   name: 'licenses',
   props: ['getPropertyGivenHotId', 'setProperty', 'waitForHotIdFromTabId'],

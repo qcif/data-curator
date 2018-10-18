@@ -22,7 +22,7 @@
   import contributors from '@/partials/Contributors'
   import PreferencesTooltip from '@/mixins/PreferencesTooltip'
   import ValidationRules from '@/mixins/ValidationRules'
-  import {ipcRenderer as ipc} from 'electron'
+  import { ipcRenderer as ipc } from 'electron'
 
   export default {
     extends: SideNav,

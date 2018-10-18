@@ -109,9 +109,9 @@ import {
 } from '@/rxSubject.js'
 import ColumnTooltip from '../mixins/ColumnTooltip'
 import ValidationRules from '../mixins/ValidationRules'
-import {isValidPatternForType} from '@/dateFormats.js'
-import {castBoolean, castNumber, castInteger} from 'tableschema/lib/types'
-import {ERROR as tableSchemaError} from 'tableschema/lib/config'
+import { isValidPatternForType } from '@/dateFormats.js'
+import { castBoolean, castNumber, castInteger } from 'tableschema/lib/types'
+import { ERROR as tableSchemaError } from 'tableschema/lib/config'
 Vue.use(VueRx, {
   Subscription
 })
@@ -265,7 +265,7 @@ export default {
         return property
       },
       watch() {
-        // ensure getter changes for tabs and columns
+        // eslint workarounds
         let temp = this.getActiveTab
         let temp2 = this.cIndex
         let temp3 = this.allTablesAllColumns
@@ -359,7 +359,7 @@ export default {
       return _.has(this.constraintInputKeyValues, key)
     },
     setConstraintCheck: function(key, target) {
-      let isChecked = target.checked
+      const isChecked = target.checked
       if (!isChecked) {
         _.unset(this.constraintInputKeyValues, key)
       } else if (this.constraintBooleanBindings.indexOf(key) > -1) {
@@ -536,7 +536,6 @@ export default {
       return value
     },
     setBareNumber: function(target) {
-      let isChecked = target.checked
       this.setExtraType('bareNumber', target.checked)
     },
     setExtraType: function(type, value) {

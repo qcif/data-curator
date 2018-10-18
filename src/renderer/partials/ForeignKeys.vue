@@ -39,9 +39,8 @@
 import tablekeys from '../partials/TableKeys'
 import tableheaderkeys from '../partials/TableHeaderKeys'
 import RelationKeys from '../mixins/RelationKeys'
-import ForeignKeysTooltip from '../mixins/ForeignKeysTooltip'
-import {ipcRenderer as ipc} from 'electron'
-import {Package} from 'datapackage'
+import { ipcRenderer as ipc } from 'electron'
+import { Package } from 'datapackage'
 import {
   pushAllTabTitlesSubscription
 } from '@/store/modules/tabs.js'
@@ -376,7 +375,7 @@ export default {
       try {
         let hasValidUrl = await this.validate(field, value, 'url:true')
         if (!hasValidUrl) {
-          this.$validator.errors.add({field: field, msg: 'The package field must be a valid url.'})
+          this.$validator.errors.add({ field: field, msg: 'The package field must be a valid url.' })
           return false
         }
         return true

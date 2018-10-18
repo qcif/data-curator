@@ -1,10 +1,10 @@
-import {HotRegister, insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight, removeRows, removeColumns} from '@/hot.js'
-import {loadDataIntoHot, saveDataToFile} from '@/data-actions.js'
-import {ipcRenderer as ipc, remote} from 'electron'
-import {isCaseSensitive} from '@/frictionlessUtilities'
-import {pushCsvDialect} from '@/dialect.js'
-import {menu} from '@/menu.js'
-import {fileFormats} from '@/file-formats.js'
+import { HotRegister, insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight, removeRows, removeColumns } from '@/hot.js'
+import { loadDataIntoHot, saveDataToFile } from '@/data-actions.js'
+import { ipcRenderer as ipc, remote } from 'electron'
+import { isCaseSensitive } from '@/frictionlessUtilities'
+import { pushCsvDialect } from '@/dialect.js'
+import { menu } from '@/menu.js'
+import { fileFormats } from '@/file-formats.js'
 import fs from 'fs-extra'
 import store from '@/store'
 
@@ -27,14 +27,14 @@ export function addHotContainerListeners(container, loadingFn, closeLoadingFn) {
         const tabId = store.getters.getTabIdFromHotId(hot.guid)
         // if we're dragging a file in, default the format to comma-separated
         loadData(hot.guid, data, fileFormats.csv, closeLoadingFn)
-        store.commit('pushTabObject', {id: tabId, filename: f.path})
+        store.commit('pushTabObject', { id: tabId, filename: f.path })
       }
     })
   }
 
   container.addEventListener('contextmenu', function(e) {
     e.preventDefault()
-    menu.popup(getWindow('home'), {async: true})
+    menu.popup(getWindow('home'), { async: true })
   }, false)
 }
 
@@ -121,7 +121,7 @@ ipc.on('removeColumns', function() {
 ipc.on('toggleCaseSensitiveHeader', function() {
   let hotId = HotRegister.getActiveInstance().guid
   const toggledCase = !isCaseSensitive(hotId)
-  pushCsvDialect(hotId, {caseSensitiveHeader: toggledCase})
+  pushCsvDialect(hotId, { caseSensitiveHeader: toggledCase })
   ipc.send('hasCaseSensitiveHeader', toggledCase)
 })
 

@@ -1,13 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import modules from '../../../src/renderer/store/modules'
 import Errors from '../../../src/renderer/components/Errors.vue'
-import {shallow} from '@vue/test-utils'
-import { remote, BrowserWindow } from 'electron'
+import { shallow } from '@vue/test-utils'
+import { BrowserWindow } from 'electron'
 Vue.use(Vuex)
-Vue.directive('tooltip', function(el, binding) {
-  // el.style.backgroundColor = binding.value
-})
 
 export function mountVuePageWithStore(page, storeFn) {
 // export function mountVuePageWithStore(page) {

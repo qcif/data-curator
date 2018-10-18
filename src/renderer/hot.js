@@ -1,8 +1,7 @@
 import Handsontable from 'handsontable/dist/handsontable.full.min.js'
-import {remote, ipcRenderer as ipc} from 'electron'
+import { ipcRenderer as ipc } from 'electron'
 import store from '@/store/modules/hots.js'
-import {allTablesAllColumnsFromSchema$, allTablesAllColumnNames$, afterSetDataAtCell$} from '@/rxSubject.js'
-const Dialog = remote.dialog
+import { allTablesAllColumnsFromSchema$, allTablesAllColumnNames$, afterSetDataAtCell$ } from '@/rxSubject.js'
 
 const _hots = {}
 const searchCallback = Handsontable.plugins.Search.DEFAULT_CALLBACK
@@ -37,7 +36,7 @@ const HotRegister = {
       },
       undo: true,
       search: searchParameters,
-      tabMoves({shiftKey}) {
+      tabMoves({ shiftKey }) {
         if (!shiftKey) {
           const selection = hot.getSelectedLast()
           let next = hot.getCell(selection[0], selection[1] + 1)
@@ -45,7 +44,7 @@ const HotRegister = {
             hot.alter('insert_col', selection[1] + 1)
           }
         }
-        return {row: 0, col: 1}
+        return { row: 0, col: 1 }
       },
       afterInit() {
         if (typeof listeners.loadingStartListener !== 'undefined') {
@@ -74,7 +73,7 @@ const HotRegister = {
       afterSetDataAtCell() {
         afterSetDataAtCell$.next(true)
       },
-      enterMoves({shiftKey}) {
+      enterMoves({ shiftKey }) {
         if (!shiftKey) {
           const selection = hot.getSelectedLast()
           let next = hot.getCell(selection[0] + 1, selection[1])
@@ -85,10 +84,10 @@ const HotRegister = {
               col: 0 - selection[1]
             }
           } else {
-            return {row: 1, col: 0}
+            return { row: 1, col: 0 }
           }
         } else {
-          return {row: 1, col: 0}
+          return { row: 1, col: 0 }
         }
       }
     })
@@ -96,7 +95,6 @@ const HotRegister = {
     return hot.guid
   },
   getInstance(id) {
-    let hot = _.get(_hots, id)
     return _.get(_hots, id)
   },
   getAllHotIds() {
@@ -117,7 +115,7 @@ const HotRegister = {
   },
   getActiveHotIdData() {
     let activeHot = this.getActiveInstance()
-    return {'id': activeHot.guid, 'data': activeHot.getData()}
+    return { 'id': activeHot.guid, 'data': activeHot.getData() }
   },
   destroyAllHots() {
     _.forIn(_hots, (hot, id) => {
@@ -271,7 +269,7 @@ export function insertColumn(offset, mathFn) {
   if (typeof range !== 'undefined') {
     const selection = mathFn(range.from.col, range.to.col) + offset
     hot.alter('insert_col', selection)
-    store.mutations.pushColumnIndexForHotId(store.state, {hotId: hot.guid, columnIndex: selection})
+    store.mutations.pushColumnIndexForHotId(store.state, { hotId: hot.guid, columnIndex: selection })
     removeHeaderAtIndex(hot, selection)
     // needed for sidenav arrows reset
     reselectCurrentCellOrMin()
@@ -288,8 +286,8 @@ export function removeHeaderAtIndex(hot, index) {
   if (hot.hasColHeaders()) {
     let header = hot.getColHeader()
     header[index] = null
-    hot.updateSettings({colHeaders: header})
-    store.mutations.pushColumnProperty(store.state, {hotId: hot.guid, columnIndex: index, key: 'name', value: ''})
+    hot.updateSettings({ colHeaders: header })
+    store.mutations.pushColumnProperty(store.state, { hotId: hot.guid, columnIndex: index, key: 'name', value: '' })
   }
 }
 
@@ -321,7 +319,7 @@ export function removeColumns() {
     // cols are re-indexed after each remove
     // so always remove 'start'
     hot.alter('remove_col', start)
-    store.mutations.removeColumnIndexForHotId(store.state, {hotId: hot.guid, columnIndex: start})
+    store.mutations.removeColumnIndexForHotId(store.state, { hotId: hot.guid, columnIndex: start })
     allTablesAllColumnsFromSchema$.next(store.getters.getAllHotTablesColumnProperties(store.state, store.getters)())
     allTablesAllColumnNames$.next(store.getters.getAllHotTablesColumnNames(store.state, store.getters)())
   }

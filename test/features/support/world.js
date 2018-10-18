@@ -7,7 +7,7 @@ import chaiAsPromised from 'chai-as-promised'
 chai.should()
 chai.use(chaiAsPromised)
 
-function CustomWorld ({attach, parameters}) {
+function CustomWorld ({ attach, parameters }) {
   // console.log('starting world...')
   this.attach = attach
   this.parameters = parameters

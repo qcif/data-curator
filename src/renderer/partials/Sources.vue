@@ -24,13 +24,11 @@
 <script>
 import {
   mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
 import SideNav from './SideNav'
 import AsyncComputed from 'vue-async-computed'
 import ValidationRules from '../mixins/ValidationRules'
-import VeeValidate from 'vee-validate'
 import Vue from 'vue'
 Vue.use(AsyncComputed)
 export default {
@@ -80,7 +78,7 @@ export default {
       this.sources = sources
     },
     emptySource: function() {
-      return {'title': '', 'path': '', 'email': ''}
+      return { 'title': '', 'path': '', 'email': '' }
     },
     getSourcesFromTab: async function(tab) {
       let hotId = await this.waitForHotIdFromTabId(tab)
@@ -89,7 +87,7 @@ export default {
     },
     // TODO: fix this redundant method
     initSources: async function(tab) {
-      let sources = await this.getSourcesFromTab(tab)
+      await this.getSourcesFromTab(tab)
     },
     setSourceProp: function(index, prop, value) {
       this.setProperty(`sources[${index}][${prop}]`, value)
@@ -107,7 +105,7 @@ export default {
         let hasValidPath = await this.validatePath(field, value)
         this.$validator.detach(field)
         if (!hasValidUrl && !hasValidPath) {
-          this.$validator.errors.add({field: field, msg: 'The path field must be a valid url or path.'})
+          this.$validator.errors.add({ field: field, msg: 'The path field must be a valid url or path.' })
         }
       } catch (err) {
         console.error('Problem with validation', err)

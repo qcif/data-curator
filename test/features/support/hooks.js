@@ -1,20 +1,16 @@
-import { Application } from 'spectron'
-import electron from 'electron'
-import { After, Before, Status, Given, When, Then } from 'cucumber'
+import { After, Before, Status } from 'cucumber'
 import fakeDialog from 'spectron-fake-dialog'
-import { expect, should, assert } from 'chai'
-import {exec} from 'child_process'
-const _ = require('lodash')
+import { exec } from 'child_process'
 
 async function stopAppRunning(app) {
   try {
     if (app && app.isRunning()) {
     // console.log('Attempting to stop app...')
-      const result = await app.stop()
+      await app.stop()
     }
     // this is just in case for slower OS/windows - catch any error and ignore
     if (app && app.electron) {
-      const forceQuitResult = await this.app.electron.ipcRenderer.sendSync('forceQuit')
+      await this.app.electron.ipcRenderer.sendSync('forceQuit')
     }
   } catch (error) {
     // console.log('error caught when stopping run. ignoring')
@@ -35,7 +31,7 @@ function tallyTestAppveyor(testCase) {
   }
 }
 
-After({timeout: 40000}, async function (testCase) {
+After({ timeout: 40000 }, async function (testCase) {
   try {
     if (testCase.result.status === Status.FAILED) {
       if (this.app && this.app.browserWindow) {
@@ -52,7 +48,7 @@ After({timeout: 40000}, async function (testCase) {
   }
 })
 
-Before({timeout: 20000}, async function (testCase) {
+Before({ timeout: 20000 }, async function (testCase) {
   try {
     // console.log('Starting before hook....')
     console.log(`Starting test scenario: ${testCase.pickle.name} in: ${testCase.sourceLocation.uri}`)
@@ -66,9 +62,9 @@ Before({timeout: 20000}, async function (testCase) {
     await this.app.client.waitUntilWindowLoaded()
     await this.app.electron.ipcRenderer.sendSync('unlockSingleton')
     await this.app.client.browserWindow.focus()
-    const result = await this.app.client.browserWindow.isFocused()
-    await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{method: 'showMessageBox', value: 1}])
-    await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{method: 'showOpenDialog', value: this.openFileDialogReturned}])
+    await this.app.client.browserWindow.isFocused()
+    await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showMessageBox', value: 1 }])
+    await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showOpenDialog', value: this.openFileDialogReturned }])
   } catch (error) {
     console.log('error in before hook', error)
     await stopAppRunning(this.app)

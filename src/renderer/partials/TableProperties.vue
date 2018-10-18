@@ -18,7 +18,6 @@
 <script>
 import {
   mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
 import SideNav from './SideNav'
@@ -34,9 +33,6 @@ import {
 import TableTooltip from '../mixins/TableTooltip'
 import ValidationRules from '../mixins/ValidationRules'
 import autosize from 'autosize'
-// import {
-//   Validator
-// } from 'vee-validate'
 Vue.use(AsyncComputed)
 export default {
   extends: SideNav,

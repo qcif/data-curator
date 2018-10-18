@@ -64,5 +64,5 @@ export function replaceLabelWithKebabAndCamelCase(selector, toReplace) {
 export function kebabAndCamelCase(selector) {
   const kebabCase = _.kebabCase(selector)
   const camelCase = _.camelCase(selector)
-  return {kebabCase, camelCase}
+  return { kebabCase, camelCase }
 }

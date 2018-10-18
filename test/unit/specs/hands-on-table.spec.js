@@ -1,9 +1,9 @@
 import Handsontable from 'handsontable/dist/handsontable.full.js'
-import {HotRegister, insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight} from '@/hot.js'
+import { insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight } from '@/hot.js'
 import store from '@/store/modules/hots.js'
-import {resetHotStore} from '../helpers/storeHelper.js'
-import {stubHotInDocumentDom, resetHot, registerHot} from '../helpers/basicHotHelper.js'
-import {globalBefore} from '../helpers/globalHelper.js'
+import { resetHotStore } from '../helpers/storeHelper.js'
+import { stubHotInDocumentDom, resetHot, registerHot } from '../helpers/basicHotHelper.js'
+import { globalBefore } from '../helpers/globalHelper.js'
 
 describe('hands on table', () => {
   let data

@@ -34,11 +34,11 @@
 <script>
 import Vue from 'vue'
 import VueGoodTable from 'vue-good-table'
-import {ipcRenderer as ipc} from 'electron'
-import {getWindow, closeSecondaryWindow} from '../index.js'
+import { ipcRenderer as ipc } from 'electron'
+import { getWindow } from '../index.js'
 import rowLink from '../partials/RowLink'
 import ErrorsTooltip from '../mixins/ErrorsTooltip'
-import {provenanceErrors$} from '@/rxSubject.js'
+import { provenanceErrors$ } from '@/rxSubject.js'
 import {
   mapMutations
 } from 'vuex'
@@ -87,7 +87,7 @@ export default {
       'pushProvenanceErrors'
     ]),
     goToCell: function(error) {
-      this.homeWindow.webContents.send('showErrorCell', {row: error.rowNumber, column: error.columnNumber})
+      this.homeWindow.webContents.send('showErrorCell', { row: error.rowNumber, column: error.columnNumber })
     },
     setErrorMessages: function(errorMessages) {
       this.messages = errorMessages.messages
@@ -123,7 +123,7 @@ export default {
       this.rows = []
       if (messages) {
         for (let next of messages) {
-          this.rows.push({rowNumber: next.rowNumber, columnNumber: next.columnNumber, message: next.message})
+          this.rows.push({ rowNumber: next.rowNumber, columnNumber: next.columnNumber, message: next.message })
         }
       }
     }

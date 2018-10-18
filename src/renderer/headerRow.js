@@ -1,8 +1,8 @@
-import {ipcRenderer as ipc} from 'electron'
-import {allTablesAllColumnNames$} from '@/rxSubject.js'
+import { ipcRenderer as ipc } from 'electron'
+import { allTablesAllColumnNames$ } from '@/rxSubject.js'
 import store from '@/store'
-import {HotRegister} from '@/hot.js'
-import {pushAllTabTitlesSubscription} from '@/store/modules/tabs.js'
+import { HotRegister } from '@/hot.js'
+import { pushAllTabTitlesSubscription } from '@/store/modules/tabs.js'
 
 export function toggleHeaderWithFeedback(hot, errorFunction, successFunction) {
   if (hot.hasColHeaders()) {
@@ -32,7 +32,7 @@ export function toggleHeaderNoFeedback(hot) {
 export function toggleHeaderOff(hot) {
   let header = hot.getColHeader()
   let data = _.concat([header], hot.getData())
-  updateHot(hot, data, {colHeaders: false, columnSorting: false})
+  updateHot(hot, data, { colHeaders: false, columnSorting: false })
   updateAllColumnsName(header.map(x => {
     return ''
   }))
@@ -43,7 +43,7 @@ export function toggleHeaderOn(hot) {
   let data = hot.getData()
   let header = data[0]
   data = _.drop(data)
-  updateHot(hot, data, {colHeaders: header, columnSorting: true})
+  updateHot(hot, data, { colHeaders: header, columnSorting: true })
   updateAllColumnsName(hot.getColHeader())
   ipc.send('hasHeaderRow', true)
 }

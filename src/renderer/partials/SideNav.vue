@@ -10,8 +10,6 @@
 </template>
 <script>
 import {
-  mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
 import {
@@ -103,7 +101,7 @@ export default {
   beforeCreate: function() {
     this.$nextTick(function() {
       // set hidden inputs
-      let found = this.formprops.forEach(x => {
+      this.formprops.forEach(x => {
         if (x.type ==='hidden') {
           this.setProperty(x.key, x.value)
         }

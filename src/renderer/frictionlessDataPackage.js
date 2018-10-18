@@ -1,10 +1,10 @@
-import {Resource, Package} from 'datapackage'
-import {HotRegister} from '@/hot.js'
+import { Resource, Package } from 'datapackage'
+import { HotRegister } from '@/hot.js'
 import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
 import path from 'path'
-import {createZipFile} from '@/exportPackage.js'
-import {hasAllColumnNames, getValidNames} from '@/frictionlessUtilities.js'
+import { createZipFile } from '@/exportPackage.js'
+import { hasAllColumnNames, getValidNames } from '@/frictionlessUtilities.js'
 
 export async function createDataPackage() {
   const errorMessages = []

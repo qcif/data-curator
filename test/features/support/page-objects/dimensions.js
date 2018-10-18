@@ -1,4 +1,3 @@
-import _ from 'lodash'
 
 export async function tableRowAndColCount(app) {
   const parentSelector = '.tab-pane.active .editor.handsontable'
@@ -8,5 +7,5 @@ export async function tableRowAndColCount(app) {
   const colResponse = await app.client.element(parentSelector)
     .elements('.ht_master table tr:first-of-type td')
   const tableColCount = colResponse.value.length
-  return {tableRowCount, tableColCount}
+  return { tableRowCount, tableColCount }
 }

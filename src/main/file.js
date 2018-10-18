@@ -1,9 +1,8 @@
-import {dialog as Dialog, BrowserWindow, ipcMain as ipc} from 'electron'
+import { dialog as Dialog, ipcMain as ipc } from 'electron'
 import Fs from 'fs'
-import {enableSave, createWindowTabWithFormattedDataFile, focusMainWindow} from './windows'
+import { createWindowTabWithFormattedDataFile, focusMainWindow } from './windows'
 import _ from 'lodash'
-import {disableOpenFileItems, enableOpenFileItems} from './menuUtils.js'
-let path = require('path')
+import { disableOpenFileItems, enableOpenFileItems } from './menuUtils.js'
 
 export function saveFileAs(format) {
   let currentWindow = focusMainWindow()
@@ -47,7 +46,7 @@ export function saveFile() {
 export function importDataPackage() {
   disableOpenFileItems()
   let window = focusMainWindow()
-  const result = Dialog.showOpenDialog({
+  Dialog.showOpenDialog({
     filters: [
       {
         name: '*',
