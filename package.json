@@ -25,7 +25,6 @@
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "postinstall": "electron-builder install-app-deps",
     "test-main": "mocha-webpack --webpack-config .electron-vue/webpack.test.config.js --glob *_spec.js test/main/specs",
-    "test-renderer": "mocha-webpack --webpack-config .electron-vue/webpack.renderer.config.js --glob *.dev.js --recursive test/unit/specs",
     "test": "(yarn run unit || yarn -v) && yarn run e2e",
     "unit": "yarn run clean && karma start test/unit/karma.conf.js",
     "e2e": "yarn run clean && yarn run pack && yarn run cucumber:postpack",
@@ -126,6 +125,7 @@
   },
   "devDependencies": {
     "@vue/test-utils": "^1.0.0-beta.25",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",

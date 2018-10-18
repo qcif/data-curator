@@ -94,8 +94,6 @@ function handleDownloadedZip(zipPath, mainWindow) {
 }
 
 async function loadPackageFromJsonUrl(urlText) {
-  let response = await testProxy()
-  console.log(`response data was: `, response.data)
   const mainWindow = focusMainWindow()
   mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading package URL..')
   const dataPackageJson = await loadPackageJson(urlText, mainWindow)
@@ -119,31 +117,6 @@ async function loadPackageFromJsonUrl(urlText) {
     await loadResources(dataPackageJson, mainWindow)
   } catch (error) {
     console.error('There was a problem loading package from json', error)
-  }
-}
-
-async function testProxy() {
-  try {
-    // let response = await axios({
-    //   method: 'get',
-    //   url: 'http://localhost:8006/redbox/api/v1.1/info',
-    //   headers: {'Authorization': 'Bearer 2755c36b-6e5e-489a-8c61-24977f9c791b'}
-    // })
-    let response = await axios({
-      method: 'get',
-      url: 'http://raw.githubusercontent.com/frictionlessdata/example-data-packages/master/countries-and-currencies/datapackage.json',
-      proxy: {
-        host: 'localhost',
-        port: 8005,
-        auth: {
-          username: 'mikeymike',
-          password: 'rapunz3l'
-        }
-      }
-    })
-    return response
-  } catch (error) {
-    console.error(`There was a problem with the text proxy`, error)
   }
 }
 

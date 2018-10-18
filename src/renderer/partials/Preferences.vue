@@ -1,20 +1,20 @@
 <template>
-    <form class="navbar-form form-horizontal" id="preferenceProperties">
-        <div class="form-group-sm row container-fluid">
-            <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
-                <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3"
-                       :for="formprop.label">{{formprop.label}}</label>
-                <component :is="formprop.tooltipView"/>
-                <component v-if="isSharedComponent(formprop.key)" :propertyName="formprop.key"
-                           :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId"
-                           :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId"
-                           :currentHotId="currentHotId" :is="formprop.key" :contributorsSetter="contributorsSetter"/>
-                <div v-show="errors.has(formprop.key) && removeProperty(formprop.key)" class="row help validate-danger">
-                    {{ errors.first(formprop.key)}}
-                </div>
-            </div>
+  <form class="navbar-form form-horizontal" id="preferenceProperties">
+    <div class="form-group-sm row container-fluid">
+      <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
+        <label v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label col-sm-3"
+               :for="formprop.label">{{formprop.label}}</label>
+        <component :is="formprop.tooltipView"/>
+        <component v-if="isSharedComponent(formprop.key)" :propertyName="formprop.key"
+                   :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId"
+                   :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId"
+                   :currentHotId="currentHotId" :is="formprop.key" :contributorsSetter="contributorsSetter"/>
+        <div v-show="errors.has(formprop.key) && removeProperty(formprop.key)" class="row help validate-danger">
+          {{ errors.first(formprop.key)}}
         </div>
-    </form>
+      </div>
+    </div>
+  </form>
 </template>
 <script>
   import SideNav from '@/partials/SideNav'
@@ -34,18 +34,19 @@
     },
     data() {
       return {
-        formprops: [{
-          label: 'License(s)',
-          key: 'licenses',
-          tooltipId: 'tooltip-preferences-licenses',
-          tooltipView: 'tooltipPreferencesLicenses'
-        },
-        {
-          label: 'Contributor(s)',
-          key: 'contributors',
-          tooltipId: 'tooltip-preferences-contributors',
-          tooltipView: 'tooltipPreferencesContributors'
-        }]
+        formprops: [
+          {
+            label: 'License(s)',
+            key: 'licenses',
+            tooltipId: 'tooltip-preferences-licenses',
+            tooltipView: 'tooltipPreferencesLicenses'
+          },
+          {
+            label: 'Contributor(s)',
+            key: 'contributors',
+            tooltipId: 'tooltip-preferences-contributors',
+            tooltipView: 'tooltipPreferencesContributors'
+          }]
       }
     },
     methods: {
@@ -84,8 +85,8 @@
   }
 </script>
 <style lang="styl" scoped>
-    @import '~static/css/validationrules'
+  @import '~static/css/validationrules'
 </style>
 <style lang="styl" scoped>
-    @import '~static/css/sidenav'
+  @import '~static/css/sidenav'
 </style>

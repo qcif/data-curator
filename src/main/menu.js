@@ -111,13 +111,6 @@ class AppMenu {
             label: 'Paste',
             accelerator: 'CmdOrCtrl+V'
           },
-          // {
-          //    turned off for Beta release
-          //    role: 'selectall',
-          //   label: 'Select All',
-          //   enabled: false,
-          //   accelerator: 'CmdOrCtrl+A'
-          // },
           {
             type: 'separator'
           }, {
@@ -236,24 +229,8 @@ class AppMenu {
               menuItem.checked = !menuItem.checked
               webContents().send('toggleCaseSensitiveHeader')
             }
-          }, {
-            // Placeholder for future features
-            //      }, {
-            //        type: 'separator'
-            //      }, {
-            //        label: 'Import Column Properties...',
-            //        enabled: false
-            //      }, {
-            //        type: 'separator'
-            //      }, {
-            //        label: 'Create Constraint from Column',
-            //        enabled: false
-            //      }, {
-            //        label: 'Create Reference Table from Column',
-            //        enabled: false
-            // }, {
-            //  type: 'separator'
-            // }, {
+          },
+          {
             label: 'Guess Column Properties',
             accelerator: 'Shift+CmdOrCtrl+G',
             click: function () {
@@ -302,27 +279,6 @@ class AppMenu {
               webContents().send('triggerMenuButton', 'Export')
             }
           }
-          // Placeholder for future features
-          //      , {
-          // Conditionally enabled based on API keys set and Data Package Exported
-          //        label: 'Publish Data Package to',
-          //        enabled: false,
-          //        submenu: [
-          //          {
-          //            label: 'CKAN',
-          //            enabled: false
-          //          , icon: '/static/img/locked.svg'
-          //          }, {
-          //            label: 'DataHub',
-          //            enabled: false
-          //          , icon: '/static/img/locked.svg'
-          //          }, {
-          //            label: 'OctoPub',
-          //            enabled: false
-          //          , icon: '/static/img/locked.svg'
-          //          }
-          //        ]
-          //      }
         ]
       },
       {
@@ -332,15 +288,6 @@ class AppMenu {
             role: 'minimize'
           }, {
             role: 'zoom'
-            // hide until implemented
-            // }, {
-            //   type: 'separator'
-            // }, {
-            //   label: 'Next Tab',
-            //   accelerator: 'CmdOrCtrl+Right'
-            // }, {
-            //   label: 'Previous Tab',
-            //   accelerator: 'CmdOrCtrl+Left'
           }, {
             type: 'separator'
           }, {
@@ -351,17 +298,6 @@ class AppMenu {
         role: 'help',
         submenu: [
           {
-            // Placeholder for future features
-            //        label: 'Data Curator Help',
-            // show accelerator for Windows and Linux only
-            //        accelerator: process.platform === 'darwin'
-            //          ? ''
-            //          : 'F1',
-            // hide above
-            //        click: function() {
-            //          shell.openExternal('https://odiqueensland.github.io/data-curator-help/')
-            //        }
-            //      }, {
             label: 'Keyboard Shortcuts',
             accelerator: 'CmdOrCtrl+/',
             enabled: true,
@@ -381,13 +317,6 @@ class AppMenu {
               shell.openExternal('https://github.com/ODIQueensland/data-curator/blob/develop/.github/CONTRIBUTING.md')
             }
           }
-          // Placeholder for future feature
-          //      , {
-          //        type: 'separator'
-          //      }, {
-          //        label: 'Welcome Guide',
-          //        enabled: false
-          //      }
         ]
       }
     ]

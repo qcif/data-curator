@@ -63,20 +63,6 @@ ipc.on('saveData', function(e, format, fileName) {
   saveDataToFile(hot, format, fileName)
 })
 
-// TODO: correct once github references re-introduced
-// ipc.on('getCSV', function(e, format) {
-//   let hot = HotRegister.getActiveInstance()
-//   var data
-//   // if no format specified, default to csv
-//   // TODO: update to node csv and check dialect mappings
-//   // if (typeof format === 'undefined') {
-//   //   data = $.csv.fromArrays(hot.getData())
-//   // } else {
-//   //   data = $.csv.fromArrays(hot.getData(), format.options)
-//   // }
-//   ipc.send('sendCSV', data)
-// })
-
 ipc.on('editUndo', function() {
   let hot = HotRegister.getActiveInstance()
   if (hot.isUndoAvailable) {

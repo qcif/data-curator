@@ -5,42 +5,6 @@ import _ from 'lodash'
 import {disableOpenFileItems, enableOpenFileItems} from './menuUtils.js'
 let path = require('path')
 
-// function makeCustomFormat(separator, delimiter) {
-//   // assemble a format object describing a custom format
-//   return {
-//     label: 'Custom',
-//     filters: [],
-//     dialect: {
-//       delimiter: delimiter,
-//       quoteChar: quoteChar
-//
-//     },
-//     mediatype: 'text/plain',
-//     format: 'txt'
-//   }
-// }
-
-// function saveAsCustom() {
-//   let currentWindow = focusMainWindow()
-//   let dialog
-//   if (process.env.BABEL_ENV === 'test' || process.env.NODE_ENV === 'development') {
-//     dialog = new BrowserWindow({width: 200, height: 400})
-//   } else {
-//     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
-//   }
-//   dialog.setMenu(null)
-//   dialog.once('closed', function() {
-//     ipc.removeAllListeners('formatSelected')
-//     dialog = null
-//   })
-//   ipc.once('formatSelected', function(event, data) {
-//     dialog.close()
-//     let format = makeCustomFormat(data.delimiter, data.quoteChar)
-//     saveFileAs(format, currentWindow)
-//   })
-//   dialog.loadURL(`http://localhost:9080/#/customformat`)
-// }
-
 export function saveFileAs(format) {
   let currentWindow = focusMainWindow()
   Dialog.showSaveDialog({
@@ -62,7 +26,6 @@ To save the data, choose a unique file name.`
       })
       return
     }
-    // enableSave()
     currentWindow.webContents.send('saveData', format, filename)
     currentWindow.format = format
     currentWindow.webContents.send('saveDataSuccess')
@@ -80,27 +43,6 @@ export function saveFile() {
   let currentWindow = focusMainWindow()
   currentWindow.webContents.send('saveData', currentWindow.format, global.tab.activeFilename)
 }
-
-// function openCustom() {
-//   // var window = focusMainWindow()
-//   let dialog
-//   if (process.env.BABEL_ENV === 'test' || process.env.NODE_ENV === 'development') {
-//     dialog = new BrowserWindow({width: 200, height: 400})
-//   } else {
-//     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
-//   }
-//   dialog.setMenu(null)
-//   dialog.once('closed', function() {
-//     ipc.removeAllListeners('formatSelected')
-//     dialog = null
-//   })
-//   ipc.once('formatSelected', function(event, data) {
-//     dialog.close()
-//     var format = makeCustomFormat(data.separator, data.delimiter)
-//     openFile(format)
-//   })
-//   dialog.loadURL(`http://localhost:9080/#/customformat`)
-// }
 
 export function importDataPackage() {
   disableOpenFileItems()
