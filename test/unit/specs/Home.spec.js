@@ -1,16 +1,14 @@
 import Home from '@/components/Home'
-import {stubSimpleTabStore} from '../helpers/storeHelper.js'
-import {mountVuePageWithStore, shallowMountErrors, stubBrowserWindow} from '../helpers/vueHelper.js'
-import {globalStubWindows} from '../helpers/globalHelper.js'
-import {shallow, mount, createLocalVue, config} from '@vue/test-utils'
-import {registerHotWithContainer, resetHot, stubHotRegisterActiveInstance} from '../helpers/basicHotHelper.js'
-import {HotRegister} from '@/hot.js'
-import {remote} from 'electron'
+import { stubSimpleTabStore } from '../helpers/storeHelper.js'
+// import { shallowMountErrors} from '../helpers/vueHelper.js'
+import { mount, createLocalVue } from '@vue/test-utils'
+import { registerHotWithContainer, resetHot, stubHotRegisterActiveInstance } from '../helpers/basicHotHelper.js'
+import { HotRegister } from '@/hot.js'
 import Vuex from 'vuex'
 import flushPromises from 'flush-promises'
 
 describe('Home.vue', () => {
-  const toolbarMenuTitles = Home.data().toolbarMenus
+  // const toolbarMenuTitles = Home.data().toolbarMenus
   // dummmy test to begin with to incorporate vue/html with existing framework
   describe('Home.vue toolbar menus', () => {
     // let vm
@@ -99,7 +97,7 @@ describe('Home.vue', () => {
       const localVue = createLocalVue()
       localVue.use(Vuex)
       let store = new Vuex.Store(stubSimpleTabStore())
-      wrapper = mount(Home, {store, localVue, attachToDocument: true})
+      wrapper = mount(Home, { store, localVue, attachToDocument: true })
       let container = wrapper.vm.$el.querySelector('#csvContent .editor')
       hot = registerHotWithContainer(container)
     })
@@ -113,9 +111,9 @@ describe('Home.vue', () => {
       expect(wrapper.vm.currentColumnIndex).to.equal(0)
       expect(wrapper.vm.messages).to.equal(false)
       this.stub(HotRegister, 'getActiveInstance').returns(hot)
-      let errorsWrapper = shallowMountErrors()
+      // let errorsWrapper = shallowMountErrors()
       let messages = stubBasicErrorMessage1()
-      wrapper.setData({messagesTitle: 'Validation Errors', messagesType: 'error', messages: messages})
+      wrapper.setData({ messagesTitle: 'Validation Errors', messagesType: 'error', messages: messages })
       await flushPromises()
       const el = wrapper.findAll(`#csvContent .editor .ht_master table.htCore tr:nth-of-type(1) td:nth-of-type(1).htCommentCell`)
       expect(el.length).to.equal(1)
@@ -125,7 +123,7 @@ describe('Home.vue', () => {
       expect(wrapper.vm.messages).to.equal(false)
       this.stub(HotRegister, 'getActiveInstance').returns(hot)
       let messages = stubBasicErrorMessage1()
-      wrapper.setData({messagesTitle: 'Validation Errors', messagesType: 'foo', messages: messages})
+      wrapper.setData({ messagesTitle: 'Validation Errors', messagesType: 'foo', messages: messages })
       await flushPromises()
       const el = wrapper.findAll(`#csvContent .editor .ht_master table.htCore tr:nth-of-type(1) td:nth-of-type(1).htCommentCell`)
       expect(el.length).to.equal(0)

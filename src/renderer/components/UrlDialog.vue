@@ -14,8 +14,7 @@
 </div>
 </template>
 <script>
-import ValidationRules from '@/mixins/ValidationRules'
-import {ipcRenderer as ipc} from 'electron'
+import { ipcRenderer as ipc } from 'electron'
 export default {
   name: 'urldialog',
   data() {

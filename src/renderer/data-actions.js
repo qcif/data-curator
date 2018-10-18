@@ -1,14 +1,14 @@
 import store from '@/store'
 import fs from 'fs'
-import {fixRaggedRows} from '@/ragged-rows.js'
-import {includeHeadersInData} from '@/frictionlessUtilities.js'
-import {toggleHeaderNoFeedback} from '@/headerRow.js'
-import {pushCsvFormat} from '@/dialect.js'
+import { fixRaggedRows } from '@/ragged-rows.js'
+import { includeHeadersInData } from '@/frictionlessUtilities.js'
+import { toggleHeaderNoFeedback } from '@/headerRow.js'
+import { pushCsvFormat } from '@/dialect.js'
 var parse = require('csv-parse/lib/sync')
 var stringify = require('csv-stringify/lib/sync')
 
 // { delimiter: ',', lineTerminator, quoteChar, doubleQuote, escapeChar, nullSequence, skipInitialSpace, header, caseSensitiveHeader, csvddfVersion }
-const frictionlessToCsvmapper = {delimiter: 'delimiter', lineTerminator: 'rowDelimiter', quoteChar: 'quote', escapeChar: 'escape', skipInitialSpace: 'ltrim'}
+const frictionlessToCsvmapper = { delimiter: 'delimiter', lineTerminator: 'rowDelimiter', quoteChar: 'quote', escapeChar: 'escape', skipInitialSpace: 'ltrim' }
 
 export function loadDataIntoHot(hot, data, format) {
   if (_.isArray(data)) {
@@ -52,7 +52,7 @@ export function loadArrayDataIntoHot(hot, arrays, format) {
 export function saveDataToFile(hot, format, filename, callback) {
   let tabId = store.getters.getActiveTab()
   if (typeof filename === 'string') {
-    store.commit('pushTabObject', {id: tabId, filename: filename})
+    store.commit('pushTabObject', { id: tabId, filename: filename })
   } else {
     filename = store.getters.getTabObjects(`${tabId}.filename`)
   }

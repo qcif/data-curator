@@ -1,4 +1,4 @@
-import {HotRegister} from '@/hot.js'
+import { HotRegister } from '@/hot.js'
 
 let hotRegisterActiveQueryStub
 let hotRegisterActiveInstanceStub

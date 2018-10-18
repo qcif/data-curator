@@ -1,13 +1,8 @@
 import Home from '@/components/Home'
-import {stubSimpleTabStore} from '../helpers/storeHelper.js'
-import {mountVuePageWithStore, shallowMountErrors, stubBrowserWindow} from '../helpers/vueHelper.js'
-import {globalStubWindows} from '../helpers/globalHelper.js'
-import {shallow, mount, createLocalVue, config} from '@vue/test-utils'
-import {registerHotWithContainer, resetHot, stubHotRegisterActiveInstance} from '../helpers/basicHotHelper.js'
-import {HotRegister} from '@/hot.js'
-import {remote} from 'electron'
+import { stubSimpleTabStore } from '../helpers/storeHelper.js'
+import { mount, createLocalVue } from '@vue/test-utils'
+import { registerHotWithContainer, resetHot, stubHotRegisterActiveInstance } from '../helpers/basicHotHelper.js'
 import Vuex from 'vuex'
-import flushPromises from 'flush-promises'
 
 describe('Home.vue', () => {
   // dummmy test to begin with to incorporate vue/html with existing framework
@@ -107,12 +102,12 @@ describe('Home.vue', () => {
   // })
 })
 
-function stubBasicErrorMessage1() {
-  return [
-    {
-      rowNumber: 1,
-      columnNumber: 1,
-      message: 'Test error'
-    }
-  ]
-}
+// function stubBasicErrorMessage1() {
+//   return [
+//     {
+//       rowNumber: 1,
+//       columnNumber: 1,
+//       message: 'Test error'
+//     }
+//   ]
+// }

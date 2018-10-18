@@ -1,10 +1,9 @@
-import { expect, should, assert } from 'chai'
-import { Given, When, Then } from 'cucumber'
-import {validationMessages} from '../page-objects/messages.js'
-import {errorColor} from '../page-objects/style.js'
-import {mapArrayToInteger} from '../page-objects/helpers.js'
+import { expect } from 'chai'
+import { Then } from 'cucumber'
+import { validationMessages } from '../page-objects/messages.js'
+import { errorColor } from '../page-objects/style.js'
+import { mapArrayToInteger } from '../page-objects/helpers.js'
 import _ from 'lodash'
-import os from 'os'
 
 Then(/^the success message should be displayed with message "([\w ]+?)"$/, function (message) {
   let regexp = new RegExp('^.*Success: ' + message + '.*$', 'm')

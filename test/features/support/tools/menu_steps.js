@@ -1,37 +1,35 @@
-import { expect, should, assert } from 'chai'
-import { Given, When, Then, After, Before } from 'cucumber'
+import { expect } from 'chai'
+import { Given, When, Then } from 'cucumber'
 import { fileFormats } from '../../../../src/renderer/file-formats.js'
-import {getFilePathFromFixtures} from '../page-objects/io.js'
-import {menu} from '../pageObjects.js'
-
-const _ = require('lodash')
+import { getFilePathFromFixtures } from '../page-objects/io.js'
+import { menu } from '../pageObjects.js'
 
 Given(/^"(?:Find|Find Replace)" is invoked$/, async function () {
-  await menu.invokeActions(this.app, {name: 'Find', type: 'application menu selection', sequence: 'Find->Find'})
+  await menu.invokeActions(this.app, { name: 'Find', type: 'application menu selection', sequence: 'Find->Find' })
 })
 
 Given(/^"Guess Column Properties" is invoked$/, async function () {
-  await menu.invokeActions(this.app, {name: 'Guess Column Properties', type: 'toolbar menu button', sequence: 'Guess'})
+  await menu.invokeActions(this.app, { name: 'Guess Column Properties', type: 'toolbar menu button', sequence: 'Guess' })
 })
 
 Given(/^"Validate Table" is invoked$/, async function () {
-  await menu.invokeActions(this.app, {name: 'Validate', type: 'toolbar menu button', sequence: 'Validate'})
+  await menu.invokeActions(this.app, { name: 'Validate', type: 'toolbar menu button', sequence: 'Validate' })
 })
 
 Given(/^"Table Properties" is invoked$/, async function () {
-  await menu.invokeActions(this.app, {name: 'Table Properties', type: 'toolbar menu button', sequence: 'Table'})
+  await menu.invokeActions(this.app, { name: 'Table Properties', type: 'toolbar menu button', sequence: 'Table' })
 })
 
 Given(/^"Column Properties" is invoked$/, async function () {
-  await menu.invokeActions(this.app, {name: 'Column Properties', type: 'toolbar menu button', sequence: 'Column'})
+  await menu.invokeActions(this.app, { name: 'Column Properties', type: 'toolbar menu button', sequence: 'Column' })
 })
 
 Given(/^"Provenance Information" is invoked$/, async function () {
-  await menu.invokeActions(this.app, {name: 'Provenance Information', type: 'toolbar menu button', sequence: 'Provenance'})
+  await menu.invokeActions(this.app, { name: 'Provenance Information', type: 'toolbar menu button', sequence: 'Provenance' })
 })
 
 Given(/^"Data Package Properties" is invoked$/, async function () {
-  await menu.invokeActions(this.app, {name: 'Data Package Properties', type: 'toolbar menu button', sequence: 'Package'})
+  await menu.invokeActions(this.app, { name: 'Data Package Properties', type: 'toolbar menu button', sequence: 'Package' })
 })
 
 // When(/^"About" is invoked$/, async function () {
@@ -42,7 +40,7 @@ When('{string} is invoked using the {string}: {string}', async function (name, t
   console.log(`sequence`, sequence)
   console.log(`type`, type)
   console.log(`name`, name)
-  await menu.invokeActions(this.app, {name: name, type: type, sequence: sequence})
+  await menu.invokeActions(this.app, { name: name, type: type, sequence: sequence })
 })
 
 When(/^the "([\w]+?)" toolbar menu is (?:selected|clicked|invoked)/, async function (toolbarMenuName) {

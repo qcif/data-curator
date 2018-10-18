@@ -8,7 +8,7 @@
   </td>
 </template>
 <script>
-import {getWindow} from '../index.js'
+import { getWindow } from '../index.js'
 export default {
   name: 'rowLink',
   props: ['gClass', 'row', 'value'],

@@ -1,4 +1,4 @@
-import {BrowserWindow} from 'electron'
+import { BrowserWindow } from 'electron'
 
 export function createWindowTab() {
   let mainWindow = focusMainWindow()
@@ -13,7 +13,7 @@ export function createMainWindow() {
   const url = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080`
     : `file://${__dirname}/index.html`
-  let mainWindow = newWindow('home', {width: 800, height: 600, minWidth: 800, minHeight: 600}, url)
+  let mainWindow = newWindow('home', { width: 800, height: 600, minWidth: 800, minHeight: 600 }, url)
   // TODO : remove? this is inherited property from legacy project, but doesn't seem to exist as a property in Electron.
   // mainWindow.format = fileFormats.csv
   mainWindow.on('resize', function() {

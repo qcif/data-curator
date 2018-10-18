@@ -144,7 +144,6 @@
 <script>
 import {
   mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
 import * as Sortable from 'sortablejs/Sortable.js'
@@ -156,16 +155,7 @@ import {
 import {
   HotRegister,
   getColumnCount,
-  getCurrentColumnIndexOrMin,
-  getCurrentColumnIndexOrMax,
-  reselectCurrentCellOrMin,
-  // incrementColumn,
-  // decrementColumn,
-  getActiveSelected,
-  reselectCellOrMin,
-  waitForHotInstance,
-  getColumnCountFromInstance,
-  getColumnCountFromInstanceId
+  getCurrentColumnIndexOrMin
 } from '../hot.js'
 import about from '../partials/About'
 import preferences from '../partials/Preferences'
@@ -178,23 +168,23 @@ import {
   guessColumnProperties,
   validateActiveDataAgainstSchema
 } from '../frictionless.js'
-import {createDataPackage} from '@/frictionlessDataPackage.js'
+import { createDataPackage } from '@/frictionlessDataPackage.js'
 import HomeTooltip from '../mixins/HomeTooltip'
 import ErrorsTooltip from '../mixins/ErrorsTooltip'
 import {
   fileFormats
 } from '../file-formats.js'
-import {ipcRenderer as ipc, remote} from 'electron'
+import { ipcRenderer as ipc, remote } from 'electron'
 import 'lodash/lodash.min.js'
-import {unzipFile} from '@/importPackage.js'
-import {toggleHeaderWithFeedback} from '@/headerRow.js'
-import {onNextHotIdFromTabRx, hotIdFromTab$, provenanceErrors$, errorFeedback$, updateHotDimensions$} from '@/rxSubject.js'
+import { unzipFile } from '@/importPackage.js'
+import { toggleHeaderWithFeedback } from '@/headerRow.js'
+import { onNextHotIdFromTabRx, hotIdFromTab$, provenanceErrors$, errorFeedback$, updateHotDimensions$ } from '@/rxSubject.js'
 import VueRx from 'vue-rx'
 import {
   Subscription
 } from 'rxjs/Subscription'
-import {getHotIdFromTabIdFunction} from '@/store/modules/hots.js'
-import {isCaseSensitive} from '@/frictionlessUtilities'
+import { getHotIdFromTabIdFunction } from '@/store/modules/hots.js'
+import { isCaseSensitive } from '@/frictionlessUtilities'
 import Handsontable from 'handsontable/dist/handsontable.full.min.js'
 import AsyncComputed from 'vue-async-computed'
 import Vue from 'vue'
@@ -471,7 +461,7 @@ export default {
       this.unhighlightPersistedSelection(hot)
       let selected = hot.getSelectedLast()
       // with deselectOutsideHot set to true, we need to track last selection.
-      this.pushHotSelection({hotId: hot.guid, selected: selected})
+      this.pushHotSelection({ hotId: hot.guid, selected: selected })
       this.updateActiveColumn(selected)
     },
     inferColumnProperties: async function() {
@@ -489,7 +479,7 @@ export default {
         this.messagesType = 'error'
         const hot = HotRegister.getInstance(this.currentHotId)
         this.setHotComments(hot)
-        hot.updateSettings({cell: this.previousComments})
+        hot.updateSettings({ cell: this.previousComments })
       } else {
         this.messagesTitle = 'Validation Success'
         this.messages = 'No validation errors reported.'
@@ -550,7 +540,7 @@ export default {
         let messages = await createDataPackage()
         if (messages.length > 0) {
           this.exportPackageErrors(messages.map(x => {
-            return {message: x}
+            return { message: x }
           }))
         } else {
           this.exportPackageFeedback()
@@ -566,7 +556,7 @@ export default {
     addTabWithFilename: function(data, format, filename, descriptor={}) {
       this.createHotDataContainer(data, format, descriptor)
       this.$nextTick(function() {
-        this.pushTabObject({id: this.activeTab, filename: filename})
+        this.pushTabObject({ id: this.activeTab, filename: filename })
       })
     },
     addTab: function(data = '"","",""', format, descriptor) {
@@ -695,7 +685,7 @@ export default {
     },
     pushDefaultPackageProperties: function() {
       this.defaultPackageProperties.forEach(x => {
-        this.pushPackageProperty({key: x.key, value: x.value})
+        this.pushPackageProperty({ key: x.key, value: x.value })
       })
     },
     closeTab: async function(event) {
@@ -729,7 +719,6 @@ export default {
       updateHotDimensions$.next()
     },
     openSideNav: function() {
-      const self = this
       this.sideNavStatus = 'open'
       // ensure sidenav menu is rendered before adjusting form height
       updateHotDimensions$.next()
@@ -888,7 +877,7 @@ export default {
         _.unset(previousComment, 'comment')
         _.unset(previousComment, 'renderer')
       }
-      hot.updateSettings({cell: this.previousComments})
+      hot.updateSettings({ cell: this.previousComments })
       this.previousComments = []
     },
     setHotComments: function(hot) {
@@ -898,7 +887,7 @@ export default {
     },
     setHotComment: function(hot, errorMessage) {
       let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
-      this.previousComments.push({row: range.from.row, col: range.from.col, comment: {value: errorMessage.message}, renderer: this.errorHtmlRenderer})
+      this.previousComments.push({ row: range.from.row, col: range.from.col, comment: { value: errorMessage.message }, renderer: this.errorHtmlRenderer })
     },
     getCellOrRowFromCount: function(hot, row, column) {
       let rowIndex = this.transformCountToIndex(row)
@@ -911,7 +900,7 @@ export default {
         columnToIndex = this.transformCountToIndex(column)
         columnFromIndex = columnToIndex
       }
-      return {from: {col: columnFromIndex, row: rowIndex}, to: {col: columnToIndex, row: rowIndex}}
+      return { from: { col: columnFromIndex, row: rowIndex }, to: { col: columnToIndex, row: rowIndex } }
     },
     getCellOrRowFromIndex: function(hot, rowIndex, columnIndex) {
       let columnFromIndex
@@ -923,7 +912,7 @@ export default {
         columnToIndex = columnIndex
         columnFromIndex = columnToIndex
       }
-      return {from: {col: columnFromIndex, row: rowIndex}, to: {col: columnToIndex, row: rowIndex}}
+      return { from: { col: columnFromIndex, row: rowIndex }, to: { col: columnToIndex, row: rowIndex } }
     },
     // handsontable mark row/col indexes, whereas frictionless mark row/col count
     transformCountToIndex: function(count) {
@@ -937,7 +926,7 @@ export default {
       ipc.send('focusMainWindow')
     },
     packErrorMessages: function() {
-      return {title: this.messagesTitle, messages: this.messages}
+      return { title: this.messagesTitle, messages: this.messages }
     },
     closeMessages: function() {
       this.messages = false
@@ -983,7 +972,7 @@ export default {
       }
     },
     writeErrorsToProvenance: function() {
-      this.pushProvenanceErrors({hotId: this.currentHotId, errors: this.messages})
+      this.pushProvenanceErrors({ hotId: this.currentHotId, errors: this.messages })
       this.showProvenanceErrors()
     },
     showProvenanceErrors: function() {

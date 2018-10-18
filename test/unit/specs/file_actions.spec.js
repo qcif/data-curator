@@ -1,9 +1,8 @@
-import {HotRegister} from '@/hot.js'
-import {resetHotStore} from '../helpers/storeHelper.js'
-import {stubHotInDocumentDom, resetHot, registerHot} from '../helpers/basicHotHelper.js'
-import {globalBefore, globalStubTab, restoreRemoteGetGlobal} from '../helpers/globalHelper.js'
-import {saveDataToFile, loadDataIntoHot} from '@/data-actions'
-import {fileFormats} from '@/file-formats'
+import { resetHotStore } from '../helpers/storeHelper.js'
+import { stubHotInDocumentDom, resetHot, registerHot } from '../helpers/basicHotHelper.js'
+import { globalBefore, globalStubTab, restoreRemoteGetGlobal } from '../helpers/globalHelper.js'
+import { saveDataToFile, loadDataIntoHot } from '@/data-actions'
+import { fileFormats } from '@/file-formats'
 import fs from 'fs-extra'
 import os from 'os'
 // sinonTest doesn't seem to work with complex callbacks
@@ -61,7 +60,7 @@ describe('file actions', () => {
       let data = `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`
       let expectedData = `foo,bar,baz\r\n1,2,3\r\n4,5,6\r\n`
       let tempFile = `${os.tmpdir()}/mycsv.csv`
-      let globalStub = globalStubTab()
+      globalStubTab()
       let hot = registerHot()
       hot.addHook('afterUpdateSettings', function() {
         saveDataToFile(hot, fileFormats.csv, tempFile, function() {
@@ -93,7 +92,6 @@ describe('file actions', () => {
     it('converts a file from csv to tsv, using dialect.lineTerminator', function(done) {
       let data = `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`
       let tempFile = `${os.tmpdir()}/mytsv.tsv`
-      let globalStub = globalStubTab()
       let hot = registerHot()
       hot.addHook('afterUpdateSettings', () => {
         saveDataToFile(hot, fileFormats.tsv, tempFile, () => {

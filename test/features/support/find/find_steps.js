@@ -1,5 +1,5 @@
-import { expect, should, assert } from 'chai'
-import { Given, When, Then, After, Before } from 'cucumber'
+import { expect } from 'chai'
+import { Given, Then } from 'cucumber'
 import { applyFnToSelectorWithLabel } from '../page-objects/selectors.js'
 import { searchColor } from '../page-objects/style.js'
 const _ = require('lodash')
@@ -14,7 +14,7 @@ Then(/^a prompt for (?:a|the) "(find|replace)" value should be displayed/, funct
   return this.app.client.waitForVisible(`#${findOrReplace}`)
 })
 
-Then(/^the "([\w ]+?)" panel's first input (?:box |)should have focus/, {timeout: -1}, async function (panelName) {
+Then(/^the "([\w ]+?)" panel's first input (?:box |)should have focus/, { timeout: -1 }, async function (panelName) {
   return applyFnToSelectorWithLabel(this.app, 'hasFocus', `form#${panelName} input:first-of-type`, panelName, this.pageTimeout)
 })
 

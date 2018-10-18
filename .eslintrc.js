@@ -1,6 +1,5 @@
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
   parserOptions: {
     sourceType: 'module'
   },
@@ -28,7 +27,6 @@ module.exports = {
     'no-undef': 0,
     'space-before-function-paren': 0,
     'no-unused-vars': 0,
-    'no-use-before-define': 0,
     'eqeqeq': 0,
     'no-callback-literal': 0,
     'space-infix-ops': 0

@@ -2,9 +2,9 @@
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
-import {app, Menu, BrowserWindow, dialog, ipcMain as ipc} from 'electron'
-import {createWindowTab, focusMainWindow} from './windows'
-import {AppMenu} from './menu'
+import { app, Menu, BrowserWindow, dialog, ipcMain as ipc } from 'electron'
+import { createWindowTab, focusMainWindow } from './windows'
+import { AppMenu } from './menu'
 import './rendererToMain.js'
 import './preferences.js'
 
@@ -73,10 +73,6 @@ ipc.on('forceQuit', (event, arg) => {
     throw (error)
   }
 })
-
-function closeAppNoPrompt() {
-  app.exit()
-}
 
 // This is needed as without it, production will still follow the darwin vs windows behaviour - dev env won't
 app.on('window-all-closed', () => {

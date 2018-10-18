@@ -40,12 +40,10 @@ import markdown from 'markdown-it/dist/markdown-it.min.js'
 import ProvenanceTooltip from '../mixins/ProvenanceTooltip'
 import {
   mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
-import os from 'os'
-import {provenanceErrors$} from '@/rxSubject.js'
-import {compileHotErrors, stringifyProvenance} from '@/provenance.js'
+import { provenanceErrors$ } from '@/rxSubject.js'
+import { compileHotErrors, stringifyProvenance } from '@/provenance.js'
 export default {
   extends: SideNav,
   name: 'provenance',

@@ -1,7 +1,5 @@
-import { expect, should, assert } from 'chai'
-import { Given, When, Then, After, Before } from 'cucumber'
+import { When, Then } from 'cucumber'
 import { applyFnToIdOrClassSelectorFromLabel } from '../page-objects/selectors.js'
-import _ from 'lodash'
 const highlightColor = 'rgba(181,209,255,0.3)'
 
 Then(/^the column that the cursor is in should be displayed/, async function () {

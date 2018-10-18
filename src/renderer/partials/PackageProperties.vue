@@ -22,10 +22,9 @@ import sources from '@/partials/Sources'
 import contributors from '@/partials/Contributors'
 import PackageTooltip from '@/mixins/PackageTooltip'
 import ValidationRules from '@/mixins/ValidationRules'
-import {ipcRenderer as ipc} from 'electron'
+import { ipcRenderer as ipc } from 'electron'
 import {
   mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
 import autosize from 'autosize'
@@ -64,7 +63,7 @@ export default {
         tooltipId: 'tooltip-package-description',
         tooltipView: 'tooltipPackageDescription'
       },
-        // lead user through with http://frictionlessdata.io/specs/patterns/#data-package-version
+      // lead user through with http://frictionlessdata.io/specs/patterns/#data-package-version
       {
         label: 'Version',
         key: 'version',

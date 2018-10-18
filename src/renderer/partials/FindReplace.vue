@@ -38,17 +38,13 @@
 </template>
 <script>
 import {
-  mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
 import SideNav from './SideNav'
 import Vue from 'vue'
 import AsyncComputed from 'vue-async-computed'
 import {
-  HotRegister,
-  searchCallback,
-  getActiveSelectedOrHotSelectionOrMin
+  HotRegister
 } from '../hot.js'
 import VueRx from 'vue-rx'
 import {
@@ -56,12 +52,10 @@ import {
 } from 'rxjs/Subscription'
 import {
   hotIdFromTab$,
-  currentPos$,
-  afterSetDataAtCell$
+  currentPos$
 } from '@/rxSubject.js'
 import Sifter from 'sifter/sifter.min.js'
-import transform from 'stream-transform'
-import {ipcRenderer as ipc} from 'electron'
+import { ipcRenderer as ipc } from 'electron'
 Vue.use(AsyncComputed)
 Vue.use(VueRx, {
   Subscription
@@ -259,7 +253,6 @@ export default {
       this.findNextOrPrevious(direction)
       this.replacesRemaining = this.rowIndicies.length
       const hot = HotRegister.getInstance(this.activeHotId)
-      const replaceTextFn = this.replaceAllFindTextWithinCell
       const col = this.currentCol
       let data = hot.getData()
       for (const row of this.rowIndicies) {
@@ -319,7 +312,7 @@ export default {
         // indexer won't work with a header labelled: 0
         let tempHeader = currentCol + 1
         let colObject = _.map(colData, function(item) {
-          return {[tempHeader]: item}
+          return { [tempHeader]: item }
         })
         this.currentCol = currentCol
         // to avoid whether headers are set or not, can just use index for now
@@ -422,7 +415,6 @@ export default {
       return ids
     },
     determineStartingRowIndex: function(currentRow, direction, directionFn) {
-      let startingRow
       let index = _.sortedIndex(this.rowIndicies, currentRow)
       if (this.rowIndicies[index] === currentRow) {
         // starting row should never be the current selected row itself
@@ -445,7 +437,6 @@ export default {
       this.activeHotId = hotId
     },
     resetOnColumnChange: function() {
-      let newCurrentCol
       let coords = this.getHotSelection(this.activeHotId)
       if (coords && coords[1] != this.currentCol) {
         this.resetSearchResultWrapper()

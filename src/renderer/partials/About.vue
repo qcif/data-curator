@@ -16,7 +16,7 @@
 </template>
 <script>
 import SideNav from '@/partials/SideNav'
-import {remote, shell} from 'electron'
+import { remote, shell } from 'electron'
 export default {
   extends: SideNav,
   name: 'about',

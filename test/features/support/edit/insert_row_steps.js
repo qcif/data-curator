@@ -1,7 +1,6 @@
-import { expect, should, assert } from 'chai'
+import { expect } from 'chai'
 import { Given, When, Then } from 'cucumber'
 // import chai from 'chai'
-const _ = require('lodash')
 // chai.should()
 // chai.use(chaiAsPromised)
 
@@ -12,7 +11,6 @@ Given(/^the user clicks in row (\d+), column (\d+)$/, function (rowNumber, colNu
 })
 
 When(/^the user (?:performs a |)right-click[s]?$/, function () {
-  let app = this.app
   return this.app.client
     .rightClick('.ht_master table')
 })

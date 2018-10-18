@@ -1,9 +1,7 @@
 import { Subject } from 'rxjs/Subject'
 import { Observable } from 'rxjs/Observable'
-import { Subscription } from 'rxjs/Subscription'
 import { ReplaySubject } from 'rxjs/ReplaySubject'
 import 'rxjs/add/observable/fromPromise'
-// import Rx from 'rxjs/Rx'
 
 let allTablesAllColumnNames$ = new Subject()
 let allTablesAllColumnsFromSchema$ = new Subject()

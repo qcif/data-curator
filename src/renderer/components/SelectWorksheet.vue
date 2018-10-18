@@ -15,7 +15,7 @@
 </div>
 </template>
 <script>
-var ipc = require('electron').ipcRenderer
+const ipc = require('electron').ipcRenderer
 
 export default {
   name: 'selectworksheet',
@@ -42,7 +42,7 @@ export default {
     const vueUpdateSelected = this.updateSelected
     ipc.on('loadSheets', function(e, sheets) {
       sheets.forEach(function(sheet, index) {
-        vueOptions.push({text: sheet, value: sheet})
+        vueOptions.push({ text: sheet, value: sheet })
         vueUpdateSelected(sheet)
       })
     })

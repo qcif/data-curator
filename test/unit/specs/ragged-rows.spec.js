@@ -1,6 +1,5 @@
-import {HotRegister} from '@/hot.js'
-import {fixRaggedRows} from '@/ragged-rows.js'
-import {expect} from 'chai'
+import { fixRaggedRows } from '@/ragged-rows.js'
+import { expect } from 'chai'
 
 describe('Ragged rows', () => {
   before(() => {

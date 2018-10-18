@@ -1,5 +1,5 @@
-import {ipcMain as ipc, dialog} from 'electron'
-import {showErrors} from './errors.js'
+import { ipcMain as ipc, dialog } from 'electron'
+import { showErrors } from './errors.js'
 import {
   getMenu,
   getSubMenuFromMenu,
@@ -8,8 +8,8 @@ import {
   enableSubMenuItemsFromMenuObject,
   enableAllSubMenuItemsFromMenuLabel
 } from './menuUtils.js'
-import {focusMainWindow, closeSecondaryWindow} from './windows.js'
-import {loadPackageJson, loadResourceDataFromPackageUrl} from './url.js'
+import { focusMainWindow, closeSecondaryWindow } from './windows.js'
+import { loadPackageJson, loadResourceDataFromPackageUrl } from './url.js'
 
 ipc.on('toggleSaveMenu', (event, arg) => {
   let saveSubMenu = getSubMenuFromMenu('File', 'Save')
@@ -83,10 +83,6 @@ ipc.on('loadPackageUrlResourcesAsFkRelations', async function(event, url, resour
     console.error(errorMessage, error)
   }
 })
-
-function sendStopLoadingPackageFeedback() {
-  mainWindow.webContents.send('stopLoadingPackageFeedback')
-}
 
 ipc.on('loadingScreenTimeout', (event, arg) => {
   const mainWindow = focusMainWindow()

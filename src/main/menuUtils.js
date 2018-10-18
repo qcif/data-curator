@@ -103,7 +103,7 @@ export function getSubMenusAndItemsFromMenu (menu) {
         // console.log(`skipping `, next.type)
     }
   }
-  return {subMenusOnly, menuItemsOnly}
+  return { subMenusOnly, menuItemsOnly }
 }
 
 export function getSubMenuFromMenu (menuLabel, subMenuLabel) {
