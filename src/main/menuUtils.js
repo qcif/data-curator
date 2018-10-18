@@ -1,28 +1,10 @@
 import { Menu } from 'electron'
 import _ from 'lodash'
-//
-// _defaultEnabledFileMenuItems = ['New', 'OpenExcelSheet...']
-// _defaultEnabledFileMenuSubMenus = ['Open', 'Open Data Package', 'Save As']
 
 export function getMenu (menuLabel) {
   let menu = Menu.getApplicationMenu().items.find(x => x.label === menuLabel)
   return menu
 }
-
-// export function getDefaultMenuItemsEnabled(menuLabel) {
-//   const menu = getMenu(menuLabel)
-// }
-//
-// export function enableAllFileMenuItems() {
-//   enableAllFromLabels('File', ['Open', 'Open Data Package', 'Save As'])
-// }
-//
-// export function disableAllFileMenuItems() {
-//   for (const label of ['Open', 'Open Data Package', 'Save As']) {
-//     disableAllSubMenuItemsFromMenuObject(getSubMenuFromMenu(menuLabel, label))
-//   }
-//   disableAllFromLabels('File')
-// }
 
 export function enableAllFromLabels(menuLabel, subMenuLabels) {
   enableAllSubMenuItemsFromMenuLabel(menuLabel)
@@ -75,31 +57,6 @@ export function getSubMenuLabelsFromMenu (menuLabel) {
   let subMenuLabels = menu.submenu.items.map(x => x.label)
   return subMenuLabels
 }
-
-// export function disableSubMenusAndItemsFromMenu (menu) {
-//   applyFnToSubMenusAndItemsFromMenu(menu, disableAllSubMenuItemsFromMenuObject, disableMenuItem)
-// }
-//
-// export function enableSubMenusAndItemsFromMenu (menu) {
-//   applyFnToSubMenusAndItemsFromMenu(menu, disableAllSubMenuItemsFromMenuObject, disableMenuItem)
-// }
-
-// export function applyFnToSubMenusAndItemsFromMenu (menu, subMenuFn, itemsFn) {
-//   for (const next of menu.submenu.items) {
-//     switch (next.type) {
-//       case 'submenu':
-//         subMenuFn(next)
-//         break
-//       case 'normal':
-//       case 'checkbox':
-//       case 'radio':
-//         itemsFn(next)
-//         break
-//       default:
-//         console.log(`skipping `, next.type)
-//     }
-//   }
-// }
 
 export function disableOpenFileItems() {
   applyFnsToLabelsFromMenuLabel('File', ['Open Excel Sheet...', 'Open', 'Open Data Package'], disableAllSubMenuItemsFromMenuObject, disableMenuItem)

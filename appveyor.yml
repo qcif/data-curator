@@ -28,18 +28,17 @@ install:
   - git reset --hard HEAD
   - yarn
   - node --version
-
-build_script:
-  #- yarn test
-  # - yarn build
-  - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
+  - yarn run lint
+build: off
 test: off
-configuration: release
+configuration: default
 
 for:
 -
   test: off
-  build: off
+  build_script:
+    - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
+  configuration: release
   deploy:
     provider: Environment
     name: production
@@ -49,10 +48,8 @@ for:
   branches:
     only:
       - /master/
-  before_test:
-    - yarn run lint
-    - yarn run clean
   test_script:
+    - yarn run clean
     - yarn run unit
   build: off
   configuration: master
@@ -61,10 +58,8 @@ for:
   branches:
     only:
       - /ci/
-  before_test:
-    - yarn run lint
-    - yarn run clean
   test_script:
+    - yarn run clean
     - yarn run unit
     - yarn run pack
     - yarn run cucumber:postpack:impl
@@ -77,10 +72,8 @@ for:
   branches:
     only:
       - /testci/
-  before_test:
-    - yarn run lint
-    - yarn run clean
   test_script:
+    - yarn run clean
     - yarn run unit
     - yarn run pack
     - yarn run cucumber:postpack:impl
