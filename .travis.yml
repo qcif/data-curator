@@ -15,31 +15,31 @@ install:
 - source ~/.bashrc
 - yarn
 stages:
-  - lint
+  - name: lint
     if: branch IN (master, ci, testci, develop) OR type == pull_request OR tag =~ /^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/
-  - unittest
+  - name: unittest
     if: branch IN (master) OR type IN (pull_request)
-  - unittestandcoverage
+  - name: unittestandcoverage
+    if: branch IN (ci, testci)
+  - name: test
     if: branch IN (ci, testci) OR type IN (pull_request)
-  - test
-    if: branch IN (ci, testci) OR type == pull_request
-  - build
+  - name: build
     if: tag =~ /^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/
 jobs:
   include:
-    - name: lint
+    - stage: lint
       script:
       - yarn run lint
-    - name: unittest
+    - stage: unittest
       script:
       - yarn run clean
       - yarn run unit
-    - name: unittestandcoverage
+    - stage: unittestandcoverage
       script:
       - yarn run clean
       - yarn run unit
       - yarn run unit:coverage
-    - name: test
+    - stage: test
       script: ./travis_script.sh test/features/backlog
     - script: ./travis_script.sh test/features/data_curator
     - script: ./travis_script.sh test/features/edit
@@ -50,7 +50,7 @@ jobs:
     - script: ./travis_script.sh test/features/support
     - script: ./travis_script.sh test/features/tools
     - script: ./travis_script.sh test/features/window
-    - name: build
+    - stage: build
       script:
       - yarn run clean
       - yarn run release:predraft
