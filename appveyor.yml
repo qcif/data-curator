@@ -59,6 +59,7 @@ for:
     only:
       - /ci/
   test_script:
+    - git merge develop || exit
     - yarn run clean
     - yarn run unit
     - yarn run pack
