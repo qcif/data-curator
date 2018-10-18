@@ -2245,9 +2245,9 @@ cfb@~1.0.8:
     commander "^2.14.1"
     printj "~1.1.2"
 
-cfonts@^2.1.2:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/cfonts/-/cfonts-2.2.1.tgz#d43db8e711ac06eb7ffdd4a699724c9edda346a6"
+cfonts@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/cfonts/-/cfonts-2.2.2.tgz#bffe809375f03b6f1bb9fa771de61061adb627ec"
   dependencies:
     ansi-styles "^3.2.1"
     babel-runtime "^6.26.0"
@@ -6699,10 +6699,6 @@ lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
 
-lodash.clone@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.clone/-/lodash.clone-4.5.0.tgz#195870450f5a13192478df4bc3d23d2dea1907b6"
-
 lodash.clonedeep@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-3.0.2.tgz#a0a1e40d82a5ea89ff5b147b8444ed63d92827db"
@@ -6738,7 +6734,7 @@ lodash.isarray@^3.0.0:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/lodash.isarray/-/lodash.isarray-3.0.4.tgz#79e4eb88c36a8122af86f844aa9bcd851b5fbb55"
 
-lodash.isequal@^4.0.0:
+lodash.isequal@^4.0.0, lodash.isequal@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
 
@@ -6829,15 +6825,7 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-lodash@^4.0.0, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.0, lodash@^4.17.10, lodash@^4.5.0:
-  version "4.17.10"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
-
-lodash@^4.13.1, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.8.0, lodash@~4.17.4:
-  version "4.17.5"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.5.tgz#99a92d65c0272debe8c96b6057bc8fbfa3bed511"
-
-lodash@^4.17.3:
+lodash@^4.0.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.5.0, lodash@^4.8.0, lodash@~4.17.4:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
@@ -10227,12 +10215,12 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-style-loader@^0.23.0:
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.23.0.tgz#8377fefab68416a2e05f1cabd8c3a3acfcce74f1"
+style-loader@^0.23.1:
+  version "0.23.1"
+  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.23.1.tgz#cb9154606f3e771ab6c4ab637026a1049174d925"
   dependencies:
     loader-utils "^1.1.0"
-    schema-utils "^0.4.5"
+    schema-utils "^1.0.0"
 
 stylus-loader@^3.0.2:
   version "3.0.2"
@@ -11118,17 +11106,17 @@ vue-focus@^2.1.0:
   dependencies:
     loose-envify "^1.2.0"
 
-vue-good-table@^2.8.0:
-  version "2.14.6"
-  resolved "https://registry.yarnpkg.com/vue-good-table/-/vue-good-table-2.14.6.tgz#06f2265b68fb97413cfec624c2fad0458907484e"
+vue-good-table@^2.15.3:
+  version "2.15.3"
+  resolved "https://registry.yarnpkg.com/vue-good-table/-/vue-good-table-2.15.3.tgz#d399298a1cb6541d130b34bef0f67b9f0b45ff44"
   dependencies:
     date-fns "2.0.0-alpha.7"
     diacriticless "1.0.1"
     lodash.assign "^4.2.0"
-    lodash.clone "^4.5.0"
     lodash.clonedeep "^4.5.0"
     lodash.filter "^4.6.0"
     lodash.foreach "^4.5.0"
+    lodash.isequal "^4.5.0"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.1"
