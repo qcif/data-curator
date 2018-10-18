@@ -24,7 +24,7 @@ stages:
 jobs:
   include:
     - name: lint
-      if: branch IN (master, ci, testci, develop) OR type IN (pull_request) OR tag =~ /^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/
+      if: branch IN (master, ci, testci, develop) OR type == pull_request OR tag =~ "/^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
       script:
       - yarn run lint
     - name: unittest
