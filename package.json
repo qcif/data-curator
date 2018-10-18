@@ -147,7 +147,7 @@
     "cucumber-html-reporter": "^4.0.2",
     "del": "^3.0.0",
     "devtron": "^1.4.0",
-    "electron": "^2.0.11",
+    "electron": "^3.0.4",
     "electron-builder": "^20.27.1",
     "electron-debug": "^1.5.0",
     "electron-devtools-installer": "^2.2.4",
