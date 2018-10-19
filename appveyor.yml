@@ -58,10 +58,13 @@ for:
   branches:
     only:
       - /ci/
-  test_script:
+  before_test:
+    - git remote set-branches --add origin develop || exit
+    - git fetch origin develop || exit
     - git checkout --track origin/develop || exit
-    - git checkout ci || exit
+    - git checkout ${TRAVIS_BRANCH} || exit
     - git merge develop || exit
+  test_script:
     - yarn run clean
     - yarn run unit
     - yarn run pack
