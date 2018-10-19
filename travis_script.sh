@@ -3,6 +3,8 @@ set -ev
 unset -f cd
 shell_session_update() { :; }
 if [ "${TRAVIS_BRANCH}" == "ci" ] || [ "${TRAVIS_BRANCH}" == "testci" ]; then
+  git checkout --track origin/develop || exit
+  git checkout ${TRAVIS_BRANCH} || exit
   git merge develop || exit
   sudo rm -Rf rm /tmp/.X*
   export DISPLAY=':99.0'

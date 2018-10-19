@@ -59,6 +59,8 @@ for:
     only:
       - /ci/
   test_script:
+    - git checkout --track origin/develop || exit
+    - git checkout ci || exit
     - git merge develop || exit
     - yarn run clean
     - yarn run unit
