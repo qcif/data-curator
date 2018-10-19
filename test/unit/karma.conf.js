@@ -10,16 +10,18 @@ const projectRoot = path.resolve(__dirname, '../../src/renderer')
 
 // Set BABEL_ENV to use proper preset config
 process.env.BABEL_ENV = 'test'
-// process.env.NODE_ENV = 'testing'
+
+// can ignore warning for 'Tapable.plugin is deprecated' as problem lies with karma-webpack who are currently working through 4.xx rcs - wait until they're finished
+// process.traceDeprecation = true
 
 let webpackConfig = merge(baseConfig, {
   devtool: '#inline-source-map',
   optimization: {},
-  // plugins: [
-  //   new webpack.DefinePlugin({
-  //     'process.env.NODE_ENV': '"testing"'
-  //   })
-  // ],
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"testing"'
+    })
+  ],
   mode: 'none'
 })
 
@@ -57,7 +59,7 @@ module.exports = config => {
     preprocessors: {
       './index.js': ['webpack', 'sourcemap']
     },
-    logLevel: config.LOG_ERROR,
+    logLevel: config.LOG_INFO,
     reporters: ['spec', 'coverage', 'coveralls'],
     singleRun: true,
     webpack: webpackConfig,
