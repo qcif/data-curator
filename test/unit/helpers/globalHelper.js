@@ -10,11 +10,17 @@ export function globalStubTab() {
     .returns({ activeTitle: '', activeFilename: '', filenames: [] })
 }
 
-// export function globalStubWindows() {
-//   return sinon.stub(remote, 'getGlobal')
-//     .withArgs('windows')
-//     .returns({home: 'home', errors: 'errors'})
-// }
+export function globalStubWindows() {
+  return sinon.stub(remote, 'getGlobal')
+    .withArgs('windows')
+    .returns({})
+}
+
+export function globalStubMainWindows() {
+  return sinon.stub(remote, 'getGlobal')
+    .withArgs('windows')
+    .returns({ home: 'home', errors: 'errors' })
+}
 
 // export function globalStubErrorWindow() {
 //   return sinon.stub(remote, 'BrowserWindow')
