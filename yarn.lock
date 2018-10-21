@@ -865,7 +865,7 @@ babel-code-frame@^6.26.0:
     esutils "^2.0.2"
     js-tokens "^3.0.2"
 
-babel-core@^6.24.1, babel-core@^6.26.0, babel-core@^6.26.3, babel-core@~6:
+babel-core@^6.24.1, babel-core@^6.26.0, babel-core@^6.26.3:
   version "6.26.3"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-6.26.3.tgz#b2e2f09e342d0f0c88e2f02e067794125e75c207"
   dependencies:
@@ -1150,6 +1150,10 @@ babel-plugin-minify-type-constructors@^0.1.2:
   resolved "https://registry.yarnpkg.com/babel-plugin-minify-type-constructors/-/babel-plugin-minify-type-constructors-0.1.2.tgz#db53c5b76cb8e2fcd45d862f17104c78761337ee"
   dependencies:
     babel-helper-is-void-0 "^0.1.1"
+
+babel-plugin-rewire@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-rewire/-/babel-plugin-rewire-1.2.0.tgz#822562d72ed2c84e47c0f95ee232c920853e9d89"
 
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
@@ -5774,12 +5778,6 @@ init-package-json@^1.10.3:
     semver "2.x || 3.x || 4 || 5"
     validate-npm-package-license "^3.0.1"
     validate-npm-package-name "^3.0.0"
-
-inject-loader@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/inject-loader/-/inject-loader-4.0.1.tgz#079c7c1c28950cf28b8d97714dfae6212938e52a"
-  dependencies:
-    babel-core "~6"
 
 inline-source-map@~0.6.0:
   version "0.6.2"

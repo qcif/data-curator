@@ -8,7 +8,7 @@ import Vuex from 'vuex'
 import flushPromises from 'flush-promises'
 
 describe('Home.vue', () => {
-  // const toolbarMenuTitles = Home.data().toolbarMenus
+  // const toolbarMenuTitles = Home.data().toolbarMenus.js
   // dummmy test to begin with to incorporate vue/html with existing framework
   describe('Home.vue toolbar menus', () => {
     // let vm
@@ -49,7 +49,7 @@ describe('Home.vue', () => {
     // it(`should have ${toolbarMenuTitles.length} menu titles`, () => {
     //   expect(vm.$el.querySelector('#toolbar li a div').length === toolbarMenuTitles.length)
     // })
-    // Home.data().toolbarMenus.forEach(menu => {
+    // Home.data().toolbarMenus.js.forEach(menu => {
     //   it(`should open the correct panel when the toolbar menu title, ${menu.name} is clicked`, () => {
     //     let el = wrapper.findAll('#toolbar li').filter(w => {
     //       return w.contains(`#${menu.id}`)

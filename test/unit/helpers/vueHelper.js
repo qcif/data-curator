@@ -1,12 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Errors from '../../../src/renderer/components/Errors.vue'
-import { shallow } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { BrowserWindow } from 'electron'
 Vue.use(Vuex)
 
 export function mountVuePageWithStore(page, storeFn) {
-// export function mountVuePageWithStore(page) {
   const vm = new Vue({
     el: document.createElement('div'),
     render: p => p(page),
@@ -18,7 +17,7 @@ export function mountVuePageWithStore(page, storeFn) {
 }
 
 export function shallowMountErrors() {
-  const errorsWrapper = shallow(Errors)
+  const errorsWrapper = shallowMount(Errors)
   return errorsWrapper
 }
 

@@ -96,8 +96,6 @@ export default {
     resetErrorMessages: function() {
       this.messages = false
       this.title = ''
-      // close window
-      // closeSecondaryWindow('errors')
     },
     writeErrorsToProvenance: function() {
       this.homeWindow.webContents.send('pushErrorMessages', this.messages)

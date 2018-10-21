@@ -14,6 +14,8 @@ process.env.BABEL_ENV = 'test'
 // can ignore warning for 'Tapable.plugin is deprecated' as problem lies with karma-webpack who are currently working through 4.xx rcs - wait until they're finished
 // process.traceDeprecation = true
 
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true
+
 let webpackConfig = merge(baseConfig, {
   devtool: '#inline-source-map',
   optimization: {},
@@ -21,6 +23,9 @@ let webpackConfig = merge(baseConfig, {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"testing"'
     })
+    // new webpack.NamedModulesPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
+    // new (require("rewiremock/webpack/plugin"))()
   ],
   mode: 'none'
 })
@@ -59,7 +64,7 @@ module.exports = config => {
     preprocessors: {
       './index.js': ['webpack', 'sourcemap']
     },
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_ERROR,
     reporters: ['spec', 'coverage', 'coveralls'],
     singleRun: true,
     webpack: webpackConfig,

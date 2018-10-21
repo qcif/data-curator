@@ -7,8 +7,6 @@ import { Subscription } from 'rxjs/Subscription'
 import VueRx from 'vue-rx'
 import Vue from 'vue'
 import { allTablesAllColumnNames$ } from '@/rxSubject.js'
-import {
-} from '@/hot.js'
 Vue.use(VueRx, {
   Subscription
 })
