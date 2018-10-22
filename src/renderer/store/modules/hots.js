@@ -50,8 +50,6 @@ const getters = {
     return state.hotTabs[hotId].tableProperties || {}
   },
   getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
-    console.log('returning hot id column properties from actual hot...')
-    console.log(state.hotTabs)
     return state.hotTabs[hotId].columnProperties || []
   },
   // ensure getter fires each time by passing in function

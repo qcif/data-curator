@@ -217,11 +217,7 @@ function hasColumnProperties(hotId, callb) {
 }
 
 function errorHandler(err, rowNumber) {
-  console.log(`error handler`)
-  console.log(err)
-  console.log(rowNumber)
   if (err.multiple) {
-    console.log('multiple')
     for (const error of err.errors) {
       errorFeedback$.next({
         columnNumber: error.columnNumber,
@@ -231,7 +227,6 @@ function errorHandler(err, rowNumber) {
       })
     }
   } else {
-    console.log('single')
     errorFeedback$.next({
       columnNumber: err.columnNumber,
       rowNumber: rowNumber,
