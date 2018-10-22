@@ -13,20 +13,19 @@
       </li>
       <component is="tooltipWriteErrorsProvenance" />
     </ul>
+  </template>
+  <vue-good-table
+   :columns="columns"
+   :rows="rows"
+   :sort-options="{
+     enabled: true,
+     initialSortBy: {field: 'name', type: 'asc'}
+     }"
+    @on-row-click="goToCell">
+   <template slot="table-column" slot-scope="props">
+     <rowLink :row="props.row"/>
    </template>
-   <vue-good-table
-     :columns="columns"
-     :rows="rows"
-     :paginate="true"
-     :defaultSortBy="{field: 'row', type: 'asc'}"
-     :onClick="goToCell"
-    styleClass="table condensed table-bordered table-striped">
-      <template slot="table-row" slot-scope="props">
-        <rowLink gClass="center-align" :row="props.row" :value="props.row.rowNumber"/>
-        <rowLink gClass="center-align" :row="props.row" :value="props.row.columnNumber"/>
-        <rowLink gClass="left-align"  :row="props.row" :value="props.row.message"/>
-      </template>
-</vue-good-table>
+  </vue-good-table>
  </div>
 
 </div>
@@ -57,19 +56,25 @@ export default {
         {
           label: 'Row number',
           field: 'rowNumber',
-          filterable: true,
+          filterOptions: {
+            enabled: true
+          },
           type: 'number'
         },
         {
           label: 'Column number',
           field: 'columnNumber',
-          filterable: true,
+          filterOptions: {
+            enabled: true
+          },
           type: 'number'
         },
         {
           label: 'Error message',
           field: 'message',
-          filterable: true
+          filterOptions: {
+            enabled: true
+          }
         }
       ],
       rows: [
@@ -130,6 +135,9 @@ export default {
 </script>
 <style scoped>
 @import '~components-font-awesome/css/fontawesome-all.min.css'
+</style>
+<style scoped>
+@import '~vue-good-table/dist/vue-good-table.css'
 </style>
 <style lang="styl" scoped>
 @import '~static/css/keyboard-help'

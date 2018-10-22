@@ -23,9 +23,6 @@ let webpackConfig = merge(baseConfig, {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"testing"'
     })
-    // new webpack.NamedModulesPlugin(),
-    // new webpack.HotModuleReplacementPlugin(),
-    // new (require("rewiremock/webpack/plugin"))()
   ],
   mode: 'none'
 })
@@ -64,7 +61,7 @@ module.exports = config => {
     preprocessors: {
       './index.js': ['webpack', 'sourcemap']
     },
-    logLevel: config.LOG_ERROR,
+    logLevel: config.LOG_INFO,
     reporters: ['spec', 'coverage', 'coveralls'],
     singleRun: true,
     webpack: webpackConfig,

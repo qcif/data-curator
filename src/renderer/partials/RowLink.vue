@@ -1,17 +1,33 @@
 <template>
-  <td :class="gClass">
+  <div>
+  <span class="center-align">
     <a href="#"
       @mouseover="hoverToSelectErrorCell(row)"
       @mouseout="exitHoverToSelectErrorCell(row)">
-      {{value}}
+      {{row.rowNumber}}
     </a>
-  </td>
+  </span>
+  <span class="center-align">
+    <a href="#"
+      @mouseover="hoverToSelectErrorCell(row)"
+      @mouseout="exitHoverToSelectErrorCell(row)">
+      {{row.columnNumber}}
+    </a>
+  </span>
+  <span class="left-align">
+    <a href="#"
+      @mouseover="hoverToSelectErrorCell(row)"
+      @mouseout="exitHoverToSelectErrorCell(row)">
+      {{row.message}}
+    </a>
+  </span>
+</div>
 </template>
 <script>
 import { getWindow } from '../index.js'
 export default {
   name: 'rowLink',
-  props: ['gClass', 'row', 'value'],
+  props: ['row'],
   computed: {
     // cache main window
     homeWindow() {
