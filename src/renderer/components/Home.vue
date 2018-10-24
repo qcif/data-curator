@@ -11,7 +11,7 @@
             <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': toolbarIndex === index}" @click="updateToolbarMenu(index)">
               <a v-tooltip="tooltip(menu.tooltipId)" href="#">
                 <!-- <a href="#"> -->
-                <i v-if="menu.icon" :class="menu.icon" class="fa" aria-hidden="true" />
+                  <i v-if="menu.icon" :class="menu.icon" class="fa" aria-hidden="true" />
                 <object v-if="menu.image" :class="menu.class" :data="menu.image" type="image/svg+xml" />
                 <div :id="menu.id" class="toolbar-text">{{ menu.name }}</div>
               </a>
@@ -949,26 +949,26 @@ export default {
       await ipc.send('showErrorsWindow')
     },
     sendErrorsToErrorsWindow: function(id) {
-        const browserWindow = getWindow('errors', id)
-        if (browserWindow) {
-          if (this.messages && this.messagesType === 'error') {
-            // opening error window will trigger close messages, so ensure have these first
-            const errorMessages = this.packErrorMessages()
-            // if window dom is already present, send error messages
+      const browserWindow = getWindow('errors', id)
+      if (browserWindow) {
+        if (this.messages && this.messagesType === 'error') {
+          // opening error window will trigger close messages, so ensure have these first
+          const errorMessages = this.packErrorMessages()
+          // if window dom is already present, send error messages
+          browserWindow.webContents.send('errorMessages', errorMessages)
+          // but the window will not receive anything if not yet dom-ready
+          browserWindow.webContents.on('dom-ready', function() {
             browserWindow.webContents.send('errorMessages', errorMessages)
-            // but the window will not receive anything if not yet dom-ready
-            browserWindow.webContents.on('dom-ready', function() {
-              browserWindow.webContents.send('errorMessages', errorMessages)
-            })
-          } else {
-            // this alerts error window to close - so only needed for dom-ready error window
-            browserWindow.webContents.send('errorMessages')
-          }
-          // messages are to appear in 1 window or the other, not both (get messsages first if required)
-          this.closeMessages()
+          })
         } else {
-          // console.log('no error window found. ignoring...')
+          // this alerts error window to close - so only needed for dom-ready error window
+          browserWindow.webContents.send('errorMessages')
         }
+        // messages are to appear in 1 window or the other, not both (get messsages first if required)
+        this.closeMessages()
+      } else {
+        // console.log('no error window found. ignoring...')
+      }
     },
     reselectHotCell: function() {
       let hot = HotRegister.getActiveInstance()
