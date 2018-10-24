@@ -1,24 +1,28 @@
 <template>
   <div id="primaryKeys">
-    <component is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="getSelectedKeys" :pushSelectedKeys="pushSelectedKeys"/>
+    <component
+      is="tableheaderkeys"
+      :active-names="localHeaderNames"
+      :get-selected-keys="getSelectedKeys"
+      :push-selected-keys="pushSelectedKeys"/>
   </div>
 </template>
 <script>
 import tableheaderkeys from '../partials/TableHeaderKeys'
 import RelationKeys from '../mixins/RelationKeys'
 export default {
+  name: 'Primarykeys',
   components: {
     tableheaderkeys
   },
   mixins: [RelationKeys],
-  name: 'primarykeys',
+  props: ['setProperty', 'getPropertyGivenHotId', 'propertyName', 'currentHotId'],
   data() {
     return {
       localHeaderNames: [],
       selectedLocalKeys: []
     }
   },
-  props: ['setProperty', 'getPropertyGivenHotId', 'propertyName', 'currentHotId'],
   computed: {
     getSelectedKeys() {
       return this.selectedLocalKeys

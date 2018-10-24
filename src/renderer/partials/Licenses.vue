@@ -1,20 +1,25 @@
 <template>
-<div>
-  <!-- <input :value="collectedLicenses" @input="selectLicenseHints($event.target.value)" class="form-control input-sm col-sm-8" type="text" /> -->
-  <div id="licenses">
-    <!-- <label class="control-label col-sm-4" /> -->
-    <select v-model="selectedLicenses" class="form-control input-sm col-sm-9" multiple>
-        <option v-for="license in licenses" :value="license.title">{{license.title}}</option>
+  <div>
+    <!-- <input :value="collectedLicenses" @input="selectLicenseHints($event.target.value)" class="form-control input-sm col-sm-8" type="text" /> -->
+    <div id="licenses">
+      <!-- <label class="control-label col-sm-4" /> -->
+      <select
+        v-model="selectedLicenses"
+        class="form-control input-sm col-sm-9"
+        multiple>
+        <option
+          v-for="license in licenses"
+          :value="license.title">{{ license.title }}</option>
       </select>
+    </div>
   </div>
-</div>
 </template>
 <script>
 import {
   mapGetters
 } from 'vuex'
 export default {
-  name: 'licenses',
+  name: 'Licenses',
   props: ['getPropertyGivenHotId', 'setProperty', 'waitForHotIdFromTabId'],
   data() {
     return {
@@ -83,6 +88,10 @@ export default {
   computed: {
     ...mapGetters(['getActiveTab'])
   },
+  mounted: function() {
+    // update license when re-opening panel with licenses
+    this.initLicenses()
+  },
   methods: {
     initLicenses: async function() {
       let licenseTitles = await this.getLicenseTitlesFromTab()
@@ -108,10 +117,6 @@ export default {
         return []
       }
     }
-  },
-  mounted: function() {
-    // update license when re-opening panel with licenses
-    this.initLicenses()
   }
 }
 </script>

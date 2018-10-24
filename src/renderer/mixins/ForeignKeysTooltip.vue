@@ -2,7 +2,6 @@
 import Tooltip from '../mixins/Tooltip'
 import externalLink from '../partials/ExternalLink'
 export default {
-  extends: Tooltip,
   components: {
     externalLink,
     'tooltipForeignkey': {
@@ -21,6 +20,7 @@ export default {
       props: ['index'],
       template: `<div :id="'tooltip-foreignkey-tablekey' + index">The table columnn header(s) used to reference the foreign key(s).</div>`
     }
-  }
+  },
+  extends: Tooltip
 }
 </script>

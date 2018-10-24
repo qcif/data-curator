@@ -1,40 +1,78 @@
 <template>
-<form class="navbar-form form-horizontal" id="findAndReplace">
-  <div class="form-group-sm row container-fluid">
-    <div  class="propertyrow clearfix" v-for="(formprop, index) in formprops" :key="index">
-      <label v-show="formprop.label" v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label pull-left" :for="formprop.label">{{formprop.label}}</label>
-      <component :is="formprop.tooltipView"/>
-      <div class="inputrow clearfix">
-        <div class="placeholder text-muted small" :class="formprop.key" :data-placeholder="formprop.resultFn(formprop.key)">
-          <input class="pull-left form-control input-sm col-sm-9" type="text" :id="formprop.key" :value="getText(formprop.key)" @input="setText(formprop.key, $event.target.value)" :name="formprop.key" />
-          <span v-show="formprop.resultFn(formprop.key)" :class="formprop.resultIconFn()" class="glyphicon form-control-feedback"/>
+  <form
+    id="findAndReplace"
+    class="navbar-form form-horizontal">
+    <div class="form-group-sm row container-fluid">
+      <div
+        v-for="(formprop, index) in formprops"
+        :key="index"
+        class="propertyrow clearfix">
+        <label
+          v-tooltip.left="tooltip(formprop.tooltipId)"
+          v-show="formprop.label"
+          :for="formprop.label"
+          class="control-label pull-left">{{ formprop.label }}</label>
+        <component :is="formprop.tooltipView"/>
+        <div class="inputrow clearfix">
+          <div
+            :class="formprop.key"
+            :data-placeholder="formprop.resultFn(formprop.key)"
+            class="placeholder text-muted small">
+            <input
+              :id="formprop.key"
+              :value="getText(formprop.key)"
+              :name="formprop.key"
+              class="pull-left form-control input-sm col-sm-9"
+              type="text"
+              @input="setText(formprop.key, $event.target.value)" >
+            <span
+              v-show="formprop.resultFn(formprop.key)"
+              :class="formprop.resultIconFn()"
+              class="glyphicon form-control-feedback"/>
+          </div>
+          <span class="btn-group pull-right">
+            <button
+              :class="formprop.buttonTypeClass || 'btn-primary'"
+              type="button"
+              class="btn btn-sm"
+              @click="formprop.fn('previous')">
+              <span
+                v-if="formprop.buttonLeftClass"
+                :class="formprop.buttonLeftClass"/>
+              <template v-if="formprop.buttonLeftText">
+                {{ formprop.buttonLeftText }}
+              </template>
+            </button>
+            <button
+              v-show="formprop.buttonRightClass"
+              :class="formprop.buttonTypeClass || 'btn-primary'"
+              type="button"
+              class="btn btn-sm"
+              @click="formprop.fn('next')">
+              <span :class="formprop.buttonRightClass"/>
+            </button>
+          </span>
         </div>
-        <span class="btn-group pull-right">
-          <button type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-primary'" @click="formprop.fn('previous')">
-            <span v-if="formprop.buttonLeftClass" :class="formprop.buttonLeftClass"/>
-            <template v-if="formprop.buttonLeftText">
-              {{formprop.buttonLeftText}}
-            </template>
+        <div
+          v-if="formprop.buttonBelowText"
+          class="btn-group pull-right">
+          <button
+            :class="formprop.buttonTypeClass || 'btn-primary'"
+            type="button"
+            class="button-below btn btn-sm"
+            @click="formprop.belowFn('next')">
+            <span :class="formprop.buttonBelowClass">{{ formprop.buttonBelowText }}</span>
           </button>
-          <button v-show="formprop.buttonRightClass" type="button" class="btn btn-sm" :class="formprop.buttonTypeClass || 'btn-primary'" @click="formprop.fn('next')">
-            <span :class="formprop.buttonRightClass"/>
-          </button>
-        </span>
+        </div>
       </div>
-      <div v-if="formprop.buttonBelowText" class="btn-group pull-right">
-        <button type="button" class="button-below btn btn-sm" :class="formprop.buttonTypeClass || 'btn-primary'" @click="formprop.belowFn('next')">
-          <span :class="formprop.buttonBelowClass">{{formprop.buttonBelowText}}</span>
-        </button>
-      </div>
-    </div>
     <!-- <div class="pickrow">
       <span v-for="(radioprop, index) in radioprops">
         <input type="radio" :id="radioprop.key" :value="radioprop.value" v-model="findTypePicked">
         <label for="find-in-column">{{radioprop.label}}</label>
       </span>
     </div> -->
-  </div>
-</form>
+    </div>
+  </form>
 </template>
 <script>
 import {
@@ -78,10 +116,10 @@ const _searchCallback = function(instance, row, col, value, result) {
 }
 
 export default {
-  extends: SideNav,
-  name: 'findReplace',
+  name: 'FindReplace',
   components: {
   },
+  extends: SideNav,
   data() {
     return {
       activeHotId: null,
@@ -137,6 +175,26 @@ export default {
   },
   computed: {
     ...mapGetters(['getHotSelection'])
+  },
+  mounted: async function() {
+    this.activeHotId = await this.currentHotId()
+    const vueUpdateActiveHotId = this.updateActiveHotId
+    const vueResetOnColumnChange = this.resetOnColumnChange
+    const vueResetSearchResult = this.resetSearchResultWrapper
+    const vueResetRowIndex = this.resetRowIndex
+    this.$subscribeTo(hotIdFromTab$, function(hotId) {
+      vueUpdateActiveHotId(hotId)
+      vueResetSearchResult()
+    })
+    this.$subscribeTo(currentPos$, function(currentPos) {
+      vueResetOnColumnChange()
+      vueResetRowIndex()
+    })
+    ipc.on('clickFindButton', function(event, arg) {
+      let el = document.querySelector(`button .${arg}`).parentNode
+      el.click()
+      el.classList.add('active', 'focus')
+    })
   },
   methods: {
     getReplaceResultIcon: function() {
@@ -459,26 +517,6 @@ export default {
     resetRowIndex() {
       this.updatedRowIndex = -1
     }
-  },
-  mounted: async function() {
-    this.activeHotId = await this.currentHotId()
-    const vueUpdateActiveHotId = this.updateActiveHotId
-    const vueResetOnColumnChange = this.resetOnColumnChange
-    const vueResetSearchResult = this.resetSearchResultWrapper
-    const vueResetRowIndex = this.resetRowIndex
-    this.$subscribeTo(hotIdFromTab$, function(hotId) {
-      vueUpdateActiveHotId(hotId)
-      vueResetSearchResult()
-    })
-    this.$subscribeTo(currentPos$, function(currentPos) {
-      vueResetOnColumnChange()
-      vueResetRowIndex()
-    })
-    ipc.on('clickFindButton', function(event, arg) {
-      let el = document.querySelector(`button .${arg}`).parentNode
-      el.click()
-      el.classList.add('active', 'focus')
-    })
   }
 }
 </script>

@@ -1,14 +1,37 @@
 <template>
-  <form id="aboutProperties" class="panel-group">
-    <ul class="list-group" v-for="(list, index) in aboutProps" :key="index">
-      <li :style="aboutListStyle" class="list-group-item" v-for="(item, index) in list.items" :key="index">
+  <form
+    id="aboutProperties"
+    class="panel-group">
+    <ul
+      v-for="(list, index) in aboutProps"
+      :key="index"
+      class="list-group">
+      <li
+        v-for="(item, index) in list.items"
+        :style="aboutListStyle"
+        :key="index"
+        class="list-group-item">
         <template v-if="item.image">
-          <a v-if="item.link" href="#" @click="openLink(item.link)"><img :height="item.height" width="auto" :src="item.image" /></a>
-          <img v-else :src="item.image" />
+          <a
+            v-if="item.link"
+            href="#"
+            @click="openLink(item.link)"><img
+              :height="item.height"
+              :src="item.image"
+              width="auto" ></a>
+          <img
+            v-else
+            :src="item.image" >
         </template>
         <template v-if="item.label">
-          <a :style="item.style" v-if="item.link" href="#" @click="openLink(item.link)">{{item.label}}</a>
-          <span :style="item.style" v-else>{{item.label}}</span>
+          <a
+            v-if="item.link"
+            :style="item.style"
+            href="#"
+            @click="openLink(item.link)">{{ item.label }}</a>
+          <span
+            v-else
+            :style="item.style">{{ item.label }}</span>
         </template>
       </li>
     </ul>
@@ -18,8 +41,8 @@
 import SideNav from '@/partials/SideNav'
 import { remote, shell } from 'electron'
 export default {
+  name: 'About',
   extends: SideNav,
-  name: 'about',
   data() {
     return {
       aboutListStyle: {

@@ -1,21 +1,20 @@
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
   parserOptions: {
-    sourceType: 'module'
+    sourceType: 'module',
+    parser: 'babel-eslint'
   },
   env: {
     browser: true,
     node: true,
     es6: true
   },
-  extends: 'standard',
+  extends: ['standard', 'plugin:vue/base'],
   globals: {
     __static: true
   },
   plugins: [
-    'html',
-    'eslint-plugin-html'
+    'vue'
   ],
   'rules': {
     // allow paren-less arrow functions

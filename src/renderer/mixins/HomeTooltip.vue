@@ -1,7 +1,6 @@
 <script>
 import Tooltip from '../mixins/Tooltip'
 export default {
-  extends: Tooltip,
   components: {
     'tooltipValidate': {
       template: '<div id="tooltip-validate">Validate Table</div>'
@@ -36,6 +35,7 @@ export default {
     'tooltipNext': {
       template: '<div id="tooltip-next">Next Column Property</div>'
     }
-  }
+  },
+  extends: Tooltip
 }
 </script>

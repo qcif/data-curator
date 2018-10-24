@@ -1,19 +1,58 @@
 <template>
-<form class="navbar-form form-horizontal" id="tableProperties">
-  <div class="form-group-sm row container-fluid">
-    <div class="propertyrow" v-for="(formprop, index) in formprops" :key="index">
-      <label v-show="formprop.label" v-tooltip.left="tooltip(formprop.tooltipId)" class="control-label" :for="formprop.label">{{formprop.label}}</label>
-      <component :is="formprop.tooltipView"/>
-      <input v-if="formprop.key === 'missingValues'" :value="missingValues" @input="setMissingValuesWithSingleEmpty($event.target.value)" type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
-      <textarea v-else-if="formprop.key === 'description'" rows="4" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" class="form-control label-sm col-sm-9" :id="formprop.key" ></textarea>
-      <component v-else-if="isSharedComponent(formprop.key)" :propertyName="formprop.key" :getProperty="getProperty" :getPropertyGivenHotId="getPropertyGivenHotId" :setProperty="setProperty" :waitForHotIdFromTabId="waitForHotIdFromTabId" :currentHotId="currentHotId" :is="formprop.key"/>
-      <input v-else type="text" :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)" v-validate="validationRules(formprop.key)" :name="formprop.key"/>
-      <div v-show="errors.has(formprop.key) && removeValue(formprop.key)" class="row help validate-danger">
-        {{ errors.first(formprop.key)}}
+  <form
+    id="tableProperties"
+    class="navbar-form form-horizontal">
+    <div class="form-group-sm row container-fluid">
+      <div
+        v-for="(formprop, index) in formprops"
+        :key="index"
+        class="propertyrow">
+        <label
+          v-tooltip.left="tooltip(formprop.tooltipId)"
+          v-show="formprop.label"
+          :for="formprop.label"
+          class="control-label">{{ formprop.label }}</label>
+        <component :is="formprop.tooltipView"/>
+        <input
+          v-if="formprop.key === 'missingValues'"
+          :value="missingValues"
+          :id="formprop.key"
+          type="text"
+          class="form-control input-sm col-sm-9"
+          @input="setMissingValuesWithSingleEmpty($event.target.value)" >
+        <textarea
+          v-else-if="formprop.key === 'description'"
+          :value="getProperty(formprop.key)"
+          :id="formprop.key"
+          rows="4"
+          class="form-control label-sm col-sm-9"
+          @input="setProperty(formprop.key, $event.target.value)" />
+        <component
+          v-else-if="isSharedComponent(formprop.key)"
+          :property-name="formprop.key"
+          :get-property="getProperty"
+          :get-property-given-hot-id="getPropertyGivenHotId"
+          :set-property="setProperty"
+          :wait-for-hot-id-from-tab-id="waitForHotIdFromTabId"
+          :current-hot-id="currentHotId"
+          :is="formprop.key"/>
+        <input
+          v-validate="validationRules(formprop.key)"
+          v-else
+          :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }"
+          :id="formprop.key"
+          :value="getProperty(formprop.key)"
+          :name="formprop.key"
+          type="text"
+          @input="setProperty(formprop.key, $event.target.value)">
+        <div
+          v-show="errors.has(formprop.key) && removeValue(formprop.key)"
+          class="row help validate-danger">
+          {{ errors.first(formprop.key) }}
+        </div>
       </div>
     </div>
-  </div>
-</form>
+  </form>
 </template>
 <script>
 import {
@@ -35,15 +74,15 @@ import ValidationRules from '../mixins/ValidationRules'
 import autosize from 'autosize'
 Vue.use(AsyncComputed)
 export default {
-  extends: SideNav,
-  name: 'tabular',
-  mixins: [ValidationRules, TableTooltip],
+  name: 'Tabular',
   components: {
     licenses,
     sources,
     primaryKeys,
     foreignKeys
   },
+  extends: SideNav,
+  mixins: [ValidationRules, TableTooltip],
   data() {
     return {
       formprops: [{

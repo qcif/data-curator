@@ -2,7 +2,6 @@
 import Tooltip from '../mixins/Tooltip'
 import externalLink from '../partials/ExternalLink'
 export default {
-  extends: Tooltip,
   components: {
     externalLink,
     'tooltipColumnName': {
@@ -43,6 +42,7 @@ export default {
       template: `<div id="tooltip-column-rdfType">Set a
       <externalLink text="RDF Type" url="http://frictionlessdata.io/specs/table-schema/#rich-types"/> to provide extra meaning to the data</div>`
     }
-  }
+  },
+  extends: Tooltip
 }
 </script>
