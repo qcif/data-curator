@@ -4,16 +4,16 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand"></a>
+          <a class="navbar-brand" />
         </div>
         <div id="toolbar">
           <ul class="nav navbar-nav">
             <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': toolbarIndex === index}" @click="updateToolbarMenu(index)">
-              <a href="#" v-tooltip="tooltip(menu.tooltipId)">
-              <!-- <a href="#"> -->
-                <i v-if="menu.icon" class="fa" :class="menu.icon" aria-hidden="true" />
+              <a v-tooltip="tooltip(menu.tooltipId)" href="#">
+                <!-- <a href="#"> -->
+                <i v-if="menu.icon" :class="menu.icon" class="fa" aria-hidden="true" />
                 <object v-if="menu.image" :class="menu.class" :data="menu.image" type="image/svg+xml" />
-                <div :id="menu.id" class="toolbar-text">{{menu.name}}</div>
+                <div :id="menu.id" class="toolbar-text">{{ menu.name }}</div>
               </a>
               <component :is="menu.tooltipView" />
             </li>
@@ -23,54 +23,60 @@
     </nav>
   </div>
   <div id="body-panel" class="panel">
-    <nav id="sidenav" class="sidenav navbar navbar-default row" :class="sideNavProperties">
+    <nav id="sidenav" :class="sideNavProperties" class="sidenav navbar navbar-default row">
       <!-- <div> -->
-        <div class="navbar-header">
-          <ul class="nav navbar-right closebtn">
-            <li>
-              <a href="#">
-                <span v-show="sideNavStatus === 'open'" class="btn-default fa fa-times" @click="closeSideNav" />
+      <div class="navbar-header">
+        <ul class="nav navbar-right closebtn">
+          <li>
+            <a href="#">
+                <span
+                  v-show="sideNavStatus === 'open'"
+                  class="btn-default fa fa-times"
+                  @click="closeSideNav" />
               </a>
-            </li>
-          </ul>
-          <a class="navbar-brand" href="#">
-            {{sideNavViewTitle}}
+          </li>
+        </ul>
+        <a class="navbar-brand" href="#">
+            {{ sideNavViewTitle }}
           </a>
-        </div>
-        <transition :name="sideNavTransition" mode="out-in" :css="enableTransition">
-          <component ref="sidenavref" :is="sideNavView" :adjustSidenavFormHeight="adjustSidenavFormHeight" :sideNavFormHeight="sideNavFormHeight" :cIndex="currentColumnIndex" :reselectHotCell="reselectHotCell">
-          </component>
-        </transition>
-        <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
-          <a v-if="isLeftArrowEnabled" href="#" v-tooltip.left="tooltip('tooltip-previous')" class="left" @click.prevent="sideNavLeft()"><span class="btn fa fa-chevron-left fa-2x" /></a>
-          <component v-if="isLeftArrowEnabled" is="tooltipPrevious" />
-          <a v-if="isRightArrowEnabled" href="#" v-tooltip.left="tooltip('tooltip-next')" class="right" @click.prevent="sideNavRight()"><span class="btn fa fa-chevron-right fa-2x" /></a>
-          <component v-if="isRightArrowEnabled" is="tooltipNext" />
-        </div>
+      </div>
+      <transition :name="sideNavTransition" :css="enableTransition" mode="out-in">
+        <component ref="sidenavref" :is="sideNavView" :adjust-sidenav-form-height="adjustSidenavFormHeight" :side-nav-form-height="sideNavFormHeight" :c-index="currentColumnIndex" :reselect-hot-cell="reselectHotCell" />
+      </transition>
+      <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
+        <a v-tooltip.left="tooltip('tooltip-previous')" v-if="isLeftArrowEnabled" href="#" class="left" @click.prevent="sideNavLeft()"><span class="btn fa fa-chevron-left fa-2x" /></a>
+        <component is="tooltipPrevious" v-if="isLeftArrowEnabled" />
+        <a v-tooltip.left="tooltip('tooltip-next')" v-if="isRightArrowEnabled" href="#" class="right" @click.prevent="sideNavRight()"><span class="btn fa fa-chevron-right fa-2x" /></a>
+        <component is="tooltipNext" v-if="isRightArrowEnabled" />
+      </div>
     </nav>
-    <div id="main-panel" class="panel panel-default" :class="sideNavPropertiesForMain">
-      <div id="main-middle-panel" class="panel panel-body" :class="messageStatus">
-        <div id='csvEditor'>
+    <div id="main-panel" :class="sideNavPropertiesForMain" class="panel panel-default">
+      <div id="main-middle-panel" :class="messageStatus" class="panel panel-body">
+        <div id="csvEditor">
           <ul class="nav nav-tabs">
             <li>
-              <ul class="nav nav-tabs" id='csvTab'>
+              <ul id="csvTab" class="nav nav-tabs">
                 <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" class="tab-header" @click="setActiveTabWrapper(tab)">
                   <a>
-                    <span>{{tabTitle(tab)}}</span>
-                    <span v-if="tabs.length > 1" class="tabclose btn-default fa fa-times" @click.stop="closeTab"></span>
-                  </a>
+                      <span>{{ tabTitle(tab) }}</span>
+                      <span
+                        v-if="tabs.length > 1"
+                        class="tabclose btn-default fa fa-times"
+                        @click.stop="closeTab"/>
+                    </a>
                 </li>
               </ul>
             </li>
-            <li class="add-tab" @click="addTab()" v-tooltip.right="tooltip('tooltip-add-tab')">
-              <a>&nbsp;<button type="button" class="btn btn-sm"><i class="fa fa-plus"></i></button></a>
+            <li v-tooltip.right="tooltip('tooltip-add-tab')" class="add-tab" @click="addTab()">
+              <a>&nbsp;<button
+                  type="button"
+                  class="btn btn-sm"><i class="fa fa-plus"/></button></a>
             </li>
             <component is="tooltipAddTab" />
           </ul>
-          <div class="tab-content" id='csvContent'>
-            <div class="tab-pane" v-for="tab in tabs" :key="tab" :class="{ active: activeTab == tab}">
-              <div class="editor">
-              </div>
+          <div id="csvContent" class="tab-content">
+            <div v-for="tab in tabs" :key="tab" :class="{ active: activeTab == tab}" class="tab-pane">
+              <div class="editor" />
             </div>
           </div>
         </div>
@@ -78,7 +84,7 @@
       <div id="main-bottom-panel" class="panel-footer" :class="mainBottomPanelStatus">
         <div id="message-panel" class="panel-default">
           <!-- tidy up messages view with components -->
-          <div class="message-view" v-show="toggleMessageView()">
+          <div class="message-view" v-show="debounceToggleMessageView()">
             <div class="message-title-container affix">
               <ul class="nav navbar-right closebtn">
                 <li>
@@ -135,8 +141,8 @@
       <span class="glyphicon glyphicon-refresh spinning">
       </span>
       <span class="validation-load">
-        {{loadingDataMessage}}
-      </span>
+          {{ loadingDataMessage }}
+        </span>
     </div>
   </div>
 </div>
@@ -168,33 +174,54 @@ import {
   guessColumnProperties,
   validateActiveDataAgainstSchema
 } from '../frictionless.js'
-import { createDataPackage } from '@/frictionlessDataPackage.js'
+import {
+  createDataPackage
+} from '@/frictionlessDataPackage.js'
 import HomeTooltip from '../mixins/HomeTooltip'
 import ErrorsTooltip from '../mixins/ErrorsTooltip'
 import {
   fileFormats
 } from '../file-formats.js'
-import { ipcRenderer as ipc, remote } from 'electron'
+import {
+  ipcRenderer as ipc,
+  remote
+} from 'electron'
 import 'lodash/lodash.min.js'
-import { unzipFile } from '@/importPackage.js'
-import { toggleHeaderWithFeedback } from '@/headerRow.js'
-import { onNextHotIdFromTabRx, hotIdFromTab$, provenanceErrors$, errorFeedback$, updateHotDimensions$ } from '@/rxSubject.js'
+import {
+  unzipFile
+} from '@/importPackage.js'
+import {
+  toggleHeaderWithFeedback
+} from '@/headerRow.js'
+import {
+  onNextHotIdFromTabRx,
+  hotIdFromTab$,
+  provenanceErrors$,
+  errorFeedback$,
+  updateHotDimensions$
+} from '@/rxSubject.js'
 import VueRx from 'vue-rx'
 import {
   Subscription
 } from 'rxjs/Subscription'
-import { getHotIdFromTabIdFunction } from '@/store/modules/hots.js'
-import { isCaseSensitive } from '@/frictionlessUtilities'
+import {
+  getHotIdFromTabIdFunction
+} from '@/store/modules/hots.js'
+import {
+  isCaseSensitive
+} from '@/frictionlessUtilities'
 import Handsontable from 'handsontable/dist/handsontable.full.min.js'
 import AsyncComputed from 'vue-async-computed'
 import Vue from 'vue'
-import { toolbarMenus } from '@/toolbarMenus'
+import {
+  toolbarMenus
+} from '@/toolbarMenus'
 Vue.use(AsyncComputed)
 Vue.use(VueRx, {
   Subscription
 })
 export default {
-  name: 'home',
+  name: 'Home',
   mixins: [HomeTooltip, ErrorsTooltip],
   asyncComputed: {
     isLeftArrowEnabled: {
@@ -255,7 +282,10 @@ export default {
         key: 'profile',
         value: 'tabular-data-package'
       }],
-      reportSiblingClasses: ['main-bottom-panel', 'main-middle-panel']
+      reportSiblingClasses: ['main-bottom-panel', 'main-middle-panel'],
+      debounceToggleMessageView: _.debounce(this.toggleMessageView, 300, {
+        'trailing': true
+      })
     }
   },
   computed: {
@@ -395,7 +425,10 @@ export default {
       this.unhighlightPersistedSelection(hot)
       let selected = hot.getSelectedLast()
       // with deselectOutsideHot set to true, we need to track last selection.
-      this.pushHotSelection({ hotId: hot.guid, selected: selected })
+      this.pushHotSelection({
+        hotId: hot.guid,
+        selected: selected
+      })
       this.updateActiveColumn(selected)
     },
     inferColumnProperties: async function() {
@@ -413,7 +446,9 @@ export default {
         this.messagesType = 'error'
         const hot = HotRegister.getInstance(this.currentHotId)
         this.setHotComments(hot)
-        hot.updateSettings({ cell: this.previousComments })
+        hot.updateSettings({
+          cell: this.previousComments
+        })
       } else {
         this.messagesTitle = 'Validation Success'
         this.messages = 'No validation errors reported.'
@@ -427,7 +462,7 @@ export default {
       td.style.backgroundColor = this.errorColor
       return td
     },
-    validateTable: async function() {
+    validateTable: function() {
       this.loadingDataMessage = 'Validating Table...'
       let self = this
       _.delay(function() {
@@ -474,7 +509,9 @@ export default {
         let messages = await createDataPackage()
         if (messages.length > 0) {
           this.exportPackageErrors(messages.map(x => {
-            return { message: x }
+            return {
+              message: x
+            }
           }))
         } else {
           this.exportPackageFeedback()
@@ -487,10 +524,13 @@ export default {
       let allEditors = document.querySelectorAll('#csvContent .editor')
       return allEditors[allEditors.length - 1]
     },
-    addTabWithFilename: function(data, format, filename, descriptor={}) {
+    addTabWithFilename: function(data, format, filename, descriptor = {}) {
       this.createHotDataContainer(data, format, descriptor)
       this.$nextTick(function() {
-        this.pushTabObject({ id: this.activeTab, filename: filename })
+        this.pushTabObject({
+          id: this.activeTab,
+          filename: filename
+        })
       })
     },
     addTab: function(data = '"","",""', format, descriptor) {
@@ -535,7 +575,7 @@ export default {
     isLoadingMessageRunning: function() {
       return this.loadingDataMessage
     },
-    createHotDataContainer: function(data, format={}, descriptor={}) {
+    createHotDataContainer: function(data, format = {}, descriptor = {}) {
       this.initTab()
       let vueLatestHotContainer = this.latestHotContainer
       this.$nextTick(function() {
@@ -566,8 +606,7 @@ export default {
         deselectionListener: this.deselectionListener,
         loadingStartListener: this.showLoadingScreen,
         loadingFinishListener: this.closeLoadingScreen
-      }, findReplace.data().hotParameters
-      )
+      }, findReplace.data().hotParameters)
       addHotContainerListeners(container, this.closeAndShowLoadingScreen, this.closeLoadingScreen)
     },
     mergeOntoCsvFormat: function(format) {
@@ -619,7 +658,10 @@ export default {
     },
     pushDefaultPackageProperties: function() {
       this.defaultPackageProperties.forEach(x => {
-        this.pushPackageProperty({ key: x.key, value: x.value })
+        this.pushPackageProperty({
+          key: x.key,
+          value: x.value
+        })
       })
     },
     closeTab: async function(event) {
@@ -810,7 +852,9 @@ export default {
         _.unset(previousComment, 'comment')
         _.unset(previousComment, 'renderer')
       }
-      hot.updateSettings({ cell: this.previousComments })
+      hot.updateSettings({
+        cell: this.previousComments
+      })
       this.previousComments = []
     },
     setHotComments: function(hot) {
@@ -820,7 +864,14 @@ export default {
     },
     setHotComment: function(hot, errorMessage) {
       let range = this.getCellOrRowFromCount(hot, errorMessage.rowNumber, errorMessage.columnNumber)
-      this.previousComments.push({ row: range.from.row, col: range.from.col, comment: { value: errorMessage.message }, renderer: this.errorHtmlRenderer })
+      this.previousComments.push({
+        row: range.from.row,
+        col: range.from.col,
+        comment: {
+          value: errorMessage.message
+        },
+        renderer: this.errorHtmlRenderer
+      })
     },
     getCellOrRowFromCount: function(hot, row, column) {
       let rowIndex = this.transformCountToIndex(row)
@@ -833,7 +884,16 @@ export default {
         columnToIndex = this.transformCountToIndex(column)
         columnFromIndex = columnToIndex
       }
-      return { from: { col: columnFromIndex, row: rowIndex }, to: { col: columnToIndex, row: rowIndex } }
+      return {
+        from: {
+          col: columnFromIndex,
+          row: rowIndex
+        },
+        to: {
+          col: columnToIndex,
+          row: rowIndex
+        }
+      }
     },
     getCellOrRowFromIndex: function(hot, rowIndex, columnIndex) {
       let columnFromIndex
@@ -845,7 +905,16 @@ export default {
         columnToIndex = columnIndex
         columnFromIndex = columnToIndex
       }
-      return { from: { col: columnFromIndex, row: rowIndex }, to: { col: columnToIndex, row: rowIndex } }
+      return {
+        from: {
+          col: columnFromIndex,
+          row: rowIndex
+        },
+        to: {
+          col: columnToIndex,
+          row: rowIndex
+        }
+      }
     },
     // handsontable mark row/col indexes, whereas frictionless mark row/col count
     transformCountToIndex: function(count) {
@@ -859,7 +928,10 @@ export default {
       ipc.send('focusMainWindow')
     },
     packErrorMessages: function() {
-      return { title: this.messagesTitle, messages: this.messages }
+      return {
+        title: this.messagesTitle,
+        messages: this.messages
+      }
     },
     closeMessages: function() {
       this.messages = false
@@ -867,34 +939,41 @@ export default {
       this.messageTitle = ''
     },
     toggleMessageView: function() {
-      if (this.messagesType === 'error' && getWindow('errors')) {
+      const errorWindow = getWindow('errors')
+      if (this.messagesType === 'error' && errorWindow) {
         return false
       }
+      console.log(this.messages)
       return this.messages
     },
     openErrorsWindow: async function() {
       await ipc.send('showErrorsWindow')
     },
     sendErrorsToErrorsWindow: function(id) {
-      const browserWindow = getWindow('errors', id)
-      if (browserWindow) {
-        if (this.messages && this.messagesType === 'error') {
-          // opening error window will trigger close messages, so ensure have these first
-          const errorMessages = this.packErrorMessages()
-          // if window dom is already present, send error messages
-          browserWindow.webContents.send('errorMessages', errorMessages)
-          // but the window will not receive anything if not yet dom-ready
-          browserWindow.webContents.on('dom-ready', function() {
+      try {
+        const browserWindow = getWindow('errors', id)
+        if (browserWindow) {
+          if (this.messages && this.messagesType === 'error') {
+            // opening error window will trigger close messages, so ensure have these first
+            const errorMessages = this.packErrorMessages()
+            // if window dom is already present, send error messages
             browserWindow.webContents.send('errorMessages', errorMessages)
-          })
+            // but the window will not receive anything if not yet dom-ready
+            browserWindow.webContents.on('dom-ready', async function() {
+              browserWindow.webContents.send('errorMessages', errorMessages)
+            })
+          } else {
+            // this alerts error window to close - so only needed for dom-ready error window
+            browserWindow.webContents.send('errorMessages')
+          }
+          // messages are to appear in 1 window or the other, not both (get messsages first if required)
+          this.closeMessages()
         } else {
-          // this alerts error window to close - so only needed for dom-ready error window
-          browserWindow.webContents.send('errorMessages')
+          // console.log('no error window found. ignoring...')
         }
-        // messages are to appear in 1 window or the other, not both (get messsages first if required)
-        this.closeMessages()
-      } else {
-        // console.log('no error window found. ignoring...')
+      } catch (e) {
+        console.error('Problem in sending errors...')
+        console.log(e)
       }
     },
     reselectHotCell: function() {
@@ -905,7 +984,10 @@ export default {
       }
     },
     writeErrorsToProvenance: function() {
-      this.pushProvenanceErrors({ hotId: this.currentHotId, errors: this.messages })
+      this.pushProvenanceErrors({
+        hotId: this.currentHotId,
+        errors: this.messages
+      })
       this.showProvenanceErrors()
     },
     showProvenanceErrors: function() {
@@ -1030,7 +1112,11 @@ export default {
       self.resetPackagePropertiesToObject(packageProperties)
     })
     this.$subscribeTo(errorFeedback$, function(nextError) {
+      if (!self.messages) {
+        self.messages = []
+      }
       self.messages.push(nextError)
+      console.log(nextError)
     })
     this.$subscribeTo(updateHotDimensions$, function(message) {
       self.updateDimensions()

@@ -1,33 +1,19 @@
 <template>
-  <div>
-  <span class="center-align">
-    <a href="#"
-      @mouseover="hoverToSelectErrorCell(row)"
-      @mouseout="exitHoverToSelectErrorCell(row)">
-      {{row.rowNumber}}
-    </a>
-  </span>
-  <span class="center-align">
-    <a href="#"
-      @mouseover="hoverToSelectErrorCell(row)"
-      @mouseout="exitHoverToSelectErrorCell(row)">
-      {{row.columnNumber}}
-    </a>
-  </span>
-  <span class="left-align">
-    <a href="#"
-      @mouseover="hoverToSelectErrorCell(row)"
-      @mouseout="exitHoverToSelectErrorCell(row)">
-      {{row.message}}
-    </a>
-  </span>
-</div>
+  <div v-show="row && row.hasOwnProperty('message')">
+    <span v-for="column in columns" class="column.cellClass || 'center-align'">
+        <a href="#" v-show="row && row.hasOwnProperty(column)"
+        @mouseover="hoverToSelectErrorCell(row)"
+        @mouseout="exitHoverToSelectErrorCell(row)">
+        {{row.rowNumber}}
+      </a>
+    </span>
+  </div>
 </template>
 <script>
 import { getWindow } from '../index.js'
 export default {
   name: 'rowLink',
-  props: ['row'],
+  props: ['row', 'columns'],
   computed: {
     // cache main window
     homeWindow() {
