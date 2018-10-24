@@ -943,14 +943,12 @@ export default {
       if (this.messagesType === 'error' && errorWindow) {
         return false
       }
-      console.log(this.messages)
       return this.messages
     },
     openErrorsWindow: async function() {
       await ipc.send('showErrorsWindow')
     },
     sendErrorsToErrorsWindow: function(id) {
-      try {
         const browserWindow = getWindow('errors', id)
         if (browserWindow) {
           if (this.messages && this.messagesType === 'error') {
@@ -959,7 +957,7 @@ export default {
             // if window dom is already present, send error messages
             browserWindow.webContents.send('errorMessages', errorMessages)
             // but the window will not receive anything if not yet dom-ready
-            browserWindow.webContents.on('dom-ready', async function() {
+            browserWindow.webContents.on('dom-ready', function() {
               browserWindow.webContents.send('errorMessages', errorMessages)
             })
           } else {
@@ -971,10 +969,6 @@ export default {
         } else {
           // console.log('no error window found. ignoring...')
         }
-      } catch (e) {
-        console.error('Problem in sending errors...')
-        console.log(e)
-      }
     },
     reselectHotCell: function() {
       let hot = HotRegister.getActiveInstance()
@@ -1116,7 +1110,6 @@ export default {
         self.messages = []
       }
       self.messages.push(nextError)
-      console.log(nextError)
     })
     this.$subscribeTo(updateHotDimensions$, function(message) {
       self.updateDimensions()

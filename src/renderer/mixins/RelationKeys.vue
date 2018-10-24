@@ -11,7 +11,7 @@ Vue.use(VueRx, {
   Subscription
 })
 export default {
-  name: 'relationkeys',
+  name: 'Relationkeys',
   watch: {
     getActiveTab: function() {
       this.initTableHeaderKeys()

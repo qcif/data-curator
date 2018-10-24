@@ -2,7 +2,6 @@
 import Tooltip from '../mixins/Tooltip'
 import externalLink from '../partials/ExternalLink'
 export default {
-  extends: Tooltip,
   components: {
     externalLink,
     'tooltipPackageName': {
@@ -38,6 +37,7 @@ export default {
       components: { externalLink },
       template: `<div id="tooltip-package-contributors">Each <externalLink text="Contributor" url="http://frictionlessdata.io/specs/data-package/#contributors"/> must have a title and may contain path, email, role and organization</div>`
     }
-  }
+  },
+  extends: Tooltip
 }
 </script>

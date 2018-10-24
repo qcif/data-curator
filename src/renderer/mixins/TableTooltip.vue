@@ -2,7 +2,6 @@
 import Tooltip from '../mixins/Tooltip'
 import externalLink from '../partials/ExternalLink'
 export default {
-  extends: Tooltip,
   components: {
     externalLink,
     'tooltipTableName': {
@@ -40,6 +39,7 @@ export default {
       template: `<div id="tooltip-table-missing-values">Value(s) that indicate a
       <externalLink text="Missing Value" url="http://frictionlessdata.io/specs/table-schema/#missing-values"/>. Separate values with a comma</div>`
     }
-  }
+  },
+  extends: Tooltip
 }
 </script>

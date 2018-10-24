@@ -1,10 +1,10 @@
 <template>
-  <textarea></textarea>
+  <textarea/>
 </template>
 <script>
 import autosize from 'autosize'
 export default {
-  name: 'autosizeTextArea',
+  name: 'AutosizeTextArea',
   props: {
     value: {
       default: ''

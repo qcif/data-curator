@@ -1,21 +1,41 @@
 <template>
   <div id="sources">
-    <div v-for="(source,index) in getSources" :key="index" class="source col-sm-12">
+    <div
+      v-for="(source,index) in getSources"
+      :key="index"
+      class="source col-sm-12">
       <div class="inputs-container">
-        <div v-for="prop in Object.keys(source)" class="input-group">
-          <span class="input-group-addon input-sm">{{prop}}</span>
-          <input :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(prop + index) }" :value="source[prop]" @input="setSourceProp(index, prop, $event.target.value)" type="text" :id="prop + index" v-validate="sourceValidationRules(prop, index)" :name="prop + index"/>
-          <div v-show="errors.has(prop + index)" class="row help validate-danger">
-            {{ errors.first(prop + index)}}
+        <div
+          v-for="prop in Object.keys(source)"
+          class="input-group">
+          <span class="input-group-addon input-sm">{{ prop }}</span>
+          <input
+            v-validate="sourceValidationRules(prop, index)"
+            :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(prop + index) }"
+            :value="source[prop]"
+            :id="prop + index"
+            :name="prop + index"
+            type="text"
+            @input="setSourceProp(index, prop, $event.target.value)">
+          <div
+            v-show="errors.has(prop + index)"
+            class="row help validate-danger">
+            {{ errors.first(prop + index) }}
           </div>
         </div>
       </div>
-      <button type="button" class="btn btn-danger btn-sm" @click="removeSource(index)">
+      <button
+        type="button"
+        class="btn btn-danger btn-sm"
+        @click="removeSource(index)">
         <span class="glyphicon glyphicon-minus"/>
       </button>
     </div>
     <div class="button-container">
-      <button type="button" class="add-source btn btn-primary btn-sm" @click="addSource()">
+      <button
+        type="button"
+        class="add-source btn btn-primary btn-sm"
+        @click="addSource()">
         <span class="glyphicon glyphicon-plus"/>Add source
       </button>
     </div>
@@ -32,15 +52,15 @@ import ValidationRules from '../mixins/ValidationRules'
 import Vue from 'vue'
 Vue.use(AsyncComputed)
 export default {
-  name: 'sources',
+  name: 'Sources',
+  extends: SideNav,
   mixins: [ValidationRules],
+  props: ['setProperty', 'getProperty', 'getPropertyGivenHotId'],
   data() {
     return {
       sources: []
     }
   },
-  props: ['setProperty', 'getProperty', 'getPropertyGivenHotId'],
-  extends: SideNav,
   computed: {
     ...mapGetters(['getActiveTab']),
     regexForPath() {
@@ -131,14 +151,14 @@ export default {
       }
     }
   },
-  mounted: function() {
-    let tab = this.getActiveTab
-    this.initSources(tab)
-  },
   watch: {
     getActiveTab: function(tab) {
       this.initSources(tab)
     }
+  },
+  mounted: function() {
+    let tab = this.getActiveTab
+    this.initSources(tab)
   }
 }
 </script>
