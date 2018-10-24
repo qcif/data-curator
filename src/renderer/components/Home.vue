@@ -84,7 +84,7 @@
       <div id="main-bottom-panel" class="panel-footer" :class="mainBottomPanelStatus">
         <div id="message-panel" class="panel-default">
           <!-- tidy up messages view with components -->
-          <div class="message-view" v-show="debounceToggleMessageView()">
+          <div class="message-view" v-show="toggleMessageView()">
             <div class="message-title-container affix">
               <ul class="nav navbar-right closebtn">
                 <li>
@@ -282,10 +282,7 @@ export default {
         key: 'profile',
         value: 'tabular-data-package'
       }],
-      reportSiblingClasses: ['main-bottom-panel', 'main-middle-panel'],
-      debounceToggleMessageView: _.debounce(this.toggleMessageView, 300, {
-        'trailing': true
-      })
+      reportSiblingClasses: ['main-bottom-panel', 'main-middle-panel']
     }
   },
   computed: {
