@@ -203,6 +203,9 @@ sideNavFooterHeight = 70px
   @extend #sidenav form
   max-height calc(100% - 70px) !important
 
+
+bottomPanelClosed = -10px
+
 #main-bottom-panel
   box-sizing border-box !important
   height 55px
@@ -215,8 +218,10 @@ sideNavFooterHeight = 70px
   &.closed
     margin-left 0
     padding-right 5px
+    bottom bottomPanelClosed
   &.messages-closed
     height 0
+    bottom bottomPanelClosed
   &.messages-opened
     height 150px !important
     overflow-y scroll
