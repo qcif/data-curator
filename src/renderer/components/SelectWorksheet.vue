@@ -10,7 +10,7 @@
           class="form-control">
           <option
             v-for="(option, index) in options"
-            :key="`${option.value}-${index}`"
+            :key="option.value + index"
             :value="option.value">
             {{ option.text }}
           </option>
