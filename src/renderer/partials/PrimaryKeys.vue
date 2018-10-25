@@ -1,7 +1,7 @@
 <template>
   <div id="primaryKeys">
     <component
-      :is="tableheaderkeys"
+      :is="'tableheaderkeys'"
       :activeNames="localHeaderNames"
       :getSelectedKeys="getSelectedKeys"
       :pushSelectedKeys="pushSelectedKeys"/>

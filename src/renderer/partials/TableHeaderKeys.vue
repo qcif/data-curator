@@ -30,7 +30,7 @@ export default {
       default: function() { return [] }
     },
     getSelectedKeys: {
-      type: Function,
+      type: Array,
       default: function() { return [] }
     },
     pushSelectedKeys: {
@@ -54,8 +54,8 @@ export default {
       default: undefined
     },
     currentHotId: {
-      type: String,
-      default: ''
+      type: Function,
+      default: async function() {}
     }
   },
   computed: {
