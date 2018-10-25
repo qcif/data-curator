@@ -25,7 +25,36 @@ import ForeignKeysTooltip from '../mixins/ForeignKeysTooltip'
 export default {
   name: 'Tablekeys',
   mixins: [ForeignKeysTooltip],
-  props: ['allTableNames', 'getSelectedTable', 'pushSelectedTable', 'labelName', 'tooltipId', 'tooltipView', 'index'],
+  props: {
+    allTableNames: {
+      type: Array,
+      default: function() { return [] }
+    },
+    getSelectedTable: {
+      type: Function,
+      default: function() { return [] }
+    },
+    pushSelectedTable: {
+      type: Function,
+      default: function() {}
+    },
+    labelName: {
+      type: String,
+      default: ''
+    },
+    tooltipId: {
+      type: String,
+      default: ''
+    },
+    tooltipView: {
+      type: String,
+      default: ''
+    },
+    index: {
+      type: Number,
+      default: undefined
+    }
+  },
   computed: {
     allTables() {
       return this.allTableNames || []

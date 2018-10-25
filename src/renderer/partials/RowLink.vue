@@ -2,6 +2,7 @@
   <div v-show="row && row.hasOwnProperty('message')">
     <span
       v-for="column in columns"
+      :key="column.field"
       class="column.cellClass || 'center-align'">
       <a
         v-show="row && row.hasOwnProperty(column)"
@@ -17,7 +18,16 @@
 import { getWindow } from '../index.js'
 export default {
   name: 'RowLink',
-  props: ['row', 'columns'],
+  props: {
+    row: {
+      type: Object,
+      default: function() { return {} }
+    },
+    columns: {
+      type: Object,
+      default: function() { return {} }
+    }
+  },
   computed: {
     // cache main window
     homeWindow() {

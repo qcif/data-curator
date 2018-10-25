@@ -28,7 +28,16 @@ import ColumnToolTip from '../mixins/ColumnTooltip'
 export default {
   name: 'Sidenav',
   mixins: [ColumnToolTip],
-  props: ['sideNavFormHeight', 'adjustSidenavFormHeight'],
+  props: {
+    sideNavFormHeight: {
+      type: String,
+      default: ''
+    },
+    adjustSidenavFormHeight: {
+      type: Function,
+      default: function() {}
+    }
+  },
   data() {
     return {
       formprops: [],

@@ -2,10 +2,11 @@
   <div id="foreignKeyFields">
     <div
       v-for="(foreignKey,index) in hotForeignKeys"
+      :key="foreignKey + index"
       class="foreign col-sm-12">
       <div class="inputs-container">
         <component
-          is="tableheaderkeys"
+          :is="tableheaderkeys"
           :key="getLocalComponentKey(index)"
           :activeNames="localHeaderNames"
           :getSelectedKeys="getSelectedLocalKeys(index)"
@@ -15,8 +16,8 @@
           labelName="Foreign key(s)"
           tooltipView="tooltipForeignkey" />
         <component
-          is="tablekeys"
           v-if="isHeadersSelected && !fkPackages[index]"
+          :is="tablekeys"
           :key="getTableComponentKey(index)"
           :allTableNames="allTableNames"
           :getSelectedTable="getSelectedTable(index)"
@@ -26,8 +27,8 @@
           labelName="Reference Table"
           tooltipView="tooltipForeignkeyTable" />
         <component
-          is="tableheaderkeys"
           v-if="isHeadersSelected && !fkPackages[index]"
+          :is="tableheaderkeys"
           :key="getForeignComponentKey(index)"
           :activeNames="getCurrentForeignHeaders(index)"
           :getSelectedKeys="getSelectedForeignKeys(index)"
@@ -71,7 +72,7 @@
           </div>
           <div v-if="fkPackages[index]">
             <component
-              is="tablekeys"
+              :is="tablekeys"
               :key="getPackageTableComponentKey(index)"
               :allTableNames="allFkTableNames"
               :getSelectedTable="getFkPackageTable(index)"
@@ -81,7 +82,7 @@
               labelName="Reference Table"
               tooltipView="tooltipForeignkeyTable" />
             <component
-              is="tableheaderkeys"
+              :is="tableheaderkeys"
               :key="getForeignPackageComponentKey(index)"
               :activeNames="getCurrentPackageForeignHeaders(index)"
               :getSelectedKeys="getSelectedForeignKeys(index)"
@@ -146,7 +147,20 @@ export default {
     tableheaderkeys
   },
   mixins: [RelationKeys, ValidationRules],
-  props: ['setProperty', 'getPropertyGivenHotId', 'propertyName', 'currentHotId'],
+  props: {
+    setProperty: {
+      type: Function,
+      default: function() {}
+    },
+    propertyName: {
+      type: String,
+      default: ''
+    },
+    currentHotId: {
+      type: Function,
+      default: async function() {}
+    }
+  },
   asyncComputed: {
     hotForeignKeys: {
       async get() {
@@ -197,6 +211,34 @@ export default {
       toggleText: fkPackagesButtonText$,
       testLoadingPackage: loadingPackage$
     }
+  },
+  created: async function() {
+    let self = this
+    this.$subscribeTo(allTabsTitles$, function(allTabsTitles) {
+      self.updateTableSubscriptions(allTabsTitles)
+    })
+    ipc.on('packageUrlLoaded', async function(event, index, hotId, url, descriptor) {
+      const dataPackage = await Package.load(descriptor)
+      if (dataPackage && dataPackage.valid) {
+        self.stopLoadingPackageFeedback()
+        self.updateFkPackageIndex(index, true)
+        self.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: url })
+        // persist the first table by default
+        if (dataPackage.resources.length > 0) {
+          self.pushForeignKeysForeignTableForTable({ hotId: hotId, index: index, resource: dataPackage.resources[0].name })
+        }
+        await self.updateFkComponents(dataPackage, url)
+      }
+    })
+  },
+  mounted: function() {
+    let self = this
+    pushAllTabTitlesSubscription()
+    this.populateAsyncFkPackageComponents()
+    // occasionally fkpackage table getter doesn't arrive on tab change - update to ensure all received
+    _.delay(function() {
+      self.$forceUpdate()
+    }, 200)
   },
   methods: {
     ...mapMutations([
@@ -506,34 +548,6 @@ export default {
         console.error('There was a problem with populating fk components', error)
       }
     }
-  },
-  created: async function() {
-    let self = this
-    this.$subscribeTo(allTabsTitles$, function(allTabsTitles) {
-      self.updateTableSubscriptions(allTabsTitles)
-    })
-    ipc.on('packageUrlLoaded', async function(event, index, hotId, url, descriptor) {
-      const dataPackage = await Package.load(descriptor)
-      if (dataPackage && dataPackage.valid) {
-        self.stopLoadingPackageFeedback()
-        self.updateFkPackageIndex(index, true)
-        self.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: url })
-        // persist the first table by default
-        if (dataPackage.resources.length > 0) {
-          self.pushForeignKeysForeignTableForTable({ hotId: hotId, index: index, resource: dataPackage.resources[0].name })
-        }
-        await self.updateFkComponents(dataPackage, url)
-      }
-    })
-  },
-  mounted: function() {
-    let self = this
-    pushAllTabTitlesSubscription()
-    this.populateAsyncFkPackageComponents()
-    // occasionally fkpackage table getter doesn't arrive on tab change - update to ensure all received
-    _.delay(function() {
-      self.$forceUpdate()
-    }, 200)
   }
 }
 </script>
