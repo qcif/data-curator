@@ -6,7 +6,8 @@
       class="source col-sm-12">
       <div class="inputs-container">
         <div
-          v-for="prop in Object.keys(source)"
+          v-for="(prop, index) in Object.keys(source)"
+          :key="prop + index"
           class="input-group">
           <span class="input-group-addon input-sm">{{ prop }}</span>
           <input
@@ -55,7 +56,20 @@ export default {
   name: 'Sources',
   extends: SideNav,
   mixins: [ValidationRules],
-  props: ['setProperty', 'getProperty', 'getPropertyGivenHotId'],
+  props: {
+    setProperty: {
+      type: Function,
+      default: function() {}
+    },
+    getProperty: {
+      type: Function,
+      default: function() {}
+    },
+    getPropertyGivenHotId: {
+      type: Function,
+      default: function() {}
+    }
+  },
   data() {
     return {
       sources: []
@@ -80,6 +94,15 @@ export default {
         return this.sources
       }
     }
+  },
+  watch: {
+    getActiveTab: function(tab) {
+      this.initSources(tab)
+    }
+  },
+  mounted: function() {
+    let tab = this.getActiveTab
+    this.initSources(tab)
   },
   methods: {
     ...mapMutations([
@@ -150,15 +173,6 @@ export default {
           return ''
       }
     }
-  },
-  watch: {
-    getActiveTab: function(tab) {
-      this.initSources(tab)
-    }
-  },
-  mounted: function() {
-    let tab = this.getActiveTab
-    this.initSources(tab)
   }
 }
 </script>

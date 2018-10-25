@@ -42,7 +42,9 @@
             cols="55"
             class="form-control input-sm col-sm-9" />
           <div id="provenance-errors-container">
-            <div v-for="(errors, hotId) in provenanceHotErrors">
+            <div
+              v-for="(errors, hotId) in provenanceHotErrors"
+              :key="hotId">
               <span class="provenance-errors-btn">
                 <button
                   v-show="!isPreview && provenanceHotErrors"
@@ -80,6 +82,36 @@ export default {
   name: 'Provenance',
   extends: SideNav,
   mixins: [ProvenanceTooltip],
+  data() {
+    return {
+      isPreview: false,
+      provenance: '',
+      provenanceHotErrors: null,
+      placeholder: `Short description of the dataset (the first sentence and first paragraph should be extractable to provide short standalone descriptions)
+
+### Why was the dataset created?
+reference legislation if relevant
+
+### How was it collected
+what events lead up to its collection?
+
+### When was it collected?
+
+### Where was it collected?
+
+### Which instruments were used to collect it?
+
+### What does “null” mean?
+are null values unknown, missing or not applicable?
+
+### Other comments
+
+- error corrections
+- transformations
+- if the data had been aggregated, what level of detail can be expected
+- known caveats or limitations in the data`
+    }
+  },
   computed: {
     ...mapGetters([
       'getProvenance'
@@ -94,6 +126,18 @@ export default {
     buttonText() {
       return this.isPreview ? 'Edit' : 'Preview'
     }
+  },
+  watch: {
+    provenance: function(value) {
+      this.pushProvenance(value)
+    }
+  },
+  mounted: function() {
+    let self = this
+    this.provenance = this.getProvenance.markdown
+    this.$subscribeTo(provenanceErrors$, function() {
+      self.addErrorsToProvenance()
+    })
   },
   methods: {
     ...mapMutations([
@@ -135,48 +179,6 @@ export default {
       if (element) {
         element.focus()
       }
-    }
-  },
-  watch: {
-    provenance: function(value) {
-      this.pushProvenance(value)
-    }
-  },
-  mounted: function() {
-    let self = this
-    this.provenance = this.getProvenance.markdown
-    this.$subscribeTo(provenanceErrors$, function() {
-      self.addErrorsToProvenance()
-    })
-  },
-  data() {
-    return {
-      isPreview: false,
-      provenance: '',
-      provenanceHotErrors: null,
-      placeholder: `Short description of the dataset (the first sentence and first paragraph should be extractable to provide short standalone descriptions)
-
-### Why was the dataset created?
-reference legislation if relevant
-
-### How was it collected
-what events lead up to its collection?
-
-### When was it collected?
-
-### Where was it collected?
-
-### Which instruments were used to collect it?
-
-### What does “null” mean?
-are null values unknown, missing or not applicable?
-
-### Other comments
-
-- error corrections
-- transformations
-- if the data had been aggregated, what level of detail can be expected
-- known caveats or limitations in the data`
     }
   }
 }

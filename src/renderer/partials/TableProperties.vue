@@ -146,6 +146,21 @@ export default {
   computed: {
     ...mapGetters(['getActiveTab', 'getTableProperty', 'getHotTabs'])
   },
+  mounted: function() {
+    this.$validator.extend('unique_name', {
+      getMessage: field => `There is already another tab with this ${field}.`,
+      validate: value => new Promise((resolve) => {
+        let currentNames = _.values(_.mapValues(this.getHotTabs, function(hotTab) {
+          return hotTab.tableProperties ? hotTab.tableProperties.name : ''
+        }))
+        let otherNames = _.without(currentNames, ...value)
+        resolve({
+          valid: currentNames.length - otherNames.length <= 1
+        })
+      })
+    })
+    autosize(document.querySelector('textarea'))
+  },
   methods: {
     ...mapMutations([
       'pushTableProperty'
@@ -209,21 +224,6 @@ export default {
       this.pushTableProperty(this.propertySetObject(key, ''))
       return true
     }
-  },
-  mounted: function() {
-    this.$validator.extend('unique_name', {
-      getMessage: field => `There is already another tab with this ${field}.`,
-      validate: value => new Promise((resolve) => {
-        let currentNames = _.values(_.mapValues(this.getHotTabs, function(hotTab) {
-          return hotTab.tableProperties ? hotTab.tableProperties.name : ''
-        }))
-        let otherNames = _.without(currentNames, ...value)
-        resolve({
-          valid: currentNames.length - otherNames.length <= 1
-        })
-      })
-    })
-    autosize(document.querySelector('textarea'))
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="primaryKeys">
     <component
-      is="tableheaderkeys"
+      :is="tableheaderkeys"
       :activeNames="localHeaderNames"
       :getSelectedKeys="getSelectedKeys"
       :pushSelectedKeys="pushSelectedKeys"/>
@@ -16,7 +16,24 @@ export default {
     tableheaderkeys
   },
   mixins: [RelationKeys],
-  props: ['setProperty', 'getPropertyGivenHotId', 'propertyName', 'currentHotId'],
+  props: {
+    setProperty: {
+      type: Function,
+      default: function() {}
+    },
+    propertyName: {
+      type: String,
+      default: ''
+    },
+    currentHotId: {
+      type: Function,
+      default: async function() {}
+    },
+    getPropertyGivenHotId: {
+      type: Function,
+      default: function() {}
+    }
+  },
   data() {
     return {
       localHeaderNames: [],

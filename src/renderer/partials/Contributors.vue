@@ -122,6 +122,9 @@ export default {
       }
     }
   },
+  mounted: function() {
+    this.initContributors()
+  },
   methods: {
     ...mapMutations([
       'pushPackageProperty'
@@ -172,9 +175,6 @@ export default {
           return ''
       }
     }
-  },
-  mounted: function() {
-    this.initContributors()
   }
 }
 </script>

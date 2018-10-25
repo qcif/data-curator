@@ -126,6 +126,9 @@ export default {
   computed: {
     ...mapGetters(['getPackageProperty'])
   },
+  mounted: function() {
+    autosize(document.querySelector('textarea'))
+  },
   methods: {
     ...mapMutations([
       'pushPackageProperty'
@@ -160,9 +163,6 @@ export default {
       this.setProperty(key, value)
       return true
     }
-  },
-  mounted: function() {
-    autosize(document.querySelector('textarea'))
   }
 }
 </script>

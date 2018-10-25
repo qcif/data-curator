@@ -8,7 +8,8 @@
         class="form-control input-sm col-sm-9"
         multiple>
         <option
-          v-for="license in licenses"
+          v-for="(license, index) in licenses"
+          :key="license.title + index"
           :value="license.title">{{ license.title }}</option>
       </select>
     </div>
@@ -20,7 +21,20 @@ import {
 } from 'vuex'
 export default {
   name: 'Licenses',
-  props: ['getPropertyGivenHotId', 'setProperty', 'waitForHotIdFromTabId'],
+  props: {
+    setProperty: {
+      type: Function,
+      default: function() {}
+    },
+    getPropertyGivenHotId: {
+      type: Function,
+      default: function() {}
+    },
+    waitForHotIdFromTabId: {
+      type: Function,
+      default: async function() {}
+    }
+  },
   data() {
     return {
       // sourced from: https://licenses.opendefinition.org/licenses
@@ -76,6 +90,9 @@ export default {
       selectedLicenses: []
     }
   },
+  computed: {
+    ...mapGetters(['getActiveTab'])
+  },
   watch: {
     getActiveTab: function() {
       // update licenses when adding tabs
@@ -84,9 +101,6 @@ export default {
     selectedLicenses: function(selected) {
       this.setProperty('licenses', this.licensesObject(selected))
     }
-  },
-  computed: {
-    ...mapGetters(['getActiveTab'])
   },
   mounted: function() {
     // update license when re-opening panel with licenses

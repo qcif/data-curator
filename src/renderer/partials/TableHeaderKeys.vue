@@ -13,6 +13,7 @@
         multiple>
         <option
           v-for="columnName in activeNames"
+          :key="columnName"
           :value="columnName">{{ columnName }}</option>
       </select>
     </div>
@@ -23,7 +24,40 @@ import ForeignKeysTooltip from '../mixins/ForeignKeysTooltip'
 export default {
   name: 'Tableheaderkeys',
   mixins: [ForeignKeysTooltip],
-  props: ['activeNames', 'getSelectedKeys', 'pushSelectedKeys', 'labelName', 'tooltipId', 'tooltipView', 'index', 'currentHotId'],
+  props: {
+    activeNames: {
+      type: Array,
+      default: function() { return [] }
+    },
+    getSelectedKeys: {
+      type: Function,
+      default: function() { return [] }
+    },
+    pushSelectedKeys: {
+      type: Function,
+      default: function() {}
+    },
+    labelName: {
+      type: String,
+      default: ''
+    },
+    tooltipId: {
+      type: String,
+      default: ''
+    },
+    tooltipView: {
+      type: String,
+      default: ''
+    },
+    index: {
+      type: Number,
+      default: undefined
+    },
+    currentHotId: {
+      type: String,
+      default: ''
+    }
+  },
   computed: {
     selectedKeys: {
       get() {
