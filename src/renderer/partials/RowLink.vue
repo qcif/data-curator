@@ -2,8 +2,7 @@
   <div v-show="row && row.hasOwnProperty('message')">
     <span
       v-for="column in columns"
-      :key="column.field"
-      class="column.cellClass || 'center-align'">
+      :key="column.field">
       <a
         v-show="row && row.hasOwnProperty(column)"
         href="#"
