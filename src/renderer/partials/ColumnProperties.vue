@@ -270,9 +270,6 @@ export default {
     cIndex: {
       type: Number,
       default: 0
-    },
-    reselectHotCell: {
-      type: Function
     }
   },
   data() {
