@@ -102,15 +102,6 @@ Data Curator proudly [uses open source software](https://github.com/ODIQueenslan
 - Choose a platform from the [Releases page](https://github.com/ODIQueensland/data-curator/releases/latest).
 - Drag the application to your applications folder.
 
-### On macOS
-
-If you encounter [a warning message](https://github.com/ODIQueensland/data-curator/issues/111) informing you the application cannot be opened due to being from an unknown developer, try:
-
-- Right click the app
-- then option + click on Open.
-
-This warning occurs due to macOS quarantining applications when it cannot determine the certificate used to sign the application. We're planning to sign the application so this goes away.
-
 --------------------------------------------------------------------------------
 
 ## Development
