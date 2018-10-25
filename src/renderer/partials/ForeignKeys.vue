@@ -6,7 +6,7 @@
       class="foreign col-sm-12">
       <div class="inputs-container">
         <component
-          :is="tableheaderkeys"
+          :is="'tableheaderkeys'"
           :key="getLocalComponentKey(index)"
           :activeNames="localHeaderNames"
           :getSelectedKeys="getSelectedLocalKeys(index)"
@@ -17,7 +17,7 @@
           tooltipView="tooltipForeignkey" />
         <component
           v-if="isHeadersSelected && !fkPackages[index]"
-          :is="tablekeys"
+          :is="'tablekeys'"
           :key="getTableComponentKey(index)"
           :allTableNames="allTableNames"
           :getSelectedTable="getSelectedTable(index)"
@@ -28,7 +28,7 @@
           tooltipView="tooltipForeignkeyTable" />
         <component
           v-if="isHeadersSelected && !fkPackages[index]"
-          :is="tableheaderkeys"
+          :is="'tableheaderkeys'"
           :key="getForeignComponentKey(index)"
           :activeNames="getCurrentForeignHeaders(index)"
           :getSelectedKeys="getSelectedForeignKeys(index)"
@@ -72,7 +72,7 @@
           </div>
           <div v-if="fkPackages[index]">
             <component
-              :is="tablekeys"
+              :is="'tablekeys'"
               :key="getPackageTableComponentKey(index)"
               :allTableNames="allFkTableNames"
               :getSelectedTable="getFkPackageTable(index)"
@@ -82,7 +82,7 @@
               labelName="Reference Table"
               tooltipView="tooltipForeignkeyTable" />
             <component
-              :is="tableheaderkeys"
+              :is="'tableheaderkeys'"
               :key="getForeignPackageComponentKey(index)"
               :activeNames="getCurrentPackageForeignHeaders(index)"
               :getSelectedKeys="getSelectedForeignKeys(index)"
@@ -298,18 +298,24 @@ export default {
       return dataPackage
     },
     setFkPackage: async function(index, hotId, value) {
+      // do not setup spinner immediately
+      let self = this
+      _.delay(function() {
+        self.startLoadingPackage(index, hotId, value)
+      }, 5000)
+    },
+    startLoadingPackage: async function(index, hotId, value) {
+      let self = this
       this.loadingPackage[index] = value
       loadingPackage$.next(index)
-      let self = this
-      // set timeout on spinner
-      _.delay(function() {
-        self.loadingPackage.length = 0
-        loadingPackage$.next(-1)
-      }, 10000)
       let isValid = await this.validatePackageUrl(`fk-package${index}`, index, hotId, value)
       if (isValid) {
         ipc.send('loadPackageUrl', index, hotId, value)
       }
+      // set timeout on spinner
+      _.delay(function() {
+        self.stopLoadingPackageFeedback(index)
+      }, 5000)
     },
     stopLoadingPackageFeedback: function(index) {
       this.loadingPackage[index] = false
