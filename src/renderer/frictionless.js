@@ -169,7 +169,7 @@ export async function validateActiveDataAgainstSchema(callback) {
     relations = await collateForeignKeys(hotId, callback)
   } catch (error) {
     console.error(error)
-    errorHandler({ message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`, name: 'Invalid foreign table(s)' }, null, errorCollector)
+    errorHandler({ message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`, name: 'Invalid foreign table(s)' }, null)
   }
   const stream = await table.iter({
     keyed: false,
