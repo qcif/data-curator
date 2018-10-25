@@ -266,7 +266,15 @@ export default {
   name: 'Column',
   extends: SideNav,
   mixins: [ValidationRules, ColumnTooltip],
-  props: ['cIndex', 'reselectHotCell'],
+  props: {
+    cIndex: {
+      type: Number,
+      default: 0
+    },
+    reselectHotCell: {
+      type: Function
+    }
+  },
   data() {
     return {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
@@ -413,7 +421,7 @@ export default {
       watch() {
         // eslint workarounds
         let temp = this.getActiveTab
-        let temp2 = this.cIndex
+        let temp2 = this.c-index
         let temp3 = this.allTablesAllColumns
       }
     },
@@ -436,7 +444,7 @@ export default {
       },
       watch() {
         let temp = this.getActiveTab
-        let temp2 = this.cIndex
+        let temp2 = this.c-index
         // ensure format also updates after setting type
         let temp3 = this.typeProperty
       }
@@ -487,7 +495,7 @@ export default {
     getter: function(hotId, key) {
       let object = {
         hotId: hotId,
-        columnIndex: this.cIndex,
+        columnIndex: this.c-index,
         key: key
       }
       return object
@@ -495,7 +503,7 @@ export default {
     setter: function(hotId, key, value) {
       let object = {
         hotId: hotId,
-        columnIndex: this.cIndex,
+        columnIndex: this.c-index,
         key: key,
         value: value
       }
@@ -773,7 +781,7 @@ export default {
     },
     getNameProperty() {
       let allColumns = this.allTablesAllColumnsNames[this.activeCurrentHotId] || []
-      return allColumns[this.cIndex] || ''
+      return allColumns[this.c-index] || ''
     },
     formatValuesHasPattern() {
       return this.formatProperty === 'pattern' && _.indexOf(this.formatPropertiesForType, 'pattern') > -1

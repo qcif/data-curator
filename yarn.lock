@@ -867,7 +867,7 @@ babel-cli@^6.26.0:
   optionalDependencies:
     chokidar "^1.6.1"
 
-babel-code-frame@^6.26.0:
+babel-code-frame@6.26.0, babel-code-frame@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-code-frame/-/babel-code-frame-6.26.0.tgz#63fd43f7dc1e3bb7ce35947db8fe369a3f58c74b"
   dependencies:
@@ -2594,10 +2594,6 @@ coa@~2.0.1:
   dependencies:
     q "^1.1.2"
 
-coalescy@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/coalescy/-/coalescy-1.0.0.tgz#4b065846b836361ada6c4b4a4abf4bc1cac31bf1"
-
 code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
@@ -4174,14 +4170,13 @@ eslint-config-standard@^12.0.0:
   version "12.0.0"
   resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-12.0.0.tgz#638b4c65db0bd5a41319f96bba1f15ddad2107d9"
 
-eslint-friendly-formatter@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-friendly-formatter/-/eslint-friendly-formatter-4.0.1.tgz#27d504dc837f7caddbf201b2e84a4ee730ba3efa"
+eslint-formatter-friendly@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-formatter-friendly/-/eslint-formatter-friendly-6.0.0.tgz#8363888f7b50f992dfaed72a849a604fc97d598f"
   dependencies:
+    babel-code-frame "6.26.0"
     chalk "^2.0.1"
-    coalescy "1.0.0"
     extend "^3.0.0"
-    minimist "^1.2.0"
     strip-ansi "^4.0.0"
     text-table "^0.2.0"
 

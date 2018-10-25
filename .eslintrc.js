@@ -9,7 +9,7 @@ module.exports = {
     node: true,
     es6: true
   },
-  extends: ['standard', 'plugin:vue/base'],
+  extends: ['standard', 'plugin:vue/recommended'],
   globals: {
     __static: true
   },
@@ -29,6 +29,7 @@ module.exports = {
     'no-unused-vars': 0,
     'eqeqeq': 0,
     'no-callback-literal': 0,
-    'space-infix-ops': 0
+    'space-infix-ops': 0,
+    'vue/attribute-hyphenation': 0
   }
 }

@@ -12,13 +12,21 @@ Vue.use(VueRx, {
 })
 export default {
   name: 'Relationkeys',
+  computed: {
+    ...mapGetters(['getActiveTab', 'getAllHotTablesColumnNames', 'getAllTabTitles', 'getTabObjects', 'getHotIdFromTabId', 'getSyncHotIdFromTabId', 'getAllForeignKeys', 'tabTitle'])
+  },
   watch: {
     getActiveTab: function() {
       this.initTableHeaderKeys()
     }
   },
-  computed: {
-    ...mapGetters(['getActiveTab', 'getAllHotTablesColumnNames', 'getAllTabTitles', 'getTabObjects', 'getHotIdFromTabId', 'getSyncHotIdFromTabId', 'getAllForeignKeys', 'tabTitle'])
+  mounted: async function() {
+    let self = this
+    this.$subscribeTo(allTablesAllColumnNames$, async function(allTablesAllColumnNames) {
+      const hotId = await self.getHotIdFromTabId(self.getActiveTab)
+      await self.updateSubscriptions(allTablesAllColumnNames, hotId)
+    })
+    this.initTableHeaderKeys()
   },
   methods: {
     ...mapMutations(['pushForeignKeysLocalFieldsForTable', 'pushForeignKeysForeignFieldsForTable', 'pushForeignKeysForeignTableForTable']),
@@ -28,15 +36,7 @@ export default {
     getHotIdHeaderNames: function(allTablesAllNames, hotId) {
       return _.without(allTablesAllNames[hotId], '', null, undefined)
     }
-  },
-
-  mounted: async function() {
-    let self = this
-    this.$subscribeTo(allTablesAllColumnNames$, async function(allTablesAllColumnNames) {
-      const hotId = await self.getHotIdFromTabId(self.getActiveTab)
-      await self.updateSubscriptions(allTablesAllColumnNames, hotId)
-    })
-    this.initTableHeaderKeys()
   }
+
 }
 </script>

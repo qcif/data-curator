@@ -9,7 +9,12 @@
 <script>
 export default {
   name: 'DataCurator',
-  props: ['routerName']
+  props: {
+    routerName: {
+      type: String,
+      required: true
+    }
+  }
 }
 </script>
 <style lang="styl" scoped>

@@ -1,32 +1,45 @@
 <template>
-<div id="container" class="container-fluid errors-window">
-  <h1>{{ title }}</h1>
-  <div>
-    <template v-if="messages">
+  <div
+    id="container"
+    class="container-fluid errors-window">
+    <h1>{{ title }}</h1>
+    <div>
+      <template v-if="messages">
         <i class="navbar-text">{{ messages.length }} Error(s)</i>
         <ul class="nav navbar-nav navbar-left" >
           <li>
-        <a href="#" v-tooltip.top="tooltip('tooltip-write-errors-provenance')" @click.prevent="writeErrorsToProvenance()">
-          <object data="static/img/validation-results.svg" type="image/svg+xml" />
-          <!-- <span class="btn-default fas fa-file-alt"  /> -->
+            <a
+              v-tooltip.top="tooltip('tooltip-write-errors-provenance')"
+              href="#"
+              @click.prevent="writeErrorsToProvenance()">
+              <object
+                data="static/img/validation-results.svg"
+                type="image/svg+xml" />
+                <!-- <span class="btn-default fas fa-file-alt"  /> -->
             </a>
           </li>
-          <component is="tooltipWriteErrorsProvenance" />
+          <component :is="tooltipWriteErrorsProvenance" />
         </ul>
       </template>
-    <vue-good-table :columns="columns" :rows="rows" :sort-options="{
+      <vue-good-table
+        :columns="columns"
+        :rows="rows"
+        :sort-options="{
           enabled: true,
           initialSortBy: {field: 'name', type: 'asc'}
-        }" @on-row-click="goToCell">
-      <template slot="table-column" slot-scope="props">
+        }"
+        @on-row-click="goToCell">
+        <template
+          slot="table-column"
+          slot-scope="props">
           <rowLink
             :row="props.row"
             :columns="props.columns"/>
         </template>
-    </vue-good-table>
-  </div>
+      </vue-good-table>
+    </div>
 
-</div>
+  </div>
 </template>
 <script>
 import Vue from 'vue'
@@ -90,6 +103,30 @@ export default {
       return getWindow('home')
     }
   },
+  watch: {
+    messages: function(messages) {
+      this.rows = []
+      if (messages) {
+        for (let next of messages) {
+          this.rows.push({
+            rowNumber: next.rowNumber,
+            columnNumber: next.columnNumber,
+            message: next.message
+          })
+        }
+      }
+    }
+  },
+  mounted: function() {
+    let self = this
+    ipc.on('errorMessages', function(event, arg) {
+      if (!arg) {
+        self.resetErrorMessages()
+      } else {
+        self.setErrorMessages(arg)
+      }
+    })
+  },
   methods: {
     ...mapMutations([
       'pushProvenanceErrors'
@@ -116,30 +153,6 @@ export default {
     showProvenanceErrors: function() {
       this.homeWindow.webContents.send('showProvenanceErrors')
     }
-  },
-  watch: {
-    messages: function(messages) {
-      this.rows = []
-      if (messages) {
-        for (let next of messages) {
-          this.rows.push({
-            rowNumber: next.rowNumber,
-            columnNumber: next.columnNumber,
-            message: next.message
-          })
-        }
-      }
-    }
-  },
-  mounted: function() {
-    let self = this
-    ipc.on('errorMessages', function(event, arg) {
-      if (!arg) {
-        self.resetErrorMessages()
-      } else {
-        self.setErrorMessages(arg)
-      }
-    })
   }
 }
 </script>

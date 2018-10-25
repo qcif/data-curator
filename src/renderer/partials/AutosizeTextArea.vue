@@ -7,6 +7,7 @@ export default {
   name: 'AutosizeTextArea',
   props: {
     value: {
+      type: String,
       default: ''
     }
   },

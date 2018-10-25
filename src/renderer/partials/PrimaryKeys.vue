@@ -2,9 +2,9 @@
   <div id="primaryKeys">
     <component
       is="tableheaderkeys"
-      :active-names="localHeaderNames"
-      :get-selected-keys="getSelectedKeys"
-      :push-selected-keys="pushSelectedKeys"/>
+      :activeNames="localHeaderNames"
+      :getSelectedKeys="getSelectedKeys"
+      :pushSelectedKeys="pushSelectedKeys"/>
   </div>
 </template>
 <script>
