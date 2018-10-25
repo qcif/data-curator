@@ -30,6 +30,7 @@ module.exports = {
     'eqeqeq': 0,
     'no-callback-literal': 0,
     'space-infix-ops': 0,
+    // hyphenation causes issues with component props
     'vue/attribute-hyphenation': 0
   }
 }
