@@ -1,10 +1,14 @@
 <template>
   <div v-show="row && row.hasOwnProperty('message')">
-    <span v-for="column in columns" class="column.cellClass || 'center-align'">
-        <a href="#" v-show="row && row.hasOwnProperty(column)"
+    <span
+      v-for="column in columns"
+      class="column.cellClass || 'center-align'">
+      <a
+        v-show="row && row.hasOwnProperty(column)"
+        href="#"
         @mouseover="hoverToSelectErrorCell(row)"
         @mouseout="exitHoverToSelectErrorCell(row)">
-        {{row.rowNumber}}
+        {{ row.rowNumber }}
       </a>
     </span>
   </div>
@@ -12,7 +16,7 @@
 <script>
 import { getWindow } from '../index.js'
 export default {
-  name: 'rowLink',
+  name: 'RowLink',
   props: ['row', 'columns'],
   computed: {
     // cache main window

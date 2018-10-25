@@ -1,151 +1,256 @@
 <template>
-<div id="home-container" class="panel panel-group">
-  <div id="header-panel" class="panel-heading">
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
+  <div
+    id="home-container"
+    class="panel panel-group">
+    <div
+      id="header-panel"
+      class="panel-heading">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" />
+          </div>
+          <div id="toolbar">
+            <ul class="nav navbar-nav">
+              <li
+                v-for="(menu, index) in toolbarMenus"
+                :key="index"
+                :class="{ 'active': toolbarIndex === index}"
+                @click="updateToolbarMenu(index)">
+                <a
+                  v-tooltip="tooltip(menu.tooltipId)"
+                  href="#">
+                  <!-- <a href="#"> -->
+                  <i
+                    v-if="menu.icon"
+                    :class="menu.icon"
+                    class="fa"
+                    aria-hidden="true" />
+                  <object
+                    v-if="menu.image"
+                    :class="menu.class"
+                    :data="menu.image"
+                    type="image/svg+xml" />
+                  <div
+                    :id="menu.id"
+                    class="toolbar-text">{{ menu.name }}</div>
+                </a>
+                <component :is="menu.tooltipView" />
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div
+      id="body-panel"
+      class="panel">
+      <nav
+        id="sidenav"
+        :class="sideNavProperties"
+        class="sidenav navbar navbar-default row">
+        <!-- <div> -->
         <div class="navbar-header">
-          <a class="navbar-brand" />
-        </div>
-        <div id="toolbar">
-          <ul class="nav navbar-nav">
-            <li v-for="(menu, index) in toolbarMenus" :key="index" :class="{ 'active': toolbarIndex === index}" @click="updateToolbarMenu(index)">
-              <a v-tooltip="tooltip(menu.tooltipId)" href="#">
-                <!-- <a href="#"> -->
-                  <i v-if="menu.icon" :class="menu.icon" class="fa" aria-hidden="true" />
-                <object v-if="menu.image" :class="menu.class" :data="menu.image" type="image/svg+xml" />
-                <div :id="menu.id" class="toolbar-text">{{ menu.name }}</div>
-              </a>
-              <component :is="menu.tooltipView" />
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </div>
-  <div id="body-panel" class="panel">
-    <nav id="sidenav" :class="sideNavProperties" class="sidenav navbar navbar-default row">
-      <!-- <div> -->
-      <div class="navbar-header">
-        <ul class="nav navbar-right closebtn">
-          <li>
-            <a href="#">
+          <ul class="nav navbar-right closebtn">
+            <li>
+              <a href="#">
                 <span
                   v-show="sideNavStatus === 'open'"
                   class="btn-default fa fa-times"
                   @click="closeSideNav" />
               </a>
-          </li>
-        </ul>
-        <a class="navbar-brand" href="#">
+            </li>
+          </ul>
+          <a
+            class="navbar-brand"
+            href="#">
             {{ sideNavViewTitle }}
           </a>
-      </div>
-      <transition :name="sideNavTransition" :css="enableTransition" mode="out-in">
-        <component ref="sidenavref" :is="sideNavView" :adjust-sidenav-form-height="adjustSidenavFormHeight" :side-nav-form-height="sideNavFormHeight" :c-index="currentColumnIndex" :reselect-hot-cell="reselectHotCell" />
-      </transition>
-      <div v-show="sideNavPosition === 'right'" id="sidenav-footer" class="panel-footer row">
-        <a v-tooltip.left="tooltip('tooltip-previous')" v-if="isLeftArrowEnabled" href="#" class="left" @click.prevent="sideNavLeft()"><span class="btn fa fa-chevron-left fa-2x" /></a>
-        <component is="tooltipPrevious" v-if="isLeftArrowEnabled" />
-        <a v-tooltip.left="tooltip('tooltip-next')" v-if="isRightArrowEnabled" href="#" class="right" @click.prevent="sideNavRight()"><span class="btn fa fa-chevron-right fa-2x" /></a>
-        <component is="tooltipNext" v-if="isRightArrowEnabled" />
-      </div>
-    </nav>
-    <div id="main-panel" :class="sideNavPropertiesForMain" class="panel panel-default">
-      <div id="main-middle-panel" :class="messageStatus" class="panel panel-body">
-        <div id="csvEditor">
-          <ul class="nav nav-tabs">
-            <li>
-              <ul id="csvTab" class="nav nav-tabs">
-                <li v-for="tab in tabs" :id="tab" :key="tab" :class="{active: activeTab == tab}" class="tab-header" @click="setActiveTabWrapper(tab)">
-                  <a>
+        </div>
+        <transition
+          :name="sideNavTransition"
+          :css="enableTransition"
+          mode="out-in">
+          <component
+            ref="sidenavref"
+            :is="sideNavView"
+            :adjustSidenavFormHeight="adjustSidenavFormHeight"
+            :sideNavFormHeight="sideNavFormHeight"
+            :cIndex="currentColumnIndex"
+            :reselectHotCell="reselectHotCell" />
+        </transition>
+        <div
+          v-show="sideNavPosition === 'right'"
+          id="sidenav-footer"
+          class="panel-footer row">
+          <a
+            v-tooltip.left="tooltip('tooltip-previous')"
+            v-if="isLeftArrowEnabled"
+            href="#"
+            class="left"
+            @click.prevent="sideNavLeft()"><span class="btn fa fa-chevron-left fa-2x" /></a>
+          <component
+            v-if="isLeftArrowEnabled"
+            :is="'tooltipPrevious'" />
+          <a
+            v-tooltip.left="tooltip('tooltip-next')"
+            v-if="isRightArrowEnabled"
+            href="#"
+            class="right"
+            @click.prevent="sideNavRight()"><span class="btn fa fa-chevron-right fa-2x" /></a>
+          <component
+            v-if="isRightArrowEnabled"
+            :is="'tooltipNext'" />
+        </div>
+      </nav>
+      <div
+        id="main-panel"
+        :class="sideNavPropertiesForMain"
+        class="panel panel-default">
+        <div
+          id="main-middle-panel"
+          :class="messageStatus"
+          class="panel panel-body">
+          <div id="csvEditor">
+            <ul class="nav nav-tabs">
+              <li>
+                <ul
+                  id="csvTab"
+                  class="nav nav-tabs">
+                  <li
+                    v-for="tab in tabs"
+                    :id="tab"
+                    :key="tab"
+                    :class="{active: activeTab == tab}"
+                    class="tab-header"
+                    @click="setActiveTabWrapper(tab)">
+                    <a>
                       <span>{{ tabTitle(tab) }}</span>
                       <span
                         v-if="tabs.length > 1"
                         class="tabclose btn-default fa fa-times"
                         @click.stop="closeTab"/>
                     </a>
-                </li>
-              </ul>
-            </li>
-            <li v-tooltip.right="tooltip('tooltip-add-tab')" class="add-tab" @click="addTab()">
-              <a>&nbsp;<button
+                  </li>
+                </ul>
+              </li>
+              <li
+                v-tooltip.right="tooltip('tooltip-add-tab')"
+                class="add-tab"
+                @click="addTab()">
+                <a>&nbsp;<button
                   type="button"
                   class="btn btn-sm"><i class="fa fa-plus"/></button></a>
-            </li>
-            <component is="tooltipAddTab" />
-          </ul>
-          <div id="csvContent" class="tab-content">
-            <div v-for="tab in tabs" :key="tab" :class="{ active: activeTab == tab}" class="tab-pane">
-              <div class="editor" />
+              </li>
+              <component :is="'tooltipAddTab'" />
+            </ul>
+            <div
+              id="csvContent"
+              class="tab-content">
+              <div
+                v-for="tab in tabs"
+                :key="tab"
+                :class="{ active: activeTab == tab}"
+                class="tab-pane">
+                <div class="editor" />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div id="main-bottom-panel" class="panel-footer" :class="mainBottomPanelStatus">
-        <div id="message-panel" class="panel-default">
-          <!-- tidy up messages view with components -->
-          <div class="message-view" v-show="toggleMessageView()">
-            <div class="message-title-container affix">
-              <ul class="nav navbar-right closebtn">
-                <li>
-                  <a href="#" @click="closeMessages()">
-                    <span class="btn-default fa fa-times"/>
-                  </a>
-                </li>
-              </ul>
-              <h3 class="message-title">{{messagesTitle}}</h3>
+        <div
+          id="main-bottom-panel"
+          :class="mainBottomPanelStatus"
+          class="panel-footer">
+          <div
+            id="message-panel"
+            class="panel-default">
+            <!-- tidy up messages view with components -->
+            <div
+              v-show="toggleMessageView()"
+              class="message-view">
+              <div class="message-title-container affix">
+                <ul class="nav navbar-right closebtn">
+                  <li>
+                    <a
+                      href="#"
+                      @click="closeMessages()">
+                      <span class="btn-default fa fa-times"/>
+                    </a>
+                  </li>
+                </ul>
+                <h3 class="message-title">{{ messagesTitle }}</h3>
+              </div>
+              <template v-if="messagesType === 'error'">
+                <nav class="navbar errors-meta affix">
+                  <div class="container-fluid">
+                    <i class="navbar-text">{{ messages.length }} Error(s)</i>
+                    <ul class="nav navbar-nav navbar-left" >
+                      <li>
+                        <a
+                          v-tooltip.top="tooltip('tooltip-open-errors-window')"
+                          href="#"
+                          @click="openErrorsWindow()">
+                          <span class="btn-default fas fa-external-link-alt"/>
+                        </a>
+                      </li>
+                      <component :is="'tooltipOpenErrorsWindow'" />
+                      <li>
+                        <a
+                          v-tooltip.top="tooltip('tooltip-write-errors-provenance')"
+                          href="#"
+                          @click.prevent="writeErrorsToProvenance()">
+                          <object
+                            data="static/img/validation-results.svg"
+                            type="image/svg+xml" />
+                        </a>
+                      </li>
+                      <component :is="'tooltipWriteErrorsProvenance'" />
+                    </ul>
+                  </div>
+                </nav>
+                <div class="errors-content">
+                  <div
+                    v-for="(errorMessage, index) in messages"
+                    :id="'error-messages' + index"
+                    :key="index">
+                    <a
+                      href="#"
+                      @click.prevent="goToCell(errorMessage.rowNumber, errorMessage.columnNumber)"
+                      @mouseover="hoverToSelectErrorCell(errorMessage.rowNumber, errorMessage.columnNumber)"
+                      @mouseout="exitHoverToSelectErrorCell(errorMessage.rowNumber, errorMessage.columnNumber)">
+                      <span v-show="errorMessage.rowNumber">(row:{{ errorMessage.rowNumber }})</span>
+                      <span v-show="errorMessage.columnNumber">(column:{{ errorMessage.columnNumber }})</span>
+                      <span>{{ errorMessage.message }}</span>
+                    </a>
+                  </div>
+                </div>
+              </template>
+              <div
+                v-else
+                id="other-message">
+                <span>{{ messages }}</span>
+              </div>
             </div>
-            <template  v-if="messagesType === 'error'">
-              <nav class="navbar errors-meta affix">
-                <div class="container-fluid">
-                  <i class="navbar-text">{{messages.length}} Error(s)</i>
-                  <ul class="nav navbar-nav navbar-left" >
-                    <li>
-                      <a href="#" v-tooltip.top="tooltip('tooltip-open-errors-window')" @click="openErrorsWindow()">
-                        <span class="btn-default fas fa-external-link-alt"/>
-                      </a>
-                    </li>
-                    <component is="tooltipOpenErrorsWindow" />
-                    <li>
-                      <a href="#" v-tooltip.top="tooltip('tooltip-write-errors-provenance')" @click.prevent="writeErrorsToProvenance()">
-                        <object data="static/img/validation-results.svg" type="image/svg+xml" />
-                      </a>
-                    </li>
-                    <component is="tooltipWriteErrorsProvenance" />
-                  </ul>
-                </div>
-              </nav>
-              <div class="errors-content">
-                <div :id="'error-messages' + index" v-for="(errorMessage, index) in messages" :key="index">
-                  <a href="#" @click.prevent="goToCell(errorMessage.rowNumber, errorMessage.columnNumber)"
-                    @mouseover="hoverToSelectErrorCell(errorMessage.rowNumber, errorMessage.columnNumber)"
-                    @mouseout="exitHoverToSelectErrorCell(errorMessage.rowNumber, errorMessage.columnNumber)">
-                  <span v-show="errorMessage.rowNumber">(row:{{errorMessage.rowNumber}})</span>
-                  <span v-show="errorMessage.columnNumber">(column:{{errorMessage.columnNumber}})</span>
-                  <span>{{errorMessage.message}}</span>
-                  </a>
-                </div>
-              </div>
-            </template>
-            <div id="other-message" v-else>
-                <span>{{messages}}</span>
-              </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div id="footer-panel" class="panel panel-footer">
-    <div v-show="loadingDataMessage" class="loading-pane" />
-    <div v-show="loadingDataMessage" class="modalHide modal1">
-      <span class="glyphicon glyphicon-refresh spinning">
-      </span>
-      <span class="validation-load">
+    <div
+      id="footer-panel"
+      class="panel panel-footer">
+      <div
+        v-show="loadingDataMessage"
+        class="loading-pane" />
+      <div
+        v-show="loadingDataMessage"
+        class="modalHide modal1">
+        <span class="glyphicon glyphicon-refresh spinning" />
+        <span class="validation-load">
           {{ loadingDataMessage }}
         </span>
+      </div>
     </div>
   </div>
-</div>
 </template>
 <script>
 import {
@@ -222,6 +327,15 @@ Vue.use(VueRx, {
 })
 export default {
   name: 'Home',
+  components: {
+    about,
+    preferences,
+    column,
+    tabular,
+    packager,
+    provenance,
+    findReplace
+  },
   mixins: [HomeTooltip, ErrorsTooltip],
   asyncComputed: {
     isLeftArrowEnabled: {
@@ -313,6 +427,144 @@ export default {
     },
     highlightColor() {
       return 'rgba(181, 209, 255, 0.3)'
+    }
+  },
+  watch: {
+    activeTab: async function(tabId) {
+      try {
+        let hotId = await this.getHotIdFromTabId(tabId)
+        this.currentHotId = hotId
+        this.reselectHotCell()
+      } catch (err) {
+        console.error('Problem with getting hot id from watched tab', err)
+      }
+      this.closeMessages()
+      this.sendErrorsToErrorsWindow()
+    },
+    messages: function() {
+      if (this.messages) {
+        this.sendErrorsToErrorsWindow()
+      }
+    }
+  },
+  mounted: function() {
+    let self = this
+    // request may be coming from another page - get focus first
+    ipc.on('showErrorCell', async function(event, arg) {
+      await ipc.send('focusMainWindow')
+      // ensure cell select occurs after main window focus
+      _.delay(function(arg) {
+        self.goToCell(arg.row, arg.column)
+      }, 100, arg)
+    })
+    ipc.on('getErrorMessages', function(event, arg) {
+      self.sendErrorsToErrorsWindow(arg)
+    })
+    ipc.on('hoverToSelectErrorCell', function(event, arg) {
+      self.hoverToSelectErrorCell(arg.rowNumber, arg.columnNumber)
+    })
+    ipc.on('exitHoverToSelectErrorCell', function(event, arg) {
+      self.exitHoverToSelectErrorCell(arg.rowNumber, arg.columnNumber)
+    })
+    ipc.on('triggerMenuButton', function(event, arg) {
+      self.triggerMenuButton(arg)
+    })
+    ipc.on('toggleActiveHeaderRow', function() {
+      self.toggleHeader()
+    })
+    ipc.on('addTab', function() {
+      self.addTab()
+    })
+    ipc.on('addTabWithData', function(e, data) {
+      self.addTab(data)
+    })
+    ipc.on('addTabWithFormattedData', function(e, data, format) {
+      self.addTab(data, format)
+    })
+    ipc.on('addTabWithFormattedDataAndDescriptor', function(e, data, format, descriptor) {
+      self.addTab(data, format, descriptor)
+    })
+    ipc.on('addTabWithFormattedDataFile', function(e, data, format, filename) {
+      self.addTabWithFilename(data, format, filename)
+    })
+    ipc.on('showSidePanel', function(event, arg1, arg2) {
+      self.triggerSideNav({
+        sideNavView: arg1,
+        title: arg2 || arg1
+      })
+    })
+    ipc.on('saveDataSuccess', function(e, format, fileName) {
+      self.$forceUpdate()
+    })
+    ipc.on('resized', function() {
+      updateHotDimensions$.next()
+    })
+    this.$nextTick(function() {
+      require('../index.js')
+      const csvTab = document.getElementById('csvTab')
+      Sortable.create(csvTab, {
+        animation: 150,
+        onSort: function(evt) {
+          let tabIdOrder = []
+          document.querySelectorAll('#csvTab .tab-header').forEach((el) => {
+            tabIdOrder.push(el.id)
+          })
+          self.setTabsOrder(tabIdOrder)
+        }
+      })
+      this.closeSideNav()
+      this.addTab()
+    })
+    ipc.on('showProvenanceErrors', function(event, arg) {
+      self.showProvenanceErrors()
+    })
+    ipc.on('closeAndshowLoadingScreen', function(event, message) {
+      self.closeAndShowLoadingScreen(message)
+    })
+    ipc.on('closeLoadingScreen', function(event) {
+      self.closeLoadingScreen()
+    })
+    ipc.on('resetPackagePropertiesToObject', function(event, packageProperties) {
+      self.resetPackagePropertiesToObject(packageProperties)
+    })
+    this.$subscribeTo(errorFeedback$, function(nextError) {
+      if (!self.messages) {
+        self.messages = []
+      }
+      self.messages.push(nextError)
+    })
+    this.$subscribeTo(updateHotDimensions$, function(message) {
+      self.updateDimensions()
+    })
+  },
+  beforeCreate: function() {
+    this.$subscribeTo(hotIdFromTab$, function(hotId) {
+      let hot = HotRegister.getInstance(hotId)
+      if (hot) {
+        ipc.send('hasHeaderRow', hot.hasColHeaders())
+      }
+      ipc.send('hasCaseSensitiveHeader', isCaseSensitive(hotId))
+      remote.getGlobal('tab').activeHotId = hotId
+    })
+    onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
+  },
+  created: function() {
+    let self = this
+    ipc.on('guessColumnProperties', function(event, arg) {
+      self.inferColumnProperties()
+    })
+    ipc.on('importDataPackage', function(event, filePath, isTransient = false) {
+      self.importDataPackage(filePath, isTransient)
+    })
+    ipc.on('validateTable', function(event, arg) {
+      self.validateTable()
+    })
+    this.pushDefaultPackageProperties()
+    ipc.send('closedFindReplace')
+  },
+  updated: function() {
+    if (this.loadingDataMessage && this.loadingDataMessage.length > 0) {
+      document.querySelector('.modal1').classList.remove('modalHide')
     }
   },
   methods: {
@@ -994,153 +1246,6 @@ export default {
         hot.render()
       }, 500)
     }
-  },
-  components: {
-    about,
-    preferences,
-    column,
-    tabular,
-    packager,
-    provenance,
-    findReplace
-  },
-  watch: {
-    activeTab: async function(tabId) {
-      try {
-        let hotId = await this.getHotIdFromTabId(tabId)
-        this.currentHotId = hotId
-        this.reselectHotCell()
-      } catch (err) {
-        console.error('Problem with getting hot id from watched tab', err)
-      }
-      this.closeMessages()
-      this.sendErrorsToErrorsWindow()
-    },
-    messages: function() {
-      if (this.messages) {
-        this.sendErrorsToErrorsWindow()
-      }
-    }
-  },
-  mounted: function() {
-    let self = this
-    // request may be coming from another page - get focus first
-    ipc.on('showErrorCell', async function(event, arg) {
-      await ipc.send('focusMainWindow')
-      // ensure cell select occurs after main window focus
-      _.delay(function(arg) {
-        self.goToCell(arg.row, arg.column)
-      }, 100, arg)
-    })
-    ipc.on('getErrorMessages', function(event, arg) {
-      self.sendErrorsToErrorsWindow(arg)
-    })
-    ipc.on('hoverToSelectErrorCell', function(event, arg) {
-      self.hoverToSelectErrorCell(arg.rowNumber, arg.columnNumber)
-    })
-    ipc.on('exitHoverToSelectErrorCell', function(event, arg) {
-      self.exitHoverToSelectErrorCell(arg.rowNumber, arg.columnNumber)
-    })
-    ipc.on('triggerMenuButton', function(event, arg) {
-      self.triggerMenuButton(arg)
-    })
-    ipc.on('toggleActiveHeaderRow', function() {
-      self.toggleHeader()
-    })
-    ipc.on('addTab', function() {
-      self.addTab()
-    })
-    ipc.on('addTabWithData', function(e, data) {
-      self.addTab(data)
-    })
-    ipc.on('addTabWithFormattedData', function(e, data, format) {
-      self.addTab(data, format)
-    })
-    ipc.on('addTabWithFormattedDataAndDescriptor', function(e, data, format, descriptor) {
-      self.addTab(data, format, descriptor)
-    })
-    ipc.on('addTabWithFormattedDataFile', function(e, data, format, filename) {
-      self.addTabWithFilename(data, format, filename)
-    })
-    ipc.on('showSidePanel', function(event, arg1, arg2) {
-      self.triggerSideNav({
-        sideNavView: arg1,
-        title: arg2 || arg1
-      })
-    })
-    ipc.on('saveDataSuccess', function(e, format, fileName) {
-      self.$forceUpdate()
-    })
-    ipc.on('resized', function() {
-      updateHotDimensions$.next()
-    })
-    this.$nextTick(function() {
-      require('../index.js')
-      const csvTab = document.getElementById('csvTab')
-      Sortable.create(csvTab, {
-        animation: 150,
-        onSort: function(evt) {
-          let tabIdOrder = []
-          document.querySelectorAll('#csvTab .tab-header').forEach((el) => {
-            tabIdOrder.push(el.id)
-          })
-          self.setTabsOrder(tabIdOrder)
-        }
-      })
-      this.closeSideNav()
-      this.addTab()
-    })
-    ipc.on('showProvenanceErrors', function(event, arg) {
-      self.showProvenanceErrors()
-    })
-    ipc.on('closeAndshowLoadingScreen', function(event, message) {
-      self.closeAndShowLoadingScreen(message)
-    })
-    ipc.on('closeLoadingScreen', function(event) {
-      self.closeLoadingScreen()
-    })
-    ipc.on('resetPackagePropertiesToObject', function(event, packageProperties) {
-      self.resetPackagePropertiesToObject(packageProperties)
-    })
-    this.$subscribeTo(errorFeedback$, function(nextError) {
-      if (!self.messages) {
-        self.messages = []
-      }
-      self.messages.push(nextError)
-    })
-    this.$subscribeTo(updateHotDimensions$, function(message) {
-      self.updateDimensions()
-    })
-  },
-  beforeCreate: function() {
-    this.$subscribeTo(hotIdFromTab$, function(hotId) {
-      let hot = HotRegister.getInstance(hotId)
-      if (hot) {
-        ipc.send('hasHeaderRow', hot.hasColHeaders())
-      }
-      ipc.send('hasCaseSensitiveHeader', isCaseSensitive(hotId))
-      remote.getGlobal('tab').activeHotId = hotId
-    })
-    onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
-  },
-  created: function() {
-    let self = this
-    ipc.on('guessColumnProperties', function(event, arg) {
-      self.inferColumnProperties()
-    })
-    ipc.on('importDataPackage', function(event, filePath, isTransient = false) {
-      self.importDataPackage(filePath, isTransient)
-    })
-    ipc.on('validateTable', function(event, arg) {
-      self.validateTable()
-    })
-    this.pushDefaultPackageProperties()
-    ipc.send('closedFindReplace')
-  },
-  updated: function() {
-    if (this.loadingDataMessage && this.loadingDataMessage.length > 0) {
-      document.querySelector('.modal1').classList.remove('modalHide')
-    }
   }
 }
 </script>
@@ -1158,7 +1263,6 @@ export default {
 </style>
 <style lang="styl" scoped>
 @import '~static/css/panel'
-</style>
 </style>
 <style lang="styl" scoped>
 @import '~static/css/tooltip'

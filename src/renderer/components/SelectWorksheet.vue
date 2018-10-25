@@ -9,7 +9,8 @@
           v-model="selected"
           class="form-control">
           <option
-            v-for="option in options"
+            v-for="(option, index) in options"
+            :key="`${option.value}-${index}`"
             :value="option.value">
             {{ option.text }}
           </option>

@@ -14,14 +14,14 @@
         <component :is="formprop.tooltipView"/>
         <component
           v-if="isSharedComponent(formprop.key)"
-          :property-name="formprop.key"
-          :get-property="getProperty"
-          :get-property-given-hot-id="getPropertyGivenHotId"
-          :set-property="setProperty"
-          :wait-for-hot-id-from-tab-id="waitForHotIdFromTabId"
-          :current-hot-id="currentHotId"
+          :propertyName="formprop.key"
+          :getProperty="getProperty"
+          :getPropertyGivenHotId="getPropertyGivenHotId"
+          :setProperty="setProperty"
+          :waitForHotIdFromTabId="waitForHotIdFromTabId"
+          :currentHotId="currentHotId"
           :is="formprop.key"
-          :contributors-setter="contributorsSetter"/>
+          :contributorsSetter="contributorsSetter"/>
         <div
           v-show="errors.has(formprop.key) && removeProperty(formprop.key)"
           class="row help validate-danger">
