@@ -1,6 +1,7 @@
 
 [![GitHub package version](https://img.shields.io/github/package-json/v/ODIQueensland/data-curator.svg)](https://github.com/ODIQueensland/data-curator/releases)
- [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
+[![JavaScript Style Guide](https://img.shields.io/badge/js_code_style-standard-brightgreen.svg)](https://standardjs.com)
+ [![vue-recommended-style](https://img.shields.io/badge/vue_code_style-recommended-brightgreen.svg?style=flat)](https://vuejs.org/v2/style-guide/#Priority-C-Recommended)
 [![Travis Build Status](https://travis-ci.org/ODIQueensland/data-curator.svg?branch=ci)](https://travis-ci.org/ODIQueensland/data-curator)
 [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/branch/ci?svg=true)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
 [![Appveyor Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2034%20%20❌failed:%200%20%20❗undefined:%20199-orange.svg)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
@@ -151,6 +152,8 @@ Electron passes and listens for messages between main and renderer using the IPC
 ## Coding Standards
 
 We have adopted [Standard JS](https://standardjs.com) as our JavaScript coding standard.
+
+We have adopted [Recommended Vue](https://vuejs.org/v2/style-guide/#Priority-C-Recommended) as our Vue coding standard.
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
