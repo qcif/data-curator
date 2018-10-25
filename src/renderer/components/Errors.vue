@@ -26,12 +26,15 @@
         :rows="rows"
         :sort-options="{
           enabled: true,
-          initialSortBy: {field: 'name', type: 'asc'}
+          initialSortBy: {field: 'rowNumber', type: 'asc'}
         }"
         @on-row-click="goToCell">
         <template
           slot="table-column"
           slot-scope="props">
+          <span>
+            {{ props.column.label }}
+          </span>
           <rowLink
             :row="props.row"
             :columns="props.columns"/>
@@ -90,8 +93,7 @@ export default {
         field: 'message',
         filterOptions: {
           enabled: true
-        },
-        cellClass: 'left-align'
+        }
       }
       ],
       rows: []
