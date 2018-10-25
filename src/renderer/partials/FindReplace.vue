@@ -12,7 +12,6 @@
           v-show="formprop.label"
           :for="formprop.label"
           class="control-label pull-left">{{ formprop.label }}</label>
-        <component :is="formprop.tooltipView"/>
         <div class="inputrow clearfix">
           <div
             :class="formprop.key"

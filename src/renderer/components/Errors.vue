@@ -18,7 +18,7 @@
                 <!-- <span class="btn-default fas fa-file-alt"  /> -->
             </a>
           </li>
-          <component :is="tooltipWriteErrorsProvenance" />
+          <component :is="'tooltipWriteErrorsProvenance'" />
         </ul>
       </template>
       <vue-good-table
