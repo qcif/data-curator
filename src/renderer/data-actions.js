@@ -50,7 +50,7 @@ export function loadArrayDataIntoHot(hot, arrays, format) {
 }
 
 export function saveDataToFile(hot, format, filename, callback) {
-  let tabId = store.getters.getActiveTab()
+  let tabId = store.getters.getActiveTab
   if (typeof filename === 'string') {
     store.commit('pushTabObject', { id: tabId, filename: filename })
   } else {
