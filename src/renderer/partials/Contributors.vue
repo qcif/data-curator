@@ -6,7 +6,8 @@
       class="contributor col-sm-12">
       <div class="inputs-container">
         <div
-          v-for="prop in Object.keys(contributor)"
+          v-for="(prop, index) in Object.keys(contributor)"
+          :key="prop + index"
           class="input-group">
           <span class="input-group-addon input-sm">{{ prop }}</span>
           <select
@@ -69,7 +70,24 @@ export default {
   name: 'Contributors',
   extends: SideNav,
   mixins: [ValidationRules],
-  props: ['setProperty', 'getProperty', 'getPropertyGivenHotId', 'contributorsSetter'],
+  props: {
+    setProperty: {
+      type: Function,
+      default: function() {}
+    },
+    getProperty: {
+      type: Function,
+      default: function() {}
+    },
+    getPropertyGivenHotId: {
+      type: Function,
+      default: function() {}
+    },
+    contributorsSetter: {
+      type: Function,
+      default: undefined
+    }
+  },
   data() {
     return {
       contributors: []

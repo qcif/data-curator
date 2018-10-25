@@ -418,7 +418,7 @@ export default {
       watch() {
         // eslint workarounds
         let temp = this.getActiveTab
-        let temp2 = this.c-index
+        let temp2 = this.cIndex
         let temp3 = this.allTablesAllColumns
       }
     },
@@ -441,11 +441,81 @@ export default {
       },
       watch() {
         let temp = this.getActiveTab
-        let temp2 = this.c-index
+        let temp2 = this.cIndex
         // ensure format also updates after setting type
         let temp3 = this.typeProperty
       }
     }
+  },
+  computed: {
+    ...mapGetters([
+      'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getAllHotTablesColumnNames'
+    ]),
+    hasTypeFormatWarning() {
+      return (this.typeProperty == 'date' && this.formatProperty == 'default')
+    },
+    getNameProperty() {
+      let allColumns = this.allTablesAllColumnsNames[this.activeCurrentHotId] || []
+      return allColumns[this.cIndex] || ''
+    },
+    formatValuesHasPattern() {
+      return this.formatProperty === 'pattern' && _.indexOf(this.formatPropertiesForType, 'pattern') > -1
+    },
+    formatPropertiesForType() {
+      let property = this.typeProperty || 'any'
+      let choices = this.formats[property]
+      return choices
+    },
+    constraintValues() {
+      let property = this.typeProperty
+      this.updateConstraintInputKeyValues()
+      return this.constraints[property]
+    },
+    isDropdownFormatDisabled() {
+      return !this.formatPropertiesForType ? false : this.formatPropertiesForType.length < 2
+    }
+  },
+  watch: {
+    'formatProperty': function(nextFormat) {
+      if (nextFormat === 'pattern') {
+        if (_.indexOf(this.formatPropertiesForType, 'pattern') > -1) {
+          this.setFormatPropertyValueForPattern()
+        }
+      }
+      this.debounceCheckType()
+    },
+    'formatPropertyValue': function() {
+      this.setFormatPropertyValueForPattern()
+    },
+    'formatPropertiesForType': function() {
+      this.debounceCheckType()
+    }
+  },
+  mounted: function() {
+    let vueUpdateAllTablesAllColumnsNames = this.updateAllTablesAllColumnsNames
+    this.$subscribeTo(allTablesAllColumnNames$, function(result) {
+      vueUpdateAllTablesAllColumnsNames(result)
+    })
+    allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
+    autosize(document.querySelector('textarea'))
+  },
+  created: function() {
+    let vueType = this.typePropertyWrapper
+    let vueFormat = this.formatPropertyValueWrapper
+    this.$validator.extend('formatPattern', {
+      getMessage: function(field) {
+        return `The format pattern is not supported.`
+      },
+      validate: function(value) {
+        return new Promise((resolve) => {
+          let isValid = isValidPatternForType(vueFormat(), vueType())
+          resolve({
+            valid: isValid
+          })
+        })
+      }
+    })
+    this.validateDefaultExtraProperties()
   },
   methods: {
     ...mapMutations([
@@ -492,7 +562,7 @@ export default {
     getter: function(hotId, key) {
       let object = {
         hotId: hotId,
-        columnIndex: this.c-index,
+        columnIndex: this.cIndex,
         key: key
       }
       return object
@@ -500,7 +570,7 @@ export default {
     setter: function(hotId, key, value) {
       let object = {
         hotId: hotId,
-        columnIndex: this.c-index,
+        columnIndex: this.cIndex,
         key: key,
         value: value
       }
@@ -768,76 +838,6 @@ export default {
     checkType: function() {
       this.warningVisibility = this.hasTypeFormatWarning
     }
-  },
-  computed: {
-    ...mapGetters([
-      'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getAllHotTablesColumnNames'
-    ]),
-    hasTypeFormatWarning() {
-      return (this.typeProperty == 'date' && this.formatProperty == 'default')
-    },
-    getNameProperty() {
-      let allColumns = this.allTablesAllColumnsNames[this.activeCurrentHotId] || []
-      return allColumns[this.c-index] || ''
-    },
-    formatValuesHasPattern() {
-      return this.formatProperty === 'pattern' && _.indexOf(this.formatPropertiesForType, 'pattern') > -1
-    },
-    formatPropertiesForType() {
-      let property = this.typeProperty || 'any'
-      let choices = this.formats[property]
-      return choices
-    },
-    constraintValues() {
-      let property = this.typeProperty
-      this.updateConstraintInputKeyValues()
-      return this.constraints[property]
-    },
-    isDropdownFormatDisabled() {
-      return !this.formatPropertiesForType ? false : this.formatPropertiesForType.length < 2
-    }
-  },
-  watch: {
-    'formatProperty': function(nextFormat) {
-      if (nextFormat === 'pattern') {
-        if (_.indexOf(this.formatPropertiesForType, 'pattern') > -1) {
-          this.setFormatPropertyValueForPattern()
-        }
-      }
-      this.debounceCheckType()
-    },
-    'formatPropertyValue': function() {
-      this.setFormatPropertyValueForPattern()
-    },
-    'formatPropertiesForType': function() {
-      this.debounceCheckType()
-    }
-  },
-  mounted: function() {
-    let vueUpdateAllTablesAllColumnsNames = this.updateAllTablesAllColumnsNames
-    this.$subscribeTo(allTablesAllColumnNames$, function(result) {
-      vueUpdateAllTablesAllColumnsNames(result)
-    })
-    allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
-    autosize(document.querySelector('textarea'))
-  },
-  created: function() {
-    let vueType = this.typePropertyWrapper
-    let vueFormat = this.formatPropertyValueWrapper
-    this.$validator.extend('formatPattern', {
-      getMessage: function(field) {
-        return `The format pattern is not supported.`
-      },
-      validate: function(value) {
-        return new Promise((resolve) => {
-          let isValid = isValidPatternForType(vueFormat(), vueType())
-          resolve({
-            valid: isValid
-          })
-        })
-      }
-    })
-    this.validateDefaultExtraProperties()
   }
 }
 </script>
