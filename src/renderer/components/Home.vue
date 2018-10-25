@@ -77,7 +77,7 @@
             :adjustSidenavFormHeight="adjustSidenavFormHeight"
             :sideNavFormHeight="sideNavFormHeight"
             :cIndex="currentColumnIndex"
-            :reselectHotCell="reselectHotCell" />
+          />
         </transition>
         <div
           v-show="sideNavPosition === 'right'"
