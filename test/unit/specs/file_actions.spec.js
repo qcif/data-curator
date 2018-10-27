@@ -13,12 +13,15 @@ describe('file actions', () => {
   before(() => {
     globalBefore()
   })
+  let sandbox
   beforeEach(() => {
-    stubHotInDocumentDom()
+    sandbox = sinon.createSandbox()
+    stubHotInDocumentDom(sandbox)
   })
   afterEach(() => {
-    resetHot()
-    resetHotStore()
+    resetHot(sandbox)
+    // resetHotStore()
+    sandbox.restore()
   })
 
   describe('opening csv data', () => {
@@ -60,7 +63,7 @@ describe('file actions', () => {
       let data = `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`
       let expectedData = `foo,bar,baz\r\n1,2,3\r\n4,5,6\r\n`
       let tempFile = `${os.tmpdir()}/mycsv.csv`
-      globalStubTab()
+      globalStubTab(sandbox)
       let hot = registerHot()
       hot.addHook('afterUpdateSettings', function() {
         saveDataToFile(hot, fileFormats.csv, tempFile, function() {
@@ -92,6 +95,7 @@ describe('file actions', () => {
     it('converts a file from csv to tsv, using dialect.lineTerminator', function(done) {
       let data = `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`
       let tempFile = `${os.tmpdir()}/mytsv.tsv`
+      globalStubTab(sandbox)
       let hot = registerHot()
       hot.addHook('afterUpdateSettings', () => {
         saveDataToFile(hot, fileFormats.tsv, tempFile, () => {
