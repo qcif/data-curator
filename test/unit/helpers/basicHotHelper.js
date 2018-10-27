@@ -7,7 +7,7 @@ let hotElementClassName = 'stubbedHot'
 export function stubHotInDocumentDom(sandbox) {
   resetDocument()
   stubDom()
-  stubHotRegisterActiveQuery()
+  stubHotRegisterActiveQuery(sandbox)
 }
 
 function resetDocument() {

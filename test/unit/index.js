@@ -9,6 +9,8 @@ var sinonChai = require('sinon-chai')
 sinon.config = {
   useFakeTimers: false
 }
+// const sinonTest = require('sinon-test')(sinon)
+// global.sinonTest = sinonTest
 chai.use(sinonChai)
 
 // require all test files (files that ends with .spec.js)

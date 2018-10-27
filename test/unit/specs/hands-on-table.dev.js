@@ -6,6 +6,7 @@ import { stubHotInDocumentDom, resetHot, registerHot } from '../helpers/basicHot
 import { globalBefore } from '../helpers/globalHelper.js'
 
 describe('hands on table', () => {
+  let sandbox
   let data
   let expectedData
   let hot
@@ -15,7 +16,8 @@ describe('hands on table', () => {
   })
 
   beforeEach(() => {
-    stubHotInDocumentDom()
+    sandbox = sinon.createSandbox()
+    stubHotInDocumentDom(sandbox)
     hot = registerHot()
     data = stubData()
     expectedData = stubData()
@@ -25,7 +27,9 @@ describe('hands on table', () => {
     resetHot()
     resetHotStore()
     data = null
+    hot = null
     expectedData = null
+    sandbox.restore()
   })
 
   function stubData() {
@@ -225,8 +229,8 @@ describe('hands on table', () => {
 
   describe('insertColumn tests', () => {
     describe('insertColumnLeft tests', () => {
-      it('adds a column to the left (first col)', sinonTest(function() {
-        let mock = mockPushColumnIndex(this.mock, 0)
+      it('adds a column to the left (first col)', function() {
+        let mock = mockPushColumnIndex(sandbox.mock, 0)
         hot.addHook('afterLoadData', () => {
           hot.selectCell(0, 0, 3, 0) // select whole column
           insertColumnLeft()
@@ -267,10 +271,10 @@ describe('hands on table', () => {
         })
         hot.loadData(data)
         mock.verify()
-      }))
+      })
 
-      it('adds a column to the left (middle)', sinonTest(function() {
-        let mock = mockPushColumnIndex(this.mock, 2)
+      it('adds a column to the left (middle)', function() {
+        let mock = mockPushColumnIndex(sandbox.mock, 2)
         hot.addHook('afterLoadData', () => {
           hot.selectCell(2, 2, 2, 2) // select only one cell
           insertColumnLeft()
@@ -311,10 +315,10 @@ describe('hands on table', () => {
         })
         hot.loadData(data)
         mock.verify()
-      }))
+      })
 
-      it('adds a column to the left (last col)', sinonTest(function() {
-        let mock = mockPushColumnIndex(this.mock, 3)
+      it('adds a column to the left (last col)', function() {
+        let mock = mockPushColumnIndex(sandbox.mock, 3)
         hot.addHook('afterLoadData', () => {
           hot.selectCell(1, 3, 2, 4) // select partial rectangular column
           insertColumnLeft()
@@ -355,12 +359,12 @@ describe('hands on table', () => {
         })
         hot.loadData(data)
         mock.verify()
-      }))
+      })
     })
 
     describe('insertColumnRight tests', () => {
-      it('adds a column to the right (first col)', sinonTest(function() {
-        let mock = mockPushColumnIndex(this.mock, 1)
+      it('adds a column to the right (first col)', function() {
+        let mock = mockPushColumnIndex(sandbox.mock, 1)
         hot.addHook('afterLoadData', () => {
           hot.selectCell(0, 0, 3, 0) // select whole column
           insertColumnRight()
@@ -396,10 +400,10 @@ describe('hands on table', () => {
         })
         hot.loadData(data)
         mock.verify()
-      }))
+      })
 
-      it('adds a column to the right (middle)', sinonTest(function() {
-        let mock = mockPushColumnIndex(this.mock, 2)
+      it('adds a column to the right (middle)', function() {
+        let mock = mockPushColumnIndex(sandbox.mock, 2)
         hot.addHook('afterLoadData', () => {
           hot.selectCell(1, 1, 1, 1) // select only one cell
           insertColumnRight()
@@ -440,10 +444,10 @@ describe('hands on table', () => {
         })
         hot.loadData(data)
         mock.verify()
-      }))
+      })
 
-      it('adds a column to the right (last col)', sinonTest(function() {
-        let mock = mockPushColumnIndex(this.mock, 5)
+      it('adds a column to the right (last col)', function() {
+        let mock = mockPushColumnIndex(sandbox.mock, 5)
         hot.addHook('afterLoadData', () => {
           hot.selectCell(1, 3, 2, 4) // select a rectangular range
           insertColumnRight()
@@ -484,7 +488,7 @@ describe('hands on table', () => {
         })
         hot.loadData(data)
         mock.verify()
-      }))
+      })
     })
 
     function mockPushColumnIndex(sMock, columnIndex) {
