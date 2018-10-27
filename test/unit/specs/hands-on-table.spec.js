@@ -25,7 +25,7 @@ describe('hands on table', () => {
 
   afterEach(() => {
     resetHot()
-    resetHotStore()
+    resetHotStore(sandbox)
     data = null
     hot = null
     expectedData = null

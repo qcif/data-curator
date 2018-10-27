@@ -11,37 +11,29 @@ describe('frictionless utilities', () => {
   before(() => {
     globalBefore()
   })
+  let sandbox
   beforeEach(() => {
-    stubHotInDocumentDom()
+    sandbox = sinon.createSandbox()
+    stubHotInDocumentDom(sandbox)
   })
   afterEach(() => {
-    resetHot()
-    resetHotStore()
+    resetHot(sandbox)
+    sandbox.restore()
   })
   describe('is case sensitive', () => {
+
     [ { hotTab: {}, expected: false },
       { hotTab: { tableProperties: {} }, expected: false },
       { hotTab: { tableProperties: { dialect: {} } }, expected: false },
       { hotTab: { tableProperties: { dialect: { caseSensitiveHeader: false } } }, expected: false },
       { hotTab: { tableProperties: { dialect: { caseSensitiveHeader: true } } }, expected: true }
-    ].forEach(function(test) {
-      it(`when table properties is ${JSON.stringify(test.hotTabs)}`, sinonTest(function() {
+    ].forEach(test => {
+
+      it(`when table properties is ${JSON.stringify(test.hotTab)}`, function() {
         let hot = registerHot()
         store.state.hotTabs[hot.guid] = test.hotTab
         expect(sut.isCaseSensitive(hot.guid)).to.equal(test.expected)
-      }))
-      // describe('default dialect', () => {
-      //   [ {dialect: false},
-      //     {dialect: true}
-      //   ].forEach(function(testDialect) {
-      //     it(`when table properties is ${JSON.stringify(test.hotTabs)} and DEFAULT is ${dialect}`, sinonTest(function() {
-      //       let hot = registerHot()
-      //       store.state.hotTabs[hot.guid] = test.hotTab
-      //       this.stub(DEFAULT_DIALECT, 'caseSensitiveHeader').value(testDialect)
-      //       expect(sut.isCaseSensitive(hot.guid)).to.equal(test.expected)
-      //     }))
-      //   })
-      // })
+      })
     })
   })
 
@@ -62,7 +54,7 @@ describe('frictionless utilities', () => {
           ['4', '5', '6']
         ]
       }
-    ].forEach(function(test) {
+    ].forEach(test => {
       it(`asserts that hot has headers after data is first loaded`, function() {
         let hot = registerHot()
         loadDataIntoHot(hot, test.data)
@@ -71,10 +63,9 @@ describe('frictionless utilities', () => {
       it(`returns data when hasHeaders is ${test.hasHeaders}`, function() {
         let hot = registerHot()
         loadDataIntoHot(hot, test.data)
-        sinon.stub(hot, 'hasColHeaders').returns(test.hasHeaders)
+        sandbox.stub(hot, 'hasColHeaders').returns(test.hasHeaders)
         let result = sut.includeHeadersInData(hot)
         expect(result).to.deep.equal(test.expected)
-        hot.hasColHeaders.restore()
       })
     })
   })
