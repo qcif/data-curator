@@ -1,66 +1,73 @@
 import Home from '@/components/Home'
+import flushPromises from 'flush-promises'
 import { stubSimpleTabStore } from '../helpers/storeHelper.js'
 import { rightSideNavStyle, leftSideNavStyle, footerMsgStyle, navPanelType } from '../helpers/domHelper.js'
-import { createLocalVue, shallowMount, mount } from '@vue/test-utils'
+import { createLocalVue, shallowMount, mount, TransitionStub } from '@vue/test-utils'
 import { registerHotWithContainer, resetHot, stubHotRegisterActiveInstance } from '../helpers/basicHotHelper.js'
 import { toolbarMenus } from '@/toolbarMenus.js'
 import Vuex from 'vuex'
-import { shallowMountErrors } from '../helpers/vueHelper.js'
-import { globalStubWindows, globalStubMainWindows, restoreRemoteGetGlobal } from '../helpers/globalHelper.js'
+import { globalStubWindows} from '../helpers/globalHelper.js'
+import { errorFeedback$ } from '@/rxSubject.js'
+import { ipcRenderer as ipc } from 'electron'
+
 describe('Home.vue', () => {
+  let sandbox
   // dummmy test to begin with to incorporate vue/html with existing framework
   describe('Toolbar menus', () => {
     let wrapper
     let hot
     beforeEach(() => {
+      sandbox = sinon.createSandbox()
+      Home.__Rewire__('getWindow', function (name) {
+        return undefined
+      })
+      Home.__Rewire__('guessColumnProperties', function () {
+        wrapper.setData({ messagesTitle: 'Guess success' })
+      })
       const localVue = createLocalVue()
       localVue.use(Vuex)
       let store = new Vuex.Store(stubSimpleTabStore(hot))
-      wrapper = shallowMount(Home, { store, localVue, attachToDocument: true })
+      wrapper = shallowMount(Home, {
+        store,
+        localVue,
+        attachToDocument: true
+      })
       let container = wrapper.vm.$el.querySelector('#csvContent .editor')
       hot = registerHotWithContainer(container)
-      stubHotRegisterActiveInstance(hot)
-      globalStubWindows()
-
-      Home.__Rewire__('guessColumnProperties', function() {
-        wrapper.setData({ messagesTitle: 'Guess success' })
-      })
+      stubHotRegisterActiveInstance(hot, sandbox)
       wrapper.setMethods({
-        'updateDimensions': sinon.stub(),
-        'loadDataIntoLatestHot': sinon.stub().withArgs().returns(hot.guid),
-        'initHotTablePropertiesFromDescriptor': sinon.stub(),
-        'removePreviousHotComments': sinon.stub(),
-        'createPackage': sinon.stub().callsFake(function fakeFn() {
+        'updateDimensions': sandbox.stub(),
+        'loadDataIntoLatestHot': sandbox.stub().withArgs().returns(hot.guid),
+        'initHotTablePropertiesFromDescriptor': sandbox.stub(),
+        'removePreviousHotComments': sandbox.stub(),
+        'createPackage': sandbox.stub().callsFake(function fakeFn() {
           wrapper.setData({ messagesTitle: 'Export success' })
         }),
-        'validateTable': sinon.stub().callsFake(function fakeFn() {
+        'validateTable': sandbox.stub().callsFake(function fakeFn() {
           wrapper.setData({ messagesTitle: 'Validate success' })
         })
       })
     })
+
     afterEach(() => {
-      resetHot()
+      Home.__ResetDependency__('getWindow')
+      Home.__ResetDependency__('guessColumnProperties')
       wrapper.vm.$destroy()
+      resetHot(sandbox)
+      wrapper.destroy()
       wrapper = null
       hot = null
-      restoreRemoteGetGlobal()
+      sandbox.restore()
     })
 
     toolbarMenus.forEach(menu => {
-      it(`should show the relevant active button and navigation panel when ${menu.name} button is clicked.`, () => {
-        let el = wrapper.findAll('#toolbar li').filter(w => {
-          return w.contains(`#${menu.id}`)
-        })
-        if (el.length > 1) {
-          throw new Error(`Should have found only 1 matching element, not ${el.length}`)
-        }
-        el.wrappers[0].trigger('click')
+      it(`should show the relevant active button and navigation panel when ${menu.name} button is clicked.`, function () {
+        clickToolbarId(wrapper, menu.id)
         let clickedMenuName = wrapper.vm.$el.querySelector('#toolbar li.active').textContent
         clickedMenuName = clickedMenuName
           ? clickedMenuName.trim()
           : ''
         expect(clickedMenuName).to.equal(menu.name)
-
         const rightNavPanel = wrapper.find(rightSideNavStyle)
         const leftNavPanel = wrapper.find(leftSideNavStyle)
         const footerMsgPanel = wrapper.find(footerMsgStyle)
@@ -89,52 +96,87 @@ describe('Home.vue', () => {
     let wrapper
     let hot
     beforeEach(() => {
+      sandbox = sinon.createSandbox()
+      Home.__Rewire__('getWindow', function (name, id) {
+        return undefined
+      })
+      Home.__Rewire__('getCurrentColumnIndexOrMin', function () {
+        return 0
+      })
       const localVue = createLocalVue()
       localVue.use(Vuex)
       let store = new Vuex.Store(stubSimpleTabStore(hot))
-      wrapper = shallowMount(Home, { store, localVue, attachToDocument: true })
+      wrapper = shallowMount(Home, {
+        store,
+        localVue,
+        attachToDocument: true,
+        sync: false
+      })
       let container = wrapper.vm.$el.querySelector('#csvContent .editor')
       hot = registerHotWithContainer(container)
-      stubHotRegisterActiveInstance(hot)
-      globalStubMainWindows()
+      stubHotRegisterActiveInstance(hot, sandbox)
+      globalStubWindows(sandbox)
+      wrapper.setData({ currentHotId: hot.guid, previousComments: [] })
+      wrapper.setMethods({
+        'validateTable': sandbox.stub().callsFake(async function fakeFn() {
+          await wrapper.vm.validateTableCore()
+        })
+      })
     })
     afterEach(() => {
-      resetHot()
-      wrapper.vm.$destroy()
+      Home.__ResetDependency__('getWindow')
+      Home.__ResetDependency__('getCurrentColumnIndexOrMin')
+      Home.__ResetDependency__('validateActiveDataAgainstSchema')
+      resetHot(sandbox)
+      wrapper.destroy()
       wrapper = null
       hot = null
-      restoreRemoteGetGlobal()
+      for (const listener of ['guessColumnProperties', 'importDataPackage', 'validateTable', 'showErrorCell', 'getErrorMessages', 'hoverToSelectErrorCell', 'exitHoverToSelectErrorCell', 'triggerMenuButton', 'toggleActiveHeaderRow', 'addTab', 'addTabWithData', 'addTabWithFormattedData', 'addTabWithFormattedDataAndDescriptor', 'addTabWithFormattedDataFile', 'showSidePanel', 'saveDataSuccess', 'resized', 'showProvenanceErrors', 'closeAndshowLoadingScreen', 'closeLoadingScreen', 'resetPackagePropertiesToObject']) {
+        ipc.removeAllListeners(listener)
+      }
+      sandbox.restore()
     })
-    it('should trigger Comments when messages type equals error', sinonTest(async function() {
+    it('should trigger Comments when validation produces errors', async function () {
       expect(wrapper.vm.currentColumnIndex).to.equal(0)
       expect(wrapper.vm.messages).to.equal(false)
-      let errorsWrapper = shallowMountErrors()
-      // let messages = stubBasicErrorMessage1()
-      // wrapper.setData({ messagesTitle: 'Validation Errors', messagesType: 'error', messages: messages })
-      // await flushPromises()
-      // const el = wrapper.findAll(`#csvContent .editor .ht_master table.htCore tr:nth-of-type(1) td:nth-of-type(1).htCommentCell`)
-      // expect(el.length).to.equal(1)
-    }))
-    // it('should NOT trigger Comments when messages type does NOT equal error', sinonTest(async function() {
-    //   expect(wrapper.vm.currentColumnIndex).to.equal(0)
-    //   expect(wrapper.vm.messages).to.equal(false)
-    //   this.stub(HotRegister, 'getActiveInstance').returns(hot)
-    //   let messages = stubBasicErrorMessage1()
-    //   wrapper.setData({ messagesTitle: 'Validation Errors', messagesType: 'foo', messages: messages })
-    //   await flushPromises()
-    //   const el = wrapper.findAll(`#csvContent .editor .ht_master table.htCore tr:nth-of-type(1) td:nth-of-type(1).htCommentCell`)
-    //   expect(el.length).to.equal(0)
-    // }))
+      Home.__Rewire__('validateActiveDataAgainstSchema', function (callback) {
+        errorFeedback$.next(stubBasicErrorMessage1())
+        callback()
+      })
+      clickToolbarId(wrapper, 'validate-data')
+      await flushPromises()
+      const el = wrapper.vm.$el.querySelectorAll(`#csvContent .editor .ht_master table.htCore .htCommentCell`)
+      expect(el.length).to.equal(1)
+    })
+    it('should NOT trigger Comments when validation produces NO errors', async function () {
+      expect(wrapper.vm.currentColumnIndex).to.equal(0)
+      expect(wrapper.vm.messages).to.equal(false)
+      Home.__Rewire__('validateActiveDataAgainstSchema', function (callback) {
+        callback()
+      })
+      clickToolbarId(wrapper, 'validate-data')
+      await flushPromises()
+      const el = wrapper.vm.$el.querySelectorAll(`#csvContent .editor .ht_master table.htCore .htCommentCell`)
+      expect(el.length).to.equal(0)
+    })
   })
 })
 
 function stubBasicErrorMessage1() {
-  return [
-    {
-      rowNumber: 1,
-      columnNumber: 1,
-      message: 'This is a test error',
-      name: 'Test Error'
-    }
-  ]
+  return {
+    rowNumber: 1,
+    columnNumber: 1,
+    message: 'This is a test error',
+    name: 'Test Error'
+  }
+}
+
+function clickToolbarId(wrapper, id) {
+  const el = wrapper.findAll('#toolbar li').filter(w => {
+    return w.contains(`#${id}`)
+  })
+  if (el.length > 1) {
+    throw new Error(`Should have found only 1 matching element, not ${el.length}`)
+  }
+  el.wrappers[0].trigger('click')
 }
