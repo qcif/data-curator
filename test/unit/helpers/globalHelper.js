@@ -4,20 +4,20 @@ export function globalBefore() {
   window._ = require('lodash')
 }
 
-export function globalStubTab() {
-  return sinon.stub(remote, 'getGlobal')
+export function globalStubTab(sandbox) {
+  return sandbox.stub(remote, 'getGlobal')
     .withArgs('tab')
     .returns({ activeTitle: '', activeFilename: '', filenames: [] })
 }
 
-export function globalStubWindows() {
-  return sinon.stub(remote, 'getGlobal')
+export function globalStubWindows(sandbox) {
+  return sandbox.stub(remote, 'getGlobal')
     .withArgs('windows')
     .returns({})
 }
 
-export function globalStubMainWindows() {
-  return sinon.stub(remote, 'getGlobal')
+export function globalStubMainWindows(sandbox) {
+  return sandbox.stub(remote, 'getGlobal')
     .withArgs('windows')
     .returns({ home: 'home', errors: 'errors' })
 }
