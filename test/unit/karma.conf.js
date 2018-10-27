@@ -8,6 +8,8 @@ process.env.KARMA = true
 const baseConfig = require('../../.electron-vue/webpack.renderer.config')
 const projectRoot = path.resolve(__dirname, '../../src/renderer')
 
+const staticDir = path.resolve(__dirname, '../../static')
+
 // Set BABEL_ENV to use proper preset config
 process.env.BABEL_ENV = 'test'
 
@@ -46,8 +48,8 @@ module.exports = config => {
     coverageReporter: {
       dir: './coverage',
       reporters: [
-        {type: 'lcov', subdir: '.'},
-        {type: 'text-summary'}
+        { type: 'lcov', subdir: '.' },
+        { type: 'text-summary' }
       ]
     },
     // customLaunchers: {
@@ -57,7 +59,13 @@ module.exports = config => {
     //   }
     // },
     frameworks: ['mocha', 'sinon-chai'],
-    files: ['./index.js'],
+    proxies: {
+      '/static': staticDir
+    },
+    files: [
+      './index.js',
+      { pattern: `${staticDir}/img/*.svg`, watched: false, included: false, served: true }
+    ],
     preprocessors: {
       './index.js': ['webpack', 'sourcemap']
     },
