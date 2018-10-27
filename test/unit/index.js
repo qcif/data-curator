@@ -1,8 +1,10 @@
 import Vue from 'vue'
 Vue.config.devtools = false
 Vue.config.productionTip = false
-const sinonTest = require('sinon-test')(sinon, {useFakeTimers: false})
-global.sinonTest = sinonTest
+
+//use sinonTest in files wish to use it to choose over sandbox
+// const sinonTest = require('sinon-test')(sinon, {useFakeTimers: false})
+// global.sinonTest = sinonTest
 var sinonChai = require('sinon-chai')
 sinon.config = {
   useFakeTimers: false

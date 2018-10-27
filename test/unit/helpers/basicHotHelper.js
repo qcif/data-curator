@@ -4,7 +4,7 @@ let hotRegisterActiveQueryStub
 let hotRegisterActiveInstanceStub
 let hotElementClassName = 'stubbedHot'
 
-export function stubHotInDocumentDom() {
+export function stubHotInDocumentDom(sandbox) {
   resetDocument()
   stubDom()
   stubHotRegisterActiveQuery()
@@ -22,8 +22,8 @@ function stubDom() {
   document.body.appendChild(hotView)
 }
 
-function stubHotRegisterActiveQuery() {
-  hotRegisterActiveQueryStub = sinon.stub(HotRegister, 'activeQuery')
+function stubHotRegisterActiveQuery(sandbox) {
+  hotRegisterActiveQueryStub = sandbox.stub(HotRegister, 'activeQuery')
   hotRegisterActiveQueryStub.withArgs().returns(stubActiveQuery())
 }
 
@@ -31,13 +31,15 @@ function stubActiveQuery() {
   return document.querySelectorAll(`.${hotElementClassName}`)[0]
 }
 
-export function resetHot() {
+export function resetHot(sandbox) {
   HotRegister.destroyAllHots()
-  if (hotRegisterActiveQueryStub) {
-    hotRegisterActiveQueryStub.restore()
-  }
-  if (hotRegisterActiveInstanceStub) {
-    hotRegisterActiveInstanceStub.restore()
+  if (!sandbox) {
+    if (hotRegisterActiveQueryStub) {
+      hotRegisterActiveQueryStub.restore()
+    }
+    if (hotRegisterActiveInstanceStub) {
+      hotRegisterActiveInstanceStub.restore()
+    }
   }
 }
 
@@ -54,7 +56,7 @@ export function registerHotWithContainer(container) {
   return hot
 }
 
-export function stubHotRegisterActiveInstance(hot) {
-  hotRegisterActiveInstanceStub = sinon.stub(HotRegister, 'getActiveInstance')
+export function stubHotRegisterActiveInstance(hot, sandbox) {
+  hotRegisterActiveInstanceStub = sandbox.stub(HotRegister, 'getActiveInstance')
   hotRegisterActiveInstanceStub.withArgs().returns(hot)
 }
