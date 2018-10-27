@@ -6,7 +6,7 @@ import { createLocalVue, shallowMount, mount, TransitionStub } from '@vue/test-u
 import { registerHotWithContainer, resetHot, stubHotRegisterActiveInstance } from '../helpers/basicHotHelper.js'
 import { toolbarMenus } from '@/toolbarMenus.js'
 import Vuex from 'vuex'
-import { globalStubWindows} from '../helpers/globalHelper.js'
+import { globalStubWindows } from '../helpers/globalHelper.js'
 import { errorFeedback$ } from '@/rxSubject.js'
 import { ipcRenderer as ipc } from 'electron'
 

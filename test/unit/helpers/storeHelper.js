@@ -1,10 +1,10 @@
 import store from '@/store'
 export function resetHotStore() {
-  store.state = {
+  store.replaceState({
     hotTabs: {},
     packageProperties: {},
     provenanceProperties: { markdown: '' }
-  }
+  })
 }
 
 export function stubSimpleTabStore(hot) {
