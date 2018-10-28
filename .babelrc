@@ -1,17 +1,24 @@
 {
   "comments": false,
   "env": {
-    "test": {
+    "unit": {
       "presets": [
         ["env", {
-          "targets": {
-            "node": 8
-          },
+          "targets": { "node": 8 },
           "modules": false
         }],
         "stage-0"
       ],
       "plugins": ["istanbul", "rewire"]
+    },
+    "test": {
+      "presets": [
+        ["env", {
+          "targets": { "node": 8 }
+        }],
+        "stage-0"
+      ],
+      "plugins": ["istanbul"]
     },
     "main": {
       "presets": [
