@@ -11,7 +11,7 @@ const projectRoot = path.resolve(__dirname, '../../src/renderer')
 const staticDir = path.resolve(__dirname, '../../static')
 
 // Set BABEL_ENV to use proper preset config
-process.env.BABEL_ENV = 'test'
+process.env.BABEL_ENV = 'unit'
 
 // can ignore warning for 'Tapable.plugin is deprecated' as problem lies with karma-webpack who are currently working through 4.xx rcs - wait until they're finished
 // process.traceDeprecation = true

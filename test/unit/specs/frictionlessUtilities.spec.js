@@ -21,14 +21,12 @@ describe('frictionless utilities', () => {
     sandbox.restore()
   })
   describe('is case sensitive', () => {
-
     [ { hotTab: {}, expected: false },
       { hotTab: { tableProperties: {} }, expected: false },
       { hotTab: { tableProperties: { dialect: {} } }, expected: false },
       { hotTab: { tableProperties: { dialect: { caseSensitiveHeader: false } } }, expected: false },
       { hotTab: { tableProperties: { dialect: { caseSensitiveHeader: true } } }, expected: true }
     ].forEach(test => {
-
       it(`when table properties is ${JSON.stringify(test.hotTab)}`, function() {
         let hot = registerHot()
         store.state.hotTabs[hot.guid] = test.hotTab
