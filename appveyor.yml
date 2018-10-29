@@ -31,8 +31,8 @@ install:
   - yarn clean
   - yarn run clean
   - yarn run lint
-#build: off
-#test: off
+build: off
+test: off
 configuration: default
 
 for:
@@ -69,6 +69,7 @@ for:
    - ps: git checkout $env:APPVEYOR_REPO_BRANCH || exit
    - git merge develop || exit
    - yarn
+   configuration: test
 -
   branches:
     only:
