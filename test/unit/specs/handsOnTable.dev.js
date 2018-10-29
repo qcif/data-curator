@@ -1,5 +1,4 @@
 import Handsontable from 'handsontable/dist/handsontable.full.js'
-import { insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight } from '@/hot.js'
 import store from '@/store/modules/hots.js'
 import { resetHotStore } from '../helpers/storeHelper.js'
 import { stubHotInDocumentDom, resetHot, registerHot } from '../helpers/basicHotHelper.js'
@@ -51,11 +50,16 @@ describe('hands on table', () => {
     ]
   }
 
-
-  describe('Active hot functions', () => {
-    hot.loadData(data)
-    const result = hotFunctions.getActiveSelected()
-  })
+  // describe('Active hot functions', () => {
+  //   it('returns last cell of active hot when calling getActiveSelected', () => {
+  //     const test = hotFunctions.HotRegister.getActiveInstance()
+  //     console.log(test.guid)
+  //     console.log(hot.guid)
+  //     hot.loadData(data)
+  //     const result = hotFunctions.getActiveSelected()
+  //     expect(result).to.equal([0, 0])
+  //   })
+  // })
 
   describe('loading Hands On Table library into workview', () => {
     it('constructs hands on table via controller without altering loaded data', () => {
@@ -75,401 +79,401 @@ describe('hands on table', () => {
   })
 
   describe('Insert rows', () => {
-      it('adds a row above (first row)', () => {
-        hot.addHook('afterLoadData', () => {
-          hot.selectCell(0, 0, 0, 4) // select whole row
-          insertRowAbove(true)
-          expectedData.unshift([null, null, null, null, null])
-          expect(hot.getData()).to.deep.equal(expectedData)
-        })
-        hot.loadData(data)
+    it('adds a row above (first row)', () => {
+      hot.addHook('afterLoadData', () => {
+        hot.selectCell(0, 0, 0, 4) // select whole row
+        hotFunctions.insertRowAbove(true)
+        expectedData.unshift([null, null, null, null, null])
+        expect(hot.getData()).to.deep.equal(expectedData)
       })
-
-      it('adds a row above (middle)', () => {
-        hot.addHook('afterLoadData', () => {
-          hot.selectCell(2, 0, 2, 0) // select only one cell
-          insertRowAbove(true)
-          assert.deepEqual(hot.getData(), [
-            [
-              '', 'Ford', 'Volvo', 'Toyota', 'Honda'
-            ],
-            [
-              '2014', 10, 11, 12, 13
-            ],
-            [
-              null, null, null, null, null
-            ],
-            [
-              '2015', 20, 11, 14, 13
-            ],
-            [
-              '2016', 30, 15, 12, 13
-            ]
-          ])
-        })
-        hot.loadData(data)
-      })
-
-      it('adds a row above (end row)', () => {
-        hot.addHook('afterLoadData', () => {
-          hot.selectCell(3, 2, 3, 4) // select partial row
-          insertRowAbove(true)
-          assert.deepEqual(hot.getData(), [
-            [
-              '', 'Ford', 'Volvo', 'Toyota', 'Honda'
-            ],
-            [
-              '2014', 10, 11, 12, 13
-            ],
-            [
-              '2015', 20, 11, 14, 13
-            ],
-            [
-              null, null, null, null, null
-            ],
-            [
-              '2016', 30, 15, 12, 13
-            ]
-          ])
-        })
-        hot.loadData(data)
-      })
-
-      it('adds a row below (first row)', () => {
-        hot.addHook('afterLoadData', () => {
-          hot.selectCell(0, 0, 0, 4) // select whole row
-          insertRowBelow(true)
-          assert.deepEqual(hot.getData(), [
-            [
-              '', 'Ford', 'Volvo', 'Toyota', 'Honda'
-            ],
-            [
-              null, null, null, null, null
-            ],
-            [
-              '2014', 10, 11, 12, 13
-            ],
-            [
-              '2015', 20, 11, 14, 13
-            ],
-            [
-              '2016', 30, 15, 12, 13
-            ]
-          ])
-        })
-        hot.loadData(data)
-      })
-
-      it('adds a row below (middle)', () => {
-        hot.addHook('afterLoadData', () => {
-          hot.selectCell(1, 2, 1, 2) // select only one cell
-          insertRowBelow(true)
-          assert.deepEqual(hot.getData(), [
-            [
-              '', 'Ford', 'Volvo', 'Toyota', 'Honda'
-            ],
-            [
-              '2014', 10, 11, 12, 13
-            ],
-            [
-              null, null, null, null, null
-            ],
-            [
-              '2015', 20, 11, 14, 13
-            ],
-            [
-              '2016', 30, 15, 12, 13
-            ]
-          ])
-        })
-        hot.loadData(data)
-      })
-
-      it('adds a row below (end row)', () => {
-        hot.addHook('afterLoadData', () => {
-          hot.selectCell(2, 0, 3, 3) // select rectangular area
-          insertRowBelow(true)
-          assert.deepEqual(hot.getData(), [
-            [
-              '', 'Ford', 'Volvo', 'Toyota', 'Honda'
-            ],
-            [
-              '2014', 10, 11, 12, 13
-            ],
-            [
-              '2015', 20, 11, 14, 13
-            ],
-            [
-              '2016', 30, 15, 12, 13
-            ],
-            [
-              null, null, null, null, null
-            ]
-          ])
-        })
-        hot.loadData(data)
-      })
+      hot.loadData(data)
     })
 
+    it('adds a row above (middle)', () => {
+      hot.addHook('afterLoadData', () => {
+        hot.selectCell(2, 0, 2, 0) // select only one cell
+        hotFunctions.insertRowAbove(true)
+        assert.deepEqual(hot.getData(), [
+          [
+            '', 'Ford', 'Volvo', 'Toyota', 'Honda'
+          ],
+          [
+            '2014', 10, 11, 12, 13
+          ],
+          [
+            null, null, null, null, null
+          ],
+          [
+            '2015', 20, 11, 14, 13
+          ],
+          [
+            '2016', 30, 15, 12, 13
+          ]
+        ])
+      })
+      hot.loadData(data)
+    })
+
+    it('adds a row above (end row)', () => {
+      hot.addHook('afterLoadData', () => {
+        hot.selectCell(3, 2, 3, 4) // select partial row
+        hotFunctions.insertRowAbove(true)
+        assert.deepEqual(hot.getData(), [
+          [
+            '', 'Ford', 'Volvo', 'Toyota', 'Honda'
+          ],
+          [
+            '2014', 10, 11, 12, 13
+          ],
+          [
+            '2015', 20, 11, 14, 13
+          ],
+          [
+            null, null, null, null, null
+          ],
+          [
+            '2016', 30, 15, 12, 13
+          ]
+        ])
+      })
+      hot.loadData(data)
+    })
+
+    it('adds a row below (first row)', () => {
+      hot.addHook('afterLoadData', () => {
+        hot.selectCell(0, 0, 0, 4) // select whole row
+        hotFunctions.insertRowBelow(true)
+        assert.deepEqual(hot.getData(), [
+          [
+            '', 'Ford', 'Volvo', 'Toyota', 'Honda'
+          ],
+          [
+            null, null, null, null, null
+          ],
+          [
+            '2014', 10, 11, 12, 13
+          ],
+          [
+            '2015', 20, 11, 14, 13
+          ],
+          [
+            '2016', 30, 15, 12, 13
+          ]
+        ])
+      })
+      hot.loadData(data)
+    })
+
+    it('adds a row below (middle)', () => {
+      hot.addHook('afterLoadData', () => {
+        hot.selectCell(1, 2, 1, 2) // select only one cell
+        hotFunctions.insertRowBelow(true)
+        assert.deepEqual(hot.getData(), [
+          [
+            '', 'Ford', 'Volvo', 'Toyota', 'Honda'
+          ],
+          [
+            '2014', 10, 11, 12, 13
+          ],
+          [
+            null, null, null, null, null
+          ],
+          [
+            '2015', 20, 11, 14, 13
+          ],
+          [
+            '2016', 30, 15, 12, 13
+          ]
+        ])
+      })
+      hot.loadData(data)
+    })
+
+    it('adds a row below (end row)', () => {
+      hot.addHook('afterLoadData', () => {
+        hot.selectCell(2, 0, 3, 3) // select rectangular area
+        hotFunctions.insertRowBelow(true)
+        assert.deepEqual(hot.getData(), [
+          [
+            '', 'Ford', 'Volvo', 'Toyota', 'Honda'
+          ],
+          [
+            '2014', 10, 11, 12, 13
+          ],
+          [
+            '2015', 20, 11, 14, 13
+          ],
+          [
+            '2016', 30, 15, 12, 13
+          ],
+          [
+            null, null, null, null, null
+          ]
+        ])
+      })
+      hot.loadData(data)
+    })
+  })
+
   describe('Insert columns', () => {
-      it('adds a column to the left (first col)', function() {
-        let mock = mockPushColumnIndex(sandbox.mock, 0)
-        hot.addHook('afterLoadData', () => {
-          hot.selectCell(0, 0, 3, 0) // select whole column
-          insertColumnLeft()
-          assert.deepEqual(hot.getData(), [
-            [
-              null,
-              '',
-              'Ford',
-              'Volvo',
-              'Toyota',
-              'Honda'
-            ],
-            [
-              null,
-              '2014',
-              10,
-              11,
-              12,
-              13
-            ],
-            [
-              null,
-              '2015',
-              20,
-              11,
-              14,
-              13
-            ],
-            [
-              null,
-              '2016',
-              30,
-              15,
-              12,
-              13
-            ]
-          ])
-        })
-        hot.loadData(data)
-        mock.verify()
+    it('adds a column to the left (first col)', function() {
+      let mock = mockPushColumnIndex(sandbox.mock, 0)
+      hot.addHook('afterLoadData', () => {
+        hot.selectCell(0, 0, 3, 0) // select whole column
+        hotFunctions.insertColumnLeft()
+        assert.deepEqual(hot.getData(), [
+          [
+            null,
+            '',
+            'Ford',
+            'Volvo',
+            'Toyota',
+            'Honda'
+          ],
+          [
+            null,
+            '2014',
+            10,
+            11,
+            12,
+            13
+          ],
+          [
+            null,
+            '2015',
+            20,
+            11,
+            14,
+            13
+          ],
+          [
+            null,
+            '2016',
+            30,
+            15,
+            12,
+            13
+          ]
+        ])
       })
+      hot.loadData(data)
+      mock.verify()
+    })
 
-      it('adds a column to the left (middle)', function() {
-        let mock = mockPushColumnIndex(sandbox.mock, 2)
-        hot.addHook('afterLoadData', () => {
-          hot.selectCell(2, 2, 2, 2) // select only one cell
-          insertColumnLeft()
-          assert.deepEqual(hot.getData(), [
-            [
-              '',
-              'Ford',
-              null,
-              'Volvo',
-              'Toyota',
-              'Honda'
-            ],
-            [
-              '2014',
-              10,
-              null,
-              11,
-              12,
-              13
-            ],
-            [
-              '2015',
-              20,
-              null,
-              11,
-              14,
-              13
-            ],
-            [
-              '2016',
-              30,
-              null,
-              15,
-              12,
-              13
-            ]
-          ])
-        })
-        hot.loadData(data)
-        mock.verify()
+    it('adds a column to the left (middle)', function() {
+      let mock = mockPushColumnIndex(sandbox.mock, 2)
+      hot.addHook('afterLoadData', () => {
+        hot.selectCell(2, 2, 2, 2) // select only one cell
+        hotFunctions.insertColumnLeft()
+        assert.deepEqual(hot.getData(), [
+          [
+            '',
+            'Ford',
+            null,
+            'Volvo',
+            'Toyota',
+            'Honda'
+          ],
+          [
+            '2014',
+            10,
+            null,
+            11,
+            12,
+            13
+          ],
+          [
+            '2015',
+            20,
+            null,
+            11,
+            14,
+            13
+          ],
+          [
+            '2016',
+            30,
+            null,
+            15,
+            12,
+            13
+          ]
+        ])
       })
+      hot.loadData(data)
+      mock.verify()
+    })
 
-      it('adds a column to the left (last col)', function() {
-        let mock = mockPushColumnIndex(sandbox.mock, 3)
-        hot.addHook('afterLoadData', () => {
-          hot.selectCell(1, 3, 2, 4) // select partial rectangular column
-          insertColumnLeft()
-          assert.deepEqual(hot.getData(), [
-            [
-              '',
-              'Ford',
-              'Volvo',
-              null,
-              'Toyota',
-              'Honda'
-            ],
-            [
-              '2014',
-              10,
-              11,
-              null,
-              12,
-              13
-            ],
-            [
-              '2015',
-              20,
-              11,
-              null,
-              14,
-              13
-            ],
-            [
-              '2016',
-              30,
-              15,
-              null,
-              12,
-              13
-            ]
-          ])
-        })
-        hot.loadData(data)
-        mock.verify()
+    it('adds a column to the left (last col)', function() {
+      let mock = mockPushColumnIndex(sandbox.mock, 3)
+      hot.addHook('afterLoadData', () => {
+        hot.selectCell(1, 3, 2, 4) // select partial rectangular column
+        hotFunctions.insertColumnLeft()
+        assert.deepEqual(hot.getData(), [
+          [
+            '',
+            'Ford',
+            'Volvo',
+            null,
+            'Toyota',
+            'Honda'
+          ],
+          [
+            '2014',
+            10,
+            11,
+            null,
+            12,
+            13
+          ],
+          [
+            '2015',
+            20,
+            11,
+            null,
+            14,
+            13
+          ],
+          [
+            '2016',
+            30,
+            15,
+            null,
+            12,
+            13
+          ]
+        ])
       })
+      hot.loadData(data)
+      mock.verify()
+    })
 
-      it('adds a column to the right (first col)', function() {
-        let mock = mockPushColumnIndex(sandbox.mock, 1)
-        hot.addHook('afterLoadData', () => {
-          hot.selectCell(0, 0, 3, 0) // select whole column
-          insertColumnRight()
-          assert.deepEqual(hot.getData(), [
-            [
-              '', null, 'Ford', 'Volvo', 'Toyota', 'Honda'
-            ],
-            [
-              '2014',
-              null,
-              10,
-              11,
-              12,
-              13
-            ],
-            [
-              '2015',
-              null,
-              20,
-              11,
-              14,
-              13
-            ],
-            [
-              '2016',
-              null,
-              30,
-              15,
-              12,
-              13
-            ]
-          ])
-        })
-        hot.loadData(data)
-        mock.verify()
+    it('adds a column to the right (first col)', function() {
+      let mock = mockPushColumnIndex(sandbox.mock, 1)
+      hot.addHook('afterLoadData', () => {
+        hot.selectCell(0, 0, 3, 0) // select whole column
+        hotFunctions.insertColumnRight()
+        assert.deepEqual(hot.getData(), [
+          [
+            '', null, 'Ford', 'Volvo', 'Toyota', 'Honda'
+          ],
+          [
+            '2014',
+            null,
+            10,
+            11,
+            12,
+            13
+          ],
+          [
+            '2015',
+            null,
+            20,
+            11,
+            14,
+            13
+          ],
+          [
+            '2016',
+            null,
+            30,
+            15,
+            12,
+            13
+          ]
+        ])
       })
+      hot.loadData(data)
+      mock.verify()
+    })
 
-      it('adds a column to the right (middle)', function() {
-        let mock = mockPushColumnIndex(sandbox.mock, 2)
-        hot.addHook('afterLoadData', () => {
-          hot.selectCell(1, 1, 1, 1) // select only one cell
-          insertColumnRight()
-          assert.deepEqual(hot.getData(), [
-            [
-              '',
-              'Ford',
-              null,
-              'Volvo',
-              'Toyota',
-              'Honda'
-            ],
-            [
-              '2014',
-              10,
-              null,
-              11,
-              12,
-              13
-            ],
-            [
-              '2015',
-              20,
-              null,
-              11,
-              14,
-              13
-            ],
-            [
-              '2016',
-              30,
-              null,
-              15,
-              12,
-              13
-            ]
-          ])
-        })
-        hot.loadData(data)
-        mock.verify()
+    it('adds a column to the right (middle)', function() {
+      let mock = mockPushColumnIndex(sandbox.mock, 2)
+      hot.addHook('afterLoadData', () => {
+        hot.selectCell(1, 1, 1, 1) // select only one cell
+        hotFunctions.insertColumnRight()
+        assert.deepEqual(hot.getData(), [
+          [
+            '',
+            'Ford',
+            null,
+            'Volvo',
+            'Toyota',
+            'Honda'
+          ],
+          [
+            '2014',
+            10,
+            null,
+            11,
+            12,
+            13
+          ],
+          [
+            '2015',
+            20,
+            null,
+            11,
+            14,
+            13
+          ],
+          [
+            '2016',
+            30,
+            null,
+            15,
+            12,
+            13
+          ]
+        ])
       })
+      hot.loadData(data)
+      mock.verify()
+    })
 
-      it('adds a column to the right (last col)', function() {
-        let mock = mockPushColumnIndex(sandbox.mock, 5)
-        hot.addHook('afterLoadData', () => {
-          hot.selectCell(1, 3, 2, 4) // select a rectangular range
-          insertColumnRight()
-          assert.deepEqual(hot.getData(), [
-            [
-              '',
-              'Ford',
-              'Volvo',
-              'Toyota',
-              'Honda',
-              null
-            ],
-            [
-              '2014',
-              10,
-              11,
-              12,
-              13,
-              null
-            ],
-            [
-              '2015',
-              20,
-              11,
-              14,
-              13,
-              null
-            ],
-            [
-              '2016',
-              30,
-              15,
-              12,
-              13,
-              null
-            ]
-          ])
-        })
-        hot.loadData(data)
-        mock.verify()
+    it('adds a column to the right (last col)', function() {
+      let mock = mockPushColumnIndex(sandbox.mock, 5)
+      hot.addHook('afterLoadData', () => {
+        hot.selectCell(1, 3, 2, 4) // select a rectangular range
+        hotFunctions.insertColumnRight()
+        assert.deepEqual(hot.getData(), [
+          [
+            '',
+            'Ford',
+            'Volvo',
+            'Toyota',
+            'Honda',
+            null
+          ],
+          [
+            '2014',
+            10,
+            11,
+            12,
+            13,
+            null
+          ],
+          [
+            '2015',
+            20,
+            11,
+            14,
+            13,
+            null
+          ],
+          [
+            '2016',
+            30,
+            15,
+            12,
+            13,
+            null
+          ]
+        ])
       })
+      hot.loadData(data)
+      mock.verify()
+    })
   })
 
   function stubDefaultHotProperties(data) {
