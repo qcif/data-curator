@@ -69,7 +69,7 @@ for:
     - ps: git checkout $env:APPVEYOR_REPO_BRANCH || exit
     - git merge develop || exit
     - yarn
-   configuration: test
+  configuration: test
 -
   branches:
     only:
