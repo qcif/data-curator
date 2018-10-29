@@ -28,6 +28,8 @@ install:
   - git reset --hard HEAD
   - yarn
   - node --version
+  - yarn clean
+  - yarn run clean
   - yarn run lint
 build: off
 test: off

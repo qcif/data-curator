@@ -4,6 +4,7 @@ import store from '@/store/modules/hots.js'
 import { resetHotStore } from '../helpers/storeHelper.js'
 import { stubHotInDocumentDom, resetHot, registerHot } from '../helpers/basicHotHelper.js'
 import { globalBefore } from '../helpers/globalHelper.js'
+import * as hotFunctions from '@/hot.js'
 
 describe('hands on table', () => {
   let sandbox
@@ -50,6 +51,11 @@ describe('hands on table', () => {
     ]
   }
 
+
+  describe('Active hot functions', () => {
+    hot.loadData(data)
+    const result = hotFunctions.getActiveSelected()
+  })
 
   describe('loading Hands On Table library into workview', () => {
     it('constructs hands on table via controller without altering loaded data', () => {
