@@ -7,11 +7,11 @@ image: Visual Studio 2017
 platform:
   - x64
 #
-#cache:
-#  - node_modules
-#  - '%APPDATA%\npm-cache'
-#  - '%USERPROFILE%\.electron'
-#  - '%USERPROFILE%\AppData\Local\Yarn\cache'
+cache:
+  - node_modules
+  - '%APPDATA%\npm-cache'
+  - '%USERPROFILE%\.electron'
+  - '%USERPROFILE%\AppData\Local\Yarn\cache'
 
 environment:
   GH_TOKEN:
@@ -31,8 +31,8 @@ install:
   - yarn clean
   - yarn run clean
   - yarn run lint
-build: off
-test: off
+#build: off
+#test: off
 configuration: default
 
 for:
