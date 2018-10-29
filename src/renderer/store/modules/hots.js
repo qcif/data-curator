@@ -407,12 +407,11 @@ const mutations = {
       _.set(state.hotTabs[hotId], 'columnProperties', hotIdColumns[hotId])
     }
   },
-  resetAll(state) {
-    state = {
-      hotTabs: {},
-      packageProperties: {},
-      provenanceProperties: { markdown: '', hotErrors: {} }
-    }
+  resetHotState(state) {
+    state.hotTabs = {}
+    state.packageProperties = {}
+    state.provenanceProperties = { markdown: '', hotErrors: {} }
+    state.fkPackageComponents= {}
   }
 }
 

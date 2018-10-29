@@ -1,7 +1,5 @@
 import * as sut from '@/frictionlessUtilities'
 import store from '@/store/modules/hots'
-
-import { resetHotStore } from '../helpers/storeHelper.js'
 import { stubHotInDocumentDom, resetHot, registerHot } from '../helpers/basicHotHelper.js'
 import { globalBefore } from '../helpers/globalHelper.js'
 import { loadDataIntoHot } from '@/data-actions'
