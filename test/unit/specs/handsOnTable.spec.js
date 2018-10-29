@@ -50,27 +50,6 @@ describe('hands on table', () => {
     ]
   }
 
-  function stubDefaultHotProperties(data) {
-    return {
-      data,
-      colHeaders: false,
-      rowHeaders: true,
-      // autoColumnSize: {syncLimit: 300},
-      fixedRowsTop: 0,
-      // enable when header row function implemented - otherwise header is sorted with values
-      columnSorting: true,
-      sortIndicator: true,
-      contextMenu: false,
-      autoRowSize: true,
-      autoWrap: true,
-      manualRowResize: true,
-      manualColumnResize: true,
-      manualRowMove: true,
-      enterBeginsEditing: false,
-      persistentState: true,
-      outsideClickDeselects: false
-    }
-  }
 
   describe('loading Hands On Table library into workview', () => {
     it('constructs hands on table via controller without altering loaded data', () => {
@@ -89,147 +68,144 @@ describe('hands on table', () => {
     })
   })
 
-  describe('insertRowAbove tests', () => {
-    it('adds a row above (first row)', () => {
-      hot.addHook('afterLoadData', () => {
-        hot.selectCell(0, 0, 0, 4) // select whole row
-        insertRowAbove(true)
-        expectedData.unshift([null, null, null, null, null])
-        expect(hot.getData()).to.deep.equal(expectedData)
+  describe('Insert rows', () => {
+      it('adds a row above (first row)', () => {
+        hot.addHook('afterLoadData', () => {
+          hot.selectCell(0, 0, 0, 4) // select whole row
+          insertRowAbove(true)
+          expectedData.unshift([null, null, null, null, null])
+          expect(hot.getData()).to.deep.equal(expectedData)
+        })
+        hot.loadData(data)
       })
-      hot.loadData(data)
+
+      it('adds a row above (middle)', () => {
+        hot.addHook('afterLoadData', () => {
+          hot.selectCell(2, 0, 2, 0) // select only one cell
+          insertRowAbove(true)
+          assert.deepEqual(hot.getData(), [
+            [
+              '', 'Ford', 'Volvo', 'Toyota', 'Honda'
+            ],
+            [
+              '2014', 10, 11, 12, 13
+            ],
+            [
+              null, null, null, null, null
+            ],
+            [
+              '2015', 20, 11, 14, 13
+            ],
+            [
+              '2016', 30, 15, 12, 13
+            ]
+          ])
+        })
+        hot.loadData(data)
+      })
+
+      it('adds a row above (end row)', () => {
+        hot.addHook('afterLoadData', () => {
+          hot.selectCell(3, 2, 3, 4) // select partial row
+          insertRowAbove(true)
+          assert.deepEqual(hot.getData(), [
+            [
+              '', 'Ford', 'Volvo', 'Toyota', 'Honda'
+            ],
+            [
+              '2014', 10, 11, 12, 13
+            ],
+            [
+              '2015', 20, 11, 14, 13
+            ],
+            [
+              null, null, null, null, null
+            ],
+            [
+              '2016', 30, 15, 12, 13
+            ]
+          ])
+        })
+        hot.loadData(data)
+      })
+
+      it('adds a row below (first row)', () => {
+        hot.addHook('afterLoadData', () => {
+          hot.selectCell(0, 0, 0, 4) // select whole row
+          insertRowBelow(true)
+          assert.deepEqual(hot.getData(), [
+            [
+              '', 'Ford', 'Volvo', 'Toyota', 'Honda'
+            ],
+            [
+              null, null, null, null, null
+            ],
+            [
+              '2014', 10, 11, 12, 13
+            ],
+            [
+              '2015', 20, 11, 14, 13
+            ],
+            [
+              '2016', 30, 15, 12, 13
+            ]
+          ])
+        })
+        hot.loadData(data)
+      })
+
+      it('adds a row below (middle)', () => {
+        hot.addHook('afterLoadData', () => {
+          hot.selectCell(1, 2, 1, 2) // select only one cell
+          insertRowBelow(true)
+          assert.deepEqual(hot.getData(), [
+            [
+              '', 'Ford', 'Volvo', 'Toyota', 'Honda'
+            ],
+            [
+              '2014', 10, 11, 12, 13
+            ],
+            [
+              null, null, null, null, null
+            ],
+            [
+              '2015', 20, 11, 14, 13
+            ],
+            [
+              '2016', 30, 15, 12, 13
+            ]
+          ])
+        })
+        hot.loadData(data)
+      })
+
+      it('adds a row below (end row)', () => {
+        hot.addHook('afterLoadData', () => {
+          hot.selectCell(2, 0, 3, 3) // select rectangular area
+          insertRowBelow(true)
+          assert.deepEqual(hot.getData(), [
+            [
+              '', 'Ford', 'Volvo', 'Toyota', 'Honda'
+            ],
+            [
+              '2014', 10, 11, 12, 13
+            ],
+            [
+              '2015', 20, 11, 14, 13
+            ],
+            [
+              '2016', 30, 15, 12, 13
+            ],
+            [
+              null, null, null, null, null
+            ]
+          ])
+        })
+        hot.loadData(data)
+      })
     })
 
-    it('adds a row above (middle)', () => {
-      hot.addHook('afterLoadData', () => {
-        hot.selectCell(2, 0, 2, 0) // select only one cell
-        insertRowAbove(true)
-        assert.deepEqual(hot.getData(), [
-          [
-            '', 'Ford', 'Volvo', 'Toyota', 'Honda'
-          ],
-          [
-            '2014', 10, 11, 12, 13
-          ],
-          [
-            null, null, null, null, null
-          ],
-          [
-            '2015', 20, 11, 14, 13
-          ],
-          [
-            '2016', 30, 15, 12, 13
-          ]
-        ])
-      })
-      hot.loadData(data)
-    })
-
-    it('adds a row above (end row)', () => {
-      hot.addHook('afterLoadData', () => {
-        hot.selectCell(3, 2, 3, 4) // select partial row
-        insertRowAbove(true)
-        assert.deepEqual(hot.getData(), [
-          [
-            '', 'Ford', 'Volvo', 'Toyota', 'Honda'
-          ],
-          [
-            '2014', 10, 11, 12, 13
-          ],
-          [
-            '2015', 20, 11, 14, 13
-          ],
-          [
-            null, null, null, null, null
-          ],
-          [
-            '2016', 30, 15, 12, 13
-          ]
-        ])
-      })
-      hot.loadData(data)
-    })
-  })
-
-  describe('insertRowBelow tests', () => {
-    it('adds a row below (first row)', () => {
-      hot.addHook('afterLoadData', () => {
-        hot.selectCell(0, 0, 0, 4) // select whole row
-        insertRowBelow(true)
-        assert.deepEqual(hot.getData(), [
-          [
-            '', 'Ford', 'Volvo', 'Toyota', 'Honda'
-          ],
-          [
-            null, null, null, null, null
-          ],
-          [
-            '2014', 10, 11, 12, 13
-          ],
-          [
-            '2015', 20, 11, 14, 13
-          ],
-          [
-            '2016', 30, 15, 12, 13
-          ]
-        ])
-      })
-      hot.loadData(data)
-    })
-
-    it('adds a row below (middle)', () => {
-      hot.addHook('afterLoadData', () => {
-        hot.selectCell(1, 2, 1, 2) // select only one cell
-        insertRowBelow(true)
-        assert.deepEqual(hot.getData(), [
-          [
-            '', 'Ford', 'Volvo', 'Toyota', 'Honda'
-          ],
-          [
-            '2014', 10, 11, 12, 13
-          ],
-          [
-            null, null, null, null, null
-          ],
-          [
-            '2015', 20, 11, 14, 13
-          ],
-          [
-            '2016', 30, 15, 12, 13
-          ]
-        ])
-      })
-      hot.loadData(data)
-    })
-
-    it('adds a row below (end row)', () => {
-      hot.addHook('afterLoadData', () => {
-        hot.selectCell(2, 0, 3, 3) // select rectangular area
-        insertRowBelow(true)
-        assert.deepEqual(hot.getData(), [
-          [
-            '', 'Ford', 'Volvo', 'Toyota', 'Honda'
-          ],
-          [
-            '2014', 10, 11, 12, 13
-          ],
-          [
-            '2015', 20, 11, 14, 13
-          ],
-          [
-            '2016', 30, 15, 12, 13
-          ],
-          [
-            null, null, null, null, null
-          ]
-        ])
-      })
-      hot.loadData(data)
-    })
-  })
-
-  describe('insertColumn tests', () => {
-    describe('insertColumnLeft tests', () => {
+  describe('Insert columns', () => {
       it('adds a column to the left (first col)', function() {
         let mock = mockPushColumnIndex(sandbox.mock, 0)
         hot.addHook('afterLoadData', () => {
@@ -361,9 +337,7 @@ describe('hands on table', () => {
         hot.loadData(data)
         mock.verify()
       })
-    })
 
-    describe('insertColumnRight tests', () => {
       it('adds a column to the right (first col)', function() {
         let mock = mockPushColumnIndex(sandbox.mock, 1)
         hot.addHook('afterLoadData', () => {
@@ -490,15 +464,36 @@ describe('hands on table', () => {
         hot.loadData(data)
         mock.verify()
       })
-    })
-
-    function mockPushColumnIndex(sMock, columnIndex) {
-      let mock = sMock(store.mutations)
-      mock.expects('pushColumnIndexForHotId').withArgs(store.state, {
-        hotId: hot.guid,
-        columnIndex: columnIndex
-      })
-      return mock
-    }
   })
+
+  function stubDefaultHotProperties(data) {
+    return {
+      data,
+      colHeaders: false,
+      rowHeaders: true,
+      // autoColumnSize: {syncLimit: 300},
+      fixedRowsTop: 0,
+      // enable when header row function implemented - otherwise header is sorted with values
+      columnSorting: true,
+      sortIndicator: true,
+      contextMenu: false,
+      autoRowSize: true,
+      autoWrap: true,
+      manualRowResize: true,
+      manualColumnResize: true,
+      manualRowMove: true,
+      enterBeginsEditing: false,
+      persistentState: true,
+      outsideClickDeselects: false
+    }
+  }
+
+  function mockPushColumnIndex(sMock, columnIndex) {
+    let mock = sMock(store.mutations)
+    mock.expects('pushColumnIndexForHotId').withArgs(store.state, {
+      hotId: hot.guid,
+      columnIndex: columnIndex
+    })
+    return mock
+  }
 })
