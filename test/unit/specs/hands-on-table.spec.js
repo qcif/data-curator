@@ -24,11 +24,12 @@ describe('hands on table', () => {
   })
 
   afterEach(() => {
-    resetHot()
-    resetHotStore(sandbox)
+    resetHot(sandbox)
+    resetHotStore()
     data = null
     hot = null
     expectedData = null
+    store.mutations.resetHotState(store.state)
     sandbox.restore()
   })
 

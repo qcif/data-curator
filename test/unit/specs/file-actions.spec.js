@@ -1,4 +1,3 @@
-import { resetHotStore } from '../helpers/storeHelper.js'
 import { stubHotInDocumentDom, resetHot, registerHot } from '../helpers/basicHotHelper.js'
 import { globalBefore, globalStubTab, restoreRemoteGetGlobal } from '../helpers/globalHelper.js'
 import { saveDataToFile, loadDataIntoHot } from '@/data-actions'
@@ -20,7 +19,6 @@ describe('file actions', () => {
   })
   afterEach(() => {
     resetHot(sandbox)
-    // resetHotStore()
     sandbox.restore()
   })
 
