@@ -41,8 +41,8 @@ jobs:
     - stage: prescript
       before_script:
       - ./ci_merge_script.sh
+      script:
       - yarn
-      script: off
     - stage: lint
       script:
       - yarn run lint

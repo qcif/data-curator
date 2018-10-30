@@ -50,16 +50,13 @@ describe('hands on table', function() {
     ]
   }
 
-  // describe('Active hot functions', function() {
-  //   it('returns last cell of active hot when calling getActiveSelected', function() {
-  //     const test = hotFunctions.HotRegister.getActiveInstance()
-  //     console.log(test.guid)
-  //     console.log(hot.guid)
-  //     hot.loadData(data)
-  //     const result = hotFunctions.getActiveSelected()
-  //     expect(result).to.equal([0, 0])
-  //   })
-  // })
+  describe('Active hot functions', function() {
+    it('returns 0 as default column index', function() {
+      hot.loadData(data)
+      const result = hotFunctions.getCurrentColumnIndexOrMin()
+      expect(result).to.equal([0, 0])
+    })
+  })
 
   describe('loading Hands On Table library into workview', function() {
     it('constructs hands on table via controller without altering loaded data', function() {

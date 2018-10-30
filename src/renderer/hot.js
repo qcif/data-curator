@@ -132,24 +132,6 @@ const HotRegister = {
   }
 }
 
-export function getActiveSelected() {
-  let activeHot = HotRegister.getActiveInstance()
-  return activeHot.getSelectedLast()
-}
-
-export function getActiveSelectedOrHotSelectionOrMin() {
-  let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getSelectedLast()
-  if (!currentCell) {
-    currentCell = store.getters.getHotSelection(store.state, store.getters)(activeHot.guid)
-  }
-  if (!currentCell) {
-    activeHot.selectCell(0, 0)
-    currentCell = activeHot.getSelectedLast()
-  }
-  return currentCell
-}
-
 export function getCurrentColumnIndexOrMin() {
   let activeHot = HotRegister.getActiveInstance()
   let currentCell = activeHot.getSelectedLast()

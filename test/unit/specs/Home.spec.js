@@ -145,7 +145,6 @@ describe('Home.vue', function() {
       })
       clickToolbarId(wrapper, 'validate-data')
       await flushPromises()
-      await Vue.nextnextTick()
       const el = wrapper.vm.$el.querySelectorAll(`#csvContent .editor .ht_master table.htCore .htCommentCell`)
       expect(el.length).to.equal(1)
     })
