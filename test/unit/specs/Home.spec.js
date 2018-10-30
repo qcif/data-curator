@@ -10,13 +10,13 @@ import { globalStubWindows } from '../helpers/globalHelper.js'
 import { errorFeedback$ } from '@/rxSubject.js'
 import { ipcRenderer as ipc } from 'electron'
 
-describe('Home.vue', () => {
+describe('Home.vue', function() {
   let sandbox
   // dummmy test to begin with to incorporate vue/html with existing framework
-  describe('Toolbar menus', () => {
+  describe('Toolbar menus', function() {
     let wrapper
     let hot
-    beforeEach(() => {
+    beforeEach(function() {
       sandbox = sinon.createSandbox()
       Home.__Rewire__('getWindow', function (name) {
         return undefined
@@ -49,7 +49,7 @@ describe('Home.vue', () => {
       })
     })
 
-    afterEach(() => {
+    afterEach(function() {
       Home.__ResetDependency__('getWindow')
       Home.__ResetDependency__('guessColumnProperties')
       wrapper.vm.$destroy()
@@ -86,16 +86,16 @@ describe('Home.vue', () => {
         }
       })
     })
-    it(`should have ${toolbarMenus.length} menus`, () => {
+    it(`should have ${toolbarMenus.length} menus`, function() {
       const toolbarNumber = wrapper.vm.$el.querySelectorAll('#toolbar li').length
       expect(toolbarNumber).to.equal(toolbarMenus.length)
     })
   })
 
-  describe('Hot comments', () => {
+  describe('Hot comments', function() {
     let wrapper
     let hot
-    beforeEach(() => {
+    beforeEach(function() {
       sandbox = sinon.createSandbox()
       Home.__Rewire__('getWindow', function (name, id) {
         return undefined
@@ -123,7 +123,7 @@ describe('Home.vue', () => {
         })
       })
     })
-    afterEach(() => {
+    afterEach(function() {
       Home.__ResetDependency__('getWindow')
       Home.__ResetDependency__('getCurrentColumnIndexOrMin')
       Home.__ResetDependency__('validateActiveDataAgainstSchema')
@@ -145,6 +145,7 @@ describe('Home.vue', () => {
       })
       clickToolbarId(wrapper, 'validate-data')
       await flushPromises()
+      await Vue.nextnextTick()
       const el = wrapper.vm.$el.querySelectorAll(`#csvContent .editor .ht_master table.htCore .htCommentCell`)
       expect(el.length).to.equal(1)
     })

@@ -5,17 +5,17 @@ import { stubHotInDocumentDom, resetHot, registerHot } from '../helpers/basicHot
 import { globalBefore } from '../helpers/globalHelper.js'
 import * as hotFunctions from '@/hot.js'
 
-describe('hands on table', () => {
+describe('hands on table', function() {
   let sandbox
   let data
   let expectedData
   let hot
 
-  before(() => {
+  before(function() {
     globalBefore()
   })
 
-  beforeEach(() => {
+  beforeEach(function() {
     sandbox = sinon.createSandbox()
     stubHotInDocumentDom(sandbox)
     hot = registerHot()
@@ -23,7 +23,7 @@ describe('hands on table', () => {
     expectedData = stubData()
   })
 
-  afterEach(() => {
+  afterEach(function() {
     resetHot(sandbox)
     resetHotStore()
     data = null
@@ -50,8 +50,8 @@ describe('hands on table', () => {
     ]
   }
 
-  // describe('Active hot functions', () => {
-  //   it('returns last cell of active hot when calling getActiveSelected', () => {
+  // describe('Active hot functions', function() {
+  //   it('returns last cell of active hot when calling getActiveSelected', function() {
   //     const test = hotFunctions.HotRegister.getActiveInstance()
   //     console.log(test.guid)
   //     console.log(hot.guid)
@@ -61,26 +61,26 @@ describe('hands on table', () => {
   //   })
   // })
 
-  describe('loading Hands On Table library into workview', () => {
-    it('constructs hands on table via controller without altering loaded data', () => {
-      hot.addHook('afterLoadData', () => {
+  describe('loading Hands On Table library into workview', function() {
+    it('constructs hands on table via controller without altering loaded data', function() {
+      hot.addHook('afterLoadData', function() {
         expect(hot.getData()).to.deep.equal(expectedData)
       })
       hot.loadData(data)
     })
 
-    it('returns the same data when loaded via hot controller as it does directly throught hot library', () => {
+    it('returns the same data when loaded via hot controller as it does directly throught hot library', function() {
       let hot2 = new Handsontable(document.querySelector('.stubbedHot'), stubDefaultHotProperties(data))
-      hot.addHook('afterLoadData', () => {
+      hot.addHook('afterLoadData', function() {
         expect(hot.getData()).to.deep.equal(hot2.getData())
       })
       hot.loadData(data)
     })
   })
 
-  describe('Insert rows', () => {
-    it('adds a row above (first row)', () => {
-      hot.addHook('afterLoadData', () => {
+  describe('Insert rows', function() {
+    it('adds a row above (first row)', function() {
+      hot.addHook('afterLoadData', function() {
         hot.selectCell(0, 0, 0, 4) // select whole row
         hotFunctions.insertRowAbove(true)
         expectedData.unshift([null, null, null, null, null])
@@ -89,8 +89,8 @@ describe('hands on table', () => {
       hot.loadData(data)
     })
 
-    it('adds a row above (middle)', () => {
-      hot.addHook('afterLoadData', () => {
+    it('adds a row above (middle)', function() {
+      hot.addHook('afterLoadData', function() {
         hot.selectCell(2, 0, 2, 0) // select only one cell
         hotFunctions.insertRowAbove(true)
         assert.deepEqual(hot.getData(), [
@@ -114,8 +114,8 @@ describe('hands on table', () => {
       hot.loadData(data)
     })
 
-    it('adds a row above (end row)', () => {
-      hot.addHook('afterLoadData', () => {
+    it('adds a row above (end row)', function() {
+      hot.addHook('afterLoadData', function() {
         hot.selectCell(3, 2, 3, 4) // select partial row
         hotFunctions.insertRowAbove(true)
         assert.deepEqual(hot.getData(), [
@@ -139,8 +139,8 @@ describe('hands on table', () => {
       hot.loadData(data)
     })
 
-    it('adds a row below (first row)', () => {
-      hot.addHook('afterLoadData', () => {
+    it('adds a row below (first row)', function() {
+      hot.addHook('afterLoadData', function() {
         hot.selectCell(0, 0, 0, 4) // select whole row
         hotFunctions.insertRowBelow(true)
         assert.deepEqual(hot.getData(), [
@@ -164,8 +164,8 @@ describe('hands on table', () => {
       hot.loadData(data)
     })
 
-    it('adds a row below (middle)', () => {
-      hot.addHook('afterLoadData', () => {
+    it('adds a row below (middle)', function() {
+      hot.addHook('afterLoadData', function() {
         hot.selectCell(1, 2, 1, 2) // select only one cell
         hotFunctions.insertRowBelow(true)
         assert.deepEqual(hot.getData(), [
@@ -189,8 +189,8 @@ describe('hands on table', () => {
       hot.loadData(data)
     })
 
-    it('adds a row below (end row)', () => {
-      hot.addHook('afterLoadData', () => {
+    it('adds a row below (end row)', function() {
+      hot.addHook('afterLoadData', function() {
         hot.selectCell(2, 0, 3, 3) // select rectangular area
         hotFunctions.insertRowBelow(true)
         assert.deepEqual(hot.getData(), [
@@ -215,10 +215,10 @@ describe('hands on table', () => {
     })
   })
 
-  describe('Insert columns', () => {
+  describe('Insert columns', function() {
     it('adds a column to the left (first col)', function() {
       let mock = mockPushColumnIndex(sandbox.mock, 0)
-      hot.addHook('afterLoadData', () => {
+      hot.addHook('afterLoadData', function() {
         hot.selectCell(0, 0, 3, 0) // select whole column
         hotFunctions.insertColumnLeft()
         assert.deepEqual(hot.getData(), [
@@ -262,7 +262,7 @@ describe('hands on table', () => {
 
     it('adds a column to the left (middle)', function() {
       let mock = mockPushColumnIndex(sandbox.mock, 2)
-      hot.addHook('afterLoadData', () => {
+      hot.addHook('afterLoadData', function() {
         hot.selectCell(2, 2, 2, 2) // select only one cell
         hotFunctions.insertColumnLeft()
         assert.deepEqual(hot.getData(), [
@@ -306,7 +306,7 @@ describe('hands on table', () => {
 
     it('adds a column to the left (last col)', function() {
       let mock = mockPushColumnIndex(sandbox.mock, 3)
-      hot.addHook('afterLoadData', () => {
+      hot.addHook('afterLoadData', function() {
         hot.selectCell(1, 3, 2, 4) // select partial rectangular column
         hotFunctions.insertColumnLeft()
         assert.deepEqual(hot.getData(), [
@@ -350,7 +350,7 @@ describe('hands on table', () => {
 
     it('adds a column to the right (first col)', function() {
       let mock = mockPushColumnIndex(sandbox.mock, 1)
-      hot.addHook('afterLoadData', () => {
+      hot.addHook('afterLoadData', function() {
         hot.selectCell(0, 0, 3, 0) // select whole column
         hotFunctions.insertColumnRight()
         assert.deepEqual(hot.getData(), [
@@ -389,7 +389,7 @@ describe('hands on table', () => {
 
     it('adds a column to the right (middle)', function() {
       let mock = mockPushColumnIndex(sandbox.mock, 2)
-      hot.addHook('afterLoadData', () => {
+      hot.addHook('afterLoadData', function() {
         hot.selectCell(1, 1, 1, 1) // select only one cell
         hotFunctions.insertColumnRight()
         assert.deepEqual(hot.getData(), [
@@ -433,7 +433,7 @@ describe('hands on table', () => {
 
     it('adds a column to the right (last col)', function() {
       let mock = mockPushColumnIndex(sandbox.mock, 5)
-      hot.addHook('afterLoadData', () => {
+      hot.addHook('afterLoadData', function() {
         hot.selectCell(1, 3, 2, 4) // select a rectangular range
         hotFunctions.insertColumnRight()
         assert.deepEqual(hot.getData(), [

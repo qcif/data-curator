@@ -5,20 +5,20 @@ import { globalBefore } from '../helpers/globalHelper.js'
 import { loadDataIntoHot } from '@/data-actions'
 import os from 'os'
 
-describe('frictionless utilities', () => {
-  before(() => {
+describe('frictionless utilities', function() {
+  before(function() {
     globalBefore()
   })
   let sandbox
-  beforeEach(() => {
+  beforeEach(function() {
     sandbox = sinon.createSandbox()
     stubHotInDocumentDom(sandbox)
   })
-  afterEach(() => {
+  afterEach(function() {
     resetHot(sandbox)
     sandbox.restore()
   })
-  describe('is case sensitive', () => {
+  describe('is case sensitive', function() {
     [ { hotTab: {}, expected: false },
       { hotTab: { tableProperties: {} }, expected: false },
       { hotTab: { tableProperties: { dialect: {} } }, expected: false },
@@ -33,7 +33,7 @@ describe('frictionless utilities', () => {
     })
   })
 
-  describe('include headers in data', () => {
+  describe('include headers in data', function() {
     [
       { data: `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`,
         hasHeaders: false,

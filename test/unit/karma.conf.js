@@ -43,7 +43,10 @@ module.exports = config => {
     browsers: ['Electron'],
     autoWatch: false,
     client: {
-      useIframe: false
+      useIframe: false,
+      mocha: {
+        timeout: 5000
+      }
     },
     coverageReporter: {
       dir: './coverage',
