@@ -67,7 +67,7 @@ for:
     - ps: $(git fetch origin develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git checkout --track origin/develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git checkout $env:APPVEYOR_REPO_BRANCH | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
-    - ps: $(git merge develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
+    - ps: $(git checkout develop -- src | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - yarn
   build: off
   deploy: off
