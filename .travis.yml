@@ -12,7 +12,7 @@ cache:
   - "$HOME/.electron"
   - "$HOME/.cache"
 before_install:
-- brew update
+- - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
 - nvm install 8
 - curl -o- -L https://yarnpkg.com/install.sh | bash
