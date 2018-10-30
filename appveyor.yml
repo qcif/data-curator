@@ -60,14 +60,14 @@ for:
       - /ci/
       - /testci/
   before_test:
-    - ps: git config --global user.email "appveyor@appveyor.com"
-    - ps: git config --global user.name "AppVeyorBot"
-    - ps: git stash
-    - ps: git remote set-branches --add origin develop -or exit 1
-    - ps: git fetch origin develop -or exit 1
-    - ps: git checkout --track origin/develop -or exit 1
-    - ps: git checkout $env:APPVEYOR_REPO_BRANCH -or exit 1
-    - ps: git merge develop -or exit 1
+    - git config --global user.email "appveyor@appveyor.com"
+    - git config --global user.name "AppVeyorBot"
+    - git stash
+    - ps: $(git remote set-branches --add origin develop | Out-Host; $?) -or exit 1
+    - ps: $(git fetch origin develop | Out-Host; $?) -or exit 1
+    - ps: $(git checkout --track origin/develop | Out-Host; $?) -or exit 1
+    - ps: $(git checkout $env:APPVEYOR_REPO_BRANCH | Out-Host; $?) -or exit 1
+    - ps: $(git merge develop | Out-Host; $?) -or exit 1
     - yarn
   build: off
   deploy: off
