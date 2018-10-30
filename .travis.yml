@@ -1,13 +1,10 @@
 sudo: required
 language: c
+
 os:
-  - linux
-  - osx
-matrix:
-  include:
-    - os: linux
-      dist: trusty
-    - os: osx
+- linux
+- osx
+
 cache:
   directories:
   - node_modules
