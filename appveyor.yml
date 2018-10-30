@@ -63,11 +63,11 @@ for:
     - git config --global user.email "appveyor@appveyor.com"
     - git config --global user.name "AppVeyorBot"
     - git stash
-    - git remote set-branches --add origin develop || exit
-    - git fetch origin develop || exit
-    - git checkout --track origin/develop || exit
-    - ps: git checkout $env:APPVEYOR_REPO_BRANCH || exit
-    - git merge develop || exit
+    - git remote set-branches --add origin develop OR exit 1
+    - git fetch origin develop OR exit 1
+    - git checkout --track origin/develop OR exit 1
+    - ps: git checkout $env:APPVEYOR_REPO_BRANCH OR exit 1
+    - git merge develop OR exit 1
     - yarn
   build: off
   deploy: off
