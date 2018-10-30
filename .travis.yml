@@ -2,8 +2,8 @@ sudo: required
 language: c
 
 os:
-- linux
-- osx
+  - osx
+  - linux
 
 cache:
   directories:
