@@ -7,23 +7,23 @@ import os from 'os'
 // sinonTest doesn't seem to work with complex callbacks
 // const sinonTest = require('sinon-test')(sinon, {useFakeTimers: false})
 
-describe('file actions', () => {
+describe('file actions', function() {
   // let globalStub
-  before(() => {
+  before(function() {
     globalBefore()
   })
   let sandbox
-  beforeEach(() => {
+  beforeEach(function() {
     sandbox = sinon.createSandbox()
     stubHotInDocumentDom(sandbox)
   })
-  afterEach(() => {
+  afterEach(function() {
     resetHot(sandbox)
     sandbox.restore()
   })
 
-  describe('opening csv data', () => {
-    it('opens simple csv data capturing it in a handsontable', () => {
+  describe('opening csv data', function() {
+    it('opens simple csv data capturing it in a handsontable', function() {
       let data = `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`
       let hot = registerHot()
       hot.addHook('afterUpdateSettings', function() {
@@ -39,8 +39,8 @@ describe('file actions', () => {
     })
   })
 
-  describe('opening semicolon-separated data', () => {
-    it('opens simple semicolon-separated data capturing it in a handsontable', () => {
+  describe('opening semicolon-separated data', function() {
+    it('opens simple semicolon-separated data capturing it in a handsontable', function() {
       let data = `foo;bar;baz${os.EOL}1;2;3${os.EOL}4;5;6`
       let hot = registerHot()
       hot.addHook('afterUpdateSettings', function() {
@@ -56,7 +56,7 @@ describe('file actions', () => {
     })
   })
 
-  describe('saving csv data into a file', () => {
+  describe('saving csv data into a file', function() {
     it('saves simple csv data to a file, with data intact, using dialect.lineTerminator', function(done) {
       let data = `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`
       let expectedData = `foo,bar,baz\r\n1,2,3\r\n4,5,6\r\n`
@@ -89,14 +89,14 @@ describe('file actions', () => {
     })
   })
 
-  describe('convert file', () => {
+  describe('convert file', function() {
     it('converts a file from csv to tsv, using dialect.lineTerminator', function(done) {
       let data = `foo,bar,baz${os.EOL}1,2,3${os.EOL}4,5,6`
       let tempFile = `${os.tmpdir()}/mytsv.tsv`
       globalStubTab(sandbox)
       let hot = registerHot()
-      hot.addHook('afterUpdateSettings', () => {
-        saveDataToFile(hot, fileFormats.tsv, tempFile, () => {
+      hot.addHook('afterUpdateSettings', function() {
+        saveDataToFile(hot, fileFormats.tsv, tempFile, function() {
           let expectedData = `foo\tbar\tbaz\r\n1\t2\t3\r\n4\t5\t6\r\n`
           fs.readFile(tempFile, 'utf-8', (err, d) => {
             if (err) {
