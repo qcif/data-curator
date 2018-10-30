@@ -47,18 +47,7 @@ for:
 -
   branches:
     only:
-      - /master/
-  test_script:
-    - yarn run clean
-    - yarn run unit
-  build: off
-  deploy: off
-  configuration: master
--
-  branches:
-    only:
       - /ci/
-      - /testci/
   before_test:
     - git config --global user.email "appveyor@appveyor.com"
     - git config --global user.name "AppVeyorBot"
@@ -90,6 +79,7 @@ for:
   branches:
     only:
       - /testci/
+      - /master/
   test_script:
     - yarn run clean
     - yarn run unit
