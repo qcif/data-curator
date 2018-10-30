@@ -31,8 +31,6 @@ install:
   - yarn clean
   - yarn run clean
   - yarn run lint
-build: off
-test: off
 configuration: default
 
 for:
@@ -54,8 +52,8 @@ for:
     - yarn run clean
     - yarn run unit
   build: off
-  configuration: master
   deploy: off
+  configuration: master
 -
   branches:
     only:
@@ -70,8 +68,8 @@ for:
     - git merge develop || exit
     - yarn
   build: off
-  configuration: test
   deploy: off
+  configuration: test
 -
   branches:
     only:
@@ -84,8 +82,8 @@ for:
   after_test:
     - yarn run cucumber:report:badge
   build: off
-  configuration: test
   deploy: off
+  configuration: test
 -
   branches:
     only:
@@ -96,5 +94,5 @@ for:
     - yarn run pack
     - yarn run cucumber:postpack:impl
   build: off
-  configuration: test
   deploy: off
+  configuration: test
