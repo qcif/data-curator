@@ -142,23 +142,11 @@ export function getCurrentColumnIndexOrMin() {
   return currentCell[1]
 }
 
-export function getCurrentColumnIndexOrMax() {
-  let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getSelectedLast()
-  if (!currentCell) {
-    let maxCol = getColumnCount() - 1
-    activeHot.selectCell(0, maxCol)
-    currentCell = activeHot.getSelectedLast()
-  }
-  return currentCell[1]
-}
-
 export function reselectCurrentCellOrMin() {
   let activeHot = HotRegister.getActiveInstance()
   let currentCell = activeHot.getSelectedLast()
   if (!currentCell) {
     activeHot.selectCell(0, 0)
-    currentCell = activeHot.getSelectedLast()
   } else {
     activeHot.selectCell(currentCell[0], currentCell[1])
   }
