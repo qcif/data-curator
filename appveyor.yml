@@ -6,7 +6,6 @@ image: Visual Studio 2017
 
 platform:
   - x64
-
 #cache:
 #  - node_modules
 #  - '%APPDATA%\npm-cache'
