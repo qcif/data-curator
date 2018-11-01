@@ -46,8 +46,6 @@ export function stubSimpleTabStore(hot) {
         return ['stubbed Column names']
       },
       getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
-        console.log('returning hot id column properties from stub...')
-        console.log(state.hotTabs)
         // init for other functions that may need this initialisation
         state.hotTabs[hotId] = {}
         state.hotTabs[hotId].columnProperties = {}

@@ -28,7 +28,7 @@ install:
   - git reset --hard HEAD
   - yarn
   - node --version
-  - yarn clean
+  - yarn autoclean
   - yarn run clean
   - yarn run lint
 configuration: default
