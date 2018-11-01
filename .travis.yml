@@ -48,12 +48,18 @@ jobs:
       - yarn run clean
       - yarn run unit
     - stage: unittestandcoverage
+#      only allow failures when not in a critical branch (ie: master, tag)
+      allow_failures:
+      - os: linux
       os: osx
-    - os: linux
       script:
       - yarn run clean
       - yarn run unit
       - yarn run unit:coverage
+    - os: linux
+      script:
+      - yarn run clean
+      - yarn run unit
     - stage: test
       script: ./travis_script.sh test/features/backlog
       os: osx
