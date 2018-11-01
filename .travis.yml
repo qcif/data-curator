@@ -83,18 +83,7 @@ jobs:
     - script: ./travis_script.sh test/features/support
     - script: ./travis_script.sh test/features/tools
     - script: ./travis_script.sh test/features/window
-    - stage: test
-      os: linux
-      script: ./travis_script.sh test/features/backlog
-    - script: ./travis_script.sh test/features/data_curator
-    - script: ./travis_script.sh test/features/edit
-    - script: ./travis_script.sh test/features/file
-    - script: ./travis_script.sh test/features/find
-    - script: ./travis_script.sh test/features/help
-    - script: ./travis_script.sh test/features/other
-    - script: ./travis_script.sh test/features/support
-    - script: ./travis_script.sh test/features/tools
-    - script: ./travis_script.sh test/features/window
+
     - stage: build
       os: osx
       script:
