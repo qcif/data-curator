@@ -31,6 +31,9 @@ install:
   - yarn autoclean
   - yarn run clean
   - yarn run lint
+test: off
+build: off
+deploy: off
 configuration: default
 
 for:
@@ -48,7 +51,7 @@ for:
   branches:
     only:
       - /ci/
-  before_test:
+  test_script:
     - git config --global user.email "appveyor@appveyor.com"
     - git config --global user.name "AppVeyorBot"
     - git stash
@@ -58,7 +61,6 @@ for:
     - ps: $(git checkout $env:APPVEYOR_REPO_BRANCH | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git checkout develop -- src | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - yarn
-  test_script:
     - yarn run clean
     - yarn run unit
     - yarn run pack
