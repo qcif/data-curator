@@ -1,8 +1,5 @@
 sudo: required
 language: c
-os:
-  - osx
-  - linux
 cache:
   directories:
   - node_modules
@@ -37,11 +34,11 @@ jobs:
       script:
       - yarn
     - stage: lint
+      os:
+        - osx
+        - linux
       script:
       - yarn run lint
-      os:
-      - osx
-      - linux
     - stage: unittest
       script:
       - yarn run clean
