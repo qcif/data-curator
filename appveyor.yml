@@ -6,12 +6,12 @@ image: Visual Studio 2017
 
 platform:
   - x64
-#
-#cache:
-#  - node_modules
-#  - '%APPDATA%\npm-cache'
-#  - '%USERPROFILE%\.electron'
-#  - '%USERPROFILE%\AppData\Local\Yarn\cache'
+
+cache:
+  - node_modules
+  - '%APPDATA%\npm-cache'
+  - '%USERPROFILE%\.electron'
+  - '%USERPROFILE%\AppData\Local\Yarn\cache'
 
 environment:
   GH_TOKEN:
@@ -58,13 +58,6 @@ for:
     - ps: $(git checkout $env:APPVEYOR_REPO_BRANCH | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git checkout develop -- src | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - yarn
-  build: off
-  deploy: off
-  configuration: test
--
-  branches:
-    only:
-      - /ci/
   test_script:
     - yarn run clean
     - yarn run unit
@@ -74,7 +67,7 @@ for:
     - yarn run cucumber:report:badge
   build: off
   deploy: off
-  configuration: test
+  configuration: mergeandtest
 -
   branches:
     only:
