@@ -26,53 +26,36 @@ stages:
     if: branch IN (ci, testci, master) OR type IN (pull_request)
   - name: build
     if: tag =~ /^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/
-#below seems to be the only way to do this for both linux and osx - TODO: refactor scripts so single line(especially stage test)
 jobs:
   include:
     - stage: prescript
       os: osx
-      before_script:
-      - ./ci_merge_script.sh
-      script:
-      - yarn
-    - stage: prescript
-      os: linux
+    - os: linux
       before_script:
       - ./ci_merge_script.sh
       script:
       - yarn
     - stage: lint
       os: osx
-      script:
-      - yarn run lint
-    - stage: lint
-      os: linux
+    - os: linux
       script:
       - yarn run lint
     - stage: unittest
       os: osx
-      script:
-      - yarn run clean
-      - yarn run unit
-    - stage: unittest
-      os: linux
+    - os: linux
       script:
       - yarn run clean
       - yarn run unit
     - stage: unittestandcoverage
       os: osx
-      script:
-      - yarn run clean
-      - yarn run unit
-      - yarn run unit:coverage
-    - stage: unittestandcoverage
-      os: linux
+    - os: linux
       script:
       - yarn run clean
       - yarn run unit
       - yarn run unit:coverage
     - stage: test
       os: osx
+    - os: linux
       script: ./travis_script.sh test/features/backlog
     - script: ./travis_script.sh test/features/data_curator
     - script: ./travis_script.sh test/features/edit
@@ -83,14 +66,9 @@ jobs:
     - script: ./travis_script.sh test/features/support
     - script: ./travis_script.sh test/features/tools
     - script: ./travis_script.sh test/features/window
-
     - stage: build
       os: osx
-      script:
-      - yarn run clean
-      - yarn run release:predraft
-    - stage: build
-      os: linux
+    - os: linux
       script:
       - yarn run clean
       - yarn run release:predraft
