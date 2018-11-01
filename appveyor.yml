@@ -31,17 +31,14 @@ install:
   - yarn autoclean
   - yarn run clean
   - yarn run lint
-test: off
-build: off
-deploy: off
-configuration: default
+configuration: Debug
 
 for:
 -
   test: off
   build_script:
     - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
-  configuration: release
+  configuration: Release
   deploy:
     provider: Environment
     name: production
@@ -69,7 +66,7 @@ for:
     - yarn run cucumber:report:badge
   build: off
   deploy: off
-  configuration: mergeandtest
+  configuration: Mergeandtest
 -
   branches:
     only:
@@ -82,4 +79,4 @@ for:
     - yarn run cucumber:postpack:impl
   build: off
   deploy: off
-  configuration: test
+  configuration: Test
