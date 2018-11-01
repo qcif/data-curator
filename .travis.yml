@@ -1,6 +1,8 @@
 sudo: required
 language: c
-
+os:
+  - osx
+  - linux
 cache:
   directories:
   - node_modules
