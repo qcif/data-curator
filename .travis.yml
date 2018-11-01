@@ -11,8 +11,8 @@ install:
 - nvm install 8
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
-before_script:
 - yarn
+script: true
 stages:
   - name: prescript
     if: branch IN (ci)
@@ -33,6 +33,7 @@ jobs:
     - os: linux
       before_script:
       - ./ci_merge_script.sh
+#     merge script may update dependencies
       script:
       - yarn
     - stage: lint
