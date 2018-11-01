@@ -1,8 +1,5 @@
 sudo: required
 language: c
-os:
-  - osx
-  - linux
 
 cache:
   directories:
@@ -21,7 +18,7 @@ stages:
   - name: prescript
     if: branch IN (ci)
   - name: lint
-    if: os in (osx, linux) AND branch IN (master, ci, testci, develop) OR type == pull_request OR tag =~ /^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/
+    if: branch IN (master, ci, testci, develop) OR type == pull_request OR tag =~ /^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/
   - name: unittest
     if: branch IN (master) OR type IN (pull_request)
   - name: unittestandcoverage
@@ -40,6 +37,9 @@ jobs:
     - stage: lint
       script:
       - yarn run lint
+      os:
+      - osx
+      - linux
     - stage: unittest
       script:
       - yarn run clean
