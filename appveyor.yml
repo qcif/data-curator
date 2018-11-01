@@ -6,6 +6,7 @@ image: Visual Studio 2017
 
 platform:
   - x64
+
 #cache:
 #  - node_modules
 #  - '%APPDATA%\npm-cache'
@@ -46,7 +47,7 @@ for:
 -
   branches:
     only:
-      - /ci/
+      - ci
   test_script:
     - git config --global user.email "appveyor@appveyor.com"
     - git config --global user.name "AppVeyorBot"
@@ -69,8 +70,8 @@ for:
 -
   branches:
     only:
-      - /testci/
-      - /master/
+      - testci
+      - master
   test_script:
     - yarn run clean
     - yarn run unit
