@@ -1,6 +1,6 @@
 import * as sut from '@/frictionlessUtilities'
 import store from '@/store/modules/hots'
-import { stubHotInDocumentDom, resetHot, registerHot } from '../helpers/basicHotHelper.js'
+import { stubHotInDocumentDom, resetHot, registerHot } from '../helpers/hotHelper.js'
 import { globalBefore } from '../helpers/globalHelper.js'
 import { loadDataIntoHot } from '@/data-actions'
 import os from 'os'

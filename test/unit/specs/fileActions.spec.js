@@ -1,4 +1,4 @@
-import { stubHotInDocumentDom, resetHot, registerHot } from '../helpers/basicHotHelper.js'
+import { stubHotInDocumentDom, resetHot, registerHot } from '../helpers/hotHelper.js'
 import { globalBefore, globalStubTab, restoreRemoteGetGlobal } from '../helpers/globalHelper.js'
 import { saveDataToFile, loadDataIntoHot } from '@/data-actions'
 import { fileFormats } from '@/file-formats'
