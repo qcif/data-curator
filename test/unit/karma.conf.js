@@ -45,7 +45,7 @@ module.exports = config => {
     client: {
       useIframe: false,
       mocha: {
-        timeout: 5000
+        timeout: 10000
       }
     },
     coverageReporter: {
