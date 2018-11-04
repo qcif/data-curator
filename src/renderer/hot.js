@@ -4,7 +4,6 @@ import store from '@/store/modules/hots.js'
 import { allTablesAllColumnsFromSchema$, allTablesAllColumnNames$, afterSetDataAtCell$ } from '@/rxSubject.js'
 
 const _hots = {}
-const searchCallback = Handsontable.plugins.Search.DEFAULT_CALLBACK
 
 const HotRegister = {
   register(container, listeners={}, searchParameters = false) {
@@ -25,8 +24,6 @@ const HotRegister = {
       manualRowMove: true,
       enterBeginsEditing: false,
       persistentState: true,
-      // currentRowClassName: 'currentRow',
-      // currentColClassName: 'currentCol',
       // outsideClickDeselects: must be set to true -
       // -otherwise visibleRows will include ALL rows (even for large datasets), which will affect performance when switching tabs (https://github.com/ODIQueensland/data-curator/issues/387)
       outsideClickDeselects: true,
@@ -152,28 +149,6 @@ export function reselectCurrentCellOrMin() {
   }
 }
 
-export function reselectCellOrMin(hotId) {
-  let activeHot = HotRegister.getInstance(hotId)
-  let currentCell = activeHot.getSelectedLast()
-  if (!currentCell) {
-    activeHot.selectCell(0, 0)
-    // currentCell = activeHot.getSelectedLast()
-  } else {
-    activeHot.selectCell(currentCell[0], currentCell[1])
-  }
-}
-
-export function reselectCurrentCellOrMax() {
-  let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getSelectedLast()
-  if (!currentCell) {
-    let maxCol = getColumnCount() - 1
-    activeHot.selectCell(0, maxCol)
-  } else {
-    activeHot.selectCell(currentCell[0], currentCell[1])
-  }
-}
-
 export function getColumnCount() {
   let activeHot = HotRegister.getActiveInstance()
   let colCount
@@ -181,30 +156,6 @@ export function getColumnCount() {
     colCount = activeHot.countCols()
   }
   return colCount
-}
-
-export function getColumnCountFromInstance(hot) {
-  let colCount = hot.countCols()
-  return colCount
-}
-
-export function getColumnCountFromInstanceId(hotId) {
-  let hot = HotRegister.getInstan(hotId)
-  let colCount = hot.countCols()
-  return colCount
-}
-
-export function waitForHotInstance() {
-  return new Promise((resolve, reject) => {
-    let hot = HotRegister.getActiveInstance()
-    if (!hot) {
-      _.delay(function() {
-        resolve(HotRegister.getActiveInstance())
-      }, 100)
-    } else {
-      resolve(hot)
-    }
-  })
 }
 
 export function insertRowAbove() {
@@ -296,16 +247,11 @@ export function removeColumns() {
   reselectCurrentCellOrMin()
 }
 
-ipc.on('reselectCurrentCellOrMin', function(event, arg) {
-  reselectCurrentCellOrMin()
-})
-
 ipc.on('selectHotCell', function(event, rowCountNumber, ColCountNumber) {
   let hot = HotRegister.getActiveInstance()
   hot.selectCell(rowCountNumber - 1, ColCountNumber - 1)
 })
 
 export {
-  HotRegister,
-  searchCallback
+  HotRegister
 }

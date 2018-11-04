@@ -4,7 +4,7 @@ import { resetStateObject } from '@/store/modules/hots.js'
 import { fileFormats } from '@/file-formats'
 import { DEFAULT_DIALECT } from 'datapackage/lib/config.js'
 import _ from 'lodash'
-import { registerHot, stubHotInDocumentDom } from '../helpers/basicHotHelper'
+import { registerHot, stubHotInDocumentDom } from '../helpers/hotHelper'
 import * as dataActions from '@/data-actions.js'
 
 describe('Push Csv dialect and formats', function() {

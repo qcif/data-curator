@@ -32,7 +32,7 @@ jobs:
       os: osx
     - os: linux
       before_script:
-      - ./ci_merge_script.sh
+      - ./scripts/ci_merge_script.sh
 #     merge script may update dependencies
       script:
       - yarn
@@ -43,8 +43,12 @@ jobs:
       - yarn run lint
     - stage: unittest
       os: osx
+      script:
+      - yarn run clean
+      - yarn run unit
     - os: linux
       script:
+      - sudo apt-get install -y libgtk-3-0
       - yarn run clean
       - yarn run unit
     - stage: unittestandcoverage
@@ -61,34 +65,34 @@ jobs:
       - yarn run clean
       - yarn run unit
     - stage: test
-      script: ./travis_script.sh test/features/backlog
+      script: ./scripts/travis_script.sh test/features/backlog
       os: osx
     - os: linux
-    - script: ./travis_script.sh test/features/data_curator
+    - script: ./scripts/travis_script.sh test/features/data_curator
       os: osx
     - os: linux
-    - script: ./travis_script.sh test/features/edit
+    - script: ./scripts/travis_script.sh test/features/edit
       os: osx
     - os: linux
-    - script: ./travis_script.sh test/features/file
+    - script: ./scripts/travis_script.sh test/features/file
       os: osx
     - os: linux
-    - script: ./travis_script.sh test/features/find
+    - script: ./scripts/travis_script.sh test/features/find
       os: osx
     - os: linux
-    - script: ./travis_script.sh test/features/help
+    - script: ./scripts/travis_script.sh test/features/help
       os: osx
     - os: linux
-    - script: ./travis_script.sh test/features/other
+    - script: ./scripts/travis_script.sh test/features/other
       os: osx
     - os: linux
-    - script: ./travis_script.sh test/features/support
+    - script: ./scripts/travis_script.sh test/features/support
       os: osx
     - os: linux
-    - script: ./travis_script.sh test/features/tools
+    - script: ./scripts/travis_script.sh test/features/tools
       os: osx
     - os: linux
-    - script: ./travis_script.sh test/features/window
+    - script: ./scripts/travis_script.sh test/features/window
       os: osx
     - os: linux
     - stage: build
