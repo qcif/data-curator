@@ -7,5 +7,5 @@ git remote set-branches --add origin develop || exit
 git fetch origin develop || exit
 git checkout --track origin/develop || exit
 git checkout ${TRAVIS_BRANCH} || exit
-git merge develop || exit
+git checkout develop -- src || exit
 set +e

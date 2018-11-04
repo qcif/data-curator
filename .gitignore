@@ -18,3 +18,4 @@ yarn-error.log
 webdriver.log/
 coverage/
 test/unit/coverage/
+test/cucumber_report.json
