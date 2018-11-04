@@ -2,15 +2,13 @@ import Vue from 'vue'
 Vue.config.devtools = false
 Vue.config.productionTip = false
 
-//use sinonTest in files wish to use it to choose over sandbox
+// sandbox preferred over sinonTest, so that can set up in hooks, rather than in tests.
 // const sinonTest = require('sinon-test')(sinon, {useFakeTimers: false})
 // global.sinonTest = sinonTest
 var sinonChai = require('sinon-chai')
 sinon.config = {
   useFakeTimers: false
 }
-// const sinonTest = require('sinon-test')(sinon)
-// global.sinonTest = sinonTest
 chai.use(sinonChai)
 
 // require all test files (files that ends with .spec.js)

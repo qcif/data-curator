@@ -1,12 +1,5 @@
 sudo: required
 language: c
-os:
-  - osx
-  - linux
-matrix:
-  include:
-    - os: osx
-    - os: linux
 cache:
   directories:
   - node_modules
@@ -14,15 +7,16 @@ cache:
   - "$HOME/.cache"
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./scripts/linux_setup_script.sh; fi
 install:
 - nvm install 8
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
-before_script:
 - yarn
+script: true
 stages:
   - name: prescript
-    if: branch IN (ci, testci)
+    if: branch IN (ci)
   - name: lint
     if: branch IN (master, ci, testci, develop) OR type == pull_request OR tag =~ /^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/
   - name: unittest
@@ -30,39 +24,77 @@ stages:
   - name: unittestandcoverage
     if: branch IN (ci, testci)
   - name: test
-    if: branch IN (ci, testci) OR type IN (pull_request)
+    if: branch IN (ci, testci, master) OR type IN (pull_request)
   - name: build
     if: tag =~ /^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/
 jobs:
   include:
     - stage: prescript
+      os: osx
+    - os: linux
       before_script:
-      - ./ci_merge_script.sh
+      - ./scripts/ci_merge_script.sh
+#     merge script may update dependencies
+      script:
       - yarn
     - stage: lint
+      os: osx
+    - os: linux
       script:
       - yarn run lint
     - stage: unittest
+      os: osx
+    - os: linux
       script:
       - yarn run clean
       - yarn run unit
     - stage: unittestandcoverage
+#      only allow failures when not in a critical branch (ie: master, tag)
+      allow_failures:
+      - os: linux
+      os: osx
       script:
       - yarn run clean
       - yarn run unit
       - yarn run unit:coverage
+    - os: linux
+      script:
+      - yarn run clean
+      - yarn run unit
     - stage: test
-      script: ./travis_script.sh test/features/backlog
-    - script: ./travis_script.sh test/features/data_curator
-    - script: ./travis_script.sh test/features/edit
-    - script: ./travis_script.sh test/features/file
-    - script: ./travis_script.sh test/features/find
-    - script: ./travis_script.sh test/features/help
-    - script: ./travis_script.sh test/features/other
-    - script: ./travis_script.sh test/features/support
-    - script: ./travis_script.sh test/features/tools
-    - script: ./travis_script.sh test/features/window
+      script: ./scripts/travis_script.sh test/features/backlog
+      os: osx
+    - os: linux
+    - script: ./scripts/travis_script.sh test/features/data_curator
+      os: osx
+    - os: linux
+    - script: ./scripts/travis_script.sh test/features/edit
+      os: osx
+    - os: linux
+    - script: ./scripts/travis_script.sh test/features/file
+      os: osx
+    - os: linux
+    - script: ./scripts/travis_script.sh test/features/find
+      os: osx
+    - os: linux
+    - script: ./scripts/travis_script.sh test/features/help
+      os: osx
+    - os: linux
+    - script: ./scripts/travis_script.sh test/features/other
+      os: osx
+    - os: linux
+    - script: ./scripts/travis_script.sh test/features/support
+      os: osx
+    - os: linux
+    - script: ./scripts/travis_script.sh test/features/tools
+      os: osx
+    - os: linux
+    - script: ./scripts/travis_script.sh test/features/window
+      os: osx
+    - os: linux
     - stage: build
+      os: osx
+    - os: linux
       script:
       - yarn run clean
       - yarn run release:predraft

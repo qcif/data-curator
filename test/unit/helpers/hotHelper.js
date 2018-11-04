@@ -7,7 +7,7 @@ let hotElementClassName = 'stubbedHot'
 export function stubHotInDocumentDom(sandbox) {
   resetDocument()
   stubDom()
-  stubHotRegisterActiveQuery(sandbox)
+  stubHotRegisterWithDefaultActiveQuery(sandbox)
 }
 
 function resetDocument() {
@@ -16,19 +16,37 @@ function resetDocument() {
   document.close()
 }
 
-function stubDom() {
+export function stubDom() {
   let hotView = document.createElement('div')
   hotView.setAttribute('class', hotElementClassName)
   document.body.appendChild(hotView)
 }
 
-function stubHotRegisterActiveQuery(sandbox) {
+export function stubHotRegisterWithDefaultActiveQuery(sandbox) {
   hotRegisterActiveQueryStub = sandbox.stub(HotRegister, 'activeQuery')
-  hotRegisterActiveQueryStub.withArgs().returns(stubActiveQuery())
+  hotRegisterActiveQueryStub.withArgs().returns(stubActiveQueryWithLast())
 }
 
-function stubActiveQuery() {
-  return document.querySelectorAll(`.${hotElementClassName}`)[0]
+export function stubHotRegisterWithActiveQuery(sandbox, queryFn) {
+  hotRegisterActiveQueryStub = sandbox.stub(HotRegister, 'activeQuery')
+  hotRegisterActiveQueryStub.withArgs().returns(queryFn())
+}
+
+export function registerHot() {
+  let container = stubActiveQueryWithLast()
+  let hotId = HotRegister.register(container)
+  let hot = HotRegister.getInstance(hotId)
+  return hot
+}
+
+export function stubActiveQueryWithLast() {
+  const allResults = document.querySelectorAll(`.${hotElementClassName}`)
+  return allResults[allResults.length - 1]
+}
+
+export function stubActiveQueryWithFirst() {
+  const allResults = document.querySelectorAll(`.${hotElementClassName}`)
+  return allResults[0]
 }
 
 export function resetHot(sandbox) {
@@ -43,13 +61,6 @@ export function resetHot(sandbox) {
   }
 }
 
-export function registerHot() {
-  let container = stubActiveQuery()
-  let hotId = HotRegister.register(container)
-  let hot = HotRegister.getInstance(hotId)
-  return hot
-}
-
 export function registerHotWithContainer(container) {
   let hotId = HotRegister.register(container)
   let hot = HotRegister.getInstance(hotId)
@@ -59,4 +70,8 @@ export function registerHotWithContainer(container) {
 export function stubHotRegisterActiveInstance(hot, sandbox) {
   hotRegisterActiveInstanceStub = sandbox.stub(HotRegister, 'getActiveInstance')
   hotRegisterActiveInstanceStub.withArgs().returns(hot)
+}
+
+export {
+  hotRegisterActiveQueryStub
 }

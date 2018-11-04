@@ -3,7 +3,7 @@ import flushPromises from 'flush-promises'
 import { stubSimpleTabStore } from '../helpers/storeHelper.js'
 import { rightSideNavStyle, leftSideNavStyle, footerMsgStyle, navPanelType } from '../helpers/domHelper.js'
 import { createLocalVue, shallowMount, mount, TransitionStub } from '@vue/test-utils'
-import { registerHotWithContainer, resetHot, stubHotRegisterActiveInstance } from '../helpers/basicHotHelper.js'
+import { registerHotWithContainer, resetHot, stubHotRegisterActiveInstance } from '../helpers/hotHelper.js'
 import { toolbarMenus } from '@/toolbarMenus.js'
 import Vuex from 'vuex'
 import { globalStubWindows } from '../helpers/globalHelper.js'
@@ -145,7 +145,6 @@ describe('Home.vue', function() {
       })
       clickToolbarId(wrapper, 'validate-data')
       await flushPromises()
-      await Vue.nextnextTick()
       const el = wrapper.vm.$el.querySelectorAll(`#csvContent .editor .ht_master table.htCore .htCommentCell`)
       expect(el.length).to.equal(1)
     })
