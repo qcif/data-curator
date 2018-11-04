@@ -120,7 +120,7 @@
     "vue-rx": "^5.0.0",
     "vue-template-compiler": "^2.5.17",
     "vuex": "^3.0.1",
-    "xlsx": "^0.13.0",
+    "xlsx": "^0.14.0",
     "zeroclipboard": "^2.3.0"
   },
   "devDependencies": {
