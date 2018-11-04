@@ -7,6 +7,7 @@ cache:
   - "$HOME/.cache"
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./scripts/linux_setup_script.sh; fi
 install:
 - nvm install 8
 - curl -o- -L https://yarnpkg.com/install.sh | bash
@@ -43,12 +44,8 @@ jobs:
       - yarn run lint
     - stage: unittest
       os: osx
-      script:
-      - yarn run clean
-      - yarn run unit
     - os: linux
       script:
-      - sudo apt-get install -y libgtk-3-0
       - yarn run clean
       - yarn run unit
     - stage: unittestandcoverage
