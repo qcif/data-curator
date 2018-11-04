@@ -59,6 +59,7 @@ jobs:
       - yarn run unit:coverage
     - os: linux
       script:
+      - ./scripts/linux_setup_script.sh
       - yarn run clean
       - yarn run unit
     - stage: test
