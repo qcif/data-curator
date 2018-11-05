@@ -51,7 +51,9 @@ for:
   test_script:
     - git config --global user.email "appveyor@appveyor.com"
     - git config --global user.name "AppVeyorBot"
-    - git stash
+    - ps: $(git stash | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
+#      ensure that branch contains all commits
+    - ps: $(git pull origin ci | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git remote set-branches --add origin develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git fetch origin develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git checkout --track origin/develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
@@ -64,6 +66,10 @@ for:
     - yarn run cucumber:postpack:impl
   after_test:
     - yarn run cucumber:report:badge
+  on_success:
+    - ps: $(git add --all . | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
+    - ps: $(git commit -m "appveyor: Updating branch, $env:APPVEYOR_REPO_BRANCH, from appveyor build | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
+    - ps: $(git push origin $env:APPVEYOR_REPO_BRANCH | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
   build: off
   deploy: off
   configuration: Mergeandtest
