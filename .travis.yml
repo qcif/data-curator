@@ -60,36 +60,36 @@ jobs:
     - os: linux
       script:
       - yarn run clean
-      - yarn run unit
+      - ./scripts/travis_headless_linux_unit_tests_script.sh
     - stage: test
-      script: ./scripts/travis_script.sh test/features/backlog
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/backlog
       os: osx
     - os: linux
-    - script: ./scripts/travis_script.sh test/features/data_curator
+    - script: ./scripts/travis_headless_e2e_tests.sh test/features/data_curator
       os: osx
     - os: linux
-    - script: ./scripts/travis_script.sh test/features/edit
+    - script: ./scripts/travis_headless_e2e_tests.sh test/features/edit
       os: osx
     - os: linux
-    - script: ./scripts/travis_script.sh test/features/file
+    - script: ./scripts/travis_headless_e2e_tests.sh test/features/file
       os: osx
     - os: linux
-    - script: ./scripts/travis_script.sh test/features/find
+    - script: ./scripts/travis_headless_e2e_tests.sh test/features/find
       os: osx
     - os: linux
-    - script: ./scripts/travis_script.sh test/features/help
+    - script: ./scripts/travis_headless_e2e_tests.sh test/features/help
       os: osx
     - os: linux
-    - script: ./scripts/travis_script.sh test/features/other
+    - script: ./scripts/travis_headless_e2e_tests.sh test/features/other
       os: osx
     - os: linux
-    - script: ./scripts/travis_script.sh test/features/support
+    - script: ./scripts/travis_headless_e2e_tests.sh test/features/support
       os: osx
     - os: linux
-    - script: ./scripts/travis_script.sh test/features/tools
+    - script: ./scripts/travis_headless_e2e_tests.sh test/features/tools
       os: osx
     - os: linux
-    - script: ./scripts/travis_script.sh test/features/window
+    - script: ./scripts/travis_headless_e2e_tests.sh test/features/window
       os: osx
     - os: linux
     - stage: build
