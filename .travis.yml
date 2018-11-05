@@ -33,7 +33,7 @@ jobs:
       os: osx
     - os: linux
       before_script:
-      - ./scripts/ci_merge_script.sh
+  #    - ./scripts/ci_merge_script.sh
 #     merge script may update dependencies
       script:
       - yarn
@@ -60,8 +60,8 @@ jobs:
     - os: linux
       script:
       - ./scripts/linux_setup_script.sh
-      - yarn run clean
-      - yarn run unit
+  #    - yarn run clean
+  #    - yarn run unit
     - stage: test
       script: ./scripts/travis_script.sh test/features/backlog
       os: osx
