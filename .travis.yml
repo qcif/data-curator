@@ -29,24 +29,24 @@ stages:
 jobs:
   include:
     - stage: prescript
-      os: osx
-    - os: linux
       before_script:
       - ./scripts/ci_merge_script.sh
 #     merge script may update dependencies
       script:
       - yarn
-    - stage: lint
       os: osx
-    - os: linux
+      - os: linux
+    - stage: lint
       script:
       - yarn run lint
-    - stage: unittest
       os: osx
-    - os: linux
+      - os: linux
+    - stage: unittest
       script:
       - yarn run clean
       - yarn run unit
+      os: osx
+      - os: linux
     - stage: unittestandcoverage
 #      only allow failures when not in a critical branch (ie: master, tag)
       allow_failures:
