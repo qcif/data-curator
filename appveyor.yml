@@ -53,7 +53,7 @@ for:
     - git config --global user.name "AppVeyorBot"
     - ps: $(git stash | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git remote set-branches --add origin develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
-    - ps: $(git fetch origin develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
+    - git fetch origin develop
     - ps: $(git checkout --track origin/develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git checkout $env:APPVEYOR_REPO_BRANCH | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git checkout develop -- src | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
