@@ -53,7 +53,7 @@ for:
     - git config --global user.name "AppVeyorBot"
     - ps: $(git stash | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
 #      ensure that branch contains all commits
-    - ps: $(git pull origin ci | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
+#    - ps: $(git pull origin ci | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git remote set-branches --add origin develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git fetch origin develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git checkout --track origin/develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
