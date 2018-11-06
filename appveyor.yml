@@ -65,8 +65,8 @@ for:
   after_test:
     - yarn run cucumber:report:badge
   on_success:
-    - ps: $(git add --all . | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
-    - ps: $(git commit -m "appveyor Updating branch from appveyor build." | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
+    - git add test/cucumber_report.html test/cucumber_report.json README.md
+    - git commit -m "appveyor Updating branch from appveyor build."
     - git push origin ci
   build: off
   deploy: off
