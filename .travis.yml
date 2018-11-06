@@ -35,18 +35,18 @@ jobs:
       script:
       - yarn
       os: osx
-      - os: linux
+    - os: linux
     - stage: lint
       script:
       - yarn run lint
       os: osx
-      - os: linux
+    - os: linux
     - stage: unittest
       script:
       - yarn run clean
       - yarn run unit
       os: osx
-      - os: linux
+    - os: linux
     - stage: unittestandcoverage
 #      only allow failures when not in a critical branch (ie: master, tag)
       allow_failures:
