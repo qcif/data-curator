@@ -55,8 +55,8 @@ for:
     - ps: $(git remote set-branches --add origin develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - git fetch origin develop
     - git checkout --track origin/develop
-    - git checkout $env:APPVEYOR_REPO_BRANCH
-    - git checkout develop
+    - git checkout ci
+    - git checkout develop -- src
     - yarn
     - yarn run clean
     - yarn run unit
