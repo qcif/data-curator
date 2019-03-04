@@ -1,15 +1,15 @@
 Command / Field,Group,en,fr
-Validate,Toolbar,Validate Table,
-Column,Toolbar,Set Column Properties,
-Table,Toolbar,Set Table Properties,
-Provenance,Toolbar,Set Provenance Information,
-Package,Toolbar,Set Data Package Properties,
-Export,Toolbar,Export Data Package,
-Add Tab,Tab,Add Data Tab,
-Close Tab,Tab,Close Data Tab,
-Close Panel,All Panels,Close Panel,
-Next,Property Panels,Next Property Panel,
-Previous,Property Panels,Previous Property Panel,
+Validate,Toolbar,Validate Table,Valider Table
+Column,Toolbar,Set Column Properties,Définir Propriétés Colonnes
+Table,Toolbar,Set Table Properties, Définir Propriétés Table
+Provenance,Toolbar,Set Provenance Information, Définir Provenance Information
+Package,Toolbar,Set Data Package Properties,Définir Propriétés Package
+Export,Toolbar,Export Data Package,Export Data Package
+Add Tab,Tab,Add Data Tab,Ajout feuille de données
+Close Tab,Tab,Close Data Tab,Fermer Feuille de Données
+Close Panel,All Panels,Close Panel,Fermer Panneau
+Next,Property Panels,Next Property Panel,Panneau de proriété suivant
+Previous,Property Panels,Previous Property Panel,Panneau de proriété précédent
 Name,Column Property,"The <a href=""http://frictionlessdata.io/specs/table-schema/#name"">Name</a> of the column. Usually the value of the first row in the column.",
 Title,Column Property,"A human readable <a href=""http://frictionlessdata.io/specs/table-schema/#title"">Title</a> for the column.",
 Description,Column Property,"A <a href=""http://frictionlessdata.io/specs/table-schema/#description"">Description</a> of the column",
