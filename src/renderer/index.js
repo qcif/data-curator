@@ -59,8 +59,16 @@ export function loadData(key, data, format, closeLoadingFn) {
 }
 
 ipc.on('saveData', function(e, format, fileName) {
+  console.log('saving data...')
   let hot = HotRegister.getActiveInstance()
+  hot.deselectCell()
+  console.log(hot.getData())
   saveDataToFile(hot, format, fileName)
+  let selection = store.getters.getHotSelection(hot.guid)
+  console.log('reselecting...')
+  if (selection) {
+    hot.selectCell(selection[0], selection[1], selection[2], selection[3])
+  }
 })
 
 ipc.on('editUndo', function() {
