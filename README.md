@@ -4,7 +4,8 @@
  [![vue-recommended-style](https://img.shields.io/badge/vue_code_style-recommended-brightgreen.svg?style=flat)](https://vuejs.org/v2/style-guide/#Priority-C-Recommended)
 [![Travis Build Status](https://travis-ci.org/ODIQueensland/data-curator.svg?branch=ci)](https://travis-ci.org/ODIQueensland/data-curator)
 [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/branch/ci?svg=true)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
-[![Appveyor Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2034%20%20❌failed:%200%20%20❗undefined:%20199-orange.svg)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
+[![Appveyor Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2034%20%20❌failed:%200%20%20❗undefined:%200-orange.svg)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
+
 [![Unit Test Coverage Status](https://coveralls.io/repos/github/ODIQueensland/data-curator/badge.svg?branch=ci)](https://coveralls.io/github/ODIQueensland/data-curator?branch=ci)
 [![Github All Releases](https://img.shields.io/github/downloads/ODIQueensland/data-curator/total.svg)](https://github.com/ODIQueensland/data-curator/releases)
 [![Github Releases](https://img.shields.io/github/downloads/ODIQueensland/data-curator/latest/total.svg?label=Latest%20version%20downloads)](https://github.com/ODIQueensland/data-curator/releases/latest)
