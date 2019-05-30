@@ -8,7 +8,7 @@ platform:
   - x64
 
 cache:
-  - node_modules
+#  - node_modules
 #  - '%APPDATA%\npm-cache'
 #  - '%USERPROFILE%\.electron'
 #  - '%USERPROFILE%\AppData\Local\Yarn\cache'
