@@ -7,11 +7,11 @@ image: Visual Studio 2017
 platform:
   - x64
 
-#cache:
-#  - node_modules
-#  - '%APPDATA%\npm-cache'
-#  - '%USERPROFILE%\.electron'
-#  - '%USERPROFILE%\AppData\Local\Yarn\cache'
+cache:
+  - node_modules
+  - '%APPDATA%\npm-cache'
+  - '%USERPROFILE%\.electron'
+  - '%USERPROFILE%\AppData\Local\Yarn\cache'
 
 environment:
   GH_TOKEN:
@@ -33,6 +33,7 @@ install:
   - yarn run lint
 configuration: Debug
 
+
 for:
 -
   test: off
@@ -48,9 +49,13 @@ for:
   branches:
     only:
       - ci
+  skip_commits:
+    message: /^appveyor Updating branch from appveyor build.$/
   test_script:
-    - git config --global user.email "appveyor@appveyor.com"
-    - git config --global user.name "AppVeyorBot"
+    - git config --global credential.helper store
+    - ps: Add-Content "$HOME\.git-credentials" "https://$($env:GH_TOKEN):x-oauth-basic@github.com`n"
+    - git config --global user.email %APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL%
+    - git config --global user.name %APPVEYOR_REPO_COMMIT_AUTHOR%
     - ps: $(git stash | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git remote set-branches --add origin develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - git fetch origin develop
