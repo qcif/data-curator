@@ -7,7 +7,7 @@ image: Visual Studio 2017
 platform:
   - x64
 
-#cache:
+cache:
 #  - node_modules
 #  - '%APPDATA%\npm-cache'
 #  - '%USERPROFILE%\.electron'
@@ -33,6 +33,7 @@ install:
   - yarn run lint
 configuration: Debug
 
+
 for:
 -
   test: off
@@ -48,15 +49,19 @@ for:
   branches:
     only:
       - ci
+  skip_commits:
+    message: /^appveyor Updating branch from appveyor build.$/
   test_script:
-    - git config --global user.email "appveyor@appveyor.com"
-    - git config --global user.name "AppVeyorBot"
-    - git stash
+    - git config --global credential.helper store
+    - ps: Add-Content "$HOME\.git-credentials" "https://$($env:GH_TOKEN):x-oauth-basic@github.com`n"
+    - git config --global user.email %APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL%
+    - git config --global user.name %APPVEYOR_REPO_COMMIT_AUTHOR%
+    - ps: $(git stash | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
     - ps: $(git remote set-branches --add origin develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
-    - ps: $(git fetch origin develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
-    - ps: $(git checkout --track origin/develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
-    - ps: $(git checkout $env:APPVEYOR_REPO_BRANCH | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
-    - ps: $(git checkout develop -- src | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
+    - git fetch origin develop
+    - git checkout --track origin/develop
+    - git checkout ci
+    - git checkout develop -- src
     - yarn
     - yarn run clean
     - yarn run unit
@@ -64,6 +69,10 @@ for:
     - yarn run cucumber:postpack:impl
   after_test:
     - yarn run cucumber:report:badge
+  on_success:
+    - git add test/cucumber_report.html test/cucumber_report.json README.md
+    - git commit -m "appveyor Updating branch from appveyor build."
+    - git push origin ci
   build: off
   deploy: off
   configuration: Mergeandtest
