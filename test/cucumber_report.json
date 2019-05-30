@@ -1,12 +1,3186 @@
 [
   {
+    "description": "  As a Data Packager\n  I want to insert another row below the current row\n  So that I can add more data to the data tab\n\n  RULES\n  =====\n\n  - The \"Insert Row Below\" command can be invoked using a menu item, keyboard shortcut or a context menu in the data tab",
+    "keyword": "Feature",
+    "name": "Insert Row Below",
+    "line": 1,
+    "id": "insert-row-below",
+    "tags": [],
+    "uri": "test\\features\\edit\\insert-row-below.feature",
+    "elements": [
+      {
+        "id": "insert-row-below;insert-row-below",
+        "keyword": "Scenario",
+        "line": 12,
+        "name": "Insert Row Below",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 11
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6122000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 13,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 23000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "the table should have 1 row by 3 columns",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:91"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 100000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 15,
+            "name": "the user clicks in row 1, column 1",
+            "match": {
+              "location": "test\\features\\support\\edit\\insert_row_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 16000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "the user right-clicks",
+            "match": {
+              "location": "test\\features\\support\\edit\\insert_row_steps.js:13"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 96000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "the user clicks on \"Insert Row Below\"",
+            "match": {
+              "location": "test\\features\\support\\edit\\insert_row_steps.js:18"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 13000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 18,
+            "name": "the table should have 2 rows by 3 columns",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:91"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 38000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 19,
+            "name": "there should be 1 new row below the current row",
+            "match": {
+              "location": "test\\features\\support\\edit\\insert_row_steps.js:23"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 31000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 20,
+            "name": "there should be 3 columns",
+            "match": {
+              "location": "test\\features\\support\\edit\\insert_row_steps.js:33"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 37000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 21,
+            "name": "the cursor should be in row 2, column 1",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:122"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 138000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5083000000
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "  As a Data Packager\n  I want to add a data table\n  So that I can add and edit related data\n\n  RULES\n  =====\n\n  - Tab names must be unique\n  - Name a new tab, \"untitled\" with a sequential number appended to the end to enable uniqueness\n  - The \"New\" command can be invoked using a menu item or the add tab button",
+    "keyword": "Feature",
+    "name": "New",
+    "line": 1,
+    "id": "new",
+    "tags": [],
+    "uri": "test\\features\\file\\new.feature",
+    "elements": [
+      {
+        "id": "new;default",
+        "keyword": "Scenario",
+        "line": 14,
+        "name": "Default",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 13
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5581000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 15,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 25000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 16,
+            "name": "1 window should be displayed",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 32000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "the window should have 1 tab",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:47"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 76000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 18,
+            "name": "the tab should have 1 table",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:77"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 78000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 19,
+            "name": "the table should have 1 row by 3 columns",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:91"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 93000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 20,
+            "name": "the table should be empty",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:104"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 100000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 21,
+            "name": "the cursor should be in row 1, column 1",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:122"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 93000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7128000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "new;add-tab",
+        "keyword": "Scenario",
+        "line": 24,
+        "name": "Add Tab",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 23
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5422000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 25,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 16000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 26,
+            "name": "the \"File\"->\"New\" menu is selected",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 47000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 27,
+            "name": "the window should have 2 tabs",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:47"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 156000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 28,
+            "name": "the new tab should have 1 table",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:77"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 75000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 29,
+            "name": "the new table should have 1 row by 3 columns",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:91"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 91000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 30,
+            "name": "the new table should be empty",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:104"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 604000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 31,
+            "name": "the cursor should be in the new table",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:113"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 31000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 32,
+            "name": "the cursor should be in row 1, column 1",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:122"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 104000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 33,
+            "name": "the new tab should be in the right-most position",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 544000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 34,
+            "name": "the new tab should have a unique name",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:66"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 148000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7107000000
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "  As a Data Packager\n  I want to open a comma separated value (CSV) file\n  So that I can describe, validate and package the data\n\n  RULES\n  =====\n\n  - The Open Comma Separated command can be invoked using the menu or a keyboard shortcut\n  - The data will be stored in a \".csv\" file\n  - The most common form of separated value files is a comma separated value (CSV) file. The [CSV Dialect specification](http://frictionlessdata.io/specs/csv-dialect/#specification) describes variations that use Tab or Semicolon to seperate values. Custom formats are sometimes used. Each of these formats can be described using a CSV Dialect that describes the 'delimiter' and other options.\n  - Use the default CSV dialect values in the specification to open the file and separate the values into the correct columns.\n\n  LATER\n  =====\n\n  - \"Guess Column Properties\" on opening the file",
+    "keyword": "Feature",
+    "name": "Open a Comma separated value file",
+    "line": 1,
+    "id": "open-a-comma-separated-value-file",
+    "tags": [],
+    "uri": "test\\features\\file\\open-comma-separated-file.feature",
+    "elements": [
+      {
+        "id": "open-a-comma-separated-value-file;open-an-existing-comma-separated-value-file",
+        "keyword": "Scenario",
+        "line": 20,
+        "name": "Open an existing comma separated value file",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 19
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5400000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 21,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 22000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 22,
+            "name": "the \"File\"->\"Open\"->\"Comma separated...\" menu is selected",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:57"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 11000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 23,
+            "name": "the openfile dialog should be displayed",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:62"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 9000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 24,
+            "name": "another tab with its filename as the title should be displayed",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:70"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 203000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 25,
+            "name": "the table rows and columns should match the \"csv\" file",
+            "match": {
+              "location": "test\\features\\support\\file\\open-comma-separated-file_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 81000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5072000000
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "  As a User\n  I want to find data within the current column or across the current table\n  So that I can determine if the data exists and correct it if necessary\n\n  RULES\n  =====\n\n  - Users can choose a search constraint to find data across the table or within the current column\n  - The default search constraint is find in column\n  - When \"Find next\" is invoked but no values are found on reaching the end of the column/table, start the search from the top of the table\n  - When \"Find previous\" is invoked but no values are found on reaching the top of the column/table, start the search from the bottom of the table\n  - \"Find\" can be invoked using a toolbar, menu item, toolbar, or keyboard shortcut\n  - \"Find next\" and \"Find previous\" can be invoked using a using a menu item, button or keyboard shortcut\n  - \"Find next\" and \"Find previous\" can only be invoked after a search value has been entered\n  - The warning that the replace command cannot be undone should say, \"Warning, the replace command cannot be undone. Save your work before making changes\"\n\n  LATER\n  =====\n\n  - The column that cursor is in should be displayed in the search panel\n  - The table that is active should be displayed in the search panel\n  - The search order is down columns and then across rows\n  - Find in Table\n\n  USER INTERFACE\n  ==============\n\n  ![Data Curator Find and Replace user interface](https://github.com/ODIQueensland/data-curator/raw/develop/static/img/ui/find-and-replace.png)",
+    "keyword": "Feature",
+    "name": "Find data",
+    "line": 1,
+    "id": "find-data",
+    "tags": [],
+    "uri": "test\\features\\find\\find.feature",
+    "elements": [
+      {
+        "id": "find-data;basic-find",
+        "keyword": "Scenario",
+        "line": 44,
+        "name": "Basic Find",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 31
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5316000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 33,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 19000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 34,
+            "name": "\"Find\" is invoked using the \"toolbar menu button\": \"Find\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 363000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 35,
+            "name": "the \"Find and Replace\" panel should be displayed",
+            "match": {
+              "location": "test\\features\\support\\other\\navigation-panels_steps.js:4"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5067000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 36,
+            "name": "a prompt for a \"find\" value should be displayed",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:13"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 52000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 37,
+            "name": "a prompt for a \"replace\" value should be displayed",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:13"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 53000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 38,
+            "name": "the \"Find and Replace\" panel's first input should have focus",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:17"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 64000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 40,
+            "name": "the column that the cursor is in should be displayed",
+            "match": {
+              "location": "test\\features\\support\\other\\navigation_steps.js:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 159000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5035000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;basic-find",
+        "keyword": "Scenario",
+        "line": 45,
+        "name": "Basic Find",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 31
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5298000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 33,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 22000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 34,
+            "name": "\"Find\" is invoked using the \"application menu selection\": \"Find->Find\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 52000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 35,
+            "name": "the \"Find and Replace\" panel should be displayed",
+            "match": {
+              "location": "test\\features\\support\\other\\navigation-panels_steps.js:4"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5061000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 36,
+            "name": "a prompt for a \"find\" value should be displayed",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:13"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 60000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 37,
+            "name": "a prompt for a \"replace\" value should be displayed",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:13"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 46000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 38,
+            "name": "the \"Find and Replace\" panel's first input should have focus",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:17"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 56000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 40,
+            "name": "the column that the cursor is in should be displayed",
+            "match": {
+              "location": "test\\features\\support\\other\\navigation_steps.js:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 211000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7124000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-submenu-item-is-available-from-invoking-find",
+        "keyword": "Scenario",
+        "line": 54,
+        "name": "Find submenu item is available from invoking Find",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 47
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5330000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 49,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 23000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 50,
+            "name": "\"Find\" is invoked using the \"toolbar menu button\": \"Find\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 333000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 51,
+            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 42000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10159000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-submenu-item-is-available-from-invoking-find",
+        "keyword": "Scenario",
+        "line": 55,
+        "name": "Find submenu item is available from invoking Find",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 47
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5747000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 49,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 19000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 50,
+            "name": "\"Find\" is invoked using the \"application menu selection\": \"Find->Find\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 47000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 51,
+            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 20000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7191000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-submenu-item-is-available-from-invoking-find",
+        "keyword": "Scenario",
+        "line": 56,
+        "name": "Find submenu item is available from invoking Find",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 47
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5645000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 49,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 18000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 50,
+            "name": "\"Find\" is invoked using the \"toolbar menu button\": \"Find\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 317000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 51,
+            "name": "\"Find Previous\" is invoked using the \"application menu selection\": \"Find->Find Previous\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 40000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10189000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-submenu-item-is-available-from-invoking-find",
+        "keyword": "Scenario",
+        "line": 57,
+        "name": "Find submenu item is available from invoking Find",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 47
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5936000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 49,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 18000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 50,
+            "name": "\"Find\" is invoked using the \"application menu selection\": \"Find->Find\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 46000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 51,
+            "name": "\"Find Previous\" is invoked using the \"application menu selection\": \"Find->Find Previous\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 23000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7123000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-submenu-item-is-available-from-invoking-find",
+        "keyword": "Scenario",
+        "line": 58,
+        "name": "Find submenu item is available from invoking Find",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 47
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5276000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 49,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 19000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 50,
+            "name": "\"Find\" is invoked using the \"toolbar menu button\": \"Find\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 410000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 51,
+            "name": "\"Replace Next\" is invoked using the \"application menu selection\": \"Find->Replace Next\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 59000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 32196000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-submenu-item-is-available-from-invoking-find",
+        "keyword": "Scenario",
+        "line": 59,
+        "name": "Find submenu item is available from invoking Find",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 47
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5494000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 49,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 20000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 50,
+            "name": "\"Find\" is invoked using the \"application menu selection\": \"Find->Find\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 50000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 51,
+            "name": "\"Replace Next\" is invoked using the \"application menu selection\": \"Find->Replace Next\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 29000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7167000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-submenu-item-is-available-from-invoking-find",
+        "keyword": "Scenario",
+        "line": 60,
+        "name": "Find submenu item is available from invoking Find",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 47
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5566000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 49,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 26000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 50,
+            "name": "\"Find\" is invoked using the \"toolbar menu button\": \"Find\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 334000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 51,
+            "name": "\"Replace Previous\" is invoked using the \"application menu selection\": \"Find->Replace Previous\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 58000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 32239000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-submenu-item-is-available-from-invoking-find",
+        "keyword": "Scenario",
+        "line": 61,
+        "name": "Find submenu item is available from invoking Find",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 47
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5404000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 49,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 22000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 50,
+            "name": "\"Find\" is invoked using the \"application menu selection\": \"Find->Find\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 49000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 51,
+            "name": "\"Replace Previous\" is invoked using the \"application menu selection\": \"Find->Replace Previous\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 25000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7163000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-submenu-item-is-available-from-invoking-find",
+        "keyword": "Scenario",
+        "line": 62,
+        "name": "Find submenu item is available from invoking Find",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 47
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5614000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 49,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 17000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 50,
+            "name": "\"Find\" is invoked using the \"toolbar menu button\": \"Find\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 419000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 51,
+            "name": "\"Replace All\" is invoked using the \"application menu selection\": \"Find->Replace All\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 47000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 34181000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-submenu-item-is-available-from-invoking-find",
+        "keyword": "Scenario",
+        "line": 63,
+        "name": "Find submenu item is available from invoking Find",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 47
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5253000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 49,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 17000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 50,
+            "name": "\"Find\" is invoked using the \"application menu selection\": \"Find->Find\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 40000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 51,
+            "name": "\"Replace All\" is invoked using the \"application menu selection\": \"Find->Replace All\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 54000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7128000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-next",
+        "keyword": "Scenario",
+        "line": 78,
+        "name": "Find next",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 65
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5488000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 67,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 19000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 68,
+            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"test\",\"\",\"\"],[\"\",\"\",\"\"],[\"test\",\"test\",\"\"],[\"test\",\"\",\"\"],[\"\",\"\",\"test\"],[\"\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 234000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 69,
+            "name": "\"Find\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 44000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 70,
+            "name": "\"test\" has been entered",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4204000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 72,
+            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 31000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 73,
+            "name": "all the cells with values that match the \"test\" should be highlighted",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1261000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5074000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-next",
+        "keyword": "Scenario",
+        "line": 79,
+        "name": "Find next",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 65
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5477000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 67,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 18000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 68,
+            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"\\\\test\\\\\",\"\",\"\"],[\"\",\"\",\"\"],[\"\\\\test\\\\\",\"\\\\test\\\\\",\"\"],[\"\\\\test\\\\\",\"\",\"\"],[\"\",\"\",\"\\\\test\\\\\"],[\"\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 686000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 69,
+            "name": "\"Find\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 42000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 70,
+            "name": "\"\\test\\\" has been entered",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4160000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 72,
+            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 28000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 73,
+            "name": "all the cells with values that match the \"\\test\\\" should be highlighted",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 902000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5115000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-next",
+        "keyword": "Scenario",
+        "line": 80,
+        "name": "Find next",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 65
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5280000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 67,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 28000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 68,
+            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"test123\",\"\",\"\"],[\"\",\"\",\"\"],[\"test123\",\"test123\",\"\"],[\"test123\",\"\",\"\"],[\"\",\"\",\"test123\"],[\"\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 231000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 69,
+            "name": "\"Find\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 40000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 70,
+            "name": "\"test123\" has been entered",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4176000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 72,
+            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 29000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 73,
+            "name": "all the cells with values that match the \"test123\" should be highlighted",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1304000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5034000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-next",
+        "keyword": "Scenario",
+        "line": 81,
+        "name": "Find next",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 65
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5226000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 67,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 16000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 68,
+            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"'test'\",\"\",\"\"],[\"\",\"\",\"\"],[\"'test'\",\"'test'\",\"\"],[\"'test'\",\"\",\"\"],[\"\",\"\",\"'test'\"],[\"\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 253000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 69,
+            "name": "\"Find\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 39000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 70,
+            "name": "\"'test'\" has been entered",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4157000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 72,
+            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 31000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 73,
+            "name": "all the cells with values that match the \"'test'\" should be highlighted",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1304000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7114000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-next",
+        "keyword": "Scenario",
+        "line": 82,
+        "name": "Find next",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 65
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5294000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 67,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 15000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 68,
+            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"\\\"test\\\"\",\"\",\"\"],[\"\",\"\",\"\"],[\"\\\"test\\\"\",\"\\\"test\\\"\",\"\"],[\"\\\"test\\\"\",\"\",\"\"],[\"\",\"\",\"\\\"test\\\"\"],[\"\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 309000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 69,
+            "name": "\"Find\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 41000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 70,
+            "name": "\"\"test\"\" has been entered",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4163000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 72,
+            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 29000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 73,
+            "name": "all the cells with values that match the \"\"test\"\" should be highlighted",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1767000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5077000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-next",
+        "keyword": "Scenario",
+        "line": 83,
+        "name": "Find next",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 65
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5456000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 67,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 20000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 68,
+            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"two words\",\"\",\"\"],[\"\",\"\",\"\"],[\"two words\",\"two words\",\"\"],[\"two words\",\"\",\"\"],[\"\",\"\",\"two words\"],[\"\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 244000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 69,
+            "name": "\"Find\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 43000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 70,
+            "name": "\"two words\" has been entered",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4200000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 72,
+            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 29000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 73,
+            "name": "all the cells with values that match the \"two words\" should be highlighted",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1894000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7131000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-next",
+        "keyword": "Scenario",
+        "line": 84,
+        "name": "Find next",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 65
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5353000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 67,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 24000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 68,
+            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"two words\",\"\",\"\"],[\"\",\"\",\"\"],[\"two words\",\"two words\",\"\"],[\"two words\",\"\",\"\"],[\"\",\"\",\"two words\"],[\"\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 229000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 69,
+            "name": "\"Find\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 41000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 70,
+            "name": "\"two\" has been entered",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4142000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 72,
+            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 32000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 73,
+            "name": "all the cells with values that match the \"two\" should be highlighted",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 872000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5068000000
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "  As a Data Curator User\n  I want to add another data table\n  So that I can package related data tables together\n\n  RULES\n  =====\n  - The \"Add Tab\" command can be invoked using a button\n\n    USER INTERFACE\n    ==============\n\n    ![Add tab user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/add-tab.png)",
+    "keyword": "Feature",
+    "name": "Add Tab",
+    "line": 1,
+    "id": "add-tab",
+    "tags": [],
+    "uri": "test\\features\\other\\add-tab.feature",
+    "elements": [
+      {
+        "id": "add-tab;add-tab",
+        "keyword": "Scenario",
+        "line": 16,
+        "name": "Add Tab",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 15
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5360000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 17,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 28000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 18,
+            "name": "the window has 1 tab",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:47"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 67000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 19,
+            "name": "the \"Add Tab\" button is invoked",
+            "match": {
+              "location": "test\\features\\support\\other\\navigation_steps.js:22"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 111000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 20,
+            "name": "the window should have 2 tabs",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:47"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 115000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 21,
+            "name": "the new tab should have 1 table",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:77"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 59000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 22,
+            "name": "the new table should have 1 row by 3 columns",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:91"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 78000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 23,
+            "name": "the new table should be empty",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:104"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 577000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7139000000
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "  As a Data Packager\n  I want to derive as many column properties as possible from the data and the CSV dialect\n  So that I can quickly set the column properties\n\n  RULES\n  =====\n\n    - The \"Guess Column Properties\" command can be invoked using a menu item or a toolbar button\n    - Read a sample of the data and for each column, infer the data type and format and set the 'type' and 'format' property values to the inferred values\n\n  LATER\n  =====\n\n    - If column properties for `type`, `format` and `constraints` already exist, then prompt the user to ask if they should be over-written.",
+    "keyword": "Feature",
+    "name": "Guess Column Properties",
+    "line": 1,
+    "id": "guess-column-properties",
+    "tags": [],
+    "uri": "test\\features\\tools\\guess-column-properties.feature",
+    "elements": [
+      {
+        "id": "guess-column-properties;guess-column-properties-immediately-after-opening-data-curator",
+        "keyword": "Scenario",
+        "line": 24,
+        "name": "Guess column properties immediately after opening Data Curator",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 17
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5258000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 19,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 16000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 20,
+            "name": "\"Guess Column Properties\" is invoked using the \"toolbar menu button\": \"Guess\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 339000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 21,
+            "name": "the failure message should be displayed with message \"Guess column properties failed\"",
+            "match": {
+              "location": "test\\features\\support\\validation\\messages.js:17"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 99000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 32171000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "guess-column-properties;guess-column-properties-immediately-after-opening-data-curator",
+        "keyword": "Scenario",
+        "line": 25,
+        "name": "Guess column properties immediately after opening Data Curator",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 17
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5702000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 19,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 23000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 20,
+            "name": "\"Guess Column Properties\" is invoked using the \"application menu selection\": \"Tools->Guess Column Properties\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 15000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 21,
+            "name": "the failure message should be displayed with message \"Guess column properties failed\"",
+            "match": {
+              "location": "test\\features\\support\\validation\\messages.js:17"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 102000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7115000000
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "  As a Data Packager\n  I want to described the table\n  So that it can be validated and Data Consumers can understand and use it\n\n  RULES\n  =====\n\n    - Table properties are defined in:\n      - http://frictionlessdata.io/specs/data-resource/\n      - http://frictionlessdata.io/specs/tabular-data-resource/\n      - http://frictionlessdata.io/specs/csv-dialect/\n      - http://frictionlessdata.io/specs/table-schema/#other-properties\n    - The 'name':\n      - is required and must be unique\n      - is defaulted from the file name excluding the file extension, if the file has been opened or saved\n      - when available, replaces the Data Tab Name\n    - Some properties can be defaulted and do not need to not displayed:\n      - 'path'\n      - 'profile' must be set to 'tabular-data-resource'\n      - 'format' the standard file extension for this type of resource\n      - 'mediatype' the mediatype/mimetype of the resource 'text/csv'\n      - 'encoding' UTF-8.\n      - 'CSV Dialect'\n        - 'delimiter' based on the format of the opened/saved file\n        - 'header' true\n        - 'bytes' calculated from the file size\n    - These properties are optional:\n      - 'title'\n      - 'description'\n      - 'sources'\n      - 'licenses'\n    - The following Table Schema properties apply to the whole Table:\n      - 'missingValues'\n      - 'primaryKeys'\n      - 'foreignKeys'\n    - The 'foreign key' relationships can be to columns in:\n      - the same table\n      - a table in the same data package\n      - at table at a url\n    - \"Table Properties\" can be invoked from the menu, toolbar or shortcut\n\n  USER INTERFACE\n  ==============\n\n  ![Table properties user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/table-properties.png)",
+    "keyword": "Feature",
+    "name": "Set Table Properties",
+    "line": 1,
+    "id": "set-table-properties",
+    "tags": [],
+    "uri": "test\\features\\tools\\set-table-properties.feature",
+    "elements": [
+      {
+        "id": "set-table-properties;show-correct-side-navigation-panels",
+        "keyword": "Scenario",
+        "line": 56,
+        "name": "Show Correct Side Navigation Panels",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 48
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5591000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 50,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 17000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 51,
+            "name": "the window has 1 tab",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:47"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 82000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 52,
+            "name": "\"Table Properties\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 328000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 53,
+            "name": "the \"Table Properties\" panel should be displayed",
+            "match": {
+              "location": "test\\features\\support\\other\\navigation-panels_steps.js:4"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5048000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7134000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "set-table-properties;show-correct-side-navigation-panels",
+        "keyword": "Scenario",
+        "line": 57,
+        "name": "Show Correct Side Navigation Panels",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 48
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5346000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 50,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 19000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 51,
+            "name": "the window has 1 tab",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:47"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 87000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 52,
+            "name": "\"Column Properties\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:23"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 305000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 53,
+            "name": "the \"Column Properties\" panel should be displayed",
+            "match": {
+              "location": "test\\features\\support\\other\\navigation-panels_steps.js:4"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5055000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5064000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "set-table-properties;show-correct-side-navigation-panels",
+        "keyword": "Scenario",
+        "line": 58,
+        "name": "Show Correct Side Navigation Panels",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 48
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5531000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 50,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 25000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 51,
+            "name": "the window has 1 tab",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:47"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 117000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 52,
+            "name": "\"Provenance Information\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:27"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 327000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 53,
+            "name": "the \"Provenance Properties\" panel should be displayed",
+            "match": {
+              "location": "test\\features\\support\\other\\navigation-panels_steps.js:4"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5087000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5071000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "set-table-properties;show-correct-side-navigation-panels",
+        "keyword": "Scenario",
+        "line": 59,
+        "name": "Show Correct Side Navigation Panels",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 48
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5263000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 50,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 24000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 51,
+            "name": "the window has 1 tab",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:47"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 85000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 52,
+            "name": "\"Data Package Properties\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:31"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 390000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 53,
+            "name": "the \"Package Properties\" panel should be displayed",
+            "match": {
+              "location": "test\\features\\support\\other\\navigation-panels_steps.js:4"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5064000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7155000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "set-table-properties;show-correct-side-navigation-panels",
+        "keyword": "Scenario",
+        "line": 60,
+        "name": "Show Correct Side Navigation Panels",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 48
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5347000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 50,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 17000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 51,
+            "name": "the window has 1 tab",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:47"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 75000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 52,
+            "name": "\"Find Replace\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 39000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 53,
+            "name": "the \"Find and Replace\" panel should be displayed",
+            "match": {
+              "location": "test\\features\\support\\other\\navigation-panels_steps.js:4"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5058000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7111000000
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     "description": "  As a Data Packager\n  I want to validate the data for common errors and against the [schema](https://frictionlessdata.io/specs/table-schema/) I have defined\n  So that I can correct errors and share validated data with Data Consumers\n\n  RULES\n  =====\n\n  - The \"Validate Table\" command can be invoked using a menu item, toolbar button or shortcut\n  - [Structural data checks](https://github.com/frictionlessdata/goodtables-py#validation-against-structure-checks) include:\n    - blank header\n    - duplicate header\n    - blank row\n    - duplicate row\n    - ragged rows (extra/missing value compared to header row)\n  - Schema validation checks include the:\n    - data is the same \"type\" and \"format\" as defined in the schema, ignoring \"missing values\"\n    - data conforms with the \"constraints\"\n    - \"primary keys\" are unique\n    - \"foreign key\" relationships to one or more columns in:\n      - the same table\n      - another table in the same data package\n      - another table in a data package at a url (not in specification [yet](https://gitter.im/frictionlessdata/chat?at=59eaed08f7299e8f53142845))\n\n  QUESTION\n  ========\n\n  - How can we support writing validation errors for two tables to provenance information?\n  - How is -$1.00 handled by `bareNumber` - error or -1.00?\n\n  USER INTERFACE\n  ==============\n\n  ![Validate user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/validate.png)\n\n  LATER\n  =====\n\n  - different `missingValues` can be validated per column\n  - trueValues and falseValues\n  - bareNumber\n  - decimalChar\n  - groupChar",
     "keyword": "Feature",
     "name": "Validate Table",
     "line": 1,
     "id": "validate-table",
     "tags": [],
-    "uri": "test/features/tools/validate-table.feature",
+    "uri": "test\\features\\tools\\validate-table.feature",
     "elements": [
       {
         "id": "validate-table;validate-table",
@@ -29,11 +3203,11 @@
             "keyword": "Before",
             "hidden": true,
             "match": {
-              "location": "test/features/support/hooks.js:55"
+              "location": "test\\features\\support\\hooks.js:51"
             },
             "result": {
               "status": "passed",
-              "duration": 6404000000
+              "duration": 5683000000
             }
           },
           {
@@ -42,11 +3216,11 @@
             "line": 48,
             "name": "Data Curator is open",
             "match": {
-              "location": "test/features/support/file/new_steps.js:6"
+              "location": "test\\features\\support\\file\\new_steps.js:6"
             },
             "result": {
               "status": "passed",
-              "duration": 35000000
+              "duration": 25000000
             }
           },
           {
@@ -55,11 +3229,11 @@
             "line": 49,
             "name": "1 data tab is displayed",
             "match": {
-              "location": "test/features/support/file/new_steps.js:47"
+              "location": "test\\features\\support\\file\\new_steps.js:47"
             },
             "result": {
               "status": "passed",
-              "duration": 74000000
+              "duration": 82000000
             }
           },
           {
@@ -68,11 +3242,11 @@
             "line": 50,
             "name": "the active table has data: \"[[\"\",\"\",\"\"]]\"",
             "match": {
-              "location": "test/features/support/file/new_steps.js:11"
+              "location": "test\\features\\support\\file\\new_steps.js:11"
             },
             "result": {
               "status": "passed",
-              "duration": 149000000
+              "duration": 142000000
             }
           },
           {
@@ -81,11 +3255,11 @@
             "line": 52,
             "name": "\"Validate Table\" is invoked",
             "match": {
-              "location": "test/features/support/tools/menu_steps.js:17"
+              "location": "test\\features\\support\\tools\\menu_steps.js:15"
             },
             "result": {
               "status": "passed",
-              "duration": 342000000
+              "duration": 316000000
             }
           },
           {
@@ -94,11 +3268,11 @@
             "line": 55,
             "name": "the validation failure message should be displayed with the messages: \"[\"No Columns Properties\"]\" for rows: \"[]\" and columns: \"[]\"",
             "match": {
-              "location": "test/features/support/validation/messages.js:41"
+              "location": "test\\features\\support\\validation\\messages.js:40"
             },
             "result": {
               "status": "passed",
-              "duration": 553000000
+              "duration": 569000000
             }
           },
           {
@@ -107,11 +3281,11 @@
             "line": 56,
             "name": "the validation errors count should be \"1\"",
             "match": {
-              "location": "test/features/support/validation/messages.js:105"
+              "location": "test\\features\\support\\validation\\messages.js:104"
             },
             "result": {
               "status": "passed",
-              "duration": 56000000
+              "duration": 58000000
             }
           },
           {
@@ -120,22 +3294,22 @@
             "line": 57,
             "name": "the table cell errors should be highlighted for rows: \"[]\" and columns: \"[]\"",
             "match": {
-              "location": "test/features/support/validation/messages.js:73"
+              "location": "test\\features\\support\\validation\\messages.js:72"
             },
             "result": {
               "status": "passed",
-              "duration": 35000000
+              "duration": 43000000
             }
           },
           {
             "keyword": "After",
             "hidden": true,
             "match": {
-              "location": "test/features/support/hooks.js:38"
+              "location": "test\\features\\support\\hooks.js:34"
             },
             "result": {
               "status": "passed",
-              "duration": 5169000000
+              "duration": 7144000000
             }
           }
         ]
@@ -161,11 +3335,11 @@
             "keyword": "Before",
             "hidden": true,
             "match": {
-              "location": "test/features/support/hooks.js:55"
+              "location": "test\\features\\support\\hooks.js:51"
             },
             "result": {
               "status": "passed",
-              "duration": 5408000000
+              "duration": 5486000000
             }
           },
           {
@@ -174,11 +3348,11 @@
             "line": 48,
             "name": "Data Curator is open",
             "match": {
-              "location": "test/features/support/file/new_steps.js:6"
+              "location": "test\\features\\support\\file\\new_steps.js:6"
             },
             "result": {
               "status": "passed",
-              "duration": 37000000
+              "duration": 21000000
             }
           },
           {
@@ -187,11 +3361,11 @@
             "line": 49,
             "name": "1 data tab is displayed",
             "match": {
-              "location": "test/features/support/file/new_steps.js:47"
+              "location": "test\\features\\support\\file\\new_steps.js:47"
             },
             "result": {
               "status": "passed",
-              "duration": 71000000
+              "duration": 73000000
             }
           },
           {
@@ -200,11 +3374,11 @@
             "line": 50,
             "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"\",\"\",\"\"]]\"",
             "match": {
-              "location": "test/features/support/file/new_steps.js:11"
+              "location": "test\\features\\support\\file\\new_steps.js:11"
             },
             "result": {
               "status": "passed",
-              "duration": 156000000
+              "duration": 683000000
             }
           },
           {
@@ -213,11 +3387,11 @@
             "line": 52,
             "name": "\"Validate Table\" is invoked",
             "match": {
-              "location": "test/features/support/tools/menu_steps.js:17"
+              "location": "test\\features\\support\\tools\\menu_steps.js:15"
             },
             "result": {
               "status": "passed",
-              "duration": 304000000
+              "duration": 290000000
             }
           },
           {
@@ -226,11 +3400,11 @@
             "line": 55,
             "name": "the validation failure message should be displayed with the messages: \"[\"Blank Row\"]\" for rows: \"[1]\" and columns: \"[]\"",
             "match": {
-              "location": "test/features/support/validation/messages.js:41"
+              "location": "test\\features\\support\\validation\\messages.js:40"
             },
             "result": {
               "status": "passed",
-              "duration": 571000000
+              "duration": 566000000
             }
           },
           {
@@ -239,11 +3413,11 @@
             "line": 56,
             "name": "the validation errors count should be \"1\"",
             "match": {
-              "location": "test/features/support/validation/messages.js:105"
+              "location": "test\\features\\support\\validation\\messages.js:104"
             },
             "result": {
               "status": "passed",
-              "duration": 66000000
+              "duration": 78000000
             }
           },
           {
@@ -252,22 +3426,22 @@
             "line": 57,
             "name": "the table cell errors should be highlighted for rows: \"[1]\" and columns: \"[]\"",
             "match": {
-              "location": "test/features/support/validation/messages.js:73"
+              "location": "test\\features\\support\\validation\\messages.js:72"
             },
             "result": {
               "status": "passed",
-              "duration": 72000000
+              "duration": 83000000
             }
           },
           {
             "keyword": "After",
             "hidden": true,
             "match": {
-              "location": "test/features/support/hooks.js:38"
+              "location": "test\\features\\support\\hooks.js:34"
             },
             "result": {
               "status": "passed",
-              "duration": 5154000000
+              "duration": 34182000000
             }
           }
         ]
@@ -293,11 +3467,11 @@
             "keyword": "Before",
             "hidden": true,
             "match": {
-              "location": "test/features/support/hooks.js:55"
+              "location": "test\\features\\support\\hooks.js:51"
             },
             "result": {
               "status": "passed",
-              "duration": 5355000000
+              "duration": 5635000000
             }
           },
           {
@@ -306,11 +3480,11 @@
             "line": 48,
             "name": "Data Curator is open",
             "match": {
-              "location": "test/features/support/file/new_steps.js:6"
+              "location": "test\\features\\support\\file\\new_steps.js:6"
             },
             "result": {
               "status": "passed",
-              "duration": 27000000
+              "duration": 36000000
             }
           },
           {
@@ -319,11 +3493,11 @@
             "line": 49,
             "name": "1 data tab is displayed",
             "match": {
-              "location": "test/features/support/file/new_steps.js:47"
+              "location": "test\\features\\support\\file\\new_steps.js:47"
             },
             "result": {
               "status": "passed",
-              "duration": 63000000
+              "duration": 93000000
             }
           },
           {
@@ -332,11 +3506,11 @@
             "line": 50,
             "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"\",\"\",\"\"],[\"a\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
             "match": {
-              "location": "test/features/support/file/new_steps.js:11"
+              "location": "test\\features\\support\\file\\new_steps.js:11"
             },
             "result": {
               "status": "passed",
-              "duration": 262000000
+              "duration": 197000000
             }
           },
           {
@@ -345,11 +3519,11 @@
             "line": 52,
             "name": "\"Validate Table\" is invoked",
             "match": {
-              "location": "test/features/support/tools/menu_steps.js:17"
+              "location": "test\\features\\support\\tools\\menu_steps.js:15"
             },
             "result": {
               "status": "passed",
-              "duration": 339000000
+              "duration": 330000000
             }
           },
           {
@@ -358,11 +3532,11 @@
             "line": 55,
             "name": "the validation failure message should be displayed with the messages: \"[\"Blank Row\"]\" for rows: \"[1,3]\" and columns: \"[0,0]\"",
             "match": {
-              "location": "test/features/support/validation/messages.js:41"
+              "location": "test\\features\\support\\validation\\messages.js:40"
             },
             "result": {
               "status": "passed",
-              "duration": 563000000
+              "duration": 596000000
             }
           },
           {
@@ -371,11 +3545,11 @@
             "line": 56,
             "name": "the validation errors count should be \"2\"",
             "match": {
-              "location": "test/features/support/validation/messages.js:105"
+              "location": "test\\features\\support\\validation\\messages.js:104"
             },
             "result": {
               "status": "passed",
-              "duration": 71000000
+              "duration": 90000000
             }
           },
           {
@@ -384,22 +3558,22 @@
             "line": 57,
             "name": "the table cell errors should be highlighted for rows: \"[1,3]\" and columns: \"[0,0]\"",
             "match": {
-              "location": "test/features/support/validation/messages.js:73"
+              "location": "test\\features\\support\\validation\\messages.js:72"
             },
             "result": {
               "status": "passed",
-              "duration": 104000000
+              "duration": 148000000
             }
           },
           {
             "keyword": "After",
             "hidden": true,
             "match": {
-              "location": "test/features/support/hooks.js:38"
+              "location": "test\\features\\support\\hooks.js:34"
             },
             "result": {
               "status": "passed",
-              "duration": 5155000000
+              "duration": 7182000000
             }
           }
         ]
