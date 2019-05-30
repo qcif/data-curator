@@ -7,7 +7,7 @@ image: Visual Studio 2017
 platform:
   - x64
 
-cache:
+#cache:
 #  - node_modules
 #  - '%APPDATA%\npm-cache'
 #  - '%USERPROFILE%\.electron'
