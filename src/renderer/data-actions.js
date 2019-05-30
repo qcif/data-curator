@@ -29,7 +29,10 @@ export function loadCsvDataIntoHot(hot, data, format) {
     // let csv parser handle the line terminators
     _.unset(csvOptions, 'rowDelimiter')
     // TODO: update to stream
-    arrays = parse(data, csvOptions)
+    let updatedData = _.replace(data, /["]/g, '"""')
+    updatedData = _.replace(updatedData, /""""""/g, '""')
+    // data = _.replace
+    arrays = parse(updatedData, csvOptions)
     pushCsvFormat(hot.guid, format)
   }
   fixRaggedRows(arrays)
