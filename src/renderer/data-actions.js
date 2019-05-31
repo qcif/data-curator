@@ -29,7 +29,23 @@ export function loadCsvDataIntoHot(hot, data, format) {
     // let csv parser handle the line terminators
     _.unset(csvOptions, 'rowDelimiter')
     // TODO: update to stream
+    csvOptions.bom = false
+    if (data.charCodeAt(0) === 0xFEFF) {
+      store.commit('pushTableProperty', { hotId: hot.guid, key: `bom`, value: 0xFEFF })
+    }
+    console.dir(store)
+    let hexdump = require('hexdump-nodejs')
+    let buffer = Buffer.from(data)
+    // buffer.write(data, 0x10)
+    console.log('data before parse...')
+    console.log(hexdump(buffer))
     arrays = parse(data, csvOptions)
+    if (arrays[1] && arrays[1][0]) {
+      buffer = Buffer.from(arrays[1][0])
+      // buffer2.write(arrays[0], 0x10)
+      console.log('array 0 after parse...')
+      console.log(hexdump(buffer))
+    }
     pushCsvFormat(hot.guid, format)
   }
   fixRaggedRows(arrays)
@@ -76,10 +92,23 @@ export function saveDataToFile(hot, format, filename, callback) {
   if (typeof format === 'undefined' || !format) {
     // TODO: update to stream
     data = stringify(arrays)
+    let hexdump = require('hexdump-nodejs')
+    let buffer = Buffer.from(data)
+    // buffer.write(data, 0x10)
+    console.log('data after stringify...')
+    console.log(hexdump(buffer))
   } else {
     let csvOptions = dialectToCsvOptions(format.dialect)
     data = stringify(arrays, csvOptions)
+    let hexdump = require('hexdump-nodejs')
+    let buffer = Buffer.from(data)
+    // buffer.write(data, 0x10)
+    console.log('data after stringify...')
+    console.log(hexdump(buffer))
     pushCsvFormat(hot.guid, format)
+  }
+  if (data.charCodeAt(0) !== 0xFEFF && store.getters.getTableProperty({ key: 'bom', hotId: hot.guid })) {
+    data = String.fromCodePoint(0xFEFF) + data
   }
   fs.writeFile(filename, data, callback)
 }
