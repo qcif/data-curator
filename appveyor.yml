@@ -46,6 +46,12 @@ for:
     on:
       appveyor_repo_tag: true
 -
+  test_script:
+    - ps: if (Test-Path $env:APPVEYOR_PULL_REQUEST_NUMBER) { Write-Host "This should be a PR."}
+  build: off
+  deploy: off
+  configuration: Test
+-
   branches:
     only:
       - ci
@@ -78,9 +84,9 @@ for:
   configuration: Mergeandtest
 -
   branches:
-    except:
-      - develop
-      - ci
+    only:
+      - testci
+      - master
   test_script:
     - yarn run clean
     - yarn run unit
