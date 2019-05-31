@@ -1,160 +1,160 @@
 category,en,fr
-menu item,data curator,
-menu item,about data curator,
-menu item,services,
-menu item,hide data curator,
-menu item,hide others,
-menu item,show all,
-menu item,quit data curator,
-menu item,file,
-menu item,new,
-menu item,open,
-menu item,comma separated,
-menu item,tab separated,
-menu item,semicolon separated,
-menu item,open excel sheet,
-menu item,open data package,
-menu item,edit,
-menu item,undo,
-menu item,redo,
-menu item,cut,
-menu item,copy,
-menu item,paste,
-menu item,insert row above,
-menu item,insert row below,
-menu item,insert column before,
-menu item,insert column after,
-menu item,remove row(s),
-menu item,remove column(s),
-menu item,find,
-menu item,find next,
-menu item,find previous,
-menu item,replace next,
-menu item,replace previous,
-menu item,replace all,
-menu item,tools,
-menu item,header row,
-menu item,case sensitive header row,
-menu item,guess column properties,
-menu item,set column properties,
-menu item,set table properties,
-menu item,set provenance information,
-menu item,set data package properties,
-menu item,validate table,
-menu item,export data package,
-menu item,window,
-menu item,next tab,
-menu item,previous tab,
-menu item,help,
-menu item,keyboard shortcuts,
-menu item,support forum,
-menu item,report issues,
-main panel,untitled,
-main panel,add data tab,
-about panel,data curator share usable open data,
-about panel,Beta version,
+menu item,data curator,data curator
+menu item,about data curator,a propos de data curator
+menu item,services,services
+menu item,hide data curator,cacher data curator
+menu item,hide others,cacher le reste
+menu item,show all,tout montrer
+menu item,quit data curator,quitter data cuator
+menu item,file,fichier
+menu item,new,nouveau
+menu item,open,ouvrir
+menu item,comma separated,séparateur virgule
+menu item,tab separated,séparateur tabulation
+menu item,semicolon separated,séoarteur point virgule
+menu item,open excel sheet,ouvrir feuille excel
+menu item,open data package,ouvrir data package
+menu item,edit,éditer
+menu item,undo,annuler
+menu item,redo,refaire
+menu item,cut,couper
+menu item,copy,copier
+menu item,paste,coller
+menu item,insert row above,insérer ligne dessus
+menu item,insert row below,insérer ligne dessous
+menu item,insert column before,insérer colonne avant
+menu item,insert column after,insérer colonne après
+menu item,remove row(s),supprimer ligne(s)
+menu item,remove column(s),supprimer colonne(s)
+menu item,find,trouver
+menu item,find next,suivant
+menu item,find previous,précédent
+menu item,replace next,remplacer suivant
+menu item,replace previous,remplacer précédent
+menu item,replace all,remplacer tout
+menu item,tools,outils
+menu item,header row,entête de ligne
+menu item,case sensitive header row,entête de ligne sensible à la casse
+menu item,guess column properties,propriétés colonne
+menu item,set column properties,définir propriétés colonne
+menu item,set table properties,définir propriétés table
+menu item,set provenance information,définir information provenance
+menu item,set data package properties,définir propriétés data package
+menu item,validate table,valider table
+menu item,export data package,export data package
+menu item,window,fenêtre
+menu item,next tab,onglet suivant
+menu item,previous tab,onglet précédent
+menu item,help,aide
+menu item,keyboard shortcuts,racourcis clavier
+menu item,support forum,support forum
+menu item,report issues,raport anomalie
+main panel,untitled,sans titre
+main panel,add data tab,ajout onglet data
+about panel,data curator share usable open data,data curator share usable open data
+about panel,Beta version,Beta version
 about panel,Access the support forum or report issues via the Help menu,
-about panel,Funded by the Queensland Government,
-about panel,Coordinated by the ODI Australian Network,
-about panel,Includes software developed by the Queensland Cyber Infrastructure Foundation on behalf of the Queensland Government and the ODI Australian Network,
-about panel,Using Frictionless Data specifications and software,
-bottom panel,Validation Errors,
-bottom panel,Guess column properties,
-error message,Failed: Guess column properties failed. Column property names must be set.,
-error message,Success: Guess column properties succeeded.,
-column properties,name,
-column properties,title,
-column properties,description,
-column properties,type,
-column properties,string,
-column properties,number,
-column properties,integer,
-column properties,boolean,
-column properties,object,
-column properties,array,
-column properties,date,
-column properties,time,
-column properties,datetime,
-column properties,year,
-column properties,yearmonth,
-column properties,duration,
-column properties,geopoint,
-column properties,geojson,
-column properties,any,
-column properties,format,
-column properties,default,
-column properties,email,
-column properties,uri,
-column properties,binary,
-column properties,uuid: ,
-column properties,decimalChar,
-column properties,groupChar,
-column properties,bareNumber,
-column properties,decimalChar,
-column properties,trueValues,
-column properties,falseValues,
-column properties,pattern,
-column properties,topojson,
-column properties,required,
-column properties,unique,
-column properties,minLength,
-column properties,maxLength,
-column properties,minimum,
-column properties,maximum,
-column properties,enum,
-column properties,rdfType,
-table properties,source(s),
-table properties,add source,
-table properties,path,
-table properties,licence(s),
-table properties,Creative Commons Attribution 4.0,
-table properties,Creative Commons Attribution Share-Alike 4.0,
-table properties,Creative Commons CCZero 1.0,
-table properties,Open Data Commons Attribution License 1.0,
-table properties,Open Data Commons Open Database License 1.0,
-table properties,Open Data Commons Public Domain Dedication and Licence 1.0,
-table properties,Open Government License 2.0 (Canada),
-table properties,Open Government Licence 3.0 (United Kingdom),
-table properties,Open Government Data License Taiwan 1.0,
-table properties,Public Domain Mark,
-table properties,Primary key(s),
-table properties,add foreign key,
-table properties,missing value(s),
-provenance information,preview,
-provenance information,edit,
-package properties,id,
-package properties,version,
-package properties,contributor(s),
-package properties,role,
-package properties,author,
-package properties,contributor,
-package properties,wrangler,
-package properties,maintainer,
-package properties,publisher,
-package properties,organization,
-package properties,add contributor,
-error message,row is completely blank,
-error message,Failed: Guess column properties failed. Column properties must be set.,
-error message,Failed: Guess column properties failed. Column property names must be set.,
-error message,Failed: Guess column properties failed. All Column property names must be set and must be unique.,
-error message,Failed: Guess column properties failed.,
-error message,Success: Guess column properties succeeded.,
-error message,All tabs must be saved before exporting.,
-error message,There is a problem with at least 1 package property. Please check and try again.,
-error message,There was an error creating the data package.,
-error message,Provenance properties must be set.,
-error message,Package properties must be set.,
-error message,"Package property, 'name' must be set.",
-error message,There is at least 1 tab with the same title. Each tab must have a unique title.,
-error message,There is a required table or column property that is missing. Please check that all required properties are entered.,
-error message,Table properties must be set.,
-error message,"Table property, 'name', must not be empty.",
-error message,Column properties must be set.,
-error message,Column property names cannot be empty - set a Header Row,
-error message,At least 1  source does not have a title.,
-error message,At least 1 contributor does not have a title.,
-error message,Foreign keys cannot be empty.,
-find panel, in column,
-find panel, in table,
-find panel, found,
+about panel,Funded by the Queensland Government,Financé par le Gouvernement du Queesnsland
+about panel,Coordinated by the ODI Australian Network,Coordonné par ODI Australian Network
+about panel,Includes software developed by the Queensland Cyber Infrastructure Foundation on behalf of the Queensland Government and the ODI Australian Network,Includes software developed by the Queensland Cyber Infrastructure Foundation on behalf of the Queensland Government and the ODI Australian Network
+about panel,Using Frictionless Data specifications and software,Using Frictionless Data specifications and software
+bottom panel,Validation Errors,Erreurs de Validation
+bottom panel,Guess column properties,Analyse propriétés colonne
+error message,Failed: Guess column properties failed. Column property names must be set.,Erreur: Echec analyse propriétés colonne. Le nom de la colonne doit être défini.
+error message,Success: Guess column properties succeeded.,Réussite: analyse propriétés colonne réussie
+column properties,name,nom
+column properties,title,titre
+column properties,description,description
+column properties,type,type
+column properties,string,string
+column properties,number,number
+column properties,integer,integer
+column properties,boolean,boolean
+column properties,object,object
+column properties,array,array
+column properties,date,date
+column properties,time,time
+column properties,datetime,datetime
+column properties,year,year
+column properties,yearmonth,yearmonth
+column properties,duration,duration
+column properties,geopoint,geopoint
+column properties,geojson,geojson
+column properties,any,autre
+column properties,format,format
+column properties,default,default
+column properties,email,email
+column properties,uri,uri
+column properties,binary,binary
+column properties,uuid: ,uuid: 
+column properties,decimalChar,decimalChar
+column properties,groupChar,groupChar
+column properties,bareNumber,bareNumber
+column properties,decimalChar,decimalChar
+column properties,trueValues,trueValues
+column properties,falseValues,falseValues
+column properties,pattern,pattern
+column properties,topojson,topojson
+column properties,required,requis
+column properties,unique,unique
+column properties,minLength,minLength
+column properties,maxLength,maxLength
+column properties,minimum,minimum
+column properties,maximum,maximum
+column properties,enum,enum
+column properties,rdfType,rdfType
+table properties,source(s),source(s)
+table properties,add source,ajout source(s)
+table properties,path,chemin
+table properties,licence(s),licence(s)
+table properties,Creative Commons Attribution 4.0,Creative Commons Attribution 4.0
+table properties,Creative Commons Attribution Share-Alike 4.0,Creative Commons Attribution Share-Alike 4.0
+table properties,Creative Commons CCZero 1.0,Creative Commons CCZero 1.0
+table properties,Open Data Commons Attribution License 1.0,Open Data Commons Attribution License 1.0
+table properties,Open Data Commons Open Database License 1.0,Open Data Commons Open Database License 1.0
+table properties,Open Data Commons Public Domain Dedication and Licence 1.0,Open Data Commons Public Domain Dedication and Licence 1.0
+table properties,Open Government License 2.0 (Canada),Open Government License 2.0 (Canada)
+table properties,Open Government Licence 3.0 (United Kingdom),Open Government Licence 3.0 (United Kingdom)
+table properties,Open Government Data License Taiwan 1.0,Open Government Data License Taiwan 1.0
+table properties,Public Domain Mark,Marque de domaine public
+table properties,Primary key(s),Clé(s) primaire
+table properties,add foreign key,ajout clé étrangère
+table properties,missing value(s),valeur(s) manquante
+provenance information,preview,pré-visualisation
+provenance information,edit,édition
+package properties,id,id
+package properties,version,version
+package properties,contributor(s),contributeur(s)
+package properties,role,rôle
+package properties,author,auteur
+package properties,contributor,contributeur
+package properties,wrangler,spécialiste
+package properties,maintainer,mainteneur
+package properties,publisher,éditeur
+package properties,organization,organisation
+package properties,add contributor,ajout contributeur
+error message,row is completely blank,ligne vide
+error message,Failed: Guess column properties failed. Column properties must be set.,Erreur: Echec analyse propriétés colonne. Propriétés colonne doivent être définis.
+error message,Failed: Guess column properties failed. Column property names must be set.,Erreur: Echec analyse propriétés colonne. Le nom de la colonne doit être défini.
+error message,Failed: Guess column properties failed. All Column property names must be set and must be unique.,Erreur: Echec analyse propriétés colonne. Les noms de colonnes doivent être définis et uniques.
+error message,Failed: Guess column properties failed.,Echec analyse propriétés colonne
+error message,Success: Guess column properties succeeded.,Réussite: analyse propriétés colonne réussie
+error message,All tabs must be saved before exporting.,Tous les onglets doivent être enregistrés avant export
+error message,There is a problem with at least 1 package property. Please check and try again.,Il y a au moins un problème de propriété de package
+error message,There was an error creating the data package.,Erreur lors de la création du package
+error message,Provenance properties must be set.,Propriété Provenance doit être défini
+error message,Package properties must be set.,Propriétés package doivent être définis
+error message,"Package property, 'name' must be set.","Propriétés 'nom' du package doit être défini"
+error message,There is at least 1 tab with the same title. Each tab must have a unique title.,Au moins un onglet porte le même nom. Chaque onglet doit avoir un nom unique.
+error message,There is a required table or column property that is missing. Please check that all required properties are entered.,Une propriété requise manque. Vérifier toutes les propriétés requises.
+error message,Table properties must be set.,Propriétés de la table doivent être définis.
+error message,"Table property, 'name', must not be empty.","Propriétés 'nom' de la table doit être défini"
+error message,Column properties must be set.,Propriétés de la colonne doivent être définis
+error message,Column property names cannot be empty - set a Header Row,Nom de colonne ne peut pas être vide - définir une entête
+error message,At least 1  source does not have a title.,Au moins 1 source sans titre.
+error message,At least 1 contributor does not have a title.,Au moins 1 contributeur sans titre
+error message,Foreign keys cannot be empty.,Clé étrangère ne peut pas être vide.
+find panel, in column, dans la colonne
+find panel, in table,dans la table
+find panel, found, trouvé
 
