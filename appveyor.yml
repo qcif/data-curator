@@ -78,9 +78,9 @@ for:
   configuration: Mergeandtest
 -
   branches:
-    only:
-      - testci
-      - master
+    except:
+      - develop
+      - ci
   test_script:
     - yarn run clean
     - yarn run unit
