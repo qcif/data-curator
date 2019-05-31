@@ -28,6 +28,10 @@ export function loadCsvDataIntoHot(hot, data, format) {
     let csvOptions = dialectToCsvOptions(format.dialect)
     // let csv parser handle the line terminators
     _.unset(csvOptions, 'rowDelimiter')
+    csvOptions.doubleQuote = false
+    csvOptions.quote = '"'
+    csvOptions.escape = '\\'
+    csvOptions.relax = true
     // TODO: update to stream
     let updatedData = _.replace(data, /["]/g, '"""')
     updatedData = _.replace(updatedData, /""""""/g, '""')
