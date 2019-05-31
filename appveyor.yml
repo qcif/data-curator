@@ -31,6 +31,8 @@ install:
   - yarn autoclean
   - yarn run clean
   - yarn run lint
+  - ps: Write-Host "PR? : $env:APPVEYOR_REPO_TAG"
+  - ps: Write-Host $env:APPVEYOR_REPO_TAG
 test_script:
   - ps: if (Test-Path $env:APPVEYOR_PULL_REQUEST_NUMBER) { Write-Host "This should be a PR."}
 
