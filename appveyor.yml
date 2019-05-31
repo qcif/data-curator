@@ -31,6 +31,9 @@ install:
   - yarn autoclean
   - yarn run clean
   - yarn run lint
+test_script:
+  - ps: if (Test-Path $env:APPVEYOR_PULL_REQUEST_NUMBER) { Write-Host "This should be a PR."}
+
 configuration: Debug
 
 
@@ -47,10 +50,10 @@ for:
       appveyor_repo_tag: true
 -
   test_script:
-    - ps: if (Test-Path $env:APPVEYOR_PULL_REQUEST_NUMBER) { Write-Host "This should be a PR."}
+    - ps: if (Test-Path $env:APPVEYOR_PULL_REQUEST_NUMBER) { Write-Host "This should be a PR!"}
   build: off
   deploy: off
-  configuration: Test
+  configuration: Test2
 -
   branches:
     only:
