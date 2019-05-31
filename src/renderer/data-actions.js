@@ -28,15 +28,8 @@ export function loadCsvDataIntoHot(hot, data, format) {
     let csvOptions = dialectToCsvOptions(format.dialect)
     // let csv parser handle the line terminators
     _.unset(csvOptions, 'rowDelimiter')
-    csvOptions.doubleQuote = false
-    csvOptions.quote = '"'
-    csvOptions.escape = '\\'
-    csvOptions.relax = true
     // TODO: update to stream
-    let updatedData = _.replace(data, /["]/g, '"""')
-    updatedData = _.replace(updatedData, /""""""/g, '""')
-    // data = _.replace
-    arrays = parse(updatedData, csvOptions)
+    arrays = parse(data, csvOptions)
     pushCsvFormat(hot.guid, format)
   }
   fixRaggedRows(arrays)
@@ -85,6 +78,7 @@ export function saveDataToFile(hot, format, filename, callback) {
     data = stringify(arrays)
   } else {
     let csvOptions = dialectToCsvOptions(format.dialect)
+    csvOptions.quoted = true
     data = stringify(arrays, csvOptions)
     pushCsvFormat(hot.guid, format)
   }
