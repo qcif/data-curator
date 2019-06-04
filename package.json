@@ -88,6 +88,7 @@
     "bootstrap": "3.4.1",
     "components-font-awesome": "^5.0.6",
     "csv": "^2.0.0",
+    "csv-sniffer": "^0.1.1",
     "datapackage": "^1.1.1",
     "electron-settings": "^3.2.0",
     "escape-regexp": "^0.0.1",
