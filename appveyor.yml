@@ -31,7 +31,9 @@ install:
   - yarn autoclean
   - yarn run clean
   - yarn run lint
-  - ps: Write-Host "PR $env:APPVEYOR_REPO_TAG"
+  - ps: Write-Host "PR $env:APPVEYOR_PULL_REQUEST_NUMBER"
+  - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { Write-Host "Entering a repo build..."}
+  - ps: if ("$env:APPVEYOR_PULL_REQUEST_NUMBER" -ne "") { Write-Host "Entering a PR build..."}
 configuration: Debug
 
 
