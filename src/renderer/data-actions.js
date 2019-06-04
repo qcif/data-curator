@@ -6,6 +6,7 @@ import { toggleHeaderNoFeedback } from '@/headerRow.js'
 import { pushCsvFormat } from '@/dialect.js'
 var parse = require('csv-parse/lib/sync')
 var stringify = require('csv-stringify/lib/sync')
+var CSVSniffer = require('csv-sniffer')()
 
 // { delimiter: ',', lineTerminator, quoteChar, doubleQuote, escapeChar, nullSequence, skipInitialSpace, header, caseSensitiveHeader, csvddfVersion }
 const frictionlessToCsvmapper = { delimiter: 'delimiter', lineTerminator: 'rowDelimiter', quoteChar: 'quote', escapeChar: 'escape', skipInitialSpace: 'ltrim' }
@@ -28,7 +29,16 @@ export function loadCsvDataIntoHot(hot, data, format) {
     let csvOptions = dialectToCsvOptions(format.dialect)
     // let csv parser handle the line terminators
     _.unset(csvOptions, 'rowDelimiter')
+    // if (data.charCodeAt(0) === 0xFEFF) {
+    //   store.commit('pushTableProperty', { hotId: hot.guid, key: `bom`, value: 0xFEFF })
+    // }
+    let sample = _.truncate(data, { length: 1000 })
+    var sniffer = new CSVSniffer()
+
+    var sniffResult = sniffer.sniff(sample, { quoteChar: '"' })
     // TODO: update to stream
+    console.log('sniff result')
+    console.dir(sniffResult)
     arrays = parse(data, csvOptions)
     pushCsvFormat(hot.guid, format)
   }
@@ -82,6 +92,9 @@ export function saveDataToFile(hot, format, filename, callback) {
     data = stringify(arrays, csvOptions)
     pushCsvFormat(hot.guid, format)
   }
+  // if (data.charCodeAt(0) !== 0xFEFF && store.getters.getTableProperty({ key: 'bom', hotId: hot.guid })) {
+  //   data = String.fromCodePoint(0xFEFF) + data
+  // }
   fs.writeFile(filename, data, callback)
 }
 
