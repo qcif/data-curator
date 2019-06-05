@@ -90,6 +90,7 @@
     "csv": "^2.0.0",
     "csv-sniffer": "^0.1.1",
     "datapackage": "^1.1.1",
+    "detect-newline": "^3.0.0",
     "electron-settings": "^3.2.0",
     "escape-regexp": "^0.0.1",
     "etl": "^0.5.12",
