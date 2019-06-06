@@ -39,8 +39,9 @@ jobs:
     - stage: lint
       script:
       - yarn run lint
-      os: osx
-    - os: linux
+      os:
+      - osx
+      - linux
     - stage: unittest
       script:
       - yarn run clean
