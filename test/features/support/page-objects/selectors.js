@@ -20,7 +20,7 @@ export async function applyFnToIdOrClassSelectorFromLabel(app, fn, label, timeou
     return result
   } catch (error) {
     console.log(`Unable to find via class. Trying id`)
-    result = await applyFnToIdSelectorFromLabel(app, fn, label, timeout)
+    const result = await applyFnToIdSelectorFromLabel(app, fn, label, timeout)
     return result
   }
 }
