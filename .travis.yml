@@ -40,8 +40,8 @@ jobs:
       script:
       - yarn run lint
       os:
-      - osx
-      - linux
+        - osx
+        - linux
     - stage: unittest
       script:
       - yarn run clean
