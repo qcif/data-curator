@@ -620,7 +620,6 @@ export default {
       if (element) {
         element.style.backgroundColor = this.highlightColor
       }
-      console.log('hightlighted')
     },
     unhighlightPersistedSelection: function(hot) {
       let element = this.getHotSelectionElement(hot)
@@ -1223,7 +1222,6 @@ export default {
     reselectHotCell: function() {
       let hot = HotRegister.getActiveInstance()
       let selection = this.getHotSelection(hot.guid)
-      console.log('reselecting...')
       if (selection) {
         hot.selectCell(selection[0], selection[1], selection[2], selection[3])
       }
