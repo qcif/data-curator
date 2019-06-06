@@ -782,7 +782,7 @@ export default {
         })
       })
     },
-    addTab: function(data = '"","",""', format, descriptor) {
+    addTab: function(data = ',,', format, descriptor) {
       this.createHotDataContainer(data, format, descriptor)
     },
     setActiveTabWrapper: function(tabId) {

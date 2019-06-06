@@ -7,6 +7,7 @@ export function resetHotStore() {
   })
 }
 
+// note that the layout here is different (flattened and simpler) than the actual store
 export function stubSimpleTabStore(hot) {
   const stubbedStore = {
     state: {
@@ -50,6 +51,10 @@ export function stubSimpleTabStore(hot) {
         state.hotTabs[hotId] = {}
         state.hotTabs[hotId].columnProperties = {}
         return {}
+      },
+      getTableProperty: (state, getters) => (property) => {
+        let tableProperties = {}
+        return tableProperties[property.key]
       }
     },
     mutations: {
