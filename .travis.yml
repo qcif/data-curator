@@ -2,16 +2,16 @@ sudo: required
 language: c
 cache:
   directories:
-  - node_modules
-  - "$HOME/.electron"
-  - "$HOME/.cache"
+    - node_modules
+    - "$HOME/.electron"
+    - "$HOME/.cache"
 before_install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
-- nvm install 8
-- curl -o- -L https://yarnpkg.com/install.sh | bash
-- source ~/.bashrc
-- yarn
+  - nvm install 8
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - source ~/.bashrc
+  - yarn
 script: true
 stages:
   - name: prescript
@@ -30,10 +30,10 @@ jobs:
   include:
     - stage: prescript
       before_script:
-      - ./scripts/ci_merge_script.sh
-#     merge script may update dependencies
+        - ./scripts/ci_merge_script.sh
+      #     merge script may update dependencies
       script:
-      - yarn
+        - yarn
       os: osx
     - os: linux
     - stage: lint
@@ -44,28 +44,32 @@ jobs:
       script:
         - yarn run lint
     - stage: unittest
-      script:
-      - yarn run clean
-      - yarn run unit
       os: osx
+      script:
+        - yarn run clean
+        - yarn run unit
     - os: linux
+      script:
+        - yarn run clean
+        - yarn run unit
     - stage: unittestandcoverage
-#      only allow failures when not in a critical branch (ie: master, tag)
+      #      only allow failures when not in a critical branch (ie: master, tag)
       allow_failures:
-      - os: linux
+        - os: linux
       os: osx
       script:
-      - yarn run clean
-      - yarn run unit
-      - yarn run unit:coverage
+        - yarn run clean
+        - yarn run unit
+        - yarn run unit:coverage
     - os: linux
       script:
-      - yarn run clean
-      - ./scripts/travis_headless_linux_unit_tests_script.sh
+        - yarn run clean
+        - ./scripts/travis_headless_linux_unit_tests_script.sh
     - stage: test
-      script: ./scripts/travis_headless_e2e_tests.sh test/features/backlog
       os: osx
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/backlog
     - os: linux
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/backlog
     - script: ./scripts/travis_headless_e2e_tests.sh test/features/data_curator
       os: osx
     - os: linux
@@ -97,8 +101,8 @@ jobs:
       os: osx
     - os: linux
       script:
-      - yarn run clean
-      - yarn run release:predraft
+        - yarn run clean
+        - yarn run release:predraft
 env:
   global:
     secure: F+Bn6BrNKTTybkEs4UwCl7961z7ura2zBeuw+tS/vXqswb//x9DEhEr5IJ53VyC+H2R3Wj8yJ121514FiJwNg4hUpUQ98DHyczbMLXrg+wjQI2ZYvhiAonR5LzDGNd/XLhSDezQK556+guq67SnGPP3iqnfjyu8XJ2IaynLukvLSazZTCliuqpEpwaCn99+xhaHLcGRF/Dh2Gg5+HVfQnC4S6eiYGo5Dm9RDG0hntxYHUOAxQYmnvXxf7uLNc0sfFSoVd1BZytZCVFLceY5DM0tOO8kRyMQk+LJqneAdhp9Z8pUMcTMDeJtNegqqSaBra8UAkrGv1tUrBYUQnq4fkbH0tees6mJNFkqNlOW67pj8zghYSAKwNXiazFmH/lYE2sleBKGflznLZPDD5XXLlQ/aKXF+3wAx0wMtiGkFBbGP+GoBg10+7RgKw0A+mpLaJAVwUYGGJSEfH3A0U0OEt7XRdk/sD4nFKLzL3SAx3QC57FdGu4VWdJJT9t54oX+NzM3QmBH3dNxmge4XFLR1iwN72yheB2HyGu5zafKdOfbvCz2fP1ddECm2KWu8I7NNuBIwoBUm3tVm60b3gTpblAO3RcIrLg3k+ACTSvxJuzqSIE2/YnXGnjfVPW/NaCcyD1cPFppTvmpjLNHRfwP9zeP4nBOHHgOv7grzmvCs6QY=
