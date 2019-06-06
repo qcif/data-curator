@@ -7,7 +7,7 @@ image: Visual Studio 2017
 platform:
   - x64
 
-cache:
+#cache:
 #  - node_modules
 #  - '%APPDATA%\npm-cache'
 #  - '%USERPROFILE%\.electron'
@@ -31,8 +31,11 @@ install:
   - yarn autoclean
   - yarn run clean
   - yarn run lint
+  - if defined APPVEYOR_PULL_REQUEST_NUMBER ECHO PR %APPVEYOR_PULL_REQUEST_NUMBER%
+  - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run unit
+  - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run pack
+  - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run cucumber:postpack:impl
 configuration: Debug
-
 
 for:
 -
@@ -78,9 +81,9 @@ for:
   configuration: Mergeandtest
 -
   branches:
-    only:
-      - testci
-      - master
+    except:
+      - develop
+      - ci
   test_script:
     - yarn run clean
     - yarn run unit
