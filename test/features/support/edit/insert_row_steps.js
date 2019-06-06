@@ -1,22 +1,10 @@
 import { expect } from 'chai'
 import { Given, When, Then } from 'cucumber'
-import os from 'os'
-import fs from 'fs-extra'
-import { restoreRemoteGetGlobal } from '../../../unit/helpers/globalHelper'
-// import chai from 'chai'
-// chai.should()
-// chai.use(chaiAsPromised)
 
-Given(/^the user clicks in row (\d+), column (\d+)$/, async function (rowNumber, colNumber) {
+Given(/^the user clicks in row (\d+), column (\d+)$/, function (rowNumber, colNumber) {
   this.rowNumber = rowNumber
   this.colNumber = colNumber
-  // let result = this.app.webContents.send('selectHotCell', rowNumber, colNumber)
-  await this.app.client.keys(['t', '\t', 'a'])
-  let tempFile = `${os.tmpdir()}/test.csv`
-  this.app.webContents.send('saveData', null, tempFile)
-  await this.app.client.pause(4000)
-  let returnedData = fs.readFileSync(tempFile, 'utf-8')
-  expect(returnedData).to.deep.equal('t,a,\n')
+  return this.app.webContents.send('selectHotCell', rowNumber, colNumber)
 })
 
 When(/^the user (?:performs a |)right-click[s]?$/, function () {
