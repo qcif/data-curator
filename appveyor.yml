@@ -36,6 +36,7 @@ install:
       {
         Write-Host "Entering a PR build..."
         Write-Host "PR $env:APPVEYOR_PULL_REQUEST_NUMBER"
+        yarn
         yarn run unit
         yarn run pack
         yarn run cucumber:postpack:impl
