@@ -8,9 +8,13 @@ language: c
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
-- nvm install 10
+- nvm install 10 --lts
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
+- brew upgrade npm
+- npm --version
+- yarn --version
+- nvm --version
 - yarn
 script: true
 stages:
