@@ -9,12 +9,11 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
 - nvm install 10 --lts
-- curl -o- -L https://yarnpkg.com/install.sh | bash
-- source ~/.bashrc
-- brew upgrade npm
-- npm --version
+- curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.15.2
 - yarn --version
 - nvm --version
+- node --version
+- source ~/.bashrc
 - yarn
 script: true
 stages:
