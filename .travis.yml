@@ -10,10 +10,10 @@ before_install:
 install:
 - nvm install 10 --lts
 - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.15.2
+- source ~/.bashrc
 - yarn --version
 - nvm --version
 - node --version
-- source ~/.bashrc
 - yarn
 script: true
 stages:
