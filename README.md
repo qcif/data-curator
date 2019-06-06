@@ -23,7 +23,7 @@ Data Curator is a simple desktop CSV editor to help describe, validate and share
 
 Open data creators are increasingly focusing on improving open data publishing so that data can be used to create insight and drive positive change.
 
-Open data is more likely to be used if data consumers can(test):
+Open data is more likely to be used if data consumers can:
 
 - understand why and how the data was collected
 - understand the structure of the data
