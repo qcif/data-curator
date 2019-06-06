@@ -31,7 +31,7 @@ install:
   - yarn autoclean
   - yarn run clean
   - yarn run lint
-test-script:
+test_script:
   - ps: |
       if ("$env:APPVEYOR_PULL_REQUEST_NUMBER" -ne "")
       {
