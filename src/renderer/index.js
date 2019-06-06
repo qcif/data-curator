@@ -59,13 +59,12 @@ export function loadData(key, data, format, closeLoadingFn) {
 }
 
 ipc.on('saveData', function(e, format, fileName) {
-  console.log('saving data...')
   let hot = HotRegister.getActiveInstance()
+  // ensure that cell (and its row) holding cursor is committed
   hot.deselectCell()
-  console.log(hot.getData())
   saveDataToFile(hot, format, fileName)
   let selection = store.getters.getHotSelection(hot.guid)
-  console.log('reselecting...')
+  // reselect cell after save
   if (selection) {
     hot.selectCell(selection[0], selection[1], selection[2], selection[3])
   }

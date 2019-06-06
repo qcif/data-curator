@@ -68,21 +68,7 @@ const HotRegister = {
         }
       },
       afterSetDataAtCell() {
-        console.log('set data at source...')
         afterSetDataAtCell$.next(true)
-      },
-      beforeValueRender() {
-        console.log('set data at render...')
-        afterSetDataAtCell$.next(true)
-      },
-      beforeChange() {
-        console.log('data set before change...')
-      },
-      afterChange() {
-        console.log('data set after change...')
-      },
-      afterChangesObserved() {
-        console.log('data set after changes observed...')
       },
       enterMoves({ shiftKey }) {
         if (!shiftKey) {
