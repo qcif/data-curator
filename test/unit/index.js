@@ -13,6 +13,7 @@ chai.use(sinonChai)
 
 // require all test files (files that ends with .spec.js)
 const testsContext = require.context('./specs', true, /\.(dev|spec)/)
+// const testsContext = require.context('./specs', true, /\.(dev)/)
 testsContext.keys().forEach(testsContext)
 
 // require all src files except main.js for coverage.

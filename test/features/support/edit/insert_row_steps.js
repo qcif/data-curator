@@ -1,8 +1,5 @@
 import { expect } from 'chai'
 import { Given, When, Then } from 'cucumber'
-// import chai from 'chai'
-// chai.should()
-// chai.use(chaiAsPromised)
 
 Given(/^the user clicks in row (\d+), column (\d+)$/, function (rowNumber, colNumber) {
   this.rowNumber = rowNumber
