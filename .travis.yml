@@ -37,11 +37,12 @@ jobs:
       os: osx
     - os: linux
     - stage: lint
+      os: osx
       script:
-      - yarn run lint
-      os:
-        - osx
-        - linux
+        - yarn run lint
+    - os: linux
+      script:
+        - yarn run lint
     - stage: unittest
       script:
       - yarn run clean
