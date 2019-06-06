@@ -31,11 +31,19 @@ install:
   - yarn autoclean
   - yarn run clean
   - yarn run lint
-  - ps: Write-Host "PR $env:APPVEYOR_PULL_REQUEST_NUMBER"
-  - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { Write-Host "Entering a repo build..."}
-  - ps: if ("$env:APPVEYOR_PULL_REQUEST_NUMBER" -ne "") { Write-Host "Entering a PR build..."}
+test-script:
+  - ps: |
+      if ("$env:APPVEYOR_PULL_REQUEST_NUMBER" -ne "")
+      {
+        Write-Host "Entering a PR build..."
+        Write-Host "PR $env:APPVEYOR_PULL_REQUEST_NUMBER"
+        yarn run unit
+        yarn run pack
+        yarn run cucumber:postpack:impl
+      }
+build: off
+deploy: off
 configuration: Debug
-
 
 for:
 -
