@@ -31,7 +31,6 @@ install:
   - yarn autoclean
   - yarn run clean
   - yarn run lint
-test_script:
   - ps: |
       if ("$env:APPVEYOR_PULL_REQUEST_NUMBER" -ne "")
       {
@@ -41,8 +40,6 @@ test_script:
         yarn run pack
         yarn run cucumber:postpack:impl
       }
-build: off
-deploy: off
 configuration: Debug
 
 for:
