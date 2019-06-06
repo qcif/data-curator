@@ -26,7 +26,6 @@ install:
   - ps: Install-Product node 8 x64
   - choco upgrade yarn
   - git reset --hard HEAD
-  - RMDIR /S /Q node_modules
   - yarn
   - node --version
   - yarn autoclean
