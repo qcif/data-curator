@@ -19,6 +19,9 @@ environment:
   COVERALLS_REPO_TOKEN:
     secure: 5CQKw1+Is8KphKjmT2emU/C7eNlZN3OEteemQZjOjJl47BVABYr1SOZ+IX82NSWy
 
+skip_commits:
+  message: /^appveyor Updating branch from appveyor build.$/
+
 init:
   - git config --global core.autocrlf input
 
@@ -52,8 +55,6 @@ for:
   branches:
     only:
       - ci
-  skip_commits:
-    message: /^appveyor Updating branch from appveyor build.$/
   test_script:
     - git config --global credential.helper store
     - ps: Add-Content "$HOME\.git-credentials" "https://$($env:GH_TOKEN):x-oauth-basic@github.com`n"
