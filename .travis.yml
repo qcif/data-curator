@@ -1,10 +1,10 @@
 sudo: required
 language: c
-#cache:
-#  directories:
-#  - node_modules
-#  - "$HOME/.electron"
-#  - "$HOME/.cache"
+cache:
+  directories:
+  - node_modules
+  - "$HOME/.electron"
+  - "$HOME/.cache"
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
