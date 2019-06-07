@@ -29,7 +29,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5428000000
+              "duration": 5527000000
             }
           },
           {
@@ -42,7 +42,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 21000000
+              "duration": 27000000
             }
           },
           {
@@ -55,7 +55,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 86000000
+              "duration": 128000000
             }
           },
           {
@@ -64,11 +64,11 @@
             "line": 15,
             "name": "the user clicks in row 1, column 1",
             "match": {
-              "location": "test\\features\\support\\edit\\insert_row_steps.js:7"
+              "location": "test\\features\\support\\edit\\insert_row_steps.js:4"
             },
             "result": {
               "status": "passed",
-              "duration": 16000000
+              "duration": 14000000
             }
           },
           {
@@ -77,11 +77,11 @@
             "line": 16,
             "name": "the user right-clicks",
             "match": {
-              "location": "test\\features\\support\\edit\\insert_row_steps.js:13"
+              "location": "test\\features\\support\\edit\\insert_row_steps.js:10"
             },
             "result": {
               "status": "passed",
-              "duration": 84000000
+              "duration": 107000000
             }
           },
           {
@@ -90,7 +90,7 @@
             "line": 17,
             "name": "the user clicks on \"Insert Row Below\"",
             "match": {
-              "location": "test\\features\\support\\edit\\insert_row_steps.js:18"
+              "location": "test\\features\\support\\edit\\insert_row_steps.js:15"
             },
             "result": {
               "status": "passed",
@@ -107,7 +107,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 41000000
+              "duration": 33000000
             }
           },
           {
@@ -116,11 +116,11 @@
             "line": 19,
             "name": "there should be 1 new row below the current row",
             "match": {
-              "location": "test\\features\\support\\edit\\insert_row_steps.js:23"
+              "location": "test\\features\\support\\edit\\insert_row_steps.js:20"
             },
             "result": {
               "status": "passed",
-              "duration": 30000000
+              "duration": 28000000
             }
           },
           {
@@ -129,11 +129,11 @@
             "line": 20,
             "name": "there should be 3 columns",
             "match": {
-              "location": "test\\features\\support\\edit\\insert_row_steps.js:33"
+              "location": "test\\features\\support\\edit\\insert_row_steps.js:30"
             },
             "result": {
               "status": "passed",
-              "duration": 33000000
+              "duration": 29000000
             }
           },
           {
@@ -146,7 +146,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 113000000
+              "duration": 103000000
             }
           },
           {
@@ -194,7 +194,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5226000000
+              "duration": 5350000000
             }
           },
           {
@@ -207,7 +207,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 15000000
+              "duration": 16000000
             }
           },
           {
@@ -220,7 +220,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 19000000
+              "duration": 20000000
             }
           },
           {
@@ -233,7 +233,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 76000000
+              "duration": 79000000
             }
           },
           {
@@ -246,7 +246,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 59000000
+              "duration": 68000000
             }
           },
           {
@@ -272,7 +272,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 102000000
+              "duration": 99000000
             }
           },
           {
@@ -285,7 +285,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 84000000
+              "duration": 85000000
             }
           },
           {
@@ -296,7 +296,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5072000000
+              "duration": 7176000000
             }
           }
         ]
@@ -322,7 +322,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5284000000
+              "duration": 5488000000
             }
           },
           {
@@ -335,7 +335,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 16000000
+              "duration": 25000000
             }
           },
           {
@@ -348,7 +348,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 44000000
+              "duration": 47000000
             }
           },
           {
@@ -361,7 +361,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 126000000
+              "duration": 123000000
             }
           },
           {
@@ -374,7 +374,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 66000000
+              "duration": 65000000
             }
           },
           {
@@ -400,7 +400,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1066000000
+              "duration": 583000000
             }
           },
           {
@@ -413,7 +413,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 25000000
+              "duration": 24000000
             }
           },
           {
@@ -426,7 +426,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 588000000
+              "duration": 580000000
             }
           },
           {
@@ -439,7 +439,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 542000000
+              "duration": 44000000
             }
           },
           {
@@ -452,7 +452,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 146000000
+              "duration": 134000000
             }
           },
           {
@@ -463,7 +463,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5039000000
+              "duration": 5069000000
             }
           }
         ]
@@ -500,7 +500,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5511000000
+              "duration": 5372000000
             }
           },
           {
@@ -513,7 +513,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 22000000
+              "duration": 16000000
             }
           },
           {
@@ -526,7 +526,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 11000000
+              "duration": 10000000
             }
           },
           {
@@ -539,7 +539,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 9000000
+              "duration": 79000000
             }
           },
           {
@@ -552,7 +552,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 211000000
+              "duration": 207000000
             }
           },
           {
@@ -565,7 +565,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 76000000
+              "duration": 78000000
             }
           },
           {
@@ -576,7 +576,222 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5061000000
+              "duration": 5044000000
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "  As an Data Packager\n  I want to save the changes made to the data in the active data tab using the appropriate CSV dialect settings\n  So that I can progressively save my work\n\n  RULES\n  =====\n\n  - The \"Save\" command can be invoked from a menu item or a keyboard shortcut\n  - The \"Save\" command is only enabled after a file has been saved for the first time using \"Save As\"\n\n  LATER\n  =====\n\n  - Write the size of the file to the `bytes` table property",
+    "keyword": "Feature",
+    "name": "Save",
+    "line": 1,
+    "id": "save",
+    "tags": [],
+    "uri": "test\\features\\file\\save.feature",
+    "elements": [
+      {
+        "id": "save;enter-text-and-save,-capturing-all-of-the-text",
+        "keyword": "Scenario",
+        "line": 34,
+        "name": "Enter text and save, capturing all of the text",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 25
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5392000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 27,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 19000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 28,
+            "name": "the table should have 1 row by 3 columns",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:91"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 93000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 29,
+            "name": "the user clicks in row 1, column 1",
+            "match": {
+              "location": "test\\features\\support\\edit\\insert_row_steps.js:4"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 91000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 30,
+            "name": "the user presses keys: [\"t\",\"Tab\",\"a\"]",
+            "match": {
+              "location": "test\\features\\support\\file\\save_file.js:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 53000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 31,
+            "name": "the saved data should match: [\"t,a,\"]",
+            "match": {
+              "location": "test\\features\\support\\file\\save_file.js:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4029000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5077000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "save;enter-text-and-save,-capturing-all-of-the-text",
+        "keyword": "Scenario",
+        "line": 35,
+        "name": "Enter text and save, capturing all of the text",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 25
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5183000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 27,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 17000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 28,
+            "name": "the table should have 1 row by 3 columns",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:91"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 78000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 29,
+            "name": "the user clicks in row 1, column 1",
+            "match": {
+              "location": "test\\features\\support\\edit\\insert_row_steps.js:4"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 89000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 30,
+            "name": "the user presses keys: [\"t\",\"Tab\",\"a\",\"Return\",\"x\"]",
+            "match": {
+              "location": "test\\features\\support\\file\\save_file.js:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 83000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 31,
+            "name": "the saved data should match: [\"t,a,\",\"x,,\"]",
+            "match": {
+              "location": "test\\features\\support\\file\\save_file.js:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4028000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5074000000
             }
           }
         ]
@@ -613,7 +828,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5223000000
+              "duration": 5107000000
             }
           },
           {
@@ -626,7 +841,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 18000000
+              "duration": 16000000
             }
           },
           {
@@ -639,7 +854,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 323000000
+              "duration": 362000000
             }
           },
           {
@@ -652,7 +867,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5070000000
+              "duration": 5062000000
             }
           },
           {
@@ -665,7 +880,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 54000000
+              "duration": 44000000
             }
           },
           {
@@ -678,7 +893,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 54000000
+              "duration": 53000000
             }
           },
           {
@@ -691,7 +906,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 61000000
+              "duration": 52000000
             }
           },
           {
@@ -704,7 +919,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 632000000
+              "duration": 129000000
             }
           },
           {
@@ -715,7 +930,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 7120000000
+              "duration": 5033000000
             }
           }
         ]
@@ -741,7 +956,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5261000000
+              "duration": 5313000000
             }
           },
           {
@@ -754,7 +969,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 17000000
+              "duration": 16000000
             }
           },
           {
@@ -767,7 +982,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 41000000
+              "duration": 46000000
             }
           },
           {
@@ -780,7 +995,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5127000000
+              "duration": 5061000000
             }
           },
           {
@@ -806,7 +1021,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 44000000
+              "duration": 144000000
             }
           },
           {
@@ -819,7 +1034,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 50000000
+              "duration": 55000000
             }
           },
           {
@@ -832,7 +1047,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 150000000
+              "duration": 181000000
             }
           },
           {
@@ -843,7 +1058,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 7104000000
+              "duration": 7102000000
             }
           }
         ]
@@ -869,7 +1084,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5180000000
+              "duration": 5411000000
             }
           },
           {
@@ -895,7 +1110,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 364000000
+              "duration": 284000000
             }
           },
           {
@@ -908,7 +1123,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 44000000
+              "duration": 41000000
             }
           },
           {
@@ -919,7 +1134,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 10212000000
+              "duration": 10185000000
             }
           }
         ]
@@ -945,7 +1160,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5295000000
+              "duration": 5321000000
             }
           },
           {
@@ -958,7 +1173,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 23000000
+              "duration": 17000000
             }
           },
           {
@@ -971,7 +1186,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 44000000
+              "duration": 40000000
             }
           },
           {
@@ -984,7 +1199,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 39000000
+              "duration": 18000000
             }
           },
           {
@@ -995,7 +1210,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 7177000000
+              "duration": 7168000000
             }
           }
         ]
@@ -1021,7 +1236,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5405000000
+              "duration": 5285000000
             }
           },
           {
@@ -1034,7 +1249,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 17000000
+              "duration": 16000000
             }
           },
           {
@@ -1047,7 +1262,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 789000000
+              "duration": 398000000
             }
           },
           {
@@ -1060,7 +1275,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 40000000
+              "duration": 43000000
             }
           },
           {
@@ -1071,7 +1286,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5071000000
+              "duration": 34223000000
             }
           }
         ]
@@ -1097,7 +1312,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5300000000
+              "duration": 5207000000
             }
           },
           {
@@ -1110,7 +1325,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 18000000
+              "duration": 26000000
             }
           },
           {
@@ -1123,7 +1338,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 41000000
+              "duration": 39000000
             }
           },
           {
@@ -1136,7 +1351,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 105000000
+              "duration": 34000000
             }
           },
           {
@@ -1147,7 +1362,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5087000000
+              "duration": 7149000000
             }
           }
         ]
@@ -1173,7 +1388,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5429000000
+              "duration": 5255000000
             }
           },
           {
@@ -1186,7 +1401,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 18000000
+              "duration": 17000000
             }
           },
           {
@@ -1199,7 +1414,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 411000000
+              "duration": 318000000
             }
           },
           {
@@ -1212,7 +1427,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 57000000
+              "duration": 60000000
             }
           },
           {
@@ -1223,7 +1438,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 12602000000
+              "duration": 10148000000
             }
           }
         ]
@@ -1249,7 +1464,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5116000000
+              "duration": 5264000000
             }
           },
           {
@@ -1262,7 +1477,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 19000000
+              "duration": 26000000
             }
           },
           {
@@ -1275,7 +1490,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 42000000
+              "duration": 43000000
             }
           },
           {
@@ -1288,7 +1503,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 124000000
+              "duration": 33000000
             }
           },
           {
@@ -1299,7 +1514,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 7140000000
+              "duration": 7170000000
             }
           }
         ]
@@ -1325,7 +1540,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5331000000
+              "duration": 5267000000
             }
           },
           {
@@ -1338,7 +1553,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 18000000
+              "duration": 16000000
             }
           },
           {
@@ -1351,7 +1566,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 389000000
+              "duration": 357000000
             }
           },
           {
@@ -1364,7 +1579,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 61000000
+              "duration": 47000000
             }
           },
           {
@@ -1375,7 +1590,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 34213000000
+              "duration": 34200000000
             }
           }
         ]
@@ -1401,7 +1616,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5186000000
+              "duration": 5286000000
             }
           },
           {
@@ -1414,7 +1629,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 17000000
+              "duration": 18000000
             }
           },
           {
@@ -1440,7 +1655,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 62000000
+              "duration": 36000000
             }
           },
           {
@@ -1451,7 +1666,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 7128000000
+              "duration": 7152000000
             }
           }
         ]
@@ -1477,7 +1692,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5384000000
+              "duration": 5955000000
             }
           },
           {
@@ -1490,7 +1705,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 20000000
+              "duration": 30000000
             }
           },
           {
@@ -1503,7 +1718,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 325000000
+              "duration": 326000000
             }
           },
           {
@@ -1516,7 +1731,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 51000000
+              "duration": 79000000
             }
           },
           {
@@ -1527,7 +1742,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 32241000000
+              "duration": 10297000000
             }
           }
         ]
@@ -1553,7 +1768,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5386000000
+              "duration": 5353000000
             }
           },
           {
@@ -1566,7 +1781,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 32000000
+              "duration": 19000000
             }
           },
           {
@@ -1579,7 +1794,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 44000000
+              "duration": 43000000
             }
           },
           {
@@ -1592,7 +1807,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 38000000
+              "duration": 27000000
             }
           },
           {
@@ -1603,7 +1818,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 7159000000
+              "duration": 5186000000
             }
           }
         ]
@@ -1629,7 +1844,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5335000000
+              "duration": 5475000000
             }
           },
           {
@@ -1642,7 +1857,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 16000000
+              "duration": 18000000
             }
           },
           {
@@ -1655,7 +1870,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 255000000
+              "duration": 791000000
             }
           },
           {
@@ -1668,7 +1883,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 46000000
+              "duration": 40000000
             }
           },
           {
@@ -1681,7 +1896,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4159000000
+              "duration": 4153000000
             }
           },
           {
@@ -1694,7 +1909,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 36000000
+              "duration": 28000000
             }
           },
           {
@@ -1707,7 +1922,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 749000000
+              "duration": 880000000
             }
           },
           {
@@ -1718,7 +1933,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5032000000
+              "duration": 5035000000
             }
           }
         ]
@@ -1744,7 +1959,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5482000000
+              "duration": 5601000000
             }
           },
           {
@@ -1757,7 +1972,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 31000000
+              "duration": 18000000
             }
           },
           {
@@ -1770,7 +1985,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 248000000
+              "duration": 271000000
             }
           },
           {
@@ -1783,7 +1998,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 40000000
+              "duration": 47000000
             }
           },
           {
@@ -1796,7 +2011,237 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4167000000
+              "duration": 4154000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 72,
+            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 34000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 73,
+            "name": "all the cells with values that match the \"\\test\\\" should be highlighted",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1783000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7258000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-next",
+        "keyword": "Scenario",
+        "line": 80,
+        "name": "Find next",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 65
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5200000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 67,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 17000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 68,
+            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"test123\",\"\",\"\"],[\"\",\"\",\"\"],[\"test123\",\"test123\",\"\"],[\"test123\",\"\",\"\"],[\"\",\"\",\"test123\"],[\"\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 253000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 69,
+            "name": "\"Find\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 111000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 70,
+            "name": "\"test123\" has been entered",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4171000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 72,
+            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 31000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 73,
+            "name": "all the cells with values that match the \"test123\" should be highlighted",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 378000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5076000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-next",
+        "keyword": "Scenario",
+        "line": 81,
+        "name": "Find next",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 65
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5306000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 67,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 15000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 68,
+            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"'test'\",\"\",\"\"],[\"\",\"\",\"\"],[\"'test'\",\"'test'\",\"\"],[\"'test'\",\"\",\"\"],[\"\",\"\",\"'test'\"],[\"\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 235000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 69,
+            "name": "\"Find\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 44000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 70,
+            "name": "\"'test'\" has been entered",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4162000000
             }
           },
           {
@@ -1816,13 +2261,13 @@
             "arguments": [],
             "keyword": "Then ",
             "line": 73,
-            "name": "all the cells with values that match the \"\\test\\\" should be highlighted",
+            "name": "all the cells with values that match the \"'test'\" should be highlighted",
             "match": {
               "location": "test\\features\\support\\find\\find_steps.js:21"
             },
             "result": {
               "status": "passed",
-              "duration": 1361000000
+              "duration": 398000000
             }
           },
           {
@@ -1833,7 +2278,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 7117000000
+              "duration": 5066000000
             }
           }
         ]
@@ -1841,7 +2286,122 @@
       {
         "id": "find-data;find-next",
         "keyword": "Scenario",
-        "line": 80,
+        "line": 82,
+        "name": "Find next",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 65
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5358000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 67,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 19000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 68,
+            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"\\\"test\\\"\",\"\",\"\"],[\"\",\"\",\"\"],[\"\\\"test\\\"\",\"\\\"test\\\"\",\"\"],[\"\\\"test\\\"\",\"\",\"\"],[\"\",\"\",\"\\\"test\\\"\"],[\"\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 729000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 69,
+            "name": "\"Find\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 42000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 70,
+            "name": "\"\"test\"\" has been entered",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4164000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 72,
+            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 29000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 73,
+            "name": "all the cells with values that match the \"\"test\"\" should be highlighted",
+            "match": {
+              "location": "test\\features\\support\\find\\find_steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1427000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7110000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "find-data;find-next",
+        "keyword": "Scenario",
+        "line": 83,
         "name": "Find next",
         "tags": [
           {
@@ -1872,351 +2432,6 @@
             },
             "result": {
               "status": "passed",
-              "duration": 103000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 68,
-            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"test123\",\"\",\"\"],[\"\",\"\",\"\"],[\"test123\",\"test123\",\"\"],[\"test123\",\"\",\"\"],[\"\",\"\",\"test123\"],[\"\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
-            "match": {
-              "location": "test\\features\\support\\file\\new_steps.js:11"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 219000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 69,
-            "name": "\"Find\" is invoked",
-            "match": {
-              "location": "test\\features\\support\\tools\\menu_steps.js:7"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 45000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 70,
-            "name": "\"test123\" has been entered",
-            "match": {
-              "location": "test\\features\\support\\find\\find_steps.js:7"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 4160000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 72,
-            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
-            "match": {
-              "location": "test\\features\\support\\tools\\menu_steps.js:39"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 35000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 73,
-            "name": "all the cells with values that match the \"test123\" should be highlighted",
-            "match": {
-              "location": "test\\features\\support\\find\\find_steps.js:21"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 1278000000
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "match": {
-              "location": "test\\features\\support\\hooks.js:34"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 7082000000
-            }
-          }
-        ]
-      },
-      {
-        "id": "find-data;find-next",
-        "keyword": "Scenario",
-        "line": 81,
-        "name": "Find next",
-        "tags": [
-          {
-            "name": "@impl",
-            "line": 65
-          }
-        ],
-        "type": "scenario",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "match": {
-              "location": "test\\features\\support\\hooks.js:51"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 5215000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 67,
-            "name": "Data Curator is open",
-            "match": {
-              "location": "test\\features\\support\\file\\new_steps.js:6"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 16000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 68,
-            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"'test'\",\"\",\"\"],[\"\",\"\",\"\"],[\"'test'\",\"'test'\",\"\"],[\"'test'\",\"\",\"\"],[\"\",\"\",\"'test'\"],[\"\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
-            "match": {
-              "location": "test\\features\\support\\file\\new_steps.js:11"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 267000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 69,
-            "name": "\"Find\" is invoked",
-            "match": {
-              "location": "test\\features\\support\\tools\\menu_steps.js:7"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 56000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 70,
-            "name": "\"'test'\" has been entered",
-            "match": {
-              "location": "test\\features\\support\\find\\find_steps.js:7"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 4207000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 72,
-            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
-            "match": {
-              "location": "test\\features\\support\\tools\\menu_steps.js:39"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 29000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 73,
-            "name": "all the cells with values that match the \"'test'\" should be highlighted",
-            "match": {
-              "location": "test\\features\\support\\find\\find_steps.js:21"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 448000000
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "match": {
-              "location": "test\\features\\support\\hooks.js:34"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 5061000000
-            }
-          }
-        ]
-      },
-      {
-        "id": "find-data;find-next",
-        "keyword": "Scenario",
-        "line": 82,
-        "name": "Find next",
-        "tags": [
-          {
-            "name": "@impl",
-            "line": 65
-          }
-        ],
-        "type": "scenario",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "match": {
-              "location": "test\\features\\support\\hooks.js:51"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 5355000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 67,
-            "name": "Data Curator is open",
-            "match": {
-              "location": "test\\features\\support\\file\\new_steps.js:6"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 15000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 68,
-            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"\\\"test\\\"\",\"\",\"\"],[\"\",\"\",\"\"],[\"\\\"test\\\"\",\"\\\"test\\\"\",\"\"],[\"\\\"test\\\"\",\"\",\"\"],[\"\",\"\",\"\\\"test\\\"\"],[\"\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
-            "match": {
-              "location": "test\\features\\support\\file\\new_steps.js:11"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 1236000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 69,
-            "name": "\"Find\" is invoked",
-            "match": {
-              "location": "test\\features\\support\\tools\\menu_steps.js:7"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 40000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 70,
-            "name": "\"\"test\"\" has been entered",
-            "match": {
-              "location": "test\\features\\support\\find\\find_steps.js:7"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 4161000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 72,
-            "name": "\"Find Next\" is invoked using the \"application menu selection\": \"Find->Find Next\"",
-            "match": {
-              "location": "test\\features\\support\\tools\\menu_steps.js:39"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 29000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 73,
-            "name": "all the cells with values that match the \"\"test\"\" should be highlighted",
-            "match": {
-              "location": "test\\features\\support\\find\\find_steps.js:21"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 2243000000
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "match": {
-              "location": "test\\features\\support\\hooks.js:34"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 5038000000
-            }
-          }
-        ]
-      },
-      {
-        "id": "find-data;find-next",
-        "keyword": "Scenario",
-        "line": 83,
-        "name": "Find next",
-        "tags": [
-          {
-            "name": "@impl",
-            "line": 65
-          }
-        ],
-        "type": "scenario",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "match": {
-              "location": "test\\features\\support\\hooks.js:51"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 5361000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 67,
-            "name": "Data Curator is open",
-            "match": {
-              "location": "test\\features\\support\\file\\new_steps.js:6"
-            },
-            "result": {
-              "status": "passed",
               "duration": 17000000
             }
           },
@@ -2230,7 +2445,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 249000000
+              "duration": 707000000
             }
           },
           {
@@ -2243,7 +2458,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 37000000
+              "duration": 48000000
             }
           },
           {
@@ -2256,7 +2471,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4175000000
+              "duration": 4200000000
             }
           },
           {
@@ -2269,7 +2484,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 33000000
+              "duration": 31000000
             }
           },
           {
@@ -2282,7 +2497,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1381000000
+              "duration": 1829000000
             }
           },
           {
@@ -2293,7 +2508,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5040000000
+              "duration": 7130000000
             }
           }
         ]
@@ -2319,7 +2534,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 6325000000
+              "duration": 5423000000
             }
           },
           {
@@ -2332,7 +2547,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 28000000
+              "duration": 17000000
             }
           },
           {
@@ -2345,7 +2560,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 755000000
+              "duration": 240000000
             }
           },
           {
@@ -2358,7 +2573,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 49000000
+              "duration": 43000000
             }
           },
           {
@@ -2371,7 +2586,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4157000000
+              "duration": 4167000000
             }
           },
           {
@@ -2384,7 +2599,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 39000000
+              "duration": 30000000
             }
           },
           {
@@ -2397,7 +2612,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 376000000
+              "duration": 2274000000
             }
           },
           {
@@ -2408,7 +2623,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 7109000000
+              "duration": 5037000000
             }
           }
         ]
@@ -2445,7 +2660,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5102000000
+              "duration": 5310000000
             }
           },
           {
@@ -2458,7 +2673,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 15000000
+              "duration": 19000000
             }
           },
           {
@@ -2484,7 +2699,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 109000000
+              "duration": 100000000
             }
           },
           {
@@ -2497,7 +2712,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 126000000
+              "duration": 112000000
             }
           },
           {
@@ -2510,7 +2725,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 63000000
+              "duration": 91000000
             }
           },
           {
@@ -2523,7 +2738,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 84000000
+              "duration": 89000000
             }
           },
           {
@@ -2536,7 +2751,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 104000000
+              "duration": 124000000
             }
           },
           {
@@ -2547,7 +2762,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5034000000
+              "duration": 7096000000
             }
           }
         ]
@@ -2584,7 +2799,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5710000000
+              "duration": 5403000000
             }
           },
           {
@@ -2597,7 +2812,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 26000000
+              "duration": 18000000
             }
           },
           {
@@ -2610,7 +2825,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 308000000
+              "duration": 338000000
             }
           },
           {
@@ -2623,7 +2838,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 97000000
+              "duration": 96000000
             }
           },
           {
@@ -2634,7 +2849,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 32211000000
+              "duration": 34148000000
             }
           }
         ]
@@ -2660,7 +2875,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5293000000
+              "duration": 5862000000
             }
           },
           {
@@ -2673,7 +2888,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 26000000
+              "duration": 18000000
             }
           },
           {
@@ -2686,7 +2901,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 11000000
+              "duration": 12000000
             }
           },
           {
@@ -2699,7 +2914,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 104000000
+              "duration": 97000000
             }
           },
           {
@@ -2710,7 +2925,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5124000000
+              "duration": 7133000000
             }
           }
         ]
@@ -2747,7 +2962,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5288000000
+              "duration": 5442000000
             }
           },
           {
@@ -2760,7 +2975,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 24000000
+              "duration": 17000000
             }
           },
           {
@@ -2773,7 +2988,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 67000000
+              "duration": 72000000
             }
           },
           {
@@ -2786,7 +3001,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 310000000
+              "duration": 300000000
             }
           },
           {
@@ -2799,7 +3014,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5054000000
+              "duration": 5059000000
             }
           },
           {
@@ -2810,7 +3025,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 7109000000
+              "duration": 5035000000
             }
           }
         ]
@@ -2836,7 +3051,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5261000000
+              "duration": 5461000000
             }
           },
           {
@@ -2849,7 +3064,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 80000000
+              "duration": 19000000
             }
           },
           {
@@ -2862,7 +3077,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 77000000
+              "duration": 79000000
             }
           },
           {
@@ -2875,7 +3090,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 302000000
+              "duration": 313000000
             }
           },
           {
@@ -2888,7 +3103,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5057000000
+              "duration": 5061000000
             }
           },
           {
@@ -2899,7 +3114,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5037000000
+              "duration": 7113000000
             }
           }
         ]
@@ -2925,7 +3140,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5178000000
+              "duration": 5614000000
             }
           },
           {
@@ -2938,7 +3153,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 16000000
+              "duration": 17000000
             }
           },
           {
@@ -2964,7 +3179,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 303000000
+              "duration": 293000000
             }
           },
           {
@@ -2977,7 +3192,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5055000000
+              "duration": 5061000000
             }
           },
           {
@@ -2988,7 +3203,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5114000000
+              "duration": 7072000000
             }
           }
         ]
@@ -3014,7 +3229,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5363000000
+              "duration": 5317000000
             }
           },
           {
@@ -3027,7 +3242,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 16000000
+              "duration": 20000000
             }
           },
           {
@@ -3040,7 +3255,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 66000000
+              "duration": 81000000
             }
           },
           {
@@ -3053,7 +3268,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 391000000
+              "duration": 301000000
             }
           },
           {
@@ -3066,7 +3281,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5063000000
+              "duration": 5056000000
             }
           },
           {
@@ -3077,7 +3292,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 7122000000
+              "duration": 7097000000
             }
           }
         ]
@@ -3103,7 +3318,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5256000000
+              "duration": 5482000000
             }
           },
           {
@@ -3116,7 +3331,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 15000000
+              "duration": 20000000
             }
           },
           {
@@ -3129,7 +3344,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 148000000
+              "duration": 101000000
             }
           },
           {
@@ -3142,7 +3357,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 40000000
+              "duration": 44000000
             }
           },
           {
@@ -3155,7 +3370,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5056000000
+              "duration": 5066000000
             }
           },
           {
@@ -3166,7 +3381,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 7123000000
+              "duration": 7097000000
             }
           }
         ]
@@ -3185,16 +3400,12 @@
       {
         "id": "validate-table;validate-table",
         "keyword": "Scenario",
-        "line": 60,
+        "line": 59,
         "name": "Validate Table",
         "tags": [
           {
-            "name": "@dev",
-            "line": 45
-          },
-          {
             "name": "@impl",
-            "line": 46
+            "line": 45
           }
         ],
         "type": "scenario",
@@ -3207,145 +3418,13 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5547000000
+              "duration": 5477000000
             }
           },
           {
             "arguments": [],
             "keyword": "Given ",
-            "line": 48,
-            "name": "Data Curator is open",
-            "match": {
-              "location": "test\\features\\support\\file\\new_steps.js:6"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 23000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 49,
-            "name": "1 data tab is displayed",
-            "match": {
-              "location": "test\\features\\support\\file\\new_steps.js:47"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 85000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 50,
-            "name": "the active table has data: \"[[\"\",\"\",\"\"]]\"",
-            "match": {
-              "location": "test\\features\\support\\file\\new_steps.js:11"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 164000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 52,
-            "name": "\"Validate Table\" is invoked",
-            "match": {
-              "location": "test\\features\\support\\tools\\menu_steps.js:15"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 323000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 55,
-            "name": "the validation failure message should be displayed with the messages: \"[\"No Columns Properties\"]\" for rows: \"[]\" and columns: \"[]\"",
-            "match": {
-              "location": "test\\features\\support\\validation\\messages.js:40"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 561000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 56,
-            "name": "the validation errors count should be \"1\"",
-            "match": {
-              "location": "test\\features\\support\\validation\\messages.js:104"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 79000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 57,
-            "name": "the table cell errors should be highlighted for rows: \"[]\" and columns: \"[]\"",
-            "match": {
-              "location": "test\\features\\support\\validation\\messages.js:72"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 32000000
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "match": {
-              "location": "test\\features\\support\\hooks.js:34"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 8092000000
-            }
-          }
-        ]
-      },
-      {
-        "id": "validate-table;validate-table",
-        "keyword": "Scenario",
-        "line": 61,
-        "name": "Validate Table",
-        "tags": [
-          {
-            "name": "@dev",
-            "line": 45
-          },
-          {
-            "name": "@impl",
-            "line": 46
-          }
-        ],
-        "type": "scenario",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "match": {
-              "location": "test\\features\\support\\hooks.js:51"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 5659000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 48,
+            "line": 47,
             "name": "Data Curator is open",
             "match": {
               "location": "test\\features\\support\\file\\new_steps.js:6"
@@ -3358,79 +3437,79 @@
           {
             "arguments": [],
             "keyword": "And ",
-            "line": 49,
+            "line": 48,
             "name": "1 data tab is displayed",
             "match": {
               "location": "test\\features\\support\\file\\new_steps.js:47"
             },
             "result": {
               "status": "passed",
-              "duration": 76000000
+              "duration": 104000000
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
-            "line": 50,
-            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"\",\"\",\"\"]]\"",
+            "line": 49,
+            "name": "the active table has data: \"[[\"\",\"\",\"\"]]\"",
             "match": {
               "location": "test\\features\\support\\file\\new_steps.js:11"
             },
             "result": {
               "status": "passed",
-              "duration": 173000000
+              "duration": 165000000
             }
           },
           {
             "arguments": [],
             "keyword": "When ",
-            "line": 52,
+            "line": 51,
             "name": "\"Validate Table\" is invoked",
             "match": {
               "location": "test\\features\\support\\tools\\menu_steps.js:15"
             },
             "result": {
               "status": "passed",
-              "duration": 291000000
+              "duration": 361000000
             }
           },
           {
             "arguments": [],
             "keyword": "Then ",
-            "line": 55,
-            "name": "the validation failure message should be displayed with the messages: \"[\"Blank Row\"]\" for rows: \"[1]\" and columns: \"[]\"",
+            "line": 54,
+            "name": "the validation failure message should be displayed with the messages: \"[\"No Columns Properties\"]\" for rows: \"[]\" and columns: \"[]\"",
             "match": {
               "location": "test\\features\\support\\validation\\messages.js:40"
             },
             "result": {
               "status": "passed",
-              "duration": 576000000
+              "duration": 571000000
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
-            "line": 56,
+            "line": 55,
             "name": "the validation errors count should be \"1\"",
             "match": {
               "location": "test\\features\\support\\validation\\messages.js:104"
             },
             "result": {
               "status": "passed",
-              "duration": 88000000
+              "duration": 69000000
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
-            "line": 57,
-            "name": "the table cell errors should be highlighted for rows: \"[1]\" and columns: \"[]\"",
+            "line": 56,
+            "name": "the table cell errors should be highlighted for rows: \"[]\" and columns: \"[]\"",
             "match": {
               "location": "test\\features\\support\\validation\\messages.js:72"
             },
             "result": {
               "status": "passed",
-              "duration": 74000000
+              "duration": 37000000
             }
           },
           {
@@ -3441,7 +3520,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 7170000000
+              "duration": 7178000000
             }
           }
         ]
@@ -3449,16 +3528,12 @@
       {
         "id": "validate-table;validate-table",
         "keyword": "Scenario",
-        "line": 62,
+        "line": 60,
         "name": "Validate Table",
         "tags": [
           {
-            "name": "@dev",
-            "line": 45
-          },
-          {
             "name": "@impl",
-            "line": 46
+            "line": 45
           }
         ],
         "type": "scenario",
@@ -3471,98 +3546,98 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5209000000
+              "duration": 5458000000
             }
           },
           {
             "arguments": [],
             "keyword": "Given ",
-            "line": 48,
+            "line": 47,
             "name": "Data Curator is open",
             "match": {
               "location": "test\\features\\support\\file\\new_steps.js:6"
             },
             "result": {
               "status": "passed",
-              "duration": 16000000
+              "duration": 20000000
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
-            "line": 49,
+            "line": 48,
             "name": "1 data tab is displayed",
             "match": {
               "location": "test\\features\\support\\file\\new_steps.js:47"
             },
             "result": {
               "status": "passed",
-              "duration": 138000000
+              "duration": 95000000
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
-            "line": 50,
-            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"\",\"\",\"\"],[\"a\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
+            "line": 49,
+            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"\",\"\",\"\"]]\"",
             "match": {
               "location": "test\\features\\support\\file\\new_steps.js:11"
             },
             "result": {
               "status": "passed",
-              "duration": 198000000
+              "duration": 651000000
             }
           },
           {
             "arguments": [],
             "keyword": "When ",
-            "line": 52,
+            "line": 51,
             "name": "\"Validate Table\" is invoked",
             "match": {
               "location": "test\\features\\support\\tools\\menu_steps.js:15"
             },
             "result": {
               "status": "passed",
-              "duration": 302000000
+              "duration": 309000000
             }
           },
           {
             "arguments": [],
             "keyword": "Then ",
-            "line": 55,
-            "name": "the validation failure message should be displayed with the messages: \"[\"Blank Row\"]\" for rows: \"[1,3]\" and columns: \"[0,0]\"",
+            "line": 54,
+            "name": "the validation failure message should be displayed with the messages: \"[\"Blank Row\"]\" for rows: \"[1]\" and columns: \"[]\"",
             "match": {
               "location": "test\\features\\support\\validation\\messages.js:40"
             },
             "result": {
               "status": "passed",
-              "duration": 572000000
+              "duration": 564000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 55,
+            "name": "the validation errors count should be \"1\"",
+            "match": {
+              "location": "test\\features\\support\\validation\\messages.js:104"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 96000000
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
             "line": 56,
-            "name": "the validation errors count should be \"2\"",
-            "match": {
-              "location": "test\\features\\support\\validation\\messages.js:104"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 73000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 57,
-            "name": "the table cell errors should be highlighted for rows: \"[1,3]\" and columns: \"[0,0]\"",
+            "name": "the table cell errors should be highlighted for rows: \"[1]\" and columns: \"[]\"",
             "match": {
               "location": "test\\features\\support\\validation\\messages.js:72"
             },
             "result": {
               "status": "passed",
-              "duration": 145000000
+              "duration": 88000000
             }
           },
           {
@@ -3573,7 +3648,135 @@
             },
             "result": {
               "status": "passed",
-              "duration": 8483000000
+              "duration": 5120000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "validate-table;validate-table",
+        "keyword": "Scenario",
+        "line": 61,
+        "name": "Validate Table",
+        "tags": [
+          {
+            "name": "@impl",
+            "line": 45
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5403000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 47,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 25000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 48,
+            "name": "1 data tab is displayed",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:47"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 75000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 49,
+            "name": "the active table has data: \"[[\"h1\",\"h2\",\"h3\"],[\"\",\"\",\"\"],[\"a\",\"\",\"\"],[\"\",\"\",\"\"]]\"",
+            "match": {
+              "location": "test\\features\\support\\file\\new_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 217000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 51,
+            "name": "\"Validate Table\" is invoked",
+            "match": {
+              "location": "test\\features\\support\\tools\\menu_steps.js:15"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 303000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 54,
+            "name": "the validation failure message should be displayed with the messages: \"[\"Blank Row\"]\" for rows: \"[1,3]\" and columns: \"[0,0]\"",
+            "match": {
+              "location": "test\\features\\support\\validation\\messages.js:40"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 571000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 55,
+            "name": "the validation errors count should be \"2\"",
+            "match": {
+              "location": "test\\features\\support\\validation\\messages.js:104"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 85000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 56,
+            "name": "the table cell errors should be highlighted for rows: \"[1,3]\" and columns: \"[0,0]\"",
+            "match": {
+              "location": "test\\features\\support\\validation\\messages.js:72"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 120000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test\\features\\support\\hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5043000000
             }
           }
         ]
