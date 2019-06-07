@@ -1,16 +1,20 @@
 sudo: required
 language: c
-cache:
-  directories:
-  - node_modules
-  - "$HOME/.electron"
-  - "$HOME/.cache"
+#cache:
+#  directories:
+#  - node_modules
+#  - "$HOME/.electron"
+#  - "$HOME/.cache"
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
-- nvm install 8
+- nvm install 10 --lts
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
+- nvm use 10 --lts
+- yarn --version
+- nvm --version
+- node --version
 - yarn
 script: true
 stages:
