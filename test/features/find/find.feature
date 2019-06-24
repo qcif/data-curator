@@ -28,6 +28,7 @@ Feature: Find data
 
   ![Data Curator Find and Replace user interface](https://github.com/ODIQueensland/data-curator/raw/develop/static/img/ui/find-and-replace.png)
 
+
   @impl
   Scenario Outline: Basic Find
     Given Data Curator is open
@@ -36,7 +37,6 @@ Feature: Find data
     And a prompt for a "find" value should be displayed
     And a prompt for a "replace" value should be displayed
     And the "Find and Replace" panel's first input should have focus
-    # And I should see search constraints
     And the column that the cursor is in should be displayed
     # And a warning that the replace command cannot be undone should be displayed
     Examples:
@@ -66,30 +66,42 @@ Feature: Find data
   Scenario Outline: Find next
     Given Data Curator is open
     And the active table has data: "<data>"
+    And the user clicks in row 1, column 1
     And "Find" is invoked
-    When "<search value>" has been entered
-    # And a search constraint has been entered
+    When "<search value>" has been entered in the input field: "<find>"
     And "Find Next" is invoked using the "application menu selection": "Find->Find Next"
-    Then all the cells with values that match the "<search value>" should be highlighted
-    # And a count of all the values that match the search value and comply with the search constraints should be displayed
-    # And a number representing which instance of the data that has been found value should be displayed
+    Then all the cells with values that are a case insensitive match for "<search value>" should be highlighted
+    And a count of all the values that match the "find" value should be displayed
+    And the "find" display count should read "<display count>"
     Examples:
-    | search value  | data                                                                                                                                              |
-    | test          | [["h1","h2","h3"],["test","",""],["","",""],["test","test",""],["test","",""],["","","test"],["","",""],["","",""]]                               |
-    | \test\        | [["h1","h2","h3"],["\\\test\\\","",""],["","",""],["\\\test\\\","\\\test\\\",""],["\\\test\\\","",""],["","","\\\test\\\"],["","",""],["","",""]] |
-    | test123       | [["h1","h2","h3"],["test123","",""],["","",""],["test123","test123",""],["test123","",""],["","","test123"],["","",""],["","",""]]                |
-    | 'test'        | [["h1","h2","h3"],["'test'","",""],["","",""],["'test'","'test'",""],["'test'","",""],["","","'test'"],["","",""],["","",""]]                     |
-    | "test"        | [["h1","h2","h3"],["\"test\"","",""],["","",""],["\"test\"","\"test\"",""],["\"test\"","",""],["","","\"test\""],["","",""],["","",""]]           |
-    | two words     | [["h1","h2","h3"],["two words","",""],["","",""],["two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      |
-    | two           | [["h1","h2","h3"],["two words","",""],["","",""],["two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      |
+    | search value  | display count | data                                                                                                                                              |
+    | test          | 2 of 3        | [["h1","h2","h3"],["test","",""],["","",""],["test","test",""],["test","",""],["","","test"],["","",""],["","",""]]                               |
+    | test          | 2 of 3        | [["h1","h2","h3"],["TeSt","",""],["","",""],["test","test",""],["test","",""],["","","test"],["","",""],["","",""]]                               |
+    | \test\        | 2 of 3        | [["h1","h2","h3"],["\\\test\\\","",""],["","",""],["\\\test\\\","\\\test\\\",""],["\\\test\\\","",""],["","","\\\test\\\"],["","",""],["","",""]] |
+    | test123       | 2 of 3        | [["h1","h2","h3"],["test123","",""],["","",""],["test123","test123",""],["test123","",""],["","","test123"],["","",""],["","",""]]                |
+    | 'test'        | 2 of 3        | [["h1","h2","h3"],["'test'","",""],["","",""],["'test'","'test'",""],["'test'","",""],["","","'test'"],["","",""],["","",""]]                     |
+    | "test"        | 2 of 3        | [["h1","h2","h3"],["\"test\"","",""],["","",""],["\"test\"","\"test\"",""],["\"test\"","",""],["","","\"test\""],["","",""],["","",""]]           |
+    | two words     | 2 of 3        | [["h1","h2","h3"],["two words","",""],["","",""],["two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      |
+    | two           | 2 of 3        | [["h1","h2","h3"],["two words","",""],["","",""],["two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      |
 
-
-  Scenario: Find previous
+  @impl
+  Scenario Outline: Find previous
     Given Data Curator is open
-    And a search value and optionally search constraints have been entered
-    When "Find Previous" is invoked
-    Then all cells with values that match the search value and comply with the search constraints should be highlighted
-    And the cursor should be moved to previous cell after the current cell that matches the search value and complies with the search constraints
-    And that cell's border should be highlighted
-    And a count of all the values that match the search value and comply with the search constraints should be displayed
-    And a number representing which instance of the data that has been found value should be displayed
+    And the active table has data: "<data>"
+    And the user clicks in row 1, column 1
+    And "Find" is invoked
+    When "<search value>" has been entered in the input field: "<find>"
+    And "Find Previous" is invoked using the "application menu selection": "Find->Find Previous"
+    Then all the cells with values that are a case insensitive match for "<search value>" should be highlighted
+    And a count of all the values that match the "find" value should be displayed
+    And the "find" display count should read "<display count>"
+    Examples:
+      | search value  | display count | data                                                                                                                                              |
+      | test          | 3 of 3        | [["h1","h2","h3"],["test","",""],["","",""],["test","test",""],["test","",""],["","","test"],["","",""],["","",""]]                               |
+      | test          | 3 of 3        | [["h1","h2","h3"],["TeSt","",""],["","",""],["test","test",""],["test","",""],["","","test"],["","",""],["","",""]]                               |
+      | \test\        | 3 of 3        | [["h1","h2","h3"],["\\\test\\\","",""],["","",""],["\\\test\\\","\\\test\\\",""],["\\\test\\\","",""],["","","\\\test\\\"],["","",""],["","",""]] |
+      | test123       | 3 of 3        | [["h1","h2","h3"],["test123","",""],["","",""],["test123","test123",""],["test123","",""],["","","test123"],["","",""],["","",""]]                |
+      | 'test'        | 3 of 3        | [["h1","h2","h3"],["'test'","",""],["","",""],["'test'","'test'",""],["'test'","",""],["","","'test'"],["","",""],["","",""]]                     |
+      | "test"        | 3 of 3        | [["h1","h2","h3"],["\"test\"","",""],["","",""],["\"test\"","\"test\"",""],["\"test\"","",""],["","","\"test\""],["","",""],["","",""]]           |
+      | two words     | 3 of 3        | [["h1","h2","h3"],["two words","",""],["","",""],["two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      |
+      | two           | 3 of 3        | [["h1","h2","h3"],["two words","",""],["","",""],["two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      |
