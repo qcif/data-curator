@@ -319,12 +319,15 @@ export default {
       hot.loadData(data)
       this.clickedFindOrReplace = 'replace'
     },
+    // Ensure replace, like find, is case insensitive
     getReplacedAllFindTextFromCell: function(data, row, col) {
       let cellText = data[row][col]
+      let caseInsensitiveCellText = cellText.toLowerCase()
+      let caseInsensitiveFindTextValue = this.findTextValue.toLowerCase()
       // ensure any special characters in find text are treated as ordinary text
-      const escapedFindText = _.escapeRegExp(this.findTextValue)
+      const escapedFindText = _.escapeRegExp(caseInsensitiveFindTextValue)
       const regExp = new RegExp(escapedFindText, 'g')
-      let updatedCellText = _.replace(cellText, regExp, this.replaceTextValue)
+      let updatedCellText = _.replace(caseInsensitiveCellText, regExp, this.replaceTextValue)
       return updatedCellText
     },
     previousFn: function(index, arrayLength) {
