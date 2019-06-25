@@ -27,6 +27,12 @@ ipc.on('hasHeaderRow', (event, arg) => {
   subMenu.checked = arg
 })
 
+ipc.on('hasLockedColumns', (event, arg) => {
+  console.log('received')
+  let subMenu = getSubMenuFromMenu('Tools', 'Lock Column Properties')
+  subMenu.checked = arg
+})
+
 ipc.on('showErrorsWindow', (event, arg) => {
   showErrors()
 })

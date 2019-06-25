@@ -273,6 +273,18 @@ class AppMenu {
           }, {
             type: 'separator'
           }, {
+            label: 'Lock Column Properties',
+            accelerator: 'Shift+CmdOrCtrl+L',
+            type: 'checkbox',
+            checked: false,
+            click (menuItem) {
+              // revert 'checked' toggle so only controlled by event
+              menuItem.checked = !menuItem.checked
+              webContents().send('toggleLockColumnProperties')
+            }
+          }, {
+            type: 'separator'
+          }, {
             label: 'Export Data Package...',
             accelerator: 'Shift+CmdOrCtrl+X',
             click () {
@@ -280,8 +292,7 @@ class AppMenu {
             }
           }
         ]
-      },
-      {
+      }, {
         label: 'Window',
         submenu: [
           {
@@ -382,7 +393,7 @@ class AppMenu {
           }, {
             label: 'Preferences',
             accelerator: 'CmdOrCtrl+,',
-            click: function() {
+            click: function () {
               webContents().send('showSidePanel', 'preferences')
             }
           }, {
@@ -426,7 +437,7 @@ class AppMenu {
       }, {
         label: 'Settings',
         accelerator: 'CmdOrCtrl+,',
-        click: function() {
+        click: function () {
           webContents().send('showSidePanel', 'preferences', 'settings')
         }
       })
