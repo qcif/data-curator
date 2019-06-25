@@ -1,0 +1,191 @@
+[
+  {
+    "description": "  As a Data Packager\n  I want to describe the meaning and structure of the data\n  So that it can be validated and Data Consumers can understand and use it\n\n  RULES\n  =====\n\n  - Column properties are defined in http://frictionlessdata.io/specs/table-schema/\n  - The `name`, `type` and `format` can be pre-populated using Guess Column Properties\n  - A `name` must be entered for each column. `name` will be defaulted from the value in the first row\n  - The `title` and `description` are optional\n  - Each `type` has a `format` of `default` and may have a limited set of other formats\n  - Data of a certain `type` may have extra properties e.g. `groupChar` for `number`\n  - Each column may have one or more `constraints` to further restrict the valid values that can be entered into a column. Constraints can vary by `type`\n  - \"Set Column Properties\" for the current column can be invoked from the menu, toolbar or shortcut\n\n  LATER\n  =====\n\n  - `missingValues` can be set per column",
+    "keyword": "Feature",
+    "name": "Set Column Properties",
+    "line": 1,
+    "id": "set-column-properties",
+    "tags": [],
+    "uri": "test/features/tools/set-column-properties.feature",
+    "elements": [
+      {
+        "id": "set-column-properties;set-column-properties-for-the-current-column",
+        "keyword": "Scenario",
+        "line": 35,
+        "name": "Set Column Properties for the current column",
+        "tags": [
+          {
+            "name": "@dev",
+            "line": 27
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test/features/support/hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6319000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 24,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test/features/support/file/new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 69000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 25,
+            "name": "the cursor should be in the new table",
+            "match": {
+              "location": "test/features/support/file/new_steps.js:113"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 80000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 29,
+            "name": "\"Column Properties\" is invoked using the \"toolbar menu button\": \"Column\"",
+            "match": {
+              "location": "test/features/support/tools/menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 341000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 30,
+            "name": "the \"Column Properties\" panel should be displayed",
+            "match": {
+              "location": "test/features/support/other/navigation-panels_steps.js:4"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5168000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test/features/support/hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5168000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "set-column-properties;set-column-properties-for-the-current-column",
+        "keyword": "Scenario",
+        "line": 36,
+        "name": "Set Column Properties for the current column",
+        "tags": [
+          {
+            "name": "@dev",
+            "line": 27
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "test/features/support/hooks.js:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5287000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 24,
+            "name": "Data Curator is open",
+            "match": {
+              "location": "test/features/support/file/new_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 30000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 25,
+            "name": "the cursor should be in the new table",
+            "match": {
+              "location": "test/features/support/file/new_steps.js:113"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 60000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 29,
+            "name": "\"Column Properties\" is invoked using the \"application menu selection\": \"Tools->Set Column Properties\"",
+            "match": {
+              "location": "test/features/support/tools/menu_steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 129000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 30,
+            "name": "the \"Column Properties\" panel should be displayed",
+            "match": {
+              "location": "test/features/support/other/navigation-panels_steps.js:4"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5064000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "test/features/support/hooks.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5165000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
