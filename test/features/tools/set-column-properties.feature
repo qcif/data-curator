@@ -33,7 +33,6 @@ Feature: Set Column Properties
       | toolbar menu button        | Column                       |
       | application menu selection | Tools->Set Column Properties |
 
-  @dev
   Scenario: Set Column Properties for the current column
     When "Column Properties" is invoked
     Then the "Column Properties" panel should be displayed

@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import { Given, When, Then } from 'cucumber'
 import { defaultTabData, isDataEqualToDefaultData } from '../page-objects/io.js'
 import _ from 'lodash'
-import { getActiveTableSelector } from '../page-objects/selectors'
+import { activeTableSelector } from '../page-objects/selectors'
 
 When(/^Data Curator is open$/, async function () {
   const title = await this.app.client.waitUntilWindowLoaded().getTitle()
@@ -121,7 +121,7 @@ Then(/^the cursor (?:should be|is) in the (?:new )table$/, function () {
 })
 
 Then(/^the cursor (?:should be|is) in row (\d+), column (\d+)$/, function (rowNumber, colNumber) {
-  const parentSelector = getActiveTableSelector()
+  const parentSelector = activeTableSelector
   return this.app.client.element(parentSelector)
     .getAttribute('.ht_master table tr th', 'class')
     .then(function(response) {
