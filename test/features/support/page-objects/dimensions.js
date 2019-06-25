@@ -1,11 +1,21 @@
+import { getActiveTableSelector } from './selectors'
 
-export async function tableRowAndColCount(app) {
-  const parentSelector = '.tab-pane.active .editor.handsontable'
-  const rowResponse = await app.client.element(parentSelector)
-    .elements('.ht_master table tr')
-  const tableRowCount = rowResponse.value.length
-  const colResponse = await app.client.element(parentSelector)
-    .elements('.ht_master table tr:first-of-type td')
-  const tableColCount = colResponse.value.length
+export async function tableRowAndColCount (app) {
+  const tableRowCount = getNumberOfRows(app)
+  const tableColCount = getNumberOfColumns(app)
   return { tableRowCount, tableColCount }
+}
+
+export async function getNumberOfColumns (app) {
+  const response = await app.client
+    .element(getActiveTableSelector())
+    .elements('.ht_master table tr:first-child td')
+  return response.value.length
+}
+
+export async function getNumberOfRows (app) {
+  const response = await app.client
+    .element(getActiveTableSelector())
+    .elements('.ht_master table tr th')
+  return response.value.length
 }

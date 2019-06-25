@@ -14,11 +14,6 @@ import {
 
 const _ = require('lodash')
 
-When(/^"(.+?)" has been entered in the input field(?: for|)[:]? "(.+?)"/, { timeout: -1 }, async function (value, field) {
-  const result = await enterInputInFieldName(this.app, value, field, this.pageShortTimeout)
-  return result
-})
-
 Then(/^a prompt for (?:a|the) "(find|replace)" value should be displayed/, function (findOrReplace) {
   return this.app.client.waitForVisible(`#${findOrReplace}`)
 })
