@@ -6,9 +6,8 @@ Feature: Insert Row Below
   RULES
   =====
 
-  - The "Insert Row Below" command can be invoked using a menu item, keyboard shortcut or a context menu in the data tab
+  - The "Insert Row Below" command can be invoked using a menu item, keyboard shortcut or a context menu in the data table
 
-  @impl
   Scenario: Insert Row Below
     Given Data Curator is open
     And the table should have 1 row by 3 columns

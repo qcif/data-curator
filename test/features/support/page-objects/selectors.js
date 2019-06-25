@@ -56,7 +56,7 @@ export function kebabAndCamelCase (selector) {
   return { kebabCase, camelCase }
 }
 
-export async function countNumberOfCurrentColumnCellsWithText(app, hotParentSelector, currentColumnSelector) {
+export async function countNumberOfCurrentColumnCellsWithText (app, hotParentSelector, currentColumnSelector) {
   const colTexts = await app.client.element(hotParentSelector).getText(currentColumnSelector)
   return colTexts
 }
@@ -74,12 +74,14 @@ export async function getCurrentColumnSelector (app, hotParentSelector) {
   return currentColumnSelector
 }
 
-export async function getPlaceholderValue(app, idName) {
+export async function getPlaceholderValue (app, idName) {
   const findInputParent = await app.client.element(`#${idName}`).element('..')
   const attributeTarget = await app.client.elementIdAttribute(findInputParent.value.ELEMENT, 'data-placeholder')
   return attributeTarget.value
 }
 
-export function getActiveTableSelector() {
-  return '.tab-pane.active .editor.handsontable'
+const activeTableSelector = '.tab-pane.active .editor.handsontable'
+
+export {
+  activeTableSelector
 }
