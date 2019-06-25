@@ -15,6 +15,7 @@ let fkPackagesButtonText$ = new Subject()
 let loadingPackage$ = new Subject()
 const errorFeedback$ = new Subject()
 const updateHotDimensions$ = new Subject()
+const allTableLocks$ = new Subject()
 
 export function onNextHotIdFromTabRx(asyncFunction) {
   let subject = hotIdFromTab$
@@ -45,5 +46,6 @@ export {
   fkPackagesButtonText$,
   loadingPackage$,
   errorFeedback$,
-  updateHotDimensions$
+  updateHotDimensions$,
+  allTableLocks$
 }

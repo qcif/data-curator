@@ -561,6 +561,7 @@ export default {
     })
     this.pushDefaultPackageProperties()
     ipc.send('closedFindReplace')
+    ipc.send('hasLockedColumns', false)
   },
   updated: function() {
     if (this.loadingDataMessage && this.loadingDataMessage.length > 0) {

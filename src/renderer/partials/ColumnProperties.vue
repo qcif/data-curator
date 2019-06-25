@@ -2,238 +2,240 @@
   <form
     id="columnProperties"
     class="navbar-form form-horizontal">
-    <div class="form-group-sm row container-fluid">
-      <div
-        v-for="(formprop, index) in formprops"
-        :key="index"
-        class="propertyrow">
-        <template v-if="!isExtraPropertyKey(formprop.key) || isExtraPropertyType(typeProperty, formprop.key)">
-          <label
-            v-tooltip.left="tooltip(formprop.tooltipId)"
-            :for="formprop.key"
-            class="control-label col-sm-3">
-            {{ formprop.label }}
-          </label>
-        </template>
-        <component :is="formprop.tooltipView"/>
-        <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
-          <select
-            v-if="formprop.key==='type'"
-            :value="getTypeProperty"
-            v-model="typeProperty"
-            :id="formprop.key"
-            class="form-control input-sm col-sm-9"
-            @input="setTypeProperty($event.target.value)">
-            <option
-              v-for="option1 in typeValues"
-              :key="option1"
-              :value="option1">
-              {{ option1 }}
-            </option>
-          </select>
-          <div
-            v-if="formprop.key==='format'"
-            id="format-container"
-            :class="{ 'format-pattern': formatValuesHasPattern }">
-            <span
-              v-tooltip.notrigger.left="tooltipWrap(formprop.tooltipValueId, warningVisibility)"
-              v-if="hasTypeFormatWarning">
-              <select
-                id="format"
-                :value="getFormatProperty"
-                v-model="formatProperty"
-                :disabled="isDropdownFormatDisabled"
-                class="form-control input-sm col-sm-9"
-                @input="setFormatProperty($event.target.value)">
-                <option
-                  v-for="option2 in formatPropertiesForType"
-                  :key="option2"
-                  :value="option2">
-                  {{ option2 }}
-                </option>
-              </select>
-              <component :is="formprop.tooltipValueView"/>
-            </span>
-            <span v-else>
-              <select
-                id="format"
-                :value="getFormatProperty"
-                v-model="formatProperty"
-                :disabled="isDropdownFormatDisabled"
-                class="form-control input-sm col-sm-9"
-                @input="setFormatProperty($event.target.value)">
-                <option
-                  v-for="option2 in formatPropertiesForType"
-                  :key="option2"
-                  :value="option2">
-                  {{ option2 }}
-                </option>
-              </select>
-            </span>
-            <input
-              v-validate.initial="'formatPattern|required'"
-              v-if="formatValuesHasPattern"
-              v-model="formatPropertyValue"
-              :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has('formatValue') }"
-              type="text"
-              name="formatValue">
-            <div
-              v-show="formatValuesHasPattern && errors.has('formatValue')"
-              class="row help validate-danger">
-              {{ errors.first('formatValue') }}
-            </div>
-          </div>
-        </template>
+    <fieldset :disabled="isLocked">
+      <div class="form-group-sm row container-fluid">
         <div
-          v-else-if="formprop.key === 'constraints'"
-          id="constraints"
-          class="col-sm-9">
-          <div
-            v-for="option in constraintValues"
-            :key="option"
-            class="input-group row">
-            <input
-              :id="option"
-              :checked="getConstraintCheck(option)"
-              type="checkbox"
-              @click="setConstraintCheck(option, $event.target)" >
+          v-for="(formprop, index) in formprops"
+          :key="index"
+          class="propertyrow">
+          <template v-if="!isExtraPropertyKey(formprop.key) || isExtraPropertyType(typeProperty, formprop.key)">
             <label
-              :for="option"
-              class="form-control-static">{{ option }}</label>
-            <template v-if="!isBooleanConstraint(option) && getConstraintCheck(option)">
+              v-tooltip.left="tooltip(formprop.tooltipId)"
+              :for="formprop.key"
+              class="control-label col-sm-3">
+              {{ formprop.label }}
+            </label>
+          </template>
+          <component :is="formprop.tooltipView"/>
+          <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
+            <select
+              v-if="formprop.key==='type'"
+              :value="getTypeProperty"
+              v-model="typeProperty"
+              :id="formprop.key"
+              class="form-control input-sm col-sm-9"
+              @input="setTypeProperty($event.target.value)">
+              <option
+                v-for="option1 in typeValues"
+                :key="option1"
+                :value="option1">
+                {{ option1 }}
+              </option>
+            </select>
+            <div
+              v-if="formprop.key==='format'"
+              id="format-container"
+              :class="{ 'format-pattern': formatValuesHasPattern }">
+              <span
+                v-tooltip.notrigger.left="tooltipWrap(formprop.tooltipValueId, warningVisibility)"
+                v-if="hasTypeFormatWarning">
+                <select
+                  id="format"
+                  :value="getFormatProperty"
+                  v-model="formatProperty"
+                  :disabled="isDropdownFormatDisabled"
+                  class="form-control input-sm col-sm-9"
+                  @input="setFormatProperty($event.target.value)">
+                  <option
+                    v-for="option2 in formatPropertiesForType"
+                    :key="option2"
+                    :value="option2">
+                    {{ option2 }}
+                  </option>
+                </select>
+                <component :is="formprop.tooltipValueView"/>
+              </span>
+              <span v-else>
+                <select
+                  id="format"
+                  :value="getFormatProperty"
+                  v-model="formatProperty"
+                  :disabled="isDropdownFormatDisabled"
+                  class="form-control input-sm col-sm-9"
+                  @input="setFormatProperty($event.target.value)">
+                  <option
+                    v-for="option2 in formatPropertiesForType"
+                    :key="option2"
+                    :value="option2">
+                    {{ option2 }}
+                  </option>
+                </select>
+              </span>
               <input
-                v-validate.initial="constraintValidationRules(option)"
-                :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }"
-                :value="getConstraintValue(option)"
-                :name="option"
+                v-validate.initial="'formatPattern|required'"
+                v-if="formatValuesHasPattern"
+                v-model="formatPropertyValue"
+                :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has('formatValue') }"
                 type="text"
-                @input="setConstraintValue(option, $event.target.value)">
-            </template>
+                name="formatValue">
+              <div
+                v-show="formatValuesHasPattern && errors.has('formatValue')"
+                class="row help validate-danger">
+                {{ errors.first('formatValue') }}
+              </div>
+            </div>
+          </template>
+          <div
+            v-else-if="formprop.key === 'constraints'"
+            id="constraints"
+            class="col-sm-9">
             <div
-              v-show="errors.has(option) && removeConstraint(option)"
-              class="row help validate-danger">
-              {{ errors.collect(option)[0] }}
+              v-for="option in constraintValues"
+              :key="option"
+              class="input-group row">
+              <input
+                :id="option"
+                :checked="getConstraintCheck(option)"
+                type="checkbox"
+                @click="setConstraintCheck(option, $event.target)" >
+              <label
+                :for="option"
+                class="form-control-static">{{ option }}</label>
+              <template v-if="!isBooleanConstraint(option) && getConstraintCheck(option)">
+                <input
+                  v-validate.initial="constraintValidationRules(option)"
+                  :class="{ 'form-group-sm constraint-text': true,'validate-danger': errors.has(option) }"
+                  :value="getConstraintValue(option)"
+                  :name="option"
+                  type="text"
+                  @input="setConstraintValue(option, $event.target.value)">
+              </template>
+              <div
+                v-show="errors.has(option) && removeConstraint(option)"
+                class="row help validate-danger">
+                {{ errors.collect(option)[0] }}
+              </div>
             </div>
           </div>
-        </div>
-        <textarea
-          v-else-if="formprop.key === 'description'"
-          :value="getProperty(formprop.key)"
-          :id="formprop.key"
-          rows="4"
-          class="form-control label-sm col-sm-9"
-          @input="setProperty(formprop.key, $event.target.value)" />
-        <input
-          v-else-if="formprop.key === 'name'"
-          :disabled="formprop.isDisabled"
-          :value="getNameProperty"
-          :id="formprop.key"
-          type="text"
-          class="form-control label-sm col-sm-9"
-          @input="setProperty(formprop.key, $event.target.value)" >
-        <template v-else-if="formprop.key === 'rdfType'" >
-          <input
-            v-validate="{url:true}"
+          <textarea
+            v-else-if="formprop.key === 'description'"
             :value="getProperty(formprop.key)"
-            :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }"
             :id="formprop.key"
-            :name="formprop.key"
+            rows="4"
+            class="form-control label-sm col-sm-9"
+            @input="setProperty(formprop.key, $event.target.value)" />
+          <input
+            v-else-if="formprop.key === 'name'"
+            :disabled="formprop.isDisabled"
+            :value="getNameProperty"
+            :id="formprop.key"
             type="text"
-            @input="setProperty(formprop.key, $event.target.value)">
-          <div
-            v-show="formprop.key === 'rdfType' && errors.has(formprop.key)"
-            class="row help validate-danger">
-            {{ errors.first(formprop.key) }}
-          </div>
-        </template>
-        <template v-else-if="formprop.key === 'booleanType'">
-          <div
-            v-show="typeProperty === 'boolean'"
-            class="extra-types input-group">
-            <label
-              class="inline control-label col-sm-3"
-              for="trueValues">True Values</label>
+            class="form-control label-sm col-sm-9"
+            @input="setProperty(formprop.key, $event.target.value)" >
+          <template v-else-if="formprop.key === 'rdfType'" >
             <input
-              id="trueValues"
-              :value="getTrueValues()"
+              v-validate="{url:true}"
+              :value="getProperty(formprop.key)"
+              :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }"
+              :id="formprop.key"
+              :name="formprop.key"
               type="text"
-              class="form-control label-sm col-sm-9"
-              @blur="setTrueValues($event.target.value)" >
-          </div>
-          <div
-            v-show="typeProperty === 'boolean'"
-            class="extra-types input-group">
-            <label
-              class="inline control-label col-sm-3"
-              for="falseValues">False Values</label>
-            <input
-              id="falseValues"
-              :value="getFalseValues()"
-              type="text"
-              class="form-control label-sm col-sm-9"
-              @blur="setFalseValues($event.target.value)" >
-          </div>
-        </template>
-        <template v-else-if="formprop.key === 'numberType'">
-          <div
-            v-for="(extraType, eIndex) in formprop.types"
-            v-show="typeProperty === 'number'"
-            :key="'number' + eIndex"
-            class="extra-types input-group">
-            <label
-              :for="formprop.key + extraType"
-              class="inline control-label col-sm-3">{{ getExtraPropertyLabel(extraType) }}</label>
-            <input
-              v-if="extraType === 'bareNumber'"
-              :id="formprop.key + extraType"
-              :checked="getExtraType(extraType)"
-              type="checkbox"
-              @click="setBareNumber($event.target)" >
-            <input
-              v-validate="{max:1}"
-              v-else
-              :value="getExtraType(extraType)"
-              :class="{ 'form-control label-sm col-sm-9': true,'validate-danger': errors.has(formprop.key + extraType) }"
-              :id="formprop.key + extraType"
-              :name="formprop.key + extraType"
-              type="text"
-              @input="setExtraType(extraType, $event.target.value)"
-              @blur="removeOnError(`${formprop.key}${extraType}`, extraType)">
+              @input="setProperty(formprop.key, $event.target.value)">
             <div
-              v-show="errors.has(formprop.key + extraType)"
+              v-show="formprop.key === 'rdfType' && errors.has(formprop.key)"
               class="row help validate-danger">
-              {{ errors.first(formprop.key + extraType) }}
+              {{ errors.first(formprop.key) }}
             </div>
-          </div>
-        </template>
-        <template v-else-if="formprop.key === 'integerType'">
-          <div
-            v-for="(extraType, eIndex) in formprop.types"
-            v-show="typeProperty === 'integer'"
-            :key="'integer' + eIndex"
-            class="extra-types input-group">
-            <template v-if="extraType === 'bareNumber'">
+          </template>
+          <template v-else-if="formprop.key === 'booleanType'">
+            <div
+              v-show="typeProperty === 'boolean'"
+              class="extra-types input-group">
+              <label
+                class="inline control-label col-sm-3"
+                for="trueValues">True Values</label>
+              <input
+                id="trueValues"
+                :value="getTrueValues()"
+                type="text"
+                class="form-control label-sm col-sm-9"
+                @blur="setTrueValues($event.target.value)" >
+            </div>
+            <div
+              v-show="typeProperty === 'boolean'"
+              class="extra-types input-group">
+              <label
+                class="inline control-label col-sm-3"
+                for="falseValues">False Values</label>
+              <input
+                id="falseValues"
+                :value="getFalseValues()"
+                type="text"
+                class="form-control label-sm col-sm-9"
+                @blur="setFalseValues($event.target.value)" >
+            </div>
+          </template>
+          <template v-else-if="formprop.key === 'numberType'">
+            <div
+              v-for="(extraType, eIndex) in formprop.types"
+              v-show="typeProperty === 'number'"
+              :key="'number' + eIndex"
+              class="extra-types input-group">
               <label
                 :for="formprop.key + extraType"
                 class="inline control-label col-sm-3">{{ getExtraPropertyLabel(extraType) }}</label>
               <input
+                v-if="extraType === 'bareNumber'"
                 :id="formprop.key + extraType"
                 :checked="getExtraType(extraType)"
                 type="checkbox"
                 @click="setBareNumber($event.target)" >
-            </template>
-          </div>
-        </template>
-        <input
-          v-else
-          :disabled="formprop.isDisabled"
-          :value="getProperty(formprop.key)"
-          :id="formprop.key"
-          type="text"
-          class="form-control label-sm col-sm-9"
-          @input="setProperty(formprop.key, $event.target.value)" >
+              <input
+                v-validate="{max:1}"
+                v-else
+                :value="getExtraType(extraType)"
+                :class="{ 'form-control label-sm col-sm-9': true,'validate-danger': errors.has(formprop.key + extraType) }"
+                :id="formprop.key + extraType"
+                :name="formprop.key + extraType"
+                type="text"
+                @input="setExtraType(extraType, $event.target.value)"
+                @blur="removeOnError(`${formprop.key}${extraType}`, extraType)">
+              <div
+                v-show="errors.has(formprop.key + extraType)"
+                class="row help validate-danger">
+                {{ errors.first(formprop.key + extraType) }}
+              </div>
+            </div>
+          </template>
+          <template v-else-if="formprop.key === 'integerType'">
+            <div
+              v-for="(extraType, eIndex) in formprop.types"
+              v-show="typeProperty === 'integer'"
+              :key="'integer' + eIndex"
+              class="extra-types input-group">
+              <template v-if="extraType === 'bareNumber'">
+                <label
+                  :for="formprop.key + extraType"
+                  class="inline control-label col-sm-3">{{ getExtraPropertyLabel(extraType) }}</label>
+                <input
+                  :id="formprop.key + extraType"
+                  :checked="getExtraType(extraType)"
+                  type="checkbox"
+                  @click="setBareNumber($event.target)" >
+              </template>
+            </div>
+          </template>
+          <input
+            v-else
+            :disabled="formprop.isDisabled"
+            :value="getProperty(formprop.key)"
+            :id="formprop.key"
+            type="text"
+            class="form-control label-sm col-sm-9"
+            @input="setProperty(formprop.key, $event.target.value)" >
+        </div>
       </div>
-    </div>
+    </fieldset>
   </form>
 </template>
 <script>
@@ -251,13 +253,16 @@ import {
 } from 'rxjs/Subscription'
 import {
   allTablesAllColumnNames$,
-  allTablesAllColumnsFromSchema$
+  allTablesAllColumnsFromSchema$,
+  allTableLocks$
 } from '@/rxSubject.js'
-import ColumnTooltip from '../mixins/ColumnTooltip'
-import ValidationRules from '../mixins/ValidationRules'
+import ColumnTooltip from '@/mixins/ColumnTooltip'
+import ValidationRules from '@/mixins/ValidationRules'
 import { isValidPatternForType } from '@/dateFormats.js'
 import { castBoolean, castNumber, castInteger } from 'tableschema/lib/types'
 import { ERROR as tableSchemaError } from 'tableschema/lib/config'
+import { LockProperties } from '@/lockProperties'
+import * as activeTab$ from 'rxjs'
 Vue.use(VueRx, {
   Subscription
 })
@@ -281,6 +286,7 @@ export default {
       constraintInputKeyValues: {},
       warningVisibility: false,
       allTablesAllColumnsNames: {},
+      // isLocked: false,
       // TODO: setup args so clear for constraints only
       debounceSetConstraints: _.debounce(this.pushColumnProperty, 300, {
         'leading': true,
@@ -423,7 +429,7 @@ export default {
       }
     },
     getFormatProperty: {
-      async get() {
+      async get () {
         // use promise for format's hotid to keep in sync with getTypeProperty
         let hotId = await this.currentHotId()
         let getter = this.getter(hotId, 'format')
@@ -439,11 +445,17 @@ export default {
         this.formatProperty = property
         return property
       },
-      watch() {
+      watch () {
         let temp = this.getActiveTab
         let temp2 = this.cIndex
         // ensure format also updates after setting type
         let temp3 = this.typeProperty
+      }
+    },
+    isLocked: {
+      async get() {
+        console.log('getting lock...')
+        return LockProperties.isColumnPropertiesLocked(this.activeCurrentHotId)
       }
     }
   },
@@ -490,14 +502,23 @@ export default {
     'formatPropertiesForType': function() {
       this.debounceCheckType()
     }
+    // 'activeCurrentHotId': function(activeId) {
+    //   console.log(`new active id is: ${activeId}`)
+    // }
   },
   mounted: function() {
-    let vueUpdateAllTablesAllColumnsNames = this.updateAllTablesAllColumnsNames
+    let self = this
     this.$subscribeTo(allTablesAllColumnNames$, function(result) {
-      vueUpdateAllTablesAllColumnsNames(result)
+      self.updateAllTablesAllColumnsNames(result)
     })
     allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
     autosize(document.querySelector('textarea'))
+
+    // this.$subscribeTo(allTableLocks$, async function(allTablesLocks) {
+    //   const hotId = this.activeCurrentHotId
+    //   self.isLocked = _.includes(allTablesLocks, hotId)
+    //   console.log(`locked is ${self.isLocked}`)
+    // })
   },
   created: function() {
     let vueType = this.typePropertyWrapper
