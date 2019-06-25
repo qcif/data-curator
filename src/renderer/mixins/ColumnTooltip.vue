@@ -7,7 +7,7 @@ export default {
     'tooltipColumnName': {
       components: { externalLink },
       template: `<div id="tooltip-column-name">
-      <externalLink text="Name" url="http://frictionlessdata.io/specs/table-schema/#name"/> is usually the value of the first row in the column</div>`
+      <externalLink text="Name" url="http://frictionlessdata.io/specs/table-schema/#name"/> is usually the value of the first row in the column. Where no name is set, select 'Header Row' from the Tools menu to assign column names.</div>`
     },
     'tooltipColumnTitle': {
       components: { externalLink },
