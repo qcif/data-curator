@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export async function waitForVisibleIdFromLabel(app, parentSelector, label, timeout) {
+export async function waitForVisibleIdFromLabel (app, parentSelector, label, timeout) {
   const kebabCase = _.kebabCase(label)
   const camelCase = _.camelCase(label)
   let result
@@ -14,34 +14,24 @@ export async function waitForVisibleIdFromLabel(app, parentSelector, label, time
   }
 }
 
-export async function applyFnToIdOrClassSelectorFromLabel(app, fn, label, timeout) {
+export async function applyFnToIdOrClassSelectorFromLabel (app, fn, label, timeout) {
   try {
-    const result = await applyFnToClassSelectorFromLabel(app, fn, label, timeout)
+    const result = await applyFnToSelectorWithLabel(app, fn, '.' + label, label, timeout)
     return result
   } catch (error) {
     console.log(`Unable to find via class. Trying id`)
-    const result = await applyFnToIdSelectorFromLabel(app, fn, label, timeout)
+    const result = await applyFnToSelectorWithLabel(app, fn, '#' + label, label, timeout)
     return result
   }
 }
 
-export async function applyFnToClassSelectorFromLabel(app, fn, label, timeout) {
-  const result = await applyFnToSelectorWithLabel(app, fn, '.' + label, label, timeout)
-  return result
-}
-
-export async function applyFnToIdSelectorFromLabel(app, fn, label, timeout) {
-  const result = await applyFnToSelectorWithLabel(app, fn, '#' + label, label, timeout)
-  return result
-}
-
-export async function applyFnToSelectorWithLabel(app, fn, selector, label, timeout) {
+export async function applyFnToSelectorWithLabel (app, fn, selector, label, timeout) {
   const selectors = replaceLabelWithKebabAndCamelCase(selector, label)
   const result = await applyFnToDualSelectors(app, fn, selectors[0], selectors[1], timeout)
   return result
 }
 
-export async function applyFnToDualSelectors(app, fn, selector1, selector2, timeout) {
+export async function applyFnToDualSelectors (app, fn, selector1, selector2, timeout) {
   let result
   try {
     // console.log('fn is', fn)
@@ -54,13 +44,13 @@ export async function applyFnToDualSelectors(app, fn, selector1, selector2, time
   }
 }
 
-export function replaceLabelWithKebabAndCamelCase(selector, toReplace) {
+export function replaceLabelWithKebabAndCamelCase (selector, toReplace) {
   const kebabCaseSelector = _.replace(selector, toReplace, _.kebabCase(toReplace))
   const camelCaseSelector = _.replace(selector, toReplace, _.camelCase(toReplace))
   return [kebabCaseSelector, camelCaseSelector]
 }
 
-export function kebabAndCamelCase(selector) {
+export function kebabAndCamelCase (selector) {
   const kebabCase = _.kebabCase(selector)
   const camelCase = _.camelCase(selector)
   return { kebabCase, camelCase }
