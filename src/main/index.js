@@ -23,16 +23,16 @@ global.tab = {
 }
 global.windows = {}
 
-const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
-  // Someone tried to run a second instance, we should focus our window.
-  console.error('Attempted to open a second instance. Disallowing...')
-  focusMainWindow()
-})
-
-if (isSecondInstance) {
-  console.error('Data curator is already open. Quitting this application.')
-  app.quit()
-}
+// const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
+//   // Someone tried to run a second instance, we should focus our window.
+//   console.error('Attempted to open a second instance. Disallowing...')
+//   focusMainWindow()
+// })
+//
+// if (isSecondInstance) {
+//   console.error('Data curator is already open. Quitting this application.')
+//   app.quit()
+// }
 
 app.on('ready', () => {
   let appMenu = new AppMenu()
