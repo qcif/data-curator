@@ -12,6 +12,7 @@ Feature: Insert Column After
   Scenario: Insert Column After
     Given Data Curator is open
     And the table should have 1 row by 3 columns
+    And the active table has data: "[["test","",""]]"
     When the user clicks in row 1, column 3
     And the user right-clicks
     And the user clicks on "Insert Column After"
