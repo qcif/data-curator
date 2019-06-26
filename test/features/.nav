@@ -53,7 +53,7 @@
   - show-previous-tab.feature
 - help:
   - show-keyboard-shortcuts.feature
-  - help.feature
+  - data-curator-help.feature
   - report-issues.feature
 - other:
   - open-data-curator.feature

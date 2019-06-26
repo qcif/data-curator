@@ -41,7 +41,7 @@ export function loadCsvDataIntoHot (hot, data, format) {
     _.unset(csvOptions, 'rowDelimiter')
     // TODO: update to stream
     csvOptions.bom = false
-    captureBOM(data)
+    captureBOM(data, hot.guid)
     arrays = parse(data, csvOptions)
     pushCsvFormat(hot.guid, format)
   }
@@ -52,9 +52,9 @@ export function loadCsvDataIntoHot (hot, data, format) {
   toggleHeaderNoFeedback(hot)
 }
 
-function captureBOM (data) {
+function captureBOM (data, hotId) {
   if (data.charCodeAt(0) === 0xFEFF) {
-    store.commit('pushTableProperty', { hotId: hot.guid, key: `bom`, value: 0xFEFF })
+    store.commit('pushTableProperty', { hotId: hotId, key: `bom`, value: 0xFEFF })
   }
 }
 
@@ -104,12 +104,12 @@ export function saveDataToFile (hot, format, filename, callback) {
     console.log('')
     pushCsvFormat(hot.guid, format)
   }
-  reinsertExistingBOM(data)
+  reinsertExistingBOM(data, hot.guid)
   fs.writeFile(filename, data, callback)
 }
 
-function reinsertExistingBOM (data) {
-  if (data.charCodeAt(0) !== 0xFEFF && store.getters.getTableProperty({ key: 'bom', hotId: hot.guid })) {
+function reinsertExistingBOM (data, hotId) {
+  if (data.charCodeAt(0) !== 0xFEFF && store.getters.getTableProperty({ key: 'bom', hotId: hotId })) {
     data = String.fromCodePoint(0xFEFF) + data
   }
 }
