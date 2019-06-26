@@ -208,7 +208,7 @@ function hasColumnProperties(hotId, callb) {
   }
   let names = getValidNames(hotId)
   if (!hasAllColumnNames(hotId, columnProperties, names)) {
-    errorHandler({ message: `Every Column property, including the column properties of any foreign keys, must have a unique 'name'.`,
+    errorHandler({ message: `Every Column property, including the column properties of any foreign keys, must have a unique 'name'. Where no name is set, select 'Header Row' from the Tools menu to assign column names.'`,
       name: 'Missing Column Property names' })
     callb()
     return false
