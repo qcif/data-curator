@@ -114,7 +114,7 @@ const getters = {
     return hotColumnProperties[property.key]
   },
   getTableProperty: (state, getters) => (property) => {
-    let tableProperties = state.hotTabs[property.hotId].tableProperties || {}
+    let tableProperties = _.get(state, `hotTabs[${property.hotId}].tableProperties`, {})
     return tableProperties[property.key]
   },
   getPackageProperty: (state, getters) => (property) => {

@@ -19,6 +19,9 @@ environment:
   COVERALLS_REPO_TOKEN:
     secure: 5CQKw1+Is8KphKjmT2emU/C7eNlZN3OEteemQZjOjJl47BVABYr1SOZ+IX82NSWy
 
+skip_commits:
+  message: /^appveyor Updating branch from appveyor build.$/
+
 init:
   - git config --global core.autocrlf input
 
@@ -31,8 +34,11 @@ install:
   - yarn autoclean
   - yarn run clean
   - yarn run lint
+  - if defined APPVEYOR_PULL_REQUEST_NUMBER ECHO PR %APPVEYOR_PULL_REQUEST_NUMBER%
+  - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run unit
+  - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run pack
+  - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run cucumber:postpack:impl
 configuration: Debug
-
 
 for:
 -
@@ -49,8 +55,6 @@ for:
   branches:
     only:
       - ci
-  skip_commits:
-    message: /^appveyor Updating branch from appveyor build.$/
   test_script:
     - git config --global credential.helper store
     - ps: Add-Content "$HOME\.git-credentials" "https://$($env:GH_TOKEN):x-oauth-basic@github.com`n"
@@ -78,9 +82,9 @@ for:
   configuration: Mergeandtest
 -
   branches:
-    only:
-      - testci
-      - master
+    except:
+      - develop
+      - ci
   test_script:
     - yarn run clean
     - yarn run unit
