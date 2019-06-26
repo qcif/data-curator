@@ -105,7 +105,6 @@ export function saveDataToFile (hot, format, filename, callback) {
     data = stringify(arrays)
     let hexdump = require('hexdump-nodejs')
     let buffer = Buffer.from(data)
-    // buffer.write(data, 0x10)
     console.log('data after stringify...')
     console.log(hexdump(buffer))
   } else {
@@ -116,7 +115,6 @@ export function saveDataToFile (hot, format, filename, callback) {
     data = stringify(arrays, csvOptions)
     let hexdump = require('hexdump-nodejs')
     let buffer = Buffer.from(data)
-    // buffer.write(data, 0x10)
     console.log('data after stringify...')
     console.log(hexdump(buffer))
     pushCsvFormat(hot.guid, format)
