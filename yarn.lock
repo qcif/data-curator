@@ -6213,6 +6213,11 @@ header-case@^1.0.0:
     no-case "^2.2.0"
     upper-case "^1.1.3"
 
+hexdump-nodejs@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/hexdump-nodejs/-/hexdump-nodejs-0.1.0.tgz#5b6281d91dd88c79dfa51b42f08dac4cc2f9ae92"
+  integrity sha1-W2KB2R3YjHnfpRtC8I2sTML5rpI=
+
 highlight.js@^9.3.0:
   version "9.13.1"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.13.1.tgz#054586d53a6863311168488a0f58d6c505ce641e"
