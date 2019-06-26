@@ -318,9 +318,9 @@ class AppMenu {
           }, {
             type: 'separator'
           }, {
-            label: 'Support Forum',
+            label: 'Data Curator Help',
             click () {
-              shell.openExternal('https://ask.theodi.org.au/c/projects/data-curator')
+              shell.openExternal('https://odiqueensland.github.io/data-curator-help')
             }
           }, {
             label: 'Report Issues',
