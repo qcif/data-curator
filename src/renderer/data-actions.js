@@ -104,12 +104,12 @@ export function saveDataToFile (hot, format, filename, callback) {
     console.log('')
     pushCsvFormat(hot.guid, format)
   }
-  reinsertExistingBOM(data)
+  reinsertExistingBOM(data, hot.guid)
   fs.writeFile(filename, data, callback)
 }
 
-function reinsertExistingBOM (data) {
-  if (data.charCodeAt(0) !== 0xFEFF && store.getters.getTableProperty({ key: 'bom', hotId: hot.guid })) {
+function reinsertExistingBOM (data, hotId) {
+  if (data.charCodeAt(0) !== 0xFEFF && store.getters.getTableProperty({ key: 'bom', hotId: hotId })) {
     data = String.fromCodePoint(0xFEFF) + data
   }
 }
