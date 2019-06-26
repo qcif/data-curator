@@ -48,13 +48,13 @@ When(/^the "([\w]+?)" toolbar menu is (?:selected|clicked|invoked)/, async funct
   return result
 })
 
-When(/^the "([\w]+?)"->"([\w]+?)" menu is (?:selected|clicked|invoked)/, async function (menuLabel, subMenuLabel) {
+When(/^(?:the )"([\w]+?)"->"([\w]+?)" menu is (?:selected|clicked|invoked)/, async function (menuLabel, subMenuLabel) {
   const returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel])
   expect(returned).to.equal(subMenuLabel)
 })
 
 // 3rd menu may contain spaces, dots
-When(/^the "([\w]+?)"->"([\w]+?)"->"([\w .]+?)" menu is (?:selected|clicked|invoked)/, async function (menuLabel, subMenuLabel, subSubMenuLabel) {
+When(/^(?:the )"([\w]+?)"->"([\w]+?)"->"([\w .]+?)" menu is (?:selected|clicked|invoked)/, async function (menuLabel, subMenuLabel, subSubMenuLabel) {
   let returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel, subSubMenuLabel])
   expect(returned).to.equal(subSubMenuLabel)
 })
