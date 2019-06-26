@@ -1,6 +1,7 @@
 import { After, Before, Status } from 'cucumber'
 import fakeDialog from 'spectron-fake-dialog'
 import { exec } from 'child_process'
+import { applyMock } from './page-objects/mockMainProcess'
 
 async function stopAppRunning(app) {
   try {
@@ -59,6 +60,7 @@ Before({ timeout: 20000 }, async function (testCase) {
     this.pageTimeout = 5000
     this.pageShortTimeout = 1000
     await fakeDialog.apply(this.app)
+    await applyMock(this.app)
     await this.app.start()
     await this.app.client.waitUntilWindowLoaded()
     await this.app.electron.ipcRenderer.sendSync('unlockSingleton')
@@ -66,6 +68,8 @@ Before({ timeout: 20000 }, async function (testCase) {
     await this.app.client.browserWindow.isFocused()
     await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showMessageBox', value: 1 }])
     await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showOpenDialog', value: this.openFileDialogReturned }])
+    // browser.expectRequest(method, url, statusCode)
+    // await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_SHELL/SEND', [{ method: 'openExternal', value: createPromise() }])
   } catch (error) {
     console.log('error in before hook', error)
     await stopAppRunning(this.app)
