@@ -27,9 +27,12 @@ ipc.on('hasHeaderRow', (event, arg) => {
   subMenu.checked = arg
 })
 
-ipc.on('hasLockedColumns', (event, arg) => {
-  let subMenu = getSubMenuFromMenu('Tools', 'Lock Column Properties')
-  subMenu.checked = arg
+ipc.on('hasLockedActiveTable', (event, arg) => {
+  let lockedSubMenu = getSubMenuFromMenu('Tools', 'Lock Column Properties')
+  lockedSubMenu.checked = arg
+  // for locked table (ie: lock is enabled), value is true, so any menu 'enabled': set to false
+  let guessSubMenu = getSubMenuFromMenu('Tools', 'Guess Column Properties')
+  guessSubMenu.enabled = !arg
 })
 
 ipc.on('showErrorsWindow', (event, arg) => {
