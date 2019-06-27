@@ -265,6 +265,9 @@ import {
   getWindow
 } from '../index.js'
 import {
+  disableEnableContextMenu
+} from '../menu.js'
+import {
   HotRegister,
   getColumnCount,
   getCurrentColumnIndexOrMin
@@ -457,6 +460,7 @@ export default {
 
     this.$subscribeTo(allTableLocks$, async function(allTablesLocks) {
       self.isActiveTabLocked = _.includes(allTablesLocks, self.currentHotId)
+      disableEnableContextMenu(self.isActiveTabLocked)
       ipc.send('hasLockedActiveTable', self.isActiveTabLocked)
     })
     // request may be coming from another page - get focus first

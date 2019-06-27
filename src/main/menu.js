@@ -208,6 +208,7 @@ class AppMenu {
           {
             label: 'Guess Column Properties',
             accelerator: 'Shift+CmdOrCtrl+G',
+            lockable: true,
             click: function () {
               webContents().send('guessColumnProperties')
             }

@@ -1,4 +1,4 @@
-import { ipcMain as ipc, dialog } from 'electron'
+import { ipcMain as ipc, dialog, Menu } from 'electron'
 import { showErrors } from './errors.js'
 import {
   getMenu,
@@ -6,7 +6,8 @@ import {
   clickLabelsOnMenu,
   disableAllSubMenuItemsFromMenuObject,
   enableSubMenuItemsFromMenuObject,
-  enableAllSubMenuItemsFromMenuLabel
+  enableAllSubMenuItemsFromMenuLabel,
+  disableEnableBasedOnAttributeAndConditionFromLabels
 } from './menuUtils.js'
 import { focusMainWindow, closeSecondaryWindow } from './windows.js'
 import { loadPackageJson, loadResourceDataFromPackageUrl } from './url.js'
@@ -31,8 +32,7 @@ ipc.on('hasLockedActiveTable', (event, arg) => {
   let lockedSubMenu = getSubMenuFromMenu('Tools', 'Lock Column Properties')
   lockedSubMenu.checked = arg
   // for locked table (ie: lock is enabled), value is true, so any menu 'enabled': set to false
-  let guessSubMenu = getSubMenuFromMenu('Tools', 'Guess Column Properties')
-  guessSubMenu.enabled = !arg
+  disableEnableBasedOnAttributeAndConditionFromLabels(['Edit', 'Tools'], 'lockable', !arg)
 })
 
 ipc.on('showErrorsWindow', (event, arg) => {
