@@ -3,9 +3,9 @@ import { showUrlDialog } from './url.js'
 import { createWindowTab, focusMainWindow } from './windows.js'
 import { importExcel } from './excel.js'
 import { showKeyboardHelp } from './help.js'
-import { fileFormats } from '../renderer/file-formats.js'
-import { sharedMenus } from '../renderer/menu.js'
+import { sharedMenus, fileFormats } from '../renderer/sharedWithMain.js'
 import { shell, Menu } from 'electron'
+import _ from 'lodash'
 
 class AppMenu {
   initTemplate () {
@@ -114,45 +114,19 @@ class AppMenu {
           },
           {
             type: 'separator'
-          }, {
-            label: sharedMenus.insertRowAbove.label,
-            accelerator: sharedMenus.insertRowAbove.accelerator,
-            click () {
-              webContents().send('insertRowAbove')
-            }
-          }, {
-            label: sharedMenus.insertRowBelow.label,
-            accelerator: sharedMenus.insertRowBelow.accelerator,
-            click () {
-              webContents().send('insertRowBelow')
-            }
-          }, {
+          },
+          _.assign({}, sharedMenus.insertRowAbove, { click() { webContents().send('insertRowAbove') } }),
+          _.assign({}, sharedMenus.insertRowBelow, { click() { webContents().send('insertRowBelow') } }),
+          {
             type: 'separator'
-          }, {
-            label: sharedMenus.insertColumnBefore.label,
-            accelerator: sharedMenus.insertColumnBefore.accelerator,
-            click () {
-              webContents().send('insertColumnBefore')
-            }
-          }, {
-            label: sharedMenus.insertColumnAfter.label,
-            accelerator: sharedMenus.insertColumnAfter.accelerator,
-            click () {
-              webContents().send('insertColumnAfter')
-            }
-          }, {
+          },
+          _.assign({}, sharedMenus.insertColumnBefore, { click() { webContents().send('insertColumnBefore') } }),
+          _.assign({}, sharedMenus.insertColumnAfter, { click() { webContents().send('insertColumnAfter') } }),
+          {
             type: 'separator'
-          }, {
-            label: sharedMenus.removeRows.label,
-            click () {
-              webContents().send('removeRows')
-            }
-          }, {
-            label: sharedMenus.removeColumns.label,
-            click () {
-              webContents().send('removeColumns')
-            }
-          }
+          },
+          _.assign({}, sharedMenus.removeRows, { click() { webContents().send('removeRows') } }),
+          _.assign({}, sharedMenus.removeColumns, { click() { webContents().send('removeColumns') } })
         ]
       },
       {
