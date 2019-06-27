@@ -237,6 +237,11 @@
           <td><kbd>Command &#8984;</kbd> <kbd>O</kbd></td>
         </tr>
         <tr>
+          <td><b>Import Column Properties</b> - Import a table schema JSON file.</td>
+          <td><kbd>Shift &#8679;</kbd> <kbd>Ctrl</kbd> <kbd>I</kbd></td>
+          <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>I</kbd></td>
+        </tr>
+        <tr>
           <td><b>Save</b> the active data tab as a CSV file</td>
           <td><kbd>Ctrl</kbd> <kbd>S</kbd></td>
           <td><kbd>Command &#8984;</kbd> <kbd>S</kbd></td>
