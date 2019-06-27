@@ -456,7 +456,6 @@ export default {
     let self = this
 
     this.$subscribeTo(allTableLocks$, async function(allTablesLocks) {
-      let hotId = self.currentHotId
       self.isActiveTabLocked = _.includes(allTablesLocks, self.currentHotId)
       ipc.send('hasLockedColumns', self.isActiveTabLocked)
     })
