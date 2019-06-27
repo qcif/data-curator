@@ -56,6 +56,15 @@ class AppMenu {
             //        ]
             type: 'separator'
           }, {
+            label: 'Import Column Properties',
+            accelerator: 'Shift+CmdOrCtrl+I',
+            click () {
+              webContents().send('importColumnProperties')
+              webContents().send('toggleLockColumnProperties')
+            }
+          }, {
+            type: 'separator'
+          }, {
             label: 'Save',
             accelerator: 'CmdOrCtrl+S',
             click () {
