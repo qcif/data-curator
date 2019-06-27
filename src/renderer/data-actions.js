@@ -101,7 +101,6 @@ export function saveDataToFile (hot, format, filename, callback) {
       csvOptions.quoted = true
     }
     data = stringify(arrays, csvOptions)
-    console.log('')
     pushCsvFormat(hot.guid, format)
   }
   reinsertExistingBOM(data, hot.guid)

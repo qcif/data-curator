@@ -9,10 +9,13 @@ const LockProperties = {
 
   toggleLockColumnProperties () {
     const hotId = HotRegister.getActiveInstance().guid
-    let isActiveHotLocked = !!this.isColumnPropertiesLocked(hotId)
-    isActiveHotLocked = !isActiveHotLocked
-    this.updateStoredTableLock(hotId, isActiveHotLocked)
-    ipc.send('hasLockedColumns', isActiveHotLocked)
+    let currentLock = _.includes(this.getLockedTables(), hotId)
+    currentLock = !currentLock
+    this.updateStoredTableLock(hotId, currentLock)
+  },
+
+  getLockedTables() {
+    return store.getters.hasPropertyFromAllTables(this.storeName)
   },
 
   updateStoredTableLock (hotId, value) {
@@ -21,20 +24,17 @@ const LockProperties = {
       key: this.storeName,
       value: !!value
     })
-    allTableLocks$.next(store.getters.getPropertyFromAllTables(this.storeName))
+    this.trigger()
   },
 
-  isColumnPropertiesLocked (hotId) {
-    let allLocks = store.getters.getPropertyFromAllTables(this.storeName)
-    return _.includes(allLocks, hotId)
+  trigger() {
+    allTableLocks$.next(this.getLockedTables())
   }
 }
 
 ipc.on('toggleLockColumnProperties', function (event, arg) {
   LockProperties.toggleLockColumnProperties()
 })
-
-allTableLocks$.next(store.getters.getPropertyFromAllTables(LockProperties.storeName))
 
 export {
   LockProperties

@@ -77,7 +77,7 @@
             :adjustSidenavFormHeight="adjustSidenavFormHeight"
             :sideNavFormHeight="sideNavFormHeight"
             :cIndex="currentColumnIndex"
-            :isLocked="isLocked"
+            :isLocked="isActiveTabLocked"
           />
         </transition>
         <div
@@ -400,7 +400,7 @@ export default {
         value: 'tabular-data-package'
       }],
       reportSiblingClasses: ['main-bottom-panel', 'main-middle-panel'],
-      isLocked: false
+      isActiveTabLocked: false
     }
   },
   computed: {
@@ -438,14 +438,13 @@ export default {
       try {
         let hotId = await this.getHotIdFromTabId(tabId)
         this.currentHotId = hotId
-        console.log(`current Hot id is: ${this.currentHotId}`)
         this.reselectHotCell()
       } catch (err) {
         console.error('Problem with getting hot id from watched tab', err)
       }
       this.closeMessages()
       this.sendErrorsToErrorsWindow()
-      console.log('hello active tab 2...')
+      LockProperties.trigger()
     },
     messages: function() {
       if (this.messages) {
@@ -457,8 +456,9 @@ export default {
     let self = this
 
     this.$subscribeTo(allTableLocks$, async function(allTablesLocks) {
-      self.isLocked = _.includes(LockProperties.getLockedTables(), hotId)
-      ipc.send('hasLockedColumns', self.isLocked)
+      let hotId = self.currentHotId
+      self.isActiveTabLocked = _.includes(allTablesLocks, self.currentHotId)
+      ipc.send('hasLockedColumns', self.isActiveTabLocked)
     })
     // request may be coming from another page - get focus first
     ipc.on('showErrorCell', async function(event, arg) {
@@ -557,7 +557,6 @@ export default {
       }
       ipc.send('hasCaseSensitiveHeader', isCaseSensitive(hotId))
       remote.getGlobal('tab').activeHotId = hotId
-      LockProperties.trigger()
     })
     onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
   },
