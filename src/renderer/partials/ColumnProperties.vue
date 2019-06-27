@@ -253,16 +253,14 @@ import {
 } from 'rxjs/Subscription'
 import {
   allTablesAllColumnNames$,
-  allTablesAllColumnsFromSchema$,
-  allTableLocks$
+  allTablesAllColumnsFromSchema$
 } from '@/rxSubject.js'
-import ColumnTooltip from '@/mixins/ColumnTooltip'
-import ValidationRules from '@/mixins/ValidationRules'
+import ColumnTooltip from '../mixins/ColumnTooltip'
+import ValidationRules from '../mixins/ValidationRules'
 import { isValidPatternForType } from '@/dateFormats.js'
 import { castBoolean, castNumber, castInteger } from 'tableschema/lib/types'
 import { ERROR as tableSchemaError } from 'tableschema/lib/config'
 import { LockProperties } from '@/lockProperties'
-import * as activeTab$ from 'rxjs'
 Vue.use(VueRx, {
   Subscription
 })
@@ -275,6 +273,10 @@ export default {
     cIndex: {
       type: Number,
       default: 0
+    },
+    isLocked: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -286,7 +288,6 @@ export default {
       constraintInputKeyValues: {},
       warningVisibility: false,
       allTablesAllColumnsNames: {},
-      // isLocked: false,
       // TODO: setup args so clear for constraints only
       debounceSetConstraints: _.debounce(this.pushColumnProperty, 300, {
         'leading': true,
@@ -429,7 +430,7 @@ export default {
       }
     },
     getFormatProperty: {
-      async get () {
+      async get() {
         // use promise for format's hotid to keep in sync with getTypeProperty
         let hotId = await this.currentHotId()
         let getter = this.getter(hotId, 'format')
@@ -445,17 +446,11 @@ export default {
         this.formatProperty = property
         return property
       },
-      watch () {
+      watch() {
         let temp = this.getActiveTab
         let temp2 = this.cIndex
         // ensure format also updates after setting type
         let temp3 = this.typeProperty
-      }
-    },
-    isLocked: {
-      async get() {
-        console.log('getting lock...')
-        return LockProperties.isColumnPropertiesLocked(this.activeCurrentHotId)
       }
     }
   },
@@ -502,9 +497,6 @@ export default {
     'formatPropertiesForType': function() {
       this.debounceCheckType()
     }
-    // 'activeCurrentHotId': function(activeId) {
-    //   console.log(`new active id is: ${activeId}`)
-    // }
   },
   mounted: function() {
     let self = this
@@ -513,12 +505,7 @@ export default {
     })
     allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
     autosize(document.querySelector('textarea'))
-
-    // this.$subscribeTo(allTableLocks$, async function(allTablesLocks) {
-    //   const hotId = this.activeCurrentHotId
-    //   self.isLocked = _.includes(allTablesLocks, hotId)
-    //   console.log(`locked is ${self.isLocked}`)
-    // })
+    LockProperties.trigger()
   },
   created: function() {
     let vueType = this.typePropertyWrapper
