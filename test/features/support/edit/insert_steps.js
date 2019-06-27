@@ -7,6 +7,7 @@ import {
   getNumberOfRows
 } from '../page-objects/dimensions'
 import { activeTableSelector } from '../page-objects/selectors'
+import { applyFnToIdOrClassSelectorWithParent } from '../page-objects/io'
 
 Given(/^the user clicks in row (\d+), column (\d+)$/, async function (rowNumber, colNumber) {
   this.rowNumber = rowNumber
@@ -16,16 +17,28 @@ Given(/^the user clicks in row (\d+), column (\d+)$/, async function (rowNumber,
   await this.app.webContents.send('selectHotCell', rowNumber, colNumber)
 })
 
-When(/^the user (?:performs a |)right-click[s]?$/, function () {
+When(/^the user (?:performs a |)right-click[s]?$/, async function () {
   // by default click in where current cell selection is to avoid unpredictable webdriver behaviour
-  return this.app.client
-    .element(activeTableSelector)
-    .element('.ht_master table tr td.current.highlight')
+  // const result = await applyFnToIdOrClassSelectorWithParent(app, 'click', field, 'input', timeout)
+  // await this.app.client.pause(this.pageTimeout)
+  // return result
+  // await this.app.client.moveTo('.ht_master table')
+  // await this.app.client.pause(this.pageTimeout)
+  await this.app.client.keys('test')
+  await this.app.client.rightClick('.ht_master table')
+  // await this.app.client.rightClick()
 })
 
+// When(/^the user moves mouse?$/, async function () {
+//   // by default click in where current cell selection is to avoid unpredictable webdriver behaviour
+//   await this.app.client.element('.ht_master table').moveTo('.ht_master table tr')
+//   // await this.app.client.rightClick()
+// })
+
 Then(/^the user clicks (?:on|in) "Insert ([Rr]ow|[Cc]olumn) ([bB]elow|[Aa]bove|[Bb]efore|[Aa]fter)"$/, function (rowOrColumn, place) {
+  console.log('got to here...')
   return this.app
-    .webContents.send('clickLabelOnContextMenu', `Insert ${rowOrColumn.toLowerCase()} ${place.toLowerCase()}`)
+    .webContents.send('clickLabelOnContextMenu', 'Insert Row Above')
 })
 
 Then(/^there should be (\d+) new row[s]? above the current row$/, async function (numberOfNew) {
