@@ -3,7 +3,8 @@ const toolbarMenus = [{
   id: 'guess-column-properties',
   image: 'static/img/guess-column-properties.svg',
   tooltipId: 'tooltip-guess',
-  tooltipView: 'tooltipGuess'
+  tooltipView: 'tooltipGuess',
+  lockable: true
 },
 {
   name: 'Column',

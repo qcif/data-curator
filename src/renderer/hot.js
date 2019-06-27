@@ -176,11 +176,11 @@ export function insertRow(offset, mathFn) {
   }
 }
 
-export function insertColumnLeft() {
+export function insertColumnBefore() {
   insertColumn(0, Math.min)
 }
 
-export function insertColumnRight() {
+export function insertColumnAfter() {
   insertColumn(1, Math.max)
 }
 

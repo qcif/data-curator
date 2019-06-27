@@ -64,6 +64,16 @@ const getters = {
     }
     return hotIdColumnNames
   },
+  hasPropertyFromAllTables: (state, getters) => (propertyName) => {
+    let tablesWithProperty = []
+    for (let hotId in state.hotTabs) {
+      let tableProps = state.hotTabs[hotId].tableProperties || {}
+      if (_.get(tableProps, propertyName)) {
+        tablesWithProperty.push(hotId)
+      }
+    }
+    return tablesWithProperty
+  },
   getAllHotTablesColumnProperties: (state, getters) => () => {
     let hotIdColumnNames = {}
     for (let hotId in state.hotTabs) {
