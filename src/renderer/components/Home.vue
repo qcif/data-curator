@@ -77,6 +77,7 @@
             :adjustSidenavFormHeight="adjustSidenavFormHeight"
             :sideNavFormHeight="sideNavFormHeight"
             :cIndex="currentColumnIndex"
+            :isLocked="isLocked"
           />
         </transition>
         <div
@@ -303,7 +304,8 @@ import {
   hotIdFromTab$,
   provenanceErrors$,
   errorFeedback$,
-  updateHotDimensions$
+  updateHotDimensions$,
+  allTableLocks$
 } from '@/rxSubject.js'
 import VueRx from 'vue-rx'
 import {
@@ -321,6 +323,7 @@ import Vue from 'vue'
 import {
   toolbarMenus
 } from '@/toolbarMenus'
+import { LockProperties } from '@/lockProperties'
 Vue.use(AsyncComputed)
 Vue.use(VueRx, {
   Subscription
@@ -396,7 +399,8 @@ export default {
         key: 'profile',
         value: 'tabular-data-package'
       }],
-      reportSiblingClasses: ['main-bottom-panel', 'main-middle-panel']
+      reportSiblingClasses: ['main-bottom-panel', 'main-middle-panel'],
+      isLocked: false
     }
   },
   computed: {
@@ -434,12 +438,14 @@ export default {
       try {
         let hotId = await this.getHotIdFromTabId(tabId)
         this.currentHotId = hotId
+        console.log(`current Hot id is: ${this.currentHotId}`)
         this.reselectHotCell()
       } catch (err) {
         console.error('Problem with getting hot id from watched tab', err)
       }
       this.closeMessages()
       this.sendErrorsToErrorsWindow()
+      console.log('hello active tab 2...')
     },
     messages: function() {
       if (this.messages) {
@@ -449,6 +455,11 @@ export default {
   },
   mounted: function() {
     let self = this
+
+    this.$subscribeTo(allTableLocks$, async function(allTablesLocks) {
+      self.isLocked = _.includes(LockProperties.getLockedTables(), hotId)
+      ipc.send('hasLockedColumns', self.isLocked)
+    })
     // request may be coming from another page - get focus first
     ipc.on('showErrorCell', async function(event, arg) {
       await ipc.send('focusMainWindow')
@@ -538,6 +549,7 @@ export default {
     })
   },
   beforeCreate: function() {
+    let self = this
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
       let hot = HotRegister.getInstance(hotId)
       if (hot) {
@@ -545,6 +557,9 @@ export default {
       }
       ipc.send('hasCaseSensitiveHeader', isCaseSensitive(hotId))
       remote.getGlobal('tab').activeHotId = hotId
+      // LockProperties.trigger()
+      self.isLocked = _.includes(LockProperties.getLockedTables(), hotId)
+      ipc.send('hasLockedColumns', self.isLocked)
     })
     onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
   },
@@ -561,7 +576,6 @@ export default {
     })
     this.pushDefaultPackageProperties()
     ipc.send('closedFindReplace')
-    ipc.send('hasLockedColumns', false)
   },
   updated: function() {
     if (this.loadingDataMessage && this.loadingDataMessage.length > 0) {
