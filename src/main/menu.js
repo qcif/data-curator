@@ -4,6 +4,7 @@ import { createWindowTab, focusMainWindow } from './windows.js'
 import { importExcel } from './excel.js'
 import { showKeyboardHelp } from './help.js'
 import { fileFormats } from '../renderer/file-formats.js'
+import { sharedMenus } from '../renderer/menu.js'
 import { shell, Menu } from 'electron'
 
 class AppMenu {
@@ -114,40 +115,40 @@ class AppMenu {
           {
             type: 'separator'
           }, {
-            label: 'Insert Row Above',
-            accelerator: 'CmdOrCtrl+I',
+            label: sharedMenus.insertRowAbove.label,
+            accelerator: sharedMenus.insertRowAbove.accelerator,
             click () {
               webContents().send('insertRowAbove')
             }
           }, {
-            label: 'Insert Row Below',
-            accelerator: 'CmdOrCtrl+K',
+            label: sharedMenus.insertRowBelow.label,
+            accelerator: sharedMenus.insertRowBelow.accelerator,
             click () {
               webContents().send('insertRowBelow')
             }
           }, {
             type: 'separator'
           }, {
-            label: 'Insert Column Before',
-            accelerator: 'CmdOrCtrl+J',
+            label: sharedMenus.insertColumnBefore.label,
+            accelerator: sharedMenus.insertColumnBefore.accelerator,
             click () {
-              webContents().send('insertColumnLeft')
+              webContents().send('insertColumnBefore')
             }
           }, {
-            label: 'Insert Column After',
-            accelerator: 'CmdOrCtrl+L',
+            label: sharedMenus.insertColumnAfter.label,
+            accelerator: sharedMenus.insertColumnAfter.accelerator,
             click () {
-              webContents().send('insertColumnRight')
+              webContents().send('insertColumnAfter')
             }
           }, {
             type: 'separator'
           }, {
-            label: 'Remove Row(s)',
+            label: sharedMenus.removeRows.label,
             click () {
               webContents().send('removeRows')
             }
           }, {
-            label: 'Remove Column(s)',
+            label: sharedMenus.removeColumns.label,
             click () {
               webContents().send('removeColumns')
             }
