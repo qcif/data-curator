@@ -88,6 +88,7 @@ Then(/^the (?:new |)tab should have 1 table$/, function () {
     })
 })
 
+// the table should have {int} row by {int} columns
 Then(/^the (?:new |)table (?:should have |has )(\d+) row[s]? by (\d+) column[s]?$/, function (rowCount, colCount) {
   return this.app.client.element('.active .editor.handsontable')
     .elements('.ht_master table tr th')
