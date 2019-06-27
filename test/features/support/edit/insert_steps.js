@@ -17,35 +17,34 @@ Given(/^the user clicks in row (\d+), column (\d+)$/, async function (rowNumber,
   await this.app.webContents.send('selectHotCell', rowNumber, colNumber)
 })
 
-When(/^the user (?:performs a |)right-click[s]?$/, async function () {
-  // by default click in where current cell selection is to avoid unpredictable webdriver behaviour
-  // const result = await applyFnToIdOrClassSelectorWithParent(app, 'click', field, 'input', timeout)
-  // await this.app.client.pause(this.pageTimeout)
-  // return result
-  // await this.app.client.moveTo('.ht_master table')
-  // await this.app.client.pause(this.pageTimeout)
-  await this.app.client.keys('test')
-  await this.app.client.rightClick('.ht_master table')
-  // await this.app.client.rightClick()
+When(/^the user types "(.*?)"?$/, async function(textEntered) {
+  await this.app.client.keys(textEntered)
+  await this.app.client.pause(2000)
 })
 
-// When(/^the user moves mouse?$/, async function () {
-//   // by default click in where current cell selection is to avoid unpredictable webdriver behaviour
-//   await this.app.client.element('.ht_master table').moveTo('.ht_master table tr')
-//   // await this.app.client.rightClick()
-// })
+When(/^the user (?:performs a |)right-click[s]?$/, async function () {
+  await this.app.client.rightClick('.ht_master table')
+})
 
-Then(/^the user clicks (?:on|in) "Insert ([Rr]ow|[Cc]olumn) ([bB]elow|[Aa]bove|[Bb]efore|[Aa]fter)"$/, function (rowOrColumn, place) {
-  console.log('got to here...')
+Then(/^the user clicks (?:on|in) "Insert (Row|Column) (Below|Above|Before|After)"$/, function (rowOrColumn, place) {
+  console.log(`${rowOrColumn} ${place}`)
   return this.app
-    .webContents.send('clickLabelOnContextMenu', 'Insert Row Above')
+    .webContents.send('clickLabelOnContextMenu', `Insert ${rowOrColumn} ${place}`)
+})
+
+Then(/^the text: "(.+?)" should be in row (\d+) column (\d+)$/, async function (expectedText, expectedRow, expectedColumn) {
+  let textFound = await this.app.client.elements(`.ht_master table tr:nth-of-type(${expectedRow}) td:nth-of-type(${expectedColumn})`).getText()
+  let allText = await this.app.client.elements('.ht_master table').getText()
+  expect(textFound).to.equal(allText)
+  expect(textFound).to.equal(expectedText)
+  expect(textFound.length).to.be.greaterThan(0)
 })
 
 Then(/^there should be (\d+) new row[s]? above the current row$/, async function (numberOfNew) {
   let currentRowNumber = await getIndexOfCurrentRowInRows(this.app) + 1
   expect(currentRowNumber).to.equal(this.rowNumber + numberOfNew)
-  // let numberOfRows = await getNumberOfRows(this.app)
-  // expect(numberOfRows).to.equal(this.rowCount + numberOfNew)
+  let numberOfRows = await getNumberOfRows(this.app)
+  expect(numberOfRows).to.equal(this.rowCount + numberOfNew)
 })
 
 Then(/^there should be (\d+) new column[s]? before the current column$/, async function (numberOfNew) {
