@@ -15,7 +15,7 @@
               <li
                 v-for="(menu, index) in toolbarMenus"
                 :key="index"
-                :class="{ 'active': toolbarIndex === index}"
+                :class="{ 'active': toolbarIndex === index, 'disabled':isActiveTabLocked && menu.lockable}"
                 @click="updateToolbarMenu(index)">
                 <a
                   v-tooltip="tooltip(menu.tooltipId)"
@@ -457,7 +457,7 @@ export default {
 
     this.$subscribeTo(allTableLocks$, async function(allTablesLocks) {
       self.isActiveTabLocked = _.includes(allTablesLocks, self.currentHotId)
-      ipc.send('hasLockedColumns', self.isActiveTabLocked)
+      ipc.send('hasLockedActiveTable', self.isActiveTabLocked)
     })
     // request may be coming from another page - get focus first
     ipc.on('showErrorCell', async function(event, arg) {
@@ -1034,6 +1034,9 @@ export default {
       }
     },
     updateToolbarMenu: function(index) {
+      if (this.isActiveTabLocked && this.toolbarMenus[index].lockable) {
+        return false
+      }
       if (this.isSideNavToolbarMenu(index)) {
         this.updateToolbarMenuForSideNav(index)
       } else {
