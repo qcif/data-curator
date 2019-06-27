@@ -1,47 +1,77 @@
-import { insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight, removeRows, removeColumns } from '@/hot.js'
+import { insertRowAbove, insertRowBelow, insertColumnBefore, insertColumnAfter, removeRows, removeColumns } from '@/hot.js'
 import { remote } from 'electron'
 const Menu = remote.Menu
 const MenuItem = remote.MenuItem
 
-var menu = new Menu()
+const sharedMenus = {
+  insertRowAbove: {
+    label: 'Insert Row Above',
+    accelerator: 'CmdOrCtrl+I'
+  },
+  insertRowBelow: {
+    label: 'Insert Row Below',
+    accelerator: 'CmdOrCtrl+K'
+  },
+  insertColumnBefore: {
+    label: 'Insert Column Before',
+    accelerator: 'CmdOrCtrl+J'
+  },
+  insertColumnAfter: {
+    label: 'Insert Column After',
+    accelerator: 'CmdOrCtrl+L'
+  },
+  removeRows: {
+    label: 'Remove Row(s)'
+  },
+  removeColumns: {
+    label: 'Remove Column(s)'
+  }
+}
 
-var rowAbove = new MenuItem({
-  label: 'Insert row above',
+let menu = new Menu()
+
+let rowAbove = new MenuItem({
+  label: sharedMenus.insertRowAbove.label,
+  accelerator: sharedMenus.insertRowAbove.accelerator,
   click: function() {
     insertRowAbove()
   }
 })
 
-var rowBelow = new MenuItem({
-  label: 'Insert row below',
+let rowBelow = new MenuItem({
+  label: sharedMenus.insertRowBelow.label,
+  accelerator: sharedMenus.insertRowBelow.accelerator,
   click: function() {
     insertRowBelow()
   }
 })
 
-var columnLeft = new MenuItem({
-  label: 'Insert column before',
+let columnBefore = new MenuItem({
+  label: sharedMenus.insertColumnBefore.label,
+  accelerator: sharedMenus.insertColumnBefore.accelerator,
+  lockable: true,
   click: function() {
-    insertColumnLeft()
+    insertColumnBefore()
   }
 })
 
-var columnRight = new MenuItem({
-  label: 'Insert column after',
+let columnAfter = new MenuItem({
+  label: sharedMenus.insertColumnAfter.label,
+  accelerator: sharedMenus.insertColumnAfter.accelerator,
   click: function() {
-    insertColumnRight()
+    insertColumnAfter()
   }
 })
 
-var removeRow = new MenuItem({
-  label: 'Remove row(s)',
+let removeRow = new MenuItem({
+  label: sharedMenus.removeRows.label,
   click: function() {
     removeRows()
   }
 })
 
-var removeCol = new MenuItem({
-  label: 'Remove column(s)',
+let removeCol = new MenuItem({
+  label: sharedMenus.removeColumns.label,
   click: function() {
     removeColumns()
   }
@@ -51,12 +81,12 @@ menu.append(new MenuItem({ type: 'separator' }))
 menu.append(rowAbove)
 menu.append(rowBelow)
 menu.append(new MenuItem({ type: 'separator' }))
-menu.append(columnLeft)
-menu.append(columnRight)
+menu.append(columnBefore)
+menu.append(columnAfter)
 menu.append(new MenuItem({ type: 'separator' }))
 menu.append(removeRow)
 menu.append(removeCol)
 
 export {
-  menu
+  menu, sharedMenus
 }

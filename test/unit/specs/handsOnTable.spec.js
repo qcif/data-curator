@@ -242,11 +242,11 @@ describe('hands on table', function () {
     })
 
     describe('Insert columns', function () {
-      it('adds a column to the left (first col)', function () {
+      it('adds a column before (first col)', function () {
         let mock = mockPushColumnIndex(sandbox.mock, 0)
         hot.addHook('afterLoadData', function () {
           hot.selectCell(0, 0, 3, 0) // select whole column
-          hotFunctions.insertColumnLeft()
+          hotFunctions.insertColumnBefore()
           assert.deepEqual(hot.getData(), [
             [
               null,
@@ -286,11 +286,11 @@ describe('hands on table', function () {
         mock.verify()
       })
 
-      it('adds a column to the left (middle)', function () {
+      it('adds a column before (middle)', function () {
         let mock = mockPushColumnIndex(sandbox.mock, 2)
         hot.addHook('afterLoadData', function () {
           hot.selectCell(2, 2, 2, 2) // select only one cell
-          hotFunctions.insertColumnLeft()
+          hotFunctions.insertColumnBefore()
           assert.deepEqual(hot.getData(), [
             [
               '',
@@ -330,11 +330,11 @@ describe('hands on table', function () {
         mock.verify()
       })
 
-      it('adds a column to the left (last col)', function () {
+      it('adds a column before (last col)', function () {
         let mock = mockPushColumnIndex(sandbox.mock, 3)
         hot.addHook('afterLoadData', function () {
           hot.selectCell(1, 3, 2, 4) // select partial rectangular column
-          hotFunctions.insertColumnLeft()
+          hotFunctions.insertColumnBefore()
           assert.deepEqual(hot.getData(), [
             [
               '',
@@ -374,11 +374,11 @@ describe('hands on table', function () {
         mock.verify()
       })
 
-      it('adds a column to the right (first col)', function () {
+      it('adds a column after (first col)', function () {
         let mock = mockPushColumnIndex(sandbox.mock, 1)
         hot.addHook('afterLoadData', function () {
           hot.selectCell(0, 0, 3, 0) // select whole column
-          hotFunctions.insertColumnRight()
+          hotFunctions.insertColumnAfter()
           assert.deepEqual(hot.getData(), [
             [
               '', null, 'Ford', 'Volvo', 'Toyota', 'Honda'
@@ -413,11 +413,11 @@ describe('hands on table', function () {
         mock.verify()
       })
 
-      it('adds a column to the right (middle)', function () {
+      it('adds a column after (middle)', function () {
         let mock = mockPushColumnIndex(sandbox.mock, 2)
         hot.addHook('afterLoadData', function () {
           hot.selectCell(1, 1, 1, 1) // select only one cell
-          hotFunctions.insertColumnRight()
+          hotFunctions.insertColumnAfter()
           assert.deepEqual(hot.getData(), [
             [
               '',
@@ -457,11 +457,11 @@ describe('hands on table', function () {
         mock.verify()
       })
 
-      it('adds a column to the right (last col)', function () {
+      it('adds a column after (last col)', function () {
         let mock = mockPushColumnIndex(sandbox.mock, 5)
         hot.addHook('afterLoadData', function () {
           hot.selectCell(1, 3, 2, 4) // select a rectangular range
-          hotFunctions.insertColumnRight()
+          hotFunctions.insertColumnAfter()
           assert.deepEqual(hot.getData(), [
             [
               '',
