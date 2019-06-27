@@ -557,9 +557,7 @@ export default {
       }
       ipc.send('hasCaseSensitiveHeader', isCaseSensitive(hotId))
       remote.getGlobal('tab').activeHotId = hotId
-      // LockProperties.trigger()
-      self.isLocked = _.includes(LockProperties.getLockedTables(), hotId)
-      ipc.send('hasLockedColumns', self.isLocked)
+      LockProperties.trigger()
     })
     onNextHotIdFromTabRx(getHotIdFromTabIdFunction())
   },
