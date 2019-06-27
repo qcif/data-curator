@@ -1,4 +1,4 @@
-import { HotRegister, insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight, removeRows, removeColumns } from '@/hot.js'
+import { HotRegister, insertRowAbove, insertRowBelow, insertColumnBefore, insertColumnAfter, removeRows, removeColumns } from '@/hot.js'
 import { loadDataIntoHot, saveDataToFile } from '@/data-actions.js'
 import { ipcRenderer as ipc, remote } from 'electron'
 import { isCaseSensitive } from '@/frictionlessUtilities'
@@ -109,12 +109,12 @@ ipc.on('closeContextMenu', function() {
   menu.closePopUp(getWindow('home'))
 })
 
-ipc.on('insertColumnLeft', function() {
-  insertColumnLeft()
+ipc.on('insertColumnBefore', function() {
+  insertColumnBefore()
 })
 
-ipc.on('insertColumnRight', function() {
-  insertColumnRight()
+ipc.on('insertColumnAfter', function() {
+  insertColumnAfter()
 })
 
 ipc.on('removeRows', function() {

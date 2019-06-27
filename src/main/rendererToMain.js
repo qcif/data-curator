@@ -1,4 +1,4 @@
-import { ipcMain as ipc, dialog } from 'electron'
+import { ipcMain as ipc, dialog, Menu } from 'electron'
 import { showErrors } from './errors.js'
 import {
   getMenu,
@@ -6,7 +6,8 @@ import {
   clickLabelsOnMenu,
   disableAllSubMenuItemsFromMenuObject,
   enableSubMenuItemsFromMenuObject,
-  enableAllSubMenuItemsFromMenuLabel
+  enableAllSubMenuItemsFromMenuLabel,
+  disableEnableBasedOnAttributeAndConditionFromLabels
 } from './menuUtils.js'
 import { focusMainWindow, closeSecondaryWindow } from './windows.js'
 import { loadPackageJson, loadResourceDataFromPackageUrl } from './url.js'
@@ -25,6 +26,13 @@ ipc.on('hasCaseSensitiveHeader', (event, arg) => {
 ipc.on('hasHeaderRow', (event, arg) => {
   let subMenu = getSubMenuFromMenu('Tools', 'Header Row')
   subMenu.checked = arg
+})
+
+ipc.on('hasLockedActiveTable', (event, arg) => {
+  let lockedSubMenu = getSubMenuFromMenu('Tools', 'Lock Column Properties')
+  lockedSubMenu.checked = arg
+  // for locked table (ie: lock is enabled), value is true, so any menu 'enabled': set to false
+  disableEnableBasedOnAttributeAndConditionFromLabels(['Edit', 'Tools'], 'lockable', !arg)
 })
 
 ipc.on('showErrorsWindow', (event, arg) => {

@@ -3,8 +3,9 @@ import { showUrlDialog } from './url.js'
 import { createWindowTab, focusMainWindow } from './windows.js'
 import { importExcel } from './excel.js'
 import { showKeyboardHelp } from './help.js'
-import { fileFormats } from '../renderer/file-formats.js'
+import { sharedMenus, fileFormats } from '../renderer/sharedWithMain.js'
 import { shell, Menu } from 'electron'
+import _ from 'lodash'
 
 class AppMenu {
   initTemplate () {
@@ -113,45 +114,19 @@ class AppMenu {
           },
           {
             type: 'separator'
-          }, {
-            label: 'Insert Row Above',
-            accelerator: 'CmdOrCtrl+I',
-            click () {
-              webContents().send('insertRowAbove')
-            }
-          }, {
-            label: 'Insert Row Below',
-            accelerator: 'CmdOrCtrl+K',
-            click () {
-              webContents().send('insertRowBelow')
-            }
-          }, {
+          },
+          _.assign({}, sharedMenus.insertRowAbove, { click() { webContents().send('insertRowAbove') } }),
+          _.assign({}, sharedMenus.insertRowBelow, { click() { webContents().send('insertRowBelow') } }),
+          {
             type: 'separator'
-          }, {
-            label: 'Insert Column Before',
-            accelerator: 'CmdOrCtrl+J',
-            click () {
-              webContents().send('insertColumnLeft')
-            }
-          }, {
-            label: 'Insert Column After',
-            accelerator: 'CmdOrCtrl+L',
-            click () {
-              webContents().send('insertColumnRight')
-            }
-          }, {
+          },
+          _.assign({}, sharedMenus.insertColumnBefore, { click() { webContents().send('insertColumnBefore') } }),
+          _.assign({}, sharedMenus.insertColumnAfter, { click() { webContents().send('insertColumnAfter') } }),
+          {
             type: 'separator'
-          }, {
-            label: 'Remove Row(s)',
-            click () {
-              webContents().send('removeRows')
-            }
-          }, {
-            label: 'Remove Column(s)',
-            click () {
-              webContents().send('removeColumns')
-            }
-          }
+          },
+          _.assign({}, sharedMenus.removeRows, { click() { webContents().send('removeRows') } }),
+          _.assign({}, sharedMenus.removeColumns, { click() { webContents().send('removeColumns') } })
         ]
       },
       {
@@ -233,6 +208,7 @@ class AppMenu {
           {
             label: 'Guess Column Properties',
             accelerator: 'Shift+CmdOrCtrl+G',
+            lockable: true,
             click: function () {
               webContents().send('guessColumnProperties')
             }
@@ -273,6 +249,18 @@ class AppMenu {
           }, {
             type: 'separator'
           }, {
+            label: 'Lock Column Properties',
+            accelerator: 'Shift+CmdOrCtrl+L',
+            type: 'checkbox',
+            checked: false,
+            click (menuItem) {
+              // revert 'checked' toggle so only controlled by event
+              menuItem.checked = !menuItem.checked
+              webContents().send('toggleLockColumnProperties')
+            }
+          }, {
+            type: 'separator'
+          }, {
             label: 'Export Data Package...',
             accelerator: 'Shift+CmdOrCtrl+X',
             click () {
@@ -280,8 +268,7 @@ class AppMenu {
             }
           }
         ]
-      },
-      {
+      }, {
         label: 'Window',
         submenu: [
           {
@@ -382,7 +369,7 @@ class AppMenu {
           }, {
             label: 'Preferences',
             accelerator: 'CmdOrCtrl+,',
-            click: function() {
+            click: function () {
               webContents().send('showSidePanel', 'preferences')
             }
           }, {
@@ -426,7 +413,7 @@ class AppMenu {
       }, {
         label: 'Settings',
         accelerator: 'CmdOrCtrl+,',
-        click: function() {
+        click: function () {
           webContents().send('showSidePanel', 'preferences', 'settings')
         }
       })

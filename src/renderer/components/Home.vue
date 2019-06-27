@@ -15,7 +15,7 @@
               <li
                 v-for="(menu, index) in toolbarMenus"
                 :key="index"
-                :class="{ 'active': toolbarIndex === index}"
+                :class="{ 'active': toolbarIndex === index, 'disabled':isActiveTabLocked && menu.lockable}"
                 @click="updateToolbarMenu(index)">
                 <a
                   v-tooltip="tooltip(menu.tooltipId)"
@@ -77,6 +77,7 @@
             :adjustSidenavFormHeight="adjustSidenavFormHeight"
             :sideNavFormHeight="sideNavFormHeight"
             :cIndex="currentColumnIndex"
+            :isLocked="isActiveTabLocked"
           />
         </transition>
         <div
@@ -264,6 +265,9 @@ import {
   getWindow
 } from '../index.js'
 import {
+  disableEnableContextMenu
+} from '../menu.js'
+import {
   HotRegister,
   getColumnCount,
   getCurrentColumnIndexOrMin
@@ -303,7 +307,8 @@ import {
   hotIdFromTab$,
   provenanceErrors$,
   errorFeedback$,
-  updateHotDimensions$
+  updateHotDimensions$,
+  allTableLocks$
 } from '@/rxSubject.js'
 import VueRx from 'vue-rx'
 import {
@@ -321,6 +326,7 @@ import Vue from 'vue'
 import {
   toolbarMenus
 } from '@/toolbarMenus'
+import { LockProperties } from '@/lockProperties'
 Vue.use(AsyncComputed)
 Vue.use(VueRx, {
   Subscription
@@ -396,7 +402,8 @@ export default {
         key: 'profile',
         value: 'tabular-data-package'
       }],
-      reportSiblingClasses: ['main-bottom-panel', 'main-middle-panel']
+      reportSiblingClasses: ['main-bottom-panel', 'main-middle-panel'],
+      isActiveTabLocked: false
     }
   },
   computed: {
@@ -440,6 +447,7 @@ export default {
       }
       this.closeMessages()
       this.sendErrorsToErrorsWindow()
+      LockProperties.trigger()
     },
     messages: function() {
       if (this.messages) {
@@ -449,6 +457,12 @@ export default {
   },
   mounted: function() {
     let self = this
+
+    this.$subscribeTo(allTableLocks$, async function(allTablesLocks) {
+      self.isActiveTabLocked = _.includes(allTablesLocks, self.currentHotId)
+      disableEnableContextMenu(self.isActiveTabLocked)
+      ipc.send('hasLockedActiveTable', self.isActiveTabLocked)
+    })
     // request may be coming from another page - get focus first
     ipc.on('showErrorCell', async function(event, arg) {
       await ipc.send('focusMainWindow')
@@ -538,6 +552,7 @@ export default {
     })
   },
   beforeCreate: function() {
+    let self = this
     this.$subscribeTo(hotIdFromTab$, function(hotId) {
       let hot = HotRegister.getInstance(hotId)
       if (hot) {
@@ -1023,6 +1038,9 @@ export default {
       }
     },
     updateToolbarMenu: function(index) {
+      if (this.isActiveTabLocked && this.toolbarMenus[index].lockable) {
+        return false
+      }
       if (this.isSideNavToolbarMenu(index)) {
         this.updateToolbarMenuForSideNav(index)
       } else {

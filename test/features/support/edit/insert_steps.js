@@ -7,6 +7,7 @@ import {
   getNumberOfRows
 } from '../page-objects/dimensions'
 import { activeTableSelector } from '../page-objects/selectors'
+import { applyFnToIdOrClassSelectorWithParent } from '../page-objects/io'
 
 Given(/^the user clicks in row (\d+), column (\d+)$/, async function (rowNumber, colNumber) {
   this.rowNumber = rowNumber
@@ -16,23 +17,34 @@ Given(/^the user clicks in row (\d+), column (\d+)$/, async function (rowNumber,
   await this.app.webContents.send('selectHotCell', rowNumber, colNumber)
 })
 
-When(/^the user (?:performs a |)right-click[s]?$/, function () {
-  // by default click in where current cell selection is to avoid unpredictable webdriver behaviour
-  return this.app.client
-    .element(activeTableSelector)
-    .element('.ht_master table tr td.current.highlight')
+When(/^the user types "(.*?)"?$/, async function(textEntered) {
+  await this.app.client.keys(textEntered)
+  await this.app.client.pause(2000)
 })
 
-Then(/^the user clicks (?:on|in) "Insert ([Rr]ow|[Cc]olumn) ([bB]elow|[Aa]bove|[Bb]efore|[Aa]fter)"$/, function (rowOrColumn, place) {
+When(/^the user (?:performs a |)right-click[s]?$/, async function () {
+  await this.app.client.rightClick('.ht_master table')
+})
+
+Then(/^the user clicks (?:on|in) "Insert (Row|Column) (Below|Above|Before|After)"$/, function (rowOrColumn, place) {
+  console.log(`${rowOrColumn} ${place}`)
   return this.app
-    .webContents.send('clickLabelOnContextMenu', `Insert ${rowOrColumn.toLowerCase()} ${place.toLowerCase()}`)
+    .webContents.send('clickLabelOnContextMenu', `Insert ${rowOrColumn} ${place}`)
+})
+
+Then(/^the text: "(.+?)" should be in row (\d+) column (\d+)$/, async function (expectedText, expectedRow, expectedColumn) {
+  let textFound = await this.app.client.elements(`.ht_master table tr:nth-of-type(${expectedRow}) td:nth-of-type(${expectedColumn})`).getText()
+  let allText = await this.app.client.elements('.ht_master table').getText()
+  expect(textFound).to.equal(allText)
+  expect(textFound).to.equal(expectedText)
+  expect(textFound.length).to.be.greaterThan(0)
 })
 
 Then(/^there should be (\d+) new row[s]? above the current row$/, async function (numberOfNew) {
   let currentRowNumber = await getIndexOfCurrentRowInRows(this.app) + 1
   expect(currentRowNumber).to.equal(this.rowNumber + numberOfNew)
-  // let numberOfRows = await getNumberOfRows(this.app)
-  // expect(numberOfRows).to.equal(this.rowCount + numberOfNew)
+  let numberOfRows = await getNumberOfRows(this.app)
+  expect(numberOfRows).to.equal(this.rowCount + numberOfNew)
 })
 
 Then(/^there should be (\d+) new column[s]? before the current column$/, async function (numberOfNew) {
