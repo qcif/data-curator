@@ -498,6 +498,9 @@ export default {
     ipc.on('addTabWithFormattedDataAndDescriptor', function(e, data, format, descriptor) {
       self.addTab(data, format, descriptor)
     })
+    ipc.on('addSchemaToTabAndLock', function(e, schema) {
+      self.safeInitHotColumnPropertiesFromSchema(schema)
+    })
     ipc.on('addTabWithFormattedDataFile', function(e, data, format, filename) {
       self.addTabWithFilename(data, format, filename)
     })
@@ -911,6 +914,33 @@ export default {
       let tableHotIdProperties = {}
       tableHotIdProperties[hotId] = tableProperties
       this.resetTablePropertiesToObject(tableHotIdProperties)
+    },
+
+    safeInitHotColumnPropertiesFromSchema: function(schema) {
+      try {
+        const schemaFieldsCount = _.get(schema, 'fields', 0).length
+        const columnCount = getColumnCount()
+        if (this.currentHotId && schemaFieldsCount === columnCount) {
+          this.initHotColumnPropertiesFromSchema(this.currentHotId, schema)
+          // hot rendering problem when tabs opened quickly - https://github.com/ODIQueensland/data-curator/issues/803- workaround as selecting table re-renders
+          getCurrentColumnIndexOrMin()
+          updateHotDimensions$.next()
+          LockProperties.toggleLockColumnProperties()
+          this.addImportDataPropertiesError('Import Column properties success', `${schemaFieldsCount} schema fields were imported.`)
+        } else {
+          const errorMessage = `Unable to import ${schemaFieldsCount} schema fields to a ${columnCount}-column table`
+          this.addImportDataPropertiesError('Validation Error', errorMessage)
+        }
+      } catch (error) {
+        console.error('ERROR: Import Column Properties: ', error)
+        this.addImportDataPropertiesError('Import Column properties error', 'The column properties could not be imported.')
+      }
+    },
+    addImportDataPropertiesError: function(title, message) {
+      this.messagesTitle = title
+      this.messages = message
+      // as there's only 1 message, simpler to send as feedback (without rows/cols for error)
+      this.messagesType = 'feedback'
     },
     initHotColumnPropertiesFromSchema: function(hotId, schema) {
       // TODO : move this to similar logic in importDataPackage to tidy up
