@@ -129,6 +129,28 @@ const HotRegister = {
   }
 }
 
+function lockedTabFunction({ shiftKey }) {
+  return { row: 0, col: 1 }
+}
+
+function defaultTabFunction({ shiftKey }) {
+  let hot = HotRegister.getActiveInstance()
+  if (!shiftKey) {
+    const selection = hot.getSelectedLast()
+    let next = hot.getCell(selection[0], selection[1] + 1)
+    if (next == null) {
+      hot.alter('insert_col', selection[1] + 1)
+    }
+  }
+  return { row: 0, col: 1 }
+}
+
+export function resetTabMoves(isActiveTabLocked) {
+  let hot = HotRegister.getActiveInstance()
+  hot.updateSettings({ tabMoves: isActiveTabLocked ? lockedTabFunction
+    : defaultTabFunction })
+}
+
 export function getCurrentColumnIndexOrMin() {
   let activeHot = HotRegister.getActiveInstance()
   let currentCell = activeHot.getSelectedLast()
