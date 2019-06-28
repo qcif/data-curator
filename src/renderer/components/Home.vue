@@ -270,7 +270,8 @@ import {
 import {
   HotRegister,
   getColumnCount,
-  getCurrentColumnIndexOrMin
+  getCurrentColumnIndexOrMin,
+  resetTabMoves
 } from '../hot.js'
 import about from '../partials/About'
 import preferences from '../partials/Preferences'
@@ -461,6 +462,7 @@ export default {
     this.$subscribeTo(allTableLocks$, async function(allTablesLocks) {
       self.isActiveTabLocked = _.includes(allTablesLocks, self.currentHotId)
       disableEnableContextMenu(self.isActiveTabLocked)
+      resetTabMoves(self.isActiveTabLocked)
       ipc.send('hasLockedActiveTable', self.isActiveTabLocked)
     })
     // request may be coming from another page - get focus first
