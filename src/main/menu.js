@@ -1,5 +1,5 @@
 import { openFile, saveFileAs, saveFile, importDataPackage } from './file.js'
-import { showUrlDialog } from './url.js'
+import { showUrlDialogForPackage, showUrlDialogForResourceSchema } from './url.js'
 import { createWindowTab, focusMainWindow } from './windows.js'
 import { importExcel } from './excel.js'
 import { showKeyboardHelp } from './help.js'
@@ -54,6 +54,14 @@ class AppMenu {
             //            enabled: false
             //          }
             //        ]
+            type: 'separator'
+          }, {
+            label: 'Import Column Properties',
+            accelerator: 'Shift+CmdOrCtrl+I',
+            click () {
+              showUrlDialogForResourceSchema()
+            }
+          }, {
             type: 'separator'
           }, {
             label: 'Save',
@@ -334,8 +342,7 @@ class AppMenu {
       label: 'zip from URL...',
       enabled: true,
       click () {
-        // downloadDataPackageJson()
-        showUrlDialog()
+        showUrlDialogForPackage()
       }
     }, {
       label: 'zip from file...',
@@ -347,8 +354,7 @@ class AppMenu {
       label: 'json from URL...',
       enabled: true,
       click () {
-        // downloadDataPackageJson()
-        showUrlDialog()
+        showUrlDialogForPackage()
       }
     }]
   }
