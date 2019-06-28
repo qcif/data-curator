@@ -5,6 +5,7 @@ import { ipcMain as ipc, dialog } from 'electron'
 import { focusOrNewSecondaryWindow, focusMainWindow, closeWindowSafely } from './windows'
 import { disableOpenFileItems, enableOpenFileItems } from './menuUtils.js'
 import { Package } from 'datapackage'
+import { Schema } from 'tableschema'
 import tmp from 'tmp'
 import _ from 'lodash'
 import { dataResourceToFormat } from '../renderer/file-formats.js'
@@ -12,9 +13,16 @@ import { dataResourceToFormat } from '../renderer/file-formats.js'
 // auto cleanup
 tmp.setGracefulCleanup()
 
+export function showUrlDialogForResourceSchema() {
+  showUrlDialogForCallback(handleJsonForResourceSchema)
+}
+
 // TODO: handle errors by rejecting promises and throwing back up stack
-export function showUrlDialog() {
-  // let labels = ['zip from URL....', 'zip from file...', 'json from URL...']
+export function showUrlDialogForPackage() {
+  showUrlDialogForCallback(handleZipOrJsonForPackage)
+}
+
+export function showUrlDialogForCallback(callback, errorMessage='There was a problem loading package or resource(s)') {
   disableOpenFileItems()
   let browserWindow = focusOrNewSecondaryWindow('urldialog', { width: 300, height: 150, modal: true, alwaysOnTop: true })
   browserWindow.on('closed', () => {
@@ -27,9 +35,9 @@ export function showUrlDialog() {
     ipc.once('urlSubmitted', (e, urlText) => {
       closeWindowSafely(browserWindow)
       try {
-        handleZipOrJson(urlText)
+        callback(urlText)
       } catch (error) {
-        console.error(`There was a problem loading package or resource(s)`, error)
+        console.error(errorMessage, error)
         const mainWindow = focusMainWindow()
         mainWindow.webContents.send('closeLoadingScreen')
       }
@@ -37,13 +45,21 @@ export function showUrlDialog() {
   })
 }
 
-function handleZipOrJson(urlText) {
+function handleZipOrJsonForPackage(urlText) {
   if (_.endsWith(urlText, '.json')) {
     loadPackageFromJsonUrl(urlText)
   } else if (_.endsWith(urlText, '.zip')) {
     importDataPackageZipFromUrl(urlText)
   } else {
-    showUrlPathNotSupportedMessage()
+    showUrlPathNotSupportedMessage(urlText, '".json" or ".zip"')
+  }
+}
+
+function handleJsonForResourceSchema(urlText) {
+  if (_.endsWith(urlText, '.json')) {
+    loadResourceSchemaFromJsonUrl(urlText)
+  } else {
+    showUrlPathNotSupportedMessage(urlText, '".json"')
   }
 }
 
@@ -95,24 +111,7 @@ function handleDownloadedZip(zipPath, mainWindow) {
 
 async function loadPackageFromJsonUrl(urlText) {
   const mainWindow = focusMainWindow()
-  mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading package URL..')
-  const dataPackageJson = await loadPackageJson(urlText, mainWindow)
-  if (!dataPackageJson) {
-    dialog.showMessageBox(mainWindow, {
-      type: 'warning',
-      title: `Unable to load Data Package`,
-      message:
-        `The data package, ${urlText}, could not be loaded.
-  If the data package is a URL, please check that the URL exists.`
-    })
-    mainWindow.webContents.send('closeLoadingScreen')
-    return
-  }
-  if (!dataPackageJson.valid) {
-    showInvalidMessage(urlText, mainWindow)
-    mainWindow.webContents.send('closeLoadingScreen')
-    return
-  }
+  const dataPackageJson = await loadGenericFrictionlessFromJsonUrl(urlText, loadPackageJson, 'Data Package')
   try {
     await loadResources(dataPackageJson, mainWindow)
   } catch (error) {
@@ -120,23 +119,61 @@ async function loadPackageFromJsonUrl(urlText) {
   }
 }
 
-function showInvalidMessage(urlText, mainWindow) {
+async function loadResourceSchemaFromJsonUrl(urlText) {
+  try {
+    const resourceSchema = await loadGenericFrictionlessFromJsonUrl(urlText, loadTableResourceSchemaJson, 'Table Resource Schema')
+    const mainWindow = focusMainWindow()
+    mainWindow.webContents.send('closeLoadingScreen')
+    if (resourceSchema && resourceSchema.descriptor) {
+      const mainWindow = focusMainWindow()
+      mainWindow.webContents.send('addSchemaToTabAndLock', resourceSchema.descriptor)
+    }
+  } catch (error) {
+    console.error('There was a problem loading resource schema from json', error)
+  }
+}
+
+// atm, 'types' are only : Data Package or Resource Schema
+async function loadGenericFrictionlessFromJsonUrl(urlText, callback, frictionlessType) {
+  const mainWindow = focusMainWindow()
+  mainWindow.webContents.send('closeAndshowLoadingScreen', `Loading ${frictionlessType} URL..`)
+  const frictionlessTypeJson = await callback(urlText, mainWindow)
+  if (!frictionlessTypeJson) {
+    dialog.showMessageBox(mainWindow, {
+      type: 'warning',
+      title: `Unable to load ${frictionlessType}`,
+      message:
+        `The ${frictionlessType}, ${urlText}, could not be loaded.
+  If the ${frictionlessType} is a URL, please check that the URL exists.`
+    })
+    mainWindow.webContents.send('closeLoadingScreen')
+    return
+  }
+  if (!frictionlessTypeJson.valid) {
+    showInvalidMessage(urlText, mainWindow, frictionlessType)
+    mainWindow.webContents.send('closeLoadingScreen')
+    return
+  }
+  return frictionlessTypeJson
+}
+
+function showInvalidMessage(urlText, mainWindow, frictionlessType) {
   dialog.showMessageBox(mainWindow, {
     type: 'warning',
-    title: `Invalid Data Package`,
+    title: `Invalid ${frictionlessType}`,
     message:
-      `The data package, at ${urlText}, is not valid. Please refer to
+      `The ${frictionlessType}, at ${urlText}, is not valid. Please refer to
   https://frictionlessdata.io/specs/
   for more information.`
   })
 }
 
-function showUrlPathNotSupportedMessage(urlText, mainWindow) {
-  dialog.showMessageBox(mainWindow, {
+function showUrlPathNotSupportedMessage(urlText, supportedFileExtensions) {
+  dialog.showMessageBox(focusMainWindow(), {
     type: 'warning',
     title: `Unsupported URL Path extension`,
     message:
-      `Data Curator, does not support downloading ${urlText}, as the path does not end in ".zip" or ".json"`
+      `Data Curator, does not support downloading ${urlText}, as the path does not end in ${supportedFileExtensions}`
   })
 }
 
@@ -150,7 +187,8 @@ export async function loadPackageJson(json) {
   }
 }
 
-async function loadResources(dataPackageJson, mainWindow) {
+async function loadResources(dataPackageJson) {
+  const mainWindow = focusMainWindow()
   let packageProperties = _.assign({}, dataPackageJson.descriptor)
   _.unset(packageProperties, 'resources')
   mainWindow.webContents.send('resetPackagePropertiesToObject', packageProperties)
@@ -163,6 +201,15 @@ async function loadResources(dataPackageJson, mainWindow) {
     // datapackage-js separates headers - add back to use default DC behaviour
     let dataWithHeaders = _.concat([dataResource.headers], data)
     mainWindow.webContents.send('addTabWithFormattedDataAndDescriptor', dataWithHeaders, format, dataResource.descriptor)
+  }
+}
+
+async function loadTableResourceSchemaJson(json) {
+  try {
+    const resourceSchema = await Schema.load(json)
+    return resourceSchema
+  } catch (error) {
+    console.error(`There was a problem loading the table resource schema: ${json}`, error)
   }
 }
 
