@@ -925,7 +925,7 @@ export default {
           // hot rendering problem when tabs opened quickly - https://github.com/ODIQueensland/data-curator/issues/803- workaround as selecting table re-renders
           getCurrentColumnIndexOrMin()
           updateHotDimensions$.next()
-          LockProperties.toggleLockColumnProperties()
+          LockProperties.lockColumnProperties()
           this.addImportDataPropertiesError('Import Column properties success', `${schemaFieldsCount} schema fields were imported.`)
         } else {
           const errorMessage = `Unable to import ${schemaFieldsCount} schema fields to a ${columnCount}-column table`
