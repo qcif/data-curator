@@ -5,6 +5,18 @@ import { allTablesAllColumnsFromSchema$, allTablesAllColumnNames$, afterSetDataA
 
 const _hots = {}
 
+function defaultTabFunction({ shiftKey }) {
+  let hot = HotRegister.getActiveInstance()
+  if (!shiftKey) {
+    const selection = hot.getSelectedLast()
+    let next = hot.getCell(selection[0], selection[1] + 1)
+    if (next == null) {
+      hot.alter('insert_col', selection[1] + 1)
+    }
+  }
+  return { row: 0, col: 1 }
+}
+
 const HotRegister = {
   register(container, listeners={}, searchParameters = false) {
     let hot = new Handsontable(container, {
@@ -33,16 +45,7 @@ const HotRegister = {
       },
       undo: true,
       search: searchParameters,
-      tabMoves({ shiftKey }) {
-        if (!shiftKey) {
-          const selection = hot.getSelectedLast()
-          let next = hot.getCell(selection[0], selection[1] + 1)
-          if (next == null) {
-            hot.alter('insert_col', selection[1] + 1)
-          }
-        }
-        return { row: 0, col: 1 }
-      },
+      tabMoves: defaultTabFunction,
       afterInit() {
         if (typeof listeners.loadingStartListener !== 'undefined') {
           listeners.loadingStartListener('Loading data. Please wait...')
@@ -130,18 +133,6 @@ const HotRegister = {
 }
 
 function lockedTabFunction({ shiftKey }) {
-  return { row: 0, col: 1 }
-}
-
-function defaultTabFunction({ shiftKey }) {
-  let hot = HotRegister.getActiveInstance()
-  if (!shiftKey) {
-    const selection = hot.getSelectedLast()
-    let next = hot.getCell(selection[0], selection[1] + 1)
-    if (next == null) {
-      hot.alter('insert_col', selection[1] + 1)
-    }
-  }
   return { row: 0, col: 1 }
 }
 
