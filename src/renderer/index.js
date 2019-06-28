@@ -132,10 +132,6 @@ ipc.on('toggleCaseSensitiveHeader', function() {
   ipc.send('hasCaseSensitiveHeader', toggledCase)
 })
 
-ipc.on('importColumnProperties', function() {
-  console.log('arrived')
-})
-
 export function closeSecondaryWindow(windowName) {
   ipc.sendSync('closeSecondaryWindow', windowName)
 }
