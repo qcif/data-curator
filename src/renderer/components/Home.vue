@@ -270,7 +270,8 @@ import {
 import {
   HotRegister,
   getColumnCount,
-  getCurrentColumnIndexOrMin
+  getCurrentColumnIndexOrMin,
+  resetTabMoves
 } from '../hot.js'
 import about from '../partials/About'
 import preferences from '../partials/Preferences'
@@ -308,7 +309,8 @@ import {
   provenanceErrors$,
   errorFeedback$,
   updateHotDimensions$,
-  allTableLocks$
+  allTableLocks$,
+  allTablesAllColumnNames$
 } from '@/rxSubject.js'
 import VueRx from 'vue-rx'
 import {
@@ -412,7 +414,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId', 'getHotSelection']),
+    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId', 'getHotSelection', 'getAllHotTablesColumnNames']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -461,6 +463,7 @@ export default {
     this.$subscribeTo(allTableLocks$, async function(allTablesLocks) {
       self.isActiveTabLocked = _.includes(allTablesLocks, self.currentHotId)
       disableEnableContextMenu(self.isActiveTabLocked)
+      resetTabMoves(self.isActiveTabLocked)
       ipc.send('hasLockedActiveTable', self.isActiveTabLocked)
     })
     // request may be coming from another page - get focus first
@@ -571,7 +574,7 @@ export default {
     ipc.on('guessColumnProperties', function(event, arg) {
       self.inferColumnProperties()
     })
-    ipc.on('importDataPackage', function(event, filePath, isTransient = false) {
+    ipc.on('importDataPackageFromFile', function(event, filePath, isTransient = false) {
       self.importDataPackage(filePath, isTransient)
     })
     ipc.on('validateTable', function(event, arg) {
@@ -925,7 +928,9 @@ export default {
           // hot rendering problem when tabs opened quickly - https://github.com/ODIQueensland/data-curator/issues/803- workaround as selecting table re-renders
           getCurrentColumnIndexOrMin()
           updateHotDimensions$.next()
-          LockProperties.toggleLockColumnProperties()
+          LockProperties.lockColumnProperties()
+          // trigger column properties refresh (columns might already be opened)
+          allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
           this.addImportDataPropertiesError('Import Column properties success', `${schemaFieldsCount} schema fields were imported.`)
         } else {
           const errorMessage = `Unable to import ${schemaFieldsCount} schema fields to a ${columnCount}-column table`
@@ -943,7 +948,7 @@ export default {
       this.messagesType = 'feedback'
     },
     initHotColumnPropertiesFromSchema: function(hotId, schema) {
-      // TODO : move this to similar logic in importDataPackage to tidy up
+      // TODO : move this to similar logic in importDataPackageFromFile to tidy up
       if (!_.isEmpty(schema)) {
         let columnHotIdProperties = {}
         columnHotIdProperties[hotId] = [...schema.fields]
