@@ -12,23 +12,26 @@ import { loadPackageFromJson, loadResourceSchemaFromJson } from './loadFrictionl
 // auto cleanup
 tmp.setGracefulCleanup()
 
+const defaultDialogTitle = 'Data Curator - '
+
 export function showUrlDialogForResourceSchema() {
-  let browserWindow = createUrlDialogWindow()
+  let browserWindow = createUrlDialogWindow('Open Table Resource Schema URL')
   processUrlDialogForCallback(browserWindow, handleJsonForResourceSchema)
 }
 
 // TODO: handle errors by rejecting promises and throwing back up stack
 export function showUrlDialogForPackage() {
   disableOpenFileItems()
-  let browserWindow = createUrlDialogWindow()
+  let browserWindow = createUrlDialogWindow('Open Data Package URL')
   browserWindow.on('closed', () => {
     enableOpenFileItems()
   })
   processUrlDialogForCallback(browserWindow, handleZipOrJsonForPackage)
 }
 
-function createUrlDialogWindow() {
-  return focusOrNewSecondaryWindow('urldialog', { width: 300, height: 150, modal: true, alwaysOnTop: true })
+function createUrlDialogWindow(titleExtension) {
+  const fullTitle = titleExtension ? `${defaultDialogTitle} ${titleExtension}` : defaultDialogTitle
+  return focusOrNewSecondaryWindow('urldialog', { title: fullTitle, width: 450, height: 150, modal: true, alwaysOnTop: true })
 }
 
 export function processUrlDialogForCallback(browserWindow, callback, errorMessage='There was a problem loading package or resource(s)', dialogCallbacks) {

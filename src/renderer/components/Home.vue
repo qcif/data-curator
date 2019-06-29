@@ -309,7 +309,8 @@ import {
   provenanceErrors$,
   errorFeedback$,
   updateHotDimensions$,
-  allTableLocks$
+  allTableLocks$,
+  allTablesAllColumnNames$
 } from '@/rxSubject.js'
 import VueRx from 'vue-rx'
 import {
@@ -413,7 +414,7 @@ export default {
       activeTab: 'getActiveTab',
       tabIndex: 'getTabIndex'
     }),
-    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId', 'getHotSelection']),
+    ...mapGetters(['getPreviousTabId', 'tabTitle', 'getHotIdFromTabId', 'getHotSelection', 'getAllHotTablesColumnNames']),
     sideNavPropertiesForMain() {
       return this.sideNavStatus === 'closed' ? this.sideNavStatus : this.sideNavPosition
     },
@@ -928,6 +929,8 @@ export default {
           getCurrentColumnIndexOrMin()
           updateHotDimensions$.next()
           LockProperties.lockColumnProperties()
+          // trigger column properties refresh (columns might already be opened)
+          allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
           this.addImportDataPropertiesError('Import Column properties success', `${schemaFieldsCount} schema fields were imported.`)
         } else {
           const errorMessage = `Unable to import ${schemaFieldsCount} schema fields to a ${columnCount}-column table`
