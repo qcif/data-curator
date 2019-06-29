@@ -573,7 +573,7 @@ export default {
     ipc.on('guessColumnProperties', function(event, arg) {
       self.inferColumnProperties()
     })
-    ipc.on('importDataPackage', function(event, filePath, isTransient = false) {
+    ipc.on('importDataPackageFromFile', function(event, filePath, isTransient = false) {
       self.importDataPackage(filePath, isTransient)
     })
     ipc.on('validateTable', function(event, arg) {
@@ -945,7 +945,7 @@ export default {
       this.messagesType = 'feedback'
     },
     initHotColumnPropertiesFromSchema: function(hotId, schema) {
-      // TODO : move this to similar logic in importDataPackage to tidy up
+      // TODO : move this to similar logic in importDataPackageFromFile to tidy up
       if (!_.isEmpty(schema)) {
         let columnHotIdProperties = {}
         columnHotIdProperties[hotId] = [...schema.fields]
