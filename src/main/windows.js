@@ -49,10 +49,10 @@ export function focusMainWindow() {
   return focusWindow('home')
 }
 
-export function focusOrNewSecondaryWindow(id, dimensions) {
+export function focusOrNewSecondaryWindow(id, config) {
   let browserWindow = focusWindow(id)
   if (!browserWindow) {
-    browserWindow = newWindow(id, dimensions)
+    browserWindow = newWindow(id, config)
     browserWindow.setMenu(null)
   }
   return browserWindow
@@ -72,11 +72,11 @@ export function focusWindow(id) {
   return browserWindow
 }
 
-export function newWindow(id, dimensions, url) {
+export function newWindow(id, config, url) {
   if (process.env.NODE_ENV === 'production' && process.env.BABEL_ENV !== 'test') {
-    dimensions.nodeIntegration = false
+    config.nodeIntegration = false
   }
-  let browserWindow = new BrowserWindow(dimensions)
+  let browserWindow = new BrowserWindow(config)
   if (!url) {
     url = process.env.NODE_ENV === 'development'
       ? `http://localhost:9080/${id}.html`
