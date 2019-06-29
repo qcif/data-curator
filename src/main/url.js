@@ -21,17 +21,18 @@ export function showUrlDialogForResourceSchema() {
 
 // TODO: handle errors by rejecting promises and throwing back up stack
 export function showUrlDialogForPackage() {
-  disableOpenFileItems()
   let browserWindow = createUrlDialogWindow('Open Data Package URL')
-  browserWindow.on('closed', () => {
-    enableOpenFileItems()
-  })
   processUrlDialogForCallback(browserWindow, handleZipOrJsonForPackage)
 }
 
 function createUrlDialogWindow(titleExtension) {
+  disableOpenFileItems()
   const fullTitle = titleExtension ? `${defaultDialogTitle} ${titleExtension}` : defaultDialogTitle
-  return focusOrNewSecondaryWindow('urldialog', { title: fullTitle, width: 450, height: 150, modal: true, alwaysOnTop: true })
+  let browserWindow = focusOrNewSecondaryWindow('urldialog', { title: fullTitle, width: 450, height: 150, modal: true, alwaysOnTop: true })
+  browserWindow.on('closed', () => {
+    enableOpenFileItems()
+  })
+  return browserWindow
 }
 
 export function processUrlDialogForCallback(browserWindow, callback, errorMessage='There was a problem loading package or resource(s)', dialogCallbacks) {
