@@ -41,7 +41,7 @@ async function loadGenericFrictionlessFromJsonSource (jsonSource, callback, fric
       title: `Unable to load ${frictionlessType}`,
       message:
         `The ${frictionlessType}, ${jsonSource}, could not be loaded.
-  If the ${frictionlessType} is a URL or file, please check that it exists.`
+  If the ${frictionlessType} is a URL or file, please check that it exists in JSON format.`
     })
     mainWindow.webContents.send('closeLoadingScreen')
     return
