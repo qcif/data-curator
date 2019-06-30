@@ -10,7 +10,7 @@ import {
   disableEnableBasedOnAttributeAndConditionFromLabels
 } from './menuUtils.js'
 import { focusMainWindow, closeSecondaryWindow } from './windows.js'
-import { loadPackageJson, loadResourceDataFromPackageUrl } from './url.js'
+import { loadPackageJson, loadResourceDataFromPackageSource } from './loadFrictionless'
 
 ipc.on('toggleSaveMenu', (event, arg) => {
   let saveSubMenu = getSubMenuFromMenu('File', 'Save')
@@ -78,7 +78,7 @@ ipc.on('loadPackageUrl', async function(event, index, hotId, url) {
 
 ipc.on('loadPackageUrlResourcesAsFkRelations', async function(event, url, resourceName) {
   try {
-    const rows = await loadResourceDataFromPackageUrl(url, resourceName)
+    const rows = await loadResourceDataFromPackageSource(url, resourceName)
     event.returnValue = rows
   } catch (error) {
     const errorMessage = 'There was a problem collating data from url resources'
