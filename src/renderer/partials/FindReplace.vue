@@ -102,6 +102,7 @@ Vue.use(VueRx, {
 let _lastRowIndicies = []
 let _currentHotPos = [-1, -1]
 let _previousSearchClear = true
+let _inSearch = false
 
 // TODO: remove dependency on handsontable and just render at search collection
 // cannot access DEFAULT anymore - must copy (https://docs.handsontable.com/3.0.0/demo-searching.html#page-custom-callback)
@@ -117,37 +118,51 @@ const _searchCallback = function (instance, row, col, value, result) {
   }
 }
 
-const DEFAULT_QUERY_METHOD = function DEFAULT_QUERY_METHOD (query, value) {
-  if (isUndefined(query) || query === null || !query.toLowerCase || query.length === 0) {
-    return false
-  }
-  if (isUndefined(value) || value === null) {
-    return false
-  }
-
-  return value.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1
-}
+// const DEFAULT_QUERY_METHOD = function DEFAULT_QUERY_METHOD (query, value) {
+//   if (isUndefined(query) || query === null || !query.toLowerCase || query.length === 0) {
+//     return false
+//   }
+//   if (isUndefined(value) || value === null) {
+//     return false
+//   }
+//
+//   return value.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1
+// }
 
 const _DEFAULT_SEARCH_RESULT_CLASS = 'htSearchResult'
 
-function _toConsumableArray (arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i] }
-    return arr2
-  } else { return Array.from(arr) }
-}
+// function _toConsumableArray (arr) {
+//   if (Array.isArray(arr)) {
+//     for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i] }
+//     return arr2
+//   } else { return Array.from(arr) }
+// }
 
 function _onBeforeRenderer(TD, row, col, prop, value, cellProperties) {
-  if (_lastRowIndicies.includes(row) && col === _currentHotPos[1]) {
-    resetSearchResultClass(cellProperties)
+  if (_inSearch) {
+    _resetSearchResultClass(TD, row, col, prop, value, cellProperties)
+  }
+
+  // else {
+  //   _clearAllCellsOfSearchClass(TD, row, col, prop, value, cellProperties)
+  // }
+}
+
+function _resetSearchResultClass(TD, row, col, prop, value, cellProperties) {
+  if (_previousSearchClear) {
+    _addSearchClassToCell(row, col, cellProperties)
+  } else {
+    if (_lastRowIndicies.includes(row)) {
+      _clearAllCellsOfSearchClass(cellProperties)
+    }
   }
 }
 
-function resetSearchResultClass(cellProperties) {
+function _addSearchClassToCell(row, col, cellProperties) {
   let className = _.get(cellProperties, 'className')
-  if (!_.includes(className, _DEFAULT_SEARCH_RESULT_CLASS) && _previousSearchClear) {
-    if (_.isString(className)) {
-      cellProperties.className = `${className} ${_DEFAULT_SEARCH_RESULT_CLASS}`
+  if (_lastRowIndicies.includes(row) && col === _currentHotPos[1] && !_.includes(className, _DEFAULT_SEARCH_RESULT_CLASS)) {
+    if (_.isString(className) && _.isEmpty(_.trim(className))) {
+      cellProperties.className = _.trim(`${className} ${_DEFAULT_SEARCH_RESULT_CLASS}`)
     } else if (_.isArray(className)) {
       // it is an array
       cellProperties.className = _.concat(className, _DEFAULT_SEARCH_RESULT_CLASS)
@@ -155,15 +170,21 @@ function resetSearchResultClass(cellProperties) {
       // ignore and reset
       cellProperties.className = _DEFAULT_SEARCH_RESULT_CLASS
     }
-  } else {
+  }
+  console.log(`row ${row} and col ${col} now has class: ${cellProperties.className}`)
+}
+
+function _clearAllCellsOfSearchClass(cellProperties) {
+  let className = _.get(cellProperties, 'className')
+  if (_.includes(className, _DEFAULT_SEARCH_RESULT_CLASS)) {
     if (_.isString(className)) {
       const regExp = new RegExp(_DEFAULT_SEARCH_RESULT_CLASS, 'g')
       cellProperties.className = _.replace(className, regExp, '')
     } else if (_.isArray(className)) {
-      // it is an array
+    // it is an array
       _.pull(cellProperties.className, _DEFAULT_SEARCH_RESULT_CLASS)
     } else {
-      // ignore and reset
+    // ignore and reset
       cellProperties.className = ''
     }
   }
@@ -234,6 +255,7 @@ export default {
     console.log('mounting find')
     this.activeHotId = await this.currentHotId()
     HotRegister.addHookForHotId(this.activeHotId, 'beforeRenderer', _onBeforeRenderer)
+    const self = this
     const vueUpdateActiveHotId = this.updateActiveHotId
     const vueResetOnColumnChange = this.resetOnColumnChange
     const vueResetSearchResult = this.resetSearchResultWrapper
@@ -241,10 +263,16 @@ export default {
     this.$subscribeTo(hotIdFromTab$, function (hotId) {
       vueUpdateActiveHotId(hotId)
       vueResetSearchResult()
+      self.clearPreviousHotSearch(HotRegister.getActiveInstance())
       HotRegister.resetHookForAllHots('beforeRenderer', _onBeforeRenderer)
+      HotRegister.getActiveInstance().render()
       HotRegister.addHookForHotId(hotId, 'beforeRenderer', _onBeforeRenderer)
     })
     this.$subscribeTo(currentPos$, function (currentPos) {
+      self.clearPreviousHotSearch(HotRegister.getActiveInstance())
+      HotRegister.resetHookForAllHots('beforeRenderer', _onBeforeRenderer)
+      HotRegister.getActiveInstance().render()
+      HotRegister.addHookForHotId(self.activeHotId, 'beforeRenderer', _onBeforeRenderer)
       vueResetOnColumnChange()
       vueResetRowIndex()
     })
@@ -320,12 +348,19 @@ export default {
       }
       this.foundCounter = -1
       this.foundCount = -1
+      // HotRegister.resetHookForAllHots('beforeRenderer', _onBeforeRenderer)
+      // HotRegister.getActiveInstance().render()
+      // HotRegister.addHookForHotId(this.activeHotId, 'beforeRenderer', _onBeforeRenderer)
       this.resetSearchResultWrapper()
       // this.clickedFindOrReplace = null
       // wait for the css to update from resetting counters then remove all
       const vueInputFoundRemoveFeedback = this.inputFoundRemoveFeedback
+      const self = this
       _.delay(function () {
         vueInputFoundRemoveFeedback()
+        // HotRegister.resetHookForAllHots('beforeRenderer', _onBeforeRenderer)
+        HotRegister.getActiveInstance().render()
+        // HotRegister.addHookForHotId(self.activeHotId, 'beforeRenderer', _onBeforeRenderer)
       }, 10)
     },
     replaceText: function (direction) {
@@ -444,7 +479,9 @@ export default {
         let tempCurrentHotPos = _.clone(_currentHotPos)
         _lastRowIndicies = this.rowIndicies
         _currentHotPos = currentHotPos
+        console.time()
         this.hotSearch(hot)
+        console.timeEnd()
         _lastRowIndicies = _.clone(tempLastRowIndicies)
         _currentHotPos = _.clone(tempCurrentHotPos)
       }
@@ -467,16 +504,20 @@ export default {
     },
     hotSearch: function(hot) {
       // TODO : add loading screen here
+      _inSearch = true
       // const search = hot.getPlugin('search')
       // search.query(this.findTextValue)
       hot.render()
+      _inSearch = false
     },
     clearPreviousHotSearch: function (hot) {
+      _inSearch = true
       _previousSearchClear = false
       // const search = hot.getPlugin('search')
       // search.query()
       hot.render()
       _previousSearchClear = true
+      _inSearch = false
     },
     // hotSift: function(data, headers) {
     //   console.time()
@@ -584,6 +625,7 @@ export default {
       if (!_.isEmpty(this.rowIndicies)) {
         _lastRowIndicies = this.rowIndicies
         // hot.render()
+        // this.clearPreviousHotSearch(this.activeHotId)
       }
       this.rowIndicies = null
       this.currentCol = null
