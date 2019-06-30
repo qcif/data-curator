@@ -17,6 +17,9 @@ function defaultTabFunction({ shiftKey }) {
   return { row: 0, col: 1 }
 }
 
+// let _currentSearchColumnIndex = null
+// let _currentSearchRowIndicies = []
+
 const HotRegister = {
   register(container, listeners={}, searchParameters = false) {
     let hot = new Handsontable(container, {
@@ -44,7 +47,7 @@ const HotRegister = {
         displayDelay: 100
       },
       undo: true,
-      search: searchParameters,
+      search: false,
       tabMoves: defaultTabFunction,
       afterInit() {
         if (typeof listeners.loadingStartListener !== 'undefined') {
@@ -65,6 +68,16 @@ const HotRegister = {
           listeners.selectionListener()
         }
       },
+      // beforeRenderer(TD, row, col, prop, value, cellProperties) {
+      //   // console.dir(cellProperties)
+      //   // cellProperties.className = 'htSearchResult'
+      //
+      //   if (_currentSearchRowIndicies.includes(row) && col === _currentSearchColumnIndex) {
+      //     cellProperties.className = 'htSearchResult'
+      //   } else {
+      //     cellProperties.className = ''
+      //   }
+      // },
       afterDeselect() {
         if (typeof listeners.deselectionListener !== 'undefined') {
           listeners.deselectionListener()
@@ -129,7 +142,22 @@ const HotRegister = {
       hot.destroy()
     }
     _.unset(_hots, id)
+  },
+  // setCurrentSearch(col, rowIndicies) {
+  //   _currentSearchColumnIndex = col
+  //   _currentSearchRowIndicies = rowIndicies
+  // },
+  resetHookForAllHots(hookName, functionName) {
+    for (const nextHotId of this.getAllHotIds()) {
+      let nextInstance = this.getInstance(nextHotId)
+      nextInstance.removeHook(hookName, (...args) => functionName(...args))
+    }
+  },
+  addHookForHotId(hotId, hookName, functionName) {
+    let hotInstance = this.getInstance(hotId)
+    hotInstance.addHook(hookName, (...args) => functionName(...args))
   }
+
 }
 
 function lockedTabFunction({ shiftKey }) {
