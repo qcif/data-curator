@@ -876,7 +876,7 @@ export default {
         deselectionListener: this.deselectionListener,
         loadingStartListener: this.showLoadingScreen,
         loadingFinishListener: this.closeLoadingScreen
-      }, findReplace.data().hotParameters)
+      })
       addHotContainerListeners(container, this.closeAndShowLoadingScreen, this.closeLoadingScreen)
     },
     mergeOntoCsvFormat: function(format) {
