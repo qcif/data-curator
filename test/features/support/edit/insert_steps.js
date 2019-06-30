@@ -6,8 +6,6 @@ import {
   getNumberOfColumns,
   getNumberOfRows
 } from '../page-objects/dimensions'
-import { activeTableSelector } from '../page-objects/selectors'
-import { applyFnToIdOrClassSelectorWithParent } from '../page-objects/io'
 
 Given(/^the user clicks in row (\d+), column (\d+)$/, async function (rowNumber, colNumber) {
   this.rowNumber = rowNumber

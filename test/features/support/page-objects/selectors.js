@@ -14,6 +14,34 @@ export async function waitForVisibleIdFromLabel (app, parentSelector, label, tim
   }
 }
 
+export async function waitForVisibleInputSelector (app, selector, timeout) {
+  const kebabCase = _.kebabCase(selector)
+  const camelCase = _.camelCase(selector)
+  let result
+  try {
+    result = await app.client.waitForVisible(`input#${kebabCase}`, timeout)
+    return result
+  } catch (error) {
+    console.log(`Unable to find via ${kebabCase} Trying ${camelCase}`)
+    result = await app.client.waitForVisible(`input#${camelCase}`, timeout)
+    return result
+  }
+}
+
+export async function returnInputIdSelector (app, selector) {
+  const kebabCase = _.kebabCase(selector)
+  const camelCase = _.camelCase(selector)
+  let result
+  try {
+    result = await app.client.element(`input#${kebabCase}`)
+    return result
+  } catch (error) {
+    console.log(`Unable to find via ${kebabCase} Trying ${camelCase}`)
+    result = await app.client.element(`input#${camelCase}`)
+    return result
+  }
+}
+
 export async function applyFnToIdOrClassSelectorFromLabel (app, fn, label, timeout) {
   try {
     const result = await applyFnToSelectorWithLabel(app, fn, '.' + label, label, timeout)

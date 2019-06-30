@@ -31,9 +31,8 @@
           </div>
           <span class="btn-group pull-right">
             <button
-              :class="formprop.buttonTypeClass || 'btn-primary'"
+              class="btn btn-sm previous btn-primary"
               type="button"
-              class="btn btn-sm"
               @click="formprop.fn('previous')">
               <span
                 v-if="formprop.buttonLeftClass"
@@ -44,9 +43,8 @@
             </button>
             <button
               v-show="formprop.buttonRightClass"
-              :class="formprop.buttonTypeClass || 'btn-primary'"
+              class="btn btn-sm next btn-primary"
               type="button"
-              class="btn btn-sm"
               @click="formprop.fn('next')">
               <span :class="formprop.buttonRightClass"/>
             </button>
@@ -54,14 +52,27 @@
         </div>
         <div
           v-if="formprop.buttonBelowText"
-          class="btn-group pull-right">
-          <button
-            :class="formprop.buttonTypeClass || 'btn-primary'"
-            type="button"
-            class="button-below btn btn-sm"
-            @click="formprop.belowFn('next')">
-            <span :class="formprop.buttonBelowClass">{{ formprop.buttonBelowText }}</span>
-          </button>
+          class="bottom-line">
+          <div class="input-group row checkbox input-sm">
+            <input
+              id="case-sensitive"
+              v-model="isCaseSensitive"
+              type="checkbox">
+            <label
+              id="case-sensitive-label"
+              for="case-sensitive">case sensitive</label>
+          </div>
+          <div
+            v-if="formprop.buttonBelowText"
+            class="btn-group pull-right">
+            <button
+              :class="formprop.buttonTypeClass || 'btn-primary'"
+              type="button"
+              class="button-below btn btn-sm"
+              @click="formprop.belowFn('next')">
+              <span :class="formprop.buttonBelowClass">{{ formprop.buttonBelowText }}</span>
+            </button>
+          </div>
         </div>
       </div>
       <!-- <div class="pickrow">
@@ -105,6 +116,7 @@ let _previousSearchClear = true
 let _findTextValue = ''
 let _isCaseSensitive = true
 
+// TODO: consider removing dependence on handsontable, for faster search by implementing own beforeRenderer to trigger on find results
 // cannot access DEFAULT anymore - must copy (https://docs.handsontable.com/3.0.0/demo-searching.html#page-custom-callback)
 const _defaultCallback = function (instance, row, col, data, testResult) {
   let callbackQuery = _isCaseSensitive ? testResult && _.includes(data, _findTextValue) : testResult
@@ -144,6 +156,7 @@ export default {
       hotParameters: {
         callback: _searchCallback
       },
+      isCaseSensitive: true,
       formprops: [{
         label: 'Find in column',
         key: 'find',
@@ -178,6 +191,12 @@ export default {
   },
   computed: {
     ...mapGetters(['getHotSelection'])
+  },
+  watch: {
+    'isCaseSensitive': function(result) {
+      _isCaseSensitive = result
+      this.resetAfterUserInput()
+    }
   },
   mounted: async function () {
     this.activeHotId = await this.currentHotId()
@@ -259,14 +278,17 @@ export default {
       } else {
         this.replaceTextValue = value
       }
+      this.resetAfterUserInput()
+    },
+    resetAfterUserInput: function() {
+      const self = this
       this.foundCounter = -1
       this.foundCount = -1
       this.resetSearchResultWrapper()
       // this.clickedFindOrReplace = null
       // wait for the css to update from resetting counters then remove all
-      const vueInputFoundRemoveFeedback = this.inputFoundRemoveFeedback
       _.delay(function () {
-        vueInputFoundRemoveFeedback()
+        self.inputFoundRemoveFeedback()
       }, 10)
     },
     replaceText: function (direction) {
