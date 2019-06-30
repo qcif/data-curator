@@ -14,6 +14,11 @@ const LockProperties = {
     this.updateStoredTableLock(hotId, currentLock)
   },
 
+  lockColumnProperties () {
+    const hotId = HotRegister.getActiveInstance().guid
+    this.updateStoredTableLock(hotId, true)
+  },
+
   getLockedTables() {
     return store.getters.hasPropertyFromAllTables(this.storeName)
   },

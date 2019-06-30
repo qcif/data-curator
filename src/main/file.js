@@ -3,6 +3,7 @@ import Fs from 'fs'
 import { createWindowTabWithFormattedDataFile, focusMainWindow } from './windows'
 import _ from 'lodash'
 import { disableOpenFileItems, enableOpenFileItems } from './menuUtils.js'
+import { loadResourceSchemaFromJson } from './loadFrictionless'
 
 export function saveFileAs(format) {
   let currentWindow = focusMainWindow()
@@ -43,7 +44,7 @@ export function saveFile() {
   currentWindow.webContents.send('saveData', currentWindow.format, global.tab.activeFilename)
 }
 
-export function importDataPackage() {
+export function importDataPackageFromFile() {
   disableOpenFileItems()
   let window = focusMainWindow()
   Dialog.showOpenDialog({
@@ -62,7 +63,28 @@ export function importDataPackage() {
     if (_.isArray(filename)) {
       filename = filename[0]
     }
-    window.webContents.send('importDataPackage', filename)
+    window.webContents.send('importDataPackageFromFile', filename)
+  })
+}
+
+export function importTableResourceSchemaFromFile() {
+  let window = focusMainWindow()
+  Dialog.showOpenDialog({
+    filters: [
+      {
+        name: '*',
+        extensions: ['json']
+      }
+    ],
+    properties: ['openFile']
+  }, function(filename) {
+    if (filename === undefined) {
+      return
+    }
+    if (_.isArray(filename)) {
+      filename = filename[0]
+    }
+    loadResourceSchemaFromJson(filename)
   })
 }
 
