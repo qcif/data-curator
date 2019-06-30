@@ -59,19 +59,10 @@ When(/^(?:the )"([\w]+?)"->"([\w]+?)"->"([\w .]+?)" menu is (?:selected|clicked|
   expect(returned).to.equal(subSubMenuLabel)
 })
 
-Then('the openfile dialog should be displayed', async function () {
+Then(/^the openfile dialog (?:is|should be) displayed/, async function () {
   let globalNames = await this.app
     .electron
     .remote
     .getGlobal('openFileDialogReturned')
   expect(globalNames).to.deep.equal(this.openFileDialogReturned)
-})
-
-Then('another tab with its filename as the title should be displayed', async function () {
-  this.latestFilePath = getFilePathFromFixtures('valid.csv')
-  await this.app.electron.ipcRenderer.send('openFileIntoTab', this.latestFilePath, fileFormats.csv)
-  let text = await this.app.client
-    .timeouts('implicit', 5000)
-    .getText('#tab1')
-  expect(text).to.equal('valid')
 })

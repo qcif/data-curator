@@ -8,7 +8,6 @@ Feature: Insert Column Before
 
   - The "Insert Column Before" command can be invoked using a menu item, keyboard shortcut or a context menu in the data tab
 
-
   @impl
   Scenario Outline: Insert Column Before
     Given Data Curator is open

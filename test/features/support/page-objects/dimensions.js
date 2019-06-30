@@ -2,11 +2,8 @@ import { activeTableSelector } from './selectors'
 import _ from 'lodash'
 
 export async function tableRowAndColCount (app) {
-  const tableRowCount = getNumberOfRows(app)
-  const tableColCount = getNumberOfColumns(app)
-  console.dir(`returning ${tableRowCount} and ${tableColCount}`)
-  console.dir(tableRowCount)
-  console.dir(tableColCount)
+  const tableRowCount = await getNumberOfRows(app)
+  const tableColCount = await getNumberOfColumns(app)
   return { tableRowCount, tableColCount }
 }
 

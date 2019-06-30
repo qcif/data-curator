@@ -9,7 +9,6 @@ Feature: Insert Row Above
   - If a row is inserted above the first row and the CSV dialect has 'headerRow' set to 'true', then the 'name' property for each column may be invalidated.
   - The "Insert Row Above" command can be invoked using a menu item, keyboard shortcut or a context menu in the data tab
 
-
   @impl
   Scenario Outline: Insert Row Above
     Given Data Curator is open

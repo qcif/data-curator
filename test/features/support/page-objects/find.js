@@ -10,6 +10,18 @@ export function getRowIndicesOfCaseInsensitiveSearchText (activeColRows, searchV
       matchedTextIndices.push(index)
     }
   }
+  console.log(`matched is:...`)
+  console.dir(matchedTextIndices)
+  return matchedTextIndices
+}
+
+export function getRowIndicesOfCaseSensitiveSearchText (activeColRows, searchValue) {
+  const matchedTextIndices = []
+  for (const [index, next] of activeColRows.entries()) {
+    if ((next).includes(searchValue)) {
+      matchedTextIndices.push(index)
+    }
+  }
   return matchedTextIndices
 }
 
