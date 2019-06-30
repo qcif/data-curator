@@ -16,6 +16,7 @@ Feature: Open a Comma separated value file
 
   - "Guess Column Properties" on opening the file
 
+  @dev
   @impl
   Scenario: Open an existing comma separated value file
     Given Data Curator is open

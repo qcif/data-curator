@@ -70,7 +70,7 @@ export function getSubMenuLabelsFromMenu (menuLabel) {
 }
 
 export function disableOpenFileItems() {
-  disableMenuItems('File', ['Open Excel Sheet...', 'Open', 'Open Data Package'])
+  disableMenuItems('File', ['Open Excel Sheet...', 'Open', 'Open Data Package', 'Import Column Properties'])
 }
 
 export function disableMenuItems(menuLabel, subMenuLabels) {
@@ -78,7 +78,7 @@ export function disableMenuItems(menuLabel, subMenuLabels) {
 }
 
 export function enableOpenFileItems() {
-  enableMenuItems('File', ['Open Excel Sheet...', 'Open', 'Open Data Package'])
+  enableMenuItems('File', ['Open Excel Sheet...', 'Open', 'Open Data Package', 'Import Column Properties'])
 }
 
 export function enableMenuItems(menuLabel, subMenuLabels) {

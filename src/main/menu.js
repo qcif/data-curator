@@ -1,4 +1,4 @@
-import { openFile, saveFileAs, saveFile, importDataPackage } from './file.js'
+import { openFile, saveFileAs, saveFile, importDataPackageFromFile, importTableResourceSchemaFromFile } from './file.js'
 import { showUrlDialogForPackage, showUrlDialogForResourceSchema } from './url.js'
 import { createWindowTab, focusMainWindow } from './windows.js'
 import { importExcel } from './excel.js'
@@ -57,10 +57,20 @@ class AppMenu {
             type: 'separator'
           }, {
             label: 'Import Column Properties',
-            accelerator: 'Shift+CmdOrCtrl+I',
-            click () {
-              showUrlDialogForResourceSchema()
-            }
+            submenu: [
+              {
+                label: 'json from URL...',
+                click () {
+                  showUrlDialogForResourceSchema()
+                }
+              },
+              {
+                label: 'json from file...',
+                click () {
+                  importTableResourceSchemaFromFile()
+                }
+              }
+            ]
           }, {
             type: 'separator'
           }, {
@@ -348,7 +358,7 @@ class AppMenu {
       label: 'zip from file...',
       enabled: true,
       click () {
-        importDataPackage()
+        importDataPackageFromFile()
       }
     }, {
       label: 'json from URL...',
