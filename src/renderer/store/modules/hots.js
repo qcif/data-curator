@@ -1,4 +1,4 @@
-import {currentPos$} from '@/rxSubject.js'
+import { currentPos$ } from '@/rxSubject.js'
 
 const state = {
   hotTabs: {},
@@ -64,6 +64,16 @@ const getters = {
     }
     return hotIdColumnNames
   },
+  hasPropertyFromAllTables: (state, getters) => (propertyName) => {
+    let tablesWithProperty = []
+    for (let hotId in state.hotTabs) {
+      let tableProps = state.hotTabs[hotId].tableProperties || {}
+      if (_.get(tableProps, propertyName)) {
+        tablesWithProperty.push(hotId)
+      }
+    }
+    return tablesWithProperty
+  },
   getAllHotTablesColumnProperties: (state, getters) => () => {
     let hotIdColumnNames = {}
     for (let hotId in state.hotTabs) {
@@ -72,10 +82,10 @@ const getters = {
     return hotIdColumnNames
   },
   getAllHotColumnNamesFromHotId: (state, getters) => (hotId) => {
-    return getters.getAllHotColumnPropertyFromHotId(state, getters)({hotId: hotId, key: 'name'})
+    return getters.getAllHotColumnPropertyFromHotId(state, getters)({ hotId: hotId, key: 'name' })
   },
   getAllHotColumnTypesFromHotId: (state, getters) => (hotId) => {
-    return getters.getAllHotColumnPropertyFromHotId(state, getters)({hotId: hotId, key: 'type'})
+    return getters.getAllHotColumnPropertyFromHotId(state, getters)({ hotId: hotId, key: 'type' })
   },
   getAllHotColumnPropertyFromHotId: (state, getters) => (property) => {
     const hotId = property.hotId
@@ -85,18 +95,17 @@ const getters = {
       // return
     }
     let values = state.hotTabs[hotId].columnProperties.map(column => {
-      let value = column[propertyKey]
       return column[propertyKey]
     })
     return values
   },
   getHotIdFromTabId: (state, getters) => (tabId) => {
     return new Promise((resolve, reject) => {
-      let hotId = _.findKey(state.hotTabs, {tabId: tabId})
+      let hotId = _.findKey(state.hotTabs, { tabId: tabId })
       if (!hotId) {
         // There is a short render wait in home page, so if hotId not first returned, just wait and try again
         _.delay(function(tabId) {
-          resolve(_.findKey(state.hotTabs, {tabId: tabId}))
+          resolve(_.findKey(state.hotTabs, { tabId: tabId }))
         }, 10, tabId)
       } else {
         resolve(hotId)
@@ -104,7 +113,7 @@ const getters = {
     })
   },
   getSyncHotIdFromTabId: (state, getters) => (tabId) => {
-    let hotId = _.findKey(state.hotTabs, {tabId: tabId})
+    let hotId = _.findKey(state.hotTabs, { tabId: tabId })
     return hotId
   },
   getProvenance: state => {
@@ -115,7 +124,7 @@ const getters = {
     return hotColumnProperties[property.key]
   },
   getTableProperty: (state, getters) => (property) => {
-    let tableProperties = state.hotTabs[property.hotId].tableProperties || {}
+    let tableProperties = _.get(state, `hotTabs[${property.hotId}].tableProperties`, {})
     return tableProperties[property.key]
   },
   getPackageProperty: (state, getters) => (property) => {
@@ -408,12 +417,11 @@ const mutations = {
       _.set(state.hotTabs[hotId], 'columnProperties', hotIdColumns[hotId])
     }
   },
-  resetAll(state) {
-    state = {
-      hotTabs: {},
-      packageProperties: {},
-      provenanceProperties: { markdown: '', hotErrors: {} }
-    }
+  resetHotState(state) {
+    state.hotTabs = {}
+    state.packageProperties = {}
+    state.provenanceProperties = { markdown: '', hotErrors: {} }
+    state.fkPackageComponents= {}
   }
 }
 

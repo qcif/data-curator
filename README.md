@@ -1,11 +1,18 @@
 
 [![GitHub package version](https://img.shields.io/github/package-json/v/ODIQueensland/data-curator.svg)](https://github.com/ODIQueensland/data-curator/releases)
- [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
-[![Travis Build Status](https://travis-ci.org/ODIQueensland/data-curator.svg)](https://travis-ci.org/ODIQueensland/data-curator)
-[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/?svg=true)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
-[![Appveyor Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2034%20%20❌failed:%200%20%20❗undefined:%20199-orange.svg)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
+[![JavaScript Style Guide](https://img.shields.io/badge/js_code_style-standard-brightgreen.svg)](https://standardjs.com)
+ [![vue-recommended-style](https://img.shields.io/badge/vue_code_style-recommended-brightgreen.svg?style=flat)](https://vuejs.org/v2/style-guide/#Priority-C-Recommended)
+[![Travis Build Status](https://travis-ci.org/ODIQueensland/data-curator.svg?branch=ci)](https://travis-ci.org/ODIQueensland/data-curator)
+[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/branch/ci?svg=true)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
+[![Appveyor Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2084%20%20❌failed:%200%20%20❗undefined:%200-orange.svg)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
+
+
+
+
+
 [![Unit Test Coverage Status](https://coveralls.io/repos/github/ODIQueensland/data-curator/badge.svg?branch=ci)](https://coveralls.io/github/ODIQueensland/data-curator?branch=ci)
 [![Github All Releases](https://img.shields.io/github/downloads/ODIQueensland/data-curator/total.svg)](https://github.com/ODIQueensland/data-curator/releases)
+[![Github Releases](https://img.shields.io/github/downloads/ODIQueensland/data-curator/latest/total.svg?label=Latest%20version%20downloads)](https://github.com/ODIQueensland/data-curator/releases/latest)
 
 
  :sparkles: [Download Data Curator](https://github.com/ODIQueensland/data-curator/releases/latest) for Windows or macOS. :sparkles:
@@ -62,7 +69,7 @@ Open data consumers can use published Data Packages to:
 
 ## Follow our progress
 
-Interested in this project? Subscribe to [Data Curator News](https://github.com/ODIQueensland/data-curator/issues/15) to get occasional updates on our progress and hear about [each release](https://github.com/ODIQueensland/data-curator/releases). [Ask a question](https://ask.theodi.org.au/c/projects/data-curator) on the forum.
+Interested in this project? Subscribe to [Data Curator News](https://github.com/ODIQueensland/data-curator/issues/15) to get occasional updates on our progress and hear about [each release](https://github.com/ODIQueensland/data-curator/releases). [Find help](https://odiqueensland.github.io/data-curator-help).
 
 ## Contributions
 
@@ -99,15 +106,6 @@ Data Curator proudly [uses open source software](https://github.com/ODIQueenslan
 
 - Choose a platform from the [Releases page](https://github.com/ODIQueensland/data-curator/releases/latest).
 - Drag the application to your applications folder.
-
-### On macOS
-
-If you encounter [a warning message](https://github.com/ODIQueensland/data-curator/issues/111) informing you the application cannot be opened due to being from an unknown developer, try:
-
-- Right click the app
-- then option + click on Open.
-
-This warning occurs due to macOS quarantining applications when it cannot determine the certificate used to sign the application. We're planning to sign the application so this goes away.
 
 --------------------------------------------------------------------------------
 
@@ -150,6 +148,8 @@ Electron passes and listens for messages between main and renderer using the IPC
 ## Coding Standards
 
 We have adopted [Standard JS](https://standardjs.com) as our JavaScript coding standard.
+
+We have adopted [Recommended Vue](https://vuejs.org/v2/style-guide/#Priority-C-Recommended) as our Vue coding standard.
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 

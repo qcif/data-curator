@@ -1,17 +1,17 @@
 version: 1.4.{build}
 
-skip_non_tags: true
+# skip_non_tags: true
 
 image: Visual Studio 2017
 
 platform:
   - x64
 
-cache:
-  - node_modules
-  - '%APPDATA%\npm-cache'
-  - '%USERPROFILE%\.electron'
-  - '%USERPROFILE%\AppData\Local\Yarn\cache'
+#cache:
+#  - node_modules
+#  - '%APPDATA%\npm-cache'
+#  - '%USERPROFILE%\.electron'
+#  - '%USERPROFILE%\AppData\Local\Yarn\cache'
 
 environment:
   GH_TOKEN:
@@ -19,45 +19,77 @@ environment:
   COVERALLS_REPO_TOKEN:
     secure: 5CQKw1+Is8KphKjmT2emU/C7eNlZN3OEteemQZjOjJl47BVABYr1SOZ+IX82NSWy
 
+skip_commits:
+  message: /^appveyor Updating branch from appveyor build.$/
+
 init:
   - git config --global core.autocrlf input
 
 install:
   - ps: Install-Product node 8 x64
-  # - choco upgrade yarn --ignore-dependencies
+  - choco upgrade yarn
   - git reset --hard HEAD
   - yarn
   - node --version
-
-build_script:
-  #- yarn test
-  # - yarn build
-  - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
-test: off
-configuration: release
+  - yarn autoclean
+  - yarn run clean
+  - yarn run lint
+  - if defined APPVEYOR_PULL_REQUEST_NUMBER ECHO PR %APPVEYOR_PULL_REQUEST_NUMBER%
+  - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run unit
+  - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run pack
+  - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run cucumber:postpack:impl
+configuration: Debug
 
 for:
 -
-  branches:
-    only:
-      - /master/
-      - /develop/
   test: off
-  build: off
-  configuration: debug
+  build_script:
+    - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
+  configuration: Release
+  deploy:
+    provider: Environment
+    name: production
+    on:
+      appveyor_repo_tag: true
 -
   branches:
     only:
-      - /ci/
-  before_test:
-    - yarn run lint
-    - yarn run clean
+      - ci
   test_script:
+    - git config --global credential.helper store
+    - ps: Add-Content "$HOME\.git-credentials" "https://$($env:GH_TOKEN):x-oauth-basic@github.com`n"
+    - git config --global user.email %APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL%
+    - git config --global user.name %APPVEYOR_REPO_COMMIT_AUTHOR%
+    - ps: $(git stash | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
+    - ps: $(git remote set-branches --add origin develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
+    - git fetch origin develop
+    - git checkout --track origin/develop
+    - git checkout ci
+    - git checkout develop -- src
+    - yarn
+    - yarn run clean
     - yarn run unit
     - yarn run pack
     - yarn run cucumber:postpack:impl
-#  after_test:
-#    - yarn run cucumber:report:badge
-  build:
-    off
-  configuration: test
+  after_test:
+    - yarn run cucumber:report:badge
+  on_success:
+    - git add test/cucumber_report.html test/cucumber_report.json README.md
+    - git commit -m "appveyor Updating branch from appveyor build."
+    - git push origin ci
+  build: off
+  deploy: off
+  configuration: Mergeandtest
+-
+  branches:
+    except:
+      - develop
+      - ci
+  test_script:
+    - yarn run clean
+    - yarn run unit
+    - yarn run pack
+    - yarn run cucumber:postpack:impl
+  build: off
+  deploy: off
+  configuration: Test

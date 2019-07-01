@@ -5,6 +5,11 @@ import 'vue-directive-tooltip/css/index.css'
 Vue.use(Tooltip)
 export default {
   methods: {
+    tooltipWrap: function(property, fn) {
+      let object = this.tooltip(property)
+      object.visible = fn
+      return object
+    },
     tooltip: function(property) {
       let object = {}
       object.html = property

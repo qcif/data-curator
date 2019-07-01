@@ -1,6 +1,5 @@
 .DS_Store
-dist/electron/*
-dist/web/*
+dist/
 build/*
 !build/icons
 #!build/data-curator*.*
@@ -17,3 +16,6 @@ yarn-error.log
 !help-tags.csv
 .nyc_output/
 webdriver.log/
+coverage/
+test/unit/coverage/
+test/cucumber_report.json

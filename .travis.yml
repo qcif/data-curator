@@ -1,25 +1,118 @@
 sudo: required
-dist: trusty
 language: c
-os: osx
 cache:
   directories:
   - node_modules
   - "$HOME/.electron"
   - "$HOME/.cache"
 before_install:
-- brew update
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
-- nvm install 8
+- nvm install 10 --lts
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
+- nvm use 10 --lts
+- yarn --version
+- nvm --version
+- node --version
 - yarn
-script:
-- ./travis_script.sh
-branches:
-  only:
-  - "/^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
-  - ci
+script: true
+stages:
+  - name: prescript
+    if: branch IN (ci) AND commit_message !~ /^appveyor Updating branch from appveyor build.$/
+  - name: lint
+    if: (branch IN (master, ci, testci, develop) AND commit_message !~ /^appveyor Updating branch from appveyor build.$/) OR type == pull_request OR tag =~ /^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/
+  - name: unittest
+    if: branch IN (master) OR type IN (pull_request)
+  - name: unittestandcoverage
+    if: branch IN (ci, testci) AND commit_message !~ /^appveyor Updating branch from appveyor build.$/
+  - name: test
+    if: type IN (pull_request) OR (branch IN (ci, testci, master) AND commit_message !~ /^appveyor Updating branch from appveyor build.$/)
+  - name: build
+    if: tag =~ /^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/
+jobs:
+  include:
+    - stage: prescript
+#     merge script may update dependencies
+      os: osx
+      before_script: ./scripts/ci_merge_script.sh
+      script: yarn
+    - os: linux
+      before_script: ./scripts/ci_merge_script.sh
+      script: yarn
+    - stage: lint
+      os: osx
+      script: yarn run lint
+    - os: linux
+      script: yarn run lint
+    - stage: unittest
+      os: osx
+      script:
+      - yarn run clean
+      - yarn run unit
+    - os: linux
+      script:
+        - yarn run clean
+        - ./scripts/travis_headless_linux_unit_tests_script.sh
+    - stage: unittestandcoverage
+#      only allow failures when not in a critical branch (ie: master, tag)
+      allow_failures:
+      - os: linux
+      os: osx
+      script:
+      - yarn run clean
+      - yarn run unit
+      - yarn run unit:coverage
+    - os: linux
+      script:
+      - yarn run clean
+      - ./scripts/travis_headless_linux_unit_tests_script.sh
+    - stage: test
+      os: osx
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/backlog
+    - os: linux
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/backlog
+    - os: osx
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/data_curator
+    - os: linux
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/data_curator
+    - os: osx
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/edit
+    - os: linux
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/edit
+    - os: osx
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/file
+    - os: linux
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/file
+    - os: osx
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/find
+    - os: linux
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/find
+    - os: osx
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/help
+    - os: linux
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/help
+    - os: osx
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/other
+    - os: linux
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/other
+    - os: osx
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/support
+    - os: linux
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/support
+    - os: osx
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/tools
+    - os: linux
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/tools
+    - os: osx
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/window
+    - os: linux
+      script: ./scripts/travis_headless_e2e_tests.sh test/features/window
+    - stage: build
+      os: osx
+      script:
+      - yarn run clean
+      - yarn run release:predraft
 env:
   global:
     secure: F+Bn6BrNKTTybkEs4UwCl7961z7ura2zBeuw+tS/vXqswb//x9DEhEr5IJ53VyC+H2R3Wj8yJ121514FiJwNg4hUpUQ98DHyczbMLXrg+wjQI2ZYvhiAonR5LzDGNd/XLhSDezQK556+guq67SnGPP3iqnfjyu8XJ2IaynLukvLSazZTCliuqpEpwaCn99+xhaHLcGRF/Dh2Gg5+HVfQnC4S6eiYGo5Dm9RDG0hntxYHUOAxQYmnvXxf7uLNc0sfFSoVd1BZytZCVFLceY5DM0tOO8kRyMQk+LJqneAdhp9Z8pUMcTMDeJtNegqqSaBra8UAkrGv1tUrBYUQnq4fkbH0tees6mJNFkqNlOW67pj8zghYSAKwNXiazFmH/lYE2sleBKGflznLZPDD5XXLlQ/aKXF+3wAx0wMtiGkFBbGP+GoBg10+7RgKw0A+mpLaJAVwUYGGJSEfH3A0U0OEt7XRdk/sD4nFKLzL3SAx3QC57FdGu4VWdJJT9t54oX+NzM3QmBH3dNxmge4XFLR1iwN72yheB2HyGu5zafKdOfbvCz2fP1ddECm2KWu8I7NNuBIwoBUm3tVm60b3gTpblAO3RcIrLg3k+ACTSvxJuzqSIE2/YnXGnjfVPW/NaCcyD1cPFppTvmpjLNHRfwP9zeP4nBOHHgOv7grzmvCs6QY=

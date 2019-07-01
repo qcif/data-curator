@@ -1,45 +1,9 @@
-import {dialog as Dialog, BrowserWindow, ipcMain as ipc} from 'electron'
+import { dialog as Dialog, ipcMain as ipc } from 'electron'
 import Fs from 'fs'
-import {enableSave, createWindowTabWithFormattedDataFile, focusMainWindow} from './windows'
+import { createWindowTabWithFormattedDataFile, focusMainWindow } from './windows'
 import _ from 'lodash'
-import {disableOpenFileItems, enableOpenFileItems} from './menuUtils.js'
-let path = require('path')
-
-// function makeCustomFormat(separator, delimiter) {
-//   // assemble a format object describing a custom format
-//   return {
-//     label: 'Custom',
-//     filters: [],
-//     dialect: {
-//       delimiter: delimiter,
-//       quoteChar: quoteChar
-//
-//     },
-//     mediatype: 'text/plain',
-//     format: 'txt'
-//   }
-// }
-
-// function saveAsCustom() {
-//   let currentWindow = focusMainWindow()
-//   let dialog
-//   if (process.env.BABEL_ENV === 'test' || process.env.NODE_ENV === 'development') {
-//     dialog = new BrowserWindow({width: 200, height: 400})
-//   } else {
-//     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
-//   }
-//   dialog.setMenu(null)
-//   dialog.once('closed', function() {
-//     ipc.removeAllListeners('formatSelected')
-//     dialog = null
-//   })
-//   ipc.once('formatSelected', function(event, data) {
-//     dialog.close()
-//     let format = makeCustomFormat(data.delimiter, data.quoteChar)
-//     saveFileAs(format, currentWindow)
-//   })
-//   dialog.loadURL(`http://localhost:9080/#/customformat`)
-// }
+import { disableOpenFileItems, enableOpenFileItems } from './menuUtils.js'
+import { loadResourceSchemaFromJson } from './loadFrictionless'
 
 export function saveFileAs(format) {
   let currentWindow = focusMainWindow()
@@ -62,7 +26,6 @@ To save the data, choose a unique file name.`
       })
       return
     }
-    // enableSave()
     currentWindow.webContents.send('saveData', format, filename)
     currentWindow.format = format
     currentWindow.webContents.send('saveDataSuccess')
@@ -81,31 +44,10 @@ export function saveFile() {
   currentWindow.webContents.send('saveData', currentWindow.format, global.tab.activeFilename)
 }
 
-// function openCustom() {
-//   // var window = focusMainWindow()
-//   let dialog
-//   if (process.env.BABEL_ENV === 'test' || process.env.NODE_ENV === 'development') {
-//     dialog = new BrowserWindow({width: 200, height: 400})
-//   } else {
-//     dialog = new BrowserWindow({width: 200, height: 400, nodeIntegration: false})
-//   }
-//   dialog.setMenu(null)
-//   dialog.once('closed', function() {
-//     ipc.removeAllListeners('formatSelected')
-//     dialog = null
-//   })
-//   ipc.once('formatSelected', function(event, data) {
-//     dialog.close()
-//     var format = makeCustomFormat(data.separator, data.delimiter)
-//     openFile(format)
-//   })
-//   dialog.loadURL(`http://localhost:9080/#/customformat`)
-// }
-
-export function importDataPackage() {
+export function importDataPackageFromFile() {
   disableOpenFileItems()
   let window = focusMainWindow()
-  const result = Dialog.showOpenDialog({
+  Dialog.showOpenDialog({
     filters: [
       {
         name: '*',
@@ -121,7 +63,28 @@ export function importDataPackage() {
     if (_.isArray(filename)) {
       filename = filename[0]
     }
-    window.webContents.send('importDataPackage', filename)
+    window.webContents.send('importDataPackageFromFile', filename)
+  })
+}
+
+export function importTableResourceSchemaFromFile() {
+  let window = focusMainWindow()
+  Dialog.showOpenDialog({
+    filters: [
+      {
+        name: '*',
+        extensions: ['json']
+      }
+    ],
+    properties: ['openFile']
+  }, function(filename) {
+    if (filename === undefined) {
+      return
+    }
+    if (_.isArray(filename)) {
+      filename = filename[0]
+    }
+    loadResourceSchemaFromJson(filename)
   })
 }
 

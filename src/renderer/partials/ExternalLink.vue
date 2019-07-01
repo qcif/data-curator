@@ -1,11 +1,22 @@
 <template>
-<a href="#" @click="openLink()">{{text}}</a>
+  <a
+    href="#"
+    @click="openLink()">{{ text }}</a>
 </template>
 <script>
-import {shell} from 'electron'
+import { shell } from 'electron'
 export default {
-  props: ['text', 'url'],
-  name: 'externalLink',
+  name: 'ExternalLink',
+  props: {
+    text: {
+      type: String,
+      default: ''
+    },
+    url: {
+      type: String,
+      default: ''
+    }
+  },
   methods: {
     openLink: function() {
       shell.openExternal(this.url)

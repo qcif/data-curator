@@ -1,26 +1,40 @@
 <template>
-<div>
-  <!-- <input :value="collectedLicenses" @input="selectLicenseHints($event.target.value)" class="form-control input-sm col-sm-8" type="text" /> -->
-  <div id="licenses">
-    <!-- <label class="control-label col-sm-4" /> -->
-    <select v-model="selectedLicenses" class="form-control input-sm col-sm-9" multiple>
-        <option v-for="license in licenses" :value="license.title">{{license.title}}</option>
+  <div>
+    <!-- <input :value="collectedLicenses" @input="selectLicenseHints($event.target.value)" class="form-control input-sm col-sm-8" type="text" /> -->
+    <div id="licenses">
+      <!-- <label class="control-label col-sm-4" /> -->
+      <select
+        v-model="selectedLicenses"
+        class="form-control input-sm col-sm-9"
+        multiple>
+        <option
+          v-for="(license, index) in licenses"
+          :key="license.title + index"
+          :value="license.title">{{ license.title }}</option>
       </select>
+    </div>
   </div>
-</div>
 </template>
 <script>
 import {
-  mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
-import {
-  HotRegister
-} from '../hot.js'
 export default {
-  name: 'licenses',
-  props: ['getPropertyGivenHotId', 'setProperty', 'waitForHotIdFromTabId'],
+  name: 'Licenses',
+  props: {
+    setProperty: {
+      type: Function,
+      default: function() {}
+    },
+    getPropertyGivenHotId: {
+      type: Function,
+      default: function() {}
+    },
+    waitForHotIdFromTabId: {
+      type: Function,
+      default: async function() {}
+    }
+  },
   data() {
     return {
       // sourced from: https://licenses.opendefinition.org/licenses
@@ -76,6 +90,9 @@ export default {
       selectedLicenses: []
     }
   },
+  computed: {
+    ...mapGetters(['getActiveTab'])
+  },
   watch: {
     getActiveTab: function() {
       // update licenses when adding tabs
@@ -85,8 +102,9 @@ export default {
       this.setProperty('licenses', this.licensesObject(selected))
     }
   },
-  computed: {
-    ...mapGetters(['getActiveTab'])
+  mounted: function() {
+    // update license when re-opening panel with licenses
+    this.initLicenses()
   },
   methods: {
     initLicenses: async function() {
@@ -113,10 +131,6 @@ export default {
         return []
       }
     }
-  },
-  mounted: function() {
-    // update license when re-opening panel with licenses
-    this.initLicenses()
   }
 }
 </script>

@@ -1,10 +1,11 @@
-import { openFile, saveFileAs, saveFile, importDataPackage } from './file.js'
-import { showUrlDialog } from './url.js'
+import { openFile, saveFileAs, saveFile, importDataPackageFromFile, importTableResourceSchemaFromFile } from './file.js'
+import { showUrlDialogForPackage, showUrlDialogForResourceSchema } from './url.js'
 import { createWindowTab, focusMainWindow } from './windows.js'
 import { importExcel } from './excel.js'
 import { showKeyboardHelp } from './help.js'
-import { fileFormats } from '../renderer/file-formats.js'
+import { sharedMenus, fileFormats } from '../renderer/sharedWithMain.js'
 import { shell, Menu } from 'electron'
+import _ from 'lodash'
 
 class AppMenu {
   initTemplate () {
@@ -53,6 +54,24 @@ class AppMenu {
             //            enabled: false
             //          }
             //        ]
+            type: 'separator'
+          }, {
+            label: 'Import Column Properties',
+            submenu: [
+              {
+                label: 'json from URL...',
+                click () {
+                  showUrlDialogForResourceSchema()
+                }
+              },
+              {
+                label: 'json from file...',
+                click () {
+                  importTableResourceSchemaFromFile()
+                }
+              }
+            ]
+          }, {
             type: 'separator'
           }, {
             label: 'Save',
@@ -111,54 +130,21 @@ class AppMenu {
             label: 'Paste',
             accelerator: 'CmdOrCtrl+V'
           },
-          // {
-          //    turned off for Beta release
-          //    role: 'selectall',
-          //   label: 'Select All',
-          //   enabled: false,
-          //   accelerator: 'CmdOrCtrl+A'
-          // },
           {
             type: 'separator'
-          }, {
-            label: 'Insert Row Above',
-            accelerator: 'CmdOrCtrl+I',
-            click () {
-              webContents().send('insertRowAbove')
-            }
-          }, {
-            label: 'Insert Row Below',
-            accelerator: 'CmdOrCtrl+K',
-            click () {
-              webContents().send('insertRowBelow')
-            }
-          }, {
+          },
+          _.assign({}, sharedMenus.insertRowAbove, { click() { webContents().send('insertRowAbove') } }),
+          _.assign({}, sharedMenus.insertRowBelow, { click() { webContents().send('insertRowBelow') } }),
+          {
             type: 'separator'
-          }, {
-            label: 'Insert Column Before',
-            accelerator: 'CmdOrCtrl+J',
-            click () {
-              webContents().send('insertColumnLeft')
-            }
-          }, {
-            label: 'Insert Column After',
-            accelerator: 'CmdOrCtrl+L',
-            click () {
-              webContents().send('insertColumnRight')
-            }
-          }, {
+          },
+          _.assign({}, sharedMenus.insertColumnBefore, { click() { webContents().send('insertColumnBefore') } }),
+          _.assign({}, sharedMenus.insertColumnAfter, { click() { webContents().send('insertColumnAfter') } }),
+          {
             type: 'separator'
-          }, {
-            label: 'Remove Row(s)',
-            click () {
-              webContents().send('removeRows')
-            }
-          }, {
-            label: 'Remove Column(s)',
-            click () {
-              webContents().send('removeColumns')
-            }
-          }
+          },
+          _.assign({}, sharedMenus.removeRows, { click() { webContents().send('removeRows') } }),
+          _.assign({}, sharedMenus.removeColumns, { click() { webContents().send('removeColumns') } })
         ]
       },
       {
@@ -236,26 +222,11 @@ class AppMenu {
               menuItem.checked = !menuItem.checked
               webContents().send('toggleCaseSensitiveHeader')
             }
-          }, {
-            // Placeholder for future features
-            //      }, {
-            //        type: 'separator'
-            //      }, {
-            //        label: 'Import Column Properties...',
-            //        enabled: false
-            //      }, {
-            //        type: 'separator'
-            //      }, {
-            //        label: 'Create Constraint from Column',
-            //        enabled: false
-            //      }, {
-            //        label: 'Create Reference Table from Column',
-            //        enabled: false
-            // }, {
-            //  type: 'separator'
-            // }, {
+          },
+          {
             label: 'Guess Column Properties',
             accelerator: 'Shift+CmdOrCtrl+G',
+            lockable: true,
             click: function () {
               webContents().send('guessColumnProperties')
             }
@@ -296,51 +267,32 @@ class AppMenu {
           }, {
             type: 'separator'
           }, {
+            label: 'Lock Column Properties',
+            accelerator: 'Shift+CmdOrCtrl+L',
+            type: 'checkbox',
+            checked: false,
+            click (menuItem) {
+              // revert 'checked' toggle so only controlled by event
+              menuItem.checked = !menuItem.checked
+              webContents().send('toggleLockColumnProperties')
+            }
+          }, {
+            type: 'separator'
+          }, {
             label: 'Export Data Package...',
             accelerator: 'Shift+CmdOrCtrl+X',
             click () {
               webContents().send('triggerMenuButton', 'Export')
             }
           }
-          // Placeholder for future features
-          //      , {
-          // Conditionally enabled based on API keys set and Data Package Exported
-          //        label: 'Publish Data Package to',
-          //        enabled: false,
-          //        submenu: [
-          //          {
-          //            label: 'CKAN',
-          //            enabled: false
-          //          , icon: '/static/img/locked.svg'
-          //          }, {
-          //            label: 'DataHub',
-          //            enabled: false
-          //          , icon: '/static/img/locked.svg'
-          //          }, {
-          //            label: 'OctoPub',
-          //            enabled: false
-          //          , icon: '/static/img/locked.svg'
-          //          }
-          //        ]
-          //      }
         ]
-      },
-      {
+      }, {
         label: 'Window',
         submenu: [
           {
             role: 'minimize'
           }, {
             role: 'zoom'
-            // hide until implemented
-            // }, {
-            //   type: 'separator'
-            // }, {
-            //   label: 'Next Tab',
-            //   accelerator: 'CmdOrCtrl+Right'
-            // }, {
-            //   label: 'Previous Tab',
-            //   accelerator: 'CmdOrCtrl+Left'
           }, {
             type: 'separator'
           }, {
@@ -351,17 +303,6 @@ class AppMenu {
         role: 'help',
         submenu: [
           {
-            // Placeholder for future features
-            //        label: 'Data Curator Help',
-            // show accelerator for Windows and Linux only
-            //        accelerator: process.platform === 'darwin'
-            //          ? ''
-            //          : 'F1',
-            // hide above
-            //        click: function() {
-            //          shell.openExternal('https://odiqueensland.github.io/data-curator-help/')
-            //        }
-            //      }, {
             label: 'Keyboard Shortcuts',
             accelerator: 'CmdOrCtrl+/',
             enabled: true,
@@ -371,9 +312,9 @@ class AppMenu {
           }, {
             type: 'separator'
           }, {
-            label: 'Support Forum',
+            label: 'Data Curator Help',
             click () {
-              shell.openExternal('https://ask.theodi.org.au/c/projects/data-curator')
+              shell.openExternal('https://odiqueensland.github.io/data-curator-help')
             }
           }, {
             label: 'Report Issues',
@@ -381,13 +322,6 @@ class AppMenu {
               shell.openExternal('https://github.com/ODIQueensland/data-curator/blob/develop/.github/CONTRIBUTING.md')
             }
           }
-          // Placeholder for future feature
-          //      , {
-          //        type: 'separator'
-          //      }, {
-          //        label: 'Welcome Guide',
-          //        enabled: false
-          //      }
         ]
       }
     ]
@@ -418,21 +352,19 @@ class AppMenu {
       label: 'zip from URL...',
       enabled: true,
       click () {
-        // downloadDataPackageJson()
-        showUrlDialog()
+        showUrlDialogForPackage()
       }
     }, {
       label: 'zip from file...',
       enabled: true,
       click () {
-        importDataPackage()
+        importDataPackageFromFile()
       }
     }, {
       label: 'json from URL...',
       enabled: true,
       click () {
-        // downloadDataPackageJson()
-        showUrlDialog()
+        showUrlDialogForPackage()
       }
     }]
   }
@@ -453,7 +385,7 @@ class AppMenu {
           }, {
             label: 'Preferences',
             accelerator: 'CmdOrCtrl+,',
-            click: function() {
+            click: function () {
               webContents().send('showSidePanel', 'preferences')
             }
           }, {
@@ -497,7 +429,7 @@ class AppMenu {
       }, {
         label: 'Settings',
         accelerator: 'CmdOrCtrl+,',
-        click: function() {
+        click: function () {
           webContents().send('showSidePanel', 'preferences', 'settings')
         }
       })

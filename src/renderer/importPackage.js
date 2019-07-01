@@ -3,9 +3,8 @@ import path from 'path'
 import store from '@/store'
 import unzipper from 'unzipper'
 import etl from 'etl'
-import {ipcRenderer as ipc} from 'electron'
-import {Resource, Package} from 'datapackage'
-import {dataResourceToFormat} from '@/file-formats.js'
+import { ipcRenderer as ipc } from 'electron'
+import { dataResourceToFormat } from '@/file-formats.js'
 
 const _ignores = ['__MACOSX']
 
@@ -27,7 +26,7 @@ function createUnzipDestination(zipSource) {
 }
 
 async function unzipFileToDir(zipSource, unzipDestination, isTransient) {
-  let processed = {json: [], resource: [], md: []}
+  let processed = { json: [], resource: [], md: [] }
   await fs.createReadStream(zipSource).pipe(unzipper.Parse()).pipe(etl.map(async entry => {
     let fileDestination = path.join(unzipDestination, entry.path)
     await processStream(entry, processed, fileDestination)
@@ -160,7 +159,6 @@ function validateResourcesAndDataFiles(resourcePaths, csvPaths) {
 }
 
 async function getHotIdsFromFilenames(processed, unzipDestination, isTransient = false) {
-  let dataPackageJson = processed.json[0]
   let csvTabs = {}
   for (let pathname of processed.resource) {
     let fileDestination = path.join(unzipDestination, pathname)
@@ -169,7 +167,7 @@ async function getHotIdsFromFilenames(processed, unzipDestination, isTransient =
     if (!tabId) {
       throw new Error(`There was a problem matching ${fileDestination} with an opened tab.`)
     }
-    let hotId = _.findKey(store.getters.getHotTabs, {tabId: tabId})
+    let hotId = _.findKey(store.getters.getHotTabs, { tabId: tabId })
     // ensure csv path accounts for parent folders within zip - paths must be POSIX-only https://frictionlessdata.io/specs/data-resource/#url-or-path
     const regExpPathSeparator = '/'
     let re = new RegExp('^' + processed.parentFolders + regExpPathSeparator)
@@ -184,11 +182,11 @@ async function getHotIdsFromFilenames(processed, unzipDestination, isTransient =
 
 async function getTabIdFromFilename(filename) {
   return new Promise((resolve, reject) => {
-    let tabId = _.findKey(store.getters.getTabObjects, {filename: filename})
+    let tabId = _.findKey(store.getters.getTabObjects, { filename: filename })
     if (!tabId) {
       // wait for tabs to be ready
       _.delay(function(filename) {
-        resolve(_.findKey(store.getters.getTabObjects, {filename: filename}))
+        resolve(_.findKey(store.getters.getTabObjects, { filename: filename }))
       }, 500, filename)
     } else {
       resolve(tabId)

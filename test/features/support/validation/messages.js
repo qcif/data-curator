@@ -1,10 +1,9 @@
-import { expect, should, assert } from 'chai'
-import { Given, When, Then } from 'cucumber'
-import {validationMessages} from '../page-objects/messages.js'
-import {errorColor} from '../page-objects/style.js'
-import {mapArrayToInteger} from '../page-objects/helpers.js'
+import { expect } from 'chai'
+import { Then } from 'cucumber'
+import { validationMessages } from '../page-objects/messages.js'
+import { errorColor } from '../page-objects/style.js'
+import { mapArrayToInteger } from '../page-objects/helpers.js'
 import _ from 'lodash'
-import os from 'os'
 
 Then(/^the success message should be displayed with message "([\w ]+?)"$/, function (message) {
   let regexp = new RegExp('^.*Success: ' + message + '.*$', 'm')
@@ -17,7 +16,7 @@ Then(/^the success message should be displayed with message "([\w ]+?)"$/, funct
 
 Then(/^the failure message should be displayed with message "([\w ]+?)"$/, function (message) {
   let regexp = new RegExp('^.*Failed: ' + '.*$', 'm')
-  return this.app.client.waitForText('#message-panel', 3000)
+  return this.app.client.waitForText('#message-panel', this.pageTimeout)
     .getText('#message-panel')
     .then(function(text) {
       expect(text).to.match(regexp)
@@ -31,7 +30,7 @@ Then(/^the validation failure message should be displayed with the message(?:s|)
     return _.escapeRegExp(validationMessages[key])
   }).join('[\\s]')
   let regexp = new RegExp('^.*Validation Errors[\\s].*[\\s]' + messages + '.*$', 'm')
-  return this.app.client.waitForText('#message-panel', 3000)
+  return this.app.client.waitForText('#message-panel', this.pageTimeout)
     .getText('#message-panel')
     .then(function(text) {
       expect(text).to.match(regexp)
@@ -45,7 +44,7 @@ Then(/^the validation failure message should be displayed with the message(?:s|)
   expect(_.isArray(rows)).to.equal(true)
   const cols = JSON.parse(c)
   expect(_.isArray(cols)).to.equal(true)
-  return this.app.client.waitForText('#message-panel', 3000)
+  return this.app.client.waitForText('#message-panel', this.pageTimeout)
     .getText('#message-panel')
     .then(function(text) {
       let actualText = text.split('\n')
@@ -104,7 +103,7 @@ Then(/^a message to set column names should be displayed$/, function () {
 
 Then(/^the validation errors count should be "(\d+)"$/, function (errorsCount) {
   let regexp = new RegExp(errorsCount + ' Error\\(s\\)')
-  return this.app.client.waitForText('#message-panel', 3000)
+  return this.app.client.waitForText('#message-panel', this.pageTimeout)
     .getText('#message-panel')
     .then(function(text) {
       // console.log(`text is`, text)

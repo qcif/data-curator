@@ -1,14 +1,21 @@
 <template>
   <div id="app">
-    <router-view v-show="routerName" :name="routerName"></router-view>
+    <router-view
+      v-show="routerName"
+      :name="routerName"/>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'data-curator',
-    props: ['routerName']
+export default {
+  name: 'DataCurator',
+  props: {
+    routerName: {
+      type: String,
+      required: true
+    }
   }
+}
 </script>
 <style lang="styl" scoped>
 @import '~static/css/default'

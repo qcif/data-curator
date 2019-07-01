@@ -1,47 +1,123 @@
 <template>
-<div id="foreignKeyFields">
-  <div v-for="(foreignKey,index) in hotForeignKeys"  class="foreign col-sm-12">
-    <div class="inputs-container">
-      <component :key="getLocalComponentKey(index)" is="tableheaderkeys" :activeNames="localHeaderNames" :getSelectedKeys="getSelectedLocalKeys(index)" :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)" labelName="Foreign key(s)" :tooltipId="'tooltip-foreignkey' + index" tooltipView="tooltipForeignkey" :index="index" />
-      <component v-if="isHeadersSelected && !fkPackages[index]" :key="getTableComponentKey(index)" is="tablekeys" :allTableNames="allTableNames" :getSelectedTable="getSelectedTable(index)" :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)" labelName="Reference Table" :tooltipId="'tooltip-foreignkey-table' + index" tooltipView="tooltipForeignkeyTable" :index="index" />
-      <component v-if="isHeadersSelected && !fkPackages[index]" :key="getForeignComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" :tooltipId="'tooltip-foreignkey-tablekey' + index" tooltipView="tooltipForeignkeyTablekey" :index="index" :currentHotId="currentHotId"/>
+  <div id="foreignKeyFields">
+    <div
+      v-for="(foreignKey,index) in hotForeignKeys"
+      :key="foreignKey + index"
+      class="foreign col-sm-12">
+      <div class="inputs-container">
+        <component
+          :is="'tableheaderkeys'"
+          :key="getLocalComponentKey(index)"
+          :activeNames="localHeaderNames"
+          :getSelectedKeys="getSelectedLocalKeys(index)"
+          :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)"
+          :tooltipId="'tooltip-foreignkey' + index"
+          :index="index"
+          labelName="Foreign key(s)"
+          tooltipView="tooltipForeignkey" />
+        <component
+          v-if="isHeadersSelected && !fkPackages[index]"
+          :is="'tablekeys'"
+          :key="getTableComponentKey(index)"
+          :allTableNames="allTableNames"
+          :getSelectedTable="getSelectedTable(index)"
+          :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)"
+          :tooltipId="'tooltip-foreignkey-table' + index"
+          :index="index"
+          labelName="Reference Table"
+          tooltipView="tooltipForeignkeyTable" />
+        <component
+          v-if="isHeadersSelected && !fkPackages[index]"
+          :is="'tableheaderkeys'"
+          :key="getForeignComponentKey(index)"
+          :activeNames="getCurrentForeignHeaders(index)"
+          :getSelectedKeys="getSelectedForeignKeys(index)"
+          :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)"
+          :tooltipId="'tooltip-foreignkey-tablekey' + index"
+          :index="index"
+          :currentHotId="currentHotId"
+          labelName="Reference Column(s)"
+          tooltipView="tooltipForeignkeyTablekey"/>
+      </div>
+      <button
+        type="button"
+        class="btn btn-danger btn-sm"
+        @click="removeForeignKey(index)">
+        <span class="glyphicon glyphicon-minus"/>
+      </button>
+      <div
+        id="fk-package"
+        class="clearfix">
+        <template v-if="isHeadersSelected && fkPackages[index]">
+          <label class="control-label">Reference Package</label><span
+            v-if="testLoadingPackage == index && loadingPackage[testLoadingPackage]"
+            class="glyphicon glyphicon-refresh spinning"/>
+          <div
+            :class="{ 'right': !fkPackages[index]}"
+            class="fk-package">
+            <input
+              :key="getForeignPackageKey(index)"
+              :id="'fk-package' + index"
+              :value="getFkPackage(index)"
+              :name="'fk-package' + index"
+              class="form-control input-sm"
+              type="text"
+              @input="setFkPackage(index, currentLocalHotId, $event.target.value)"
+              @blur="removeFkPackageForErrors(index, currentLocalHotId)" >
+          </div>
+          <div
+            v-if="fkPackages[index] && errors.has('fk-package' + index)"
+            class="row help validate-danger">
+            {{ errors.first('fk-package' + index) }}
+          </div>
+          <div v-if="fkPackages[index]">
+            <component
+              :is="'tablekeys'"
+              :key="getPackageTableComponentKey(index)"
+              :allTableNames="allFkTableNames"
+              :getSelectedTable="getFkPackageTable(index)"
+              :pushSelectedTable="setFkPackageTable(index,currentLocalHotId)"
+              :tooltipId="'tooltip-foreignkey-table' + index"
+              :index="index"
+              labelName="Reference Table"
+              tooltipView="tooltipForeignkeyTable" />
+            <component
+              :is="'tableheaderkeys'"
+              :key="getForeignPackageComponentKey(index)"
+              :activeNames="getCurrentPackageForeignHeaders(index)"
+              :getSelectedKeys="getSelectedForeignKeys(index)"
+              :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)"
+              :tooltipId="'tooltip-foreignkey-tablekey' + index"
+              :index="index"
+              :currentHotId="currentHotId"
+              labelName="Reference Column(s)"
+              tooltipView="tooltipForeignkeyTablekey"/>
+          </div>
+        </template>
+        <button
+          type="button"
+          class="add-foreign btn btn-primary btn-sm"
+          @click="toggleFkPackage(index)">
+          <span class="fas fa-exchange-alt"/>{{ toggleText[index] }}
+        </button>
+      </div>
     </div>
-    <button type="button" class="btn btn-danger btn-sm" @click="removeForeignKey(index)">
-      <span class="glyphicon glyphicon-minus"/>
-    </button>
-    <div id="fk-package" class="clearfix">
-      <template v-if="isHeadersSelected && fkPackages[index]">
-        <label class="control-label">Reference Package</label><span v-if="testLoadingPackage == index && loadingPackage[testLoadingPackage]" class="glyphicon glyphicon-refresh spinning"/>
-        <div class="fk-package" :class="{ 'right': !fkPackages[index]}">
-          <input :key="getForeignPackageKey(index)" class="form-control input-sm" type="text" :id="'fk-package' + index" :value="getFkPackage(index)" @input="setFkPackage(index, currentLocalHotId, $event.target.value)" :name="'fk-package' + index" @blur="removeFkPackageForErrors(index, currentLocalHotId)" />
-        </div>
-        <div v-if="fkPackages[index] && errors.has('fk-package' + index)" class="row help validate-danger">
-          {{ errors.first('fk-package' + index)}}
-        </div>
-        <div v-if="fkPackages[index]">
-          <component :key="getPackageTableComponentKey(index)" is="tablekeys" :allTableNames="allFkTableNames" :getSelectedTable="getFkPackageTable(index)" :pushSelectedTable="setFkPackageTable(index,currentLocalHotId)" labelName="Reference Table" :tooltipId="'tooltip-foreignkey-table' + index" tooltipView="tooltipForeignkeyTable" :index="index" />
-          <component :key="getForeignPackageComponentKey(index)" is="tableheaderkeys" :activeNames="getCurrentPackageForeignHeaders(index)" :getSelectedKeys="getSelectedForeignKeys(index)" :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)" labelName="Reference Column(s)" :tooltipId="'tooltip-foreignkey-tablekey' + index" tooltipView="tooltipForeignkeyTablekey" :index="index" :currentHotId="currentHotId"/>
-        </div>
-      </template>
-      <button type="button" class="add-foreign btn btn-primary btn-sm" @click="toggleFkPackage(index)">
-        <span class="fas fa-exchange-alt"/>{{toggleText[index]}}
+    <div class="button-container">
+      <button
+        type="button"
+        class="add-foreign btn btn-primary btn-sm"
+        @click="addForeignKey()">
+        <span class="glyphicon glyphicon-plus"/>Add Foreign Key
       </button>
     </div>
   </div>
-  <div class="button-container">
-    <button type="button" class="add-foreign btn btn-primary btn-sm" @click="addForeignKey()">
-      <span class="glyphicon glyphicon-plus"/>Add Foreign Key
-    </button>
-  </div>
-</div>
 </template>
 <script>
 import tablekeys from '../partials/TableKeys'
 import tableheaderkeys from '../partials/TableHeaderKeys'
 import RelationKeys from '../mixins/RelationKeys'
-import ForeignKeysTooltip from '../mixins/ForeignKeysTooltip'
-import {ipcRenderer as ipc} from 'electron'
-import {Package} from 'datapackage'
+import { ipcRenderer as ipc } from 'electron'
+import { Package } from 'datapackage'
 import {
   pushAllTabTitlesSubscription
 } from '@/store/modules/tabs.js'
@@ -65,13 +141,26 @@ Vue.use(VueRx, {
   Subscription
 })
 export default {
+  name: 'Foreignkeys',
   components: {
     tablekeys,
     tableheaderkeys
   },
   mixins: [RelationKeys, ValidationRules],
-  name: 'foreignkeys',
-  props: ['setProperty', 'getPropertyGivenHotId', 'propertyName', 'currentHotId'],
+  props: {
+    setProperty: {
+      type: Function,
+      default: function() {}
+    },
+    propertyName: {
+      type: String,
+      default: ''
+    },
+    currentHotId: {
+      type: Function,
+      default: async function() {}
+    }
+  },
   asyncComputed: {
     hotForeignKeys: {
       async get() {
@@ -122,6 +211,34 @@ export default {
       toggleText: fkPackagesButtonText$,
       testLoadingPackage: loadingPackage$
     }
+  },
+  created: async function() {
+    let self = this
+    this.$subscribeTo(allTabsTitles$, function(allTabsTitles) {
+      self.updateTableSubscriptions(allTabsTitles)
+    })
+    ipc.on('packageUrlLoaded', async function(event, index, hotId, url, descriptor) {
+      const dataPackage = await Package.load(descriptor)
+      if (dataPackage && dataPackage.valid) {
+        self.stopLoadingPackageFeedback()
+        self.updateFkPackageIndex(index, true)
+        self.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: url })
+        // persist the first table by default
+        if (dataPackage.resources.length > 0) {
+          self.pushForeignKeysForeignTableForTable({ hotId: hotId, index: index, resource: dataPackage.resources[0].name })
+        }
+        await self.updateFkComponents(dataPackage, url)
+      }
+    })
+  },
+  mounted: function() {
+    let self = this
+    pushAllTabTitlesSubscription()
+    this.populateAsyncFkPackageComponents()
+    // occasionally fkpackage table getter doesn't arrive on tab change - update to ensure all received
+    _.delay(function() {
+      self.$forceUpdate()
+    }, 200)
   },
   methods: {
     ...mapMutations([
@@ -181,18 +298,24 @@ export default {
       return dataPackage
     },
     setFkPackage: async function(index, hotId, value) {
+      // do not setup spinner immediately
+      let self = this
+      _.delay(function() {
+        self.startLoadingPackage(index, hotId, value)
+      }, 5000)
+    },
+    startLoadingPackage: async function(index, hotId, value) {
+      let self = this
       this.loadingPackage[index] = value
       loadingPackage$.next(index)
-      let self = this
-      // set timeout on spinner
-      _.delay(function() {
-        self.loadingPackage.length = 0
-        loadingPackage$.next(-1)
-      }, 10000)
       let isValid = await this.validatePackageUrl(`fk-package${index}`, index, hotId, value)
       if (isValid) {
         ipc.send('loadPackageUrl', index, hotId, value)
       }
+      // set timeout on spinner
+      _.delay(function() {
+        self.stopLoadingPackageFeedback(index)
+      }, 5000)
     },
     stopLoadingPackageFeedback: function(index) {
       this.loadingPackage[index] = false
@@ -376,7 +499,7 @@ export default {
       try {
         let hasValidUrl = await this.validate(field, value, 'url:true')
         if (!hasValidUrl) {
-          this.$validator.errors.add({field: field, msg: 'The package field must be a valid url.'})
+          this.$validator.errors.add({ field: field, msg: 'The package field must be a valid url.' })
           return false
         }
         return true
@@ -431,34 +554,6 @@ export default {
         console.error('There was a problem with populating fk components', error)
       }
     }
-  },
-  created: async function() {
-    let self = this
-    this.$subscribeTo(allTabsTitles$, function(allTabsTitles) {
-      self.updateTableSubscriptions(allTabsTitles)
-    })
-    ipc.on('packageUrlLoaded', async function(event, index, hotId, url, descriptor) {
-      const dataPackage = await Package.load(descriptor)
-      if (dataPackage && dataPackage.valid) {
-        self.stopLoadingPackageFeedback()
-        self.updateFkPackageIndex(index, true)
-        self.pushForeignKeysForeignPackageForTable({ hotId: hotId, index: index, package: url })
-        // persist the first table by default
-        if (dataPackage.resources.length > 0) {
-          self.pushForeignKeysForeignTableForTable({ hotId: hotId, index: index, resource: dataPackage.resources[0].name })
-        }
-        await self.updateFkComponents(dataPackage, url)
-      }
-    })
-  },
-  mounted: function() {
-    let self = this
-    pushAllTabTitlesSubscription()
-    this.populateAsyncFkPackageComponents()
-    // occasionally fkpackage table getter doesn't arrive on tab change - update to ensure all received
-    _.delay(function() {
-      self.$forceUpdate()
-    }, 200)
   }
 }
 </script>

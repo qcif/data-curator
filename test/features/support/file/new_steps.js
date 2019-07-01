@@ -1,7 +1,8 @@
-import { expect, should, assert } from 'chai'
+import { expect } from 'chai'
 import { Given, When, Then } from 'cucumber'
-import {defaultTabData, isDataEqualToDefaultData} from '../page-objects/io.js'
+import { defaultTabData, isDataEqualToDefaultData } from '../page-objects/io.js'
 import _ from 'lodash'
+import { activeTableSelector } from '../page-objects/selectors'
 
 When(/^Data Curator is open$/, async function () {
   const title = await this.app.client.waitUntilWindowLoaded().getTitle()
@@ -101,6 +102,53 @@ Then(/^the (?:new |)table (?:should have |has )(\d+) row[s]? by (\d+) column[s]?
     })
 })
 
+Then(/^the (?:new |)table (?:should perhaps have |has )(\d+) row[s]? by (\d+) column[s]?$/, { timeout: -1 }, async function (rowCount, colCount) {
+  const parentSelector = '.active .editor.handsontable'
+  const elementsSelector = '.ht_master table tr'
+  let actualFirstDataRow
+  let self = this
+  await this.app.client.waitUntil(async function () {
+    actualFirstDataRow = await self.app.client.element(parentSelector).elements(elementsSelector, 8000)
+    return actualFirstDataRow.value.length === 2
+  }, 9000)
+  // expect(actualFirstDataRow).to.equal(true)
+  // let response = await this.app.client.element('.active .editor.handsontable').elements('.ht_master table tr th')
+  // expect(response.value.length).to.deep.equal(rowCount)
+  // let response2 = await response.element('.ht_master table tr').elements('td')
+  // expect(response.value.length).to.deep.equal(colCount)
+  // .then(function(response) {
+  //
+  // })
+  // .element('.ht_master table tr')
+  // .elements('td')
+  // .then(function(response) {
+  //
+  // })
+
+  // await this.app.client.waitUntil(async function () {
+  //   actualFirstDataRow = await self.app.client.element(parentSelector)
+  //     .elements(elementsSelector)
+  //     .getText()
+  //   return _.difference(data[0], actualFirstDataRow).length === 0
+  // }, 5000)
+
+  // const parentSelector = '.tab-pane.active .editor.handsontable'
+  // const elementsSelector = '.ht_master table tr:first-of-type td'
+  // let self = this
+  // let actualFirstDataRow
+  //
+  // const currentCol = _.indexOf(activeCol, 'ht__highlight')
+  //
+  // await this.app.client.waitUntil(async function () {
+  //   actualFirstDataRow = await self.app.client.element(parentSelector)
+  //     .elements(elementsSelector)
+  //     .getText()
+  //   return _.difference(data[0], actualFirstDataRow).length === 0
+  // }, 5000)
+  // const difference = _.difference(actualFirstDataRow, defaultTabData[0])
+  //
+})
+
 Then(/^the (?:new |)table (?:should be|is) empty$/, function () {
   return this.app.client.element('.active .editor.handsontable')
     .getText('.ht_master table tr td')
@@ -110,7 +158,7 @@ Then(/^the (?:new |)table (?:should be|is) empty$/, function () {
     })
 })
 
-Then(/^the cursor should be in the (?:new )table$/, function () {
+Then(/^the cursor (?:should be|is) in the (?:new )table$/, function () {
   return this.app.client.element('.active .editor.handsontable')
     .getAttribute('.ht_master table tr th', 'class')
     .then(function(response) {
@@ -119,8 +167,8 @@ Then(/^the cursor should be in the (?:new )table$/, function () {
     })
 })
 
-Then(/^the cursor should be in row (\d+), column (\d+)$/, function (rowNumber, colNumber) {
-  const parentSelector = '.tab-pane.active .editor.handsontable'
+Then(/^the cursor (?:should be|is) in row (\d+), column (\d+)$/, function (rowNumber, colNumber) {
+  const parentSelector = activeTableSelector
   return this.app.client.element(parentSelector)
     .getAttribute('.ht_master table tr th', 'class')
     .then(function(response) {

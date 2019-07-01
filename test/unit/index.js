@@ -1,8 +1,10 @@
 import Vue from 'vue'
 Vue.config.devtools = false
 Vue.config.productionTip = false
-const sinonTest = require('sinon-test')(sinon, {useFakeTimers: false})
-global.sinonTest = sinonTest
+
+// sandbox preferred over sinonTest, so that can set up in hooks, rather than in tests.
+// const sinonTest = require('sinon-test')(sinon, {useFakeTimers: false})
+// global.sinonTest = sinonTest
 var sinonChai = require('sinon-chai')
 sinon.config = {
   useFakeTimers: false
@@ -10,7 +12,8 @@ sinon.config = {
 chai.use(sinonChai)
 
 // require all test files (files that ends with .spec.js)
-const testsContext = require.context('./specs', true, /\.dev/)
+const testsContext = require.context('./specs', true, /\.(dev|spec)/)
+// const testsContext = require.context('./specs', true, /\.(dev)/)
 testsContext.keys().forEach(testsContext)
 
 // require all src files except main.js for coverage.
