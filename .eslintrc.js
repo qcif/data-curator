@@ -1,21 +1,20 @@
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
   parserOptions: {
-    sourceType: 'module'
+    sourceType: 'module',
+    parser: 'babel-eslint'
   },
   env: {
     browser: true,
     node: true,
     es6: true
   },
-  extends: 'standard',
+  extends: ['standard', 'plugin:vue/recommended'],
   globals: {
     __static: true
   },
   plugins: [
-    'html',
-    "eslint-plugin-html"
+    'vue'
   ],
   'rules': {
     // allow paren-less arrow functions
@@ -28,9 +27,10 @@ module.exports = {
     'no-undef': 0,
     'space-before-function-paren': 0,
     'no-unused-vars': 0,
-    'no-use-before-define': 0,
     'eqeqeq': 0,
     'no-callback-literal': 0,
-    'space-infix-ops': 0
+    'space-infix-ops': 0,
+    // hyphenation causes issues with component props
+    'vue/attribute-hyphenation': 0
   }
 }

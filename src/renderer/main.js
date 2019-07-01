@@ -7,12 +7,12 @@ import store from './store'
 Vue.config.productionTip = false
 
 let DefaultVue = Vue.extend({
-  components: {App},
+  components: { App },
   router,
   store
 })
 function compileVue (mount, name) {
-  new DefaultVue({template: `<App routerName="${name}"/>`}).$mount(mount)
+  new DefaultVue({ template: `<App routerName="${name}"/>` }).$mount(mount)
 }
 if (document.querySelector('#app')) {
   compileVue('#app', 'default')

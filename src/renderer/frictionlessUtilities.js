@@ -1,5 +1,5 @@
 import store from '@/store/modules/hots.js'
-import {DEFAULT_DIALECT} from 'datapackage/lib/config.js'
+import { DEFAULT_DIALECT } from 'datapackage/lib/config.js'
 
 export function includeHeadersInData(hot) {
   let allData = hot.getData()

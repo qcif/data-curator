@@ -1,17 +1,24 @@
 <template>
-<form class="navbar-form form-horizontal" id="sidenavProperties">
-  <div class="form-group-sm row container-fluid">
-    <div v-for="(formprop, index) in formprops" :key="index">
-      <label class="control-label col-sm-3" :for="formprop.label">{{formprop.label}}</label>
-      <input type="text" class="form-control input-sm col-sm-9" :id="formprop.key" />
+  <form
+    id="sidenavProperties"
+    class="navbar-form form-horizontal">
+    <div class="form-group-sm row container-fluid">
+      <div
+        v-for="(formprop, index) in formprops"
+        :key="index">
+        <label
+          :for="formprop.label"
+          class="control-label col-sm-3">{{ formprop.label }}</label>
+        <input
+          :id="formprop.key"
+          type="text"
+          class="form-control input-sm col-sm-9" >
+      </div>
     </div>
-  </div>
-</form>
+  </form>
 </template>
 <script>
 import {
-  mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
 import {
@@ -19,9 +26,18 @@ import {
 } from '../hot.js'
 import ColumnToolTip from '../mixins/ColumnTooltip'
 export default {
-  name: 'sidenav',
-  props: ['sideNavFormHeight', 'adjustSidenavFormHeight'],
+  name: 'Sidenav',
   mixins: [ColumnToolTip],
+  props: {
+    sideNavFormHeight: {
+      type: String,
+      default: ''
+    },
+    adjustSidenavFormHeight: {
+      type: Function,
+      default: function() {}
+    }
+  },
   data() {
     return {
       formprops: [],
@@ -30,6 +46,24 @@ export default {
   },
   computed: {
     ...mapGetters(['getActiveTab', 'getHotIdFromTabId'])
+  },
+  watch: {
+    sideNavFormHeight: function() {
+      this.adjustSidenavFormHeight()
+    }
+  },
+  mounted: function() {
+    this.syncSidenavFormHeight()
+  },
+  beforeCreate: function() {
+    this.$nextTick(function() {
+      // set hidden inputs
+      this.formprops.forEach(x => {
+        if (x.type ==='hidden') {
+          this.setProperty(x.key, x.value)
+        }
+      })
+    })
   },
   methods: {
     isSharedComponent: function(key) {
@@ -95,24 +129,6 @@ export default {
     // convenience method for inside functions
     getCurrentHotId: function() {
       return this.activeCurrentHotId
-    }
-  },
-  mounted: function() {
-    this.syncSidenavFormHeight()
-  },
-  beforeCreate: function() {
-    this.$nextTick(function() {
-      // set hidden inputs
-      let found = this.formprops.forEach(x => {
-        if (x.type ==='hidden') {
-          this.setProperty(x.key, x.value)
-        }
-      })
-    })
-  },
-  watch: {
-    sideNavFormHeight: function() {
-      this.adjustSidenavFormHeight()
     }
   }
 }

@@ -1,13 +1,13 @@
-import store from '@/store/modules/hots'
-
+import store from '@/store'
 export function resetHotStore() {
-  store.state = {
+  store.replaceState({
     hotTabs: {},
     packageProperties: {},
     provenanceProperties: { markdown: '' }
-  }
+  })
 }
 
+// note that the layout here is different (flattened and simpler) than the actual store
 export function stubSimpleTabStore(hot) {
   const stubbedStore = {
     state: {
@@ -45,6 +45,16 @@ export function stubSimpleTabStore(hot) {
       },
       getAllHotTablesColumnNames: (state, getters) => () => {
         return ['stubbed Column names']
+      },
+      getAllHotColumnPropertiesFromHotId: (state, getters) => (hotId) => {
+        // init for other functions that may need this initialisation
+        state.hotTabs[hotId] = {}
+        state.hotTabs[hotId].columnProperties = {}
+        return {}
+      },
+      getTableProperty: (state, getters) => (property) => {
+        let tableProperties = {}
+        return tableProperties[property.key]
       }
     },
     mutations: {
@@ -74,6 +84,14 @@ export function stubSimpleTabStore(hot) {
       },
       pushColumnProperty(state, property) {
         _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
+      },
+      resetTablePropertiesToObject(state, hotIdTables) {
+        for (let hotId in hotIdTables) {
+          if (!state.hotTabs[hotId]) {
+            throw new Error(`Unable to find tab with hot id: ${hotId}`)
+          }
+          _.set(state.hotTabs[hotId], 'tableProperties', hotIdTables[hotId])
+        }
       }
     }
   }

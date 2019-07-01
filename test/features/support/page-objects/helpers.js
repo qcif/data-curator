@@ -1,6 +1,5 @@
-import { expect, should, assert } from 'chai'
-import { Given, When, Then } from 'cucumber'
 import _ from 'lodash'
+import { mockShell } from './mockMainProcess'
 
 export function mapArrayToInteger(array, i) {
   _.map(array, function(element) {
@@ -8,4 +7,8 @@ export function mapArrayToInteger(array, i) {
       element = i
     }
   })
+}
+
+export function sendOpenUrlCall(url) {
+  return mockShell([{ method: 'openExternal', value: url }])
 }

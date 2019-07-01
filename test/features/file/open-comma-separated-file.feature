@@ -17,11 +17,16 @@ Feature: Open a Comma separated value file
   - "Guess Column Properties" on opening the file
 
   @impl
-  Scenario: Open an existing comma separated value file
+  Scenario: Open a file
     Given Data Curator is open
     When the "File"->"Open"->"Comma separated..." menu is selected
     Then the openfile dialog should be displayed
-    And another tab with its filename as the title should be displayed
+
+  @impl
+  Scenario: Open an existing comma separated value file
+    Given Data Curator is open
+    When the "csv" file "valid.csv" is selected in the openfile dialog
+    Then a new tab with the title "valid" should be displayed
     And the table rows and columns should match the "csv" file
     # And set the CSV Dialect in the Table Properties to "Comma Separated"
     # And "Fix Ragged Rows"

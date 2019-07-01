@@ -1,5 +1,5 @@
 import path from 'path'
-import {remote} from 'electron'
+import { remote } from 'electron'
 
 export function setActiveGlobal(filename, title) {
   remote.getGlobal('tab').activeFilename = filename

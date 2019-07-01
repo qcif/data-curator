@@ -7,8 +7,7 @@ import chaiAsPromised from 'chai-as-promised'
 chai.should()
 chai.use(chaiAsPromised)
 
-function CustomWorld ({attach, parameters}) {
-  // console.log('starting world...')
+function CustomWorld ({ attach, parameters }) {
   this.attach = attach
   this.parameters = parameters
   if (!this.app) {
@@ -19,8 +18,6 @@ function CustomWorld ({attach, parameters}) {
   } else {
     console.log('WARNING: app already created...')
   }
-  // console.log(`at world`)
-  // console.log(this)
 }
 
 function createApp() {

@@ -1,17 +1,32 @@
 <template>
-  <td :class="gClass">
-    <a href="#"
-      @mouseover="hoverToSelectErrorCell(row)"
-      @mouseout="exitHoverToSelectErrorCell(row)">
-      {{value}}
-    </a>
-  </td>
+  <div v-show="row && row.hasOwnProperty('message')">
+    <span
+      v-for="column in columns"
+      :key="column.field">
+      <a
+        v-show="row && row.hasOwnProperty(column)"
+        href="#"
+        @mouseover="hoverToSelectErrorCell(row)"
+        @mouseout="exitHoverToSelectErrorCell(row)">
+        {{ row.rowNumber }}
+      </a>
+    </span>
+  </div>
 </template>
 <script>
-import {getWindow} from '../index.js'
+import { getWindow } from '../index.js'
 export default {
-  name: 'rowLink',
-  props: ['gClass', 'row', 'value'],
+  name: 'RowLink',
+  props: {
+    row: {
+      type: Object,
+      default: function() { return {} }
+    },
+    columns: {
+      type: Object,
+      default: function() { return {} }
+    }
+  },
   computed: {
     // cache main window
     homeWindow() {

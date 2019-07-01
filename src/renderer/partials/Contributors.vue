@@ -1,26 +1,56 @@
 <template>
   <div id="contributors">
-    <div v-for="(contributor,index) in getContributors" :key="index" class="contributor col-sm-12">
+    <div
+      v-for="(contributor,index) in getContributors"
+      :key="index"
+      class="contributor col-sm-12">
       <div class="inputs-container">
-        <div v-for="prop in Object.keys(contributor)" class="input-group">
-          <span class="input-group-addon input-sm">{{prop}}</span>
-          <select v-if="prop === 'role'" class="form-control input-sm" :value="contributor[prop]" @input="setContributorProp(index, prop, $event.target.value)" :id="prop" >
-            <option v-for="role in roles" :key="role" v-bind:value="role">
-              {{ role}}
+        <div
+          v-for="(prop, index) in Object.keys(contributor)"
+          :key="prop + index"
+          class="input-group">
+          <span class="input-group-addon input-sm">{{ prop }}</span>
+          <select
+            v-if="prop === 'role'"
+            :value="contributor[prop]"
+            :id="prop"
+            class="form-control input-sm"
+            @input="setContributorProp(index, prop, $event.target.value)" >
+            <option
+              v-for="role in roles"
+              :key="role"
+              :value="role">
+              {{ role }}
             </option>
           </select>
-          <input v-else :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(getValidationProp(prop) + index) }" :value="contributor[prop]" @input="setContributorProp(index, prop, $event.target.value)" type="text" :id="prop + index" v-validate="contributorValidationRules(prop, index)" :name="getValidationProp(prop) + index"/>
-          <div v-show="errors.has(getValidationProp(prop) + index)" class="row help validate-danger">
-            {{ errors.first(getValidationProp(prop) + index)}}
+          <input
+            v-validate="contributorValidationRules(prop, index)"
+            v-else
+            :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(getValidationProp(prop) + index) }"
+            :value="contributor[prop]"
+            :id="prop + index"
+            :name="getValidationProp(prop) + index"
+            type="text"
+            @input="setContributorProp(index, prop, $event.target.value)">
+          <div
+            v-show="errors.has(getValidationProp(prop) + index)"
+            class="row help validate-danger">
+            {{ errors.first(getValidationProp(prop) + index) }}
           </div>
         </div>
       </div>
-      <button type="button" class="btn btn-danger btn-sm" @click="removeContributor(index)">
+      <button
+        type="button"
+        class="btn btn-danger btn-sm"
+        @click="removeContributor(index)">
         <span class="glyphicon glyphicon-minus"/>
       </button>
     </div>
     <div class="button-container">
-      <button type="button" class="add-contributor btn btn-primary btn-sm" @click="addContributor()">
+      <button
+        type="button"
+        class="add-contributor btn btn-primary btn-sm"
+        @click="addContributor()">
         <span class="glyphicon glyphicon-plus"/>Add contributor
       </button>
     </div>
@@ -29,25 +59,40 @@
 <script>
 import {
   mapMutations,
-  mapState,
   mapGetters
 } from 'vuex'
 import SideNav from './SideNav'
 import AsyncComputed from 'vue-async-computed'
 import ValidationRules from '../mixins/ValidationRules'
-import VeeValidate from 'vee-validate'
 import Vue from 'vue'
 Vue.use(AsyncComputed)
 export default {
-  name: 'contributors',
+  name: 'Contributors',
+  extends: SideNav,
   mixins: [ValidationRules],
+  props: {
+    setProperty: {
+      type: Function,
+      default: function() {}
+    },
+    getProperty: {
+      type: Function,
+      default: function() {}
+    },
+    getPropertyGivenHotId: {
+      type: Function,
+      default: function() {}
+    },
+    contributorsSetter: {
+      type: Function,
+      default: undefined
+    }
+  },
   data() {
     return {
       contributors: []
     }
   },
-  props: ['setProperty', 'getProperty', 'getPropertyGivenHotId', 'contributorsSetter'],
-  extends: SideNav,
   computed: {
     ...mapGetters(['getActiveTab']),
     regexForPath() {
@@ -77,6 +122,9 @@ export default {
       }
     }
   },
+  mounted: function() {
+    this.initContributors()
+  },
   methods: {
     ...mapMutations([
       'pushPackageProperty'
@@ -97,7 +145,7 @@ export default {
       this.contributors = contributors
     },
     emptyContributor: function() {
-      return {'title': '', 'path': '', 'email': '', 'role': '', 'organization': ''}
+      return { 'title': '', 'path': '', 'email': '', 'role': '', 'organization': '' }
     },
     getContributorsFromPackageProperties: function() {
       let contributors = this.getProperty('contributors')
@@ -127,9 +175,6 @@ export default {
           return ''
       }
     }
-  },
-  mounted: function() {
-    this.initContributors()
   }
 }
 </script>

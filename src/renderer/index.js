@@ -1,11 +1,12 @@
-import {HotRegister, insertRowAbove, insertRowBelow, insertColumnLeft, insertColumnRight, removeRows, removeColumns} from '@/hot.js'
-import {loadDataIntoHot, saveDataToFile} from '@/data-actions.js'
-import {ipcRenderer as ipc, remote} from 'electron'
-import {isCaseSensitive} from '@/frictionlessUtilities'
-import {pushCsvDialect} from '@/dialect.js'
-import {menu} from '@/menu.js'
-import {fileFormats} from '@/file-formats.js'
+import { HotRegister, insertRowAbove, insertRowBelow, insertColumnBefore, insertColumnAfter, removeRows, removeColumns } from '@/hot.js'
+import { loadDataIntoHot, saveDataToFile } from '@/data-actions.js'
+import { ipcRenderer as ipc, remote } from 'electron'
+import { isCaseSensitive } from '@/frictionlessUtilities'
+import { pushCsvDialect } from '@/dialect.js'
+import { menu } from '@/menu.js'
+import { fileFormats } from '@/file-formats.js'
 import fs from 'fs-extra'
+import store from '@/store'
 
 export function addHotContainerListeners(container, loadingFn, closeLoadingFn) {
   container.ondragover = function() {
@@ -21,16 +22,19 @@ export function addHotContainerListeners(container, loadingFn, closeLoadingFn) {
     fs.readFile(f.path, 'utf-8', function(err, data) {
       if (err) {
         console.error(err)
+      } else {
+        let hot = HotRegister.getActiveInstance()
+        const tabId = store.getters.getTabIdFromHotId(hot.guid)
+        // if we're dragging a file in, default the format to comma-separated
+        loadData(hot.guid, data, fileFormats.csv, closeLoadingFn)
+        store.commit('pushTabObject', { id: tabId, filename: f.path })
       }
-      let hot = HotRegister.getActiveInstance()
-      // if we're dragging a file in, default the format to comma-separated
-      loadData(hot.guid, data, fileFormats.csv, closeLoadingFn)
     })
   }
 
   container.addEventListener('contextmenu', function(e) {
     e.preventDefault()
-    menu.popup(getWindow('home'), {async: true})
+    menu.popup(getWindow('home'), { async: true })
   }, false)
 }
 
@@ -56,22 +60,15 @@ export function loadData(key, data, format, closeLoadingFn) {
 
 ipc.on('saveData', function(e, format, fileName) {
   let hot = HotRegister.getActiveInstance()
+  // ensure that cell (and its row) holding cursor is committed
+  hot.deselectCell()
   saveDataToFile(hot, format, fileName)
+  let selection = store.getters.getHotSelection(hot.guid)
+  // reselect cell after save
+  if (selection) {
+    hot.selectCell(selection[0], selection[1], selection[2], selection[3])
+  }
 })
-
-// TODO: correct once github references re-introduced
-// ipc.on('getCSV', function(e, format) {
-//   let hot = HotRegister.getActiveInstance()
-//   var data
-//   // if no format specified, default to csv
-//   // TODO: update to node csv and check dialect mappings
-//   // if (typeof format === 'undefined') {
-//   //   data = $.csv.fromArrays(hot.getData())
-//   // } else {
-//   //   data = $.csv.fromArrays(hot.getData(), format.options)
-//   // }
-//   ipc.send('sendCSV', data)
-// })
 
 ipc.on('editUndo', function() {
   let hot = HotRegister.getActiveInstance()
@@ -112,12 +109,12 @@ ipc.on('closeContextMenu', function() {
   menu.closePopUp(getWindow('home'))
 })
 
-ipc.on('insertColumnLeft', function() {
-  insertColumnLeft()
+ipc.on('insertColumnBefore', function() {
+  insertColumnBefore()
 })
 
-ipc.on('insertColumnRight', function() {
-  insertColumnRight()
+ipc.on('insertColumnAfter', function() {
+  insertColumnAfter()
 })
 
 ipc.on('removeRows', function() {
@@ -131,7 +128,7 @@ ipc.on('removeColumns', function() {
 ipc.on('toggleCaseSensitiveHeader', function() {
   let hotId = HotRegister.getActiveInstance().guid
   const toggledCase = !isCaseSensitive(hotId)
-  pushCsvDialect(hotId, {caseSensitiveHeader: toggledCase})
+  pushCsvDialect(hotId, { caseSensitiveHeader: toggledCase })
   ipc.send('hasCaseSensitiveHeader', toggledCase)
 })
 

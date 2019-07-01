@@ -1,11 +1,10 @@
-import {Table, Schema} from 'tableschema'
-import {HotRegister} from '@/hot.js'
+import { Table, Schema } from 'tableschema'
+import { HotRegister } from '@/hot.js'
 import store from '@/store/modules/hots.js'
 import tabStore from '@/store/modules/tabs.js'
-import {includeHeadersInData, hasAllColumnNames, getValidNames} from '@/frictionlessUtilities.js'
-import {allTablesAllColumnsFromSchema$, errorFeedback$} from '@/rxSubject.js'
-import {ipcRenderer as ipc} from 'electron'
-import {Package} from 'datapackage'
+import { includeHeadersInData, hasAllColumnNames, getValidNames } from '@/frictionlessUtilities.js'
+import { allTablesAllColumnsFromSchema$, errorFeedback$ } from '@/rxSubject.js'
+import { ipcRenderer as ipc } from 'electron'
 
 async function inferSchema(data) {
   const schema = await Schema.load({})
@@ -13,7 +12,7 @@ async function inferSchema(data) {
   let dataClone = [...data]
   let headers = dataClone.shift()
   // frictionless default for csv dialect is that tables DO have headers
-  await schema.infer(dataClone, {headers: headers})
+  await schema.infer(dataClone, { headers: headers })
   return schema
 }
 
@@ -92,7 +91,7 @@ async function collateForeignKeys(localHotId, callback) {
       let data = getForeignKeyData(foreignHotId)
       let schema = await buildSchema(data, foreignHotId)
       let table = await createFrictionlessTable(data, schema)
-      rows = await table.read({keyed: true})
+      rows = await table.read({ keyed: true })
     }
     relations[foreignKey.reference.resource] = rows
   }
@@ -139,15 +138,15 @@ function duplicatesCount(row) {
 function checkHeaderErrors(headers) {
   // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
   if (isRowBlank(headers)) {
-    errorHandler({message: `Headers are completely blank`, name: 'Blank Row'})
+    errorHandler({ message: `Headers are completely blank`, name: 'Blank Row' })
   } else {
     let diff = blankCellCount(headers)
     if (diff > 0) {
-      errorHandler({message: `There are ${diff} blank header(s)`, name: 'Blank Header'})
+      errorHandler({ message: `There are ${diff} blank header(s)`, name: 'Blank Header' })
     }
     let diff2 = duplicatesCount(headers)
     if (diff2 > 0) {
-      errorHandler({message: `There are ${diff2} duplicate header(s)`, name: 'Duplicate Header'})
+      errorHandler({ message: `There are ${diff2} duplicate header(s)`, name: 'Duplicate Header' })
     }
   }
 }
@@ -170,7 +169,7 @@ export async function validateActiveDataAgainstSchema(callback) {
     relations = await collateForeignKeys(hotId, callback)
   } catch (error) {
     console.error(error)
-    errorHandler({message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`, name: 'Invalid foreign table(s)'}, null, errorCollector)
+    errorHandler({ message: `There was a problem validating 1 or more foreign tables. Validate foreign tables first.`, name: 'Invalid foreign table(s)' }, null)
   }
   const stream = await table.iter({
     keyed: false,
@@ -185,7 +184,7 @@ export async function validateActiveDataAgainstSchema(callback) {
       errorHandler(row, row.rowNumber)
     } else {
       if (isRowBlank(row[2])) {
-        errorHandler({message: `Row ${row[0]} is completely blank`, name: 'Blank Row'}, row[0])
+        errorHandler({ message: `Row ${row[0]} is completely blank`, name: 'Blank Row' }, row[0])
       }
     }
   })
@@ -202,15 +201,15 @@ export async function validateActiveDataAgainstSchema(callback) {
 function hasColumnProperties(hotId, callb) {
   let columnProperties = store.state.hotTabs[hotId].columnProperties
   if (!columnProperties || columnProperties.length === 0) {
-    errorHandler({message: `Column properties, including the column properties of any foreign keys, must be set.`,
-      name: 'No Column Properties'})
+    errorHandler({ message: `Column properties, including the column properties of any foreign keys, must be set.`,
+      name: 'No Column Properties' })
     callb()
     return false
   }
   let names = getValidNames(hotId)
   if (!hasAllColumnNames(hotId, columnProperties, names)) {
-    errorHandler({message: `Every Column property, including the column properties of any foreign keys, must have a unique 'name'.`,
-      name: 'Missing Column Property names'})
+    errorHandler({ message: `Every Column property, including the column properties of any foreign keys, must have a unique 'name'. Where no name is set, select 'Header Row' from the Tools menu to assign column names.'`,
+      name: 'Missing Column Property names' })
     callb()
     return false
   }

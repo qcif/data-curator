@@ -1,6 +1,5 @@
 import settings from 'electron-settings'
-import {ipcMain as ipc} from 'electron'
-import _ from 'lodash'
+import { ipcMain as ipc } from 'electron'
 
 ipc.on('getPreference', (event, arg) => {
   const preference = settings.get(arg)

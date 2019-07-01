@@ -1,4 +1,4 @@
-import { expect, should, assert } from 'chai'
+import { expect } from 'chai'
 
 export async function invokeActions (app, action) {
   switch (action.type) {
@@ -57,5 +57,6 @@ export function getElementIdFromToolbarMenuName (toolbarMenuName) {
 
 export async function clickOnMenuItemFromMenu (app, menuLabel, subMenuLabel) {
   const returned = await app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel])
+  console.log(`got returned: ${returned}`)
   expect(returned).to.equal(subMenuLabel)
 }

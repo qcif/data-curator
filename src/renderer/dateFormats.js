@@ -14,3 +14,7 @@ export function isValidPatternForType(pattern, type) {
   }
   return matchFound
 }
+
+export {
+  supportedFormats
+}

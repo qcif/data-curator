@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import {DEFAULT_DIALECT as _dialectDefaults} from 'datapackage/lib/config.js'
+import { DEFAULT_DIALECT as _dialectDefaults } from 'datapackage/lib/config.js'
 /**
  * Definitions for supported file types
  * No renderer shortcuts in here (e.g., @) as used by main and renderer

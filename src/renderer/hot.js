@@ -1,11 +1,21 @@
 import Handsontable from 'handsontable/dist/handsontable.full.min.js'
-import {remote, ipcRenderer as ipc} from 'electron'
+import { ipcRenderer as ipc } from 'electron'
 import store from '@/store/modules/hots.js'
-import {allTablesAllColumnsFromSchema$, allTablesAllColumnNames$, afterSetDataAtCell$} from '@/rxSubject.js'
-const Dialog = remote.dialog
+import { allTablesAllColumnsFromSchema$, allTablesAllColumnNames$, afterSetDataAtCell$ } from '@/rxSubject.js'
 
 const _hots = {}
-const searchCallback = Handsontable.plugins.Search.DEFAULT_CALLBACK
+
+function defaultTabFunction({ shiftKey }) {
+  let hot = HotRegister.getActiveInstance()
+  if (!shiftKey) {
+    const selection = hot.getSelectedLast()
+    let next = hot.getCell(selection[0], selection[1] + 1)
+    if (next == null) {
+      hot.alter('insert_col', selection[1] + 1)
+    }
+  }
+  return { row: 0, col: 1 }
+}
 
 const HotRegister = {
   register(container, listeners={}, searchParameters = false) {
@@ -26,8 +36,6 @@ const HotRegister = {
       manualRowMove: true,
       enterBeginsEditing: false,
       persistentState: true,
-      // currentRowClassName: 'currentRow',
-      // currentColClassName: 'currentCol',
       // outsideClickDeselects: must be set to true -
       // -otherwise visibleRows will include ALL rows (even for large datasets), which will affect performance when switching tabs (https://github.com/ODIQueensland/data-curator/issues/387)
       outsideClickDeselects: true,
@@ -37,16 +45,7 @@ const HotRegister = {
       },
       undo: true,
       search: searchParameters,
-      tabMoves({shiftKey}) {
-        if (!shiftKey) {
-          const selection = hot.getSelectedLast()
-          let next = hot.getCell(selection[0], selection[1] + 1)
-          if (next == null) {
-            hot.alter('insert_col', selection[1] + 1)
-          }
-        }
-        return {row: 0, col: 1}
-      },
+      tabMoves: defaultTabFunction,
       afterInit() {
         if (typeof listeners.loadingStartListener !== 'undefined') {
           listeners.loadingStartListener('Loading data. Please wait...')
@@ -74,7 +73,7 @@ const HotRegister = {
       afterSetDataAtCell() {
         afterSetDataAtCell$.next(true)
       },
-      enterMoves({shiftKey}) {
+      enterMoves({ shiftKey }) {
         if (!shiftKey) {
           const selection = hot.getSelectedLast()
           let next = hot.getCell(selection[0] + 1, selection[1])
@@ -85,10 +84,10 @@ const HotRegister = {
               col: 0 - selection[1]
             }
           } else {
-            return {row: 1, col: 0}
+            return { row: 1, col: 0 }
           }
         } else {
-          return {row: 1, col: 0}
+          return { row: 1, col: 0 }
         }
       }
     })
@@ -96,7 +95,6 @@ const HotRegister = {
     return hot.guid
   },
   getInstance(id) {
-    let hot = _.get(_hots, id)
     return _.get(_hots, id)
   },
   getAllHotIds() {
@@ -117,7 +115,7 @@ const HotRegister = {
   },
   getActiveHotIdData() {
     let activeHot = this.getActiveInstance()
-    return {'id': activeHot.guid, 'data': activeHot.getData()}
+    return { 'id': activeHot.guid, 'data': activeHot.getData() }
   },
   destroyAllHots() {
     _.forIn(_hots, (hot, id) => {
@@ -134,22 +132,14 @@ const HotRegister = {
   }
 }
 
-export function getActiveSelected() {
-  let activeHot = HotRegister.getActiveInstance()
-  return activeHot.getSelectedLast()
+function lockedTabFunction({ shiftKey }) {
+  return { row: 0, col: 1 }
 }
 
-export function getActiveSelectedOrHotSelectionOrMin() {
-  let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getSelectedLast()
-  if (!currentCell) {
-    currentCell = store.getters.getHotSelection(store.state, store.getters)(activeHot.guid)
-  }
-  if (!currentCell) {
-    activeHot.selectCell(0, 0)
-    currentCell = activeHot.getSelectedLast()
-  }
-  return currentCell
+export function resetTabMoves(isActiveTabLocked) {
+  let hot = HotRegister.getActiveInstance()
+  hot.updateSettings({ tabMoves: isActiveTabLocked ? lockedTabFunction
+    : defaultTabFunction })
 }
 
 export function getCurrentColumnIndexOrMin() {
@@ -162,45 +152,11 @@ export function getCurrentColumnIndexOrMin() {
   return currentCell[1]
 }
 
-export function getCurrentColumnIndexOrMax() {
-  let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getSelectedLast()
-  if (!currentCell) {
-    let maxCol = getColumnCount() - 1
-    activeHot.selectCell(0, maxCol)
-    currentCell = activeHot.getSelectedLast()
-  }
-  return currentCell[1]
-}
-
 export function reselectCurrentCellOrMin() {
   let activeHot = HotRegister.getActiveInstance()
   let currentCell = activeHot.getSelectedLast()
   if (!currentCell) {
     activeHot.selectCell(0, 0)
-    currentCell = activeHot.getSelectedLast()
-  } else {
-    activeHot.selectCell(currentCell[0], currentCell[1])
-  }
-}
-
-export function reselectCellOrMin(hotId) {
-  let activeHot = HotRegister.getInstance(hotId)
-  let currentCell = activeHot.getSelectedLast()
-  if (!currentCell) {
-    activeHot.selectCell(0, 0)
-    // currentCell = activeHot.getSelectedLast()
-  } else {
-    activeHot.selectCell(currentCell[0], currentCell[1])
-  }
-}
-
-export function reselectCurrentCellOrMax() {
-  let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getSelectedLast()
-  if (!currentCell) {
-    let maxCol = getColumnCount() - 1
-    activeHot.selectCell(0, maxCol)
   } else {
     activeHot.selectCell(currentCell[0], currentCell[1])
   }
@@ -213,30 +169,6 @@ export function getColumnCount() {
     colCount = activeHot.countCols()
   }
   return colCount
-}
-
-export function getColumnCountFromInstance(hot) {
-  let colCount = hot.countCols()
-  return colCount
-}
-
-export function getColumnCountFromInstanceId(hotId) {
-  let hot = HotRegister.getInstan(hotId)
-  let colCount = hot.countCols()
-  return colCount
-}
-
-export function waitForHotInstance() {
-  return new Promise((resolve, reject) => {
-    let hot = HotRegister.getActiveInstance()
-    if (!hot) {
-      _.delay(function() {
-        resolve(HotRegister.getActiveInstance())
-      }, 100)
-    } else {
-      resolve(hot)
-    }
-  })
 }
 
 export function insertRowAbove() {
@@ -257,11 +189,11 @@ export function insertRow(offset, mathFn) {
   }
 }
 
-export function insertColumnLeft() {
+export function insertColumnBefore() {
   insertColumn(0, Math.min)
 }
 
-export function insertColumnRight() {
+export function insertColumnAfter() {
   insertColumn(1, Math.max)
 }
 
@@ -271,7 +203,7 @@ export function insertColumn(offset, mathFn) {
   if (typeof range !== 'undefined') {
     const selection = mathFn(range.from.col, range.to.col) + offset
     hot.alter('insert_col', selection)
-    store.mutations.pushColumnIndexForHotId(store.state, {hotId: hot.guid, columnIndex: selection})
+    store.mutations.pushColumnIndexForHotId(store.state, { hotId: hot.guid, columnIndex: selection })
     removeHeaderAtIndex(hot, selection)
     // needed for sidenav arrows reset
     reselectCurrentCellOrMin()
@@ -288,8 +220,8 @@ export function removeHeaderAtIndex(hot, index) {
   if (hot.hasColHeaders()) {
     let header = hot.getColHeader()
     header[index] = null
-    hot.updateSettings({colHeaders: header})
-    store.mutations.pushColumnProperty(store.state, {hotId: hot.guid, columnIndex: index, key: 'name', value: ''})
+    hot.updateSettings({ colHeaders: header })
+    store.mutations.pushColumnProperty(store.state, { hotId: hot.guid, columnIndex: index, key: 'name', value: '' })
   }
 }
 
@@ -321,16 +253,12 @@ export function removeColumns() {
     // cols are re-indexed after each remove
     // so always remove 'start'
     hot.alter('remove_col', start)
-    store.mutations.removeColumnIndexForHotId(store.state, {hotId: hot.guid, columnIndex: start})
+    store.mutations.removeColumnIndexForHotId(store.state, { hotId: hot.guid, columnIndex: start })
     allTablesAllColumnsFromSchema$.next(store.getters.getAllHotTablesColumnProperties(store.state, store.getters)())
     allTablesAllColumnNames$.next(store.getters.getAllHotTablesColumnNames(store.state, store.getters)())
   }
   reselectCurrentCellOrMin()
 }
-
-ipc.on('reselectCurrentCellOrMin', function(event, arg) {
-  reselectCurrentCellOrMin()
-})
 
 ipc.on('selectHotCell', function(event, rowCountNumber, ColCountNumber) {
   let hot = HotRegister.getActiveInstance()
@@ -338,6 +266,5 @@ ipc.on('selectHotCell', function(event, rowCountNumber, ColCountNumber) {
 })
 
 export {
-  HotRegister,
-  searchCallback
+  HotRegister
 }

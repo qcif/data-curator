@@ -1,0 +1,9 @@
+{
+  "name": "Mobile",
+  "title": "Mobile Phone Number",
+  "description": "Australian Mobile Phone Number without country code",
+  "constraints": {
+    "required": false,
+    "pattern": "^04[0-9]{8}"
+  }
+}

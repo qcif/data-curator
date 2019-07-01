@@ -1,30 +1,54 @@
 <template>
-<div id="container" class="container-fluid">
-  <form>
-    <p>
-      <select id="worksheets" v-model="selected" class="form-control">
-        <option v-for="option in options" v-bind:value="option.value">
-          {{ option.text }}
-        </option>
-      </select>
-    </p>
-    <div class="submit-container">
-      <button id="submit" class="btn btn-default" @click.prevent="submit">Open Sheet</button> <button id="cancel" class="btn btn-default" @click.prevent="cancel">Cancel</button>
-    </div>
-  </form>
-</div>
+  <div
+    id="container"
+    class="container-fluid">
+    <form>
+      <p>
+        <select
+          id="worksheets"
+          v-model="selected"
+          class="form-control">
+          <option
+            v-for="(option, index) in options"
+            :key="option.value + index"
+            :value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+      </p>
+      <div class="submit-container">
+        <button
+          id="submit"
+          class="btn btn-default"
+          @click.prevent="submit">Open Sheet</button> <button
+            id="cancel"
+            class="btn btn-default"
+            @click.prevent="cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
 </template>
 <script>
-var ipc = require('electron').ipcRenderer
+const ipc = require('electron').ipcRenderer
 
 export default {
-  name: 'selectworksheet',
+  name: 'Selectworksheet',
   data() {
     return {
       selected: '',
       options: [
       ]
     }
+  },
+  mounted: function() {
+    const vueOptions = this.options
+    const vueUpdateSelected = this.updateSelected
+    ipc.on('loadSheets', function(e, sheets) {
+      sheets.forEach(function(sheet, index) {
+        vueOptions.push({ text: sheet, value: sheet })
+        vueUpdateSelected(sheet)
+      })
+    })
   },
   methods: {
     submit: function() {
@@ -36,16 +60,6 @@ export default {
     updateSelected: function(selected) {
       this.selected = selected
     }
-  },
-  mounted: function() {
-    const vueOptions = this.options
-    const vueUpdateSelected = this.updateSelected
-    ipc.on('loadSheets', function(e, sheets) {
-      sheets.forEach(function(sheet, index) {
-        vueOptions.push({text: sheet, value: sheet})
-        vueUpdateSelected(sheet)
-      })
-    })
   }
 }
 </script>
