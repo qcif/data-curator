@@ -29,7 +29,7 @@ stages:
   - name: test
     if: type IN (pull_request) OR (branch IN (ci, testci, master) AND commit_message !~ /^appveyor Updating branch from appveyor build.$/)
   - name: build
-    if: tag =~ "/^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
+    if: tag IS present
 jobs:
   include:
     - stage: prescript
