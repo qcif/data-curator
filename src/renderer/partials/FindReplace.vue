@@ -76,11 +76,11 @@
         </div>
       </div>
       <!-- <div class="pickrow">
-              <span v-for="(radioprop, index) in radioprops">
-                <input type="radio" :id="radioprop.key" :value="radioprop.value" v-model="findTypePicked">
-                <label for="find-in-column">{{radioprop.label}}</label>
-              </span>
-            </div> -->
+                    <span v-for="(radioprop, index) in radioprops">
+                      <input type="radio" :id="radioprop.key" :value="radioprop.value" v-model="findTypePicked">
+                      <label for="find-in-column">{{radioprop.label}}</label>
+                    </span>
+                  </div> -->
     </div>
   </form>
 </template>
@@ -193,7 +193,7 @@ export default {
     ...mapGetters(['getHotSelection'])
   },
   watch: {
-    'isCaseSensitive': function(result) {
+    'isCaseSensitive': function (result) {
       _isCaseSensitive = result
       this.resetAfterUserInput()
     }
@@ -280,7 +280,7 @@ export default {
       }
       this.resetAfterUserInput()
     },
-    resetAfterUserInput: function() {
+    resetAfterUserInput: function () {
       const self = this
       this.foundCounter = -1
       this.foundCount = -1
@@ -499,15 +499,15 @@ export default {
           fields: headers,
           conjunction: 'and'
         })
+        const header = headers[0]
         ids = _isCaseSensitive
-          ? this.caseSensitiveSiftResult(arrayOfObjects, headers, result)
-          : this.caseInSensitiveSiftResult(arrayOfObjects, headers, result)
+          ? this.caseSensitiveSiftResult(arrayOfObjects, header, result)
+          : this.caseInSensitiveSiftResult(arrayOfObjects, header, result)
       }
       return ids
     },
-    caseSensitiveSiftResult: function(arrayOfObjects, headers, result) {
+    caseSensitiveSiftResult: function (arrayOfObjects, header, result) {
       let ids = []
-      let header = headers[0]
       for (const item of result.items) {
         let nextValue = arrayOfObjects[item.id][header]
         if (nextValue.includes(this.findTextValue)) {
@@ -516,10 +516,13 @@ export default {
       }
       return ids
     },
-    caseInSensitiveSiftResult: function(arrayOfObjects, headers, result) {
+    caseInSensitiveSiftResult: function (arrayOfObjects, header, result) {
       let ids = []
       for (const item of result.items) {
-        ids.push(item.id)
+        let nextValue = arrayOfObjects[item.id][header]
+        if (nextValue.toLowerCase().includes(this.findTextValue.toLowerCase())) {
+          ids.push(item.id)
+        }
       }
       return ids
     },
