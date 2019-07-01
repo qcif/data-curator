@@ -69,7 +69,7 @@ export default {
       {
         items: [
           {
-            label: `Version ${this.getApplicationVersion()} - Access Data Curator Help or report issues via the Help menu`
+            label: `Version ${this.getApplicationVersion()} - Beta - Access Data Curator Help or report issues via the Help menu`
           }
         ]
       },
