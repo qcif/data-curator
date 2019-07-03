@@ -271,7 +271,8 @@ import {
   HotRegister,
   getColumnCount,
   getCurrentColumnIndexOrMin,
-  resetTabMoves
+  resetTabMoves,
+  reselectHotCell
 } from '../hot.js'
 import about from '../partials/About'
 import preferences from '../partials/Preferences'
@@ -443,7 +444,7 @@ export default {
       try {
         let hotId = await this.getHotIdFromTabId(tabId)
         this.currentHotId = hotId
-        this.reselectHotCell()
+        reselectHotCell()
       } catch (err) {
         console.error('Problem with getting hot id from watched tab', err)
       }
@@ -694,7 +695,7 @@ export default {
       let hot = HotRegister.getActiveInstance()
       this.unhighlightPersistedSelection(hot)
       let selected = hot.getSelectedLast()
-      // with deselectOutsideHot set to true, we need to track last selection.
+      // with outsideClickDeselects set to true, we need to track last selection.
       this.pushHotSelection({
         hotId: hot.guid,
         selected: selected
@@ -928,7 +929,7 @@ export default {
           // hot rendering problem when tabs opened quickly - https://github.com/ODIQueensland/data-curator/issues/803- workaround as selecting table re-renders
           getCurrentColumnIndexOrMin()
           updateHotDimensions$.next()
-          LockProperties.lockColumnProperties()
+          LockProperties.lockTableSchema()
           // trigger column properties refresh (columns might already be opened)
           allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
           this.addImportDataPropertiesError('Import Column properties success', `${schemaFieldsCount} schema fields were imported.`)
@@ -1081,7 +1082,7 @@ export default {
       } else {
         this.updateToolbarMenuForButton(index)
       }
-      this.reselectHotCell()
+      reselectHotCell()
     },
     sideNavLeft: function() {
       let activeHot = HotRegister.getActiveInstance()
@@ -1270,13 +1271,6 @@ export default {
         this.closeMessages()
       } else {
         // console.log('no error window found. ignoring...')
-      }
-    },
-    reselectHotCell: function() {
-      let hot = HotRegister.getActiveInstance()
-      let selection = this.getHotSelection(hot.guid)
-      if (selection) {
-        hot.selectCell(selection[0], selection[1], selection[2], selection[3])
       }
     },
     writeErrorsToProvenance: function() {

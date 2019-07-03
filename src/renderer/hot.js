@@ -1,11 +1,11 @@
 import Handsontable from 'handsontable/dist/handsontable.full.min.js'
 import { ipcRenderer as ipc } from 'electron'
 import store from '@/store/modules/hots.js'
-import { allTablesAllColumnsFromSchema$, allTablesAllColumnNames$, afterSetDataAtCell$ } from '@/rxSubject.js'
+import { allTablesAllColumnNames$, allTablesAllColumnsFromSchema$ } from '@/rxSubject.js'
 
 const _hots = {}
 
-function defaultTabFunction({ shiftKey }) {
+function defaultTabFunction ({ shiftKey }) {
   let hot = HotRegister.getActiveInstance()
   if (!shiftKey) {
     const selection = hot.getSelectedLast()
@@ -18,7 +18,7 @@ function defaultTabFunction({ shiftKey }) {
 }
 
 const HotRegister = {
-  register(container, listeners={}, searchParameters = false) {
+  register (container, listeners = {}, searchParameters = false) {
     let hot = new Handsontable(container, {
       // do not allow headers on initialisation - no default headers unless toggled
       colHeaders: false,
@@ -46,34 +46,31 @@ const HotRegister = {
       undo: true,
       search: searchParameters,
       tabMoves: defaultTabFunction,
-      afterInit() {
+      afterInit () {
         if (typeof listeners.loadingStartListener !== 'undefined') {
           listeners.loadingStartListener('Loading data. Please wait...')
         }
       },
-      afterLoadData(firstTime) {
+      afterLoadData (firstTime) {
         if (typeof listeners.loadingFinishListener !== 'undefined') {
           listeners.loadingFinishListener()
         }
       },
-      afterUpdateSettings() {
+      afterUpdateSettings () {
         hot.render()
       },
-      afterSelection(r, c, r2, c2, preventScrolling, selectionLayerLevel) {
-      // preventScrolling.value = true
+      afterSelection (r, c, r2, c2, preventScrolling, selectionLayerLevel) {
+        // preventScrolling.value = true
         if (typeof listeners.selectionListener !== 'undefined') {
           listeners.selectionListener()
         }
       },
-      afterDeselect() {
+      afterDeselect () {
         if (typeof listeners.deselectionListener !== 'undefined') {
           listeners.deselectionListener()
         }
       },
-      afterSetDataAtCell() {
-        afterSetDataAtCell$.next(true)
-      },
-      enterMoves({ shiftKey }) {
+      enterMoves ({ shiftKey }) {
         if (!shiftKey) {
           const selection = hot.getSelectedLast()
           let next = hot.getCell(selection[0] + 1, selection[1])
@@ -94,36 +91,36 @@ const HotRegister = {
     _.set(_hots, hot.guid, hot)
     return hot.guid
   },
-  getInstance(id) {
+  getInstance (id) {
     return _.get(_hots, id)
   },
-  getAllHotIds() {
+  getAllHotIds () {
     return _.keys(_hots)
   },
-  getHotCount() {
+  getHotCount () {
     return _hots.length
   },
   // TODO: consider cache (vue computed) of method, and moving to Home.vue to use with props, as used a lot
-  getActiveInstance() {
+  getActiveInstance () {
     let activeHot = this.activeQuery()
     if (activeHot) {
       return this.getInstance(activeHot.id)
     }
   },
-  activeQuery() {
+  activeQuery () {
     return document.querySelectorAll('#csvContent .active .editor')[0]
   },
-  getActiveHotIdData() {
+  getActiveHotIdData () {
     let activeHot = this.getActiveInstance()
     return { 'id': activeHot.guid, 'data': activeHot.getData() }
   },
-  destroyAllHots() {
+  destroyAllHots () {
     _.forIn(_hots, (hot, id) => {
       hot.destroy()
       _.unset(_hots, id)
     })
   },
-  destroyHot(id) {
+  destroyHot (id) {
     let hot = this.getInstance(id)
     if (hot) {
       hot.destroy()
@@ -132,37 +129,48 @@ const HotRegister = {
   }
 }
 
-function lockedTabFunction({ shiftKey }) {
+function lockedTabFunction ({ shiftKey }) {
   return { row: 0, col: 1 }
 }
 
-export function resetTabMoves(isActiveTabLocked) {
+export function resetTabMoves (isActiveTabLocked) {
   let hot = HotRegister.getActiveInstance()
-  hot.updateSettings({ tabMoves: isActiveTabLocked ? lockedTabFunction
-    : defaultTabFunction })
+  hot.updateSettings({
+    tabMoves: isActiveTabLocked ? lockedTabFunction
+      : defaultTabFunction
+  })
 }
 
-export function getCurrentColumnIndexOrMin() {
-  let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getSelectedLast()
-  if (!currentCell) {
-    activeHot.selectCell(0, 0)
-    currentCell = activeHot.getSelectedLast()
-  }
-  return currentCell[1]
+export function getCurrentColumnIndexOrMin () {
+  let hot = HotRegister.getActiveInstance()
+  // ensure hot store is first source of truth
+  let selected = reselectHotCellFromHot(hot)
+  return selected[1]
 }
 
-export function reselectCurrentCellOrMin() {
-  let activeHot = HotRegister.getActiveInstance()
-  let currentCell = activeHot.getSelectedLast()
-  if (!currentCell) {
-    activeHot.selectCell(0, 0)
+export function reselectHotCell () {
+  let hot = HotRegister.getActiveInstance()
+  return reselectHotCellFromHot(hot)
+}
+
+// with outsideClickDeselects set to true, we need to track last selection so hot's getSelectedLast no longer always applies
+export function reselectHotCellFromHot (hot) {
+  let selected = store.getters.getHotSelection(store.state, store.getters)(hot.guid)
+  if (selected) {
+    hot.selectCell(selected[0], selected[1], selected[2], selected[3])
   } else {
-    activeHot.selectCell(currentCell[0], currentCell[1])
+    selected = hot.getSelectedLast()
+    if (!selected) {
+      hot.selectCell(0, 0)
+      selected = hot.getSelectedLast()
+    } else {
+      hot.selectCell(selected[0], selected[1], selected[2], selected[3])
+    }
   }
+  return selected
 }
 
-export function getColumnCount() {
+export function getColumnCount () {
   let activeHot = HotRegister.getActiveInstance()
   let colCount
   if (activeHot) {
@@ -171,15 +179,15 @@ export function getColumnCount() {
   return colCount
 }
 
-export function insertRowAbove() {
+export function insertRowAbove () {
   insertRow(0, Math.min)
 }
 
-export function insertRowBelow() {
+export function insertRowBelow () {
   insertRow(1, Math.max)
 }
 
-export function insertRow(offset, mathFn) {
+export function insertRow (offset, mathFn) {
   let hot = getHotToInsert()
   const range = hot.getSelectedRangeLast()
   if (typeof range !== 'undefined') {
@@ -189,15 +197,15 @@ export function insertRow(offset, mathFn) {
   }
 }
 
-export function insertColumnBefore() {
+export function insertColumnBefore () {
   insertColumn(0, Math.min)
 }
 
-export function insertColumnAfter() {
+export function insertColumnAfter () {
   insertColumn(1, Math.max)
 }
 
-export function insertColumn(offset, mathFn) {
+export function insertColumn (offset, mathFn) {
   let hot = getHotToInsert()
   const range = hot.getSelectedRangeLast()
   if (typeof range !== 'undefined') {
@@ -210,13 +218,13 @@ export function insertColumn(offset, mathFn) {
   }
 }
 
-function getHotToInsert() {
+function getHotToInsert () {
   let hot = HotRegister.getActiveInstance()
   hot.getActiveEditor().finishEditing(true)
   return hot
 }
 
-export function removeHeaderAtIndex(hot, index) {
+export function removeHeaderAtIndex (hot, index) {
   if (hot.hasColHeaders()) {
     let header = hot.getColHeader()
     header[index] = null
@@ -225,7 +233,7 @@ export function removeHeaderAtIndex(hot, index) {
   }
 }
 
-export function removeRows() {
+export function removeRows () {
   let hot = HotRegister.getActiveInstance()
   const range = hot.getSelectedRangeLast()
   if (typeof range === 'undefined') {
@@ -241,7 +249,7 @@ export function removeRows() {
   reselectCurrentCellOrMin()
 }
 
-export function removeColumns() {
+export function removeColumns () {
   let hot = HotRegister.getActiveInstance()
   const range = hot.getSelectedRangeLast()
   if (typeof range === 'undefined') {
@@ -260,7 +268,7 @@ export function removeColumns() {
   reselectCurrentCellOrMin()
 }
 
-ipc.on('selectHotCell', function(event, rowCountNumber, ColCountNumber) {
+ipc.on('selectHotCell', function (event, rowCountNumber, ColCountNumber) {
   let hot = HotRegister.getActiveInstance()
   hot.selectCell(rowCountNumber - 1, ColCountNumber - 1)
 })

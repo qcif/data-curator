@@ -10,7 +10,6 @@ let hotIdFromTab$ = new Subject()
 let allTabsTitles$ = new Subject()
 let provenanceErrors$ = new ReplaySubject(1)
 let currentPos$ = new Subject()
-let afterSetDataAtCell$ = new Subject()
 let fkPackagesButtonText$ = new Subject()
 let loadingPackage$ = new Subject()
 const errorFeedback$ = new Subject()
@@ -42,7 +41,6 @@ export {
   allTabsTitles$,
   provenanceErrors$,
   currentPos$,
-  afterSetDataAtCell$,
   fkPackagesButtonText$,
   loadingPackage$,
   errorFeedback$,

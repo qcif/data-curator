@@ -92,7 +92,7 @@ import SideNav from './SideNav'
 import Vue from 'vue'
 import AsyncComputed from 'vue-async-computed'
 import {
-  HotRegister
+  HotRegister, reselectHotCellFromHot
 } from '../hot.js'
 import VueRx from 'vue-rx'
 import {
@@ -104,6 +104,7 @@ import {
 } from '@/rxSubject.js'
 import Sifter from 'sifter/sifter.min.js'
 import { ipcRenderer as ipc } from 'electron'
+import { captureLatestEdit } from '../index'
 
 Vue.use(AsyncComputed)
 Vue.use(VueRx, {
@@ -213,6 +214,8 @@ export default {
       vueResetRowIndex()
     })
     ipc.on('clickFindButton', function (event, arg) {
+      // capture current edits
+      captureLatestEdit()
       let el = document.querySelector(`button .${arg}`).parentNode
       el.click()
       el.classList.add('active', 'focus')
@@ -312,7 +315,7 @@ export default {
         this.replaceData = hot.getData()
       }
       // console.timeEnd()
-      const selectedCoords = hot.getSelectedLast()
+      const selectedCoords = reselectHotCellFromHot(hot)
       if (selectedCoords) {
         const row = selectedCoords[0]
         const col = selectedCoords[1]
