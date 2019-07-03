@@ -1,11 +1,13 @@
 <template>
-  <div id="primaryKeys">
-    <component
-      :is="'tableheaderkeys'"
-      :activeNames="localHeaderNames"
-      :getSelectedKeys="getSelectedKeys"
-      :pushSelectedKeys="pushSelectedKeys"/>
-  </div>
+  <fieldset :disabled="isLocked">
+    <div id="primaryKeys">
+      <component
+        :is="'tableheaderkeys'"
+        :activeNames="localHeaderNames"
+        :getSelectedKeys="getSelectedKeys"
+        :pushSelectedKeys="pushSelectedKeys"/>
+    </div>
+  </fieldset>
 </template>
 <script>
 import tableheaderkeys from '../partials/TableHeaderKeys'
@@ -32,6 +34,10 @@ export default {
     getPropertyGivenHotId: {
       type: Function,
       default: function() {}
+    },
+    isLocked: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

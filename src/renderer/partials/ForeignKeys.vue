@@ -1,116 +1,118 @@
 <template>
-  <div id="foreignKeyFields">
-    <div
-      v-for="(foreignKey,index) in hotForeignKeys"
-      :key="foreignKey + index"
-      class="foreign col-sm-12">
-      <div class="inputs-container">
-        <component
-          :is="'tableheaderkeys'"
-          :key="getLocalComponentKey(index)"
-          :activeNames="localHeaderNames"
-          :getSelectedKeys="getSelectedLocalKeys(index)"
-          :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)"
-          :tooltipId="'tooltip-foreignkey' + index"
-          :index="index"
-          labelName="Foreign key(s)"
-          tooltipView="tooltipForeignkey" />
-        <component
-          v-if="isHeadersSelected && !fkPackages[index]"
-          :is="'tablekeys'"
-          :key="getTableComponentKey(index)"
-          :allTableNames="allTableNames"
-          :getSelectedTable="getSelectedTable(index)"
-          :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)"
-          :tooltipId="'tooltip-foreignkey-table' + index"
-          :index="index"
-          labelName="Reference Table"
-          tooltipView="tooltipForeignkeyTable" />
-        <component
-          v-if="isHeadersSelected && !fkPackages[index]"
-          :is="'tableheaderkeys'"
-          :key="getForeignComponentKey(index)"
-          :activeNames="getCurrentForeignHeaders(index)"
-          :getSelectedKeys="getSelectedForeignKeys(index)"
-          :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)"
-          :tooltipId="'tooltip-foreignkey-tablekey' + index"
-          :index="index"
-          :currentHotId="currentHotId"
-          labelName="Reference Column(s)"
-          tooltipView="tooltipForeignkeyTablekey"/>
-      </div>
-      <button
-        type="button"
-        class="btn btn-danger btn-sm"
-        @click="removeForeignKey(index)">
-        <span class="glyphicon glyphicon-minus"/>
-      </button>
+  <fieldset :disabled="isLocked">
+    <div id="foreignKeyFields">
       <div
-        id="fk-package"
-        class="clearfix">
-        <template v-if="isHeadersSelected && fkPackages[index]">
-          <label class="control-label">Reference Package</label><span
-            v-if="testLoadingPackage == index && loadingPackage[testLoadingPackage]"
-            class="glyphicon glyphicon-refresh spinning"/>
-          <div
-            :class="{ 'right': !fkPackages[index]}"
-            class="fk-package">
-            <input
-              :key="getForeignPackageKey(index)"
-              :id="'fk-package' + index"
-              :value="getFkPackage(index)"
-              :name="'fk-package' + index"
-              class="form-control input-sm"
-              type="text"
-              @input="setFkPackage(index, currentLocalHotId, $event.target.value)"
-              @blur="removeFkPackageForErrors(index, currentLocalHotId)" >
-          </div>
-          <div
-            v-if="fkPackages[index] && errors.has('fk-package' + index)"
-            class="row help validate-danger">
-            {{ errors.first('fk-package' + index) }}
-          </div>
-          <div v-if="fkPackages[index]">
-            <component
-              :is="'tablekeys'"
-              :key="getPackageTableComponentKey(index)"
-              :allTableNames="allFkTableNames"
-              :getSelectedTable="getFkPackageTable(index)"
-              :pushSelectedTable="setFkPackageTable(index,currentLocalHotId)"
-              :tooltipId="'tooltip-foreignkey-table' + index"
-              :index="index"
-              labelName="Reference Table"
-              tooltipView="tooltipForeignkeyTable" />
-            <component
-              :is="'tableheaderkeys'"
-              :key="getForeignPackageComponentKey(index)"
-              :activeNames="getCurrentPackageForeignHeaders(index)"
-              :getSelectedKeys="getSelectedForeignKeys(index)"
-              :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)"
-              :tooltipId="'tooltip-foreignkey-tablekey' + index"
-              :index="index"
-              :currentHotId="currentHotId"
-              labelName="Reference Column(s)"
-              tooltipView="tooltipForeignkeyTablekey"/>
-          </div>
-        </template>
+        v-for="(foreignKey,index) in hotForeignKeys"
+        :key="foreignKey + index"
+        class="foreign col-sm-12">
+        <div class="inputs-container">
+          <component
+            :is="'tableheaderkeys'"
+            :key="getLocalComponentKey(index)"
+            :activeNames="localHeaderNames"
+            :getSelectedKeys="getSelectedLocalKeys(index)"
+            :pushSelectedKeys="pushSelectedLocalKeys(index,currentLocalHotId)"
+            :tooltipId="'tooltip-foreignkey' + index"
+            :index="index"
+            labelName="Foreign key(s)"
+            tooltipView="tooltipForeignkey" />
+          <component
+            v-if="isHeadersSelected && !fkPackages[index]"
+            :is="'tablekeys'"
+            :key="getTableComponentKey(index)"
+            :allTableNames="allTableNames"
+            :getSelectedTable="getSelectedTable(index)"
+            :pushSelectedTable="pushSelectedForeignTable(index,currentLocalHotId)"
+            :tooltipId="'tooltip-foreignkey-table' + index"
+            :index="index"
+            labelName="Reference Table"
+            tooltipView="tooltipForeignkeyTable" />
+          <component
+            v-if="isHeadersSelected && !fkPackages[index]"
+            :is="'tableheaderkeys'"
+            :key="getForeignComponentKey(index)"
+            :activeNames="getCurrentForeignHeaders(index)"
+            :getSelectedKeys="getSelectedForeignKeys(index)"
+            :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)"
+            :tooltipId="'tooltip-foreignkey-tablekey' + index"
+            :index="index"
+            :currentHotId="currentHotId"
+            labelName="Reference Column(s)"
+            tooltipView="tooltipForeignkeyTablekey"/>
+        </div>
+        <button
+          type="button"
+          class="btn btn-danger btn-sm"
+          @click="removeForeignKey(index)">
+          <span class="glyphicon glyphicon-minus"/>
+        </button>
+        <div
+          id="fk-package"
+          class="clearfix">
+          <template v-if="isHeadersSelected && fkPackages[index]">
+            <label class="control-label">Reference Package</label><span
+              v-if="testLoadingPackage == index && loadingPackage[testLoadingPackage]"
+              class="glyphicon glyphicon-refresh spinning"/>
+            <div
+              :class="{ 'right': !fkPackages[index]}"
+              class="fk-package">
+              <input
+                :key="getForeignPackageKey(index)"
+                :id="'fk-package' + index"
+                :value="getFkPackage(index)"
+                :name="'fk-package' + index"
+                class="form-control input-sm"
+                type="text"
+                @input="setFkPackage(index, currentLocalHotId, $event.target.value)"
+                @blur="removeFkPackageForErrors(index, currentLocalHotId)" >
+            </div>
+            <div
+              v-if="fkPackages[index] && errors.has('fk-package' + index)"
+              class="row help validate-danger">
+              {{ errors.first('fk-package' + index) }}
+            </div>
+            <div v-if="fkPackages[index]">
+              <component
+                :is="'tablekeys'"
+                :key="getPackageTableComponentKey(index)"
+                :allTableNames="allFkTableNames"
+                :getSelectedTable="getFkPackageTable(index)"
+                :pushSelectedTable="setFkPackageTable(index,currentLocalHotId)"
+                :tooltipId="'tooltip-foreignkey-table' + index"
+                :index="index"
+                labelName="Reference Table"
+                tooltipView="tooltipForeignkeyTable" />
+              <component
+                :is="'tableheaderkeys'"
+                :key="getForeignPackageComponentKey(index)"
+                :activeNames="getCurrentPackageForeignHeaders(index)"
+                :getSelectedKeys="getSelectedForeignKeys(index)"
+                :pushSelectedKeys="pushSelectedForeignKeys(index,currentLocalHotId)"
+                :tooltipId="'tooltip-foreignkey-tablekey' + index"
+                :index="index"
+                :currentHotId="currentHotId"
+                labelName="Reference Column(s)"
+                tooltipView="tooltipForeignkeyTablekey"/>
+            </div>
+          </template>
+          <button
+            type="button"
+            class="add-foreign btn btn-primary btn-sm"
+            @click="toggleFkPackage(index)">
+            <span class="fas fa-exchange-alt"/>{{ toggleText[index] }}
+          </button>
+        </div>
+      </div>
+      <div class="button-container">
         <button
           type="button"
           class="add-foreign btn btn-primary btn-sm"
-          @click="toggleFkPackage(index)">
-          <span class="fas fa-exchange-alt"/>{{ toggleText[index] }}
+          @click="addForeignKey()">
+          <span class="glyphicon glyphicon-plus"/>Add Foreign Key
         </button>
       </div>
     </div>
-    <div class="button-container">
-      <button
-        type="button"
-        class="add-foreign btn btn-primary btn-sm"
-        @click="addForeignKey()">
-        <span class="glyphicon glyphicon-plus"/>Add Foreign Key
-      </button>
-    </div>
-  </div>
+  </fieldset>
 </template>
 <script>
 import tablekeys from '../partials/TableKeys'
@@ -159,6 +161,10 @@ export default {
     currentHotId: {
       type: Function,
       default: async function() {}
+    },
+    isLocked: {
+      type: Boolean,
+      default: false
     }
   },
   asyncComputed: {
