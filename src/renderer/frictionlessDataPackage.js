@@ -208,6 +208,7 @@ async function buildResource(tabId, hotId) {
   addColumnProperties(descriptor, hotId)
   addTableProperties(descriptor, hotId)
   removeEmptiesFromDescriptor(descriptor)
+  removeNonFrictionlessKeys(descriptor)
   addPath(descriptor, tabId)
   resource.commit()
   return resource
@@ -239,6 +240,12 @@ function moveMissingValues(descriptor, tableProperties) {
 function removeEmptiesFromDescriptor(descriptor) {
   removeEmpty(descriptor, 'licenses')
   removeEmpty(descriptor, 'sources')
+}
+
+function removeNonFrictionlessKeys(descriptor) {
+  for (const propertyName of ['sampledQuoteChar', 'bom']) {
+    _.unset(descriptor, propertyName)
+  }
 }
 
 function removeEmpty(descriptor, propertyName) {
