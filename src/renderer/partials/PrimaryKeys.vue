@@ -1,15 +1,18 @@
 <template>
-  <div id="primaryKeys">
-    <component
-      :is="'tableheaderkeys'"
-      :activeNames="localHeaderNames"
-      :getSelectedKeys="getSelectedKeys"
-      :pushSelectedKeys="pushSelectedKeys"/>
-  </div>
+  <fieldset :disabled="isLocked">
+    <div id="primaryKeys">
+      <component
+        :is="'tableheaderkeys'"
+        :activeNames="localHeaderNames"
+        :getSelectedKeys="getSelectedKeys"
+        :pushSelectedKeys="pushSelectedKeys"/>
+    </div>
+  </fieldset>
 </template>
 <script>
 import tableheaderkeys from '../partials/TableHeaderKeys'
 import RelationKeys from '../mixins/RelationKeys'
+
 export default {
   name: 'Primarykeys',
   components: {
@@ -19,7 +22,7 @@ export default {
   props: {
     setProperty: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     propertyName: {
       type: String,
@@ -27,26 +30,30 @@ export default {
     },
     currentHotId: {
       type: Function,
-      default: async function() {}
+      default: async function () {}
     },
     getPropertyGivenHotId: {
       type: Function,
-      default: function() {}
+      default: function () {}
+    },
+    isLocked: {
+      type: Boolean,
+      default: false
     }
   },
-  data() {
+  data () {
     return {
       localHeaderNames: [],
       selectedLocalKeys: []
     }
   },
   computed: {
-    getSelectedKeys() {
+    getSelectedKeys () {
       return this.selectedLocalKeys
     }
   },
   methods: {
-    updateSubscriptions: async function(allTablesAllColumns, hotId) {
+    updateSubscriptions: async function (allTablesAllColumns, hotId) {
       let localHotId = await this.currentHotId()
       this.localHeaderNames.length = 0
       this.localHeaderNames.push(...this.getHotIdHeaderNames(allTablesAllColumns, localHotId))
@@ -55,7 +62,7 @@ export default {
       this.selectedLocalKeys.push(...values)
     },
 
-    pushSelectedKeys: function(values) {
+    pushSelectedKeys: function (values) {
       this.setProperty(this.propertyName, values)
     }
   }
