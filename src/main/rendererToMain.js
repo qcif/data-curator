@@ -29,7 +29,7 @@ ipc.on('hasHeaderRow', (event, arg) => {
 })
 
 ipc.on('hasLockedActiveTable', (event, arg) => {
-  let lockedSubMenu = getSubMenuFromMenu('Tools', 'Lock Column Properties')
+  let lockedSubMenu = getSubMenuFromMenu('Tools', 'Lock Table Schema')
   lockedSubMenu.checked = arg
   // for locked table (ie: lock is enabled), value is true, so any menu 'enabled': set to false
   disableEnableBasedOnAttributeAndConditionFromLabels(['Edit', 'Tools'], 'lockable', !arg)

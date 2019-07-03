@@ -267,14 +267,14 @@ class AppMenu {
           }, {
             type: 'separator'
           }, {
-            label: 'Lock Column Properties',
+            label: 'Lock Table Schema',
             accelerator: 'Shift+CmdOrCtrl+L',
             type: 'checkbox',
             checked: false,
             click (menuItem) {
               // revert 'checked' toggle so only controlled by event
               menuItem.checked = !menuItem.checked
-              webContents().send('toggleLockColumnProperties')
+              webContents().send('toggleLockTableSchema')
             }
           }, {
             type: 'separator'
