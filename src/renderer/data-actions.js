@@ -5,6 +5,7 @@ import { includeHeadersInData } from '@/frictionlessUtilities.js'
 import { toggleHeaderNoFeedback } from '@/headerRow.js'
 import { pushCsvFormat } from '@/dialect.js'
 import detectNewline from 'detect-newline'
+import os from 'os'
 
 var parse = require('csv-parse/lib/sync')
 var stringify = require('csv-stringify/lib/sync')
@@ -32,11 +33,12 @@ export function loadCsvDataIntoHot (hot, data, format) {
   let arrays
   // if no format specified, default to csv
   if (typeof format === 'undefined' || !format) {
-    detectAndStoreQuoteChar(data, { rowDelimiter: '\n' }, hot.guid)
+    detectAndStoreQuoteChar(data, hot.guid, null)
+    captureBOM(data, hot.guid)
     arrays = parse(data)
   } else {
     let csvOptions = dialectToCsvOptions(format.dialect)
-    detectAndStoreQuoteChar(data, csvOptions, hot.guid)
+    detectAndStoreQuoteChar(data, hot.guid, csvOptions)
     // let csv parser handle the line terminators
     _.unset(csvOptions, 'rowDelimiter')
     // TODO: update to stream
@@ -125,11 +127,11 @@ function dialectToCsvOptions (dialect) {
   return csvOptions
 }
 
-function detectAndStoreQuoteChar (data, csvOptions, hotId) {
+function detectAndStoreQuoteChar (data, hotId, csvOptions) {
   let sample = _.truncate(data, { length: 2000 })
   var sniffer = new CSVSniffer()
   // csv-sniffer will throw exception if there is no line terminator in sample
-  let newLineString = detectNewline(sample) || csvOptions.rowDelimiter
+  let newLineString = detectNewline(sample) || _.get(csvOptions, 'rowDelimiter', os.EOL)
   var sniffResult = sniffer.sniff(sample, { newlineStr: newLineString })
   if (sniffResult.quoteChar) {
     store.commit('pushTableProperty', { hotId: hotId, key: `sampledQuoteChar`, value: sniffResult.quoteChar })
