@@ -1,4 +1,4 @@
-import { HotRegister, insertRowAbove, insertRowBelow, insertColumnBefore, insertColumnAfter, removeRows, removeColumns } from '@/hot.js'
+import { HotRegister, insertRowAbove, insertRowBelow, insertColumnBefore, insertColumnAfter, removeRows, removeColumns, reselectHotCellFromHot } from '@/hot.js'
 import { loadDataIntoHot, saveDataToFile } from '@/data-actions.js'
 import { ipcRenderer as ipc, remote } from 'electron'
 import { isCaseSensitive } from '@/frictionlessUtilities'
@@ -59,16 +59,23 @@ export function loadData(key, data, format, closeLoadingFn) {
 }
 
 ipc.on('saveData', function(e, format, fileName) {
-  let hot = HotRegister.getActiveInstance()
-  // ensure that cell (and its row) holding cursor is committed
-  hot.deselectCell()
-  saveDataToFile(hot, format, fileName)
-  let selection = store.getters.getHotSelection(hot.guid)
-  // reselect cell after save
-  if (selection) {
-    hot.selectCell(selection[0], selection[1], selection[2], selection[3])
-  }
+  captureLatestEditBeforeFunction(hot, saveDataToFile, format, fileName)
 })
+
+export function captureLatestEditBeforeFunction(fn, ...args) {
+  let hot = HotRegister.getActiveInstance()
+  hot.deselectCell()
+  if (fn) {
+    fn(hot, ...args)
+  }
+  reselectHotCellFromHot(hot)
+}
+
+export function captureLatestEdit() {
+  let hot = HotRegister.getActiveInstance()
+  hot.deselectCell()
+  reselectHotCellFromHot(hot)
+}
 
 ipc.on('editUndo', function() {
   let hot = HotRegister.getActiveInstance()
