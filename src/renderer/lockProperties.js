@@ -7,14 +7,14 @@ const LockProperties = {
 
   storeName: 'isTableLocked',
 
-  toggleLockColumnProperties () {
+  toggleLockTableSchema () {
     const hotId = HotRegister.getActiveInstance().guid
     let currentLock = _.includes(this.getLockedTables(), hotId)
     currentLock = !currentLock
     this.updateStoredTableLock(hotId, currentLock)
   },
 
-  lockColumnProperties () {
+  lockTableSchema () {
     const hotId = HotRegister.getActiveInstance().guid
     this.updateStoredTableLock(hotId, true)
   },
@@ -37,8 +37,8 @@ const LockProperties = {
   }
 }
 
-ipc.on('toggleLockColumnProperties', function (event, arg) {
-  LockProperties.toggleLockColumnProperties()
+ipc.on('toggleLockTableSchema', function (event, arg) {
+  LockProperties.toggleLockTableSchema()
 })
 
 export {
