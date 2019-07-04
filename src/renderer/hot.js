@@ -188,10 +188,15 @@ export function insertRowBelow () {
 }
 
 export function insertRow (offset, mathFn) {
+  console.log('entered insert row...')
   let hot = getHotToInsert()
   const range = hot.getSelectedRangeLast()
+  console.log('range is:')
+  console.log(range)
   if (typeof range !== 'undefined') {
     const selection = mathFn(range.from.row, range.to.row) + offset
+    console.log('selection is')
+    console.log(selection)
     hot.alter('insert_row', selection)
     hot.selectCell(selection, 0)
   }
@@ -220,6 +225,7 @@ export function insertColumn (offset, mathFn) {
 
 function getHotToInsert () {
   let hot = HotRegister.getActiveInstance()
+  captureLatestEdit(hot)
   hot.getActiveEditor().finishEditing(true)
   return hot
 }
@@ -275,4 +281,24 @@ ipc.on('selectHotCell', function (event, rowCountNumber, ColCountNumber) {
 
 export {
   HotRegister
+}
+
+export function captureLatestEditBeforeFunction (fn, ...args) {
+  let hot = HotRegister.getActiveInstance()
+  hot.deselectCell()
+  if (fn) {
+    fn(hot, ...args)
+  }
+  reselectHotCellFromHot(hot)
+}
+
+export function captureLatestEdit () {
+  let hot = HotRegister.getActiveInstance()
+  hot.deselectCell()
+  reselectHotCellFromHot(hot)
+}
+
+export function captureLatestEditFromHot (hot) {
+  hot.deselectCell()
+  reselectHotCellFromHot(hot)
 }
