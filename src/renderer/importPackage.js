@@ -9,7 +9,7 @@ import { dataResourceToFormat } from '@/file-formats.js'
 const _ignores = ['__MACOSX']
 
 // TODO: clean up isTransient logic
-export async function unzipFile(zipSource, storeCallback, isTransient) {
+export async function unzipFile (zipSource, storeCallback, isTransient) {
   try {
     let destination = createUnzipDestination(zipSource)
     await fs.ensureDir(destination)
@@ -21,11 +21,11 @@ export async function unzipFile(zipSource, storeCallback, isTransient) {
   }
 }
 
-function createUnzipDestination(zipSource) {
+function createUnzipDestination (zipSource) {
   return path.join(path.dirname(zipSource), path.basename(zipSource, '.zip'))
 }
 
-async function unzipFileToDir(zipSource, unzipDestination, isTransient) {
+async function unzipFileToDir (zipSource, unzipDestination, isTransient) {
   let processed = { json: [], resource: [], md: [] }
   await fs.createReadStream(zipSource).pipe(unzipper.Parse()).pipe(etl.map(async entry => {
     let fileDestination = path.join(unzipDestination, entry.path)
@@ -42,14 +42,14 @@ async function unzipFileToDir(zipSource, unzipDestination, isTransient) {
   return processedProperties
 }
 
-async function getDataPackageJson(processed) {
+async function getDataPackageJson (processed) {
   let filename = processed.json[0]
   let text = await stringify(filename)
   let dataPackageJson = JSON.parse(text)
   return dataPackageJson
 }
 
-async function processStream(entry, processed, fileDestination) {
+async function processStream (entry, processed, fileDestination) {
   if (isIgnored(fileDestination)) {
     await cleanUp(entry, fileDestination)
   } else {
@@ -80,7 +80,7 @@ async function processStream(entry, processed, fileDestination) {
   }
 }
 
-function isIgnored(fileDestination) {
+function isIgnored (fileDestination) {
   let shouldIgnore = false
   for (const ignore of _ignores) {
     if (fileDestination.includes(ignore)) {
@@ -91,7 +91,7 @@ function isIgnored(fileDestination) {
   return shouldIgnore
 }
 
-async function cleanUp(entry, fileDestination) {
+async function cleanUp (entry, fileDestination) {
   entry.autodrain()
   try {
     await fs.remove(fileDestination)
@@ -100,18 +100,18 @@ async function cleanUp(entry, fileDestination) {
   }
 }
 
-function validateMdFile(processed) {
+function validateMdFile (processed) {
   if (processed.md.length > 1) {
     throw new Error('Only 1 markdown file is allowed.')
   }
 }
 
-async function unzippedEntryToFile(entry, fileDestination) {
+async function unzippedEntryToFile (entry, fileDestination) {
   let returned = await entry.pipe(etl.toFile(fileDestination)).promise()
   return returned
 }
 
-async function stringify(filename) {
+async function stringify (filename) {
   let value = await etl.file(filename)
     .pipe(etl.stringify())
     .promise()
@@ -123,18 +123,18 @@ async function stringify(filename) {
   return text
 }
 
-function setProvenance(text) {
+function setProvenance (text) {
   store.commit('pushProvenance', text)
 }
 
-async function processResources(dataPackageJson, unzipDestination, processed, isTransient) {
+async function processResources (dataPackageJson, unzipDestination, processed, isTransient) {
   let resourcePaths = await getAllResourcePaths(dataPackageJson, unzipDestination, processed)
   let csvPathHotIds = await getHotIdsFromFilenames(processed, unzipDestination, isTransient)
   validateResourcesAndDataFiles(resourcePaths, _.keys(csvPathHotIds))
   return csvPathHotIds
 }
 
-async function getAllResourcePaths(dataPackageJson, unzipDestination, processed) {
+async function getAllResourcePaths (dataPackageJson, unzipDestination, processed) {
   let resourcePaths = []
   for (let dataResource of dataPackageJson.resources) {
     let fileDestination
@@ -150,7 +150,7 @@ async function getAllResourcePaths(dataPackageJson, unzipDestination, processed)
   return resourcePaths
 }
 
-function validateResourcesAndDataFiles(resourcePaths, csvPaths) {
+function validateResourcesAndDataFiles (resourcePaths, csvPaths) {
   // every processed csv should match entry in resource of datapackage.json
   let diff = _.difference(resourcePaths, csvPaths)
   if (diff.length !== 0) {
@@ -158,7 +158,7 @@ function validateResourcesAndDataFiles(resourcePaths, csvPaths) {
   }
 }
 
-async function getHotIdsFromFilenames(processed, unzipDestination, isTransient = false) {
+async function getHotIdsFromFilenames (processed, unzipDestination, isTransient = false) {
   let csvTabs = {}
   for (let pathname of processed.resource) {
     let fileDestination = path.join(unzipDestination, pathname)
@@ -180,12 +180,12 @@ async function getHotIdsFromFilenames(processed, unzipDestination, isTransient =
   return csvTabs
 }
 
-async function getTabIdFromFilename(filename) {
+async function getTabIdFromFilename (filename) {
   return new Promise((resolve, reject) => {
     let tabId = _.findKey(store.getters.getTabObjects, { filename: filename })
     if (!tabId) {
       // wait for tabs to be ready
-      _.delay(function(filename) {
+      _.delay(function (filename) {
         resolve(_.findKey(store.getters.getTabObjects, { filename: filename }))
       }, 500, filename)
     } else {
@@ -194,7 +194,7 @@ async function getTabIdFromFilename(filename) {
   })
 }
 
-function processJson(dataPackageJson, csvPathHotIds, unzipDestination) {
+function processJson (dataPackageJson, csvPathHotIds, unzipDestination) {
   let allTableProperties = dataPackageJson.resources
   let allColumnPropertiesByHotId = {}
   let allTablePropertiesByHotId = {}

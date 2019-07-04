@@ -1,18 +1,22 @@
 <template>
   <form
     id="preferenceProperties"
-    class="navbar-form form-horizontal">
+    class="navbar-form form-horizontal"
+  >
     <div class="form-group-sm row container-fluid">
       <div
         v-for="(formprop, index) in formprops"
         :key="index"
-        class="propertyrow">
+        class="propertyrow"
+      >
         <label
           v-tooltip.left="tooltip(formprop.tooltipId)"
           :for="formprop.label"
-          class="control-label col-sm-3">{{ formprop.label }}</label>
-        <component :is="formprop.tooltipView"/>
+          class="control-label col-sm-3"
+        >{{ formprop.label }}</label>
+        <component :is="formprop.tooltipView" />
         <component
+          :is="formprop.key"
           v-if="isSharedComponent(formprop.key)"
           :propertyName="formprop.key"
           :getProperty="getProperty"
@@ -20,11 +24,12 @@
           :setProperty="setProperty"
           :waitForHotIdFromTabId="waitForHotIdFromTabId"
           :currentHotId="currentHotId"
-          :is="formprop.key"
-          :contributorsSetter="contributorsSetter"/>
+          :contributorsSetter="contributorsSetter"
+        />
         <div
           v-show="errors.has(formprop.key) && removeProperty(formprop.key)"
-          class="row help validate-danger">
+          class="row help validate-danger"
+        >
           {{ errors.first(formprop.key) }}
         </div>
       </div>
@@ -47,7 +52,7 @@ export default {
   },
   extends: SideNav,
   mixins: [ValidationRules, PreferencesTooltip],
-  data() {
+  data () {
     return {
       formprops: [
         {

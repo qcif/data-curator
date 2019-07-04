@@ -6,8 +6,8 @@ import { getMenu } from '../main/menuUtils'
 const Menu = remote.Menu
 const MenuItem = remote.MenuItem
 
-function buildMenuItems(options, clickFn) {
-  let nextMenu = new MenuItem(_.assign({}, options, { click: function() { clickFn() } }))
+function buildMenuItems (options, clickFn) {
+  let nextMenu = new MenuItem(_.assign({}, options, { click: function () { clickFn() } }))
   return nextMenu
 }
 
@@ -23,7 +23,7 @@ menu.append(new MenuItem({ type: 'separator' }))
 menu.append(buildMenuItems(sharedMenus.removeRows, removeRows))
 menu.append(buildMenuItems(sharedMenus.removeColumns, removeColumns))
 
-export function disableEnableContextMenu(isLocked) {
+export function disableEnableContextMenu (isLocked) {
   menu.items.forEach(function (x) {
     if (typeof x.label !== 'undefined' && x['lockable']) {
       x.enabled = !isLocked

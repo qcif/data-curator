@@ -58,7 +58,7 @@ const fileFormats = {
   }
 }
 
-export function dataResourceToFormat(dataResource) {
+export function dataResourceToFormat (dataResource) {
   let format = {}
   _.assign(format, dataResource)
   for (const key of ['missingValues', 'name', 'path', 'profile', 'schema']) {

@@ -4,7 +4,7 @@ import store from '@/store'
 import { HotRegister } from '@/hot.js'
 import { pushAllTabTitlesSubscription } from '@/store/modules/tabs.js'
 
-export function toggleHeaderWithFeedback(hot, errorFunction, successFunction) {
+export function toggleHeaderWithFeedback (hot, errorFunction, successFunction) {
   if (hot.hasColHeaders()) {
     toggleHeaderOff(hot)
     successFunction()
@@ -18,7 +18,7 @@ export function toggleHeaderWithFeedback(hot, errorFunction, successFunction) {
   }
 }
 
-export function toggleHeaderNoFeedback(hot) {
+export function toggleHeaderNoFeedback (hot) {
   if (hot.hasColHeaders()) {
     toggleHeaderOff(hot)
     // ensure at least 2 rows before setting header
@@ -29,7 +29,7 @@ export function toggleHeaderNoFeedback(hot) {
   }
 }
 
-export function toggleHeaderOff(hot) {
+export function toggleHeaderOff (hot) {
   let header = hot.getColHeader()
   let data = _.concat([header], hot.getData())
   updateHot(hot, data, { colHeaders: false, columnSorting: false })
@@ -39,7 +39,7 @@ export function toggleHeaderOff(hot) {
   ipc.send('hasHeaderRow', false)
 }
 
-export function toggleHeaderOn(hot) {
+export function toggleHeaderOn (hot) {
   let data = hot.getData()
   let header = data[0]
   data = _.drop(data)
@@ -48,12 +48,12 @@ export function toggleHeaderOn(hot) {
   ipc.send('hasHeaderRow', true)
 }
 
-function updateHot(hot, data, settings) {
+function updateHot (hot, data, settings) {
   hot.loadData(data)
   hot.updateSettings(settings)
 }
 
-function updateAllColumnsName(values) {
+function updateAllColumnsName (values) {
   store.commit('pushAllColumnsProperty', {
     hotId: HotRegister.getActiveInstance().guid,
     key: 'name',

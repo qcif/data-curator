@@ -6,11 +6,15 @@
       <select
         v-model="selectedLicenses"
         class="form-control input-sm col-sm-9"
-        multiple>
+        multiple
+      >
         <option
           v-for="(license, index) in licenses"
           :key="license.title + index"
-          :value="license.title">{{ license.title }}</option>
+          :value="license.title"
+        >
+          {{ license.title }}
+        </option>
       </select>
     </div>
   </div>
@@ -24,18 +28,18 @@ export default {
   props: {
     setProperty: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     getPropertyGivenHotId: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     waitForHotIdFromTabId: {
       type: Function,
-      default: async function() {}
+      default: async function () {}
     }
   },
-  data() {
+  data () {
     return {
       // sourced from: https://licenses.opendefinition.org/licenses
       licenses: [{
@@ -94,37 +98,37 @@ export default {
     ...mapGetters(['getActiveTab'])
   },
   watch: {
-    getActiveTab: function() {
+    getActiveTab: function () {
       // update licenses when adding tabs
       this.initLicenses()
     },
-    selectedLicenses: function(selected) {
+    selectedLicenses: function (selected) {
       this.setProperty('licenses', this.licensesObject(selected))
     }
   },
-  mounted: function() {
+  mounted: function () {
     // update license when re-opening panel with licenses
     this.initLicenses()
   },
   methods: {
-    initLicenses: async function() {
+    initLicenses: async function () {
       let licenseTitles = await this.getLicenseTitlesFromTab()
       this.selectedLicenses = licenseTitles
     },
-    getLicenseTitlesFromTab: async function() {
+    getLicenseTitlesFromTab: async function () {
       let licenses = await this.getLicensesFromTab()
       let licenseTitles = licenses ? licenses.map(x => {
         return x.title
       }) : []
       return licenseTitles
     },
-    getLicensesFromTab: async function() {
+    getLicensesFromTab: async function () {
       let tab = this.getActiveTab
       let hotId = await this.waitForHotIdFromTabId(tab)
       let licenses = this.getPropertyGivenHotId('licenses', hotId)
       return licenses
     },
-    licensesObject: function(ids) {
+    licensesObject: function (ids) {
       if (ids && ids.length > 0) {
         return this.licenses.filter(x => ids.indexOf(x.title) !== -1)
       } else {

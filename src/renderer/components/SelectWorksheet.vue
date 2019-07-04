@@ -1,17 +1,20 @@
 <template>
   <div
     id="container"
-    class="container-fluid">
+    class="container-fluid"
+  >
     <form>
       <p>
         <select
           id="worksheets"
           v-model="selected"
-          class="form-control">
+          class="form-control"
+        >
           <option
             v-for="(option, index) in options"
             :key="option.value + index"
-            :value="option.value">
+            :value="option.value"
+          >
             {{ option.text }}
           </option>
         </select>
@@ -20,10 +23,16 @@
         <button
           id="submit"
           class="btn btn-default"
-          @click.prevent="submit">Open Sheet</button> <button
-            id="cancel"
-            class="btn btn-default"
-            @click.prevent="cancel">Cancel</button>
+          @click.prevent="submit"
+        >
+          Open Sheet
+        </button> <button
+          id="cancel"
+          class="btn btn-default"
+          @click.prevent="cancel"
+        >
+          Cancel
+        </button>
       </div>
     </form>
   </div>
@@ -33,31 +42,31 @@ const ipc = require('electron').ipcRenderer
 
 export default {
   name: 'Selectworksheet',
-  data() {
+  data () {
     return {
       selected: '',
       options: [
       ]
     }
   },
-  mounted: function() {
+  mounted: function () {
     const vueOptions = this.options
     const vueUpdateSelected = this.updateSelected
-    ipc.on('loadSheets', function(e, sheets) {
-      sheets.forEach(function(sheet, index) {
+    ipc.on('loadSheets', function (e, sheets) {
+      sheets.forEach(function (sheet, index) {
         vueOptions.push({ text: sheet, value: sheet })
         vueUpdateSelected(sheet)
       })
     })
   },
   methods: {
-    submit: function() {
+    submit: function () {
       ipc.send('worksheetSelected', this.selected)
     },
-    cancel: function() {
+    cancel: function () {
       ipc.send('worksheetCanceled')
     },
-    updateSelected: function(selected) {
+    updateSelected: function (selected) {
       this.selected = selected
     }
   }

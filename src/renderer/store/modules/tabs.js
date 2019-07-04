@@ -2,7 +2,7 @@ import { ipcRenderer as ipc } from 'electron'
 import { setActiveGlobal, extractNameFromFile, resetGlobalFilenames } from '@/store/tabStoreUtilities'
 import { activeTab$, allTabsTitles$ } from '@/rxSubject.js'
 
-export function pushAllTabTitlesSubscription() {
+export function pushAllTabTitlesSubscription () {
   allTabsTitles$.next(getters.getAllTabTitles(state))
 }
 
@@ -39,13 +39,13 @@ const getters = {
   },
   getAllTabTitles: state => {
     let allTabTitles = {}
-    _.forEach(state.tabObjects, function(object, tabId) {
+    _.forEach(state.tabObjects, function (object, tabId) {
       allTabTitles[tabId] = object.title
     })
     return allTabTitles
   },
   findTabIdFromTitle: (state, getters) => (title) => {
-    return _.findKey(state.tabObjects, function(o) { return o.title === title })
+    return _.findKey(state.tabObjects, function (o) { return o.title === title })
   }
 }
 
@@ -53,7 +53,7 @@ const mutations = {
   pushTab (state, tabId) {
     state.tabs.push(tabId)
   },
-  pushTabTitle(state, tab) {
+  pushTabTitle (state, tab) {
     let title
     if (tab.title) {
       title = tab.title
@@ -63,7 +63,7 @@ const mutations = {
     _.set(state.tabObjects, `${tab.id}.title`, title)
     pushAllTabTitlesSubscription()
   },
-  pushTabObject(state, tab) {
+  pushTabObject (state, tab) {
     if (tab.filename) {
       _.set(state.tabObjects, `${tab.id}.filename`, tab.filename)
       let title = extractNameFromFile(tab.filename)
@@ -75,7 +75,7 @@ const mutations = {
       pushAllTabTitlesSubscription()
     }
   },
-  resetTabFilename(state, tabId) {
+  resetTabFilename (state, tabId) {
     _.unset(state.tabObjects[tabId], 'filename')
     mutations.resetFilenames(state)
     ipc.send('toggleSaveMenu')
@@ -99,15 +99,15 @@ const mutations = {
     state.tabs.length = 0
     state.tabs.push(...tabIdOrder)
   },
-  incrementTabIndex(state) {
+  incrementTabIndex (state) {
     state.tabIndex++
   },
-  destroyTabObject(state, tabId) {
+  destroyTabObject (state, tabId) {
     _.unset(state.tabObjects, tabId)
     mutations.resetFilenames(state)
     pushAllTabTitlesSubscription()
   },
-  resetFilenames(state) {
+  resetFilenames (state) {
     let filtered = []
     _.forEach(state.tabObjects, (value, key) => {
       if (value.filename) { filtered.push(value.filename) }

@@ -1,18 +1,22 @@
 <template>
   <form
     id="packageProperties"
-    class="navbar-form form-horizontal">
+    class="navbar-form form-horizontal"
+  >
     <div class="form-group-sm row container-fluid">
       <div
         v-for="(formprop, index) in formprops"
         :key="index"
-        class="propertyrow">
+        class="propertyrow"
+      >
         <label
           v-tooltip.left="tooltip(formprop.tooltipId)"
           :for="formprop.label"
-          class="control-label col-sm-3">{{ formprop.label }}</label>
-        <component :is="formprop.tooltipView"/>
+          class="control-label col-sm-3"
+        >{{ formprop.label }}</label>
+        <component :is="formprop.tooltipView" />
         <component
+          :is="formprop.key"
           v-if="isSharedComponent(formprop.key)"
           :propertyName="formprop.key"
           :getProperty="getProperty"
@@ -20,27 +24,30 @@
           :setProperty="setProperty"
           :waitForHotIdFromTabId="waitForHotIdFromTabId"
           :currentHotId="currentHotId"
-          :is="formprop.key"/>
+        />
         <!-- <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)"/> -->
         <textarea
           v-else-if="formprop.key === 'description'"
-          :value="getProperty(formprop.key)"
           :id="formprop.key"
+          :value="getProperty(formprop.key)"
           rows="4"
           class="form-control label-sm col-sm-9"
-          @input="setProperty(formprop.key, $event.target.value)" />
+          @input="setProperty(formprop.key, $event.target.value)"
+        />
         <input
-          v-validate="validationRules(formprop.key)"
           v-else
-          :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }"
           :id="formprop.key"
+          v-validate="validationRules(formprop.key)"
+          :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }"
           :value="getProperty(formprop.key)"
           :name="formprop.key"
           type="text"
-          @input="setProperty(formprop.key, $event.target.value)">
+          @input="setProperty(formprop.key, $event.target.value)"
+        >
         <div
           v-show="errors.has(formprop.key) && removeProperty(formprop.key)"
-          class="row help validate-danger">
+          class="row help validate-danger"
+        >
           {{ errors.first(formprop.key) }}
         </div>
       </div>
@@ -69,7 +76,7 @@ export default {
   },
   extends: SideNav,
   mixins: [ValidationRules, PackageTooltip],
-  data() {
+  data () {
     return {
       formprops: [{
         label: 'Name*',
@@ -126,14 +133,14 @@ export default {
   computed: {
     ...mapGetters(['getPackageProperty'])
   },
-  mounted: function() {
+  mounted: function () {
     autosize(document.querySelector('textarea'))
   },
   methods: {
     ...mapMutations([
       'pushPackageProperty'
     ]),
-    getProperty: function(key) {
+    getProperty: function (key) {
       let packageProperty = this.getPackageProperty({
         'key': key
       })
@@ -142,23 +149,23 @@ export default {
       }
       return packageProperty
     },
-    setPreferencesAsDefault: function(key) {
+    setPreferencesAsDefault: function (key) {
       if (_.indexOf(this.hasPreferences, key) > -1) {
         const packageProperty = ipc.sendSync('getPreference', key)
         this.setProperty(key, packageProperty)
         return packageProperty
       }
     },
-    getPropertyGivenHotId: function(key, hotId) {
+    getPropertyGivenHotId: function (key, hotId) {
       return this.getProperty(key)
     },
-    setProperty: function(key, value) {
+    setProperty: function (key, value) {
       this.pushPackageProperty({
         key: key,
         value: value
       })
     },
-    removeProperty: function(key) {
+    removeProperty: function (key) {
       let value = ''
       this.setProperty(key, value)
       return true

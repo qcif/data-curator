@@ -4,52 +4,52 @@ let hotRegisterActiveQueryStub
 let hotRegisterActiveInstanceStub
 let hotElementClassName = 'stubbedHot'
 
-export function stubHotInDocumentDom(sandbox) {
+export function stubHotInDocumentDom (sandbox) {
   resetDocument()
   stubDom()
   stubHotRegisterWithDefaultActiveQuery(sandbox)
 }
 
-function resetDocument() {
+function resetDocument () {
   document.open()
   document.write('<html><body></body></html>')
   document.close()
 }
 
-export function stubDom() {
+export function stubDom () {
   let hotView = document.createElement('div')
   hotView.setAttribute('class', hotElementClassName)
   document.body.appendChild(hotView)
 }
 
-export function stubHotRegisterWithDefaultActiveQuery(sandbox) {
+export function stubHotRegisterWithDefaultActiveQuery (sandbox) {
   hotRegisterActiveQueryStub = sandbox.stub(HotRegister, 'activeQuery')
   hotRegisterActiveQueryStub.withArgs().returns(stubActiveQueryWithLast())
 }
 
-export function stubHotRegisterWithActiveQuery(sandbox, queryFn) {
+export function stubHotRegisterWithActiveQuery (sandbox, queryFn) {
   hotRegisterActiveQueryStub = sandbox.stub(HotRegister, 'activeQuery')
   hotRegisterActiveQueryStub.withArgs().returns(queryFn())
 }
 
-export function registerHot() {
+export function registerHot () {
   let container = stubActiveQueryWithLast()
   let hotId = HotRegister.register(container)
   let hot = HotRegister.getInstance(hotId)
   return hot
 }
 
-export function stubActiveQueryWithLast() {
+export function stubActiveQueryWithLast () {
   const allResults = document.querySelectorAll(`.${hotElementClassName}`)
   return allResults[allResults.length - 1]
 }
 
-export function stubActiveQueryWithFirst() {
+export function stubActiveQueryWithFirst () {
   const allResults = document.querySelectorAll(`.${hotElementClassName}`)
   return allResults[0]
 }
 
-export function resetHot(sandbox) {
+export function resetHot (sandbox) {
   HotRegister.destroyAllHots()
   if (!sandbox) {
     if (hotRegisterActiveQueryStub) {
@@ -61,13 +61,13 @@ export function resetHot(sandbox) {
   }
 }
 
-export function registerHotWithContainer(container) {
+export function registerHotWithContainer (container) {
   let hotId = HotRegister.register(container)
   let hot = HotRegister.getInstance(hotId)
   return hot
 }
 
-export function stubHotRegisterActiveInstance(hot, sandbox) {
+export function stubHotRegisterActiveInstance (hot, sandbox) {
   hotRegisterActiveInstanceStub = sandbox.stub(HotRegister, 'getActiveInstance')
   hotRegisterActiveInstanceStub.withArgs().returns(hot)
 }

@@ -4,7 +4,8 @@
       <div
         v-for="(foreignKey,index) in hotForeignKeys"
         :key="foreignKey + index"
-        class="foreign col-sm-12">
+        class="foreign col-sm-12"
+      >
         <div class="inputs-container">
           <component
             :is="'tableheaderkeys'"
@@ -15,10 +16,11 @@
             :tooltipId="'tooltip-foreignkey' + index"
             :index="index"
             labelName="Foreign key(s)"
-            tooltipView="tooltipForeignkey"/>
+            tooltipView="tooltipForeignkey"
+          />
           <component
-            v-if="isHeadersSelected && !fkPackages[index]"
             :is="'tablekeys'"
+            v-if="isHeadersSelected && !fkPackages[index]"
             :key="getTableComponentKey(index)"
             :allTableNames="allTableNames"
             :getSelectedTable="getSelectedTable(index)"
@@ -26,10 +28,11 @@
             :tooltipId="'tooltip-foreignkey-table' + index"
             :index="index"
             labelName="Reference Table"
-            tooltipView="tooltipForeignkeyTable"/>
+            tooltipView="tooltipForeignkeyTable"
+          />
           <component
-            v-if="isHeadersSelected && !fkPackages[index]"
             :is="'tableheaderkeys'"
+            v-if="isHeadersSelected && !fkPackages[index]"
             :key="getForeignComponentKey(index)"
             :activeNames="getCurrentForeignHeaders(index)"
             :getSelectedKeys="getSelectedForeignKeys(index)"
@@ -38,37 +41,44 @@
             :index="index"
             :currentHotId="currentHotId"
             labelName="Reference Column(s)"
-            tooltipView="tooltipForeignkeyTablekey"/>
+            tooltipView="tooltipForeignkeyTablekey"
+          />
         </div>
         <button
           type="button"
           class="btn btn-danger btn-sm"
-          @click="removeForeignKey(index)">
-          <span class="glyphicon glyphicon-minus"/>
+          @click="removeForeignKey(index)"
+        >
+          <span class="glyphicon glyphicon-minus" />
         </button>
         <div
           id="fk-package"
-          class="clearfix">
+          class="clearfix"
+        >
           <template v-if="isHeadersSelected && fkPackages[index]">
             <label class="control-label">Reference Package</label><span
               v-if="testLoadingPackage == index && loadingPackage[testLoadingPackage]"
-              class="glyphicon glyphicon-refresh spinning"/>
+              class="glyphicon glyphicon-refresh spinning"
+            />
             <div
               :class="{ 'right': !fkPackages[index]}"
-              class="fk-package">
+              class="fk-package"
+            >
               <input
-                :key="getForeignPackageKey(index)"
                 :id="'fk-package' + index"
+                :key="getForeignPackageKey(index)"
                 :value="getFkPackage(index)"
                 :name="'fk-package' + index"
                 class="form-control input-sm"
                 type="text"
                 @input="setFkPackage(index, currentLocalHotId, $event.target.value)"
-                @blur="removeFkPackageForErrors(index, currentLocalHotId)">
+                @blur="removeFkPackageForErrors(index, currentLocalHotId)"
+              >
             </div>
             <div
               v-if="fkPackages[index] && errors.has('fk-package' + index)"
-              class="row help validate-danger">
+              class="row help validate-danger"
+            >
               {{ errors.first('fk-package' + index) }}
             </div>
             <div v-if="fkPackages[index]">
@@ -81,7 +91,8 @@
                 :tooltipId="'tooltip-foreignkey-table' + index"
                 :index="index"
                 labelName="Reference Table"
-                tooltipView="tooltipForeignkeyTable"/>
+                tooltipView="tooltipForeignkeyTable"
+              />
               <component
                 :is="'tableheaderkeys'"
                 :key="getForeignPackageComponentKey(index)"
@@ -92,14 +103,16 @@
                 :index="index"
                 :currentHotId="currentHotId"
                 labelName="Reference Column(s)"
-                tooltipView="tooltipForeignkeyTablekey"/>
+                tooltipView="tooltipForeignkeyTablekey"
+              />
             </div>
           </template>
           <button
             type="button"
             class="add-foreign btn btn-primary btn-sm"
-            @click="toggleFkPackage(index)">
-            <span class="fas fa-exchange-alt"/>{{ toggleText[index] }}
+            @click="toggleFkPackage(index)"
+          >
+            <span class="fas fa-exchange-alt" />{{ toggleText[index] }}
           </button>
         </div>
       </div>
@@ -107,8 +120,9 @@
         <button
           type="button"
           class="add-foreign btn btn-primary btn-sm"
-          @click="addForeignKey()">
-          <span class="glyphicon glyphicon-plus"/>Add Foreign Key
+          @click="addForeignKey()"
+        >
+          <span class="glyphicon glyphicon-plus" />Add Foreign Key
         </button>
       </div>
     </div>

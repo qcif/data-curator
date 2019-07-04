@@ -1,17 +1,23 @@
 <template>
   <div
     id="container"
-    class="container-fluid">
-
+    class="container-fluid"
+  >
     <h1>Keyboard Shortcuts</h1>
 
     <h2>Table Editor Shortcuts</h2>
     <table class="table table-striped">
       <thead>
         <tr>
-          <th style="width:50%">Table Editing shortcuts</th>
-          <th style="width:25%"><i class="fab fa-windows fa-lg"/> &nbsp; <i class="fab fa-linux fa-lg"/></th>
-          <th style="width:25%"><i class="fab fa-apple fa-lg"/></th>
+          <th style="width:50%">
+            Table Editing shortcuts
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-windows fa-lg" /> &nbsp; <i class="fab fa-linux fa-lg" />
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-apple fa-lg" />
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -46,9 +52,15 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th style="width:50%">Table Navigation shortcuts</th>
-          <th style="width:25%"><i class="fab fa-windows fa-lg"/> &nbsp; <i class="fab fa-linux fa-lg"/></th>
-          <th style="width:25%"><i class="fab fa-apple fa-lg"/></th>
+          <th style="width:50%">
+            Table Navigation shortcuts
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-windows fa-lg" /> &nbsp; <i class="fab fa-linux fa-lg" />
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-apple fa-lg" />
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -98,9 +110,15 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th style="width:50%">Table Selection shortcuts</th>
-          <th style="width:25%"><i class="fab fa-windows fa-lg"/> &nbsp; <i class="fab fa-linux fa-lg"/></th>
-          <th style="width:25%"><i class="fab fa-apple fa-lg"/></th>
+          <th style="width:50%">
+            Table Selection shortcuts
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-windows fa-lg" /> &nbsp; <i class="fab fa-linux fa-lg" />
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-apple fa-lg" />
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -155,16 +173,22 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th style="width:50%">Context menu shortcuts</th>
-          <th style="width:25%"><i class="fab fa-windows fa-lg"/> &nbsp; <i class="fab fa-linux fa-lg"/></th>
-          <th style="width:25%"><i class="fab fa-apple fa-lg"/></th>
+          <th style="width:50%">
+            Context menu shortcuts
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-windows fa-lg" /> &nbsp; <i class="fab fa-linux fa-lg" />
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-apple fa-lg" />
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><b>Right click</b> in a cell to display the context menu</td>
-          <td><i class="fa fa-mouse-pointer"/></td>
-          <td><i class="fa fa-mouse-pointer"/></td>
+          <td><i class="fa fa-mouse-pointer" /></td>
+          <td><i class="fa fa-mouse-pointer" /></td>
         </tr>
         <tr>
           <td><b>Choose Next</b> option in context menu</td>
@@ -188,25 +212,31 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th style="width:50%">Data Curator menu shortcuts</th>
-          <th style="width:25%"><i class="fab fa-windows fa-lg"/> &nbsp; <i class="fab fa-linux fa-lg"/></th>
-          <th style="width:25%"><i class="fab fa-apple fa-lg"/></th>
+          <th style="width:50%">
+            Data Curator menu shortcuts
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-windows fa-lg" /> &nbsp; <i class="fab fa-linux fa-lg" />
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-apple fa-lg" />
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><b>Preferences</b> - set defaults to improve productivity</td>
-          <td/>
+          <td />
           <td><kbd>Command &#8984;</kbd> <kbd>,</kbd></td>
         </tr>
         <tr>
           <td><b>Hide</b> the application</td>
-          <td/>
+          <td />
           <td><kbd>Command &#8984;</kbd> <kbd>H</kbd></td>
         </tr>
         <tr>
           <td><b>Hide Others</b> - hide all other applications</td>
-          <td/>
+          <td />
           <td><kbd>Option &#8997;</kbd> <kbd>Command &#8984;</kbd> <kbd>H</kbd></td>
         </tr>
         <tr>
@@ -220,9 +250,15 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th style="width:50%">File menu shortcuts</th>
-          <th style="width:25%"><i class="fab fa-windows fa-lg"/> &nbsp; <i class="fab fa-linux fa-lg"/></th>
-          <th style="width:25%"><i class="fab fa-apple fa-lg"/></th>
+          <th style="width:50%">
+            File menu shortcuts
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-windows fa-lg" /> &nbsp; <i class="fab fa-linux fa-lg" />
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-apple fa-lg" />
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -259,9 +295,15 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th style="width:50%">Edit menu shortcuts</th>
-          <th style="width:25%"><i class="fab fa-windows fa-lg"/> &nbsp; <i class="fab fa-linux fa-lg"/></th>
-          <th style="width:25%"><i class="fab fa-apple fa-lg"/></th>
+          <th style="width:50%">
+            Edit menu shortcuts
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-windows fa-lg" /> &nbsp; <i class="fab fa-linux fa-lg" />
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-apple fa-lg" />
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -322,9 +364,15 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th style="width:50%">Find menu shortcuts</th>
-          <th style="width:25%"><i class="fab fa-windows fa-lg"/> &nbsp; <i class="fab fa-linux fa-lg"/></th>
-          <th style="width:25%"><i class="fab fa-apple fa-lg"/></th>
+          <th style="width:50%">
+            Find menu shortcuts
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-windows fa-lg" /> &nbsp; <i class="fab fa-linux fa-lg" />
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-apple fa-lg" />
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -358,9 +406,15 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th style="width:50%">Tools menu shortcuts</th>
-          <th style="width:25%"><i class="fab fa-windows fa-lg"/> &nbsp; <i class="fab fa-linux fa-lg"/></th>
-          <th style="width:25%"><i class="fab fa-apple fa-lg"/></th>
+          <th style="width:50%">
+            Tools menu shortcuts
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-windows fa-lg" /> &nbsp; <i class="fab fa-linux fa-lg" />
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-apple fa-lg" />
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -410,15 +464,21 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th style="width:50%">Window menu shortcuts</th>
-          <th style="width:25%"><i class="fab fa-windows fa-lg"/> &nbsp; <i class="fab fa-linux fa-lg"/></th>
-          <th style="width:25%"><i class="fab fa-apple fa-lg"/></th>
+          <th style="width:50%">
+            Window menu shortcuts
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-windows fa-lg" /> &nbsp; <i class="fab fa-linux fa-lg" />
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-apple fa-lg" />
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><b>Minimize</b> - minimize the Data Curator window</td>
-          <td/>
+          <td />
           <td><kbd>Command &#8984;</kbd> <kbd>M</kbd></td>
         </tr>
         <!--  see https://github.com/ODIQueensland/data-curator/issues/273
@@ -439,9 +499,15 @@
     <table class="table table-striped final">
       <thead>
         <tr>
-          <th style="width:50%">Help menu shortcuts</th>
-          <th style="width:25%"><i class="fab fa-windows fa-lg"/> &nbsp; <i class="fab fa-linux fa-lg"/></th>
-          <th style="width:25%"><i class="fab fa-apple fa-lg"/></th>
+          <th style="width:50%">
+            Help menu shortcuts
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-windows fa-lg" /> &nbsp; <i class="fab fa-linux fa-lg" />
+          </th>
+          <th style="width:25%">
+            <i class="fab fa-apple fa-lg" />
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -459,7 +525,6 @@
         </tr>
       </tbody>
     </table>
-
   </div>
 </template>
 <script>

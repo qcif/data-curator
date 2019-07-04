@@ -25,12 +25,11 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     'camelcase' : 0,
     'no-undef': 0,
-    'space-before-function-paren': 0,
     'no-unused-vars': 0,
     'eqeqeq': 0,
     'no-callback-literal': 0,
-    'space-infix-ops': 0,
     // hyphenation causes issues with component props
-    'vue/attribute-hyphenation': 0
+    'vue/attribute-hyphenation': 0,
+    'vue/no-v-html': 0
   }
 }

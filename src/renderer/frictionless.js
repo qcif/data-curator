@@ -6,7 +6,7 @@ import { includeHeadersInData, hasAllColumnNames, getValidNames } from '@/fricti
 import { allTablesAllColumnsFromSchema$, errorFeedback$ } from '@/rxSubject.js'
 import { ipcRenderer as ipc } from 'electron'
 
-async function inferSchema(data) {
+async function inferSchema (data) {
   const schema = await Schema.load({})
   // workaround for schema.infer stripping headers
   let dataClone = [...data]
@@ -16,14 +16,14 @@ async function inferSchema(data) {
   return schema
 }
 
-function storeData(hotId, schema) {
+function storeData (hotId, schema) {
   return store.mutations.pushTableSchema(store.state, {
     hotId: hotId,
     schema: schema
   })
 }
 
-export async function guessColumnProperties() {
+export async function guessColumnProperties () {
   let hot = HotRegister.getActiveInstance()
   let id = hot.guid
   let columnProperties = store.state.hotTabs[id].columnProperties
@@ -47,7 +47,7 @@ export async function guessColumnProperties() {
   return message
 }
 
-async function buildSchema(data, hotId) {
+async function buildSchema (data, hotId) {
   let schema = await inferSchema(data)
   let hotTab = store.state.hotTabs[hotId]
   schema.descriptor.fields = hotTab.columnProperties
@@ -58,7 +58,7 @@ async function buildSchema(data, hotId) {
   return schema
 }
 
-async function createFrictionlessTable(data, schema) {
+async function createFrictionlessTable (data, schema) {
   // provide schema rather than infer
   // frictionless default for csv dialect is that tables DO have headers
   let dataClone = [...data]
@@ -71,7 +71,7 @@ async function createFrictionlessTable(data, schema) {
   return table
 }
 
-async function collateForeignKeys(localHotId, callback) {
+async function collateForeignKeys (localHotId, callback) {
   const foreignKeys = store.state.hotTabs[localHotId].tableProperties.foreignKeys
   if (typeof foreignKeys === 'undefined') {
     return false
@@ -98,7 +98,7 @@ async function collateForeignKeys(localHotId, callback) {
   return relations
 }
 
-async function collatePackageForeignKeys(foreignKey) {
+async function collatePackageForeignKeys (foreignKey) {
   try {
     let rows = await ipc.sendSync('loadPackageUrlResourcesAsFkRelations', foreignKey.reference.package, foreignKey.reference.resource)
     return rows
@@ -107,12 +107,12 @@ async function collatePackageForeignKeys(foreignKey) {
   }
 }
 
-function getForeignKeyData(foreignHotId) {
+function getForeignKeyData (foreignHotId) {
   let hot = HotRegister.getInstance(foreignHotId)
   return includeHeadersInData(hot)
 }
 
-function getHotIdFromForeignKeyForeignTable(title, hotId) {
+function getHotIdFromForeignKeyForeignTable (title, hotId) {
   // check for fk in same table
   if (title === '') {
     return hotId
@@ -121,21 +121,21 @@ function getHotIdFromForeignKeyForeignTable(title, hotId) {
   return store.getters.getSyncHotIdFromTabId(store.state, store.getters)(tabId)
 }
 
-function isRowBlank(row) {
+function isRowBlank (row) {
   return row.filter(Boolean).length === 0
 }
 
-function blankCellCount(row) {
+function blankCellCount (row) {
   let sanitised = row.filter(Boolean)
   return row.length - sanitised.length
 }
 
-function duplicatesCount(row) {
+function duplicatesCount (row) {
   let uniques = new Set(row)
   return row.length - uniques.size
 }
 
-function checkHeaderErrors(headers) {
+function checkHeaderErrors (headers) {
   // TODO: consider better way to accommodate or remove - need headers/column names so this logic may be redundant
   if (isRowBlank(headers)) {
     errorHandler({ message: `Headers are completely blank`, name: 'Blank Row' })
@@ -151,7 +151,7 @@ function checkHeaderErrors(headers) {
   }
 }
 
-export async function validateActiveDataAgainstSchema(callback) {
+export async function validateActiveDataAgainstSchema (callback) {
   let hot = HotRegister.getActiveInstance()
   let hotId = hot.guid
   if (!hasColumnProperties(hotId, callback)) {
@@ -198,7 +198,7 @@ export async function validateActiveDataAgainstSchema(callback) {
   })
 }
 
-function hasColumnProperties(hotId, callb) {
+function hasColumnProperties (hotId, callb) {
   let columnProperties = store.state.hotTabs[hotId].columnProperties
   if (!columnProperties || columnProperties.length === 0) {
     errorHandler({ message: `Column properties, including the column properties of any foreign keys, must be set.`,
@@ -216,7 +216,7 @@ function hasColumnProperties(hotId, callb) {
   return true
 }
 
-function errorHandler(err, rowNumber) {
+function errorHandler (err, rowNumber) {
   if (err.multiple) {
     for (const error of err.errors) {
       errorFeedback$.next({

@@ -19,7 +19,7 @@ const LockProperties = {
     this.updateStoredTableLock(hotId, true)
   },
 
-  getLockedTables() {
+  getLockedTables () {
     return store.getters.hasPropertyFromAllTables(this.storeName)
   },
 
@@ -32,7 +32,7 @@ const LockProperties = {
     this.trigger()
   },
 
-  trigger() {
+  trigger () {
     allTableLocks$.next(this.getLockedTables())
   }
 }

@@ -46,11 +46,11 @@ app.on('ready', () => {
   }
 })
 
-function unlockSingleton() {
+function unlockSingleton () {
   app.releaseSingleInstance()
 }
 
-function forceQuit() {
+function forceQuit () {
   app.exit(5)
 }
 
@@ -80,7 +80,7 @@ app.on('window-all-closed', () => {
   app.quit()
 })
 
-export function quitDialog(event, callback) {
+export function quitDialog (event, callback) {
   event.preventDefault()
   let browserWindow = focusMainWindow()
   dialog.showMessageBox(browserWindow, {
@@ -91,7 +91,7 @@ export function quitDialog(event, callback) {
     defaultId: 0,
     title: 'Quit Application',
     message: 'There may be unsaved work. Are you sure you want to quit?'
-  }, function(response) {
+  }, function (response) {
     if (response === 0) {
       return
     }
@@ -99,7 +99,7 @@ export function quitDialog(event, callback) {
   })
 }
 
-export function quitOrSaveDialog(event, endButtonName, callback) {
+export function quitOrSaveDialog (event, endButtonName, callback) {
   event.preventDefault()
   let browserWindow = focusMainWindow()
   dialog.showMessageBox(browserWindow, {
@@ -110,14 +110,14 @@ export function quitOrSaveDialog(event, endButtonName, callback) {
     defaultId: 0,
     title: 'Save current tab before close?',
     message: 'Save current tab before close?'
-  }, function(response) {
+  }, function (response) {
     if (response === 0) {
       return
     }
     if (response === 1) {
       callback()
     } else {
-      dialog.showSaveDialog({}, function(filename) {
+      dialog.showSaveDialog({}, function (filename) {
         if (filename === undefined) {
           return
         }
@@ -127,7 +127,7 @@ export function quitOrSaveDialog(event, endButtonName, callback) {
   })
 }
 
-async function saveAndExit(callback, filename) {
+async function saveAndExit (callback, filename) {
   try {
     let browserWindow = focusMainWindow()
     await browserWindow.webContents.send('saveData', browserWindow.format, filename)
@@ -137,7 +137,7 @@ async function saveAndExit(callback, filename) {
   }
 }
 
-function closeWindowNoPrompt(result) {
+function closeWindowNoPrompt (result) {
   // ensure all windows are closed
   for (let browserWindow of BrowserWindow.getAllWindows()) {
     browserWindow.destroy()

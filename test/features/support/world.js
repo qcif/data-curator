@@ -20,7 +20,7 @@ function CustomWorld ({ attach, parameters }) {
   }
 }
 
-function createApp() {
+function createApp () {
   return new Application({
     path: electron,
     args: ['dist/electron/main.js'],

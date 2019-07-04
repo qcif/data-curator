@@ -10,13 +10,13 @@ import { globalStubWindows } from '../helpers/globalHelper.js'
 import { errorFeedback$ } from '@/rxSubject.js'
 import { ipcRenderer as ipc } from 'electron'
 
-describe('Home.vue', function() {
+describe('Home.vue', function () {
   let sandbox
   // dummmy test to begin with to incorporate vue/html with existing framework
-  describe('Toolbar menus', function() {
+  describe('Toolbar menus', function () {
     let wrapper
     let hot
-    beforeEach(function() {
+    beforeEach(function () {
       sandbox = sinon.createSandbox()
       Home.__Rewire__('getWindow', function (name) {
         return undefined
@@ -46,16 +46,16 @@ describe('Home.vue', function() {
         'loadDataIntoLatestHot': sandbox.stub().withArgs().returns(hot.guid),
         'initHotTablePropertiesFromDescriptor': sandbox.stub(),
         'removePreviousHotComments': sandbox.stub(),
-        'createPackage': sandbox.stub().callsFake(function fakeFn() {
+        'createPackage': sandbox.stub().callsFake(function fakeFn () {
           wrapper.setData({ messagesTitle: 'Export success' })
         }),
-        'validateTable': sandbox.stub().callsFake(function fakeFn() {
+        'validateTable': sandbox.stub().callsFake(function fakeFn () {
           wrapper.setData({ messagesTitle: 'Validate success' })
         })
       })
     })
 
-    afterEach(function() {
+    afterEach(function () {
       Home.__ResetDependency__('getWindow')
       Home.__ResetDependency__('guessColumnProperties')
       Home.__ResetDependency__('getCurrentColumnIndexOrMin')
@@ -94,16 +94,16 @@ describe('Home.vue', function() {
         }
       })
     })
-    it(`should have ${toolbarMenus.length} menus`, function() {
+    it(`should have ${toolbarMenus.length} menus`, function () {
       const toolbarNumber = wrapper.vm.$el.querySelectorAll('#toolbar li').length
       expect(toolbarNumber).to.equal(toolbarMenus.length)
     })
   })
 
-  describe('Hot comments', function() {
+  describe('Hot comments', function () {
     let wrapper
     let hot
-    beforeEach(function() {
+    beforeEach(function () {
       sandbox = sinon.createSandbox()
       Home.__Rewire__('getWindow', function (name, id) {
         return undefined
@@ -129,12 +129,12 @@ describe('Home.vue', function() {
       globalStubWindows(sandbox)
       wrapper.setData({ currentHotId: hot.guid, previousComments: [] })
       wrapper.setMethods({
-        'validateTable': sandbox.stub().callsFake(async function fakeFn() {
+        'validateTable': sandbox.stub().callsFake(async function fakeFn () {
           await wrapper.vm.validateTableCore()
         })
       })
     })
-    afterEach(function() {
+    afterEach(function () {
       Home.__ResetDependency__('getWindow')
       Home.__ResetDependency__('getCurrentColumnIndexOrMin')
       Home.__ResetDependency__('validateActiveDataAgainstSchema')
@@ -174,7 +174,7 @@ describe('Home.vue', function() {
   })
 })
 
-function stubBasicErrorMessage1() {
+function stubBasicErrorMessage1 () {
   return {
     rowNumber: 1,
     columnNumber: 1,
@@ -183,7 +183,7 @@ function stubBasicErrorMessage1() {
   }
 }
 
-function clickToolbarId(wrapper, id) {
+function clickToolbarId (wrapper, id) {
   const el = wrapper.findAll('#toolbar li').filter(w => {
     return w.contains(`#${id}`)
   })

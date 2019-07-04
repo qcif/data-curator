@@ -33,7 +33,7 @@ describe('hands on table', function () {
     sandbox.restore()
   })
 
-  function initHot() {
+  function initHot () {
     let hot = hotHelper.registerHot()
     store.mutations.pushHotTab(store.state, { hotId: hot.guid, tabId: 'tab0' })
     return hot

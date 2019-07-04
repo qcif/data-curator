@@ -1,21 +1,25 @@
 <template>
   <form
     id="provenanceProperties"
-    class="navbar-form form-horizontal">
+    class="navbar-form form-horizontal"
+  >
     <div class="form-group-sm row container-fluid">
       <div>
         <label
           v-tooltip.left="tooltip('tooltip-provenance-description')"
-          class="control-label col-sm-3">Description*</label>
+          class="control-label col-sm-3"
+        >Description*</label>
         <component :is="'tooltipProvenanceDescription'" />
         <span>
           <button
             type="button"
             class="btn btn-primary btn-sm"
-            @click="togglePreview()">
+            @click="togglePreview()"
+          >
             <span
               :class="buttonIconClass"
-              class="provenance-preview-icon glyphicon"/>{{ buttonText }}
+              class="provenance-preview-icon glyphicon"
+            />{{ buttonText }}
           </button>
         </span>
         <span class="provenance-errors-btn">
@@ -23,15 +27,17 @@
             v-show="!isPreview && provenanceHotErrors"
             type="button"
             class="btn btn-danger btn-sm"
-            @click="removeAllErrors()">
-            <span class="provenance-errors-icon fas fa-times-circle"/>Remove All Errors
+            @click="removeAllErrors()"
+          >
+            <span class="provenance-errors-icon fas fa-times-circle" />Remove All Errors
           </button>
         </span>
         <template v-if="isPreview">
           <div
             id="provenance-preview"
             class="col-sm-9"
-            v-html="markProvenanceText" />
+            v-html="markProvenanceText"
+          />
         </template>
         <template v-else>
           <textarea
@@ -40,27 +46,31 @@
             :placeholder="placeholder"
             rows="25"
             cols="55"
-            class="form-control input-sm col-sm-9" />
+            class="form-control input-sm col-sm-9"
+          />
           <div id="provenance-errors-container">
             <div
               v-for="(errors, hotId) in provenanceHotErrors"
-              :key="hotId">
+              :key="hotId"
+            >
               <span class="provenance-errors-btn">
                 <button
                   v-show="!isPreview && provenanceHotErrors"
                   type="button"
                   class="btn btn-danger btn-sm"
-                  @click="removeErrors(hotId)">
-                  <span class="provenance-errors-icon fas fa-times-circle"/>Remove Errors
+                  @click="removeErrors(hotId)"
+                >
+                  <span class="provenance-errors-icon fas fa-times-circle" />Remove Errors
                 </button>
               </span>
               <textarea
-                :value="errors"
                 :id="'provenance-errors-' + hotId"
+                :value="errors"
                 readonly="readonly"
                 rows="10"
                 cols="55"
-                class="provenance-errors form-control input-sm col-sm-9" />
+                class="provenance-errors form-control input-sm col-sm-9"
+              />
             </div>
           </div>
         </template>
@@ -82,7 +92,7 @@ export default {
   name: 'Provenance',
   extends: SideNav,
   mixins: [ProvenanceTooltip],
-  data() {
+  data () {
     return {
       isPreview: false,
       provenance: '',
@@ -116,26 +126,26 @@ are null values unknown, missing or not applicable?
     ...mapGetters([
       'getProvenance'
     ]),
-    markProvenanceText() {
+    markProvenanceText () {
       const stringified = stringifyProvenance(this.provenance, this.provenanceHotErrors)
       return markdown().render(stringified)
     },
-    buttonIconClass() {
+    buttonIconClass () {
       return this.isPreview ? 'glyphicon-pencil' : 'glyphicon-search'
     },
-    buttonText() {
+    buttonText () {
       return this.isPreview ? 'Edit' : 'Preview'
     }
   },
   watch: {
-    provenance: function(value) {
+    provenance: function (value) {
       this.pushProvenance(value)
     }
   },
-  mounted: function() {
+  mounted: function () {
     let self = this
     this.provenance = this.getProvenance.markdown
-    this.$subscribeTo(provenanceErrors$, function() {
+    this.$subscribeTo(provenanceErrors$, function () {
       self.addErrorsToProvenance()
     })
   },
@@ -143,25 +153,25 @@ are null values unknown, missing or not applicable?
     ...mapMutations([
       'pushProvenance', 'removeProvenanceErrors', 'removeAllProvenanceErrors'
     ]),
-    togglePreview: function() {
+    togglePreview: function () {
       this.isPreview = !this.isPreview
     },
-    removeErrors: function(hotId) {
+    removeErrors: function (hotId) {
       this.removeProvenanceErrors(hotId)
       provenanceErrors$.next()
     },
-    removeAllErrors: function() {
+    removeAllErrors: function () {
       this.resetProvenanceErrors()
       this.removeAllProvenanceErrors()
     },
-    resetProvenanceErrors: function() {
+    resetProvenanceErrors: function () {
       this.provenanceHotErrors = null
     },
-    addErrorsToProvenance: function() {
+    addErrorsToProvenance: function () {
       this.provenanceHotErrors = {}
       let self = this
       if (this.getProvenance.hotErrors) {
-        _.forEach(this.getProvenance.hotErrors, function(errors, hotId) {
+        _.forEach(this.getProvenance.hotErrors, function (errors, hotId) {
           const provenanceErrors = compileHotErrors(errors, hotId)
           // const tabTitle = self.getTabTitleFromHotId(hotId)
           // const provenanceErrors = self.compileErrors(errors, tabTitle)
@@ -171,7 +181,7 @@ are null values unknown, missing or not applicable?
       }
     },
 
-    focusErrors: function() {
+    focusErrors: function () {
       let element = document.querySelector('#provenance-errors-container')
       if (!element) {
         element = document.querySelector('#provenance-preview')

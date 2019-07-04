@@ -3,7 +3,7 @@ import fakeDialog from 'spectron-fake-dialog'
 import { exec } from 'child_process'
 import { applyMock } from './page-objects/mockMainProcess'
 
-async function stopAppRunning(app) {
+async function stopAppRunning (app) {
   try {
     if (app && app.isRunning()) {
     // console.log('Attempting to stop app...')
@@ -18,7 +18,7 @@ async function stopAppRunning(app) {
   }
 }
 
-function tallyTestAppveyor(testCase) {
+function tallyTestAppveyor (testCase) {
   if (process.env.APPVEYOR) {
     console.log('appveyor tally...')
     exec(`appveyor AddTest -Name ${testCase.pickle.name} -Framework Spectron -Filename ${testCase.sourceLocation.uri} -Outcome ${testCase.result.status} -Duration ${testCase.result.duration}`, (error, stdout, stderr) => {

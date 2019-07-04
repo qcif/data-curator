@@ -1,18 +1,22 @@
 <template>
   <form
     id="sidenavProperties"
-    class="navbar-form form-horizontal">
+    class="navbar-form form-horizontal"
+  >
     <div class="form-group-sm row container-fluid">
       <div
         v-for="(formprop, index) in formprops"
-        :key="index">
+        :key="index"
+      >
         <label
           :for="formprop.label"
-          class="control-label col-sm-3">{{ formprop.label }}</label>
+          class="control-label col-sm-3"
+        >{{ formprop.label }}</label>
         <input
           :id="formprop.key"
           type="text"
-          class="form-control input-sm col-sm-9" >
+          class="form-control input-sm col-sm-9"
+        >
       </div>
     </div>
   </form>
@@ -35,10 +39,10 @@ export default {
     },
     adjustSidenavFormHeight: {
       type: Function,
-      default: function() {}
+      default: function () {}
     }
   },
-  data() {
+  data () {
     return {
       formprops: [],
       activeCurrentHotId: null
@@ -48,35 +52,35 @@ export default {
     ...mapGetters(['getActiveTab', 'getHotIdFromTabId'])
   },
   watch: {
-    sideNavFormHeight: function() {
+    sideNavFormHeight: function () {
       this.adjustSidenavFormHeight()
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.syncSidenavFormHeight()
   },
-  beforeCreate: function() {
-    this.$nextTick(function() {
+  beforeCreate: function () {
+    this.$nextTick(function () {
       // set hidden inputs
       this.formprops.forEach(x => {
-        if (x.type ==='hidden') {
+        if (x.type === 'hidden') {
           this.setProperty(x.key, x.value)
         }
       })
     })
   },
   methods: {
-    isSharedComponent: function(key) {
+    isSharedComponent: function (key) {
       let isShared = ['sources', 'licenses', 'primaryKeys', 'foreignKeys', 'contributors'].indexOf(key) !== -1
       return isShared
     },
-    propertyGetObjectGivenHotId: function(key, hotId) {
+    propertyGetObjectGivenHotId: function (key, hotId) {
       return {
         'hotId': hotId,
         'key': key
       }
     },
-    currentHotId: async function() {
+    currentHotId: async function () {
       let hotId
       let hot = HotRegister.getActiveInstance()
       if (hot) {
@@ -95,14 +99,14 @@ export default {
       this.activeCurrentHotId = hotId
       return hotId
     },
-    propertyGetObject: function(key) {
+    propertyGetObject: function (key) {
       const hotId = HotRegister.getActiveInstance().guid
       return {
         'hotId': hotId,
         'key': key
       }
     },
-    propertySetObject: function(key, value) {
+    propertySetObject: function (key, value) {
       const hotId = HotRegister.getActiveInstance().guid
       return {
         'hotId': hotId,
@@ -111,7 +115,7 @@ export default {
       }
     },
     // convenience method
-    waitForHotIdFromTabId: async function(tabId) {
+    waitForHotIdFromTabId: async function (tabId) {
       try {
         let hotId = await this.getHotIdFromTabId(tabId)
         return hotId
@@ -121,13 +125,13 @@ export default {
         }
       }
     },
-    syncSidenavFormHeight: function() {
+    syncSidenavFormHeight: function () {
       let sidenav = document.querySelector('#sidenav')
       let form = sidenav.querySelector('form')
       form.style.height = this.sideNavFormHeight
     },
     // convenience method for inside functions
-    getCurrentHotId: function() {
+    getCurrentHotId: function () {
       return this.activeCurrentHotId
     }
   }

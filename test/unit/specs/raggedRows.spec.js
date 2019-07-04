@@ -1,12 +1,12 @@
 import { fixRaggedRows } from '@/ragged-rows.js'
 import { expect } from 'chai'
 
-describe('Ragged rows', function() {
-  before(function() {
+describe('Ragged rows', function () {
+  before(function () {
     window._ = require('lodash')
   })
 
-  function stubData() {
+  function stubData () {
     return [
       [
         '', 'Ford', 'Volvo', 'Toyota', 'Honda'
@@ -21,7 +21,7 @@ describe('Ragged rows', function() {
     ]
   }
 
-  function stubRaggedData() {
+  function stubRaggedData () {
     return [
       [
         '', 'Ford', 'Volvo', 'Toyota', 'Honda'
@@ -36,16 +36,16 @@ describe('Ragged rows', function() {
     ]
   }
 
-  describe('Ragged row functions against well formed array of arrays', function() {
-    it('parses a well formed (non-ragged) array of rows without change', function() {
+  describe('Ragged row functions against well formed array of arrays', function () {
+    it('parses a well formed (non-ragged) array of rows without change', function () {
       let data = stubData()
       fixRaggedRows(data)
       expect(stubData()).to.deep.equal(data)
     })
   })
 
-  describe('Ragged row functions against ragged array of arrays', function() {
-    it('fixes an array with 1 ragged row.', function() {
+  describe('Ragged row functions against ragged array of arrays', function () {
+    it('fixes an array with 1 ragged row.', function () {
       let expectedFixedData = [
         [
           '', 'Ford', 'Volvo', 'Toyota', 'Honda'

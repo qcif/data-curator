@@ -1,26 +1,30 @@
 <template>
   <div id="sources">
     <div
-      v-for="(source,index) in getSources"
-      :key="index"
-      class="source col-sm-12">
+      v-for="(source,gindex) in getSources"
+      :key="gindex"
+      class="source col-sm-12"
+    >
       <div class="inputs-container">
         <div
           v-for="(prop, index) in Object.keys(source)"
           :key="prop + index"
-          class="input-group">
+          class="input-group"
+        >
           <span class="input-group-addon input-sm">{{ prop }}</span>
           <input
+            :id="prop + index"
             v-validate="sourceValidationRules(prop, index)"
             :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(prop + index) }"
             :value="source[prop]"
-            :id="prop + index"
             :name="prop + index"
             type="text"
-            @input="setSourceProp(index, prop, $event.target.value)">
+            @input="setSourceProp(index, prop, $event.target.value)"
+          >
           <div
             v-show="errors.has(prop + index)"
-            class="row help validate-danger">
+            class="row help validate-danger"
+          >
             {{ errors.first(prop + index) }}
           </div>
         </div>
@@ -28,16 +32,18 @@
       <button
         type="button"
         class="btn btn-danger btn-sm"
-        @click="removeSource(index)">
-        <span class="glyphicon glyphicon-minus"/>
+        @click="removeSource(index)"
+      >
+        <span class="glyphicon glyphicon-minus" />
       </button>
     </div>
     <div class="button-container">
       <button
         type="button"
         class="add-source btn btn-primary btn-sm"
-        @click="addSource()">
-        <span class="glyphicon glyphicon-plus"/>Add source
+        @click="addSource()"
+      >
+        <span class="glyphicon glyphicon-plus" />Add source
       </button>
     </div>
   </div>
@@ -59,48 +65,48 @@ export default {
   props: {
     setProperty: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     getProperty: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     getPropertyGivenHotId: {
       type: Function,
-      default: function() {}
+      default: function () {}
     }
   },
-  data() {
+  data () {
     return {
       sources: []
     }
   },
   computed: {
     ...mapGetters(['getActiveTab']),
-    regexForPath() {
+    regexForPath () {
       // no ../ or nulls or absolute paths allowed
       return /^(([.](?![.])|[^/.:]+)+[/]*)+$/
     }
   },
   asyncComputed: {
     getSources: {
-      async get() {
+      async get () {
         let tab = this.getActiveTab
         // TODO: may need distinction here for package vs tables
         let sources = await this.getSourcesFromTab(tab)
         return sources
       },
-      watch() {
+      watch () {
         return this.sources
       }
     }
   },
   watch: {
-    getActiveTab: function(tab) {
+    getActiveTab: function (tab) {
       this.initSources(tab)
     }
   },
-  mounted: function() {
+  mounted: function () {
     let tab = this.getActiveTab
     this.initSources(tab)
   },
@@ -108,31 +114,31 @@ export default {
     ...mapMutations([
       'pushPackageProperty'
     ]),
-    removeSource: function(index) {
+    removeSource: function (index) {
       let sources = this.getProperty('sources')
       sources.splice(index, 1)
       this.setProperty('sources', sources)
       this.sources = sources
     },
-    addSource: function() {
+    addSource: function () {
       let sources = this.getProperty('sources') || []
       sources.push(this.emptySource())
       this.setProperty('sources', sources)
       this.sources = sources
     },
-    emptySource: function() {
+    emptySource: function () {
       return { 'title': '', 'path': '', 'email': '' }
     },
-    getSourcesFromTab: async function(tab) {
+    getSourcesFromTab: async function (tab) {
       let hotId = await this.waitForHotIdFromTabId(tab)
       let sources = this.getPropertyGivenHotId('sources', hotId)
       return sources
     },
     // TODO: fix this redundant method
-    initSources: async function(tab) {
+    initSources: async function (tab) {
       await this.getSourcesFromTab(tab)
     },
-    setSourceProp: function(index, prop, value) {
+    setSourceProp: function (index, prop, value) {
       this.setProperty(`sources[${index}][${prop}]`, value)
       let sources = this.getProperty('sources') || []
       this.sources = sources
@@ -140,7 +146,7 @@ export default {
         this.validateUrlOrPath(index, value)
       }
     },
-    validateUrlOrPath: async function(index, value) {
+    validateUrlOrPath: async function (index, value) {
       let prop = 'path'
       let field = `${prop}${index}`
       try {
@@ -154,16 +160,16 @@ export default {
         console.error('Problem with validation', err)
       }
     },
-    validateUrl: async function(field, value) {
+    validateUrl: async function (field, value) {
       // keep url:true as string for validation to work correctly
       return this.validate(field, value, 'url:true')
     },
-    validatePath: async function(field, value) {
+    validatePath: async function (field, value) {
       return this.validate(field, value, {
         regex: this.regexForPath
       })
     },
-    sourceValidationRules: function(prop, index) {
+    sourceValidationRules: function (prop, index) {
       switch (prop) {
         case 'email':
           return 'email'

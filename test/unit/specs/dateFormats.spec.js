@@ -12,8 +12,8 @@ const unSupportedFormats = {
   '%H:%M:%s': 'time'
 }
 
-describe('Date formats', function() {
-  describe('Supported date formats', function() {
+describe('Date formats', function () {
+  describe('Supported date formats', function () {
     const expectedResult = true
     for (const [nextPattern, nextType] of Object.entries(supportedFormats)) {
       it(`returns ${expectedResult} for type: ${nextType} with pattern: ${nextPattern} `, function () {
@@ -22,7 +22,7 @@ describe('Date formats', function() {
     }
   })
 
-  describe('Unsupported types', function() {
+  describe('Unsupported types', function () {
     const expectedResult = false
     for (const [nextPattern, nextType] of Object.entries(unSupportedTypes)) {
       it(`returns ${expectedResult} for type: ${nextType} with pattern: ${nextPattern} `, function () {
@@ -31,7 +31,7 @@ describe('Date formats', function() {
     }
   })
 
-  describe('Unsupported formats', function() {
+  describe('Unsupported formats', function () {
     const expectedResult = false
     for (const [nextPattern, nextType] of Object.entries(unSupportedFormats)) {
       it(`returns ${expectedResult} for type: ${nextType} with pattern: ${nextPattern} `, function () {

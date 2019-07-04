@@ -5,23 +5,23 @@ const jsonfile = require('jsonfile')
 const badger = require('readme-badger')
 const replace = require('replace-in-file')
 
-function isTestCaseFailure(testCase) {
+function isTestCaseFailure (testCase) {
   return _.includes([
     'ambiguous', 'failed'
   ], testCase.result.status)
 }
 
-function isTestCaseSuccess(testCase) {
+function isTestCaseSuccess (testCase) {
   return _.includes(['passed'], testCase.result.status)
 }
 
-function isTestCaseWarning(testCase) {
+function isTestCaseWarning (testCase) {
   return _.includes([
     'pending', 'undefined'
   ], testCase.result.status)
 }
 
-function tallyBasicStats(testCaseMap) {
+function tallyBasicStats (testCaseMap) {
   // stats for scenarios
   const scenarioTallies = {
     failures: 0,
@@ -60,7 +60,7 @@ function tallyBasicStats(testCaseMap) {
   return scenarioTallies
 }
 
-function createAcceptanceTestBadge(scenarioTallies) {
+function createAcceptanceTestBadge (scenarioTallies) {
   var readme = ''
   var imageUrl = 'https://img.shields.io/badge/acceptance%20tests-✔passed:%20' + scenarioTallies.success +
   '%20%20❌failed:%20' + scenarioTallies.failures +
@@ -75,7 +75,7 @@ function createAcceptanceTestBadge(scenarioTallies) {
   return badge
 }
 
-function updatedAcceptanceTestBadgeInReadme(badge) {
+function updatedAcceptanceTestBadgeInReadme (badge) {
   // swallow any whitespace before existing badge
   const changes = replace.sync({
     files: 'README.md',

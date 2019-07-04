@@ -7,16 +7,16 @@ import _ from 'lodash'
 import { registerHot, stubHotInDocumentDom } from '../helpers/hotHelper'
 import * as dataActions from '@/data-actions.js'
 
-describe('Push Csv dialect and formats', function() {
+describe('Push Csv dialect and formats', function () {
   let sandbox
   let guid = 'ht1234'
-  beforeEach(function() {
+  beforeEach(function () {
     sandbox = sinon.createSandbox()
     // ensure any leftover state from other tests cleaned up
     store.commit('resetHotState')
   })
 
-  afterEach(function() {
+  afterEach(function () {
     sandbox.restore()
     store.commit('resetHotState')
   })

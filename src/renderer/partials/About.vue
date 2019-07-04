@@ -1,37 +1,45 @@
 <template>
   <form
     id="aboutProperties"
-    class="panel-group">
+    class="panel-group"
+  >
     <ul
-      v-for="(list, index) in aboutProps"
-      :key="index"
-      class="list-group">
+      v-for="(list, pindex) in aboutProps"
+      :key="pindex"
+      class="list-group"
+    >
       <li
         v-for="(item, index) in list.items"
-        :style="aboutListStyle"
         :key="index"
-        class="list-group-item">
+        :style="aboutListStyle"
+        class="list-group-item"
+      >
         <template v-if="item.image">
           <a
             v-if="item.link"
             href="#"
-            @click="openLink(item.link)"><img
-              :height="item.height"
-              :src="item.image"
-              width="auto" ></a>
+            @click="openLink(item.link)"
+          ><img
+            :height="item.height"
+            :src="item.image"
+            width="auto"
+          ></a>
           <img
             v-else
-            :src="item.image" >
+            :src="item.image"
+          >
         </template>
         <template v-if="item.label">
           <a
             v-if="item.link"
             :style="item.style"
             href="#"
-            @click="openLink(item.link)">{{ item.label }}</a>
+            @click="openLink(item.link)"
+          >{{ item.label }}</a>
           <span
             v-else
-            :style="item.style">{{ item.label }}</span>
+            :style="item.style"
+          >{{ item.label }}</span>
         </template>
       </li>
     </ul>
@@ -43,7 +51,7 @@ import { remote, shell } from 'electron'
 export default {
   name: 'About',
   extends: SideNav,
-  data() {
+  data () {
     return {
       aboutListStyle: {
         fontWeight: 'bold',
@@ -120,10 +128,10 @@ export default {
     }
   },
   methods: {
-    getApplicationVersion: function() {
+    getApplicationVersion: function () {
       return remote.getGlobal('version')
     },
-    openLink: function(url) {
+    openLink: function (url) {
       shell.openExternal(url)
     }
   }

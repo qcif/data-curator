@@ -15,7 +15,7 @@ Given(/^the user clicks in row (\d+), column (\d+)$/, async function (rowNumber,
   await this.app.webContents.send('selectHotCell', rowNumber, colNumber)
 })
 
-When(/^the user types "(.*?)"?$/, async function(textEntered) {
+When(/^the user types "(.*?)"?$/, async function (textEntered) {
   await this.app.client.keys(textEntered)
   await this.app.client.pause(2000)
 })

@@ -5,12 +5,12 @@ import 'vue-directive-tooltip/css/index.css'
 Vue.use(Tooltip)
 export default {
   methods: {
-    tooltipWrap: function(property, fn) {
+    tooltipWrap: function (property, fn) {
       let object = this.tooltip(property)
       object.visible = fn
       return object
     },
-    tooltip: function(property) {
+    tooltip: function (property) {
       let object = {}
       object.html = property
       // ensure delay is long enough to allow hover over tooltip when it contains link, but short enough so tooltip closes before another opens

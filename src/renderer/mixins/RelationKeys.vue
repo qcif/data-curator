@@ -16,13 +16,13 @@ export default {
     ...mapGetters(['getActiveTab', 'getAllHotTablesColumnNames', 'getAllTabTitles', 'getTabObjects', 'getHotIdFromTabId', 'getSyncHotIdFromTabId', 'getAllForeignKeys', 'tabTitle'])
   },
   watch: {
-    getActiveTab: function() {
+    getActiveTab: function () {
       this.initTableHeaderKeys()
     }
   },
-  mounted: async function() {
+  mounted: async function () {
     let self = this
-    this.$subscribeTo(allTablesAllColumnNames$, async function(allTablesAllColumnNames) {
+    this.$subscribeTo(allTablesAllColumnNames$, async function (allTablesAllColumnNames) {
       const hotId = await self.getHotIdFromTabId(self.getActiveTab)
       await self.updateSubscriptions(allTablesAllColumnNames, hotId)
     })
@@ -30,10 +30,10 @@ export default {
   },
   methods: {
     ...mapMutations(['pushForeignKeysLocalFieldsForTable', 'pushForeignKeysForeignFieldsForTable', 'pushForeignKeysForeignTableForTable']),
-    initTableHeaderKeys: function() {
+    initTableHeaderKeys: function () {
       allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
     },
-    getHotIdHeaderNames: function(allTablesAllNames, hotId) {
+    getHotIdHeaderNames: function (allTablesAllNames, hotId) {
       return _.without(allTablesAllNames[hotId], '', null, undefined)
     }
   }

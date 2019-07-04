@@ -1,18 +1,21 @@
 <template>
   <form
     id="tableProperties"
-    class="navbar-form form-horizontal">
+    class="navbar-form form-horizontal"
+  >
     <div class="form-group-sm row container-fluid">
       <div
         v-for="(formprop, index) in formprops"
         :key="index"
-        class="propertyrow">
+        class="propertyrow"
+      >
         <label
-          v-tooltip.left="tooltip(formprop.tooltipId)"
           v-show="formprop.label"
+          v-tooltip.left="tooltip(formprop.tooltipId)"
           :for="formprop.label"
-          class="control-label">{{ formprop.label }}</label>
-        <component :is="formprop.tooltipView"/>
+          class="control-label"
+        >{{ formprop.label }}</label>
+        <component :is="formprop.tooltipView" />
         <input
           v-if="formprop.key === 'missingValues'"
           :id="formprop.key"
@@ -21,36 +24,41 @@
           :class="{'read-only': isLocked}"
           class="form-control input-sm col-sm-9"
           type="text"
-          @input="setMissingValuesWithSingleEmpty($event.target.value)">
+          @input="setMissingValuesWithSingleEmpty($event.target.value)"
+        >
         <textarea
           v-else-if="formprop.key === 'description'"
           :id="formprop.key"
           :value="getProperty(formprop.key)"
           class="form-control label-sm col-sm-9"
           rows="4"
-          @input="setProperty(formprop.key, $event.target.value)"/>
+          @input="setProperty(formprop.key, $event.target.value)"
+        />
         <component
+          :is="formprop.key"
           v-else-if="isSharedComponent(formprop.key)"
           :currentHotId="currentHotId"
           :getProperty="getProperty"
           :getPropertyGivenHotId="getPropertyGivenHotId"
-          :is="formprop.key"
           :isLocked="isLocked"
           :propertyName="formprop.key"
           :setProperty="setProperty"
-          :waitForHotIdFromTabId="waitForHotIdFromTabId"/>
+          :waitForHotIdFromTabId="waitForHotIdFromTabId"
+        />
         <input
-          v-validate="validationRules(formprop.key)"
           v-else
-          :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }"
           :id="formprop.key"
+          v-validate="validationRules(formprop.key)"
+          :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }"
           :name="formprop.key"
           :value="getProperty(formprop.key)"
           type="text"
-          @input="setProperty(formprop.key, $event.target.value)">
+          @input="setProperty(formprop.key, $event.target.value)"
+        >
         <div
           v-show="errors.has(formprop.key) && removeValue(formprop.key)"
-          class="row help validate-danger">
+          class="row help validate-danger"
+        >
           {{ errors.first(formprop.key) }}
         </div>
       </div>

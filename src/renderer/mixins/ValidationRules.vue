@@ -3,7 +3,7 @@ import Vue from 'vue'
 import VeeValidate from 'vee-validate'
 Vue.use(VeeValidate)
 export default {
-  mounted: function() {
+  mounted: function () {
     const enumRuleValue = 'Quote each "valid value" and separate with a comma.'
     const dict = {
       en: {
@@ -33,7 +33,7 @@ export default {
     VeeValidate.Validator.localize(dict)
   },
   methods: {
-    validationRules: function(validator) {
+    validationRules: function (validator) {
       switch (validator) {
         case 'version':
           return {
@@ -64,7 +64,7 @@ export default {
           return ''
       }
     },
-    validate: async function(field, value, rules) {
+    validate: async function (field, value, rules) {
       let isValid = true
       // ensure there are no other fields by this name
       this.$validator.detach(field)
