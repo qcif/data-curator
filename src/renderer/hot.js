@@ -214,7 +214,7 @@ export function insertColumn (offset, mathFn) {
     store.mutations.pushColumnIndexForHotId(store.state, { hotId: hot.guid, columnIndex: selection })
     removeHeaderAtIndex(hot, selection)
     // needed for sidenav arrows reset
-    reselectCurrentCellOrMin()
+    reselectHotCell()
   }
 }
 
@@ -246,7 +246,7 @@ export function removeRows () {
     // so always remove 'start'
     hot.alter('remove_row', start)
   }
-  reselectCurrentCellOrMin()
+  reselectHotCell()
 }
 
 export function removeColumns () {
@@ -265,7 +265,7 @@ export function removeColumns () {
     allTablesAllColumnsFromSchema$.next(store.getters.getAllHotTablesColumnProperties(store.state, store.getters)())
     allTablesAllColumnNames$.next(store.getters.getAllHotTablesColumnNames(store.state, store.getters)())
   }
-  reselectCurrentCellOrMin()
+  reselectHotCell()
 }
 
 ipc.on('selectHotCell', function (event, rowCountNumber, ColCountNumber) {

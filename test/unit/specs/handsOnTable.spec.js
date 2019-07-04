@@ -18,8 +18,7 @@ describe('hands on table', function () {
   beforeEach(function () {
     sandbox = sinon.createSandbox()
     hotHelper.stubHotInDocumentDom(sandbox)
-    hot = hotHelper.registerHot()
-    store.mutations.pushHotTab(store.state, { hotId: hot.guid, tabId: 'tab0' })
+    hot = initHot()
     data = stubData()
     expectedData = stubData()
   })
@@ -33,6 +32,12 @@ describe('hands on table', function () {
     store.mutations.resetHotState(store.state)
     sandbox.restore()
   })
+
+  function initHot() {
+    let hot = hotHelper.registerHot()
+    store.mutations.pushHotTab(store.state, { hotId: hot.guid, tabId: 'tab0' })
+    return hot
+  }
 
   function stubData () {
     return [
@@ -60,7 +65,7 @@ describe('hands on table', function () {
       })
 
       it('returns current column after cell selection made', function () {
-        hot = hotHelper.registerHot()
+        hot = initHot()
         hot.loadData(data)
         hot.selectCell(1, 4)
         const result = hotFunctions.getCurrentColumnIndexOrMin()
@@ -70,7 +75,7 @@ describe('hands on table', function () {
       it('returns current column of active hot after cell selection made', function () {
         sandbox.restore()
         hotHelper.stubDom()
-        const hot2 = hotHelper.registerHot()
+        const hot2 = initHot()
         hotHelper.stubHotRegisterWithDefaultActiveQuery(sandbox)
         hot2.loadData(data)
         // ensure select cells that exist in stubbed data matrix

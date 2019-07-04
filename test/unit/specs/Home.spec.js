@@ -24,6 +24,12 @@ describe('Home.vue', function() {
       Home.__Rewire__('guessColumnProperties', function () {
         wrapper.setData({ messagesTitle: 'Guess success' })
       })
+      Home.__Rewire__('getCurrentColumnIndexOrMin', function () {
+        return undefined
+      })
+      Home.__Rewire__('reselectHotCell', function () {
+        return undefined
+      })
       const localVue = createLocalVue()
       localVue.use(Vuex)
       let store = new Vuex.Store(stubSimpleTabStore(hot))
@@ -52,6 +58,8 @@ describe('Home.vue', function() {
     afterEach(function() {
       Home.__ResetDependency__('getWindow')
       Home.__ResetDependency__('guessColumnProperties')
+      Home.__ResetDependency__('getCurrentColumnIndexOrMin')
+      Home.__ResetDependency__('reselectHotCell')
       wrapper.vm.$destroy()
       resetHot(sandbox)
       wrapper.destroy()
@@ -103,6 +111,9 @@ describe('Home.vue', function() {
       Home.__Rewire__('getCurrentColumnIndexOrMin', function () {
         return 0
       })
+      Home.__Rewire__('reselectHotCell', function () {
+        return undefined
+      })
       const localVue = createLocalVue()
       localVue.use(Vuex)
       let store = new Vuex.Store(stubSimpleTabStore(hot))
@@ -127,6 +138,7 @@ describe('Home.vue', function() {
       Home.__ResetDependency__('getWindow')
       Home.__ResetDependency__('getCurrentColumnIndexOrMin')
       Home.__ResetDependency__('validateActiveDataAgainstSchema')
+      Home.__ResetDependency__('reselectHotCell')
       resetHot(sandbox)
       wrapper.destroy()
       wrapper = null
