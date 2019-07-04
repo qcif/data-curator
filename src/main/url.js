@@ -14,18 +14,18 @@ tmp.setGracefulCleanup()
 
 const defaultDialogTitle = 'Data Curator - '
 
-export function showUrlDialogForResourceSchema() {
+export function showUrlDialogForResourceSchema () {
   let browserWindow = createUrlDialogWindow('Open Table Resource Schema URL')
   processUrlDialogForCallback(browserWindow, handleJsonForResourceSchema)
 }
 
 // TODO: handle errors by rejecting promises and throwing back up stack
-export function showUrlDialogForPackage() {
+export function showUrlDialogForPackage () {
   let browserWindow = createUrlDialogWindow('Open Data Package URL')
   processUrlDialogForCallback(browserWindow, handleZipOrJsonForPackage)
 }
 
-function createUrlDialogWindow(titleExtension) {
+function createUrlDialogWindow (titleExtension) {
   disableOpenFileItems()
   const fullTitle = titleExtension ? `${defaultDialogTitle} ${titleExtension}` : defaultDialogTitle
   let browserWindow = focusOrNewSecondaryWindow('urldialog', { title: fullTitle, width: 450, height: 150, modal: true, alwaysOnTop: true })
@@ -35,7 +35,7 @@ function createUrlDialogWindow(titleExtension) {
   return browserWindow
 }
 
-export function processUrlDialogForCallback(browserWindow, callback, errorMessage='There was a problem loading package or resource(s)', dialogCallbacks) {
+export function processUrlDialogForCallback (browserWindow, callback, errorMessage = 'There was a problem loading package or resource(s)', dialogCallbacks) {
   browserWindow.webContents.on('did-finish-load', () => {
     ipc.once('urlCancelled', () => {
       closeWindowSafely(browserWindow)
@@ -53,7 +53,7 @@ export function processUrlDialogForCallback(browserWindow, callback, errorMessag
   })
 }
 
-function handleZipOrJsonForPackage(urlText) {
+function handleZipOrJsonForPackage (urlText) {
   if (_.endsWith(urlText, '.json')) {
     loadPackageFromJson(urlText)
   } else if (_.endsWith(urlText, '.zip')) {
@@ -63,7 +63,7 @@ function handleZipOrJsonForPackage(urlText) {
   }
 }
 
-function handleJsonForResourceSchema(urlText) {
+function handleJsonForResourceSchema (urlText) {
   if (_.endsWith(urlText, '.json')) {
     loadResourceSchemaFromJson(urlText)
   } else {
@@ -71,7 +71,7 @@ function handleJsonForResourceSchema(urlText) {
   }
 }
 
-export async function importDataPackageZipFromUrl(urlText) {
+export async function importDataPackageZipFromUrl (urlText) {
   const mainWindow = focusMainWindow()
   mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading zip URL..')
   try {
@@ -113,11 +113,11 @@ export async function importDataPackageZipFromUrl(urlText) {
   }
 }
 
-function handleDownloadedZip(zipPath, mainWindow) {
+function handleDownloadedZip (zipPath, mainWindow) {
   mainWindow.webContents.send('importDataPackageFromFile', zipPath, true)
 }
 
-function showUrlPathNotSupportedMessage(urlText, supportedFileExtensions) {
+function showUrlPathNotSupportedMessage (urlText, supportedFileExtensions) {
   dialog.showMessageBox(focusMainWindow(), {
     type: 'warning',
     title: `Unsupported URL Path extension`,

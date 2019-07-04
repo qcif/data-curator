@@ -35,13 +35,13 @@ export async function getColumnsAsClassInCurrentRow (app) {
   return columns
 }
 
-export async function getRowsAsClass(app) {
+export async function getRowsAsClass (app) {
   const responseValue = await getAllRowHeaders(app)
   let rows = await collectClass(app, responseValue)
   return rows
 }
 
-async function collectClass(app, collection) {
+async function collectClass (app, collection) {
   let collected = []
   for (let next of collection) {
     let elementClass = await app.client.elementIdAttribute(next.ELEMENT, 'class')
@@ -50,7 +50,7 @@ async function collectClass(app, collection) {
   return collected
 }
 
-async function getColumnElementsInCurrentRow(app) {
+async function getColumnElementsInCurrentRow (app) {
   const response = await app.client
     .element(activeTableSelector)
     .element('.ht_master table tbody tr th.ht__highlight')
@@ -58,14 +58,14 @@ async function getColumnElementsInCurrentRow(app) {
   return response.value
 }
 
-async function getCurrentRowHeader(app) {
+async function getCurrentRowHeader (app) {
   const response = await app.client
     .element(activeTableSelector)
     .element('.ht_master table tbody tr th.ht__highlight')
   return response.value
 }
 
-async function getAllRowHeaders(app) {
+async function getAllRowHeaders (app) {
   const response = await app.client
     .element(activeTableSelector)
     .elements('.ht_master table tbody tr th')

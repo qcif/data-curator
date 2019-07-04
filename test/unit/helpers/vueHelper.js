@@ -5,7 +5,7 @@ import { shallowMount } from '@vue/test-utils'
 import { BrowserWindow } from 'electron'
 Vue.use(Vuex)
 
-export function mountVuePageWithStore(page, storeFn) {
+export function mountVuePageWithStore (page, storeFn) {
   const vm = new Vue({
     el: document.createElement('div'),
     data: page.data,
@@ -16,12 +16,12 @@ export function mountVuePageWithStore(page, storeFn) {
   return vm
 }
 
-export function shallowMountErrors() {
+export function shallowMountErrors () {
   const errorsWrapper = shallowMount(Errors)
   return errorsWrapper
 }
 
-export function stubBrowserWindow(id, windowStub) {
+export function stubBrowserWindow (id, windowStub) {
   return sinon.stub(BrowserWindow, 'fromId')
     .withArgs(id)
     .returns(windowStub)

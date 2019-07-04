@@ -3,7 +3,7 @@ import XLSX from 'xlsx'
 import { createWindowTabWithData, focusOrNewSecondaryWindow, closeWindowSafely } from './windows'
 import { disableOpenFileItems, enableOpenFileItems } from './menuUtils.js'
 
-export function importExcel() {
+export function importExcel () {
   disableOpenFileItems()
   Dialog.showOpenDialog({
     filters: [
@@ -12,7 +12,7 @@ export function importExcel() {
         extensions: ['xlsx', 'xls']
       }
     ]
-  }, function(fileNames) {
+  }, function (fileNames) {
     if (fileNames === undefined) { return }
     var fileName = fileNames[0]
     var workbook = XLSX.readFile(fileName)
@@ -22,12 +22,12 @@ export function importExcel() {
     browserWindow.on('closed', function () {
       enableOpenFileItems()
     })
-    browserWindow.webContents.on('did-finish-load', function() {
+    browserWindow.webContents.on('did-finish-load', function () {
       browserWindow.webContents.send('loadSheets', workbook.SheetNames)
-      ipc.once('worksheetCanceled', function() {
+      ipc.once('worksheetCanceled', function () {
         closeWindowSafely(browserWindow)
       })
-      ipc.once('worksheetSelected', function(e, sheet_name) {
+      ipc.once('worksheetSelected', function (e, sheet_name) {
         var data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name], { header: 1 })
         closeWindowSafely(browserWindow)
         createWindowTabWithData(data)

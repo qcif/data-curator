@@ -6,21 +6,21 @@ export function getMenu (menuLabel) {
   return menu
 }
 
-export function enableAllFromLabels(menuLabel, subMenuLabels) {
+export function enableAllFromLabels (menuLabel, subMenuLabels) {
   enableAllSubMenuItemsFromMenuLabel(menuLabel)
   for (const label of subMenuLabels) {
     enableAllSubMenuItemsFromMenuObject(getSubMenuFromMenu(menuLabel, label))
   }
 }
 
-export function disableAllFromLabels(menuLabel, subMenuLabels) {
+export function disableAllFromLabels (menuLabel, subMenuLabels) {
   disableAllSubMenuItemsFromMenuLabel(menuLabel)
   for (const label of subMenuLabels) {
     disableAllSubMenuItemsFromMenuObject(getSubMenuFromMenu(menuLabel, label))
   }
 }
 
-export function disableEnableBasedOnAttributeAndConditionFromLabels(menuLabels, attribute, condition) {
+export function disableEnableBasedOnAttributeAndConditionFromLabels (menuLabels, attribute, condition) {
   for (const nextLabel of menuLabels) {
     let menu = getMenu(nextLabel)
     menu.submenu.items.forEach(function (x) {
@@ -55,11 +55,11 @@ export function disableAllSubMenuItemsFromMenuObject (menu) {
   })
 }
 
-export function disableMenuItem(menu) {
+export function disableMenuItem (menu) {
   menu.enabled = false
 }
 
-export function enableMenuItem(menu) {
+export function enableMenuItem (menu) {
   menu.enabled = true
 }
 
@@ -69,23 +69,23 @@ export function getSubMenuLabelsFromMenu (menuLabel) {
   return subMenuLabels
 }
 
-export function disableOpenFileItems() {
+export function disableOpenFileItems () {
   disableMenuItems('File', ['Open Excel Sheet...', 'Open', 'Open Data Package', 'Import Column Properties'])
 }
 
-export function disableMenuItems(menuLabel, subMenuLabels) {
+export function disableMenuItems (menuLabel, subMenuLabels) {
   applyFnsToLabelsFromMenuLabel(menuLabel, subMenuLabels, disableAllSubMenuItemsFromMenuObject, disableMenuItem)
 }
 
-export function enableOpenFileItems() {
+export function enableOpenFileItems () {
   enableMenuItems('File', ['Open Excel Sheet...', 'Open', 'Open Data Package', 'Import Column Properties'])
 }
 
-export function enableMenuItems(menuLabel, subMenuLabels) {
+export function enableMenuItems (menuLabel, subMenuLabels) {
   applyFnsToLabelsFromMenuLabel(menuLabel, subMenuLabels, enableAllSubMenuItemsFromMenuObject, enableMenuItem)
 }
 
-export function applyFnsToLabelsFromMenuLabel(menuLabel, labels, subMenuFn, menuItemFn) {
+export function applyFnsToLabelsFromMenuLabel (menuLabel, labels, subMenuFn, menuItemFn) {
   const menu = getMenu(menuLabel)
   for (const next of menu.submenu.items) {
     if (_.indexOf(labels, next.label) > -1) {

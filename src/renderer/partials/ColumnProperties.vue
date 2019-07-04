@@ -1,86 +1,99 @@
 <template>
   <form
     id="columnProperties"
-    class="navbar-form form-horizontal">
+    class="navbar-form form-horizontal"
+  >
     <fieldset :disabled="isLocked">
       <div class="form-group-sm row container-fluid">
         <div
           v-for="(formprop, index) in formprops"
           :key="index"
-          class="propertyrow">
+          class="propertyrow"
+        >
           <template v-if="!isExtraPropertyKey(formprop.key) || isExtraPropertyType(typeProperty, formprop.key)">
             <label
               v-tooltip.left="tooltip(formprop.tooltipId)"
               :for="formprop.key"
-              class="control-label col-sm-3">
+              class="control-label col-sm-3"
+            >
               {{ formprop.label }}
             </label>
           </template>
-          <component :is="formprop.tooltipView"/>
+          <component :is="formprop.tooltipView" />
           <template v-if="typeof formprop.type && formprop.type === 'dropdown'">
             <select
               v-if="formprop.key==='type'"
-              :value="getTypeProperty"
-              v-model="typeProperty"
               :id="formprop.key"
+              v-model="typeProperty"
+              :value="getTypeProperty"
               class="form-control input-sm col-sm-9"
-              @input="setTypeProperty($event.target.value)">
+              @input="setTypeProperty($event.target.value)"
+            >
               <option
                 v-for="option1 in typeValues"
                 :key="option1"
-                :value="option1">
+                :value="option1"
+              >
                 {{ option1 }}
               </option>
             </select>
             <div
               v-if="formprop.key==='format'"
               id="format-container"
-              :class="{ 'format-pattern': formatValuesHasPattern }">
+              :class="{ 'format-pattern': formatValuesHasPattern }"
+            >
               <span
+                v-if="hasTypeFormatWarning"
                 v-tooltip.notrigger.left="tooltipWrap(formprop.tooltipValueId, warningVisibility)"
-                v-if="hasTypeFormatWarning">
+              >
                 <select
                   id="format"
-                  :value="getFormatProperty"
                   v-model="formatProperty"
+                  :value="getFormatProperty"
                   :disabled="isDropdownFormatDisabled"
                   class="form-control input-sm col-sm-9"
-                  @input="setFormatProperty($event.target.value)">
+                  @input="setFormatProperty($event.target.value)"
+                >
                   <option
                     v-for="option2 in formatPropertiesForType"
                     :key="option2"
-                    :value="option2">
+                    :value="option2"
+                  >
                     {{ option2 }}
                   </option>
                 </select>
-                <component :is="formprop.tooltipValueView"/>
+                <component :is="formprop.tooltipValueView" />
               </span>
               <span v-else>
                 <select
                   id="format"
-                  :value="getFormatProperty"
                   v-model="formatProperty"
+                  :value="getFormatProperty"
                   :disabled="isDropdownFormatDisabled"
                   class="form-control input-sm col-sm-9"
-                  @input="setFormatProperty($event.target.value)">
+                  @input="setFormatProperty($event.target.value)"
+                >
                   <option
                     v-for="option2 in formatPropertiesForType"
                     :key="option2"
-                    :value="option2">
+                    :value="option2"
+                  >
                     {{ option2 }}
                   </option>
                 </select>
               </span>
               <input
-                v-validate.initial="'formatPattern|required'"
                 v-if="formatValuesHasPattern"
                 v-model="formatPropertyValue"
+                v-validate.initial="'formatPattern|required'"
                 :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has('formatValue') }"
                 type="text"
-                name="formatValue">
+                name="formatValue"
+              >
               <div
                 v-show="formatValuesHasPattern && errors.has('formatValue')"
-                class="row help validate-danger">
+                class="row help validate-danger"
+              >
                 {{ errors.first('formatValue') }}
               </div>
             </div>
@@ -88,19 +101,23 @@
           <div
             v-else-if="formprop.key === 'constraints'"
             id="constraints"
-            class="col-sm-9">
+            class="col-sm-9"
+          >
             <div
               v-for="option in constraintValues"
               :key="option"
-              class="input-group row">
+              class="input-group row"
+            >
               <input
                 :id="option"
                 :checked="getConstraintCheck(option)"
                 type="checkbox"
-                @click="setConstraintCheck(option, $event.target)" >
+                @click="setConstraintCheck(option, $event.target)"
+              >
               <label
                 :for="option"
-                class="form-control-static">{{ option }}</label>
+                class="form-control-static"
+              >{{ option }}</label>
               <template v-if="!isBooleanConstraint(option) && getConstraintCheck(option)">
                 <input
                   v-validate.initial="constraintValidationRules(option)"
@@ -108,71 +125,83 @@
                   :value="getConstraintValue(option)"
                   :name="option"
                   type="text"
-                  @input="setConstraintValue(option, $event.target.value)">
+                  @input="setConstraintValue(option, $event.target.value)"
+                >
               </template>
               <div
                 v-show="errors.has(option) && removeConstraint(option)"
-                class="row help validate-danger">
+                class="row help validate-danger"
+              >
                 {{ errors.collect(option)[0] }}
               </div>
             </div>
           </div>
           <textarea
             v-else-if="formprop.key === 'description'"
-            :value="getProperty(formprop.key)"
             :id="formprop.key"
+            :value="getProperty(formprop.key)"
             rows="4"
             class="form-control label-sm col-sm-9"
-            @input="setProperty(formprop.key, $event.target.value)" />
+            @input="setProperty(formprop.key, $event.target.value)"
+          />
           <input
             v-else-if="formprop.key === 'name'"
+            :id="formprop.key"
             :disabled="formprop.isDisabled"
             :value="getNameProperty"
-            :id="formprop.key"
             type="text"
             class="form-control label-sm col-sm-9"
-            @input="setProperty(formprop.key, $event.target.value)" >
-          <template v-else-if="formprop.key === 'rdfType'" >
+            @input="setProperty(formprop.key, $event.target.value)"
+          >
+          <template v-else-if="formprop.key === 'rdfType'">
             <input
+              :id="formprop.key"
               v-validate="{url:true}"
               :value="getProperty(formprop.key)"
               :class="{ 'form-control input-sm col-sm-9': true, 'validate-danger': errors.has(formprop.key) }"
-              :id="formprop.key"
               :name="formprop.key"
               type="text"
-              @input="setProperty(formprop.key, $event.target.value)">
+              @input="setProperty(formprop.key, $event.target.value)"
+            >
             <div
               v-show="formprop.key === 'rdfType' && errors.has(formprop.key)"
-              class="row help validate-danger">
+              class="row help validate-danger"
+            >
               {{ errors.first(formprop.key) }}
             </div>
           </template>
           <template v-else-if="formprop.key === 'booleanType'">
             <div
               v-show="typeProperty === 'boolean'"
-              class="extra-types input-group">
+              class="extra-types input-group"
+            >
               <label
                 class="inline control-label col-sm-3"
-                for="trueValues">True Values</label>
+                for="trueValues"
+              >True Values</label>
               <input
                 id="trueValues"
                 :value="getTrueValues()"
                 type="text"
                 class="form-control label-sm col-sm-9"
-                @blur="setTrueValues($event.target.value)" >
+                @blur="setTrueValues($event.target.value)"
+              >
             </div>
             <div
               v-show="typeProperty === 'boolean'"
-              class="extra-types input-group">
+              class="extra-types input-group"
+            >
               <label
                 class="inline control-label col-sm-3"
-                for="falseValues">False Values</label>
+                for="falseValues"
+              >False Values</label>
               <input
                 id="falseValues"
                 :value="getFalseValues()"
                 type="text"
                 class="form-control label-sm col-sm-9"
-                @blur="setFalseValues($event.target.value)" >
+                @blur="setFalseValues($event.target.value)"
+              >
             </div>
           </template>
           <template v-else-if="formprop.key === 'numberType'">
@@ -180,29 +209,34 @@
               v-for="(extraType, eIndex) in formprop.types"
               v-show="typeProperty === 'number'"
               :key="'number' + eIndex"
-              class="extra-types input-group">
+              class="extra-types input-group"
+            >
               <label
                 :for="formprop.key + extraType"
-                class="inline control-label col-sm-3">{{ getExtraPropertyLabel(extraType) }}</label>
+                class="inline control-label col-sm-3"
+              >{{ getExtraPropertyLabel(extraType) }}</label>
               <input
                 v-if="extraType === 'bareNumber'"
                 :id="formprop.key + extraType"
                 :checked="getExtraType(extraType)"
                 type="checkbox"
-                @click="setBareNumber($event.target)" >
+                @click="setBareNumber($event.target)"
+              >
               <input
-                v-validate="{max:1}"
                 v-else
+                :id="formprop.key + extraType"
+                v-validate="{max:1}"
                 :value="getExtraType(extraType)"
                 :class="{ 'form-control label-sm col-sm-9': true,'validate-danger': errors.has(formprop.key + extraType) }"
-                :id="formprop.key + extraType"
                 :name="formprop.key + extraType"
                 type="text"
                 @input="setExtraType(extraType, $event.target.value)"
-                @blur="removeOnError(`${formprop.key}${extraType}`, extraType)">
+                @blur="removeOnError(`${formprop.key}${extraType}`, extraType)"
+              >
               <div
                 v-show="errors.has(formprop.key + extraType)"
-                class="row help validate-danger">
+                class="row help validate-danger"
+              >
                 {{ errors.first(formprop.key + extraType) }}
               </div>
             </div>
@@ -212,27 +246,31 @@
               v-for="(extraType, eIndex) in formprop.types"
               v-show="typeProperty === 'integer'"
               :key="'integer' + eIndex"
-              class="extra-types input-group">
+              class="extra-types input-group"
+            >
               <template v-if="extraType === 'bareNumber'">
                 <label
                   :for="formprop.key + extraType"
-                  class="inline control-label col-sm-3">{{ getExtraPropertyLabel(extraType) }}</label>
+                  class="inline control-label col-sm-3"
+                >{{ getExtraPropertyLabel(extraType) }}</label>
                 <input
                   :id="formprop.key + extraType"
                   :checked="getExtraType(extraType)"
                   type="checkbox"
-                  @click="setBareNumber($event.target)" >
+                  @click="setBareNumber($event.target)"
+                >
               </template>
             </div>
           </template>
           <input
             v-else
+            :id="formprop.key"
             :disabled="formprop.isDisabled"
             :value="getProperty(formprop.key)"
-            :id="formprop.key"
             type="text"
             class="form-control label-sm col-sm-9"
-            @input="setProperty(formprop.key, $event.target.value)" >
+            @input="setProperty(formprop.key, $event.target.value)"
+          >
         </div>
       </div>
     </fieldset>
@@ -279,7 +317,7 @@ export default {
       default: false
     }
   },
-  data() {
+  data () {
     return {
       typeValues: ['string', 'number', 'integer', 'boolean', 'object', 'array', 'date', 'time', 'datetime', 'year', 'yearmonth', 'duration', 'geopoint', 'geojson', 'any'],
       typeProperty: '',
@@ -403,14 +441,14 @@ export default {
       groupChar: ''
     }
   },
-  subscriptions() {
+  subscriptions () {
     return {
       allTablesAllColumns: allTablesAllColumnsFromSchema$
     }
   },
   asyncComputed: {
     getTypeProperty: {
-      async get() {
+      async get () {
         // type won't always have current hotid immediately available
         let hotId = await this.currentHotId()
         let getter = this.getter(hotId, 'type')
@@ -422,7 +460,7 @@ export default {
         this.typeProperty = property
         return property
       },
-      watch() {
+      watch () {
         // eslint workarounds
         let temp = this.getActiveTab
         let temp2 = this.cIndex
@@ -430,7 +468,7 @@ export default {
       }
     },
     getFormatProperty: {
-      async get() {
+      async get () {
         // use promise for format's hotid to keep in sync with getTypeProperty
         let hotId = await this.currentHotId()
         let getter = this.getter(hotId, 'format')
@@ -446,7 +484,7 @@ export default {
         this.formatProperty = property
         return property
       },
-      watch() {
+      watch () {
         let temp = this.getActiveTab
         let temp2 = this.cIndex
         // ensure format also updates after setting type
@@ -458,32 +496,32 @@ export default {
     ...mapGetters([
       'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getAllHotTablesColumnNames'
     ]),
-    hasTypeFormatWarning() {
+    hasTypeFormatWarning () {
       return (this.typeProperty == 'date' && this.formatProperty == 'default')
     },
-    getNameProperty() {
+    getNameProperty () {
       let allColumns = this.allTablesAllColumnsNames[this.activeCurrentHotId] || []
       return allColumns[this.cIndex] || ''
     },
-    formatValuesHasPattern() {
+    formatValuesHasPattern () {
       return this.formatProperty === 'pattern' && _.indexOf(this.formatPropertiesForType, 'pattern') > -1
     },
-    formatPropertiesForType() {
+    formatPropertiesForType () {
       let property = this.typeProperty || 'any'
       let choices = this.formats[property]
       return choices
     },
-    constraintValues() {
+    constraintValues () {
       let property = this.typeProperty
       this.updateConstraintInputKeyValues()
       return this.constraints[property]
     },
-    isDropdownFormatDisabled() {
+    isDropdownFormatDisabled () {
       return !this.formatPropertiesForType ? false : this.formatPropertiesForType.length < 2
     }
   },
   watch: {
-    'formatProperty': function(nextFormat) {
+    'formatProperty': function (nextFormat) {
       if (nextFormat === 'pattern') {
         if (_.indexOf(this.formatPropertiesForType, 'pattern') > -1) {
           this.setFormatPropertyValueForPattern()
@@ -491,30 +529,30 @@ export default {
       }
       this.debounceCheckType()
     },
-    'formatPropertyValue': function() {
+    'formatPropertyValue': function () {
       this.setFormatPropertyValueForPattern()
     },
-    'formatPropertiesForType': function() {
+    'formatPropertiesForType': function () {
       this.debounceCheckType()
     }
   },
-  mounted: function() {
+  mounted: function () {
     let self = this
-    this.$subscribeTo(allTablesAllColumnNames$, function(result) {
+    this.$subscribeTo(allTablesAllColumnNames$, function (result) {
       self.updateAllTablesAllColumnsNames(result)
     })
     allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
     autosize(document.querySelector('textarea'))
     LockProperties.trigger()
   },
-  created: function() {
+  created: function () {
     let vueType = this.typePropertyWrapper
     let vueFormat = this.formatPropertyValueWrapper
     this.$validator.extend('formatPattern', {
-      getMessage: function(field) {
+      getMessage: function (field) {
         return `The format pattern is not supported.`
       },
-      validate: function(value) {
+      validate: function (value) {
         return new Promise((resolve) => {
           let isValid = isValidPatternForType(vueFormat(), vueType())
           resolve({
@@ -529,10 +567,10 @@ export default {
     ...mapMutations([
       'pushColumnProperty', 'removeColumnProperty'
     ]),
-    isBooleanConstraint: function(option) {
+    isBooleanConstraint: function (option) {
       return this.constraintBooleanBindings.indexOf(option) > -1
     },
-    setTypeProperty: async function(value) {
+    setTypeProperty: async function (value) {
       this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), 'type', value))
       this.typeProperty = value
       // keep format up-to-date with type
@@ -540,10 +578,10 @@ export default {
         this.pushColumnProperty(this.setter(this.activeCurrentHotId || this.currentHotId(), 'format', this.getDefaultFormatProperty()))
       }
     },
-    getDefaultFormatProperty: function() {
+    getDefaultFormatProperty: function () {
       return this.typeProperty == 'date' ? 'any' : 'default'
     },
-    setFormatProperty: function(value) {
+    setFormatProperty: function (value) {
       // if it's a pattern, watcher will trigger appropriate method when this.formatProperty is set
       if (value !== 'pattern') {
         let hotId = this.activeCurrentHotId
@@ -551,23 +589,23 @@ export default {
       }
       this.formatProperty = value
     },
-    setFormatPropertyValueForPattern: function() {
+    setFormatPropertyValueForPattern: function () {
       let pattern = this.formatPropertyValue
       if (isValidPatternForType(pattern, this.typeProperty)) {
         let hotId = this.activeCurrentHotId
         this.pushColumnProperty(this.setter(hotId, 'format', pattern))
       }
     },
-    getProperty: function(key) {
+    getProperty: function (key) {
       let hotId = this.activeCurrentHotId
       let getter = this.getter(hotId, key)
       let property = this.getHotColumnProperty(getter)
       return property
     },
-    setProperty: function(key, value) {
+    setProperty: function (key, value) {
       this.pushColumnProperty(this.setter(this.activeCurrentHotId, key, value))
     },
-    getter: function(hotId, key) {
+    getter: function (hotId, key) {
       let object = {
         hotId: hotId,
         columnIndex: this.cIndex,
@@ -575,7 +613,7 @@ export default {
       }
       return object
     },
-    setter: function(hotId, key, value) {
+    setter: function (hotId, key, value) {
       let object = {
         hotId: hotId,
         columnIndex: this.cIndex,
@@ -584,10 +622,10 @@ export default {
       }
       return object
     },
-    getConstraintCheck: function(key) {
+    getConstraintCheck: function (key) {
       return _.has(this.constraintInputKeyValues, key)
     },
-    setConstraintCheck: function(key, target) {
+    setConstraintCheck: function (key, target) {
       const isChecked = target.checked
       if (!isChecked) {
         _.unset(this.constraintInputKeyValues, key)
@@ -600,14 +638,14 @@ export default {
       }
       this.pushConstraintInputKeyValues()
       this.$forceUpdate()
-      window.setTimeout(function() {
+      window.setTimeout(function () {
         let element = document.querySelector(`input[name=${key}]`)
         if (element) {
           element.focus()
         }
       }, 100)
     },
-    getConstraintValue: function(key) {
+    getConstraintValue: function (key) {
       let value = this.constraintInputKeyValues[key]
       if (key === 'enum' && _.isArray(value)) {
         let updatedValue = `"${_.join(value, '","')}"`
@@ -616,16 +654,16 @@ export default {
         return value
       }
     },
-    removeConstraint: function(key) {
+    removeConstraint: function (key) {
       _.unset(this.constraintInputKeyValues, key)
       this.pushConstraintInputKeyValues()
       return true
     },
-    setConstraintValue: function(key, value) {
+    setConstraintValue: function (key, value) {
       this.constraintInputKeyValues[key] = value
       this.pushConstraintInputKeyValues()
     },
-    pushConstraintInputKeyValues: function() {
+    pushConstraintInputKeyValues: function () {
       // assign to a separate object, so not influenced by validation's removal of invalid values
       let constraintValues = {}
       _.assign(constraintValues, this.constraintInputKeyValues)
@@ -638,7 +676,7 @@ export default {
       this.sanitizeObjectValues(constraintValues)
       this.debounceSetConstraints(this.setter(this.activeCurrentHotId, 'constraints', constraintValues))
     },
-    sanitizeObjectValues: function(constraintValues) {
+    sanitizeObjectValues: function (constraintValues) {
       const keysToNumber = ['minLength', 'maxLength']
       for (const key of keysToNumber) {
         if (_.has(constraintValues, key) && _.isString(constraintValues[key])) {
@@ -646,7 +684,7 @@ export default {
         }
       }
     },
-    constraintValidationRules: function(option) {
+    constraintValidationRules: function (option) {
       switch (option) {
         case 'minLength':
         case 'maxLength':
@@ -658,45 +696,45 @@ export default {
           return this.validationRules(option)
       }
     },
-    updateConstraintInputKeyValues: function() {
+    updateConstraintInputKeyValues: function () {
       let hotId = this.activeCurrentHotId
       let getter = this.getter(hotId, 'constraints')
       let constraints = this.getHotColumnProperty(getter)
       this.constraintInputKeyValues = constraints || {}
     },
-    updateAllTablesAllColumnsNames: function(update) {
+    updateAllTablesAllColumnsNames: function (update) {
       this.allTablesAllColumnsNames = update || {}
     },
-    typePropertyWrapper: function() {
+    typePropertyWrapper: function () {
       return this.typeProperty
     },
-    formatPropertyValueWrapper: function() {
+    formatPropertyValueWrapper: function () {
       return this.formatPropertyValue
     },
-    setTrueValues: function(values) {
+    setTrueValues: function (values) {
       let withoutEmpties = this.removeStringEmpties(values)
       let array = this.getNoDuplicatesArrayFromString(withoutEmpties)
       this.setProperty('trueValues', array)
     },
-    setFalseValues: function(values) {
+    setFalseValues: function (values) {
       let withoutEmpties = this.removeStringEmpties(values)
       let array = this.getNoDuplicatesArrayFromString(withoutEmpties)
       this.setProperty('falseValues', array)
     },
-    getNoDuplicatesArrayFromString: function(values) {
+    getNoDuplicatesArrayFromString: function (values) {
       return Array.from(new Set(values.split(',')))
     },
-    getTrueValues: function() {
+    getTrueValues: function () {
       return this.getBooleanValuesOrDefaultAsString('trueValues')
     },
-    getFalseValues: function() {
+    getFalseValues: function () {
       return this.getBooleanValuesOrDefaultAsString('falseValues')
     },
-    getBooleanValuesOrDefaultAsString: function(booleanType) {
+    getBooleanValuesOrDefaultAsString: function (booleanType) {
       let values = this.getBooleanValuesOrDefault(booleanType)
       return values.join()
     },
-    getBooleanValuesOrDefault: function(booleanType) {
+    getBooleanValuesOrDefault: function (booleanType) {
       let values
       if (booleanType === 'trueValues') {
         values = this.getProperty('trueValues')
@@ -711,29 +749,29 @@ export default {
       }
       return values
     },
-    setAndGetDefaultTrueValues: function() {
+    setAndGetDefaultTrueValues: function () {
       let values = [...this.trueValues]
       this.setProperty('trueValues', values)
       return values
     },
-    setAndGetDefaultFalseValues: function() {
+    setAndGetDefaultFalseValues: function () {
       let values = [...this.falseValues]
       this.setProperty('falseValues', values)
       return values
     },
-    removeStringEmpties: function(string) {
+    removeStringEmpties: function (string) {
       let withoutInternalEmpties = string.replace(/[,]+/g, ',')
       // also remove 'empty' if at start or end
       let trimmed = _.trim(withoutInternalEmpties, ',')
       return trimmed
     },
-    getExtraPropertyLabel: function(key) {
+    getExtraPropertyLabel: function (key) {
       return _.upperFirst(_.lowerCase(key))
     },
-    isExtraPropertyKey: function(key) {
+    isExtraPropertyKey: function (key) {
       return _.includes(['booleanType', 'integerType', 'numberType'], key)
     },
-    isExtraPropertyType: function(type, key) {
+    isExtraPropertyType: function (type, key) {
       switch (type) {
         case 'boolean':
           return key === 'booleanType'
@@ -745,7 +783,7 @@ export default {
           return false
       }
     },
-    getExtraType: function(type) {
+    getExtraType: function (type) {
       let value = this.getProperty(type)
       if (typeof value === 'undefined') {
         switch (type) {
@@ -764,10 +802,10 @@ export default {
       }
       return value
     },
-    setBareNumber: function(target) {
+    setBareNumber: function (target) {
       this.setExtraType('bareNumber', target.checked)
     },
-    setExtraType: function(type, value) {
+    setExtraType: function (type, value) {
       switch (type) {
         case 'decimalChar':
         case 'groupChar':
@@ -778,34 +816,34 @@ export default {
           throw new Error(`Extra property type: ${type} is not supported`)
       }
     },
-    removeOnError: function(errorId, key) {
+    removeOnError: function (errorId, key) {
       if (this.errors.has(errorId)) {
         this.removeColumnProperty(this.setter(this.activeCurrentHotId, key))
       }
     },
-    setAndGetDefaultBareNumber: function() {
+    setAndGetDefaultBareNumber: function () {
       const value = this.bareNumber
       this.setProperty('bareNumber', value)
       return value
     },
-    setAndGetDefaultGroupChar: function() {
+    setAndGetDefaultGroupChar: function () {
       const value = this.groupChar
       this.setProperty('groupChar', value)
       return value
     },
-    setAndGetDefaultDecimalChar: function() {
+    setAndGetDefaultDecimalChar: function () {
       const value = this.decimalChar
       this.setProperty('decimalChar', value)
       return value
     },
     // we cannot access frictionless' extra properties directly, so at least offer error message if not correct
-    validateDefaultExtraProperties() {
+    validateDefaultExtraProperties () {
       this.validateBooleans()
       this.validateGroupCharForNumber()
       this.validateDecimalCharForNumber()
       this.validateBareNumberForNumberAndInteger()
     },
-    validateBooleans: function() {
+    validateBooleans: function () {
       for (const booleanValues of [this.trueValues, this.falseValues]) {
         for (const value of booleanValues) {
           const result = castBoolean('default', value)
@@ -813,37 +851,37 @@ export default {
         }
       }
     },
-    validateGroupCharForNumber: function() {
+    validateGroupCharForNumber: function () {
       const value = `10${this.groupChar}000`
       this.validateNumber(value, `Group char value ${this.groupChar}`)
     },
-    validateDecimalCharForNumber: function() {
+    validateDecimalCharForNumber: function () {
       const value = `10${this.decimalChar}000`
       this.validateNumber(value, `Decimal char value: ${this.decimalChar}`)
     },
-    validateBareNumberForNumberAndInteger: function() {
+    validateBareNumberForNumberAndInteger: function () {
       const value = this.bareNumber === true ? '23' : 'dummy23dummy'
       const message = `Bare Number ${this.bareNumber}`
       this.validateNumber(value, message)
       this.validateInteger(value, message)
     },
-    validateNumber: function(value, message) {
+    validateNumber: function (value, message) {
       const result = castNumber('default', value)
       this.inspectDefaultExtraPropertiesResult(result, `Number's ${message}`)
     },
-    validateInteger: function(value, message) {
+    validateInteger: function (value, message) {
       const result = castInteger('default', value)
       this.inspectDefaultExtraPropertiesResult(result, `Integer's ${message}`)
     },
-    inspectDefaultExtraPropertiesResult: function(result, message) {
+    inspectDefaultExtraPropertiesResult: function (result, message) {
       if (result === tableSchemaError) {
         throw new Error(`${message} is not a valid default`, result)
       }
     },
-    isWarningVisible: function() {
+    isWarningVisible: function () {
       return this.warningVisibility
     },
-    checkType: function() {
+    checkType: function () {
       this.warningVisibility = this.hasTypeFormatWarning
     }
   }

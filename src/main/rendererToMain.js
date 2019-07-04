@@ -68,7 +68,7 @@ ipc.on('openedFindReplace', (event, arg) => {
   enableAllSubMenuItemsFromMenuLabel('Find')
 })
 
-ipc.on('loadPackageUrl', async function(event, index, hotId, url) {
+ipc.on('loadPackageUrl', async function (event, index, hotId, url) {
   const mainWindow = focusMainWindow()
   const dataPackage = await loadPackageJson(url)
   if (dataPackage) {
@@ -76,7 +76,7 @@ ipc.on('loadPackageUrl', async function(event, index, hotId, url) {
   }
 })
 
-ipc.on('loadPackageUrlResourcesAsFkRelations', async function(event, url, resourceName) {
+ipc.on('loadPackageUrlResourcesAsFkRelations', async function (event, url, resourceName) {
   try {
     const rows = await loadResourceDataFromPackageSource(url, resourceName)
     event.returnValue = rows

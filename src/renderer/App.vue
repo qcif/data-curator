@@ -2,7 +2,8 @@
   <div id="app">
     <router-view
       v-show="routerName"
-      :name="routerName"/>
+      :name="routerName"
+    />
   </div>
 </template>
 

@@ -1,38 +1,46 @@
 <template>
   <div
     id="container"
-    class="container-fluid">
+    class="container-fluid"
+  >
     <form>
       <div class="form-block">
         <label
           class="control-label url-dialog-label"
-          for="url-dialog">
+          for="url-dialog"
+        >
           URL:
         </label>
         <input
-          v-validate="'url:true'"
           id="url-dialog"
-          :class="{ 'form-control': true, 'validate-danger': errors.has('url-dialog') }"
           v-model="urlText"
+          v-validate="'url:true'"
+          :class="{ 'form-control': true, 'validate-danger': errors.has('url-dialog') }"
           autofocus
           type="text"
-          name="url-dialog">
+          name="url-dialog"
+        >
       </div>
       <div
         v-show="errors.has('url-dialog')"
-        class="row help validate-danger">
+        class="row help validate-danger"
+      >
         {{ errors.first('url-dialog') }}
       </div>
       <div class="submit-container">
         <button
           id="cancel"
           class="btn btn-default"
-          @click.prevent="cancel">Cancel
+          @click.prevent="cancel"
+        >
+          Cancel
         </button>
         <button
           id="submit"
           class="btn btn-default"
-          @click.prevent="submit">{{ submitText }}
+          @click.prevent="submit"
+        >
+          {{ submitText }}
         </button>
       </div>
     </form>

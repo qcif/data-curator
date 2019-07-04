@@ -3,19 +3,25 @@
     <div class="input-group">
       <label
         v-tooltip.left="tooltip(tooltipId)"
-        class="control-label">{{ labelName }}</label>
+        class="control-label"
+      >{{ labelName }}</label>
       <component
         :is="tooltipView"
-        :index="index"/>
+        :index="index"
+      />
       <select
         :value="getSelectedTable()"
         class="form-control input-sm"
-        @input="setSelectedTable($event.target.value)">
+        @input="setSelectedTable($event.target.value)"
+      >
         <option
           v-for="tableName in allTables"
-          :key="tableName"
           :id="tableName"
-          :value="tableName">{{ tableName }}</option>
+          :key="tableName"
+          :value="tableName"
+        >
+          {{ tableName }}
+        </option>
       </select>
     </div>
   </div>
@@ -28,15 +34,15 @@ export default {
   props: {
     allTableNames: {
       type: Array,
-      default: function() { return [] }
+      default: function () { return [] }
     },
     getSelectedTable: {
       type: Function,
-      default: function() { return [] }
+      default: function () { return [] }
     },
     pushSelectedTable: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     labelName: {
       type: String,
@@ -56,12 +62,12 @@ export default {
     }
   },
   computed: {
-    allTables() {
+    allTables () {
       return this.allTableNames || []
     }
   },
   methods: {
-    setSelectedTable(value) {
+    setSelectedTable (value) {
       this.pushSelectedTable(value)
     }
   }

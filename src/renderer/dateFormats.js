@@ -4,7 +4,7 @@ const supportedFormats = {
   '%H:%M': 'time'
 }
 
-export function isValidPatternForType(pattern, type) {
+export function isValidPatternForType (pattern, type) {
   let matchFound = false
   for (const [nextPattern, nextType] of Object.entries(supportedFormats)) {
     if (pattern === nextPattern && type === nextType) {

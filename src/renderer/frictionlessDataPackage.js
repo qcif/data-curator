@@ -6,7 +6,7 @@ import path from 'path'
 import { createZipFile } from '@/exportPackage.js'
 import { hasAllColumnNames, getValidNames } from '@/frictionlessUtilities.js'
 
-export async function createDataPackage() {
+export async function createDataPackage () {
   const errorMessages = []
   if (!haveAllTabsGotFilenames()) {
     errorMessages.push('All tabs must be saved before exporting.')
@@ -32,11 +32,11 @@ export async function createDataPackage() {
   return errorMessages
 }
 
-export function haveAllTabsGotFilenames() {
+export function haveAllTabsGotFilenames () {
   return tabStore.getters.getTabFilenames(tabStore.state).length === tabStore.state.tabs.length
 }
 
-async function buildDataPackage(errorMessages) {
+async function buildDataPackage (errorMessages) {
   if (!hasAllPackageRequirements(errorMessages)) {
     return false
   }
@@ -47,7 +47,7 @@ async function buildDataPackage(errorMessages) {
   return dataPackage
 }
 
-function hasAllPackageRequirements(requiredMessages) {
+function hasAllPackageRequirements (requiredMessages) {
   if (!hotStore.state.provenanceProperties || !hotStore.state.provenanceProperties.markdown) {
     requiredMessages.push(`Provenance properties must be set.`)
   }
@@ -65,18 +65,18 @@ function hasAllPackageRequirements(requiredMessages) {
   return requiredMessages.length === 0
 }
 
-async function initPackage() {
+async function initPackage () {
   const dataPackage = await Package.load()
   return dataPackage
 }
 
-function addPackageProperties(descriptor) {
+function addPackageProperties (descriptor) {
   let packageProperties = hotStore.state.packageProperties
   _.merge(descriptor, packageProperties)
   removeEmptiesFromDescriptor(descriptor)
 }
 
-async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
+async function buildAllResourcesForDataPackage (dataPackage, errorMessages) {
   const resourcePaths = []
   for (let hotId in hotStore.state.hotTabs) {
     try {
@@ -100,7 +100,7 @@ async function buildAllResourcesForDataPackage(dataPackage, errorMessages) {
   }
 }
 
-async function createValidResource(hotId, errorMessages) {
+async function createValidResource (hotId, errorMessages) {
   let hotTab = hotStore.state.hotTabs[hotId]
   let hot = HotRegister.getInstance(hotId)
   if (!hasAllResourceRequirements(hot, errorMessages)) {
@@ -115,7 +115,7 @@ async function createValidResource(hotId, errorMessages) {
   return resource
 }
 
-function hasAllResourceRequirements(hot, requiredMessages) {
+function hasAllResourceRequirements (hot, requiredMessages) {
   let tableProperties = hotStore.state.hotTabs[hot.guid].tableProperties
   if (!tableProperties) {
     requiredMessages.push(`Table properties must be set.`)
@@ -139,7 +139,7 @@ function hasAllResourceRequirements(hot, requiredMessages) {
   return requiredMessages.length === 0
 }
 
-function addSourcesRequirements(properties, requiredMessages, entityName) {
+function addSourcesRequirements (properties, requiredMessages, entityName) {
   if (typeof properties.sources === 'undefined') {
     return
   }
@@ -159,7 +159,7 @@ function addSourcesRequirements(properties, requiredMessages, entityName) {
   }
 }
 
-function addContributorsRequirements(properties, requiredMessages, entityName) {
+function addContributorsRequirements (properties, requiredMessages, entityName) {
   if (typeof properties.contributors === 'undefined') {
     return
   }
@@ -179,9 +179,9 @@ function addContributorsRequirements(properties, requiredMessages, entityName) {
   }
 }
 
-function hasAllEmptyValues(propertyObject) {
+function hasAllEmptyValues (propertyObject) {
   let isEmpty = true
-  _.forOwn(propertyObject, function(value, key) {
+  _.forOwn(propertyObject, function (value, key) {
     if (value.trim().length > 0) {
       isEmpty = false
       return false
@@ -190,7 +190,7 @@ function hasAllEmptyValues(propertyObject) {
   return isEmpty
 }
 
-function addForeignKeyRequirements(tableProperties, requiredMessages) {
+function addForeignKeyRequirements (tableProperties, requiredMessages) {
   if (typeof tableProperties.foreignKeys === 'undefined') {
     return
   }
@@ -202,7 +202,7 @@ function addForeignKeyRequirements(tableProperties, requiredMessages) {
   }
 }
 
-async function buildResource(tabId, hotId) {
+async function buildResource (tabId, hotId) {
   let resource = await initResourceAndInfer()
   let descriptor = resource.descriptor
   addColumnProperties(descriptor, hotId)
@@ -214,47 +214,47 @@ async function buildResource(tabId, hotId) {
   return resource
 }
 
-async function initResourceAndInfer() {
+async function initResourceAndInfer () {
   const resource = await Resource.load()
   await resource.infer()
   return resource
 }
 
-function addColumnProperties(descriptor, hotId) {
+function addColumnProperties (descriptor, hotId) {
   let columnProperties = hotStore.state.hotTabs[hotId].columnProperties
   descriptor.schema = {}
   descriptor.schema.fields = columnProperties
 }
 
-function addTableProperties(descriptor, hotId) {
+function addTableProperties (descriptor, hotId) {
   let tableProperties = hotStore.state.hotTabs[hotId].tableProperties
   _.merge(descriptor, tableProperties)
   moveMissingValues(descriptor, tableProperties)
 }
 
-function moveMissingValues(descriptor, tableProperties) {
+function moveMissingValues (descriptor, tableProperties) {
   _.unset(descriptor, 'missingValues')
   descriptor.schema.missingValues = tableProperties.missingValues
 }
 
-function removeEmptiesFromDescriptor(descriptor) {
+function removeEmptiesFromDescriptor (descriptor) {
   removeEmpty(descriptor, 'licenses')
   removeEmpty(descriptor, 'sources')
 }
 
-function removeNonFrictionlessKeys(descriptor) {
+function removeNonFrictionlessKeys (descriptor) {
   for (const propertyName of ['sampledQuoteChar', 'bom']) {
     _.unset(descriptor, propertyName)
   }
 }
 
-function removeEmpty(descriptor, propertyName) {
+function removeEmpty (descriptor, propertyName) {
   if (descriptor[propertyName] && descriptor[propertyName].length === 0) {
     _.unset(descriptor, propertyName)
   }
 }
 
-function addPath(descriptor, tabId) {
+function addPath (descriptor, tabId) {
   let parent = 'data'
   let filename = tabStore.state.tabObjects[tabId].filename
   let basename = path.basename(filename)

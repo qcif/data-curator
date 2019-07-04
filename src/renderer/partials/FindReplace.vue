@@ -1,42 +1,50 @@
 <template>
   <form
     id="findAndReplace"
-    class="navbar-form form-horizontal">
+    class="navbar-form form-horizontal"
+  >
     <div class="form-group-sm row container-fluid">
       <div
         v-for="(formprop, index) in formprops"
         :key="index"
-        class="propertyrow clearfix">
+        class="propertyrow clearfix"
+      >
         <label
-          v-tooltip.left="tooltip(formprop.tooltipId)"
           v-show="formprop.label"
+          v-tooltip.left="tooltip(formprop.tooltipId)"
           :for="formprop.label"
-          class="control-label pull-left">{{ formprop.label }}</label>
+          class="control-label pull-left"
+        >{{ formprop.label }}</label>
         <div class="inputrow clearfix">
           <div
             :class="formprop.key"
             :data-placeholder="formprop.resultFn(formprop.key)"
-            class="placeholder text-muted small">
+            class="placeholder text-muted small"
+          >
             <input
               :id="formprop.key"
               :value="getText(formprop.key)"
               :name="formprop.key"
               class="pull-left form-control input-sm col-sm-9"
               type="text"
-              @input="setText(formprop.key, $event.target.value)">
+              @input="setText(formprop.key, $event.target.value)"
+            >
             <span
               v-show="formprop.resultFn(formprop.key)"
               :class="formprop.resultIconFn()"
-              class="glyphicon form-control-feedback"/>
+              class="glyphicon form-control-feedback"
+            />
           </div>
           <span class="btn-group pull-right">
             <button
               class="btn btn-sm previous btn-primary"
               type="button"
-              @click="formprop.fn('previous')">
+              @click="formprop.fn('previous')"
+            >
               <span
                 v-if="formprop.buttonLeftClass"
-                :class="formprop.buttonLeftClass"/>
+                :class="formprop.buttonLeftClass"
+              />
               <template v-if="formprop.buttonLeftText">
                 {{ formprop.buttonLeftText }}
               </template>
@@ -45,31 +53,37 @@
               v-show="formprop.buttonRightClass"
               class="btn btn-sm next btn-primary"
               type="button"
-              @click="formprop.fn('next')">
-              <span :class="formprop.buttonRightClass"/>
+              @click="formprop.fn('next')"
+            >
+              <span :class="formprop.buttonRightClass" />
             </button>
           </span>
         </div>
         <div
           v-if="formprop.buttonBelowText"
-          class="bottom-line">
+          class="bottom-line"
+        >
           <div class="input-group row checkbox input-sm">
             <input
               id="case-sensitive"
               v-model="isCaseSensitive"
-              type="checkbox">
+              type="checkbox"
+            >
             <label
               id="case-sensitive-label"
-              for="case-sensitive">case sensitive</label>
+              for="case-sensitive"
+            >case sensitive</label>
           </div>
           <div
             v-if="formprop.buttonBelowText"
-            class="btn-group pull-right">
+            class="btn-group pull-right"
+          >
             <button
               :class="formprop.buttonTypeClass || 'btn-primary'"
               type="button"
               class="button-below btn btn-sm"
-              @click="formprop.belowFn('next')">
+              @click="formprop.belowFn('next')"
+            >
               <span :class="formprop.buttonBelowClass">{{ formprop.buttonBelowText }}</span>
             </button>
           </div>

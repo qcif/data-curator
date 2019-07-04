@@ -1,21 +1,24 @@
 <template>
   <div
     id="container"
-    class="container-fluid errors-window">
+    class="container-fluid errors-window"
+  >
     <h1>{{ title }}</h1>
     <div>
       <template v-if="messages">
         <i class="navbar-text">{{ messages.length }} Error(s)</i>
-        <ul class="nav navbar-nav navbar-left" >
+        <ul class="nav navbar-nav navbar-left">
           <li>
             <a
               v-tooltip.top="tooltip('tooltip-write-errors-provenance')"
               href="#"
-              @click.prevent="writeErrorsToProvenance()">
+              @click.prevent="writeErrorsToProvenance()"
+            >
               <object
                 data="static/img/validation-results.svg"
-                type="image/svg+xml" />
-                <!-- <span class="btn-default fas fa-file-alt"  /> -->
+                type="image/svg+xml"
+              />
+              <!-- <span class="btn-default fas fa-file-alt"  /> -->
             </a>
           </li>
           <component :is="'tooltipWriteErrorsProvenance'" />
@@ -28,20 +31,22 @@
           enabled: true,
           initialSortBy: {field: 'rowNumber', type: 'asc'}
         }"
-        @on-row-click="goToCell">
+        @on-row-click="goToCell"
+      >
         <template
           slot="table-column"
-          slot-scope="props">
+          slot-scope="props"
+        >
           <span>
             {{ props.column.label }}
           </span>
           <rowLink
             :row="props.row"
-            :columns="props.columns"/>
+            :columns="props.columns"
+          />
         </template>
       </vue-good-table>
     </div>
-
   </div>
 </template>
 <script>
@@ -68,7 +73,7 @@ export default {
     rowLink
   },
   mixins: [ErrorsTooltip],
-  data() {
+  data () {
     return {
       title: '',
       messages: false,
@@ -101,12 +106,12 @@ export default {
   },
   computed: {
     // cache main window
-    homeWindow() {
+    homeWindow () {
       return getWindow('home')
     }
   },
   watch: {
-    messages: function(messages) {
+    messages: function (messages) {
       this.rows = []
       if (messages) {
         for (let next of messages) {
@@ -119,9 +124,9 @@ export default {
       }
     }
   },
-  mounted: function() {
+  mounted: function () {
     let self = this
-    ipc.on('errorMessages', function(event, arg) {
+    ipc.on('errorMessages', function (event, arg) {
       if (!arg) {
         self.resetErrorMessages()
       } else {
@@ -133,26 +138,26 @@ export default {
     ...mapMutations([
       'pushProvenanceErrors'
     ]),
-    goToCell: function(error) {
+    goToCell: function (error) {
       this.homeWindow.webContents.send('showErrorCell', {
         row: error.rowNumber,
         column: error.columnNumber
       })
     },
-    setErrorMessages: function(errorMessages) {
+    setErrorMessages: function (errorMessages) {
       this.messages = errorMessages.messages
       this.title = errorMessages.title
     },
-    resetErrorMessages: function() {
+    resetErrorMessages: function () {
       this.messages = false
       this.title = ''
     },
-    writeErrorsToProvenance: function() {
+    writeErrorsToProvenance: function () {
       this.homeWindow.webContents.send('pushErrorMessages', this.messages)
       this.showProvenanceErrors()
       provenanceErrors$.next()
     },
-    showProvenanceErrors: function() {
+    showProvenanceErrors: function () {
       this.homeWindow.webContents.send('showProvenanceErrors')
     }
   }

@@ -3,18 +3,24 @@
     <div class="input-group">
       <label
         v-tooltip.left="tooltip(tooltipId)"
-        class="control-label">{{ labelName }}</label>
+        class="control-label"
+      >{{ labelName }}</label>
       <component
         :is="tooltipView"
-        :index="index"/>
+        :index="index"
+      />
       <select
         v-model="selectedKeys"
         class="form-control input-sm"
-        multiple>
+        multiple
+      >
         <option
           v-for="columnName in activeNames"
           :key="columnName"
-          :value="columnName">{{ columnName }}</option>
+          :value="columnName"
+        >
+          {{ columnName }}
+        </option>
       </select>
     </div>
   </div>
@@ -27,15 +33,15 @@ export default {
   props: {
     activeNames: {
       type: Array,
-      default: function() { return [] }
+      default: function () { return [] }
     },
     getSelectedKeys: {
       type: Array,
-      default: function() { return [] }
+      default: function () { return [] }
     },
     pushSelectedKeys: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     labelName: {
       type: String,
@@ -55,15 +61,15 @@ export default {
     },
     currentHotId: {
       type: Function,
-      default: async function() {}
+      default: async function () {}
     }
   },
   computed: {
     selectedKeys: {
-      get() {
+      get () {
         return this.getSelectedKeys
       },
-      set: function(value) {
+      set: function (value) {
         this.pushSelectedKeys(value)
       }
     }

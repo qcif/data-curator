@@ -5,7 +5,8 @@
         :is="'tableheaderkeys'"
         :activeNames="localHeaderNames"
         :getSelectedKeys="getSelectedKeys"
-        :pushSelectedKeys="pushSelectedKeys"/>
+        :pushSelectedKeys="pushSelectedKeys"
+      />
     </div>
   </fieldset>
 </template>

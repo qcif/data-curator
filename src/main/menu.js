@@ -133,18 +133,18 @@ class AppMenu {
           {
             type: 'separator'
           },
-          _.assign({}, sharedMenus.insertRowAbove, { click() { webContents().send('insertRowAbove') } }),
-          _.assign({}, sharedMenus.insertRowBelow, { click() { webContents().send('insertRowBelow') } }),
+          _.assign({}, sharedMenus.insertRowAbove, { click () { webContents().send('insertRowAbove') } }),
+          _.assign({}, sharedMenus.insertRowBelow, { click () { webContents().send('insertRowBelow') } }),
           {
             type: 'separator'
           },
-          _.assign({}, sharedMenus.insertColumnBefore, { click() { webContents().send('insertColumnBefore') } }),
-          _.assign({}, sharedMenus.insertColumnAfter, { click() { webContents().send('insertColumnAfter') } }),
+          _.assign({}, sharedMenus.insertColumnBefore, { click () { webContents().send('insertColumnBefore') } }),
+          _.assign({}, sharedMenus.insertColumnAfter, { click () { webContents().send('insertColumnAfter') } }),
           {
             type: 'separator'
           },
-          _.assign({}, sharedMenus.removeRows, { click() { webContents().send('removeRows') } }),
-          _.assign({}, sharedMenus.removeColumns, { click() { webContents().send('removeColumns') } })
+          _.assign({}, sharedMenus.removeRows, { click () { webContents().send('removeRows') } }),
+          _.assign({}, sharedMenus.removeColumns, { click () { webContents().send('removeColumns') } })
         ]
       },
       {

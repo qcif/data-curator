@@ -5,7 +5,7 @@
 const { shell, ipcMain, BrowserWindow } = require('electron')
 
 class FakeMain {
-  parseArgs(window, options, callback, ...args) {
+  parseArgs (window, options, callback, ...args) {
     if (window != null && window.constructor !== BrowserWindow) {
       [callback, options, window] = [options, window, null]
     }

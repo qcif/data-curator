@@ -1,6 +1,6 @@
 import { BrowserWindow } from 'electron'
 
-export function createWindowTab() {
+export function createWindowTab () {
   let mainWindow = focusMainWindow()
   if (!mainWindow) {
     mainWindow = createMainWindow()
@@ -9,19 +9,19 @@ export function createWindowTab() {
   return mainWindow
 }
 
-export function createMainWindow() {
+export function createMainWindow () {
   const url = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080`
     : `file://${__dirname}/index.html`
   let mainWindow = newWindow('home', { width: 800, height: 600, minWidth: 800, minHeight: 600 }, url)
   // TODO : remove? this is inherited property from legacy project, but doesn't seem to exist as a property in Electron.
   // mainWindow.format = fileFormats.csv
-  mainWindow.on('resize', function() {
+  mainWindow.on('resize', function () {
     // TODO : replace with debounce
     if (global.resizeTimerId) {
       clearTimeout(global.resizeTimerId)
     }
-    let timerId = setTimeout(function() {
+    let timerId = setTimeout(function () {
       mainWindow.webContents.send('resized')
     }, 250)
     global.resizeTimerId = timerId
@@ -29,27 +29,27 @@ export function createMainWindow() {
   return mainWindow
 }
 
-export function createWindowTabWithData(data) {
+export function createWindowTabWithData (data) {
   let mainWindow = focusMainWindow()
   mainWindow.webContents.send('addTabWithData', data)
 }
 
-export function createWindowTabWithFormattedDataFile(data, format, filename) {
+export function createWindowTabWithFormattedDataFile (data, format, filename) {
   let mainWindow = focusMainWindow()
   mainWindow.webContents.send('addTabWithFormattedDataFile', data, format, filename)
 }
 
-export function closeSecondaryWindow(windowName) {
+export function closeSecondaryWindow (windowName) {
   let browserWindow = focusWindow(windowName)
   closeWindowSafely(browserWindow)
   focusMainWindow()
 }
 
-export function focusMainWindow() {
+export function focusMainWindow () {
   return focusWindow('home')
 }
 
-export function focusOrNewSecondaryWindow(id, config) {
+export function focusOrNewSecondaryWindow (id, config) {
   let browserWindow = focusWindow(id)
   if (!browserWindow) {
     browserWindow = newWindow(id, config)
@@ -58,7 +58,7 @@ export function focusOrNewSecondaryWindow(id, config) {
   return browserWindow
 }
 
-export function focusWindow(id) {
+export function focusWindow (id) {
   let browserWindow
   if (global.windows[id]) {
     browserWindow = BrowserWindow.fromId(global.windows[id])
@@ -72,7 +72,7 @@ export function focusWindow(id) {
   return browserWindow
 }
 
-export function newWindow(id, config, url) {
+export function newWindow (id, config, url) {
   if (process.env.NODE_ENV === 'production' && process.env.BABEL_ENV !== 'test') {
     config.nodeIntegration = false
   }
@@ -91,7 +91,7 @@ export function newWindow(id, config, url) {
   return browserWindow
 }
 
-export function closeWindowSafely(browserWindow) {
+export function closeWindowSafely (browserWindow) {
   if (browserWindow && !browserWindow.isDestroyed()) {
     browserWindow.close()
   }

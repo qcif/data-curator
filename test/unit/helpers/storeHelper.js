@@ -1,5 +1,5 @@
 import store from '@/store'
-export function resetHotStore() {
+export function resetHotStore () {
   store.replaceState({
     hotTabs: {},
     packageProperties: {},
@@ -8,7 +8,7 @@ export function resetHotStore() {
 }
 
 // note that the layout here is different (flattened and simpler) than the actual store
-export function stubSimpleTabStore(hot) {
+export function stubSimpleTabStore (hot) {
   const stubbedStore = {
     state: {
       tabs: [],
@@ -58,10 +58,10 @@ export function stubSimpleTabStore(hot) {
       }
     },
     mutations: {
-      pushTabTitle(state, tab) {
+      pushTabTitle (state, tab) {
         _.set(state.tabObjects, `tab0.title`, 'title')
       },
-      incrementTabIndex(state) {
+      incrementTabIndex (state) {
         state.tabIndex++
       },
       setActiveTab (state, tabId) {
@@ -70,22 +70,22 @@ export function stubSimpleTabStore(hot) {
       pushTab (state, tabId) {
         state.tabs.push('tab0')
       },
-      pushPackageProperty(state, property) {
+      pushPackageProperty (state, property) {
         _.set(state.packageProperties, property.key, property.value)
       },
-      pushHotTab(state, hotTab) {
+      pushHotTab (state, hotTab) {
         _.set(state.hotTabs, `${hotTab.hotId}.tabId`, hotTab.tabId)
       },
-      pushTableProperty(state, property) {
+      pushTableProperty (state, property) {
         _.set(state.hotTabs, `${property.hotId}.tableProperties.${property.key}`, property.value)
       },
-      pushHotSelection(state, property) {
+      pushHotSelection (state, property) {
         _.set(state.hotTabs, `${property.hotId}.selected`, property.selected)
       },
-      pushColumnProperty(state, property) {
+      pushColumnProperty (state, property) {
         _.set(state.hotTabs, `${property.hotId}.columnProperties[${property.columnIndex}].${property.key}`, property.value)
       },
-      resetTablePropertiesToObject(state, hotIdTables) {
+      resetTablePropertiesToObject (state, hotIdTables) {
         for (let hotId in hotIdTables) {
           if (!state.hotTabs[hotId]) {
             throw new Error(`Unable to find tab with hot id: ${hotId}`)

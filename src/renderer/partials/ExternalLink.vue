@@ -1,7 +1,8 @@
 <template>
   <a
     href="#"
-    @click="openLink()">{{ text }}</a>
+    @click="openLink()"
+  >{{ text }}</a>
 </template>
 <script>
 import { shell } from 'electron'
@@ -18,7 +19,7 @@ export default {
     }
   },
   methods: {
-    openLink: function() {
+    openLink: function () {
       shell.openExternal(this.url)
     }
   }

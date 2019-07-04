@@ -5,12 +5,12 @@ import _ from 'lodash'
 import { disableOpenFileItems, enableOpenFileItems } from './menuUtils.js'
 import { loadResourceSchemaFromJson } from './loadFrictionless'
 
-export function saveFileAs(format) {
+export function saveFileAs (format) {
   let currentWindow = focusMainWindow()
   Dialog.showSaveDialog({
     filters: format.filters,
     defaultPath: global.tab.activeTitle
-  }, function(filename) {
+  }, function (filename) {
     if (filename === undefined) {
       return
     }
@@ -32,19 +32,19 @@ To save the data, choose a unique file name.`
   })
 }
 
-function savedFilenameExists(filename) {
+function savedFilenameExists (filename) {
   let threshold = global.tab.activeFilename === filename ? 1 : 0
   let length = global.tab.filenames.length
   let filtered = _.without(global.tab.filenames, filename)
   return length - filtered.length > threshold
 }
 
-export function saveFile() {
+export function saveFile () {
   let currentWindow = focusMainWindow()
   currentWindow.webContents.send('saveData', currentWindow.format, global.tab.activeFilename)
 }
 
-export function importDataPackageFromFile() {
+export function importDataPackageFromFile () {
   disableOpenFileItems()
   let window = focusMainWindow()
   Dialog.showOpenDialog({
@@ -55,7 +55,7 @@ export function importDataPackageFromFile() {
       }
     ],
     properties: ['openFile']
-  }, function(filename) {
+  }, function (filename) {
     enableOpenFileItems()
     if (filename === undefined) {
       return
@@ -67,7 +67,7 @@ export function importDataPackageFromFile() {
   })
 }
 
-export function importTableResourceSchemaFromFile() {
+export function importTableResourceSchemaFromFile () {
   let window = focusMainWindow()
   Dialog.showOpenDialog({
     filters: [
@@ -77,7 +77,7 @@ export function importTableResourceSchemaFromFile() {
       }
     ],
     properties: ['openFile']
-  }, function(filename) {
+  }, function (filename) {
     if (filename === undefined) {
       return
     }
@@ -88,11 +88,11 @@ export function importTableResourceSchemaFromFile() {
   })
 }
 
-export function openFile(format) {
+export function openFile (format) {
   disableOpenFileItems()
   Dialog.showOpenDialog({
     filters: format.filters
-  }, function(filenames) {
+  }, function (filenames) {
     enableOpenFileItems()
     if (process.env.BABEL_ENV === 'test') {
       global.openFileDialogReturned = filenames
@@ -108,12 +108,12 @@ ipc.on('openFileIntoTab', (event, arg1, arg2) => {
   readFile(arg1, arg2)
 })
 
-export function readFile(filename, format) {
+export function readFile (filename, format) {
   if (openedFilenameExists(filename)) {
     showAlreadyOpenedFileDialog()
     return
   }
-  Fs.readFile(filename, 'utf-8', function(err, data) {
+  Fs.readFile(filename, 'utf-8', function (err, data) {
     if (err) {
       console.error(err)
     } else {
@@ -124,7 +124,7 @@ export function readFile(filename, format) {
 }
 
 // TODO: consider toggle global var and use with debounce to check when last dialog triggered so don't get too many dialogs for multiple file opens
-function showAlreadyOpenedFileDialog() {
+function showAlreadyOpenedFileDialog () {
   Dialog.showMessageBox(focusMainWindow(), {
     type: 'warning',
     // title is not displayed on screen on macOS
@@ -135,6 +135,6 @@ function showAlreadyOpenedFileDialog() {
   })
 }
 
-function openedFilenameExists(filename) {
+function openedFilenameExists (filename) {
   return _.indexOf(global.tab.filenames, filename) > -1
 }
