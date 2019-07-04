@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Given, When, Then } from 'cucumber'
+import { Given, Then, When } from 'cucumber'
 import {
   getIndexOfCurrentColumnInCurrentRow,
   getIndexOfCurrentRowInRows,
@@ -24,10 +24,13 @@ When(/^the user (?:performs a |)right-click[s]?$/, async function () {
   await this.app.client.rightClick('.ht_master table')
 })
 
-Then(/^the user clicks (?:on|in) "Insert (Row|Column) (Below|Above|Before|After)"$/, function (rowOrColumn, place) {
-  console.log(`${rowOrColumn} ${place}`)
-  return this.app
-    .webContents.send('clickLabelOnContextMenu', `Insert ${rowOrColumn} ${place}`)
+Then(/^the user clicks (?:on|in) "Insert (Row|Column) (Below|Above|Before|After)"$/, async function (rowOrColumn, place) {
+  this.app.webContents.send('clickLabelOnContextMenu', `Insert ${rowOrColumn} ${place}`)
+  const self = this
+  await this.app.client.waitUntil(async function () {
+    let tableRowCount = await getNumberOfRows(self.app)
+    return tableRowCount === 2
+  }, 5000)
 })
 
 Then(/^the text: "(.+?)" should be in row (\d+) column (\d+)$/, async function (expectedText, expectedRow, expectedColumn) {
@@ -64,6 +67,13 @@ Then(/^there should be (\d+) new column[s]? after the current column$/, async fu
   expect(currentColumnNumber).to.equal(this.colNumber)
   let numberOfColumns = await getNumberOfColumns(this.app)
   expect(numberOfColumns).to.equal(this.colCount + numberOfNew)
+})
+
+Then(/^the (?:new |)table (?:should have |has )(\d+) row[s]? by (\d+) column[s]?$/, async function (rowCount, colCount) {
+  let actualRowCount = await getNumberOfRows(this.app)
+  expect(actualRowCount).to.equal(rowCount)
+  let actualColumnCount = await getNumberOfColumns(this.app)
+  expect(actualColumnCount).to.equal(colCount)
 })
 
 Then(/^there should be (\d+) row[s]?$/, async function (expectedNumber) {

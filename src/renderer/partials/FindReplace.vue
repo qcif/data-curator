@@ -118,7 +118,7 @@ import {
 } from '@/rxSubject.js'
 import Sifter from 'sifter/sifter.min.js'
 import { ipcRenderer as ipc } from 'electron'
-import { captureLatestEdit } from '../index'
+import { captureLatestEdit } from '@/hot.js'
 
 Vue.use(AsyncComputed)
 Vue.use(VueRx, {

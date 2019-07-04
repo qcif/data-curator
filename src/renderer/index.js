@@ -1,4 +1,13 @@
-import { HotRegister, insertRowAbove, insertRowBelow, insertColumnBefore, insertColumnAfter, removeRows, removeColumns, reselectHotCellFromHot } from '@/hot.js'
+import {
+  HotRegister,
+  insertColumnAfter,
+  insertColumnBefore,
+  insertRowAbove,
+  insertRowBelow,
+  removeColumns,
+  removeRows,
+  captureLatestEditBeforeFunction
+} from '@/hot.js'
 import { loadDataIntoHot, saveDataToFile } from '@/data-actions.js'
 import { ipcRenderer as ipc, remote } from 'electron'
 import { isCaseSensitive } from '@/frictionlessUtilities'
@@ -62,21 +71,6 @@ ipc.on('saveData', function (e, format, fileName) {
   captureLatestEditBeforeFunction(hot, saveDataToFile, format, fileName)
 })
 
-export function captureLatestEditBeforeFunction (fn, ...args) {
-  let hot = HotRegister.getActiveInstance()
-  hot.deselectCell()
-  if (fn) {
-    fn(hot, ...args)
-  }
-  reselectHotCellFromHot(hot)
-}
-
-export function captureLatestEdit () {
-  let hot = HotRegister.getActiveInstance()
-  hot.deselectCell()
-  reselectHotCellFromHot(hot)
-}
-
 ipc.on('editUndo', function () {
   let hot = HotRegister.getActiveInstance()
   if (hot.isUndoAvailable) {
@@ -109,6 +103,7 @@ ipc.on('insertRowBelow', function () {
 })
 
 ipc.on('clickLabelOnContextMenu', function (event, arg) {
+  console.log('made it here!')
   menu.items.find(x => x.label === arg).click()
 })
 
