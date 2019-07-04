@@ -19,6 +19,7 @@ describe('hands on table', function () {
     sandbox = sinon.createSandbox()
     hotHelper.stubHotInDocumentDom(sandbox)
     hot = hotHelper.registerHot()
+    store.mutations.pushHotTab(store.state, { hotId: hot.guid, tabId: 'tab0' })
     data = stubData()
     expectedData = stubData()
   })
@@ -85,7 +86,7 @@ describe('hands on table', function () {
 
       it('selects [0,0] when no current cell can be reselected', function () {
         hot.loadData(data)
-        hotFunctions.reselectCurrentCellOrMin()
+        hotFunctions.reselectHotCell()
         const result = hot.getSelectedLast()
         expect(result).to.deep.equal([0, 0, 0, 0])
       })
@@ -93,7 +94,7 @@ describe('hands on table', function () {
       it('reselects last cells selected when reselecting', function () {
         hot.loadData(data)
         hot.selectCell(3, 1)
-        hotFunctions.reselectCurrentCellOrMin()
+        hotFunctions.reselectHotCell()
         const result = hot.getSelectedLast()
         expect(result).to.deep.equal([3, 1, 3, 1])
       })
