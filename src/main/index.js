@@ -39,11 +39,15 @@ app.on('ready', () => {
   Menu.setApplicationMenu(appMenu.menu)
   let browserWindow = createWindowTab()
   // don't allow prompt in development as slows dev process down when trying to hot-reload
-  if (process.env.NODE_ENV === 'production') {
-    browserWindow.on('close', (event) => {
-      quitDialog(event, closeWindowNoPrompt)
+  // if (process.env.NODE_ENV === 'production') {
+  browserWindow.on('close', (event) => {
+    promptBeforeCloseFunction(event, closeWindowNoPrompt, {
+      message: 'Are you sure you want to quit?',
+      title: 'Quit Data Curator',
+      quitText: 'Quit'
     })
-  }
+  })
+  // }
 })
 
 function unlockSingleton () {
@@ -66,12 +70,8 @@ ipc.on('unlockSingleton', (event, arg) => {
 })
 
 ipc.on('forceQuit', (event, arg) => {
-  try {
-    forceQuit()
-    event.returnValue = true
-  } catch (error) {
-    throw (error)
-  }
+  forceQuit()
+  event.returnValue = true
 })
 
 // This is needed as without it, production will still follow the darwin vs windows behaviour - dev env won't
@@ -80,64 +80,39 @@ app.on('window-all-closed', () => {
   app.quit()
 })
 
-export function quitDialog (event, callback) {
+ipc.on('promptToSaveBeforeTabClose', (event, args) => {
+  promptBeforeCloseFunction(event, closeTabDialog, {
+    message: 'Are you sure you want to close this tab?',
+    title: 'Close current tab',
+    quitText: 'Close tab'
+  }, args)
+})
+
+export function promptBeforeCloseFunction (event, closeFn, config, args) {
   event.preventDefault()
   let browserWindow = focusMainWindow()
   dialog.showMessageBox(browserWindow, {
     type: 'warning',
     buttons: [
-      'Cancel', 'Quit'
+      'Cancel', config.quitText
     ],
     defaultId: 0,
-    title: 'Quit Application',
-    message: 'There may be unsaved work. Are you sure you want to quit?'
+    title: config.title,
+    message: `There may be unsaved work. ${config.message}`
   }, function (response) {
     if (response === 0) {
       return
     }
-    callback()
+    closeFn(args)
   })
 }
 
-export function quitOrSaveDialog (event, endButtonName, callback) {
-  event.preventDefault()
+export function closeTabDialog (args) {
   let browserWindow = focusMainWindow()
-  dialog.showMessageBox(browserWindow, {
-    type: 'warning',
-    buttons: [
-      'Cancel', endButtonName, 'Save'
-    ],
-    defaultId: 0,
-    title: 'Save current tab before close?',
-    message: 'Save current tab before close?'
-  }, function (response) {
-    if (response === 0) {
-      return
-    }
-    if (response === 1) {
-      callback()
-    } else {
-      dialog.showSaveDialog({}, function (filename) {
-        if (filename === undefined) {
-          return
-        }
-        saveAndExit(callback, filename)
-      })
-    }
-  })
+  browserWindow.webContents.send('okToCloseTab', args)
 }
 
-async function saveAndExit (callback, filename) {
-  try {
-    let browserWindow = focusMainWindow()
-    await browserWindow.webContents.send('saveData', browserWindow.format, filename)
-    callback()
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-function closeWindowNoPrompt (result) {
+function closeWindowNoPrompt () {
   // ensure all windows are closed
   for (let browserWindow of BrowserWindow.getAllWindows()) {
     browserWindow.destroy()
