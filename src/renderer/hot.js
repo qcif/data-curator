@@ -176,6 +176,15 @@ export function getColumnCount () {
   return colCount
 }
 
+export function getRowCount () {
+  let activeHot = HotRegister.getActiveInstance()
+  let rowCount
+  if (activeHot) {
+    rowCount = activeHot.countRows()
+  }
+  return rowCount
+}
+
 export function insertRowAbove () {
   insertRow(0, Math.min)
 }
@@ -232,38 +241,42 @@ export function removeHeaderAtIndex (hot, index) {
 }
 
 export function removeRows () {
-  let hot = HotRegister.getActiveInstance()
+  let hot = getHotToInsert()
   const range = hot.getSelectedRangeLast()
   if (typeof range === 'undefined') {
     return
   }
-  const start = Math.min(range.from.row, range.to.row)
-  const end = Math.max(range.from.row, range.to.row)
-  for (let row = start; row <= end; row++) {
-    // rows are re-indexed after each remove
-    // so always remove 'start'
-    hot.alter('remove_row', start)
+  if (getRowCount() > 1) {
+    const start = Math.min(range.from.row, range.to.row)
+    const end = Math.max(range.from.row, range.to.row)
+    for (let row = start; row <= end; row++) {
+      // rows are re-indexed after each remove
+      // so always remove 'start'
+      hot.alter('remove_row', start)
+    }
+    reselectHotCell()
   }
-  reselectHotCell()
 }
 
 export function removeColumns () {
-  let hot = HotRegister.getActiveInstance()
+  let hot = getHotToInsert()
   const range = hot.getSelectedRangeLast()
   if (typeof range === 'undefined') {
     return
   }
-  const start = Math.min(range.from.col, range.to.col)
-  const end = Math.max(range.from.col, range.to.col)
-  for (let col = start; col <= end; col++) {
-    // cols are re-indexed after each remove
-    // so always remove 'start'
-    hot.alter('remove_col', start)
-    store.mutations.removeColumnIndexForHotId(store.state, { hotId: hot.guid, columnIndex: start })
-    allTablesAllColumnsFromSchema$.next(store.getters.getAllHotTablesColumnProperties(store.state, store.getters)())
-    allTablesAllColumnNames$.next(store.getters.getAllHotTablesColumnNames(store.state, store.getters)())
+  if (getColumnCount() > 1) {
+    const start = Math.min(range.from.col, range.to.col)
+    const end = Math.max(range.from.col, range.to.col)
+    for (let col = start; col <= end; col++) {
+      // cols are re-indexed after each remove
+      // so always remove 'start'
+      hot.alter('remove_col', start)
+      store.mutations.removeColumnIndexForHotId(store.state, { hotId: hot.guid, columnIndex: start })
+      allTablesAllColumnsFromSchema$.next(store.getters.getAllHotTablesColumnProperties(store.state, store.getters)())
+      allTablesAllColumnNames$.next(store.getters.getAllHotTablesColumnNames(store.state, store.getters)())
+    }
+    reselectHotCell()
   }
-  reselectHotCell()
 }
 
 ipc.on('selectHotCell', function (event, rowCountNumber, ColCountNumber) {
