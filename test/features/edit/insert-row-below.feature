@@ -8,7 +8,6 @@ Feature: Insert Row Below
 
   - The "Insert Row Below" command can be invoked using a menu item, keyboard shortcut or a context menu in the data table
 
-  @dev
   @impl
   Scenario Outline: Insert Row Below
     Given Data Curator is open
