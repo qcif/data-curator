@@ -141,7 +141,6 @@ import { allTablesAllColumnNames$, allTabsTitles$, fkPackagesButtonText$, loadin
 import ValidationRules from '../mixins/ValidationRules'
 import VueRx from 'vue-rx'
 import Vue from 'vue'
-
 Vue.use(VueRx, {
   Subscription
 })

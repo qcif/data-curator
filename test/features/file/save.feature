@@ -22,6 +22,7 @@ Feature: Save
     Then the data in the active tab should be saved at its current location and filename
     And the file size in bytes should be written to the `bytes` table property
 
+  @dev
   @impl
   Scenario Outline: Enter text and save, capturing all of the text
     Given Data Curator is open
