@@ -345,9 +345,7 @@ export default {
       this.clickedFindOrReplace = 'replace'
     },
     replaceAllText: function (direction) {
-      if (this.clickedFindOrReplace === 'find') {
-        this.resetSearchResultWrapper()
-      }
+      this.resetSearchResultWrapper()
       this.clickedFindOrReplace = 'replace'
       this.replaceMessageText = 'replaced'
       this.findNextOrPrevious(direction)
