@@ -20,7 +20,7 @@ export function saveFileAs (format) {
         // title is not displayed on screen on macOS
         title: 'Data not saved',
         message:
-`The data was not saved to the file.
+          `The data was not saved to the file.
 You selected a file name that is already used in this Data Package.
 To save the data, choose a unique file name.`
       })
@@ -112,8 +112,12 @@ export function createWindowTabFromFilename (filename) {
   let mainWindow = focusMainWindow()
   if (!mainWindow) {
     mainWindow = createMainWindow()
+    mainWindow.webContents.on('did-finish-load', function () {
+      readFile(filename)
+    })
+  } else {
+    readFile(filename)
   }
-  readFile(filename)
   return mainWindow
 }
 

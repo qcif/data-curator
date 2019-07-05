@@ -4,8 +4,12 @@ export function createWindowTab () {
   let mainWindow = focusMainWindow()
   if (!mainWindow) {
     mainWindow = createMainWindow()
+    mainWindow.webContents.on('did-finish-load', function () {
+      mainWindow.webContents.send('addTab')
+    })
+  } else {
+    mainWindow.webContents.send('addTab')
   }
-  mainWindow.webContents.send('addTab')
   return mainWindow
 }
 
@@ -14,8 +18,6 @@ export function createMainWindow () {
     ? `http://localhost:9080`
     : `file://${__dirname}/index.html`
   let mainWindow = newWindow('home', { width: 800, height: 600, minWidth: 800, minHeight: 600 }, url)
-  // TODO : remove? this is inherited property from legacy project, but doesn't seem to exist as a property in Electron.
-  // mainWindow.format = fileFormats.csv
   mainWindow.on('resize', function () {
     // TODO : replace with debounce
     if (global.resizeTimerId) {

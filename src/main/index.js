@@ -8,6 +8,7 @@ import { AppMenu } from './menu'
 import './rendererToMain.js'
 import './preferences.js'
 import yargs_parser from 'yargs-parser'
+import { createWindowTabFromFilename } from './file'
 
 let argv = yargs_parser(process.argv.slice(1))
 
@@ -37,19 +38,14 @@ if (isSecondInstance) {
   app.quit()
 }
 
+app.on('open-file', (event, path) => {
+  argv._.push(path)
+})
+
 app.on('ready', () => {
   let appMenu = new AppMenu()
   Menu.setApplicationMenu(appMenu.menu)
-  let browserWindow
-  if (!_.isEmpty(argv._)) {
-    if (process.env.NODE_ENV === 'development' && argv._.length > 1) {
-      browserWindow = createWindowTabFromFilename(argv._[1])
-    } else {
-      browserWindow = createWindowTabFromFilename(argv._[0])
-    }
-  } else {
-    browserWindow = createWindowTab()
-  }
+  let browserWindow = createInitialWindow()
   // don't allow prompt in development as slows dev process down when trying to hot-reload
   if (process.env.NODE_ENV === 'production') {
     browserWindow.on('close', (event) => {
@@ -61,6 +57,14 @@ app.on('ready', () => {
     })
   }
 })
+
+function createInitialWindow () {
+  const clIndex = process.env.NODE_ENV === 'development' ? 1 : 0
+  if (argv._.length > clIndex) {
+    return createWindowTabFromFilename(argv._[clIndex])
+  }
+  return createWindowTab()
+}
 
 function unlockSingleton () {
   app.releaseSingleInstance()
