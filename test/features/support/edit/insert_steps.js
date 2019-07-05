@@ -24,13 +24,10 @@ When(/^the user (?:performs a |)right-click[s]?$/, async function () {
   await this.app.client.rightClick('.ht_master table')
 })
 
-Then(/^the user clicks (?:on|in) "Insert (Row|Column) (Below|Above|Before|After)"$/, async function (rowOrColumn, place) {
-  this.app.webContents.send('clickLabelOnContextMenu', `Insert ${rowOrColumn} ${place}`)
-  const self = this
-  await this.app.client.waitUntil(async function () {
-    let tableRowCount = await getNumberOfRows(self.app)
-    return tableRowCount === 2
-  }, 5000)
+Then(/^the user clicks (?:on|in) "Insert (Row|Column) (Below|Above|Before|After)"$/, function (rowOrColumn, place) {
+  console.log(`${rowOrColumn} ${place}`)
+  return this.app
+    .webContents.send('clickLabelOnContextMenu', `Insert ${rowOrColumn} ${place}`)
 })
 
 Then(/^the text: "(.+?)" should be in row (\d+) column (\d+)$/, async function (expectedText, expectedRow, expectedColumn) {

@@ -5,8 +5,7 @@ import {
   insertRowAbove,
   insertRowBelow,
   removeColumns,
-  removeRows,
-  captureLatestEditBeforeFunction
+  removeRows
 } from '@/hot.js'
 import { loadDataIntoHot, saveDataToFile } from '@/data-actions.js'
 import { ipcRenderer as ipc, remote } from 'electron'
@@ -68,17 +67,11 @@ export function loadData (key, data, format, closeLoadingFn) {
 }
 
 ipc.on('saveData', function (e, format, fileName) {
-  // captureLatestEditBeforeFunction(saveDataToFile, format, fileName)
-  let hot = HotRegister.getActiveInstance()
+ let hot = HotRegister.getActiveInstance()
   // ensure that cell (and its row) holding cursor is committed
   hot.deselectCell()
   saveDataToFile(hot, format, fileName)
   reselectHotCellFromHot(hot)
-  // let selection = store.getters.getHotSelection(hot.guid)
-  // // reselect cell after save
-  // if (selection) {
-  //   hot.selectCell(selection[0], selection[1], selection[2], selection[3])
-  // }
 })
 
 ipc.on('editUndo', function () {
