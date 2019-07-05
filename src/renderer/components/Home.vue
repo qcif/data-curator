@@ -575,7 +575,7 @@ export default {
         }
       })
       this.closeSideNav()
-      this.addTab()
+      // this.addTab()
     })
     ipc.on('showProvenanceErrors', function (event, arg) {
       self.showProvenanceErrors()
@@ -1334,7 +1334,9 @@ export default {
       _.delay(function () {
         self.adjustSidenavFormHeight()
         let hot = HotRegister.getActiveInstance()
-        hot.render()
+        if (hot) {
+          hot.render()
+        }
       }, 500)
     }
   }
