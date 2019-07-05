@@ -13,7 +13,6 @@
 <script>
 import tableheaderkeys from '../partials/TableHeaderKeys'
 import RelationKeys from '../mixins/RelationKeys'
-
 export default {
   name: 'Primarykeys',
   components: {

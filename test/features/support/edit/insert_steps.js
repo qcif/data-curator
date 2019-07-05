@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Given, Then, When } from 'cucumber'
+import { Given, When, Then } from 'cucumber'
 import {
   getIndexOfCurrentColumnInCurrentRow,
   getIndexOfCurrentRowInRows,

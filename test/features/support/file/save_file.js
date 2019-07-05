@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Given, When, Then } from 'cucumber'
+import { Given, Then } from 'cucumber'
 import { arrayOfLinesToString, saveAndReturnData } from '../page-objects/io'
 
 Given(/^the user presses keys: (.+?)$/, async function (keypresses) {

@@ -6,7 +6,8 @@ const path = require('path')
 const {dependencies} = require('../package.json')
 const webpack = require('webpack')
 
-const BabiliWebpackPlugin = require('babel-minify-webpack-plugin')
+// despite `DeprecationWarning: Tapable.plugin is deprecated.` Do not upgrade: causes issues with handsontable creating blanks/repeats in rows
+const BabiliWebpackPlugin = require('babili-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')

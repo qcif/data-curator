@@ -80,12 +80,9 @@ const HotRegister = {
               row: 1,
               col: 0 - selection[1]
             }
-          } else {
-            return { row: 1, col: 0 }
           }
-        } else {
-          return { row: 1, col: 0 }
         }
+        return { row: 1, col: 0 }
       }
     })
     _.set(_hots, hot.guid, hot)
@@ -188,15 +185,10 @@ export function insertRowBelow () {
 }
 
 export function insertRow (offset, mathFn) {
-  console.log('entered insert row...')
   let hot = getHotToInsert()
   const range = hot.getSelectedRangeLast()
-  console.log('range is:')
-  console.log(range)
   if (typeof range !== 'undefined') {
     const selection = mathFn(range.from.row, range.to.row) + offset
-    console.log('selection is')
-    console.log(selection)
     hot.alter('insert_row', selection)
     hot.selectCell(selection, 0)
   }
@@ -226,7 +218,7 @@ export function insertColumn (offset, mathFn) {
 function getHotToInsert () {
   let hot = HotRegister.getActiveInstance()
   captureLatestEdit(hot)
-  hot.getActiveEditor().finishEditing(true)
+  // hot.getActiveEditor().finishEditing(true)
   return hot
 }
 
