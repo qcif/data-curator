@@ -1,6 +1,6 @@
 import { dialog as Dialog, ipcMain as ipc } from 'electron'
 import Fs from 'fs'
-import { createWindowTabWithFormattedDataFile, focusMainWindow } from './windows'
+import { createMainWindow, createWindowTabWithFormattedDataFile, focusMainWindow } from './windows'
 import _ from 'lodash'
 import { disableOpenFileItems, enableOpenFileItems } from './menuUtils.js'
 import { loadResourceSchemaFromJson } from './loadFrictionless'
@@ -20,7 +20,7 @@ export function saveFileAs (format) {
         // title is not displayed on screen on macOS
         title: 'Data not saved',
         message:
-`The data was not saved to the file.
+          `The data was not saved to the file.
 You selected a file name that is already used in this Data Package.
 To save the data, choose a unique file name.`
       })
@@ -107,6 +107,19 @@ export function openFile (format) {
 ipc.on('openFileIntoTab', (event, arg1, arg2) => {
   readFile(arg1, arg2)
 })
+
+export function createWindowTabFromFilename (filename) {
+  let mainWindow = focusMainWindow()
+  if (!mainWindow) {
+    mainWindow = createMainWindow()
+    mainWindow.webContents.on('did-finish-load', function () {
+      readFile(filename)
+    })
+  } else {
+    readFile(filename)
+  }
+  return mainWindow
+}
 
 export function readFile (filename, format) {
   if (openedFilenameExists(filename)) {

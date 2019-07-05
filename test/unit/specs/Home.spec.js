@@ -143,7 +143,7 @@ describe('Home.vue', function () {
       wrapper.destroy()
       wrapper = null
       hot = null
-      for (const listener of ['guessColumnProperties', 'importDataPackage', 'validateTable', 'showErrorCell', 'getErrorMessages', 'hoverToSelectErrorCell', 'exitHoverToSelectErrorCell', 'triggerMenuButton', 'toggleActiveHeaderRow', 'addTab', 'addTabWithData', 'addTabWithFormattedData', 'addTabWithFormattedDataAndDescriptor', 'addTabWithFormattedDataFile', 'showSidePanel', 'saveDataSuccess', 'resized', 'showProvenanceErrors', 'closeAndshowLoadingScreen', 'closeLoadingScreen', 'resetPackagePropertiesToObject', 'importDataPackageFromFile', 'addSchemaToTabAndLock']) {
+      for (const listener of ['guessColumnProperties', 'importDataPackage', 'validateTable', 'showErrorCell', 'getErrorMessages', 'hoverToSelectErrorCell', 'exitHoverToSelectErrorCell', 'triggerMenuButton', 'toggleActiveHeaderRow', 'addTab', 'addTabWithData', 'addTabWithFormattedData', 'addTabWithFormattedDataAndDescriptor', 'addTabWithFormattedDataFile', 'showSidePanel', 'saveDataSuccess', 'resized', 'showProvenanceErrors', 'closeAndshowLoadingScreen', 'closeLoadingScreen', 'resetPackagePropertiesToObject', 'importDataPackageFromFile', 'addSchemaToTabAndLock', 'okToCloseTab']) {
         ipc.removeAllListeners(listener)
       }
       sandbox.restore()
