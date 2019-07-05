@@ -2,11 +2,14 @@
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
-import { app, Menu, BrowserWindow, dialog, ipcMain as ipc } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain as ipc, Menu } from 'electron'
 import { createWindowTab, focusMainWindow } from './windows'
 import { AppMenu } from './menu'
 import './rendererToMain.js'
 import './preferences.js'
+import yargs_parser from 'yargs-parser'
+
+let argv = yargs_parser(process.argv.slice(1))
 
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
@@ -37,17 +40,26 @@ if (isSecondInstance) {
 app.on('ready', () => {
   let appMenu = new AppMenu()
   Menu.setApplicationMenu(appMenu.menu)
-  let browserWindow = createWindowTab()
+  let browserWindow
+  if (!_.isEmpty(argv._)) {
+    if (process.env.NODE_ENV === 'development' && argv._.length > 1) {
+      browserWindow = createWindowTabFromFilename(argv._[1])
+    } else {
+      browserWindow = createWindowTabFromFilename(argv._[0])
+    }
+  } else {
+    browserWindow = createWindowTab()
+  }
   // don't allow prompt in development as slows dev process down when trying to hot-reload
-  // if (process.env.NODE_ENV === 'production') {
-  browserWindow.on('close', (event) => {
-    promptBeforeCloseFunction(event, closeWindowNoPrompt, {
-      message: 'Are you sure you want to quit?',
-      title: 'Quit Data Curator',
-      quitText: 'Quit'
+  if (process.env.NODE_ENV === 'production') {
+    browserWindow.on('close', (event) => {
+      promptBeforeCloseFunction(event, closeWindowNoPrompt, {
+        message: 'Are you sure you want to quit?',
+        title: 'Quit Data Curator',
+        quitText: 'Quit'
+      })
     })
-  })
-  // }
+  }
 })
 
 function unlockSingleton () {
@@ -118,6 +130,7 @@ function closeWindowNoPrompt () {
     browserWindow.destroy()
   }
 }
+
 /**
  * Auto Updater
  *
