@@ -589,6 +589,10 @@ export default {
     ipc.on('resetPackagePropertiesToObject', function (event, packageProperties) {
       self.resetPackagePropertiesToObject(packageProperties)
     })
+    ipc.on('okToCloseTab', function (event, targetTabId) {
+      self.removeTab(targetTabId)
+      self.cleanUpTabDependencies(targetTabId)
+    })
     this.$subscribeTo(errorFeedback$, function (nextError) {
       if (!self.messages) {
         self.messages = []
@@ -1008,9 +1012,8 @@ export default {
     closeTab: async function (event) {
       // do not allow single tab to be closed
       if (this.tabs.length > 1) {
-        let targetTabId = event.currentTarget.closest('.tab-header').id
-        this.removeTab(targetTabId)
-        await this.cleanUpTabDependencies(targetTabId)
+        const targetTabId = event.currentTarget.closest('.tab-header').id
+        ipc.send('promptToSaveBeforeTabClose', targetTabId)
       }
     },
     cleanUpTabDependencies: async function (tabId) {
