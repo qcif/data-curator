@@ -575,7 +575,10 @@ export default {
         }
       })
       this.closeSideNav()
-      // this.addTab()
+      // e2e tests won't receive initial message from main, so need to create it
+      if (process.env.BABEL_ENV === 'test') {
+        this.addTab()
+      }
     })
     ipc.on('showProvenanceErrors', function (event, arg) {
       self.showProvenanceErrors()

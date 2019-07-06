@@ -59,7 +59,7 @@ app.on('ready', () => {
 })
 
 function createInitialWindow () {
-  const clIndex = process.env.NODE_ENV === 'development' ? 1 : 0
+  const clIndex = (process.env.NODE_ENV === 'development' || process.env.BABEL_ENV === 'test') ? 1 : 0
   if (argv._.length > clIndex) {
     return createWindowTabFromFilename(argv._[clIndex])
   }
