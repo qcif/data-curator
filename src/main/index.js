@@ -60,7 +60,8 @@ app.on('ready', () => {
 
 function createInitialWindow () {
   const clIndex = (process.env.NODE_ENV === 'development' || process.env.BABEL_ENV === 'test') ? 1 : 0
-  if (argv._.length > clIndex) {
+  // when there is a dialog that first comes up with message dialog (e.g., 'this is an application downloaded from the internet'), another non-string argument is present
+  if (argv._.length > clIndex && _.isString(argv._[clIndex])) {
     return createWindowTabFromFilename(argv._[clIndex])
   }
   return createWindowTab()
