@@ -9,6 +9,7 @@ import './rendererToMain.js'
 import './preferences.js'
 import yargs_parser from 'yargs-parser'
 import { createWindowTabFromFilename } from './file'
+import _ from 'lodash'
 
 let argv = yargs_parser(process.argv.slice(1))
 
