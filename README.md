@@ -25,7 +25,7 @@
 
 ![data curator icon](static/img/data-curator-banner.png)
 
-Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data.
+Data Curator is a simple desktop data editor to help describe, validate and share usable open data.
 
 ## Why do we need Data Curator?
 
@@ -45,7 +45,7 @@ Open data is more likely to be used if data consumers can:
 Using Data Curator open data producers can:
 
 - create and edit tabular data from scratch or from a template
-- open data from a CSV or Microsoft Excel file
+- open data from a comma, semi-colon, or tab separated file, or Microsoft Excel file
 - open multiple related data tables from a [Data Package](http://frictionlessdata.io/data-packages/)
 - automatically correct common problems found in CSV and Excel files
 
@@ -55,7 +55,7 @@ Using data from any of these sources, you can:
 - refine the schema to include extra [data validation rules](http://frictionlessdata.io/specs/table-schema/#constraints)
 - validate the data against the schema
 - describe the provenance of your data
-- save data as a valid CSV file in various [CSV dialects](http://frictionlessdata.io/specs/csv-dialect/)
+- save data as a valid separated value file in various [CSV dialects](http://frictionlessdata.io/specs/csv-dialect/) (e.g. comma, semi-colon, or tab separated files)
 
 Once the data is described and validated, you can share the data and its description by exporting a [Data Package](http://frictionlessdata.io/data-packages/) to:
 
