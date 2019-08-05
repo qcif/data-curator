@@ -121,7 +121,7 @@
     "vue-rx": "^5.0.0",
     "vue-template-compiler": "^2.5.17",
     "vuex": "^3.0.1",
-    "xlsx": "^0.13.0",
+    "xlsx": "^0.15.0",
     "yargs-parser": "^13.1.1",
     "zeroclipboard": "^2.3.0"
   },
