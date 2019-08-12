@@ -87,7 +87,7 @@
     "axios": "^0.19.0",
     "bootstrap": "3.4.1",
     "components-font-awesome": "^5.0.6",
-    "csv": "^2.0.0",
+    "csv": "^5.1.2",
     "csv-sniffer": "^0.1.1",
     "datapackage": "^1.1.1",
     "detect-newline": "^3.0.0",
