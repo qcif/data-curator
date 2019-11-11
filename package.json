@@ -147,7 +147,7 @@
     "coveralls": "^3.0.1",
     "cross-env": "^5.1.6",
     "css-loader": "^0.28.11",
-    "cucumber": "^4.1.0",
+    "cucumber": "^6.0.4",
     "cucumber-html-reporter": "^4.0.2",
     "del": "^3.0.0",
     "devtron": "^1.4.0",
