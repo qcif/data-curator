@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 sudo apt-get install -y curl
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
@@ -8,4 +9,4 @@ sudo apt update && sudo apt install --no-install-recommends yarn
 
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 
-nvm install node --lts || exit 1
+nvm install node --lts
