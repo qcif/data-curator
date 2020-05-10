@@ -5,7 +5,8 @@ import {
   insertRowAbove,
   insertRowBelow,
   removeColumns,
-  removeRows
+  removeRows,
+  reselectHotCellFromHot
 } from '@/hot.js'
 import { loadDataIntoHot, saveDataToFile } from '@/data-actions.js'
 import { ipcRenderer as ipc, remote } from 'electron'
