@@ -6,8 +6,9 @@
     "text"
   ],
   "require": [
-     "babel-register",
-     "babel-polyfill"
+     "@babel/register",
+     "core-js/stable",
+     "regenerator-runtime/runtime"
    ],
   "exclude" : [
     "node_modules"
