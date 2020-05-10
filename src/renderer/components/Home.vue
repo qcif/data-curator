@@ -474,7 +474,7 @@ export default {
       return `${this.messageStatus} ${this.sideNavPropertiesForMain}`
     },
     errorColor () {
-      return 'rgba(245, 186, 186, 0.3)'
+      return 'rgba(245, 186, 186, 1)'
     },
     highlightColor () {
       return 'rgba(181, 209, 255, 0.3)'
