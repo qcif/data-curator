@@ -11,7 +11,7 @@ install:
 - nvm install 8 --lts
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
-- nvm use 10 --lts
+- nvm use 8 --lts
 - yarn --version
 - nvm --version
 - node --version
