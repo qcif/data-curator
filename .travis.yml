@@ -56,6 +56,7 @@ jobs:
   - os: linux
     script:
     - yarn run clean
+    - "./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh"
     - "./scripts/travis_headless_linux_unit_tests_script.sh"
   - stage: unittestandcoverage
     allow_failures:
@@ -68,6 +69,7 @@ jobs:
   - os: linux
     script:
     - yarn run clean
+    - "./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh"
     - "./scripts/travis_headless_linux_unit_tests_script.sh"
   - stage: test
     os: osx
