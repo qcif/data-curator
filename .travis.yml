@@ -1,7 +1,5 @@
 sudo: required
 dist: bionic
-services:
-  - xvfb
 language: c
 cache:
   directories:
@@ -57,9 +55,12 @@ jobs:
     - yarn run clean
     - yarn run unit
   - os: linux
+    before_script:
+    - "./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh"
+    - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
+    - sleep 4
     script:
     - yarn run clean
-    - "./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh"
     - "./scripts/travis_headless_linux_unit_tests_script.sh"
   - stage: unittestandcoverage
     allow_failures:
@@ -70,9 +71,11 @@ jobs:
     - yarn run unit
     - yarn run unit:coverage
   - os: linux
+    before_script:
+      - "./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh"
+      - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
+      - sleep 4
     script:
-    - yarn run clean
-    - "./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh"
     - "./scripts/travis_headless_linux_unit_tests_script.sh"
   - stage: test
     os: osx
