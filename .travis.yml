@@ -1,5 +1,4 @@
 sudo: required
-dist: bionic
 language: c
 cache:
   directories:
@@ -23,12 +22,12 @@ stages:
   if: branch IN (ci) AND commit_message !~ /^appveyor Updating branch from appveyor
     build.$/
 - name: lint
-  if: "(branch IN (master, ci, develop) AND commit_message !~ /^appveyor Updating
+  if: "(branch IN (master, ci, testci, develop) AND commit_message !~ /^appveyor Updating
     branch from appveyor build.$/) OR type == pull_request OR tag =~ /^v\\\\d+\\\\.\\\\d+(\\\\.\\\\d+)?(-\\\\S*)?$/"
 - name: unittest
   if: branch IN (master) OR type IN (pull_request)
 - name: unittestandcoverage
-  if: branch IN (ci) AND commit_message !~ /^appveyor Updating branch from
+  if: branch IN (ci, testci) AND commit_message !~ /^appveyor Updating branch from
     appveyor build.$/
 - name: test
   if: type IN (pull_request) OR (branch IN (ci, testci, master) AND commit_message
@@ -55,10 +54,6 @@ jobs:
     - yarn run clean
     - yarn run unit
   - os: linux
-    before_script:
-    - "./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh"
-    - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
-    - sleep 4
     script:
     - yarn run clean
     - "./scripts/travis_headless_linux_unit_tests_script.sh"
@@ -71,11 +66,8 @@ jobs:
     - yarn run unit
     - yarn run unit:coverage
   - os: linux
-    before_script:
-      - "./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh"
-      - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
-      - sleep 4
     script:
+    - yarn run clean
     - "./scripts/travis_headless_linux_unit_tests_script.sh"
   - stage: test
     os: osx
