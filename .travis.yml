@@ -1,5 +1,8 @@
-sudo: required
+#sudo: required
 language: c
+#dist: xenial
+services:
+  - xvfb
 #cache:
 #  directories:
 #  - node_modules
