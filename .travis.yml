@@ -8,10 +8,10 @@ cache:
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
-- nvm install 10 --lts
+- nvm install 8 --lts
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
-- nvm use 10 --lts
+- nvm use 8 --LTS
 - yarn --version
 - nvm --version
 - node --version
