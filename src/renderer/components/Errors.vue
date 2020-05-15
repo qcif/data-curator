@@ -164,7 +164,7 @@ export default {
 }
 </script>
 <style scoped>
-@import '~components-font-awesome/css/fontawesome-all.min.css'
+@import '~components-font-awesome/css/all.min.css'
 </style>
 <style scoped>
 @import '~vue-good-table/dist/vue-good-table.css'

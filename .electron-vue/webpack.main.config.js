@@ -7,7 +7,7 @@ const {dependencies} = require('../package.json')
 const webpack = require('webpack')
 
 // despite `DeprecationWarning: Tapable.plugin is deprecated.` Do not upgrade: causes issues with handsontable creating blanks/repeats in rows
-const BabiliWebpackPlugin = require('babili-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin');
 
 let mainConfig = {
   entry: {
@@ -76,7 +76,7 @@ if (process.env.NODE_ENV !== 'production') {
  */
 if (process.env.NODE_ENV === 'production') {
   mainConfig.plugins.push(
-    new BabiliWebpackPlugin(),
+    new TerserPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
     })

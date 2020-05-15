@@ -10,8 +10,7 @@ const {dependencies} = require('../package.json')
 const webpack = require('webpack')
 const WebpackShellPlugin = require('webpack-shell-plugin')
 
-const BabiliWebpackPlugin = require('babili-webpack-plugin')
-
+const TerserPlugin = require('terser-webpack-plugin');
 let mainTestConfig = {
   externals: [nodeExternals()],
   module: {

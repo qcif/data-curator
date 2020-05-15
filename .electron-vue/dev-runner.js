@@ -155,7 +155,7 @@ function greeting () {
 
   if (text) {
     say(text, {
-      colors: ['yellow'],
+      colors: ['blue'],
       font: 'simple3d',
       space: false
     })

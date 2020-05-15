@@ -7,7 +7,8 @@ const {dependencies} = require('../package.json')
 const webpack = require('webpack')
 
 // despite `DeprecationWarning: Tapable.plugin is deprecated.` Do not upgrade: causes issues with handsontable creating blanks/repeats in rows
-const BabiliWebpackPlugin = require('babili-webpack-plugin')
+// const BabiliWebpackPlugin = require('babili-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -52,15 +53,7 @@ let rendererConfig = {
           name: "vendor",
           chunks: "initial",
           minSize: 1
-        },
-        styles: {
-          name: 'styles',
-          test: /\.s?css$/,
-          chunks: 'initial',
-          minChunks: 1,
-          reuseExistingChunk: true,
-          enforce: true,
-        },
+        }
       }
     }
   } : {},
@@ -158,7 +151,6 @@ let rendererConfig = {
   },
   plugins: [
     new VueLoaderPlugin(),
-    new MiniCssExtractPlugin({filename: 'styles.css'}),
     createHtmlPlugin('index'),
     createHtmlPlugin('keyboardhelp'),
     createHtmlPlugin('urldialog'),
@@ -210,7 +202,6 @@ if (process.env.NODE_ENV === 'production' && !process.env.KARMA) {
   rendererConfig.devtool = ''
 
   rendererConfig.plugins.push(
-    new BabiliWebpackPlugin(),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '../static'),
@@ -225,7 +216,6 @@ if (process.env.NODE_ENV === 'production' && !process.env.KARMA) {
       minimize: true
     })
   )
-  rendererConfig.optimization.minimize = true
 }
 
 module.exports = rendererConfig
