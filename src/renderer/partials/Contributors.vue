@@ -7,8 +7,9 @@
     >
       <div class="inputs-container">
         <div
-          v-for="(prop, index) in Object.keys(contributor)"
-          :key="prop + index"
+          v-for="prop in Object.keys(contributor)"
+          :id="prop + gindex"
+          :key="prop + gindex"
           class="input-group"
         >
           <span class="input-group-addon input-sm">{{ prop }}</span>
@@ -17,7 +18,7 @@
             :id="prop"
             :value="contributor[prop]"
             class="form-control input-sm"
-            @input="setContributorProp(index, prop, $event.target.value)"
+            @input="setContributorProp(gindex, prop, $event.target.value)"
           >
             <option
               v-for="role in roles"
@@ -29,26 +30,26 @@
           </select>
           <input
             v-else
-            :id="prop + index"
-            v-validate="contributorValidationRules(prop, index)"
-            :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(getValidationProp(prop) + index) }"
+            :id="prop + gindex"
+            v-validate="contributorValidationRules(prop, gindex)"
+            :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(getValidationProp(prop) + gindex) }"
             :value="contributor[prop]"
-            :name="getValidationProp(prop) + index"
+            :name="getValidationProp(prop) + gindex"
             type="text"
-            @input="setContributorProp(index, prop, $event.target.value)"
+            @input="setContributorProp(gindex, prop, $event.target.value)"
           >
           <div
-            v-show="errors.has(getValidationProp(prop) + index)"
+            v-show="errors.has(getValidationProp(prop) + gindex)"
             class="row help validate-danger"
           >
-            {{ errors.first(getValidationProp(prop) + index) }}
+            {{ errors.first(getValidationProp(prop) + gindex) }}
           </div>
         </div>
       </div>
       <button
         type="button"
         class="btn btn-danger btn-sm"
-        @click="removeContributor(index)"
+        @click="removeContributor(gindex)"
       >
         <span class="glyphicon glyphicon-minus" />
       </button>

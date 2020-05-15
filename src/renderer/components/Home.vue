@@ -474,7 +474,7 @@ export default {
       return `${this.messageStatus} ${this.sideNavPropertiesForMain}`
     },
     errorColor () {
-      return 'rgba(245, 186, 186, 0.3)'
+      return 'rgba(245, 186, 186, 1)'
     },
     highlightColor () {
       return 'rgba(181, 209, 255, 0.3)'
@@ -1346,7 +1346,7 @@ export default {
 }
 </script>
 <style scoped>
-@import '~components-font-awesome/css/fontawesome-all.min.css'
+@import '~components-font-awesome/css/all.min.css'
 </style>
 <style lang="styl" scoped>
 @import '~static/css/default'
