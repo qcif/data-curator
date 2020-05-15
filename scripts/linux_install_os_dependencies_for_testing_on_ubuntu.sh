@@ -1,6 +1,5 @@
 #!/bin/bash
 set -ev
-unset -f cd
 echo "executing $0"
 
 echo "Checking Ubuntu release compatibility..."
