@@ -1,10 +1,10 @@
 sudo: required
 language: c
-cache:
-  directories:
-  - node_modules
-  - "$HOME/.electron"
-  - "$HOME/.cache"
+#cache:
+#  directories:
+#  - node_modules
+#  - "$HOME/.electron"
+#  - "$HOME/.cache"
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
@@ -72,6 +72,8 @@ jobs:
     - "./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh"
     - "./scripts/travis_headless_linux_unit_tests_script.sh"
   - stage: test
+    allow_failures:
+    - os: linux
     os: osx
     script: "./scripts/travis_headless_e2e_tests.sh test/features/backlog"
   - os: linux
