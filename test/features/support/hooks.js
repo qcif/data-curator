@@ -57,7 +57,7 @@ Before({ timeout: 20000 }, async function (testCase) {
     this.rowNumber = null
     this.colNumber = null
     this.latestFilePath = null
-    this.pageTimeout = 5000
+    this.pageTimeout = 8000
     this.pageShortTimeout = 1000
     await fakeDialog.apply(this.app)
     await applyMock(this.app)
