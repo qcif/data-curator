@@ -1,21 +1,21 @@
-#sudo: required
+sudo: required
 language: c
-#dist: xenial
+dist: xenial
 services:
-  - xvfb
-#cache:
-#  directories:
-#  - node_modules
-#  - "$HOME/.electron"
-#  - "$HOME/.cache"
+- xvfb
+cache:
+  directories:
+  - node_modules
+  - "$HOME/.electron"
+  - "$HOME/.cache"
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh; fi
 install:
 - nvm install 8 --lts
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
-- nvm use 8 --LTS
+- nvm use 8
 - yarn --version
 - nvm --version
 - node --version
@@ -26,12 +26,12 @@ stages:
   if: branch IN (ci) AND commit_message !~ /^appveyor Updating branch from appveyor
     build.$/
 - name: lint
-  if: "(branch IN (master, ci, develop) AND commit_message !~ /^appveyor Updating
+  if: "(branch IN (master, ci, testci, develop) AND commit_message !~ /^appveyor Updating
     branch from appveyor build.$/) OR type == pull_request OR tag =~ /^v\\\\d+\\\\.\\\\d+(\\\\.\\\\d+)?(-\\\\S*)?$/"
 - name: unittest
   if: branch IN (master) OR type IN (pull_request)
 - name: unittestandcoverage
-  if: branch IN (ci) AND commit_message !~ /^appveyor Updating branch from
+  if: branch IN (ci, testci) AND commit_message !~ /^appveyor Updating branch from
     appveyor build.$/
 - name: test
   if: type IN (pull_request) OR (branch IN (ci, testci, master) AND commit_message
@@ -54,66 +54,60 @@ jobs:
     script: yarn run lint
   - stage: unittest
     os: osx
-    script:
-    - yarn run clean
-    - yarn run unit
+      script: yarn run unit
   - os: linux
-    script:
-    - yarn run clean
-    - "./scripts/travis_headless_linux_unit_tests_script.sh"
+      script: yarn run unit
   - stage: unittestandcoverage
     allow_failures:
     - os: linux
     os: osx
     script:
-    - yarn run clean
     - yarn run unit
     - yarn run unit:coverage
   - os: linux
     script:
-    - yarn run clean
-    - "./scripts/travis_headless_linux_unit_tests_script.sh"
+      - yarn run unit
   - stage: test
     os: osx
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/backlog"
+    script: "yarn run e2e:impl -- test/features/backlog"
   - os: linux
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/backlog"
+    script: "yarn run e2e:impl -- test/features/backlog"
   - os: osx
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/data_curator"
+    script: "yarn run e2e:impl -- test/features/data_curator"
   - os: linux
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/data_curator"
+    script: "yarn run e2e:impl -- test/features/data_curator"
   - os: osx
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/edit"
+    script: "yarn run e2e:impl -- test/features/edit"
   - os: linux
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/edit"
+    script: "yarn run e2e:impl -- test/features/edit"
   - os: osx
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/file"
+    script: "yarn run e2e:impl -- test/features/file"
   - os: linux
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/file"
+    script: "yarn run e2e:impl -- test/features/file"
   - os: osx
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/find"
+    script: "yarn run e2e:impl -- test/features/find"
   - os: linux
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/find"
+    script: "yarn run e2e:impl -- test/features/find"
   - os: osx
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/help"
+    script: "yarn run e2e:impl -- test/features/help"
   - os: linux
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/help"
+    script: "yarn run e2e:impl -- test/features/help"
   - os: osx
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/other"
+    script: "yarn run e2e:impl -- test/features/other"
   - os: linux
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/other"
+    script: "yarn run e2e:impl -- test/features/other"
   - os: osx
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/support"
+    script: "yarn run e2e:impl -- test/features/support"
   - os: linux
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/support"
+    script: "yarn run e2e:impl -- test/features/support"
   - os: osx
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/tools"
+    script: "yarn run e2e:impl -- test/features/tools"
   - os: linux
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/tools"
+    script: "yarn run e2e:impl -- test/features/tools"
   - os: osx
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/window"
+    script: "yarn run e2e:impl -- test/features/window"
   - os: linux
-    script: "./scripts/travis_headless_e2e_tests.sh test/features/window"
+    script: "yarn run e2e:impl -- test/features/window"
   - stage: build
     os: osx
     script:
