@@ -18,7 +18,7 @@ Your idea for a feature addition may already exist on our [issues backlog](https
 
 If the gist of your idea isn't there:
 - [request a feature](https://github.com/ODIQueensland/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=mattRedBox)
-- to discuss your idea privately, [contact QCIF](https://www.qcif.edu.au/contact-us/ or the [development team responsible for this project](support@redboxresearchdata.com.au)).
+- to discuss your idea privately, [contact QCIF](https://www.qcif.edu.au/contact-us/) or the [development team responsible for this project](support@redboxresearchdata.com.au)).
 
 ## Contribute Issues
 
