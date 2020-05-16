@@ -10,21 +10,19 @@ Firstly, thanks for being here. All types of contributions are valued and gratef
 
 ## Contribute Financial Support
 
-The best way to contribute financially to this project is to [join the ODI Australian Network](https://theodi.org.au/).  You may like to attend our training courses to [learn more about open data](https://theodi.org.au/events-learning/).
-
-[Contact us](https://theodi.org.au/contact/) to discuss sponsoring a new feature and dedicated support options.
+The best way to contribute financially to this project is to [contact QCIF](https://www.qcif.edu.au/contact-us/) to discuss sponsoring a new feature and dedicated support options.
 
 ## Contribute Ideas and Feature Requests
 
 Your idea for a feature addition may already exist on our [issues backlog](https://github.com/ODIQueensland/data-curator/issues) or [feature backlog](https://app.cucumber.pro/projects/data-curator/search/branch/develop?q=%40backlog). If a similar idea is in the backlog, please join the conversation.
 
 If the gist of your idea isn't there:
-- [request a feature](https://github.com/ODIQueensland/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=Stephen-Gates)
-- to discuss your idea privately, [contact us](https://theodi.org.au/contact/).
+- [request a feature](https://github.com/ODIQueensland/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=mattRedBox)
+- to discuss your idea privately, [contact QCIF](https://www.qcif.edu.au/contact-us/ or the [development team responsible for this project](support@redboxresearchdata.com.au)).
 
 ## Contribute Issues
 
-If you encounter a problem, please [add an issue](https://github.com/ODIQueensland/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=Stephen-Gates). Make sure it isn't [already reported](https://github.com/ODIQueensland/data-curator/issues).
+If you encounter a problem, please [add an issue](https://github.com/ODIQueensland/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=mattRedBox). Make sure it isn't [already reported](https://github.com/ODIQueensland/data-curator/issues).
 
 In order for us to best respond to the issue, we need as much information about the issue as you can provide. Please provide a descriptive name for your issue and provide us with as much detail as possible.
 
@@ -35,7 +33,7 @@ In order for us to best respond to the issue, we need as much information about 
 ## Contribute Code
 Data Curator is open source, and we a grateful for [all code contributions](https://github.com/ODIQueensland/data-curator/graphs/contributors). By participating in this project, you agree to abide by our [Code of Conduct](https://github.com/ODIQueensland/data-curator/blob/master/.github/CODE_OF_CONDUCT.md).
 
-Before you start coding, please reach out to us either by email  [connect@odiqueensland.org.au](mailto:connect@odiqueensland.org.au) or by tagging a repository administrator on an issue you'd like to contribute towards.
+Before you start coding, please reach out to us either by email  [support@redboxresearchdata.com.au](mailto:support@redboxresearchdata.com.au) or by tagging a repository administrator on an issue you'd like to contribute towards.
 
 If this is your first time contributing to the ODI Australian Network’s codebase you will need to [create a fork of this repository](https://help.github.com/articles/fork-a-repo/).
 
