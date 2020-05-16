@@ -62,10 +62,8 @@ for:
     - git checkout ci
     - git checkout develop -- src
     - yarn
-    - yarn run clean
     - yarn run unit
-    - yarn run pack
-    - yarn run cucumber:postpack:impl
+    - yarn run e2e:impl
   after_test:
     - yarn run cucumber:report:badge
   on_success:
@@ -80,10 +78,8 @@ for:
     only:
       - master
   test_script:
-    - yarn run clean
     - yarn run unit
-    - yarn run pack
-    - yarn run cucumber:postpack:impl
+    - yarn run e2e:impl
   build: off
   deploy: off
   configuration: Test
