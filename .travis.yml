@@ -54,9 +54,9 @@ jobs:
     script: yarn run lint
   - stage: unittest
     os: osx
-      script: yarn run unit
+    script: yarn run unit
   - os: linux
-      script: yarn run unit
+    script: yarn run unit
   - stage: unittestandcoverage
     allow_failures:
     - os: linux
