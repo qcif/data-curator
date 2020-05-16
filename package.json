@@ -73,10 +73,10 @@
             "ia32"
           ]
         }
-      ],
-      "nsis": {
-        "runAfterFinish": false
-      }
+      ]
+    },
+    "nsis": {
+      "runAfterFinish": false
     },
     "linux": {
       "icon": "build/icons",
