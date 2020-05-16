@@ -31,13 +31,12 @@ install:
   - git reset --hard HEAD
   - yarn
   - node --version
-  - yarn autoclean
+  - yarn autoclean --force
   - yarn run clean
   - yarn run lint
   - if defined APPVEYOR_PULL_REQUEST_NUMBER ECHO PR %APPVEYOR_PULL_REQUEST_NUMBER%
   - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run unit
-  - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run pack
-  - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run cucumber:postpack:impl
+  - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run e2e:impl
 configuration: Debug
 
 for:
