@@ -19,7 +19,7 @@ let hotMiddleware
 function logStats (proc, data) {
   let log = ''
 
-  log += chalk.yellow.bold(`┏ ${proc} Process ${new Array((19 - proc.length) + 1).join('-')}`)
+  log += chalk.blue.bold(`┏ ${proc} Process ${new Array((19 - proc.length) + 1).join('-')}`)
   log += '\n\n'
 
   if (typeof data === 'object') {
@@ -33,7 +33,7 @@ function logStats (proc, data) {
     log += `  ${data}\n`
   }
 
-  log += '\n' + chalk.yellow.bold(`┗ ${new Array(28 + 1).join('-')}`) + '\n'
+  log += '\n' + chalk.blue.bold(`┗ ${new Array(28 + 1).join('-')}`) + '\n'
 
   console.log(log)
 }
@@ -159,7 +159,7 @@ function greeting () {
       font: 'simple3d',
       space: false
     })
-  } else console.log(chalk.yellow.bold('\n  electron-vue'))
+  } else console.log(chalk.blue.bold('\n  electron-vue'))
   console.log(chalk.blue('  getting ready...') + '\n')
 }
 
