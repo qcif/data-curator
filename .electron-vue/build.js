@@ -56,7 +56,7 @@ function build () {
   m.on('success', () => {
     process.stdout.write('\x1B[2J\x1B[0f')
     console.log(`\n\n${results}`)
-    console.log(`${okayLog}take it away ${chalk.yellow('`electron-builder`')}\n`)
+    console.log(`${okayLog}take it away ${chalk.blue('`electron-builder`')}\n`)
     process.exit()
   })
 
@@ -119,10 +119,10 @@ function greeting () {
 
   if (text && !isCI) {
     say(text, {
-      colors: ['yellow'],
+      colors: ['blue'],
       font: 'simple3d',
       space: false
     })
-  } else console.log(chalk.yellow.bold('\n  lets-build'))
+  } else console.log(chalk.blue.bold('\n  lets-build'))
   console.log()
 }
