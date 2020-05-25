@@ -327,7 +327,8 @@ import {
   validateActiveDataAgainstSchema
 } from '../frictionless.js'
 import {
-  createDataPackage
+  createDataPackageAsZippedResources,
+  createDataPackageAsJson
 } from '@/frictionlessDataPackage.js'
 import HomeTooltip from '../mixins/HomeTooltip'
 import ErrorsTooltip from '../mixins/ErrorsTooltip'
@@ -596,6 +597,9 @@ export default {
       self.removeTab(targetTabId)
       self.cleanUpTabDependencies(targetTabId)
     })
+    ipc.on('createJsonPackage', function (event, arg) {
+      self.createJsonPackage()
+    })
     this.$subscribeTo(errorFeedback$, function (nextError) {
       if (!self.messages) {
         self.messages = []
@@ -814,7 +818,12 @@ export default {
     },
     exportPackageFeedback: function () {
       this.messagesTitle = 'Export package success'
-      this.messages = 'Data package created.'
+      this.messages = 'Data package exported.'
+      this.messagesType = 'feedback'
+    },
+    exportPackageJsonFeedback: function () {
+      this.messagesTitle = 'Export package success'
+      this.messages = 'Data package JSON exported.'
       this.messagesType = 'feedback'
     },
     exportPackageErrors: function (errorMessages) {
@@ -823,9 +832,15 @@ export default {
       this.messagesType = 'error'
       this.updateHotComments()
     },
-    createPackage: async function () {
+    createZipPackage: async function () {
+      await this.createPackage(createDataPackageAsZippedResources, this.exportPackageFeedback)
+    },
+    createJsonPackage: async function () {
+      await this.createPackage(createDataPackageAsJson, this.exportPackageJsonFeedback)
+    },
+    createPackage: async function (exportFunc, exportFeedbackFunc) {
       try {
-        let messages = await createDataPackage()
+        let messages = await exportFunc()
         if (messages.length > 0) {
           this.exportPackageErrors(messages.map(x => {
             return {
@@ -833,7 +848,7 @@ export default {
             }
           }))
         } else {
-          this.exportPackageFeedback()
+          exportFeedbackFunc()
         }
       } catch (err) {
         console.error('There was an error creating a data package.', err)
@@ -1111,7 +1126,7 @@ export default {
           this.validateTable()
           break
         case 'Export':
-          this.createPackage()
+          this.createZipPackage()
           break
         case 'Guess':
           this.inferColumnProperties()
