@@ -3,27 +3,34 @@ import { HotRegister } from '@/hot.js'
 import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
 import path from 'path'
-import { createZipFile } from '@/exportPackage.js'
+import { createJsonFile, createZipFile } from '@/exportPackage.js'
 import { getValidNames, hasAllColumnNames } from '@/frictionlessUtilities.js'
 import _ from 'lodash'
 
-export async function createDataPackage () {
+export async function createDataPackageAsZippedResources () {
+  const errorMessages = await createDataPackage(createZipFile)
+  return errorMessages
+}
+
+export async function createDataPackageAsJson () {
+  const errorMessages = await createDataPackage(createJsonFile)
+  return errorMessages
+}
+
+export async function createDataPackage (postCreateFunc) {
   const errorMessages = []
   if (!haveAllTabsGotFilenames()) {
     errorMessages.push('All tabs must be saved before exporting.')
   }
   try {
     let dataPackage = await buildDataPackage(errorMessages)
-    if (!_.isEmpty(errorMessages)) {
-      return errorMessages
-    }
-    if (dataPackage) {
+    if (_.isEmpty(errorMessages) && dataPackage) {
       dataPackage.commit()
-      if (!dataPackage.valid) {
+      if (dataPackage.valid) {
+        postCreateFunc(dataPackage.descriptor)
+      } else {
         errorMessages.push('There is a problem with at least 1 package property. Please check and try again.')
-        return errorMessages
       }
-      createZipFile(dataPackage.descriptor)
     }
   } catch (err) {
     if (err) {
@@ -92,7 +99,7 @@ async function buildAllResourcesForDataPackage (dataPackage, errorMessages) {
     } catch (err) {
       if (err) {
         console.error('There was an error creating a resource.', err)
-        return false
+        return
       }
     }
   }
