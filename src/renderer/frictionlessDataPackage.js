@@ -1,10 +1,10 @@
-import { Resource, Package } from 'datapackage'
+import { Package, Resource } from 'datapackage'
 import { HotRegister } from '@/hot.js'
 import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
 import path from 'path'
 import { createZipFile } from '@/exportPackage.js'
-import { hasAllColumnNames, getValidNames } from '@/frictionlessUtilities.js'
+import { getValidNames, hasAllColumnNames } from '@/frictionlessUtilities.js'
 import _ from 'lodash'
 
 export async function createDataPackage () {
@@ -14,7 +14,7 @@ export async function createDataPackage () {
   }
   try {
     let dataPackage = await buildDataPackage(errorMessages)
-    if (errorMessages.length > 0) {
+    if (!_.isEmpty(errorMessages)) {
       return errorMessages
     }
     if (dataPackage) {
@@ -38,9 +38,7 @@ export function haveAllTabsGotFilenames () {
 }
 
 async function buildDataPackage (errorMessages) {
-  if (!hasAllPackageRequirements(errorMessages)) {
-    return false
-  }
+  auditPackageRequirements(errorMessages)
   let dataPackage = await initPackage()
   await buildAllResourcesForDataPackage(dataPackage, errorMessages)
   // adding package properties for validation only
@@ -48,7 +46,7 @@ async function buildDataPackage (errorMessages) {
   return dataPackage
 }
 
-function hasAllPackageRequirements (requiredMessages) {
+function auditPackageRequirements (requiredMessages) {
   if (!hotStore.state.provenanceProperties || !hotStore.state.provenanceProperties.markdown) {
     requiredMessages.push(`Provenance properties must be set.`)
   }
@@ -60,10 +58,9 @@ function hasAllPackageRequirements (requiredMessages) {
     if (!name || name.trim() === '') {
       requiredMessages.push(`Package property, 'name' must be set.`)
     }
-    addSourcesRequirements(packageProperties, requiredMessages, 'package')
-    addContributorsRequirements(packageProperties, requiredMessages, 'package')
+    auditSourcesRequirements(packageProperties, requiredMessages, 'package')
+    auditContributorsRequirements(packageProperties, requiredMessages, 'package')
   }
-  return requiredMessages.length === 0
 }
 
 async function initPackage () {
@@ -104,19 +101,18 @@ async function buildAllResourcesForDataPackage (dataPackage, errorMessages) {
 async function createValidResource (hotId, errorMessages) {
   let hotTab = hotStore.state.hotTabs[hotId]
   let hot = HotRegister.getInstance(hotId)
-  if (!hasAllResourceRequirements(hot, errorMessages)) {
-    return false
+  auditResourceRequirements(hot, errorMessages)
+  if (_.isEmpty(errorMessages)) {
+    let resource = await buildResource(hotTab.tabId, hot.guid)
+    if (!resource.valid) {
+      console.error(resource.errors)
+      errorMessages.push('There is a required table or column property that is missing. Please check that all required properties are entered.')
+    }
+    return resource
   }
-  let resource = await buildResource(hotTab.tabId, hot.guid)
-  if (!resource.valid) {
-    console.error(resource.errors)
-    errorMessages.push('There is a required table or column property that is missing. Please check that all required properties are entered.')
-    return false
-  }
-  return resource
 }
 
-function hasAllResourceRequirements (hot, requiredMessages) {
+function auditResourceRequirements (hot, requiredMessages) {
   let tableProperties = hotStore.state.hotTabs[hot.guid].tableProperties
   if (!tableProperties) {
     requiredMessages.push(`Table properties must be set.`)
@@ -125,8 +121,8 @@ function hasAllResourceRequirements (hot, requiredMessages) {
     if (!name || name.trim() === '') {
       requiredMessages.push(`Table property, 'name', must not be empty.`)
     }
-    addSourcesRequirements(tableProperties, requiredMessages, 'table')
-    addForeignKeyRequirements(tableProperties, requiredMessages)
+    auditSourcesRequirements(tableProperties, requiredMessages, 'table')
+    auditForeignKeyRequirements(tableProperties, requiredMessages)
   }
   let columnProperties = hotStore.state.hotTabs[hot.guid].columnProperties
   if (!columnProperties) {
@@ -137,46 +133,34 @@ function hasAllResourceRequirements (hot, requiredMessages) {
       requiredMessages.push(`Column property names cannot be empty - set a Header Row`)
     }
   }
-  return requiredMessages.length === 0
+  // return requiredMessages.length === 0
 }
 
-function addSourcesRequirements (properties, requiredMessages, entityName) {
-  if (typeof properties.sources === 'undefined') {
+function auditSourcesRequirements (properties, requiredMessages, entityName) {
+  auditGenericRequirements(properties, requiredMessages, entityName, 'sources')
+}
+
+function auditContributorsRequirements (properties, requiredMessages, entityName) {
+  auditGenericRequirements(properties, requiredMessages, entityName, 'contributors')
+}
+
+function auditGenericRequirements (properties, requiredMessages, entityName, auditField) {
+  if (typeof properties[auditField] === 'undefined') {
     return
   }
-  for (let source of properties.sources) {
-    if (hasAllEmptyValues(source)) {
-      _.pull(properties.sources, source)
-    } else if (!source.title || source.title.trim() === '') {
-      requiredMessages.push(`At least 1 ${entityName} source does not have a title.`)
-      return false
+  for (let nextAuditField of properties[auditField]) {
+    if (hasAllEmptyValues(nextAuditField)) {
+      _.pull(properties[auditField], nextAuditField)
+    } else if (_.isEmpty(_.trim(_.get(nextAuditField, 'title')))) {
+      requiredMessages.push(`At least 1 ${entityName} ${nextAuditField} does not have a title.`)
+      return
     } else {
       // console.log('source is valid')
     }
   }
-  if (properties.sources.length < 1) {
-    properties.sources = null
-    _.unset(properties, 'sources')
-  }
-}
-
-function addContributorsRequirements (properties, requiredMessages, entityName) {
-  if (typeof properties.contributors === 'undefined') {
-    return
-  }
-  for (let contributor of properties.contributors) {
-    if (hasAllEmptyValues(contributor)) {
-      _.pull(properties.contributors, contributor)
-    } else if (_.isEmpty(_.get(contributor, 'title')) || contributor.title.trim() === '') {
-      requiredMessages.push(`At least 1 ${entityName} contributor does not have a title.`)
-      return false
-    } else {
-      // console.log('contributor is valid')
-    }
-  }
-  if (properties.contributors.length < 1) {
-    properties.contributors = null
-    _.unset(properties, 'contributors')
+  if (properties[auditField].length < 1) {
+    properties[auditField] = null
+    _.unset(properties, auditField)
   }
 }
 
@@ -191,14 +175,13 @@ function hasAllEmptyValues (propertyObject) {
   return isEmpty
 }
 
-function addForeignKeyRequirements (tableProperties, requiredMessages) {
+function auditForeignKeyRequirements (tableProperties, requiredMessages) {
   if (typeof tableProperties.foreignKeys === 'undefined') {
     return
   }
   for (let foreignKey of tableProperties.foreignKeys) {
     if (_.isEmpty(foreignKey.fields) || _.isEmpty(foreignKey.reference.fields)) {
       requiredMessages.push(`Foreign keys cannot be empty.`)
-      return false
     }
   }
 }
