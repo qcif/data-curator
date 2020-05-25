@@ -47,6 +47,10 @@ export function loadCsvDataIntoHot (hot, data, format) {
     arrays = parse(data, csvOptions)
     pushCsvFormat(hot.guid, format)
   }
+  // initialised data may have been 1 empty column - which might not have parsed correctly - fix here
+  if (_.isEmpty(arrays)) {
+    arrays = [['']]
+  }
   fixRaggedRows(arrays)
   hot.loadData(arrays)
   hot.render()
@@ -62,7 +66,6 @@ function captureBOM (data, hotId) {
 
 export function loadArrayDataIntoHot (hot, arrays, format) {
   pushCsvFormat(hot.guid, format)
-
   fixRaggedRows(arrays)
   hot.loadData(arrays)
   hot.render()

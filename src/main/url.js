@@ -7,7 +7,11 @@ import { closeWindowSafely, focusMainWindow, focusOrNewSecondaryWindow } from '.
 import { disableOpenFileItems, enableOpenFileItems } from './menuUtils.js'
 import tmp from 'tmp'
 import _ from 'lodash'
-import { loadPackageFromJson, loadResourceSchemaFromJson } from './loadFrictionless'
+import {
+  loadDataPackageJsonFromSource,
+  loadDataPackageJsonFromSourceWithNoData,
+  loadResourceSchemaFromJson
+} from './loadFrictionless'
 
 // auto cleanup
 tmp.setGracefulCleanup()
@@ -16,7 +20,12 @@ const defaultDialogTitle = 'Data Curator - '
 
 export function showUrlDialogForResourceSchema () {
   let browserWindow = createUrlDialogWindow('Open Table Resource Schema URL')
-  processUrlDialogForCallback(browserWindow, handleJsonForResourceSchema)
+  processUrlDialogForCallback(browserWindow, handleJsonForSchemaHandler(loadResourceSchemaFromJson))
+}
+
+export function showUrlDialogForPackageDescriptor () {
+  let browserWindow = createUrlDialogWindow('Open Data Package Descriptor URL')
+  processUrlDialogForCallback(browserWindow, handleJsonForSchemaHandler(loadDataPackageJsonFromSourceWithNoData))
 }
 
 // TODO: handle errors by rejecting promises and throwing back up stack
@@ -28,7 +37,13 @@ export function showUrlDialogForPackage () {
 function createUrlDialogWindow (titleExtension) {
   disableOpenFileItems()
   const fullTitle = titleExtension ? `${defaultDialogTitle} ${titleExtension}` : defaultDialogTitle
-  let browserWindow = focusOrNewSecondaryWindow('urldialog', { title: fullTitle, width: 450, height: 150, modal: true, alwaysOnTop: true })
+  let browserWindow = focusOrNewSecondaryWindow('urldialog', {
+    title: fullTitle,
+    width: 450,
+    height: 150,
+    modal: true,
+    alwaysOnTop: true
+  })
   browserWindow.on('closed', () => {
     enableOpenFileItems()
   })
@@ -55,7 +70,7 @@ export function processUrlDialogForCallback (browserWindow, callback, errorMessa
 
 function handleZipOrJsonForPackage (urlText) {
   if (_.endsWith(urlText, '.json')) {
-    loadPackageFromJson(urlText)
+    loadDataPackageJsonFromSource(urlText)
   } else if (_.endsWith(urlText, '.zip')) {
     importDataPackageZipFromUrl(urlText)
   } else {
@@ -63,11 +78,13 @@ function handleZipOrJsonForPackage (urlText) {
   }
 }
 
-function handleJsonForResourceSchema (urlText) {
-  if (_.endsWith(urlText, '.json')) {
-    loadResourceSchemaFromJson(urlText)
-  } else {
-    showUrlPathNotSupportedMessage(urlText, '".json"')
+function handleJsonForSchemaHandler (schemaHandler) {
+  return (urlText) => {
+    if (_.endsWith(urlText, '.json')) {
+      schemaHandler(urlText)
+    } else {
+      showUrlPathNotSupportedMessage(urlText, '".json"')
+    }
   }
 }
 
