@@ -69,45 +69,45 @@ jobs:
       - yarn run unit
   - stage: test
     os: osx
-    script: "yarn run e2e:impl -- test/features/backlog"
+    script: "yarn run e2e:impl test/features/backlog"
   - os: linux
-    script: "yarn run e2e:impl -- test/features/backlog"
+    script: "yarn run e2e:impl test/features/backlog"
   - os: osx
-    script: "yarn run e2e:impl -- test/features/data_curator"
+    script: "yarn run e2e:impl test/features/data_curator"
   - os: linux
-    script: "yarn run e2e:impl -- test/features/data_curator"
+    script: "yarn run e2e:impl test/features/data_curator"
   - os: osx
-    script: "yarn run e2e:impl -- test/features/edit"
+    script: "yarn run e2e:impl test/features/edit"
   - os: linux
-    script: "yarn run e2e:impl -- test/features/edit"
+    script: "yarn run e2e:impl test/features/edit"
   - os: osx
-    script: "yarn run e2e:impl -- test/features/file"
+    script: "yarn run e2e:impl test/features/file"
   - os: linux
-    script: "yarn run e2e:impl -- test/features/file"
+    script: "yarn run e2e:impl test/features/file"
   - os: osx
-    script: "yarn run e2e:impl -- test/features/find"
+    script: "yarn run e2e:impl test/features/find"
   - os: linux
-    script: "yarn run e2e:impl -- test/features/find"
+    script: "yarn run e2e:impl test/features/find"
   - os: osx
-    script: "yarn run e2e:impl -- test/features/help"
+    script: "yarn run e2e:impl test/features/help"
   - os: linux
-    script: "yarn run e2e:impl -- test/features/help"
+    script: "yarn run e2e:impl test/features/help"
   - os: osx
-    script: "yarn run e2e:impl -- test/features/other"
+    script: "yarn run e2e:impl test/features/other"
   - os: linux
-    script: "yarn run e2e:impl -- test/features/other"
+    script: "yarn run e2e:impl test/features/other"
   - os: osx
-    script: "yarn run e2e:impl -- test/features/support"
+    script: "yarn run e2e:impl test/features/support"
   - os: linux
-    script: "yarn run e2e:impl -- test/features/support"
+    script: "yarn run e2e:impl test/features/support"
   - os: osx
-    script: "yarn run e2e:impl -- test/features/tools"
+    script: "yarn run e2e:impl test/features/tools"
   - os: linux
-    script: "yarn run e2e:impl -- test/features/tools"
+    script: "yarn run e2e:impl test/features/tools"
   - os: osx
-    script: "yarn run e2e:impl -- test/features/window"
+    script: "yarn run e2e:impl test/features/window"
   - os: linux
-    script: "yarn run e2e:impl -- test/features/window"
+    script: "yarn run e2e:impl test/features/window"
   - stage: build
     os: osx
     script:
