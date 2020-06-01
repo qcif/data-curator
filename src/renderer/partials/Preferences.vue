@@ -24,7 +24,7 @@
           :setProperty="setProperty"
           :waitForHotIdFromTabId="waitForHotIdFromTabId"
           :currentHotId="currentHotId"
-          :contributorsSetter="contributorsSetter"
+          :defaultSetter="defaultSetter"
         />
         <div
           v-show="errors.has(formprop.key) && removeProperty(formprop.key)"
@@ -40,6 +40,7 @@
 import SideNav from '@/partials/SideNav'
 import licenses from '@/partials/Licenses'
 import contributors from '@/partials/Contributors'
+import customs from '@/partials/Customs'
 import PreferencesTooltip from '@/mixins/PreferencesTooltip'
 import ValidationRules from '@/mixins/ValidationRules'
 import { ipcRenderer as ipc } from 'electron'
@@ -48,7 +49,8 @@ export default {
   name: 'Preferences',
   components: {
     licenses,
-    contributors
+    contributors,
+    customs
   },
   extends: SideNav,
   mixins: [ValidationRules, PreferencesTooltip],
@@ -66,6 +68,10 @@ export default {
           key: 'contributors',
           tooltipId: 'tooltip-preferences-contributors',
           tooltipView: 'tooltipPreferencesContributors'
+        },
+        {
+          label: 'Custom Column Property',
+          key: 'customs'
         }]
     }
   },
@@ -76,10 +82,10 @@ export default {
     getPropertyGivenHotId: function (key, hotId) {
       return this.getProperty(key)
     },
-    contributorsSetter: function (index, prop, value) {
-      let currentContributors = ipc.sendSync('getPreference', 'contributors')
-      currentContributors[index][prop] = value
-      this.setProperty('contributors', currentContributors)
+    defaultSetter: function (index, prop, value, preference) {
+      let current = ipc.sendSync('getPreference', preference)
+      current[index][prop] = value
+      this.setProperty(preference, current)
     },
     setProperty: function (key, values) {
       if (!_.isEmpty(values)) {
