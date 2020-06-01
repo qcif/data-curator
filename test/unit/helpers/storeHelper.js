@@ -9,16 +9,15 @@ export function resetHotStore () {
 
 // note that the layout here is different (flattened and simpler) than the actual store
 export function stubSimpleTabStore (hot) {
+  const defaultState = {}
+  store.commit('resetHotState')
+  _.merge(defaultState, store.state)
+  _.merge(defaultState, {
+    activeTitle: '',
+    hot: hot
+  })
   const stubbedStore = {
-    state: {
-      tabs: [],
-      activeTab: '',
-      tabObjects: {},
-      tabIndex: -1,
-      activeTitle: '',
-      hotTabs: {},
-      hot: hot
-    },
+    state: defaultState,
 
     getters: {
       getTabs: state => {
@@ -32,6 +31,9 @@ export function stubSimpleTabStore (hot) {
       },
       getTabIndex: state => {
         return 0
+      },
+      getTabFilenames: state => {
+        return state.filenames
       },
       getHotSelection: (state, getters) => (hotId) => {
         return [0, 0, 0, 0]

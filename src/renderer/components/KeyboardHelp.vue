@@ -282,7 +282,7 @@
           <td><kbd>Shift &#8679;</kbd> <kbd>Ctrl</kbd> <kbd>S</kbd></td>
           <td><kbd>Shift &#8679;</kbd> <kbd>Command &#8984;</kbd> <kbd>S</kbd></td>
         </tr>
-        <!-- https://github.com/ODIQueensland/data-curator/issues/67
+        <!-- https://github.com/qcif/data-curator/issues/67
       <tr>
         <td><b>Close Tab</b> - close the active data tab</td>
         <td><kbd>Ctrl</kbd> <kbd>W</kbd></td>
@@ -332,7 +332,7 @@
           <td><kbd>Ctrl</kbd> <kbd>V</kbd></td>
           <td><kbd>Command &#8984;</kbd> <kbd>V</kbd></td>
         </tr>
-        <!-- see https://github.com/ODIQueensland/data-curator/issues/89
+        <!-- see https://github.com/qcif/data-curator/issues/89
       <tr>
         <td><b>Select All</b> the data in the table</td>
         <td><kbd>Ctrl</kbd> <kbd>A</kbd> </td>
@@ -481,7 +481,7 @@
           <td />
           <td><kbd>Command &#8984;</kbd> <kbd>M</kbd></td>
         </tr>
-        <!--  see https://github.com/ODIQueensland/data-curator/issues/273
+        <!--  see https://github.com/qcif/data-curator/issues/273
       <tr>
         <td><b>Next Tab</b> - make the next tab (if it exists) the active tab</td>
         <td><kbd>Ctrl</kbd> <kbd>&#8594;</kbd></td>

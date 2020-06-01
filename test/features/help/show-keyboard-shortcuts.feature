@@ -11,7 +11,7 @@ Feature: Show Keyboard Shortcuts
   USER INTERFACE
   ==============
 
-  ![Show keyboard shortcuts user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/keyboard-shortcuts.png)
+  ![Show keyboard shortcuts user interface](https://raw.githubusercontent.com/qcif/data-curator/develop/static/img/ui/keyboard-shortcuts.png)
 
   Scenario: Show Keyboard Shortcuts
     Given Data Curator is open

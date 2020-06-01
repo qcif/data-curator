@@ -14,30 +14,30 @@ The best way to contribute financially to this project is to [contact QCIF](http
 
 ## Contribute Ideas and Feature Requests
 
-Your idea for a feature addition may already exist on our [issues backlog](https://github.com/ODIQueensland/data-curator/issues) or [feature backlog](https://app.cucumber.pro/projects/data-curator/search/branch/develop?q=%40backlog). If a similar idea is in the backlog, please join the conversation.
+Your idea for a feature addition may already exist on our [issues backlog](https://github.com/qcif/data-curator/issues) or [feature backlog](https://app.cucumber.pro/projects/data-curator/search/branch/develop?q=%40backlog). If a similar idea is in the backlog, please join the conversation.
 
 If the gist of your idea isn't there:
-- [request a feature](https://github.com/ODIQueensland/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=mattRedBox)
+- [request a feature](https://github.com/qcif/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=mattRedBox)
 - to discuss your idea privately, [contact QCIF](https://www.qcif.edu.au/contact-us/) or the [development team responsible for this project](support@redboxresearchdata.com.au)).
 
 ## Contribute Issues
 
-If you encounter a problem, please [add an issue](https://github.com/ODIQueensland/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=mattRedBox). Make sure it isn't [already reported](https://github.com/ODIQueensland/data-curator/issues).
+If you encounter a problem, please [add an issue](https://github.com/qcif/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=mattRedBox). Make sure it isn't [already reported](https://github.com/qcif/data-curator/issues).
 
 In order for us to best respond to the issue, we need as much information about the issue as you can provide. Please provide a descriptive name for your issue and provide us with as much detail as possible.
 
 ## Contribute Documentation
 
-[Help documentation](https://odiqueensland.github.io/data-curator-help/) is being drafted in a [separate repository](https://github.com/ODIQueensland/data-curator-help). Feel free to contribute.
+[Help documentation](https://qcif.github.io/data-curator-help/) is being drafted in a [separate repository](https://github.com/qcif/data-curator-help). Feel free to contribute.
 
 ## Contribute Code
-Data Curator is open source, and we a grateful for [all code contributions](https://github.com/ODIQueensland/data-curator/graphs/contributors). By participating in this project, you agree to abide by our [Code of Conduct](https://github.com/ODIQueensland/data-curator/blob/master/.github/CODE_OF_CONDUCT.md).
+Data Curator is open source, and we a grateful for [all code contributions](https://github.com/qcif/data-curator/graphs/contributors). By participating in this project, you agree to abide by our [Code of Conduct](https://github.com/qcif/data-curator/blob/master/.github/CODE_OF_CONDUCT.md).
 
 Before you start coding, please reach out to us either by email  [support@redboxresearchdata.com.au](mailto:support@redboxresearchdata.com.au) or by tagging a repository administrator on an issue you'd like to contribute towards.
 
 If this is your first time contributing to the ODI Australian Network’s codebase you will need to [create a fork of this repository](https://help.github.com/articles/fork-a-repo/).
 
-Follow the [readme instructions](https://github.com/ODIQueensland/data-curator#development) to get your Development environment running locally.
+Follow the [readme instructions](https://github.com/qcif/data-curator#development) to get your Development environment running locally.
 
 Ensure that the automated tests pass before starting work on your contribution.
 

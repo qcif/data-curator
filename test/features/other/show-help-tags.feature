@@ -16,7 +16,7 @@ Feature: Show Help Tags
   USER INTERFACE
   ==============
   
-  ![Help tags user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/help-tags.png)
+  ![Help tags user interface](https://raw.githubusercontent.com/qcif/data-curator/develop/static/img/ui/help-tags.png)
 
   Scenario: Show Help Tag
     Given Data Curator is open

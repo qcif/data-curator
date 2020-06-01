@@ -5,7 +5,7 @@
   "description": "Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data",
   "license": "MIT",
   "main": "./dist/electron/main.js",
-  "repository": "https://github.com/ODIQueensland/data-curator.git",
+  "repository": "https://github.com/qcif/data-curator.git",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
     "build:sign:win:code": "node .electron-vue/build.js && electron-builder --config.win.sign=signWinCode.js",
