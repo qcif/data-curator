@@ -903,7 +903,7 @@ export default {
         const hotId = this.loadDataIntoLatestHot(data, updatedFormat)
         this.initHotTablePropertiesFromDescriptor(hotId, descriptor)
         this.initHotColumnPropertiesFromSchema(hotId, descriptor.schema)
-        // hot rendering problem when tabs opened quickly - https://github.com/ODIQueensland/data-curator/issues/803- workaround as selecting table re-renders
+        // hot rendering problem when tabs opened quickly - https://github.com/qcif/data-curator/issues/803- workaround as selecting table re-renders
         getCurrentColumnIndexOrMin()
         updateHotDimensions$.next()
       })
@@ -974,7 +974,7 @@ export default {
         const columnCount = getColumnCount()
         if (this.currentHotId && schemaFieldsCount === columnCount) {
           this.initHotColumnPropertiesFromSchema(this.currentHotId, schema)
-          // hot rendering problem when tabs opened quickly - https://github.com/ODIQueensland/data-curator/issues/803- workaround as selecting table re-renders
+          // hot rendering problem when tabs opened quickly - https://github.com/qcif/data-curator/issues/803- workaround as selecting table re-renders
           getCurrentColumnIndexOrMin()
           updateHotDimensions$.next()
           LockProperties.lockTableSchema()

@@ -9,6 +9,7 @@ import Vuex from 'vuex'
 import { globalStubWindows } from '../helpers/globalHelper.js'
 import { errorFeedback$ } from '@/rxSubject.js'
 import { ipcRenderer as ipc } from 'electron'
+import Vue from 'vue'
 
 describe('Home.vue', function () {
   let sandbox
@@ -69,8 +70,9 @@ describe('Home.vue', function () {
     })
 
     toolbarMenus.forEach(menu => {
-      it(`should show the relevant active button and navigation panel when ${menu.name} button is clicked.`, function () {
+      it(`should show the relevant active button and navigation panel when ${menu.name} button is clicked.`, async () => {
         clickToolbarId(wrapper, menu.id)
+        await Vue.nextTick()
         let clickedMenuName = wrapper.vm.$el.querySelector('#toolbar li.active').textContent
         clickedMenuName = clickedMenuName
           ? clickedMenuName.trim()
@@ -155,7 +157,7 @@ describe('Home.vue', function () {
         errorFeedback$.next(stubBasicErrorMessage1())
         callback()
       })
-      clickToolbarId(wrapper, 'validate-data')
+      await clickToolbarId(wrapper, 'validate-data')
       await flushPromises()
       const el = wrapper.vm.$el.querySelectorAll(`#csvContent .editor .ht_master table.htCore .htCommentCell`)
       expect(el.length).to.equal(1)
@@ -166,7 +168,7 @@ describe('Home.vue', function () {
       Home.__Rewire__('validateActiveDataAgainstSchema', function (callback) {
         callback()
       })
-      clickToolbarId(wrapper, 'validate-data')
+      await clickToolbarId(wrapper, 'validate-data')
       await flushPromises()
       const el = wrapper.vm.$el.querySelectorAll(`#csvContent .editor .ht_master table.htCore .htCommentCell`)
       expect(el.length).to.equal(0)

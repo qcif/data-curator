@@ -16,7 +16,7 @@ Feature: About
   USER INTERFACE
   ==============
 
-  ![About panel user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/about.png)
+  ![About panel user interface](https://raw.githubusercontent.com/qcif/data-curator/develop/static/img/ui/about.png)
 
   Scenario: Show the About panel
     Given Data Curator is open
