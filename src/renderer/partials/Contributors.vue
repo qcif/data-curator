@@ -92,7 +92,7 @@ export default {
       type: Function,
       default: function () {}
     },
-    contributorsSetter: {
+    defaultSetter: {
       type: Function,
       default: undefined
     }
@@ -164,8 +164,8 @@ export default {
       this.contributors = this.getContributorsFromPackageProperties()
     },
     setContributorProp: function (index, prop, value) {
-      if (typeof this.contributorsSetter !== 'undefined') {
-        this.contributorsSetter(index, prop, value)
+      if (typeof this.defaultSetter !== 'undefined') {
+        this.defaultSetter(index, prop, value, 'contributors')
       } else {
         this.setProperty(`contributors[${index}][${prop}]`, value)
       }
