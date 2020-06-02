@@ -5,12 +5,15 @@
       :key="gindex"
       class="custom col-sm-12"
     >
-      <div class="inputs-container">
+      <div
+        v-for="prop in Object.keys(custom)"
+        :id="prop + gindex"
+        :key="prop + gindex"
+        class="inputs-container"
+      >
         <div
-          v-for="prop in Object.keys(custom)"
-          :id="prop + gindex"
-          :key="prop + gindex"
-          class="input-group"
+          v-if="prop !== 'type'"
+          class="input-group text"
         >
           <span class="input-group-addon input-sm">{{ prop }}</span>
           <input
@@ -22,27 +25,41 @@
             type="text"
             @input="setCustomProp(gindex, prop, $event.target.value)"
           >
-          <div
-            v-show="errors.has(prop + gindex)"
-            class="row help validate-danger"
-          >
-            {{ errors.first(prop + gindex) }}
+        </div>
+        <div class="input-group type">
+          <span class="input-group-addon input-sm">type</span>
+          <div class="custom-types">
+            <label
+              v-for="customType of customTypes"
+              :key="customType"
+              class="checkbox-inline form-control input-sm"
+            ><input
+              type="checkbox"
+              value=""
+            ><span>{{ customType }}</span></label>
           </div>
+          <!--          <select-->
+          <!--            :id="prop + gindex"-->
+          <!--            v-model="selectedCustomTypes"-->
+          <!--            class="form-control custom-types input-sm"-->
+          <!--            multiple-->
+          <!--          >-->
+          <!--            <option-->
+          <!--              v-for="customType of customTypes"-->
+          <!--              :key="customType"-->
+          <!--              :value="customType"-->
+          <!--            >-->
+          <!--              {{ customType }}-->
+          <!--            </option>-->
+          <!--          </select>-->
+        </div>
+        <div
+          v-show="errors.has(prop + gindex)"
+          class="row help validate-danger"
+        >
+          {{ errors.first(prop + gindex) }}
         </div>
       </div>
-      <select
-              v-model="selectedCustomTypes"
-              class="form-control custom-types input-sm"
-              multiple
-      >
-        <option
-                v-for="customType of customTypes"
-                :key="customType + gindex"
-                :value="prop + gindex"
-        >
-          {{ customType }}
-        </option>
-      </select>
       <button
         type="button"
         class="btn btn-danger btn-sm"
@@ -92,21 +109,12 @@ export default {
   },
   data () {
     return {
-      customs: [],
-      selectedCustomTypes: [],
+      customs: {},
       customTypes: ['column', 'table', 'package']
     }
   },
   computed: {
-    ...mapGetters(['getActiveTab']),
-    selectedKeys: {
-      get () {
-        return this.getCustomType
-      },
-      set: function (value) {
-        this.pushCustomType(value)
-      }
-    }
+    ...mapGetters(['getActiveTab'])
   },
   asyncComputed: {
     getCustoms: {
@@ -121,7 +129,7 @@ export default {
   },
   watch: {
     selectedCustomTypes: function (selected) {
-      this.setProperty('customTableProperties', this.licensesObject(selected))
+      this.setProperty('customTableProperties', this.customsObject(selected))
     }
   },
   mounted: function () {
@@ -149,6 +157,7 @@ export default {
     },
     getCustomTypes: function () {
       console.log('in get custom types')
+      return []
     },
     setCustomProp: function (index, prop, value) {
       if (typeof this.defaultSetter !== 'undefined') {
