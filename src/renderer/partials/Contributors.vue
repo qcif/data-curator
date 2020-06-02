@@ -121,7 +121,8 @@ export default {
         let contributors = this.getContributorsFromPackageProperties() || []
         for (const [index, contributor] of contributors.entries()) {
           if (contributor.role.trim() === '') {
-            this.setProperty(`contributors[${index}]role`, this.defaultRole)
+            _.set(contributor, `role`, this.defaultRole)
+            this.setContributorProp(index, 'role', this.defaultRole)
           }
         }
         return contributors
