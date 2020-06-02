@@ -70,7 +70,7 @@ export default {
           tooltipView: 'tooltipPreferencesContributors'
         },
         {
-          label: 'Custom Column Property',
+          label: 'Custom Properties',
           key: 'customs'
         }]
     }
