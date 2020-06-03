@@ -8,14 +8,14 @@
       <div class="inputs-container">
         <div
           v-for="prop in Object.keys(contributor)"
-          :id="prop + gindex"
-          :key="prop + gindex"
+          :id="'contributor' + prop + gindex"
+          :key="'contributor' + prop + gindex"
           class="input-group"
         >
           <span class="input-group-addon input-sm">{{ prop }}</span>
           <select
             v-if="prop === 'role'"
-            :id="prop"
+            :id="prop + gindex"
             :value="contributor[prop]"
             class="form-control input-sm"
             @input="setContributorProp(gindex, prop, $event.target.value)"

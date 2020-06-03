@@ -7,8 +7,8 @@
     >
       <div
         v-for="prop in Object.keys(custom)"
-        :id="prop + gindex"
-        :key="prop + gindex"
+        :id="'custom' + prop + gindex"
+        :key="'custom' + prop + gindex"
         class="inputs-container"
       >
         <div
@@ -26,32 +26,23 @@
             @input="setCustomProp(gindex, prop, $event.target.value)"
           >
         </div>
-        <div class="input-group type">
+        <div
+          v-else
+          class="input-group type"
+        >
           <span class="input-group-addon input-sm">type</span>
           <div class="custom-types">
             <label
               v-for="customType of customTypes"
-              :key="customType"
+              :key="customType + gindex"
               class="checkbox-inline form-control input-sm"
             ><input
+              :id="prop + customType + gindex"
               type="checkbox"
-              value=""
+              :checked="includesCustomProp(custom[prop], customType)"
+              @click="setCustomPropChecked(gindex, prop, customType, $event.target.checked)"
             ><span>{{ customType }}</span></label>
           </div>
-          <!--          <select-->
-          <!--            :id="prop + gindex"-->
-          <!--            v-model="selectedCustomTypes"-->
-          <!--            class="form-control custom-types input-sm"-->
-          <!--            multiple-->
-          <!--          >-->
-          <!--            <option-->
-          <!--              v-for="customType of customTypes"-->
-          <!--              :key="customType"-->
-          <!--              :value="customType"-->
-          <!--            >-->
-          <!--              {{ customType }}-->
-          <!--            </option>-->
-          <!--          </select>-->
         </div>
         <div
           v-show="errors.has(prop + gindex)"
@@ -127,11 +118,6 @@ export default {
       }
     }
   },
-  watch: {
-    selectedCustomTypes: function (selected) {
-      this.setProperty('customTableProperties', this.customsObject(selected))
-    }
-  },
   mounted: function () {
     this.initCustoms()
   },
@@ -149,15 +135,18 @@ export default {
       this.customs = customs
     },
     emptyCustom: function () {
-      return { 'name': '' }
+      return { 'name': '', type: [] }
     },
     initCustoms: function () {
       this.customs = this.getProperty('customs')
-      this.selectedCustomTypes = this.getCustomTypes()
     },
-    getCustomTypes: function () {
-      console.log('in get custom types')
-      return []
+    includesCustomProp: function (current, customType) {
+      return _.includes(current, customType)
+    },
+    setCustomPropChecked: function (index, prop, value, isChecked) {
+      const existingCustom = _.get(this.customs, `[${index}][${prop}]`)
+      const updatedCustom = isChecked ? _.union(existingCustom, [value]) : _.without(existingCustom, value)
+      this.setCustomProp(index, prop, updatedCustom)
     },
     setCustomProp: function (index, prop, value) {
       if (typeof this.defaultSetter !== 'undefined') {
@@ -167,9 +156,6 @@ export default {
       }
       let customs = this.getProperty('customs') || []
       this.customs = customs
-    },
-    customsObject: function (ids) {
-      return []
     }
   }
 }
