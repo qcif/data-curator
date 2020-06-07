@@ -5,61 +5,81 @@
       :key="gindex"
       class="custom col-sm-12"
     >
-      <div
-        v-for="prop in Object.keys(custom)"
-        :id="'custom' + prop + gindex"
-        :key="'custom' + prop + gindex"
-        class="inputs-container"
-      >
+      <template v-if="isChildOfPreferences">
         <div
-          v-if="prop !== 'type'"
-          class="input-group text"
+          v-for="prop in Object.keys(custom)"
+          :id="'custom' + prop + gindex"
+          :key="'custom' + prop + gindex"
+          class="inputs-container"
         >
-          <span class="input-group-addon input-sm">{{ prop }}</span>
-          <input
-            :id="prop + gindex"
-            v-validate="'required'"
-            :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(prop + gindex) }"
-            :value="custom[prop]"
-            :name="prop + gindex"
-            type="text"
-            @input="setCustomProp(gindex, prop, $event.target.value)"
+          <div
+            v-if="prop !== 'types'"
+            class="input-group text"
           >
-        </div>
-        <div
-          v-else
-          class="input-group type"
-        >
-          <span class="input-group-addon input-sm">type</span>
-          <div class="custom-types">
-            <label
-              v-for="customType of customTypes"
-              :key="customType + gindex"
-              class="checkbox-inline form-control input-sm"
-            ><input
-              :id="prop + customType + gindex"
-              type="checkbox"
-              :checked="includesCustomProp(custom[prop], customType)"
-              @click="setCustomPropChecked(gindex, prop, customType, $event.target.checked)"
-            ><span>{{ customType }}</span></label>
+            <span class="input-group-addon input-sm">{{ prop }}</span>
+            <input
+              :id="prop + gindex"
+              v-validate="'required'"
+              :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(prop + gindex) }"
+              :value="custom[prop]"
+              :name="prop + gindex"
+              type="text"
+              @input="setCustomProp(gindex, prop, $event.target.value)"
+            >
+          </div>
+          <div
+            v-else
+            class="input-group types"
+          >
+            <span class="input-group-addon input-sm">types</span>
+            <div class="custom-types">
+              <label
+                v-for="customType of customTypes"
+                :key="customType + gindex"
+                class="checkbox-inline form-control input-sm"
+              ><input
+                :id="prop + customType + gindex"
+                type="checkbox"
+                :checked="includesCustomProp(custom[prop], customType)"
+                @click="setCustomPropChecked(gindex, prop, customType, $event.target.checked)"
+              ><span>{{ customType }}</span></label>
+            </div>
+          </div>
+          <div
+            v-show="errors.has(prop + gindex)"
+            class="row help validate-danger"
+          >
+            {{ errors.first(prop + gindex) }}
           </div>
         </div>
-        <div
-          v-show="errors.has(prop + gindex)"
-          class="row help validate-danger"
+        <button
+          type="button"
+          class="btn btn-danger btn-sm"
+          @click="removeCustom(gindex)"
         >
-          {{ errors.first(prop + gindex) }}
+          <span class="glyphicon glyphicon-minus" />
+        </button>
+      </template>
+      <template v-else-if="isChildOfCustomType(custom['types'])">
+        <div
+          class="input-group text"
+        >
+          <span class="input-group-addon input-sm">{{ custom['name'] }}</span>
+          <input
+            :id="'value' + gindex"
+            :class="{ 'form-control input-sm': true }"
+            :value="custom['value']"
+            :name="'value' + gindex"
+            type="text"
+            @input="setCustomProp(gindex, value, $event.target.value)"
+          >
         </div>
-      </div>
-      <button
-        type="button"
-        class="btn btn-danger btn-sm"
-        @click="removeCustom(gindex)"
-      >
-        <span class="glyphicon glyphicon-minus" />
-      </button>
+      </template>
     </div>
-    <div class="button-container">
+    <div
+      v-if="isChildOfPreferences"
+      class="button-container"
+    >
       <button
         type="button"
         class="add-custom btn btn-primary btn-sm"
@@ -101,11 +121,33 @@ export default {
   data () {
     return {
       customs: {},
-      customTypes: ['column', 'table', 'package']
+      customTypes: ['column', 'table', 'package'],
+      typesMappings: {
+        tabular: 'table',
+        packager: 'package',
+        column: 'column'
+      }
     }
   },
   computed: {
-    ...mapGetters(['getActiveTab'])
+    ...mapGetters(['getActiveTab']),
+    isChildOfPreferences () {
+      return this.parentName === 'preferences'
+    },
+    isChildOfCustomType () {
+      const parent = this.parentAsCustomType
+      return (types) => {
+        console.log('checking types')
+        console.log(types)
+        return _.find(types, function (t) { return parent === t })
+      }
+    },
+    parentAsCustomType () {
+      return _.get(this.typesMappings, this.parentName)
+    },
+    parentName () {
+      return _.toLower(this.$parent.$options.name)
+    }
   },
   asyncComputed: {
     getCustoms: {
@@ -119,6 +161,8 @@ export default {
     }
   },
   mounted: function () {
+    console.dir(this.$parent)
+    console.dir(this.$parent.$options.name === 'Preferences')
     this.initCustoms()
   },
   methods: {
@@ -135,7 +179,7 @@ export default {
       this.customs = customs
     },
     emptyCustom: function () {
-      return { 'name': '', type: [] }
+      return { 'name': '', types: [] }
     },
     initCustoms: function () {
       this.customs = this.getProperty('customs')
@@ -154,8 +198,7 @@ export default {
       } else {
         this.setProperty(`customs[${index}][${prop}]`, value)
       }
-      let customs = this.getProperty('customs') || []
-      this.customs = customs
+      this.customs = this.getProperty('customs') || []
     }
   }
 }

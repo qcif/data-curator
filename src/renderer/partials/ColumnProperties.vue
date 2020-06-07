@@ -497,7 +497,7 @@ export default {
       'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getAllHotTablesColumnNames'
     ]),
     hasTypeFormatWarning () {
-      return (this.typeProperty == 'date' && this.formatProperty == 'default')
+      return (this.typeProperty === 'date' && this.formatProperty === 'default')
     },
     getNameProperty () {
       let allColumns = this.allTablesAllColumnsNames[this.activeCurrentHotId] || []
