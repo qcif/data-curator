@@ -10,21 +10,23 @@
         class="propertyrow"
       >
         <label
+          v-if="formprop.label"
           v-tooltip.left="tooltip(formprop.tooltipId)"
           :for="formprop.label"
           class="control-label col-sm-3"
         >{{ formprop.label }}</label>
         <component :is="formprop.tooltipView" />
-        <component
-          :is="formprop.key"
-          v-if="isSharedComponent(formprop.key)"
-          :propertyName="formprop.key"
-          :getProperty="getProperty"
-          :getPropertyGivenHotId="getPropertyGivenHotId"
-          :setProperty="setProperty"
-          :waitForHotIdFromTabId="waitForHotIdFromTabId"
-          :currentHotId="currentHotId"
-        />
+        <template v-if="isSharedComponent(formprop.key)">
+          <component
+            :is="formprop.key"
+            :propertyName="formprop.key"
+            :getProperty="getProperty"
+            :getPropertyGivenHotId="getPropertyGivenHotId"
+            :setProperty="setProperty"
+            :waitForHotIdFromTabId="waitForHotIdFromTabId"
+            :currentHotId="currentHotId"
+          />
+        </template>
         <!-- <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)"/> -->
         <textarea
           v-else-if="formprop.key === 'description'"
@@ -59,6 +61,7 @@ import SideNav from '@/partials/SideNav'
 import licenses from '@/partials/Licenses'
 import sources from '@/partials/Sources'
 import contributors from '@/partials/Contributors'
+import customs from '@/partials/Customs'
 import PackageTooltip from '@/mixins/PackageTooltip'
 import ValidationRules from '@/mixins/ValidationRules'
 import { ipcRenderer as ipc } from 'electron'
@@ -72,7 +75,8 @@ export default {
   components: {
     licenses,
     sources,
-    contributors
+    contributors,
+    customs
   },
   extends: SideNav,
   mixins: [ValidationRules, PackageTooltip],
@@ -126,8 +130,12 @@ export default {
         key: 'contributors',
         tooltipId: 'tooltip-package-contributors',
         tooltipView: 'tooltipPackageContributors'
+      },
+      {
+        label: 'Custom Properties',
+        key: 'customs'
       }],
-      hasPreferences: ['contributors', 'licenses']
+      hasPreferences: ['contributors', 'licenses', 'customs']
     }
   },
   computed: {
@@ -145,6 +153,7 @@ export default {
         'key': key
       })
       if (typeof packageProperty === 'undefined') {
+        console.log('setting in package...')
         packageProperty = this.setPreferencesAsDefault(key)
       }
       return packageProperty
@@ -152,6 +161,12 @@ export default {
     setPreferencesAsDefault: function (key) {
       if (_.indexOf(this.hasPreferences, key) > -1) {
         const packageProperty = ipc.sendSync('getPreference', key)
+        // if (key === 'customs') {
+        //   this.pushCustomProperty({
+        //     key: key,
+        //     value: value
+        //   })
+        // }
         this.setProperty(key, packageProperty)
         return packageProperty
       }
