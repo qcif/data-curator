@@ -16,17 +16,16 @@
           class="control-label col-sm-3"
         >{{ formprop.label }}</label>
         <component :is="formprop.tooltipView" />
-        <template v-if="isSharedComponent(formprop.key)">
-          <component
-            :is="formprop.key"
-            :propertyName="formprop.key"
-            :getProperty="getProperty"
-            :getPropertyGivenHotId="getPropertyGivenHotId"
-            :setProperty="setProperty"
-            :waitForHotIdFromTabId="waitForHotIdFromTabId"
-            :currentHotId="currentHotId"
-          />
-        </template>
+        <component
+          :is="formprop.key"
+          v-if="isSharedComponent(formprop.key)"
+          :propertyName="formprop.key"
+          :getProperty="getProperty"
+          :getPropertyGivenHotId="getPropertyGivenHotId"
+          :setProperty="setProperty"
+          :waitForHotIdFromTabId="waitForHotIdFromTabId"
+          :currentHotId="currentHotId"
+        />
         <!-- <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)"/> -->
         <textarea
           v-else-if="formprop.key === 'description'"
@@ -153,7 +152,6 @@ export default {
         'key': key
       })
       if (typeof packageProperty === 'undefined') {
-        console.log('setting in package...')
         packageProperty = this.setPreferencesAsDefault(key)
       }
       return packageProperty
@@ -161,13 +159,9 @@ export default {
     setPreferencesAsDefault: function (key) {
       if (_.indexOf(this.hasPreferences, key) > -1) {
         const packageProperty = ipc.sendSync('getPreference', key)
-        // if (key === 'customs') {
-        //   this.pushCustomProperty({
-        //     key: key,
-        //     value: value
-        //   })
-        // }
+        // if (key !== 'customs') {
         this.setProperty(key, packageProperty)
+        // }
         return packageProperty
       }
     },
