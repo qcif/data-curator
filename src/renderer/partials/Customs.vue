@@ -62,17 +62,22 @@
       </template>
       <template v-else-if="isChildOfCustomType(custom['types'])">
         <div
-          class="input-group text"
+          :id="'customtext' + gindex"
+          class="inputs-container"
         >
-          <span class="input-group-addon input-sm">{{ custom['name'] }}</span>
-          <input
-            :id="'value' + gindex"
-            :class="{ 'form-control input-sm': true }"
-            :value="custom['value']"
-            :name="'value' + gindex"
-            type="text"
-            @input="setCustomProp(gindex, value, $event.target.value)"
+          <div
+            class="input-group text"
           >
+            <span class="input-group-addon input-sm">{{ custom['name'] }}</span>
+            <input
+              :id="'customvalue' + gindex"
+              :class="{ 'form-control input-sm': true }"
+              :value="custom['value']"
+              :name="'value' + gindex"
+              type="text"
+              @input="setCustomProp(gindex, 'value', $event.target.value)"
+            >
+          </div>
         </div>
       </template>
     </div>
@@ -137,8 +142,6 @@ export default {
     isChildOfCustomType () {
       const parent = this.parentAsCustomType
       return (types) => {
-        console.log('checking types')
-        console.log(types)
         return _.find(types, function (t) { return parent === t })
       }
     },
@@ -152,8 +155,9 @@ export default {
   asyncComputed: {
     getCustoms: {
       async get () {
-        let customs = this.getProperty('customs') || []
-        return customs
+        // const self = this
+        this.customs = this.getProperty('customs') || []
+        return this.customs
       },
       watch () {
         return this.customs
@@ -161,16 +165,17 @@ export default {
     }
   },
   mounted: function () {
-    console.dir(this.$parent)
-    console.dir(this.$parent.$options.name === 'Preferences')
     this.initCustoms()
   },
   methods: {
+    ...mapMutations(['removeAtIndexFromPackagePropertiesList']),
     removeCustom: function (index) {
       let customs = this.getProperty('customs')
       customs.splice(index, 1)
       this.setProperty('customs', customs)
       this.customs = customs
+      // synchronize preferences with store
+      this.removeAtIndexFromPackagePropertiesList({ key: 'customs', index: index })
     },
     addCustom: function () {
       let customs = this.getProperty('customs') || []
