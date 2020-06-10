@@ -121,6 +121,10 @@ export default {
     defaultSetter: {
       type: Function,
       default: undefined
+    },
+    getPropertyGivenHotId: {
+      type: Function,
+      default: function () {}
     }
   },
   data () {
