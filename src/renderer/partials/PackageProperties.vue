@@ -69,6 +69,7 @@ import {
   mapGetters
 } from 'vuex'
 import autosize from 'autosize'
+import PreferenceProperty from '../mixins/PreferenceProperty'
 export default {
   name: 'Packager',
   components: {
@@ -78,7 +79,7 @@ export default {
     customs
   },
   extends: SideNav,
-  mixins: [ValidationRules, PackageTooltip],
+  mixins: [ValidationRules, PackageTooltip, PreferenceProperty],
   data () {
     return {
       formprops: [{
@@ -133,8 +134,7 @@ export default {
       {
         label: 'Custom Properties',
         key: 'customs'
-      }],
-      hasPreferences: ['contributors', 'licenses', 'customs']
+      }]
     }
   },
   computed: {
@@ -152,18 +152,9 @@ export default {
         'key': key
       })
       if (typeof packageProperty === 'undefined') {
-        packageProperty = this.setPreferencesAsDefault(key)
+        packageProperty = this.setPreferencesAsDefault(key, this.setProperty)
       }
       return packageProperty
-    },
-    setPreferencesAsDefault: function (key) {
-      if (_.indexOf(this.hasPreferences, key) > -1) {
-        const packageProperty = ipc.sendSync('getPreference', key)
-        // if (key !== 'customs') {
-        this.setProperty(key, packageProperty)
-        // }
-        return packageProperty
-      }
     },
     getPropertyGivenHotId: function (key, hotId) {
       return this.getProperty(key)

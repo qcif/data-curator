@@ -73,12 +73,14 @@ import AsyncComputed from 'vue-async-computed'
 import licenses from '../partials/Licenses'
 import sources from '../partials/Sources'
 import primaryKeys from '../partials/PrimaryKeys'
+import customs from '../partials/Customs'
 import foreignKeys from '../partials/ForeignKeys'
 import { HotRegister } from '../hot.js'
 import TableTooltip from '../mixins/TableTooltip'
 import ValidationRules from '../mixins/ValidationRules'
 import autosize from 'autosize'
 import { LockProperties } from '@/lockProperties'
+import PreferenceProperty from '../mixins/PreferenceProperty'
 
 Vue.use(AsyncComputed)
 export default {
@@ -87,10 +89,11 @@ export default {
     licenses,
     sources,
     primaryKeys,
-    foreignKeys
+    foreignKeys,
+    customs
   },
   extends: SideNav,
-  mixins: [ValidationRules, TableTooltip],
+  mixins: [ValidationRules, TableTooltip, PreferenceProperty],
   props: {
     isLocked: {
       type: Boolean,
@@ -147,8 +150,12 @@ export default {
         key: 'missingValues',
         tooltipId: 'tooltip-table-missing-values',
         tooltipView: 'tooltipTableMissingValues'
-      }
-      ]
+      },
+      {
+        label: 'Custom Properties',
+        key: 'customs'
+      }],
+      hasPreferences: ['customs']
     }
   },
   asyncComputed: {
@@ -227,7 +234,12 @@ export default {
       }
     },
     getProperty: function (key) {
-      return this.getTableProperty(this.propertyGetObject(key))
+      const propertyArg = this.propertyGetObject(key)
+      let tableProperty = this.getTableProperty(propertyArg)
+      if (typeof tableProperty === 'undefined') {
+        tableProperty = this.setPreferencesAsDefault(key, this.setProperty)
+      }
+      return tableProperty
     },
     getPropertyGivenHotId: function (key, hotId) {
       return this.getTableProperty(this.propertyGetObjectGivenHotId(key, hotId))
