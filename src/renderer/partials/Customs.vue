@@ -10,7 +10,7 @@
           v-for="prop in Object.keys(custom)"
           :id="'custom' + prop + gindex"
           :key="'custom' + prop + gindex"
-          class="inputs-container"
+          :class="{'inputs-container': true, 'preferences': isChildOfPreferences}"
         >
           <div
             v-if="prop !== 'types'"
