@@ -1,7 +1,5 @@
-import { Subject } from 'rxjs/Subject'
-import { Observable } from 'rxjs/Observable'
-import { ReplaySubject } from 'rxjs/ReplaySubject'
-import 'rxjs/add/observable/fromPromise'
+import { Subject, ReplaySubject, Observable, BehaviorSubject } from 'rxjs'
+import { fromPromise } from 'rxjs/internal-compatibility'
 
 let allTablesAllColumnNames$ = new Subject()
 let allTablesAllColumnsFromSchema$ = new Subject()
@@ -15,6 +13,7 @@ let loadingPackage$ = new Subject()
 const errorFeedback$ = new Subject()
 const updateHotDimensions$ = new Subject()
 const allTableLocks$ = new Subject()
+const preferenceUpdate$ = new BehaviorSubject()
 
 export function onNextHotIdFromTabRx (asyncFunction) {
   let subject = hotIdFromTab$
@@ -28,7 +27,7 @@ export function onNextTabRx (subject, asyncFunction) {
 }
 
 export function onNextSubjectFromPromise (subject, promise) {
-  Observable.fromPromise(promise).subscribe(function (value) {
+  fromPromise(promise).subscribe(function (value) {
     subject.next(value)
   })
 }
@@ -45,5 +44,6 @@ export {
   loadingPackage$,
   errorFeedback$,
   updateHotDimensions$,
-  allTableLocks$
+  allTableLocks$,
+  preferenceUpdate$
 }

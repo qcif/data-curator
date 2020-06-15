@@ -288,17 +288,17 @@ import VueRx from 'vue-rx'
 import Vue from 'vue'
 import {
   Subscription
-} from 'rxjs/Subscription'
+} from 'rxjs'
 import {
   allTablesAllColumnNames$,
   allTablesAllColumnsFromSchema$
-} from '@/rxSubject.js'
+} from '../rxSubject.js'
 import ColumnTooltip from '../mixins/ColumnTooltip'
 import ValidationRules from '../mixins/ValidationRules'
-import { isValidPatternForType } from '@/dateFormats.js'
+import { isValidPatternForType } from '../dateFormats.js'
 import { castBoolean, castNumber, castInteger } from 'tableschema/lib/types'
 import { ERROR as tableSchemaError } from 'tableschema/lib/config'
-import { LockProperties } from '@/lockProperties'
+import { LockProperties } from '../lockProperties'
 Vue.use(VueRx, {
   Subscription
 })

@@ -26,7 +26,6 @@
           :waitForHotIdFromTabId="waitForHotIdFromTabId"
           :currentHotId="currentHotId"
         />
-        <!-- <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)"/> -->
         <textarea
           v-else-if="formprop.key === 'description'"
           :id="formprop.key"
@@ -56,6 +55,8 @@
   </form>
 </template>
 <script>
+import Vue from 'vue'
+import VueRx from 'vue-rx'
 import SideNav from '@/partials/SideNav'
 import licenses from '@/partials/Licenses'
 import sources from '@/partials/Sources'
@@ -63,13 +64,14 @@ import contributors from '@/partials/Contributors'
 import customs from '@/partials/Customs'
 import PackageTooltip from '@/mixins/PackageTooltip'
 import ValidationRules from '@/mixins/ValidationRules'
-import { ipcRenderer as ipc } from 'electron'
-import {
-  mapMutations,
-  mapGetters
-} from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import autosize from 'autosize'
 import PreferenceProperty from '../mixins/PreferenceProperty'
+import { Subscription } from 'rxjs'
+
+Vue.use(VueRx, {
+  Subscription
+})
 export default {
   name: 'Packager',
   components: {

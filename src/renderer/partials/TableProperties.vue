@@ -79,8 +79,9 @@ import { HotRegister } from '../hot.js'
 import TableTooltip from '../mixins/TableTooltip'
 import ValidationRules from '../mixins/ValidationRules'
 import autosize from 'autosize'
-import { LockProperties } from '@/lockProperties'
+import { LockProperties } from '../lockProperties'
 import PreferenceProperty from '../mixins/PreferenceProperty'
+import { preferenceUpdate$ } from '../rxSubject.js'
 
 Vue.use(AsyncComputed)
 export default {
@@ -168,6 +169,7 @@ export default {
     ...mapGetters(['getActiveTab', 'getTableProperty', 'getHotTabs'])
   },
   mounted: function () {
+    const self = this
     this.$validator.extend('unique_name', {
       getMessage: field => `There is already another tab with this ${field}.`,
       validate: value => new Promise((resolve) => {
@@ -237,6 +239,7 @@ export default {
       const propertyArg = this.propertyGetObject(key)
       let tableProperty = this.getTableProperty(propertyArg)
       if (typeof tableProperty === 'undefined') {
+        console.log(`checking table property get for ${key}`)
         tableProperty = this.setPreferencesAsDefault(key, this.setProperty)
       }
       return tableProperty

@@ -357,7 +357,7 @@ import {
 import VueRx from 'vue-rx'
 import {
   Subscription
-} from 'rxjs/Subscription'
+} from 'rxjs'
 import {
   getHotIdFromTabIdFunction
 } from '@/store/modules/hots.js'

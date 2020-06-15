@@ -44,6 +44,7 @@ import customs from '@/partials/Customs'
 import PreferencesTooltip from '@/mixins/PreferencesTooltip'
 import ValidationRules from '@/mixins/ValidationRules'
 import { ipcRenderer as ipc } from 'electron'
+import { preferenceUpdate$ } from '../rxSubject'
 
 export default {
   name: 'Preferences',
@@ -94,6 +95,7 @@ export default {
       } else {
         ipc.send('removePreference', key)
       }
+      preferenceUpdate$.next(key)
     },
     validateContributors: function (values) {
       return _.filter(values, function (value) {
