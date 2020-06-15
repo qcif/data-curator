@@ -1,3 +1,4 @@
+import {ipcRenderer as ipc} from "electron"
 <template>
   <div id="customs">
     <div
@@ -19,12 +20,13 @@
             <span class="input-group-addon input-sm">{{ prop }}</span>
             <input
               :id="prop + gindex"
-              v-validate="'required'"
+              v-validate="'required|unique_name'"
               :class="{ 'form-control input-sm': true, 'validate-danger': errors.has(prop + gindex) }"
               :value="custom[prop]"
               :name="prop + gindex"
               type="text"
               @input="setCustomProp(gindex, prop, $event.target.value)"
+              @blur="removeOnError(prop + gindex, gindex)"
             >
           </div>
           <div
@@ -104,6 +106,8 @@ import SideNav from './SideNav'
 import AsyncComputed from 'vue-async-computed'
 import ValidationRules from '../mixins/ValidationRules'
 import Vue from 'vue'
+import { preferenceUpdate$ } from '../rxSubject'
+import { ipcRenderer as ipc } from 'electron'
 Vue.use(AsyncComputed)
 export default {
   name: 'Customs',
@@ -138,6 +142,45 @@ export default {
       }
     }
   },
+  created: function () {
+    const self = this
+    if (!this.isChildOfPreferences) {
+      this.$subscribeTo(preferenceUpdate$, function (key) {
+        console.log(`inside for ${key}`)
+        if (key === 'customs') {
+          console.log(`updated customs property in rx for ${key}`)
+          self.mergeDefaultPreferencesIntoStore()
+        }
+      })
+      // preferenceUpdate$.pipe(filter(key => key === 'customs')).subscribe(function (key) {
+      //   if (key === 'customs') {
+      //     console.log(`updated customs property in rx for ${key}`)
+      //     const temp = self.mergePreferencesAsDefault(key, self.setProperty)
+      //   } else {
+      //     console.log('no custom key')
+      //   }
+      // })
+    }
+    this.$validator.extend('unique_name', {
+      getMessage: function (field) {
+        return `Custom names must be unique.`
+      },
+      validate: function (value) {
+        return new Promise((resolve) => {
+          let customs = self.getProperty('customs')
+          let allNames = _.map(customs, function (custom) {
+            return custom['name']
+          })
+          let allUniqNames = _.uniq(allNames)
+          let isValid = _.size(allNames) === _.size(allUniqNames)
+          resolve({
+            valid: isValid
+          })
+        })
+      }
+    })
+  },
+  // eslint-disable-next-line vue/order-in-components
   computed: {
     ...mapGetters(['getActiveTab']),
     isChildOfPreferences () {
@@ -173,13 +216,29 @@ export default {
   },
   methods: {
     ...mapMutations(['removeAtIndexFromPackagePropertiesList']),
+    mergeDefaultPreferencesIntoStore: function () {
+      let storeCustoms = this.getProperty('customs')
+      // custom preferences do not have values, store does, so get these before overwriting store with preferences
+      const mergedCustoms = _.cloneDeep(ipc.sendSync('getPreference', 'customs'))
+      _.each(mergedCustoms, function (custom, index) {
+        // custom property names are unique
+        let storeCustom = _.find(storeCustoms, function (nextCustom) { return nextCustom.name === custom['name'] })
+        _.set(custom, 'value', _.get(storeCustom, 'value'))
+      })
+      this.setProperty('customs', mergedCustoms)
+    },
+    removeOnError: function (errorId, index) {
+      if (this.errors.has(errorId)) {
+        this.removeCustom(index)
+      }
+    },
     removeCustom: function (index) {
       let customs = this.getProperty('customs')
       customs.splice(index, 1)
       this.setProperty('customs', customs)
       this.customs = customs
-      // synchronize preferences with store
-      this.removeAtIndexFromPackagePropertiesList({ key: 'customs', index: index })
+      // synchronize preferences with store (commented out for now as not needed with rxjs subscription)
+      // this.removeAtIndexFromPackagePropertiesList({ key: 'customs', index: index })
     },
     addCustom: function () {
       let customs = this.getProperty('customs') || []
