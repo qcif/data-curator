@@ -40,7 +40,8 @@ import {ipcRenderer as ipc} from "electron"
                 :key="customType + gindex"
                 class="checkbox-inline form-control input-sm"
               ><input
-                :id="prop + customType + gindex"
+                :id="prop + gindex + customType"
+                :name="prop + gindex + customType"
                 type="checkbox"
                 :checked="includesCustomProp(custom[prop], customType)"
                 @click="setCustomPropChecked(gindex, prop, customType, $event.target.checked)"
@@ -107,6 +108,7 @@ import AsyncComputed from 'vue-async-computed'
 import ValidationRules from '../mixins/ValidationRules'
 import Vue from 'vue'
 import { preferenceUpdate$ } from '../rxSubject'
+import { filter } from 'rxjs/operators'
 import { ipcRenderer as ipc } from 'electron'
 Vue.use(AsyncComputed)
 export default {
@@ -145,21 +147,9 @@ export default {
   created: function () {
     const self = this
     if (!this.isChildOfPreferences) {
-      this.$subscribeTo(preferenceUpdate$, function (key) {
-        console.log(`inside for ${key}`)
-        if (key === 'customs') {
-          console.log(`updated customs property in rx for ${key}`)
-          self.mergeDefaultPreferencesIntoStore()
-        }
+      preferenceUpdate$.pipe(filter(key => key === 'customs')).subscribe(function (key) {
+        const temp = self.mergeDefaultPreferencesIntoStore()
       })
-      // preferenceUpdate$.pipe(filter(key => key === 'customs')).subscribe(function (key) {
-      //   if (key === 'customs') {
-      //     console.log(`updated customs property in rx for ${key}`)
-      //     const temp = self.mergePreferencesAsDefault(key, self.setProperty)
-      //   } else {
-      //     console.log('no custom key')
-      //   }
-      // })
     }
     this.$validator.extend('unique_name', {
       getMessage: function (field) {
@@ -267,6 +257,14 @@ export default {
         this.setProperty(`customs[${index}][${prop}]`, value)
       }
       this.customs = this.getProperty('customs') || []
+    },
+    errorsHasType: function (prop, gindex) {
+      const self = this
+      return _.find(this.customTypes, function (customType) { return self.errors.has(prop + customType + gindex) })
+    },
+    errorsFirst: function (prop, gindex) {
+      const self = this
+      return _.find(this.customTypes, function (customType) { return self.errors.first(prop + customType + gindex) })
     }
   }
 }

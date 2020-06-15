@@ -239,7 +239,6 @@ export default {
       const propertyArg = this.propertyGetObject(key)
       let tableProperty = this.getTableProperty(propertyArg)
       if (typeof tableProperty === 'undefined') {
-        console.log(`checking table property get for ${key}`)
         tableProperty = this.setPreferencesAsDefault(key, this.setProperty)
       }
       return tableProperty
