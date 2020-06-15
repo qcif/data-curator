@@ -55,8 +55,6 @@
   </form>
 </template>
 <script>
-import Vue from 'vue'
-import VueRx from 'vue-rx'
 import SideNav from '@/partials/SideNav'
 import licenses from '@/partials/Licenses'
 import sources from '@/partials/Sources'
@@ -67,11 +65,6 @@ import ValidationRules from '@/mixins/ValidationRules'
 import { mapGetters, mapMutations } from 'vuex'
 import autosize from 'autosize'
 import PreferenceProperty from '../mixins/PreferenceProperty'
-import { Subscription } from 'rxjs'
-
-Vue.use(VueRx, {
-  Subscription
-})
 export default {
   name: 'Packager',
   components: {
