@@ -53,15 +53,16 @@ function hasAllPackageRequirements (requiredMessages) {
     requiredMessages.push(`Provenance properties must be set.`)
   }
   let packageProperties = hotStore.state.packageProperties
-  if (!packageProperties || _.isEmpty(packageProperties)) {
+  if (_.isEmpty(packageProperties)) {
     requiredMessages.push(`Package properties must be set.`)
   } else {
-    let name = packageProperties.name
-    if (!name || name.trim() === '') {
+    let name = _.get(packageProperties, 'name', '').trim()
+    if (_.isEmpty(name)) {
       requiredMessages.push(`Package property, 'name' must be set.`)
     }
-    addSourcesRequirements(packageProperties, requiredMessages, 'package')
-    addContributorsRequirements(packageProperties, requiredMessages, 'package')
+    addRequirementsForPropertyList(packageProperties, requiredMessages, 'package', 'sources')
+    addRequirementsForPropertyList(packageProperties, requiredMessages, 'package', 'contributors')
+    checkReservedWordsForPropertyList(packageProperties, requiredMessages, 'package', 'customs')
   }
   return requiredMessages.length === 0
 }
@@ -75,6 +76,7 @@ function addPackageProperties (descriptor) {
   let packageProperties = hotStore.state.packageProperties
   _.merge(descriptor, packageProperties)
   removeEmptiesFromDescriptor(descriptor)
+  updateCustomsForProperties(descriptor, 'package')
 }
 
 async function buildAllResourcesForDataPackage (dataPackage, errorMessages) {
@@ -117,7 +119,7 @@ async function createValidResource (hotId, errorMessages) {
 }
 
 function hasAllResourceRequirements (hot, requiredMessages) {
-  let tableProperties = hotStore.state.hotTabs[hot.guid].tableProperties
+  let tableProperties = _.cloneDeep(hotStore.state.hotTabs[hot.guid].tableProperties)
   if (!tableProperties) {
     requiredMessages.push(`Table properties must be set.`)
   } else {
@@ -125,10 +127,11 @@ function hasAllResourceRequirements (hot, requiredMessages) {
     if (!name || name.trim() === '') {
       requiredMessages.push(`Table property, 'name', must not be empty.`)
     }
-    addSourcesRequirements(tableProperties, requiredMessages, 'table')
+    addRequirementsForPropertyList(tableProperties, requiredMessages, 'table', 'sources')
     addForeignKeyRequirements(tableProperties, requiredMessages)
+    checkReservedWordsForPropertyList(tableProperties, requiredMessages, 'table', 'customs')
   }
-  let columnProperties = hotStore.state.hotTabs[hot.guid].columnProperties
+  let columnProperties = _.cloneDeep(hotStore.state.hotTabs[hot.guid].columnProperties)
   if (!columnProperties) {
     requiredMessages.push(`Column properties must be set.`)
   } else {
@@ -136,57 +139,50 @@ function hasAllResourceRequirements (hot, requiredMessages) {
     if (!hasAllColumnNames(hot.guid, columnProperties, names)) {
       requiredMessages.push(`Column property names cannot be empty - set a Header Row`)
     }
+    for (const nextColumn of columnProperties) {
+      console.dir(nextColumn)
+      checkReservedWordsForPropertyList(nextColumn, requiredMessages, 'column', 'customs')
+    }
   }
   return requiredMessages.length === 0
 }
 
-function addSourcesRequirements (properties, requiredMessages, entityName) {
-  if (typeof properties.sources === 'undefined') {
+function addRequirementsForPropertyList (properties, requiredMessages, entityName, propertyName, requiredAttribute = 'title') {
+  const requirementsAsList = _.get(properties, propertyName)
+  if (!_.isArray(requirementsAsList)) {
     return
   }
-  for (let source of properties.sources) {
-    if (hasAllEmptyValues(source)) {
-      _.pull(properties.sources, source)
-    } else if (!source.title || source.title.trim() === '') {
-      requiredMessages.push(`At least 1 ${entityName} source does not have a title.`)
-      return false
+  for (let property of requirementsAsList) {
+    if (hasAllEmptyValues(property)) {
+      _.pull(requirementsAsList, property)
     } else {
-      // console.log('source is valid')
+      if (_.isEmpty(_.get(property, requiredAttribute, '').trim())) {
+        requiredMessages.push(`At least 1 of ${entityName} ${propertyName} does not have a ${requiredAttribute}.`)
+        return false
+      }
     }
-  }
-  if (properties.sources.length < 1) {
-    properties.sources = null
-    _.unset(properties, 'sources')
   }
 }
 
-function addContributorsRequirements (properties, requiredMessages, entityName) {
-  if (typeof properties.contributors === 'undefined') {
+function checkReservedWordsForPropertyList (properties, requiredMessages, entityName, propertyName, requiredAttribute = 'name') {
+  const requirementsAsList = _.get(properties, propertyName)
+  let reserved = _.keys(properties)
+  if (!_.isArray(requirementsAsList)) {
     return
   }
-  for (let contributor of properties.contributors) {
-    if (hasAllEmptyValues(contributor)) {
-      _.pull(properties.contributors, contributor)
-    } else if (_.isEmpty(_.get(contributor, 'title')) || contributor.title.trim() === '') {
-      requiredMessages.push(`At least 1 ${entityName} contributor does not have a title.`)
-      return false
-    } else {
-      // console.log('contributor is valid')
+  for (let property of requirementsAsList) {
+    const toMatch = _.get(property, requiredAttribute)
+    if (_.includes(reserved, toMatch)) {
+      requiredMessages.push(`${_.capitalize(entityName)} already uses: '${toMatch}', so it cannot be used again in ${entityName} '${propertyName}' properties.`)
     }
-  }
-  if (properties.contributors.length < 1) {
-    properties.contributors = null
-    _.unset(properties, 'contributors')
   }
 }
 
 function hasAllEmptyValues (propertyObject) {
   let isEmpty = true
   _.forOwn(propertyObject, function (value, key) {
-    if (value.trim().length > 0) {
-      isEmpty = false
-      return false
-    }
+    isEmpty = _.isEmpty(_.trim(value))
+    return isEmpty
   })
   return isEmpty
 }
@@ -205,7 +201,7 @@ function addForeignKeyRequirements (tableProperties, requiredMessages) {
 
 async function buildResource (tabId, hotId) {
   let resource = await initResourceAndInfer()
-  let descriptor = resource.descriptor
+  let descriptor = _.cloneDeep(resource.descriptor)
   addColumnProperties(descriptor, hotId)
   addTableProperties(descriptor, hotId)
   removeEmptiesFromDescriptor(descriptor)
@@ -225,12 +221,16 @@ function addColumnProperties (descriptor, hotId) {
   let columnProperties = hotStore.state.hotTabs[hotId].columnProperties
   descriptor.schema = {}
   descriptor.schema.fields = columnProperties
+  for (const field of descriptor.schema.fields) {
+    updateCustomsForProperties(field, 'column')
+  }
 }
 
 function addTableProperties (descriptor, hotId) {
   let tableProperties = hotStore.state.hotTabs[hotId].tableProperties
   _.merge(descriptor, tableProperties)
   moveTableSchemaProperties(descriptor, tableProperties)
+  updateCustomsForProperties(descriptor, 'table')
 }
 
 function moveTableSchemaProperties (descriptor, tableProperties) {
@@ -247,6 +247,7 @@ function moveTableSchemaProperties (descriptor, tableProperties) {
 function removeEmptiesFromDescriptor (descriptor) {
   removeEmpty(descriptor, 'licenses')
   removeEmpty(descriptor, 'sources')
+  removeEmpty(descriptor, 'customs')
 }
 
 function removeNonFrictionlessKeys (descriptor) {
@@ -256,7 +257,7 @@ function removeNonFrictionlessKeys (descriptor) {
 }
 
 function removeEmpty (descriptor, propertyName) {
-  if (descriptor[propertyName] && descriptor[propertyName].length === 0) {
+  if (_.isEmpty(_.get(descriptor, propertyName))) {
     _.unset(descriptor, propertyName)
   }
 }
@@ -268,4 +269,15 @@ function addPath (descriptor, tabId) {
   let osPath = path.join(parent, basename)
   // resource paths must be POSIX https://frictionlessdata.io/specs/data-resource/#url-or-path
   descriptor.path = _.replace(osPath, '\\', '/')
+}
+
+function updateCustomsForProperties (descriptor, customType) {
+  let customs = _.get(descriptor, 'customs', [])
+  _.unset(descriptor, 'customs')
+  do {
+    const custom = customs.pop()
+    if (!_.isEmpty(_.get(custom, 'name', '')) && !_.isEmpty(_.get(custom, 'value', '')) && _.includes(_.get(custom, 'types', []), customType)) {
+      _.set(descriptor, custom.name, custom.value)
+    }
+  } while (!_.isEmpty(customs))
 }
