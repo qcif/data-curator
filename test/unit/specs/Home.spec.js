@@ -47,7 +47,7 @@ describe('Home.vue', function () {
         'loadDataIntoLatestHot': sandbox.stub().withArgs().returns(hot.guid),
         'initHotTablePropertiesFromDescriptor': sandbox.stub(),
         'removePreviousHotComments': sandbox.stub(),
-        'createPackage': sandbox.stub().callsFake(function fakeFn () {
+        'createZipPackage': sandbox.stub().callsFake(function fakeFn () {
           wrapper.setData({ messagesTitle: 'Export success' })
         }),
         'validateTable': sandbox.stub().callsFake(function fakeFn () {
