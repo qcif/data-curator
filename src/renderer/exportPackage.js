@@ -7,8 +7,24 @@ import { compileAndStringifyProvenance } from '@/provenance.js'
 // import os from 'os'
 const Dialog = remote.dialog
 
-export function createZipFile (text) {
-  let json = JSON.stringify(text, null, 4)
+export function createJsonFile (jsonObj) {
+  Dialog.showSaveDialog({
+    filters: [
+      {
+        name: '*',
+        extensions: ['json']
+      }
+    ]
+  }, function (filename) {
+    if (filename === undefined) {
+      return
+    }
+    fs.writeJsonSync(filename, jsonObj, { spaces: 4 })
+  })
+}
+
+export function createZipFile (jsonObj) {
+  let json = JSON.stringify(jsonObj, null, 4)
   Dialog.showSaveDialog({
     filters: [
       {

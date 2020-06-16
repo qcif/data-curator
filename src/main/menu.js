@@ -284,6 +284,12 @@ class AppMenu {
             click () {
               webContents().send('triggerMenuButton', 'Export')
             }
+          },
+          {
+            label: 'Export Package Properties...',
+            click () {
+              webContents().send('createJsonPackage')
+            }
           }
         ]
       }, {

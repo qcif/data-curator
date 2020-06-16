@@ -1,34 +1,39 @@
-import { Resource, Package } from 'datapackage'
+import { Package, Resource } from 'datapackage'
 import { HotRegister } from '@/hot.js'
 import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
 import path from 'path'
-import { createZipFile } from '@/exportPackage.js'
-import { hasAllColumnNames, getValidNames } from '@/frictionlessUtilities.js'
+import { createJsonFile, createZipFile } from '@/exportPackage.js'
+import { getValidNames, hasAllColumnNames } from '@/frictionlessUtilities.js'
 import _ from 'lodash'
 
-export async function createDataPackage () {
+export async function createDataPackageAsZippedResources () {
+  const errorMessages = await createDataPackage(createZipFile)
+  return errorMessages
+}
+
+export async function createDataPackageAsJson () {
+  const errorMessages = await createDataPackage(createJsonFile)
+  return errorMessages
+}
+
+export async function createDataPackage (postCreateFunc) {
   const errorMessages = []
   if (!haveAllTabsGotFilenames()) {
     errorMessages.push('All tabs must be saved before exporting.')
   }
   try {
     let dataPackage = await buildDataPackage(errorMessages)
-    if (errorMessages.length > 0) {
-      return errorMessages
-    }
-    if (dataPackage) {
+    if (_.isEmpty(errorMessages) && dataPackage) {
       dataPackage.commit()
-      if (!dataPackage.valid) {
+      if (dataPackage.valid) {
+        postCreateFunc(dataPackage.descriptor)
+      } else {
         errorMessages.push('There is a problem with at least 1 package property. Please check and try again.')
-        return errorMessages
       }
-      createZipFile(dataPackage.descriptor)
     }
   } catch (err) {
-    if (err) {
-      console.error('There was an error creating the data package.', err)
-    }
+    console.error('There was an error creating the data package.', err)
   }
   return errorMessages
 }
@@ -38,9 +43,7 @@ export function haveAllTabsGotFilenames () {
 }
 
 async function buildDataPackage (errorMessages) {
-  if (!hasAllPackageRequirements(errorMessages)) {
-    return false
-  }
+  auditPackageRequirements(errorMessages)
   let dataPackage = await initPackage()
   await buildAllResourcesForDataPackage(dataPackage, errorMessages)
   // adding package properties for validation only
@@ -48,23 +51,22 @@ async function buildDataPackage (errorMessages) {
   return dataPackage
 }
 
-function hasAllPackageRequirements (requiredMessages) {
+function auditPackageRequirements (requiredMessages) {
   if (!hotStore.state.provenanceProperties || !hotStore.state.provenanceProperties.markdown) {
     requiredMessages.push(`Provenance properties must be set.`)
   }
-  let packageProperties = hotStore.state.packageProperties
-  if (_.isEmpty(packageProperties)) {
+  let packageProperties = _.cloneDeep(hotStore.state.packageProperties)
+  if (!packageProperties || _.isEmpty(packageProperties)) {
     requiredMessages.push(`Package properties must be set.`)
   } else {
     let name = _.get(packageProperties, 'name', '').trim()
     if (_.isEmpty(name)) {
       requiredMessages.push(`Package property, 'name' must be set.`)
     }
-    addRequirementsForPropertyList(packageProperties, requiredMessages, 'package', 'sources')
-    addRequirementsForPropertyList(packageProperties, requiredMessages, 'package', 'contributors')
+    auditRequirementsOfPropertyList(packageProperties, requiredMessages, 'package', 'sources')
+    auditRequirementsOfPropertyList(packageProperties, requiredMessages, 'package', 'contributors')
     checkReservedWordsForPropertyList(packageProperties, requiredMessages, 'package', 'customs')
   }
-  return requiredMessages.length === 0
 }
 
 async function initPackage () {
@@ -73,7 +75,7 @@ async function initPackage () {
 }
 
 function addPackageProperties (descriptor) {
-  let packageProperties = hotStore.state.packageProperties
+  let packageProperties = _.cloneDeep(hotStore.state.packageProperties)
   _.merge(descriptor, packageProperties)
   removeEmptiesFromDescriptor(descriptor)
   updateCustomsForProperties(descriptor, 'package')
@@ -95,10 +97,8 @@ async function buildAllResourcesForDataPackage (dataPackage, errorMessages) {
       resourcePaths.push(resource.descriptor.path)
       dataPackage.addResource(resource.descriptor)
     } catch (err) {
-      if (err) {
-        console.error('There was an error creating a resource.', err)
-        return false
-      }
+      console.error('There was an error creating a resource.', err)
+      break
     }
   }
 }
@@ -106,19 +106,18 @@ async function buildAllResourcesForDataPackage (dataPackage, errorMessages) {
 async function createValidResource (hotId, errorMessages) {
   let hotTab = hotStore.state.hotTabs[hotId]
   let hot = HotRegister.getInstance(hotId)
-  if (!hasAllResourceRequirements(hot, errorMessages)) {
-    return false
+  auditResourceRequirements(hot, errorMessages)
+  if (_.isEmpty(errorMessages)) {
+    let resource = await buildResource(hotTab.tabId, hot.guid)
+    if (!resource.valid) {
+      console.error(resource.errors)
+      errorMessages.push('There is a required table or column property that is missing. Please check that all required properties are entered.')
+    }
+    return resource
   }
-  let resource = await buildResource(hotTab.tabId, hot.guid)
-  if (!resource.valid) {
-    console.error(resource.errors)
-    errorMessages.push('There is a required table or column property that is missing. Please check that all required properties are entered.')
-    return false
-  }
-  return resource
 }
 
-function hasAllResourceRequirements (hot, requiredMessages) {
+function auditResourceRequirements (hot, requiredMessages) {
   let tableProperties = _.cloneDeep(hotStore.state.hotTabs[hot.guid].tableProperties)
   if (!tableProperties) {
     requiredMessages.push(`Table properties must be set.`)
@@ -127,8 +126,8 @@ function hasAllResourceRequirements (hot, requiredMessages) {
     if (!name || name.trim() === '') {
       requiredMessages.push(`Table property, 'name', must not be empty.`)
     }
-    addRequirementsForPropertyList(tableProperties, requiredMessages, 'table', 'sources')
-    addForeignKeyRequirements(tableProperties, requiredMessages)
+    auditRequirementsOfPropertyList(tableProperties, requiredMessages, 'table', 'sources')
+    auditForeignKeyRequirements(tableProperties, requiredMessages)
     checkReservedWordsForPropertyList(tableProperties, requiredMessages, 'table', 'customs')
   }
   let columnProperties = _.cloneDeep(hotStore.state.hotTabs[hot.guid].columnProperties)
@@ -144,10 +143,9 @@ function hasAllResourceRequirements (hot, requiredMessages) {
       checkReservedWordsForPropertyList(nextColumn, requiredMessages, 'column', 'customs')
     }
   }
-  return requiredMessages.length === 0
 }
 
-function addRequirementsForPropertyList (properties, requiredMessages, entityName, propertyName, requiredAttribute = 'title') {
+function auditRequirementsOfPropertyList (properties, requiredMessages, entityName, propertyName, requiredAttribute = 'title') {
   const requirementsAsList = _.get(properties, propertyName)
   if (!_.isArray(requirementsAsList)) {
     return
@@ -158,7 +156,7 @@ function addRequirementsForPropertyList (properties, requiredMessages, entityNam
     } else {
       if (_.isEmpty(_.get(property, requiredAttribute, '').trim())) {
         requiredMessages.push(`At least 1 of ${entityName} ${propertyName} does not have a ${requiredAttribute}.`)
-        return false
+        break
       }
     }
   }
@@ -187,14 +185,14 @@ function hasAllEmptyValues (propertyObject) {
   return isEmpty
 }
 
-function addForeignKeyRequirements (tableProperties, requiredMessages) {
+function auditForeignKeyRequirements (tableProperties, requiredMessages) {
   if (typeof tableProperties.foreignKeys === 'undefined') {
     return
   }
   for (let foreignKey of tableProperties.foreignKeys) {
     if (_.isEmpty(foreignKey.fields) || _.isEmpty(foreignKey.reference.fields)) {
       requiredMessages.push(`Foreign keys cannot be empty.`)
-      return false
+      break
     }
   }
 }
