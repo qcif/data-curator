@@ -107,13 +107,12 @@ import SideNav from './SideNav'
 import AsyncComputed from 'vue-async-computed'
 import ValidationRules from '../mixins/ValidationRules'
 import Vue from 'vue'
-import { preferenceUpdate$ } from '../rxSubject'
+import { allTablesAllColumnNames$, hotIdFromTab$, preferenceUpdate$ } from '../rxSubject'
 import { filter } from 'rxjs/operators'
 import { ipcRenderer as ipc } from 'electron'
 Vue.use(AsyncComputed)
 export default {
   name: 'Customs',
-  extends: SideNav,
   mixins: [ValidationRules],
   props: {
     setProperty: {
@@ -131,6 +130,10 @@ export default {
     getPropertyGivenHotId: {
       type: Function,
       default: function () {}
+    },
+    currentHotId: {
+      type: Function,
+      default: async function () {}
     }
   },
   data () {
@@ -144,13 +147,27 @@ export default {
       }
     }
   },
-  created: function () {
+  created: async function () {
     const self = this
-    if (!this.isChildOfPreferences) {
-      preferenceUpdate$.pipe(filter(key => key === 'customs')).subscribe(function (key) {
-        const temp = self.mergeDefaultPreferencesIntoStore()
-      })
-    }
+    console.log('created.')
+    this.$subscribeTo(hotIdFromTab$, function (hotId) {
+      console.log('returning customs here')
+      self.customs = self.getPropertyGivenHotId('customs', hotId) || self.getProperty('customs') || []
+    })
+    let hotId = await this.currentHotId()
+    // console.log(`hot id is ${hotId}`)
+    this.$subscribeTo(allTablesAllColumnNames$, function (result) {
+      console.log('returning customs in columns sub here')
+      console.log(`current hot id is ${self.activeCurrentHotId}`)
+      self.customs = self.getPropertyGivenHotId('customs', self.activeCurrentHotId) || self.getProperty('customs') || []
+    })
+    preferenceUpdate$.pipe(filter(key => key === 'customs')).subscribe(function (key) {
+      const parent = self.parentName
+      if (!_.isEmpty(parent) && parent !== 'preferences') {
+        console.log('merging into store...')
+        self.mergeDefaultPreferencesIntoStore()
+      }
+    })
     this.$validator.extend('unique_name', {
       getMessage: function (field) {
         return `Custom names must be unique.`
@@ -173,9 +190,6 @@ export default {
   // eslint-disable-next-line vue/order-in-components
   computed: {
     ...mapGetters(['getActiveTab']),
-    isChildOfPreferences () {
-      return this.parentName === 'preferences'
-    },
     isChildOfCustomType () {
       const parent = this.parentAsCustomType
       return (types) => {
@@ -193,11 +207,28 @@ export default {
     getCustoms: {
       async get () {
         // const self = this
+        // console.log('returning customs')
+        // if (!this.isChildOfPreferences()) {
+        //   const hotId = await this.currentHotId
+        // }
+        console.log('returning customs after')
+        this.mergeDefaultPreferencesIntoStore()
         this.customs = this.getProperty('customs') || []
         return this.customs
       },
       watch () {
-        return this.customs
+        let temp0 = this.customs
+        let temp = this.getActiveTab
+        let temp2 = this.cIndex
+        let temp3 = this.allTablesAllColumns
+      }
+    },
+    isChildOfPreferences: {
+      get () {
+        return this.parentName === 'preferences'
+      },
+      watch () {
+        return this.parentName
       }
     }
   },
@@ -215,6 +246,7 @@ export default {
         let storeCustom = _.find(storeCustoms, function (nextCustom) { return nextCustom.name === custom['name'] })
         _.set(custom, 'value', _.get(storeCustom, 'value'))
       })
+      console.log('and setting property...')
       this.setProperty('customs', mergedCustoms)
     },
     removeOnError: function (errorId, index) {
@@ -240,6 +272,7 @@ export default {
       return { 'name': '', types: [] }
     },
     initCustoms: function () {
+      let temp = this.parentName
       this.customs = this.getProperty('customs')
     },
     includesCustomProp: function (current, customType) {

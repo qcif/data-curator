@@ -329,7 +329,7 @@ import {
 import {
   createDataPackageAsZippedResources,
   createDataPackageAsJson
-} from '@/frictionlessDataPackage.js'
+} from '../frictionlessDataPackage.js'
 import HomeTooltip from '../mixins/HomeTooltip'
 import ErrorsTooltip from '../mixins/ErrorsTooltip'
 import {
@@ -342,10 +342,10 @@ import {
 import 'lodash/lodash.min.js'
 import {
   unzipFile
-} from '@/importPackage.js'
+} from '../importPackage.js'
 import {
   toggleHeaderWithFeedback
-} from '@/headerRow.js'
+} from '../headerRow.js'
 import {
   onNextHotIdFromTabRx,
   hotIdFromTab$,
@@ -354,24 +354,24 @@ import {
   updateHotDimensions$,
   allTableLocks$,
   allTablesAllColumnNames$
-} from '@/rxSubject.js'
+} from '../rxSubject.js'
 import VueRx from 'vue-rx'
 import {
   Subscription
 } from 'rxjs'
 import {
   getHotIdFromTabIdFunction
-} from '@/store/modules/hots.js'
+} from '../store/modules/hots.js'
 import {
   isCaseSensitive
-} from '@/frictionlessUtilities'
+} from '../frictionlessUtilities'
 import Handsontable from 'handsontable/dist/handsontable.full.min.js'
 import AsyncComputed from 'vue-async-computed'
 import Vue from 'vue'
 import {
   toolbarMenus
-} from '@/toolbarMenus'
-import { LockProperties } from '@/lockProperties'
+} from '../toolbarMenus'
+import { LockProperties } from '../lockProperties'
 Vue.use(AsyncComputed)
 Vue.use(VueRx, {
   Subscription
