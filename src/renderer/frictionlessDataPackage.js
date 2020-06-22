@@ -56,7 +56,7 @@ function auditPackageRequirements (requiredMessages) {
     requiredMessages.push(`Provenance properties must be set.`)
   }
   let packageProperties = _.cloneDeep(hotStore.state.packageProperties)
-  if (!packageProperties || _.isEmpty(packageProperties)) {
+  if (_.isEmpty(packageProperties)) {
     requiredMessages.push(`Package properties must be set.`)
   } else {
     let name = _.get(packageProperties, 'name', '').trim()
@@ -172,6 +172,7 @@ function checkReservedWordsForPropertyList (properties, requiredMessages, entity
     const toMatch = _.get(property, requiredAttribute)
     if (_.includes(reserved, toMatch)) {
       requiredMessages.push(`${_.capitalize(entityName)} already uses: '${toMatch}', so it cannot be used again in ${entityName} '${propertyName}' properties.`)
+      break
     }
   }
 }
@@ -199,7 +200,8 @@ function auditForeignKeyRequirements (tableProperties, requiredMessages) {
 
 async function buildResource (tabId, hotId) {
   let resource = await initResourceAndInfer()
-  let descriptor = _.cloneDeep(resource.descriptor)
+  // update, rather than copy the descriptor
+  let descriptor = resource.descriptor
   addColumnProperties(descriptor, hotId)
   addTableProperties(descriptor, hotId)
   removeEmptiesFromDescriptor(descriptor)
