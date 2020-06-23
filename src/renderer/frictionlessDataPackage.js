@@ -218,7 +218,7 @@ async function initResourceAndInfer () {
 }
 
 function addColumnProperties (descriptor, hotId) {
-  let columnProperties = hotStore.state.hotTabs[hotId].columnProperties
+  let columnProperties = _.cloneDeep(hotStore.state.hotTabs[hotId].columnProperties)
   descriptor.schema = {}
   descriptor.schema.fields = columnProperties
   for (const field of descriptor.schema.fields) {
@@ -227,7 +227,7 @@ function addColumnProperties (descriptor, hotId) {
 }
 
 function addTableProperties (descriptor, hotId) {
-  let tableProperties = hotStore.state.hotTabs[hotId].tableProperties
+  let tableProperties = _.cloneDeep(hotStore.state.hotTabs[hotId].tableProperties)
   _.merge(descriptor, tableProperties)
   moveTableSchemaProperties(descriptor, tableProperties)
   updateCustomsForProperties(descriptor, 'table')
