@@ -556,7 +556,6 @@ export default {
   mounted: function () {
     let self = this
     this.$subscribeTo(allTablesAllColumnNames$, function (result) {
-      console.log('inside all tables all column names...')
       self.updateAllTablesAllColumnsNames(result)
     })
     allTablesAllColumnNames$.next(this.getAllHotTablesColumnNames())
@@ -619,7 +618,6 @@ export default {
       let getter = this.getter(hotId, key)
       let property = this.getHotColumnProperty(getter)
       if (typeof property === 'undefined') {
-        console.log(`couldn't get column properties, so trying preferences...`)
         property = this.setPreferencesAsDefault(key, this.setProperty)
       }
       return property

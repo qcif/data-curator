@@ -139,7 +139,6 @@ function auditResourceRequirements (hot, requiredMessages) {
       requiredMessages.push(`Column property names cannot be empty - set a Header Row`)
     }
     for (const nextColumn of columnProperties) {
-      console.dir(nextColumn)
       checkReservedWordsForPropertyList(nextColumn, requiredMessages, 'column', 'customs')
     }
   }

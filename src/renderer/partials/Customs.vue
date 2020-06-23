@@ -149,22 +149,10 @@ export default {
   },
   created: async function () {
     const self = this
-    console.log('created.')
-    this.$subscribeTo(hotIdFromTab$, function (hotId) {
-      console.log('returning customs here')
-      self.customs = self.getPropertyGivenHotId('customs', hotId) || self.getProperty('customs') || []
-    })
     let hotId = await this.currentHotId()
-    // console.log(`hot id is ${hotId}`)
-    this.$subscribeTo(allTablesAllColumnNames$, function (result) {
-      console.log('returning customs in columns sub here')
-      console.log(`current hot id is ${self.activeCurrentHotId}`)
-      self.customs = self.getPropertyGivenHotId('customs', self.activeCurrentHotId) || self.getProperty('customs') || []
-    })
     preferenceUpdate$.pipe(filter(key => key === 'customs')).subscribe(function (key) {
       const parent = self.parentName
       if (!_.isEmpty(parent) && parent !== 'preferences') {
-        console.log('merging into store...')
         self.mergeDefaultPreferencesIntoStore()
       }
     })
@@ -206,21 +194,15 @@ export default {
   asyncComputed: {
     getCustoms: {
       async get () {
-        // const self = this
-        // console.log('returning customs')
-        // if (!this.isChildOfPreferences()) {
-        //   const hotId = await this.currentHotId
-        // }
-        console.log('returning customs after')
         this.mergeDefaultPreferencesIntoStore()
         this.customs = this.getProperty('customs') || []
         return this.customs
       },
       watch () {
-        let temp0 = this.customs
+        // let temp0 = this.customs
         let temp = this.getActiveTab
         let temp2 = this.cIndex
-        let temp3 = this.allTablesAllColumns
+        // let temp3 = this.allTablesAllColumns
       }
     },
     isChildOfPreferences: {
@@ -246,7 +228,6 @@ export default {
         let storeCustom = _.find(storeCustoms, function (nextCustom) { return nextCustom.name === custom['name'] })
         _.set(custom, 'value', _.get(storeCustom, 'value'))
       })
-      console.log('and setting property...')
       this.setProperty('customs', mergedCustoms)
     },
     removeOnError: function (errorId, index) {
