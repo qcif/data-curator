@@ -806,8 +806,16 @@ export default {
       }
     },
     storeResetCallback: function (allProperties) {
+      const self = this
+      this.createCustomPropertiesForType(allProperties.package, 'package')
       this.resetPackagePropertiesToObject(allProperties.package)
+      _.each(allProperties.tables, function (table, id) {
+        self.createCustomPropertiesForType(table, 'table')
+      })
       this.resetTablePropertiesToObject(allProperties.tables)
+      _.each(allProperties.columns, function (columnsList, id) {
+        self.createCustomPropertiesForTypeFromList(columnsList, 'column')
+      })
       this.resetColumnPropertiesToObject(allProperties.columns)
     },
     importDataPackage: async function (filename, isTransient) {
@@ -980,6 +988,7 @@ export default {
       }
       let tableHotIdProperties = {}
       tableHotIdProperties[hotId] = tableProperties
+      this.createCustomPropertiesForType(tableHotIdProperties[hotId], 'table')
       this.resetTablePropertiesToObject(tableHotIdProperties)
     },
 
@@ -1016,8 +1025,30 @@ export default {
       if (!_.isEmpty(schema)) {
         let columnHotIdProperties = {}
         columnHotIdProperties[hotId] = [...schema.fields]
+        this.createCustomPropertiesForTypeFromList(columnHotIdProperties[hotId], 'column')
         this.resetColumnPropertiesToObject(columnHotIdProperties)
       }
+    },
+    createCustomPropertiesForTypeFromList: function (storeCustomsList, type) {
+      for (const storeCustoms of storeCustomsList) {
+        this.createCustomPropertiesForType(storeCustoms, type)
+      }
+    },
+    createCustomPropertiesForType: function (storeCustoms, type) {
+      const mergedCustoms = _.cloneDeep(ipc.sendSync('getPreference', 'customs'))
+      _.each(mergedCustoms, function (custom, index) {
+        // custom property names are unique
+        if (_.includes(_.get(custom, 'types'), type)) {
+          let storeCustomKey = _.findKey(storeCustoms, function (value, key) {
+            return key === custom['name']
+          })
+          if (!_.isEmpty(storeCustomKey)) {
+            _.set(custom, 'value', _.get(storeCustoms, storeCustomKey))
+            _.unset(storeCustoms, storeCustomKey)
+          }
+        }
+      })
+      _.set(storeCustoms, 'customs', mergedCustoms)
     },
     pushDefaultPackageProperties: function () {
       this.defaultPackageProperties.forEach(x => {
