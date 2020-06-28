@@ -26,7 +26,7 @@ Feature: Find data
   USER INTERFACE
   ==============
 
-  ![Data Curator Find and Replace user interface](https://github.com/ODIQueensland/data-curator/raw/develop/static/img/ui/find-and-replace.png)
+  ![Data Curator Find and Replace user interface](https://github.com/qcif/data-curator/raw/develop/static/img/ui/find-and-replace.png)
 
 
   @impl

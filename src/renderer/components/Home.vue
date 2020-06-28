@@ -327,8 +327,9 @@ import {
   validateActiveDataAgainstSchema
 } from '../frictionless.js'
 import {
-  createDataPackage
-} from '@/frictionlessDataPackage.js'
+  createDataPackageAsZippedResources,
+  createDataPackageAsJson
+} from '../frictionlessDataPackage.js'
 import HomeTooltip from '../mixins/HomeTooltip'
 import ErrorsTooltip from '../mixins/ErrorsTooltip'
 import {
@@ -341,10 +342,10 @@ import {
 import 'lodash/lodash.min.js'
 import {
   unzipFile
-} from '@/importPackage.js'
+} from '../importPackage.js'
 import {
   toggleHeaderWithFeedback
-} from '@/headerRow.js'
+} from '../headerRow.js'
 import {
   onNextHotIdFromTabRx,
   hotIdFromTab$,
@@ -353,24 +354,24 @@ import {
   updateHotDimensions$,
   allTableLocks$,
   allTablesAllColumnNames$
-} from '@/rxSubject.js'
+} from '../rxSubject.js'
 import VueRx from 'vue-rx'
 import {
   Subscription
-} from 'rxjs/Subscription'
+} from 'rxjs'
 import {
   getHotIdFromTabIdFunction
-} from '@/store/modules/hots.js'
+} from '../store/modules/hots.js'
 import {
   isCaseSensitive
-} from '@/frictionlessUtilities'
+} from '../frictionlessUtilities'
 import Handsontable from 'handsontable/dist/handsontable.full.min.js'
 import AsyncComputed from 'vue-async-computed'
 import Vue from 'vue'
 import {
   toolbarMenus
-} from '@/toolbarMenus'
-import { LockProperties } from '@/lockProperties'
+} from '../toolbarMenus'
+import { LockProperties } from '../lockProperties'
 Vue.use(AsyncComputed)
 Vue.use(VueRx, {
   Subscription
@@ -596,6 +597,9 @@ export default {
       self.removeTab(targetTabId)
       self.cleanUpTabDependencies(targetTabId)
     })
+    ipc.on('createJsonPackage', function (event, arg) {
+      self.createJsonPackage()
+    })
     this.$subscribeTo(errorFeedback$, function (nextError) {
       if (!self.messages) {
         self.messages = []
@@ -814,7 +818,12 @@ export default {
     },
     exportPackageFeedback: function () {
       this.messagesTitle = 'Export package success'
-      this.messages = 'Data package created.'
+      this.messages = 'Data package exported.'
+      this.messagesType = 'feedback'
+    },
+    exportPackageJsonFeedback: function () {
+      this.messagesTitle = 'Export package success'
+      this.messages = 'Data package JSON exported.'
       this.messagesType = 'feedback'
     },
     exportPackageErrors: function (errorMessages) {
@@ -823,9 +832,15 @@ export default {
       this.messagesType = 'error'
       this.updateHotComments()
     },
-    createPackage: async function () {
+    createZipPackage: async function () {
+      await this.createPackage(createDataPackageAsZippedResources, this.exportPackageFeedback)
+    },
+    createJsonPackage: async function () {
+      await this.createPackage(createDataPackageAsJson, this.exportPackageJsonFeedback)
+    },
+    createPackage: async function (exportFunc, exportFeedbackFunc) {
       try {
-        let messages = await createDataPackage()
+        let messages = await exportFunc()
         if (messages.length > 0) {
           this.exportPackageErrors(messages.map(x => {
             return {
@@ -833,7 +848,7 @@ export default {
             }
           }))
         } else {
-          this.exportPackageFeedback()
+          exportFeedbackFunc()
         }
       } catch (err) {
         console.error('There was an error creating a data package.', err)
@@ -903,7 +918,7 @@ export default {
         const hotId = this.loadDataIntoLatestHot(data, updatedFormat)
         this.initHotTablePropertiesFromDescriptor(hotId, descriptor)
         this.initHotColumnPropertiesFromSchema(hotId, descriptor.schema)
-        // hot rendering problem when tabs opened quickly - https://github.com/ODIQueensland/data-curator/issues/803- workaround as selecting table re-renders
+        // hot rendering problem when tabs opened quickly - https://github.com/qcif/data-curator/issues/803- workaround as selecting table re-renders
         getCurrentColumnIndexOrMin()
         updateHotDimensions$.next()
       })
@@ -974,7 +989,7 @@ export default {
         const columnCount = getColumnCount()
         if (this.currentHotId && schemaFieldsCount === columnCount) {
           this.initHotColumnPropertiesFromSchema(this.currentHotId, schema)
-          // hot rendering problem when tabs opened quickly - https://github.com/ODIQueensland/data-curator/issues/803- workaround as selecting table re-renders
+          // hot rendering problem when tabs opened quickly - https://github.com/qcif/data-curator/issues/803- workaround as selecting table re-renders
           getCurrentColumnIndexOrMin()
           updateHotDimensions$.next()
           LockProperties.lockTableSchema()
@@ -1111,7 +1126,7 @@ export default {
           this.validateTable()
           break
         case 'Export':
-          this.createPackage()
+          this.createZipPackage()
           break
         case 'Guess':
           this.inferColumnProperties()

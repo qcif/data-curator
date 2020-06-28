@@ -71,8 +71,7 @@ export default {
   },
   methods: {
     isSharedComponent: function (key) {
-      let isShared = ['sources', 'licenses', 'primaryKeys', 'foreignKeys', 'contributors'].indexOf(key) !== -1
-      return isShared
+      return ['sources', 'licenses', 'primaryKeys', 'foreignKeys', 'contributors', 'customs'].indexOf(key) !== -1
     },
     propertyGetObjectGivenHotId: function (key, hotId) {
       return {

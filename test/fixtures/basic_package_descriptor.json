@@ -1,0 +1,96 @@
+{
+  "profile": "tabular-data-package",
+  "resources": [
+    {
+      "profile": "tabular-data-resource",
+      "encoding": "utf-8",
+      "schema": {
+        "fields": [
+          {
+            "name": "headera",
+            "type": "string",
+            "format": "default",
+            "trueValues": [
+              "true",
+              "True",
+              "TRUE",
+              "1"
+            ],
+            "falseValues": [
+              "false",
+              "False",
+              "FALSE",
+              "0"
+            ],
+            "decimalChar": ".",
+            "groupChar": "",
+            "bareNumber": true,
+            "constraints": {
+              "enum": [
+                "apples",
+                "oranges"
+              ]
+            }
+          },
+          {
+            "name": "headerb",
+            "type": "integer",
+            "format": "default",
+            "trueValues": [
+              "true",
+              "True",
+              "TRUE",
+              "1"
+            ],
+            "falseValues": [
+              "false",
+              "False",
+              "FALSE",
+              "0"
+            ],
+            "decimalChar": ".",
+            "groupChar": "",
+            "bareNumber": true
+          },
+          {
+            "name": "headerc",
+            "type": "any",
+            "format": "default",
+            "trueValues": [
+              "true",
+              "True",
+              "TRUE",
+              "1"
+            ],
+            "falseValues": [
+              "false",
+              "False",
+              "FALSE",
+              "0"
+            ],
+            "decimalChar": ".",
+            "groupChar": "",
+            "bareNumber": true
+          }
+        ],
+        "missingValues": [
+          ""
+        ]
+      },
+      "format": "csv",
+      "mediatype": "text/csv",
+      "dialect": {
+        "delimiter": ",",
+        "doubleQuote": true,
+        "lineTerminator": "\r\n",
+        "quoteChar": "\"",
+        "skipInitialSpace": true,
+        "header": true,
+        "caseSensitiveHeader": false
+      },
+      "name": "testtablename",
+      "path": "data/test1.csv"
+    }
+  ],
+  "name": "test"
+}

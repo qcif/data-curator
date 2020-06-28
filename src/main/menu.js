@@ -296,6 +296,12 @@ class AppMenu {
             click () {
               webContents().send('triggerMenuButton', 'Export')
             }
+          },
+          {
+            label: 'Export Package Properties...',
+            click () {
+              webContents().send('createJsonPackage')
+            }
           }
         ]
       }, {
@@ -326,12 +332,12 @@ class AppMenu {
           }, {
             label: 'Data Curator Help',
             click () {
-              shell.openExternal('https://odiqueensland.github.io/data-curator-help')
+              shell.openExternal('https://qcif.github.io/data-curator-help')
             }
           }, {
             label: 'Report Issues',
             click () {
-              shell.openExternal('https://github.com/ODIQueensland/data-curator/blob/develop/.github/CONTRIBUTING.md')
+              shell.openExternal('https://github.com/qcif/data-curator/blob/develop/.github/CONTRIBUTING.md')
             }
           }
         ]

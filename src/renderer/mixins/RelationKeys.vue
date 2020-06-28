@@ -3,7 +3,7 @@ import {
   mapMutations,
   mapGetters
 } from 'vuex'
-import { Subscription } from 'rxjs/Subscription'
+import { Subscription } from 'rxjs'
 import VueRx from 'vue-rx'
 import Vue from 'vue'
 import { allTablesAllColumnNames$ } from '@/rxSubject.js'

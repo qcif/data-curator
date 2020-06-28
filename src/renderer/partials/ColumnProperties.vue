@@ -144,6 +144,14 @@
             class="form-control label-sm col-sm-9"
             @input="setProperty(formprop.key, $event.target.value)"
           />
+          <component
+            :is="formprop.key"
+            v-else-if="isSharedComponent(formprop.key)"
+            :currentHotId="currentHotId"
+            :getProperty="getProperty"
+            :isLocked="isLocked"
+            :setProperty="setProperty"
+          />
           <input
             v-else-if="formprop.key === 'name'"
             :id="formprop.key"
@@ -288,25 +296,30 @@ import VueRx from 'vue-rx'
 import Vue from 'vue'
 import {
   Subscription
-} from 'rxjs/Subscription'
+} from 'rxjs'
 import {
   allTablesAllColumnNames$,
   allTablesAllColumnsFromSchema$
-} from '@/rxSubject.js'
+} from '../rxSubject.js'
 import ColumnTooltip from '../mixins/ColumnTooltip'
 import ValidationRules from '../mixins/ValidationRules'
-import { isValidPatternForType } from '@/dateFormats.js'
+import customs from '@/partials/Customs'
+import { isValidPatternForType } from '../dateFormats.js'
 import { castBoolean, castNumber, castInteger } from 'tableschema/lib/types'
 import { ERROR as tableSchemaError } from 'tableschema/lib/config'
-import { LockProperties } from '@/lockProperties'
+import { LockProperties } from '../lockProperties'
+import PreferenceProperty from '../mixins/PreferenceProperty'
 Vue.use(VueRx, {
   Subscription
 })
 Vue.use(AsyncComputed)
 export default {
   name: 'Column',
+  components: {
+    customs
+  },
   extends: SideNav,
-  mixins: [ValidationRules, ColumnTooltip],
+  mixins: [ValidationRules, ColumnTooltip, PreferenceProperty],
   props: {
     cIndex: {
       type: Number,
@@ -397,6 +410,10 @@ export default {
         tooltipId: 'tooltip-column-rdfType',
         tooltipView: 'tooltipColumnRdfType',
         type: 'url'
+      },
+      {
+        label: 'Custom Properties',
+        key: 'customs'
       }
       ],
       formats: {
@@ -497,7 +514,7 @@ export default {
       'getActiveTab', 'getHotColumnProperty', 'getConstraint', 'getAllHotTablesColumnNames'
     ]),
     hasTypeFormatWarning () {
-      return (this.typeProperty == 'date' && this.formatProperty == 'default')
+      return (this.typeProperty === 'date' && this.formatProperty === 'default')
     },
     getNameProperty () {
       let allColumns = this.allTablesAllColumnsNames[this.activeCurrentHotId] || []
@@ -600,6 +617,9 @@ export default {
       let hotId = this.activeCurrentHotId
       let getter = this.getter(hotId, key)
       let property = this.getHotColumnProperty(getter)
+      if (typeof property === 'undefined') {
+        property = this.setPreferencesAsDefault(key, this.setProperty)
+      }
       return property
     },
     setProperty: function (key, value) {

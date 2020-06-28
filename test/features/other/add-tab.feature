@@ -10,7 +10,7 @@ Feature: Add Tab
     USER INTERFACE
     ==============
 
-    ![Add tab user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/add-tab.png)
+    ![Add tab user interface](https://raw.githubusercontent.com/qcif/data-curator/develop/static/img/ui/add-tab.png)
 
   @impl
   Scenario: Add Tab
