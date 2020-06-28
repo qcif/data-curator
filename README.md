@@ -1,10 +1,10 @@
 
-[![GitHub package version](https://img.shields.io/github/package-json/v/ODIQueensland/data-curator.svg)](https://github.com/ODIQueensland/data-curator/releases)
+[![GitHub package version](https://img.shields.io/github/package-json/v/qcif/data-curator.svg)](https://github.com/qcif/data-curator/releases)
 [![JavaScript Style Guide](https://img.shields.io/badge/js_code_style-standard-brightgreen.svg)](https://standardjs.com)
  [![vue-recommended-style](https://img.shields.io/badge/vue_code_style-recommended-brightgreen.svg?style=flat)](https://vuejs.org/v2/style-guide/#Priority-C-Recommended)
-[![Travis Build Status](https://travis-ci.org/ODIQueensland/data-curator.svg?branch=ci)](https://travis-ci.org/ODIQueensland/data-curator)
-[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/branch/ci?svg=true)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
-[![Appveyor Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2084%20%20❌failed:%200%20%20❗undefined:%200-orange.svg)](https://ci.appveyor.com/project/ODIQueensland/data-curator)
+[![Travis Build Status](https://travis-ci.org/qcif/data-curator.svg?branch=ci)](https://travis-ci.org/qcif/data-curator)
+[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/branch/ci?svg=true)](https://ci.appveyor.com/project/qcif/data-curator)
+[![Appveyor Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2084%20%20❌failed:%200%20%20❗undefined:%200-orange.svg)](https://ci.appveyor.com/project/qcif/data-curator)
 
 
 
@@ -15,13 +15,13 @@
 
 
 
-[![Unit Test Coverage Status](https://coveralls.io/repos/github/ODIQueensland/data-curator/badge.svg?branch=ci)](https://coveralls.io/github/ODIQueensland/data-curator?branch=ci)
-[![Github All Releases](https://img.shields.io/github/downloads/ODIQueensland/data-curator/total.svg)](https://github.com/ODIQueensland/data-curator/releases)
-[![Github Releases](https://img.shields.io/github/downloads/ODIQueensland/data-curator/latest/total.svg?label=Latest%20version%20downloads)](https://github.com/ODIQueensland/data-curator/releases/latest)
+[![Unit Test Coverage Status](https://coveralls.io/repos/github/qcif/data-curator/badge.svg?branch=ci)](https://coveralls.io/github/qcif/data-curator?branch=ci)
+[![Github All Releases](https://img.shields.io/github/downloads/qcif/data-curator/total.svg)](https://github.com/qcif/data-curator/releases)
+[![Github Releases](https://img.shields.io/github/downloads/qcif/data-curator/latest/total.svg?label=Latest%20version%20downloads)](https://github.com/qcif/data-curator/releases/latest)
 
 
- :sparkles: [Download Data Curator](https://github.com/ODIQueensland/data-curator/releases/latest) for Windows or macOS. :sparkles:
-[Request a new feature](https://github.com/ODIQueensland/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=Stephen-Gates) :bulb: [Report a bug](https://github.com/ODIQueensland/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=Stephen-Gates) :beetle: [View our plans](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open) :rocket:
+ :sparkles: [Download Data Curator](https://github.com/qcif/data-curator/releases/latest) for Windows or macOS. :sparkles:
+[Request a new feature](https://github.com/qcif/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=Stephen-Gates) :bulb: [Report a bug](https://github.com/qcif/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=Stephen-Gates) :beetle: [View our plans](https://github.com/qcif/data-curator/milestones?direction=asc&sort=due_date&state=open) :rocket:
 
 # Data Curator
 
@@ -74,17 +74,17 @@ Open data consumers can use published Data Packages to:
 
 ## Follow our progress
 
-Interested in this project? Subscribe to [Data Curator News](https://github.com/ODIQueensland/data-curator/issues/15) to get occasional updates on our progress and hear about [each release](https://github.com/ODIQueensland/data-curator/releases). [Find help](https://odiqueensland.github.io/data-curator-help).
+Interested in this project? Subscribe to [Data Curator News](https://github.com/qcif/data-curator/issues/15) to get occasional updates on our progress and hear about [each release](https://github.com/qcif/data-curator/releases). [Find help](https://qcif.github.io/data-curator-help).
 
 ## Contributions
 
-We welcome all types of [contributions to Data Curator](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md):
+We welcome all types of [contributions to Data Curator](https://github.com/qcif/data-curator/blob/master/.github/CONTRIBUTING.md):
 
-- [financial](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-financial-support)
-- [ideas](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-ideas-and-feature-requests)
-- [issues](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-issues)
-- [documentation](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-documentation)
-- [code](https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-code)
+- [financial](https://github.com/qcif/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-financial-support)
+- [ideas](https://github.com/qcif/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-ideas-and-feature-requests)
+- [issues](https://github.com/qcif/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-issues)
+- [documentation](https://github.com/qcif/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-documentation)
+- [code](https://github.com/qcif/data-curator/blob/master/.github/CONTRIBUTING.md#contribute-code)
 
 We acknowledge the great work of others. We are:
 
@@ -92,7 +92,7 @@ We acknowledge the great work of others. We are:
 - using the [Open Knowledge International](https://okfn.org) Frictionless Data [specification](http://frictionlessdata.io) and [code libraries](http://frictionlessdata.io/tools/#javascript)
 - adopting [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/#bp-summary)
 
-Data Curator proudly [uses open source software](https://github.com/ODIQueensland/data-curator/network/dependencies), including:
+Data Curator proudly [uses open source software](https://github.com/qcif/data-curator/network/dependencies), including:
 
   software                                                             | organisation                                                         | licence                                                                          | support                                                                        
   -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------
@@ -109,7 +109,7 @@ Data Curator proudly [uses open source software](https://github.com/ODIQueenslan
 
 ## Download and Install Data Curator
 
-- Choose a platform from the [Releases page](https://github.com/ODIQueensland/data-curator/releases/latest).
+- Choose a platform from the [Releases page](https://github.com/qcif/data-curator/releases/latest).
 - Drag the application to your applications folder.
 
 --------------------------------------------------------------------------------
@@ -162,9 +162,9 @@ We have adopted [Recommended Vue](https://vuejs.org/v2/style-guide/#Priority-C-R
 
 ### Acceptance tests
 
-Acceptance tests for [Data Curator](https://github.com/ODIQueensland/data-curator/blob/master/README.md) are:
+Acceptance tests for [Data Curator](https://github.com/qcif/data-curator/blob/master/README.md) are:
 
-- written using the [Gherkin language](https://cucumber.io/docs/reference#gherkin) ([learn more](https://media.pragprog.com/titles/hwcuc/gherkin.pdf)) and stored [on GitHub](https://github.com/ODIQueensland/data-curator/tree/master/test/features)
+- written using the [Gherkin language](https://cucumber.io/docs/reference#gherkin) ([learn more](https://media.pragprog.com/titles/hwcuc/gherkin.pdf)) and stored [on GitHub](https://github.com/qcif/data-curator/tree/master/test/features)
 - [shared](https://app.cucumber.pro/projects/data-curator/documents/branch/develop) using the [Cucumber Pro](https://cucumber.io/pro) beta.
 - arranged in folders like the application menu structure
 - integrated with:
@@ -220,5 +220,5 @@ Ensure that any changes in this tag are also released back to develop and master
 
 Changes are recorded on the [Releases][releases] page.
 
-[releases]: https://github.com/ODIQueensland/data-curator/releases
-[version-badge]: https://img.shields.io/github/package-json/v/ODIQueensland/data-curator.svg
+[releases]: https://github.com/qcif/data-curator/releases
+[version-badge]: https://img.shields.io/github/package-json/v/qcif/data-curator.svg

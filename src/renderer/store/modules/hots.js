@@ -337,6 +337,11 @@ const mutations = {
   pushPackageProperty (state, property) {
     _.set(state.packageProperties, property.key, property.value)
   },
+  removeAtIndexFromPackagePropertiesList (state, property) {
+    let propertiesList = _.get(state.packageProperties, property.key)
+    propertiesList.splice(property.index, 1)
+    _.set(state.packageProperties, property.key, propertiesList)
+  },
   pushTableSchema (state, hotIdSchema) {
     let hotId = hotIdSchema.hotId
     let hotTab = state.hotTabs[hotId]

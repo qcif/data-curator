@@ -21,7 +21,7 @@ Feature: Help
   NOTES
   =====
   
-  - Initial draft at https://odiqueensland.github.io/data-curator-help/
+  - Initial draft at https://qcif.github.io/data-curator-help/
 
   Scenario: Show Help
     Given Data Curator is open

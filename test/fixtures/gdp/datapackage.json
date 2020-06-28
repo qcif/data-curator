@@ -1,0 +1,60 @@
+{
+    "profile": "tabular-data-package",
+    "resources": [
+        {
+            "profile": "tabular-data-resource",
+            "encoding": "UTF-8",
+            "schema": {
+                "fields": [
+                    {
+                        "format": "default",
+                        "name": "Country Name",
+                        "type": "string"
+                    },
+                    {
+                        "format": "default",
+                        "name": "Country Code",
+                        "type": "string"
+                    },
+                    {
+                        "format": "default",
+                        "name": "Year",
+                        "type": "year"
+                    },
+                    {
+                        "description": "GDP in current USD",
+                        "format": "default",
+                        "name": "Value",
+                        "type": "number"
+                    }
+                ],
+                "missingValues": [
+                    ""
+                ]
+            },
+            "format": "csv",
+            "mediatype": "text/csv",
+            "name": "gdp",
+            "path": "data/gdp.csv",
+            "dialect": {
+                "delimiter": ",",
+                "doubleQuote": true,
+                "lineTerminator": "\r\n",
+                "quoteChar": "\"",
+                "skipInitialSpace": true,
+                "header": true,
+                "caseSensitiveHeader": false
+            }
+        }
+    ],
+    "description": "Example Data Package providing Country, regional and world GDP in current US Dollars ($)",
+    "licenses": [
+        {
+            "id": "CC0-1.0",
+            "title": "CC0 1.0",
+            "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+        }
+    ],
+    "name": "gdp",
+    "title": "Country, Regional and World GDP (Gross Domestic Product) for 2014 (Example)"
+}
