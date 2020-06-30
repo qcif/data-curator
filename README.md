@@ -15,7 +15,6 @@
 
 
 
-
 [![Unit Test Coverage Status](https://coveralls.io/repos/github/qcif/data-curator/badge.svg?branch=ci)](https://coveralls.io/github/qcif/data-curator?branch=ci)
 [![Github All Releases](https://img.shields.io/github/downloads/qcif/data-curator/total.svg)](https://github.com/qcif/data-curator/releases)
 [![Github Releases](https://img.shields.io/github/downloads/qcif/data-curator/latest/total.svg?label=Latest%20version%20downloads)](https://github.com/qcif/data-curator/releases/latest)
