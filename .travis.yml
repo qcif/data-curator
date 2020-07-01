@@ -66,48 +66,48 @@ jobs:
     - yarn run unit:coverage
   - os: linux
     script:
-      - yarn run unit
+    - yarn run unit
   - stage: test
     os: osx
-    script: "yarn run e2e:impl test/features/backlog"
+    script: yarn run e2e:impl test/features/backlog
   - os: linux
-    script: "yarn run e2e:impl test/features/backlog"
+    script: yarn run e2e:impl test/features/backlog
   - os: osx
-    script: "yarn run e2e:impl test/features/data_curator"
+    script: yarn run e2e:impl test/features/data_curator
   - os: linux
-    script: "yarn run e2e:impl test/features/data_curator"
+    script: yarn run e2e:impl test/features/data_curator
   - os: osx
-    script: "yarn run e2e:impl test/features/edit"
+    script: yarn run e2e:impl test/features/edit
   - os: linux
-    script: "yarn run e2e:impl test/features/edit"
+    script: yarn run e2e:impl test/features/edit
   - os: osx
-    script: "yarn run e2e:impl test/features/file"
+    script: yarn run e2e:impl test/features/file
   - os: linux
-    script: "yarn run e2e:impl test/features/file"
+    script: yarn run e2e:impl test/features/file
   - os: osx
-    script: "yarn run e2e:impl test/features/find"
+    script: yarn run e2e:impl test/features/find
   - os: linux
-    script: "yarn run e2e:impl test/features/find"
+    script: yarn run e2e:impl test/features/find
   - os: osx
-    script: "yarn run e2e:impl test/features/help"
+    script: yarn run e2e:impl test/features/help
   - os: linux
-    script: "yarn run e2e:impl test/features/help"
+    script: yarn run e2e:impl test/features/help
   - os: osx
-    script: "yarn run e2e:impl test/features/other"
+    script: yarn run e2e:impl test/features/other
   - os: linux
-    script: "yarn run e2e:impl test/features/other"
+    script: yarn run e2e:impl test/features/other
   - os: osx
-    script: "yarn run e2e:impl test/features/support"
+    script: yarn run e2e:impl test/features/support
   - os: linux
-    script: "yarn run e2e:impl test/features/support"
+    script: yarn run e2e:impl test/features/support
   - os: osx
-    script: "yarn run e2e:impl test/features/tools"
+    script: yarn run e2e:impl test/features/tools
   - os: linux
-    script: "yarn run e2e:impl test/features/tools"
+    script: yarn run e2e:impl test/features/tools
   - os: osx
-    script: "yarn run e2e:impl test/features/window"
+    script: yarn run e2e:impl test/features/window
   - os: linux
-    script: "yarn run e2e:impl test/features/window"
+    script: yarn run e2e:impl test/features/window
   - stage: build
     os: osx
     script:
@@ -115,5 +115,5 @@ jobs:
     - yarn run release:predraft
 env:
   global:
-  - secure: F+Bn6BrNKTTybkEs4UwCl7961z7ura2zBeuw+tS/vXqswb//x9DEhEr5IJ53VyC+H2R3Wj8yJ121514FiJwNg4hUpUQ98DHyczbMLXrg+wjQI2ZYvhiAonR5LzDGNd/XLhSDezQK556+guq67SnGPP3iqnfjyu8XJ2IaynLukvLSazZTCliuqpEpwaCn99+xhaHLcGRF/Dh2Gg5+HVfQnC4S6eiYGo5Dm9RDG0hntxYHUOAxQYmnvXxf7uLNc0sfFSoVd1BZytZCVFLceY5DM0tOO8kRyMQk+LJqneAdhp9Z8pUMcTMDeJtNegqqSaBra8UAkrGv1tUrBYUQnq4fkbH0tees6mJNFkqNlOW67pj8zghYSAKwNXiazFmH/lYE2sleBKGflznLZPDD5XXLlQ/aKXF+3wAx0wMtiGkFBbGP+GoBg10+7RgKw0A+mpLaJAVwUYGGJSEfH3A0U0OEt7XRdk/sD4nFKLzL3SAx3QC57FdGu4VWdJJT9t54oX+NzM3QmBH3dNxmge4XFLR1iwN72yheB2HyGu5zafKdOfbvCz2fP1ddECm2KWu8I7NNuBIwoBUm3tVm60b3gTpblAO3RcIrLg3k+ACTSvxJuzqSIE2/YnXGnjfVPW/NaCcyD1cPFppTvmpjLNHRfwP9zeP4nBOHHgOv7grzmvCs6QY=
-  - secure: R1p+QnWeiz2NXLc9phnPzKzs/qgosewMkQDL3DAyq3HnXNCGIVGSe+nr1AJTSel1Mit9isMK0B1M3QXr6+8xsURWUIA0zA+PJxZ90/H8Zr1WapDdRVKdrPWj1HV1Iv3htbZcEmWCHhdlTb2XJ1Zu0oyVEFQilhjScD26LxekYg1I1G/wu1axZhS9ieTbnuTiDrIMSZH+fXygZrXf2uzn9DQNi/VDgrKqkVpPZjyFMDA4OjW1I5egNtj2y42eWi5KRPh8IVzvnwUczh21bcJ+nfagA8ur3ZOjzqC+8wDl/EMjZ4uv+X7r0jmuSQV/pCnj6Zq5x5foXIKyPSNIQZiXUZbxZ9tU5Sy5BOUgjbc9iIsbQT6iGpSomHJrqe/hbDW6URsO85rV2gp2NETRm/RUQlc6ZsTdlhjlwPJAVUq2A8NYThUIo4u586SKnQ2WK4vt1lTXVAxr0JxJFenQD632Ye03Tzk1KUxriIXlo/uN4UuuSf3d0Kl9KFY0gr+lW/GDyf3KeZ4ve4ksgAkOR9tUMJvJiR00u0mM/C85QRNTUIX6o9UrODqx5vNypwGoZE/tKgVm9sjrGpHzJ6jSz5LxIKQMEFAd3zFPlGSVUclTbYUvdWH8YZCLWcNk5V1+hihgJsyS/Q+BecMrRKrWToIgyueQb95ZIRJdN9hvZiucjG8=
+  - secure: Ed4mhHGlgrZDt7Qu/NpkszYYgzYJc9PGXRJPA39CLz6eVD+SpmDz19mjAB0oTrLtFNPcJlSsT8ocZvvTAH+AtCIi5BvWFcLlT5z2DcLluATlSdS7zrTGHYudJmcKOwYgOvmV+zhwo7KCkkVS+7VA0kQx5x+Oa1ftvQmVuA4gD5RYhLBh9JK6ugEyMpr1nMhrkuHkZmmEn5oy2btZSAwyY6PQ3c26iDrXq9NMqWk0kQtN3LiLwTqYoxIiK0Vo8hYi0AOpZ2BmWFSZAtmIj4NE6YFn2u6qtsG26v/3qLybJr/FZBGlvQRurRP3IEa58ilNcEBhMPjAHKNijng30AHXMrteLmY4obZV+/bEwmaHwYd5DbNtl5YPv2/3+Dlw86IUNzhwktaw/qyZYdlXDsVjiE8wK+Qs73lIOtBz8oekORtzorf/snvQVXTyF6QeGCrfy1uGymXwHMA5tbOXXShIxqMXOFELbCq++iHZyOvV4OZAbgbWe84B1o2e5eQ+IkyO7YgBTUzCK7HT0EDA+bhnB8aZP6G+hLXc73tiV0vEkcrpt3YHsiT68YwTo9KwdC8iVV7+/7dUNcNsj5NQRvOxp5riVmivwNpY4gvJsVr/UB98A+iUfMm0si5e/eceu7hwGkQh2+ITDXdMBtls7Lhb66T58KZR7UiQsmv2/xyTe78=
+  - secure: BfulWFgDZ1hDL9CAyVVIrjjIqSut6sKt3fzWIexJg8+XomCkCi7rpsg66kK46qajywFolNXpl8V0uVBVVsjaMNdSr559GhNP7bF4L2gQRM4+wDvb8HjLO1jA75Y85+6hJcJeu0DiVn1DPSxAshxp4lkY4A0QAsGn4161WswwLKo2sNJP7oKnO9u5UqQ9ZgoRzBEhw0XZtshGdD+1VQ/Loddaqju0J4kHi/MWv9yA6aNyfxowonetqZlWwrEd5yU2pBRCOFvpPuQAnHidPj5a5+EskniAKF8yMjDTm8sTHvBNhqnX4YA4OomTHK09O5f+/7WtxVAwB0eViB1uADR6gcz+mSFzDVTIHK6IoPiDyXfjaKuvInrj6AZMuWhqany3bhgKENwWyutvY3bVHNcFyOSdLFqUm7JC/eH70L2HiEXI29GmWEzaqb1rSUfJfWXfqrCo59y2mpBoLm7Yw/G2u/qeoN8PytvnJam9dYDvaxIHkKpbxhpTm7rp43Fv6QYzL7Oc8++4HCL/+NRKbipUUoo5WThVC/Qt4D5isBTg4enciRNbz5Q486siLGw4M8m6M2JFWfo/QoVakNU9Ef0PhG5blZOD5ee37BsmGAVp3/iicLbAUJah/3I9YdDq/eEoJ32aMwLpQvYa86iXQv7WYP+mqSkvyFgcmLt4R1LBnf8=
