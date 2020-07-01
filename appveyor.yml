@@ -15,9 +15,9 @@ platform:
 
 environment:
   GH_TOKEN:
-    secure: 2+1HLAk/YGWqOMnjgsx5nII2huvHAlPkO24vJBqggRmcyy9FhiekaaMDTsRiRnRX
+    secure: Q1ftys9k/3coh0FW7NOVO0ybP/tcOq4t/FSAvitc9pUmpPDIGENyd0ezI5WlXkGZ
   COVERALLS_REPO_TOKEN:
-    secure: 5CQKw1+Is8KphKjmT2emU/C7eNlZN3OEteemQZjOjJl47BVABYr1SOZ+IX82NSWy
+    secure: faAiDKB0AuOoVTQrRYs/91SSOM0fgPTc13Sz/Oiu6CniFpShg/8a2+hZ2inzMFde
 
 skip_commits:
   message: /^appveyor Updating branch from appveyor build.$/
