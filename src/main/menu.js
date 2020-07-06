@@ -1,5 +1,5 @@
 import { openFile, saveFileAs, saveFile, importDataPackageFromFile, importTableResourceSchemaFromFile } from './file.js'
-import { showUrlDialogForPackage, showUrlDialogForResourceSchema } from './url.js'
+import { showUrlDialogForPackage, showUrlDialogForResourceSchema, showUrlDialogForPackageDescriptor } from './url.js'
 import { createWindowTab, focusMainWindow } from './windows.js'
 import { importExcel } from './excel.js'
 import { showKeyboardHelp } from './help.js'
@@ -54,6 +54,18 @@ class AppMenu {
             //            enabled: false
             //          }
             //        ]
+            type: 'separator'
+          }, {
+            label: 'Import Package Properties',
+            submenu: [
+              {
+                label: 'json from URL...',
+                click () {
+                  showUrlDialogForPackageDescriptor()
+                }
+              }
+            ]
+          }, {
             type: 'separator'
           }, {
             label: 'Import Column Properties',
