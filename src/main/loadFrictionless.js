@@ -4,16 +4,34 @@ import { focusMainWindow } from './windows'
 import _ from 'lodash'
 import { dataResourceToFormat } from '../renderer/file-formats'
 import { dialog } from 'electron'
-import { Package } from 'datapackage'
+import { Package, Resource } from 'datapackage'
 import { Schema } from 'tableschema'
 
-export async function loadPackageFromJson (json) {
-  const mainWindow = focusMainWindow()
+export async function loadDataPackageJsonFromSourceWithNoData (json) {
+  await loadDataPackageJsonFromSource(json, getEmptyDataWithHeadersFromResource)
+}
+
+export async function loadDataPackageJsonFromSource (json, dataFunc = getDataWithHeadersFromResource) {
   const dataPackageJson = await loadGenericFrictionlessFromJsonSource(json, loadPackageJson, 'Data Package')
   try {
-    await loadResources(dataPackageJson, mainWindow)
+    await loadPackageDescriptor(dataPackageJson)
+    await loadPackageResourcesAndData(dataPackageJson, dataFunc)
   } catch (error) {
     console.error('There was a problem loading package from json', error)
+  }
+}
+
+// not implemented
+export async function loadTableResourceDescriptorFromJson (json) {
+  try {
+    const resource = await loadGenericFrictionlessFromJsonSource(json, loadTableResourceDescriptorJson, 'Table Resource Descriptor')
+    const mainWindow = focusMainWindow()
+    mainWindow.webContents.send('closeLoadingScreen')
+    if (resource && resource.descriptor) {
+      await loadNextTableResource(resource, getEmptyDataWithHeadersFromResource)
+    }
+  } catch (error) {
+    console.error('There was a problem loading resource schema from json', error)
   }
 }
 
@@ -74,20 +92,48 @@ export async function loadPackageJson (source) {
   }
 }
 
-async function loadResources (dataPackageJson) {
-  const mainWindow = focusMainWindow()
+async function loadPackageDescriptor (dataPackageJson) {
   let packageProperties = _.assign({}, dataPackageJson.descriptor)
   _.unset(packageProperties, 'resources')
-  mainWindow.webContents.send('resetPackagePropertiesToObject', packageProperties)
+  focusMainWindow().webContents.send('resetPackagePropertiesToObject', packageProperties)
+}
+
+async function loadPackageResourcesAndData (dataPackageJson, dataFunc) {
+  const mainWindow = focusMainWindow()
   for (const resource of dataPackageJson.resourceNames) {
     mainWindow.webContents.send('closeAndshowLoadingScreen', 'Loading next resource...')
     const dataResource = dataPackageJson.getResource(resource)
-    const format = dataResourceToFormat(dataResource.descriptor)
-    let data = await dataResource.read()
-    mainWindow.webContents.send('closeLoadingScreen')
-    // datapackage-js separates headers - add back to use default DC behaviour
-    let dataWithHeaders = _.concat([dataResource.headers], data)
-    mainWindow.webContents.send('addTabWithFormattedDataAndDescriptor', dataWithHeaders, format, dataResource.descriptor)
+    await loadNextTableResource(dataResource, dataFunc)
+  }
+}
+
+async function loadNextTableResource (dataResource, dataFunc) {
+  const mainWindow = focusMainWindow()
+  const format = dataResourceToFormat(dataResource.descriptor)
+  let dataWithHeaders = await dataFunc(dataResource)
+  mainWindow.webContents.send('closeLoadingScreen')
+  mainWindow.webContents.send('addTabWithFormattedDataAndDescriptor', dataWithHeaders, format, dataResource.descriptor)
+}
+
+async function getDataWithHeadersFromResource (dataResource) {
+  let data = await dataResource.read()
+  // datapackage-js separates headers - add back to use default DC behaviour
+  return _.concat([dataResource.headers], data)
+}
+
+async function getEmptyDataWithHeadersFromResource (dataResource) {
+  let data = await dataResource.read()
+  let numberOfCols = _.get(dataResource, 'headers.length', 1)
+  let dataRowText = _.repeat(',', numberOfCols - 1)
+  return dataRowText
+}
+
+async function loadTableResourceDescriptorJson (source) {
+  try {
+    const resourceDescriptor = await Resource.load(source)
+    return resourceDescriptor
+  } catch (error) {
+    console.error(`There was a problem loading the table resource descriptor: ${source}`, error)
   }
 }
 
