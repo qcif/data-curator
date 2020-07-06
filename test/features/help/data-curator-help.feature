@@ -8,7 +8,7 @@ Feature: Support Forum
 
   - "Data Curator Help" can be invoked from a menu item
   - Support will be launched in a separate browser window that will require access to the internet
-  - The Support URL will be on https://odiqueensland.github.io/data-curator-help
+  - The Support URL will be on https://qcif.github.io/data-curator-help
 
   @impl
   Scenario: Data Curator Help

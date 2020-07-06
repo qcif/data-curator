@@ -10,7 +10,7 @@ Feature: Check for update
 
   - Check for update is run when you "Open Data Curator"
   - Check for update requires a connection to the Internet
-  - [Software releases](https://github.com/ODIQueensland/data-curator/releases/latest) will be available on GitHub
+  - [Software releases](https://github.com/qcif/data-curator/releases/latest) will be available on GitHub
     - Software releases must be signed with a code certificate appropriate for the <operating system>
     - Different releases are available for different <operating system> and <platform>
   - Allow the user to defer the update

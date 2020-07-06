@@ -111,7 +111,7 @@ import {
 import VueRx from 'vue-rx'
 import {
   Subscription
-} from 'rxjs/Subscription'
+} from 'rxjs'
 import {
   hotIdFromTab$,
   currentPos$

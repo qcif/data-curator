@@ -20,12 +20,12 @@ Feature: Set Provenance Information
     - lists
     - bold, italics
     - links, images
-  - Import [Sample Provenance Information](https://github.com/ODIQueensland/data-curator/blob/master/test/features/tools/sample-provenance-information.md)
+  - Import [Sample Provenance Information](https://github.com/qcif/data-curator/blob/master/test/features/tools/sample-provenance-information.md)
   
   USER INTERFACE
   ==============
 
-  ![Provenance user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/provenance.png)
+  ![Provenance user interface](https://raw.githubusercontent.com/qcif/data-curator/develop/static/img/ui/provenance.png)
   
   Scenario: Provenance information
     Given Data Curator is open

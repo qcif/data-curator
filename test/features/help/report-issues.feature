@@ -8,7 +8,7 @@ Feature: Report Issues
 
   - "Report Issues" can be invoked from a menu item
   - Support will be launched in a separate browser window that will require access to the internet
-  - The Report Issues URL will be hosted on https://github.com/ODIQueensland/data-curator/blob/master/.github/CONTRIBUTING.md
+  - The Report Issues URL will be hosted on https://github.com/qcif/data-curator/blob/master/.github/CONTRIBUTING.md
 
   Scenario: Use the menu to open the report issues page
     Given Data Curator is open

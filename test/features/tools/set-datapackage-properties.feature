@@ -14,7 +14,7 @@ Feature: Set Data Package Properties
   USER INTERFACE
   ==============
 
-  ![Data package user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/data-package.png)
+  ![Data package user interface](https://raw.githubusercontent.com/qcif/data-curator/develop/static/img/ui/data-package.png)
 
   Background:
     Given Data Curator is open

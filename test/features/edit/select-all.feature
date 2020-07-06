@@ -14,7 +14,7 @@ Feature: Select all
   USER INTERFACE
   ==============
   
-  ![Data Curator Select All user interface](https://github.com/ODIQueensland/data-curator/raw/develop/static/img/ui/select-all.png)
+  ![Data Curator Select All user interface](https://github.com/qcif/data-curator/raw/develop/static/img/ui/select-all.png)
 
   Scenario: Select All data cells in a table
     Given Data Curator is open

@@ -1,8 +1,8 @@
-![Data Curator](https://github.com/ODIQueensland/data-curator/raw/master/static/img/data-curator-banner.png)
+![Data Curator](https://github.com/qcif/data-curator/raw/master/static/img/data-curator-banner.png)
 
-Acceptance tests for [Data Curator](https://github.com/ODIQueensland/data-curator/blob/master/README.md) are:
+Acceptance tests for [Data Curator](https://github.com/qcif/data-curator/blob/master/README.md) are:
 
-- written using the [Gherkin language](https://cucumber.io/docs/reference#gherkin) ([learn more](https://media.pragprog.com/titles/hwcuc/gherkin.pdf)) and stored [on GitHub](https://github.com/ODIQueensland/data-curator/tree/master/test/features)
+- written using the [Gherkin language](https://cucumber.io/docs/reference#gherkin) ([learn more](https://media.pragprog.com/titles/hwcuc/gherkin.pdf)) and stored [on GitHub](https://github.com/qcif/data-curator/tree/master/test/features)
 - [shared](https://app.cucumber.pro/projects/data-curator/documents/branch/master) using [Cucumber Pro](https://cucumber.io/pro) beta
 - arranged in folders like the application menu structure
 
@@ -46,6 +46,6 @@ Tags
 ====
 We use `@tags` to help manage features:
 
-- the [`@backlog`](https://app.cucumber.pro/projects/data-curator/search/branch/develop?q=%40backlog) tag is used to indicate that the feature is not in our [release plans](https://github.com/ODIQueensland/data-curator/milestones?direction=asc&sort=due_date&state=open)
+- the [`@backlog`](https://app.cucumber.pro/projects/data-curator/search/branch/develop?q=%40backlog) tag is used to indicate that the feature is not in our [release plans](https://github.com/qcif/data-curator/milestones?direction=asc&sort=due_date&state=open)
 - the [`@draft`](https://app.cucumber.pro/projects/data-curator/search/branch/develop?q=%40draft) tab is used for draft features
 - the [`@impl`](https://app.cucumber.pro/projects/data-curator/search/branch/develop?q=%40impl) tab indicates the scenario tests that have been automated
