@@ -10,6 +10,7 @@
         class="propertyrow"
       >
         <label
+          v-if="formprop.label"
           v-tooltip.left="tooltip(formprop.tooltipId)"
           :for="formprop.label"
           class="control-label col-sm-3"
@@ -25,7 +26,6 @@
           :waitForHotIdFromTabId="waitForHotIdFromTabId"
           :currentHotId="currentHotId"
         />
-        <!-- <input v-else type="text" class="form-control input-sm col-sm-9" :id="formprop.key" :value="getProperty(formprop.key)" @input="setProperty(formprop.key, $event.target.value)"/> -->
         <textarea
           v-else-if="formprop.key === 'description'"
           :id="formprop.key"
@@ -59,23 +59,22 @@ import SideNav from '@/partials/SideNav'
 import licenses from '@/partials/Licenses'
 import sources from '@/partials/Sources'
 import contributors from '@/partials/Contributors'
+import customs from '@/partials/Customs'
 import PackageTooltip from '@/mixins/PackageTooltip'
 import ValidationRules from '@/mixins/ValidationRules'
-import { ipcRenderer as ipc } from 'electron'
-import {
-  mapMutations,
-  mapGetters
-} from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import autosize from 'autosize'
+import PreferenceProperty from '../mixins/PreferenceProperty'
 export default {
   name: 'Packager',
   components: {
     licenses,
     sources,
-    contributors
+    contributors,
+    customs
   },
   extends: SideNav,
-  mixins: [ValidationRules, PackageTooltip],
+  mixins: [ValidationRules, PackageTooltip, PreferenceProperty],
   data () {
     return {
       formprops: [{
@@ -126,8 +125,11 @@ export default {
         key: 'contributors',
         tooltipId: 'tooltip-package-contributors',
         tooltipView: 'tooltipPackageContributors'
-      }],
-      hasPreferences: ['contributors', 'licenses']
+      },
+      {
+        label: 'Custom Properties',
+        key: 'customs'
+      }]
     }
   },
   computed: {
@@ -145,16 +147,9 @@ export default {
         'key': key
       })
       if (typeof packageProperty === 'undefined') {
-        packageProperty = this.setPreferencesAsDefault(key)
+        packageProperty = this.setPreferencesAsDefault(key, this.setProperty)
       }
       return packageProperty
-    },
-    setPreferencesAsDefault: function (key) {
-      if (_.indexOf(this.hasPreferences, key) > -1) {
-        const packageProperty = ipc.sendSync('getPreference', key)
-        this.setProperty(key, packageProperty)
-        return packageProperty
-      }
     },
     getPropertyGivenHotId: function (key, hotId) {
       return this.getProperty(key)

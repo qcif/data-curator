@@ -15,7 +15,7 @@ Feature: Replace data
 
   The user should be warned that the replace function cannot be undone
 
-  ![Data Curator Find and Replace User Interface](https://github.com/ODIQueensland/data-curator/raw/develop/static/img/ui/find-and-replace.png)
+  ![Data Curator Find and Replace User Interface](https://github.com/qcif/data-curator/raw/develop/static/img/ui/find-and-replace.png)
 
   LATER
   =====

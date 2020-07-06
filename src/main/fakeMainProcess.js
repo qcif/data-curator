@@ -21,10 +21,6 @@ class FakeMain {
 
   mockFunction (value, ...args) {
     const [window, options, callback] = this.parseArgs(...args)
-    console.log(`options are: ${options}`)
-    console.dir(options)
-    console.log('callback is:')
-    console.dir(callback)
     if (callback) {
       setTimeout(() => callback(value), 0)
       return

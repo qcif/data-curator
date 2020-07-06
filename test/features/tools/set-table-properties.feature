@@ -43,7 +43,7 @@ Feature: Set Table Properties
   USER INTERFACE
   ==============
 
-  ![Table properties user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/table-properties.png)
+  ![Table properties user interface](https://raw.githubusercontent.com/qcif/data-curator/develop/static/img/ui/table-properties.png)
 
   @impl
   Scenario Outline: Show Correct Side Navigation Panels

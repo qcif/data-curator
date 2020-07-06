@@ -1,1 +1,1 @@
-"c:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s My /d DataCurator /du https://github.com/ODIQueensland/data-curator#readme /debug /n "Queensland Cyber Infrastructure Foundation Ltd" %1
+"c:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s My /d DataCurator /du https://github.com/qcif/data-curator#readme /debug /n "Queensland Cyber Infrastructure Foundation Ltd" %1

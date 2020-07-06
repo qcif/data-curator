@@ -1,4 +1,8 @@
 import Vue from 'vue'
+
+// require globally for modules such as tableschema-js
+import "regenerator-runtime/runtime.js"
+
 Vue.config.devtools = false
 Vue.config.productionTip = false
 

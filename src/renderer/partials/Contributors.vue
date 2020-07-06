@@ -8,14 +8,14 @@
       <div class="inputs-container">
         <div
           v-for="prop in Object.keys(contributor)"
-          :id="prop + gindex"
-          :key="prop + gindex"
+          :id="'contributor' + prop + gindex"
+          :key="'contributor' + prop + gindex"
           class="input-group"
         >
           <span class="input-group-addon input-sm">{{ prop }}</span>
           <select
             v-if="prop === 'role'"
-            :id="prop"
+            :id="prop + gindex"
             :value="contributor[prop]"
             class="form-control input-sm"
             @input="setContributorProp(gindex, prop, $event.target.value)"
@@ -92,7 +92,7 @@ export default {
       type: Function,
       default: function () {}
     },
-    contributorsSetter: {
+    defaultSetter: {
       type: Function,
       default: undefined
     }
@@ -121,7 +121,8 @@ export default {
         let contributors = this.getContributorsFromPackageProperties() || []
         for (const [index, contributor] of contributors.entries()) {
           if (contributor.role.trim() === '') {
-            this.setProperty(`contributors[${index}]role`, this.defaultRole)
+            _.set(contributor, `role`, this.defaultRole)
+            this.setContributorProp(index, 'role', this.defaultRole)
           }
         }
         return contributors
@@ -164,8 +165,8 @@ export default {
       this.contributors = this.getContributorsFromPackageProperties()
     },
     setContributorProp: function (index, prop, value) {
-      if (typeof this.contributorsSetter !== 'undefined') {
-        this.contributorsSetter(index, prop, value)
+      if (typeof this.defaultSetter !== 'undefined') {
+        this.defaultSetter(index, prop, value, 'contributors')
       } else {
         this.setProperty(`contributors[${index}][${prop}]`, value)
       }

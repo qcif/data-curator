@@ -14,7 +14,7 @@ Feature: Open Recent
   USER INTERFACE
   ==============
   
-  ![Open recent user interface](https://raw.githubusercontent.com/ODIQueensland/data-curator/develop/static/img/ui/open-recent.png)
+  ![Open recent user interface](https://raw.githubusercontent.com/qcif/data-curator/develop/static/img/ui/open-recent.png)
 
   Scenario: Open a recently opened file
     Given Data Curator is open
