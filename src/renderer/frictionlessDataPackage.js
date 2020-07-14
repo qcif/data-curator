@@ -78,6 +78,7 @@ function addPackageProperties (descriptor) {
   let packageProperties = _.cloneDeep(hotStore.state.packageProperties)
   _.merge(descriptor, packageProperties)
   removeEmptiesFromDescriptor(descriptor)
+  removeEmpty(descriptor, 'contributors')
   updateCustomsForProperties(descriptor, 'package')
 }
 
@@ -273,10 +274,12 @@ function addPath (descriptor, tabId) {
 function updateCustomsForProperties (descriptor, customType) {
   let customs = _.get(descriptor, 'customs', [])
   _.unset(descriptor, 'customs')
-  do {
-    const custom = customs.pop()
-    if (!_.isEmpty(_.get(custom, 'name', '')) && !_.isEmpty(_.get(custom, 'value', '')) && _.includes(_.get(custom, 'types', []), customType)) {
-      _.set(descriptor, custom.name, custom.value)
-    }
-  } while (!_.isEmpty(customs))
+  if (!_.isEmpty(customs)) {
+    do {
+      const custom = customs.pop()
+      if (!_.isEmpty(_.get(custom, 'name', '')) && !_.isEmpty(_.get(custom, 'value', '')) && _.includes(_.get(custom, 'types', []), customType)) {
+        _.set(descriptor, custom.name, custom.value)
+      }
+    } while (!_.isEmpty(customs))
+  }
 }

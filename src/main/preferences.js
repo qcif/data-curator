@@ -3,7 +3,7 @@ import { ipcMain as ipc } from 'electron'
 
 ipc.on('getPreference', (event, arg) => {
   const preference = settings.get(arg)
-  event.returnValue = preference || ''
+  event.returnValue = preference || []
 })
 
 ipc.on('setPreference', (event, name, stringified) => {
