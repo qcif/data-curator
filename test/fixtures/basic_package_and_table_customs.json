@@ -1,0 +1,101 @@
+{
+    "profile": "tabular-data-package",
+    "resources": [
+        {
+            "profile": "tabular-data-resource",
+            "encoding": "utf-8",
+            "schema": {
+                "fields": [
+                    {
+                        "trueValues": [
+                            "true",
+                            "True",
+                            "TRUE",
+                            "1"
+                        ],
+                        "falseValues": [
+                            "false",
+                            "False",
+                            "FALSE",
+                            "0"
+                        ],
+                        "decimalChar": ".",
+                        "groupChar": "",
+                        "bareNumber": true,
+                        "type": "any",
+                        "format": "default",
+                        "name": "h1"
+                    },
+                    {
+                        "trueValues": [
+                            "true",
+                            "True",
+                            "TRUE",
+                            "1"
+                        ],
+                        "falseValues": [
+                            "false",
+                            "False",
+                            "FALSE",
+                            "0"
+                        ],
+                        "decimalChar": ".",
+                        "groupChar": "",
+                        "bareNumber": true,
+                        "type": "any",
+                        "format": "default",
+                        "name": "h2h"
+                    },
+                    {
+                        "trueValues": [
+                            "true",
+                            "True",
+                            "TRUE",
+                            "1"
+                        ],
+                        "falseValues": [
+                            "false",
+                            "False",
+                            "FALSE",
+                            "0"
+                        ],
+                        "decimalChar": ".",
+                        "groupChar": "",
+                        "bareNumber": true,
+                        "type": "any",
+                        "format": "default",
+                        "name": "h3"
+                    }
+                ],
+                "missingValues": [
+                    ""
+                ]
+            },
+            "format": "csv",
+            "mediatype": "text/csv",
+            "dialect": {
+                "delimiter": ",",
+                "doubleQuote": true,
+                "lineTerminator": "\r\n",
+                "quoteChar": "\"",
+                "skipInitialSpace": true,
+                "header": true,
+                "caseSensitiveHeader": false
+            },
+            "name": "table_name",
+            "test 1 custom": "table value",
+            "path": "data/Untitled0.csv"
+        }
+    ],
+    "contributors": [
+        {
+            "title": "test1",
+            "path": "",
+            "email": "",
+            "role": "contributor",
+            "organization": ""
+        }
+    ],
+    "name": "test",
+    "test 2 custom": "value 1 package"
+}
