@@ -590,8 +590,8 @@ export default {
     ipc.on('closeLoadingScreen', function (event) {
       self.closeLoadingScreen()
     })
-    ipc.on('resetPackagePropertiesToObject', function (event, packageProperties) {
-      self.resetPackagePropertiesToObject(packageProperties)
+    ipc.on('resetPackageAndCustomPackagePropertiesToObject', function (event, packageProperties) {
+      self.resetPackageAndCustomPackagePropertiesToObject(packageProperties)
     })
     ipc.on('okToCloseTab', function (event, targetTabId) {
       self.removeTab(targetTabId)
@@ -804,6 +804,10 @@ export default {
       } finally {
         this.closeLoadingScreen()
       }
+    },
+    resetPackageAndCustomPackagePropertiesToObject: function (packageProperties) {
+      this.createCustomPropertiesForType(packageProperties, 'package')
+      this.resetPackagePropertiesToObject(packageProperties)
     },
     storeResetCallback: function (allProperties) {
       const self = this
