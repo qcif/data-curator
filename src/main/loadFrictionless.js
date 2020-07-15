@@ -95,7 +95,7 @@ export async function loadPackageJson (source) {
 async function loadPackageDescriptor (dataPackageJson) {
   let packageProperties = _.assign({}, dataPackageJson.descriptor)
   _.unset(packageProperties, 'resources')
-  focusMainWindow().webContents.send('resetPackagePropertiesToObject', packageProperties)
+  focusMainWindow().webContents.send('resetPackageAndCustomPackagePropertiesToObject', packageProperties)
 }
 
 async function loadPackageResourcesAndData (dataPackageJson, dataFunc) {
