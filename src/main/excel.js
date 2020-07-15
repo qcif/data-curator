@@ -13,7 +13,10 @@ export function importExcel () {
       }
     ]
   }, function (fileNames) {
-    if (fileNames === undefined) { return }
+    if (fileNames === undefined) {
+      enableOpenFileItems()
+      return
+    }
     var fileName = fileNames[0]
     var workbook = XLSX.readFile(fileName)
     // var first_sheet_name = workbook.SheetNames[0]
@@ -26,6 +29,7 @@ export function importExcel () {
       browserWindow.webContents.send('loadSheets', workbook.SheetNames)
       ipc.once('worksheetCanceled', function () {
         closeWindowSafely(browserWindow)
+        enableOpenFileItems()
       })
       ipc.once('worksheetSelected', function (e, sheet_name) {
         var data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name], { header: 1 })
