@@ -1,0 +1,70 @@
+{
+  "fields": [
+    {
+      "trueValues": [
+        "true",
+        "True",
+        "TRUE",
+        "1"
+      ],
+      "falseValues": [
+        "false",
+        "False",
+        "FALSE",
+        "0"
+      ],
+      "decimalChar": ".",
+      "groupChar": "",
+      "bareNumber": true,
+      "type": "any",
+      "format": "default",
+      "name": "h1",
+      "test3": "value2",
+      "test2": "value1"
+    },
+    {
+      "trueValues": [
+        "true",
+        "True",
+        "TRUE",
+        "1"
+      ],
+      "falseValues": [
+        "false",
+        "False",
+        "FALSE",
+        "0"
+      ],
+      "decimalChar": ".",
+      "groupChar": "",
+      "bareNumber": true,
+      "type": "any",
+      "format": "default",
+      "name": "h2"
+    },
+    {
+      "trueValues": [
+        "true",
+        "True",
+        "TRUE",
+        "1"
+      ],
+      "falseValues": [
+        "false",
+        "False",
+        "FALSE",
+        "0"
+      ],
+      "decimalChar": ".",
+      "groupChar": "",
+      "bareNumber": true,
+      "type": "any",
+      "format": "default",
+      "name": "h3",
+      "test3": "value3"
+    }
+  ],
+  "missingValues": [
+    ""
+  ]
+}
