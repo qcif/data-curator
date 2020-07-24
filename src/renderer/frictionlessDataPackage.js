@@ -4,7 +4,12 @@ import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
 import path from 'path'
 import { createJsonFile, createZipFile } from '@/exportPackage.js'
-import { getValidNames, hasAllColumnNames } from '@/frictionlessUtilities.js'
+import {
+  getValidNames,
+  hasAllColumnNames,
+  addErrorCauseToMessage,
+  handleFrictionlessError
+} from './frictionlessUtilities'
 import _ from 'lodash'
 
 export async function createDataPackageAsZippedResources () {
@@ -25,7 +30,7 @@ export async function createDataPackage (postCreateFunc) {
   try {
     let dataPackage = await buildDataPackage(errorMessages)
     if (_.isEmpty(errorMessages) && dataPackage) {
-      dataPackage.commit()
+      commitPackage(dataPackage)
       if (dataPackage.valid) {
         postCreateFunc(dataPackage.descriptor)
       } else {
@@ -33,9 +38,19 @@ export async function createDataPackage (postCreateFunc) {
       }
     }
   } catch (err) {
-    console.error('There was an error creating the data package.', err)
+    let errorMessage = 'There was an error creating the data package.'
+    errorMessages.push(addErrorCauseToMessage(err, errorMessage))
+    console.error(errorMessage, err)
   }
   return errorMessages
+}
+
+export function commitPackage (dataPackage) {
+  try {
+    dataPackage.commit()
+  } catch (err) {
+    handleFrictionlessError(err)
+  }
 }
 
 export function haveAllTabsGotFilenames () {
@@ -44,7 +59,7 @@ export function haveAllTabsGotFilenames () {
 
 async function buildDataPackage (errorMessages) {
   auditPackageRequirements(errorMessages)
-  let dataPackage = await initPackage()
+  let dataPackage = await Package.load()
   await buildAllResourcesForDataPackage(dataPackage, errorMessages)
   // adding package properties for validation only
   addPackageProperties(dataPackage.descriptor)
@@ -67,11 +82,6 @@ function auditPackageRequirements (requiredMessages) {
     auditRequirementsOfPropertyList(packageProperties, requiredMessages, 'package', 'contributors')
     checkReservedWordsForPropertyList(packageProperties, requiredMessages, 'package', 'customs')
   }
-}
-
-async function initPackage () {
-  const dataPackage = await Package.load()
-  return dataPackage
 }
 
 function addPackageProperties (descriptor) {
@@ -98,7 +108,9 @@ async function buildAllResourcesForDataPackage (dataPackage, errorMessages) {
       resourcePaths.push(resource.descriptor.path)
       dataPackage.addResource(resource.descriptor)
     } catch (err) {
-      console.error('There was an error creating a resource.', err)
+      let errorMessage = 'There was an error creating a resource.'
+      errorMessages.push(addErrorCauseToMessage(err, errorMessage))
+      console.error(errorMessage, err)
       break
     }
   }
