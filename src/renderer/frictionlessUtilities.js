@@ -1,6 +1,14 @@
 import store from '@/store/modules/hots.js'
 import { DEFAULT_DIALECT } from 'datapackage/lib/config.js'
+import { TableSchemaError } from 'datapackage'
 import _ from 'lodash'
+
+const errorMatchMappings = [
+  {
+    errorClass: TableSchemaError,
+    messagePatterns: [/Tabular format.*tsv.*is not supported/gi]
+  }
+]
 
 export function includeHeadersInData (hot) {
   let allData = hot.getData()
@@ -46,16 +54,51 @@ export function isCaseSensitive (hotId) {
   return caseSensitiveHeader
 }
 
-export function addCauseToErrorMessage (err, errorMessage) {
-  let extraErrorMessage = _.trim(_.get(err, 'message', ''))
-  if (_.isEmpty(extraErrorMessage)) {
-    if (_.isArray(err) && !_.isEmpty(err)) {
-      extraErrorMessage = _.trim(_.get(err[0], 'message', ''))
+export function handleFrictionlessError (error) {
+  if (!isErrorWhitelisted(error)) {
+    throw error
+  } else {
+    console.warn('Recovered from frictionless library problem.', error)
+  }
+}
+
+export function isErrorWhitelisted (error) {
+  let isWhiteListed = false
+  let extraErrorMessage = extractMessageFromFrictionlessError(error)
+  if (!_.isEmpty(extraErrorMessage)) {
+    _.each(errorMatchMappings, function (next) {
+      if (error instanceof next.errorClass) {
+        for (const messagePattern of next.messagePatterns) {
+          let indexFound = extraErrorMessage.search(messagePattern)
+          if (indexFound > -1) {
+            isWhiteListed = true
+            break
+          }
+        }
+      }
+    })
+  }
+  return isWhiteListed
+}
+
+export function addErrorCauseToMessage (error, errorMessage) {
+  let errorCauseMessage = extractMessageFromFrictionlessError(error)
+  return addExtraToErrorMessage(errorCauseMessage, errorMessage)
+}
+
+export function extractMessageFromFrictionlessError (error) {
+  let errorMessage = _.trim(_.get(error, 'message', ''))
+  if (_.isEmpty(errorMessage)) {
+    if (_.isArray(error) && !_.isEmpty(error)) {
+      errorMessage = _.trim(_.get(error[0], 'message', ''))
     }
   }
-  if (!_.isEmpty(extraErrorMessage)) {
-    errorMessage = `${errorMessage}\n (${extraErrorMessage})`
+  return errorMessage
+}
+
+export function addExtraToErrorMessage (extraMessage, errorMessage) {
+  if (!_.isEmpty(_.trim(extraMessage))) {
+    errorMessage = `${errorMessage}\n (${extraMessage})`
   }
-  console.error(errorMessage, err)
   return errorMessage
 }
