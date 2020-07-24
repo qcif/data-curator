@@ -1,5 +1,6 @@
 import store from '@/store/modules/hots.js'
 import { DEFAULT_DIALECT } from 'datapackage/lib/config.js'
+import _ from 'lodash'
 
 export function includeHeadersInData (hot) {
   let allData = hot.getData()
@@ -43,4 +44,18 @@ export function isCaseSensitive (hotId) {
     caseSensitiveHeader = tableProperties.dialect.caseSensitiveHeader
   }
   return caseSensitiveHeader
+}
+
+export function addCauseToErrorMessage (err, errorMessage) {
+  let extraErrorMessage = _.trim(_.get(err, 'message', ''))
+  if (_.isEmpty(extraErrorMessage)) {
+    if (_.isArray(err) && !_.isEmpty(err)) {
+      extraErrorMessage = _.trim(_.get(err[0], 'message', ''))
+    }
+  }
+  if (!_.isEmpty(extraErrorMessage)) {
+    errorMessage = `${errorMessage}\n (${extraErrorMessage})`
+  }
+  console.error(errorMessage, err)
+  return errorMessage
 }

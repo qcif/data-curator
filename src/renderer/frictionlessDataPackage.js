@@ -4,7 +4,7 @@ import tabStore from '@/store/modules/tabs.js'
 import hotStore from '@/store/modules/hots.js'
 import path from 'path'
 import { createJsonFile, createZipFile } from '@/exportPackage.js'
-import { getValidNames, hasAllColumnNames } from '@/frictionlessUtilities.js'
+import { getValidNames, hasAllColumnNames, addCauseToErrorMessage } from '@/frictionlessUtilities.js'
 import _ from 'lodash'
 
 export async function createDataPackageAsZippedResources () {
@@ -33,7 +33,10 @@ export async function createDataPackage (postCreateFunc) {
       }
     }
   } catch (err) {
-    console.error('There was an error creating the data package.', err)
+    let errorMessage = 'There was an error creating the data package.'
+    let errorMessageAndCause = addCauseToErrorMessage(err, errorMessage)
+    errorMessages.push(errorMessageAndCause)
+    console.error(errorMessage, err)
   }
   return errorMessages
 }
@@ -98,7 +101,10 @@ async function buildAllResourcesForDataPackage (dataPackage, errorMessages) {
       resourcePaths.push(resource.descriptor.path)
       dataPackage.addResource(resource.descriptor)
     } catch (err) {
-      console.error('There was an error creating a resource.', err)
+      let errorMessage = 'There was an error creating a resource.'
+      let errorMessageAndCause = addCauseToErrorMessage(err, errorMessage)
+      errorMessages.push(errorMessageAndCause)
+      console.error(errorMessage, err)
       break
     }
   }
