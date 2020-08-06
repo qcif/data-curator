@@ -72,7 +72,9 @@ export default {
         },
         {
           label: 'Custom Properties',
-          key: 'customs'
+          key: 'customs',
+          tooltipId: 'tooltip-preferences-customs',
+          tooltipView: 'tooltipPreferencesCustoms'
         }]
     }
   },
