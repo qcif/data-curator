@@ -11,6 +11,10 @@ export default {
     'tooltipPreferencesContributors': {
       components: { externalLink },
       template: `<div id="tooltip-preferences-contributors">Each <externalLink text="Contributor" url="http://frictionlessdata.io/specs/data-package/#contributors"/> must have a title and may contain path, email, role and organization</div>`
+    },
+    'tooltipPreferencesCustoms': {
+      components: { externalLink },
+      template: `<div id="tooltip-preferences-customs">Custom properties enable setting custom metadata key/value pairs. Each custom property can be configured for one or all of Package, Table and/or Column Properties. Once created, a custom property will be available from its selected property's panel in order to set a value.</div>`
     }
   },
   extends: Tooltip
