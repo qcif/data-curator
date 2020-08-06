@@ -17,20 +17,23 @@
           width 100%
           padding-left 10px !important
         .input-group-addon
-          width: 30%
+          width 30%
           max-width 200px
           overflow-x scroll
+        .input-group-addon::-webkit-scrollbar
+          display none
         .custom-types
-          display: flex
+          display flex
           flex-direction row
           align-items stretch
           .checkbox-inline
-            margin: 0px 0px 0px 0px
-            display: flex
+            margin 0px 0px 0px 0px
+            display flex
             flex-direction row
             justify-content space-between
             input
               margin-left 0px
+              width 15px
             span
               margin 0px 5px 0px 20px
     .inputs-container.preferences
