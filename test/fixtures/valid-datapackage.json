@@ -1,0 +1,126 @@
+{
+  "profile": "tabular-data-package",
+  "name": "countries-and-currencies",
+  "title": "Countries and Currencies",
+  "version": "v0.1.0",
+  "licenses": [
+    {
+      "name": "CC0-1.0",
+      "title": "Creative Commons CCZero 1.0",
+      "path": "https://creativecommons.org/publicdomain/zero/1.0/"
+    }
+  ],
+  "resources": [
+    {
+      "profile": "tabular-data-resource",
+      "name": "currencies",
+      "title": "Currencies",
+      "path": "data/currencies.csv",
+      "encoding": "UTF-8",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "licenses": [
+        {
+          "name": "CC0-1.0",
+          "title": "Creative Commons CCZero 1.0",
+          "path": "https://creativecommons.org/publicdomain/zero/1.0/"
+        }
+      ],
+      "schema": {
+        "fields": [
+          {
+            "name": "currency_alphabetic_code",
+            "type": "string",
+            "format": "default",
+            "title": "Currency Alphabetic Code"
+          },
+          {
+            "name": "currency",
+            "type": "string",
+            "format": "default"
+          },
+          {
+            "name": "symbol",
+            "type": "string",
+            "format": "default"
+          }
+        ],
+        "missingValues": [
+          ""
+        ]
+      },
+      "dialect": {
+        "delimiter": ",",
+        "quoteChar": "\"",
+        "header": true,
+        "doubleQuote": true,
+        "lineTerminator": "\r\n",
+        "skipInitialSpace": true,
+        "caseSensitiveHeader": false
+      },
+      "primaryKeys": [
+        "currency_alphabetic_code"
+      ]
+    },
+    {
+      "profile": "tabular-data-resource",
+      "name": "countries-using-usd-and-gbp",
+      "title": "Countries using USD and GBP currencies",
+      "path": "data/countries-using-usd-and-gbp.csv",
+      "encoding": "UTF-8",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "licenses": [
+        {
+          "name": "CC0-1.0",
+          "title": "Creative Commons CCZero 1.0",
+          "path": "https://creativecommons.org/publicdomain/zero/1.0/"
+        }
+      ],
+      "schema": {
+        "fields": [
+          {
+            "name": "name",
+            "type": "string",
+            "format": "default",
+            "title": "Country Name"
+          },
+          {
+            "name": "currency_alphabetic_code",
+            "type": "string",
+            "format": "default",
+            "title": "Currency Alphabeic Code"
+          }
+        ],
+        "missingValues": [
+          ""
+        ]
+      },
+      "dialect": {
+        "delimiter": ",",
+        "quoteChar": "\"",
+        "header": true,
+        "doubleQuote": true,
+        "lineTerminator": "\r\n",
+        "skipInitialSpace": true,
+        "caseSensitiveHeader": false
+      },
+      "primaryKeys": [
+        "name"
+      ],
+      "foreignKeys": [
+        {
+          "fields": [
+            "currency_alphabetic_code"
+          ],
+          "reference": {
+            "resource": "currencies",
+            "fields": [
+              "currency_alphabetic_code"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
