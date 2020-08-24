@@ -12,7 +12,6 @@ yarn-error.log
 .tmp/
 .idea/
 *.iml
-*.csv
 !help-tags.csv
 .nyc_output/
 webdriver.log/
