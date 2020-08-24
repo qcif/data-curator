@@ -1,0 +1,78 @@
+{
+    "profile": "tabular-data-package",
+    "resources": [
+        {
+            "profile": "tabular-data-resource",
+            "encoding": "utf-8",
+            "schema": {
+                "fields": [
+                    {
+                        "trueValues": [
+                            "true",
+                            "True",
+                            "TRUE",
+                            "1"
+                        ],
+                        "falseValues": [
+                            "false",
+                            "False",
+                            "FALSE",
+                            "0"
+                        ],
+                        "decimalChar": ".",
+                        "groupChar": "",
+                        "bareNumber": true,
+                        "type": "any",
+                        "format": "default",
+                        "name": "h1"
+                    },
+                    {
+                        "name": "h2",
+                        "type": "string",
+                        "format": "default"
+                    },
+                    {
+                        "trueValues": [
+                            "true",
+                            "True",
+                            "TRUE",
+                            "1"
+                        ],
+                        "falseValues": [
+                            "false",
+                            "False",
+                            "FALSE",
+                            "0"
+                        ],
+                        "decimalChar": ".",
+                        "groupChar": "",
+                        "bareNumber": true,
+                        "type": "any",
+                        "format": "default",
+                        "name": "h3",
+                        "test 1 custom": "value 1"
+                    }
+                ],
+                "missingValues": [
+                    ""
+                ]
+            },
+            "format": "csv",
+            "mediatype": "text/csv",
+            "dialect": {
+                "delimiter": ",",
+                "doubleQuote": true,
+                "lineTerminator": "\r\n",
+                "quoteChar": "\"",
+                "skipInitialSpace": true,
+                "header": true,
+                "caseSensitiveHeader": false
+            },
+            "name": "valid-custom-table",
+            "test 1 custom": "value 2",
+            "path": "data/valid-custom.csv"
+        }
+    ],
+    "name": "valid-custom-package",
+    "test 2 custom": "value 3"
+}
