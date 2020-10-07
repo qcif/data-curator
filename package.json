@@ -1,7 +1,7 @@
 {
   "name": "DataCurator",
-  "version": "1.2.5-beta",
-  "author": " <matt@redboxresearchdata.com.au>",
+  "version": "1.2.5",
+  "author": "Matt Mulholland <matt@redboxresearchdata.com.au>",
   "description": "Data Curator is a simple desktop CSV editor to help describe, validate and share usable open data",
   "license": "MIT",
   "main": "./dist/electron/main.js",
@@ -67,13 +67,18 @@
       "icon": "build/icons/icon.ico",
       "target": [
         {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
+                    "target": "nsis",
+                    "arch": [
+                      "x64",
+                      "ia32"
+                    ]
         }
       ]
+    },
+    "appx": {
+      "publisherDisplayName": "Queensland Cyber Infrastructure Foundation Ltd",
+      "publisher": "CN=...",
+      "identityName": "DataCurator"
     },
     "nsis": {
       "runAfterFinish": false
