@@ -29,7 +29,7 @@
 
  :sparkles: [Download Data Curator](https://github.com/qcif/data-curator/releases/latest) for Windows or macOS. :sparkles:
 [Request a new feature](https://github.com/qcif/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=Stephen-Gates) :bulb: [Report a bug](https://github.com/qcif/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=Stephen-Gates) :beetle: [View our plans](https://github.com/qcif/data-curator/milestones?direction=asc&sort=due_date&state=open) :rocket:
-Now [available](https://www.microsoft.com/p/datacurator/9n644tz9vzp6) through the Microsoft Windows Store. :department_store:
+Now [available](https://www.microsoft.com/p/datacurator/9n644tz9vzp6){:target="_blank"} through the Microsoft Windows Store. :department_store:
 
 # Data Curator
 
