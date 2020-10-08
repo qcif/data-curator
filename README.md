@@ -29,7 +29,7 @@
 
  :sparkles: [Download Data Curator](https://github.com/qcif/data-curator/releases/latest) for Windows or macOS. :sparkles:
 [Request a new feature](https://github.com/qcif/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=Stephen-Gates) :bulb: [Report a bug](https://github.com/qcif/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=Stephen-Gates) :beetle: [View our plans](https://github.com/qcif/data-curator/milestones?direction=asc&sort=due_date&state=open) :rocket:
-Now [available](https://www.microsoft.com/en-au/p/datacurator/9n644tz9vzp6?activetab=pivot:overviewtab) through the Microsoft Windows Store. :department_store:
+Now [available](https://www.microsoft.com/p/datacurator/9n644tz9vzp6) through the Microsoft Windows Store. :department_store:
 
 # Data Curator
 
@@ -117,8 +117,10 @@ Data Curator proudly [uses open source software](https://github.com/qcif/data-cu
 
 ## Download and Install Data Curator
 
+- Data Curator is now available through the Microsoft Windows store. Go to the [Windows store website](https://www.microsoft.com/en-au/store/apps/windows) and search for "Data Curator".
 - Choose a platform from the [Releases page](https://github.com/qcif/data-curator/releases/latest).
-- Drag the application to your applications folder.
+- Drag the application to your 'Start Menu' or 'Applications folder.
+- Alternatively
 
 --------------------------------------------------------------------------------
 
