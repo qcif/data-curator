@@ -118,9 +118,8 @@ Data Curator proudly [uses open source software](https://github.com/qcif/data-cu
 ## Download and Install Data Curator
 
 - Data Curator is now available through the Microsoft Windows store. Go to the [Windows store website](https://www.microsoft.com/en-au/store/apps/windows) and search for "Data Curator".
-- Choose a platform from the [Releases page](https://github.com/qcif/data-curator/releases/latest).
+- Alternatively, choose a platform from the [Releases page](https://github.com/qcif/data-curator/releases/latest) and download an unsigned release.
 - Drag the application to your 'Start Menu' or 'Applications folder.
-- Alternatively
 
 --------------------------------------------------------------------------------
 
