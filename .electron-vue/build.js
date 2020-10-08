@@ -29,13 +29,13 @@ if (process.env.BUILD_TARGET === 'clean') {
 }
 
 function clean () {
-  del.sync(['build/*', '!build/icons', '!build/icons/icon.*'])
+  del.sync(['build/*', '!build/icons', '!build/icons/icon.*', '!build/appx', '!build/appx/*.png'])
   console.log(`\n${doneLog}\n`)
   process.exit()
 }
 
 function cleanAll () {
-  del.sync(['dist/electron/*', 'build/*', '!build/icons', '!build/icons/icon.*'])
+  del.sync(['dist/electron/*', 'build/*', '!build/icons', '!build/icons/icon.*', '!build/appx', '!build/appx/*.png'])
   console.log(`\n${doneLog}\n`)
   process.exit()
 }
