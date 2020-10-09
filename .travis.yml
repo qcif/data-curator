@@ -8,7 +8,7 @@ cache:
   - "$HOME/.electron"
   - "$HOME/.cache"
 before_install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall --force java && brew cask install adoptopenjdk && brew update; fi
+#- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall --force java && brew cask install adoptopenjdk && brew update; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh; fi
 install:
 - nvm install 8 --lts
