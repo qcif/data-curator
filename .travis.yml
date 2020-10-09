@@ -59,8 +59,7 @@ jobs:
   - stage: unittestandcoverage
     os: osx
     script:
-    - yarn run unit
-    - yarn run unit:coverage
+    - yarn run unit && yarn run unit:coverage
   - os: linux
     script:
     - yarn run unit
