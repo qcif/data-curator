@@ -18,3 +18,5 @@ webdriver.log/
 coverage/
 test/unit/coverage/
 test/cucumber_report.json
+.coveralls.sh
+.coveralls.yml
