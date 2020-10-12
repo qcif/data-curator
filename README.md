@@ -60,7 +60,7 @@ Using Data Curator open data producers can:
 
 - create and edit tabular data from scratch or from a template
 - open data from a comma, semi-colon, or tab separated file, or Microsoft Excel file
-- open multiple related data tables from a [Data Package](http://frictionlessdata.io/data-packages/)
+- open multiple related data tables from a [Data Package](http://frictionlessdata.io/data-package/)
 - automatically correct common problems found in CSV and Excel files
 
 Using data from any of these sources, you can:
@@ -71,7 +71,7 @@ Using data from any of these sources, you can:
 - describe the provenance of your data
 - save data as a valid separated value file in various [CSV dialects](http://frictionlessdata.io/specs/csv-dialect/) (e.g. comma, semi-colon, or tab separated files)
 
-Once the data is described and validated, you can share the data and its description by exporting a [Data Package](http://frictionlessdata.io/data-packages/) to:
+Once the data is described and validated, you can share the data and its description by exporting a [Data Package](http://frictionlessdata.io/data-package/) to:
 
 - publish the data on a CKAN open data portal
 - use it as a template for others to make similar data
