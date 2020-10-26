@@ -1,0 +1,169 @@
+{
+  "fields": [
+    {
+      "name": "pid",
+      "type": "integer",
+      "format": "default",
+      "trueValues": [
+        "true",
+        "True",
+        "TRUE",
+        "1"
+      ],
+      "falseValues": [
+        "false",
+        "False",
+        "FALSE",
+        "0"
+      ],
+      "decimalChar": ".",
+      "groupChar": "",
+      "bareNumber": true,
+      "constraints": {
+        "required": true,
+        "unique": true,
+        "minimum": "1",
+        "maximum": "9999999999",
+        "pattern": "\\d"
+      },
+      "title": "Person ID",
+      "description": "The unique person ID number"
+    },
+    {
+      "name": "state",
+      "type": "string",
+      "format": "default",
+      "trueValues": [
+        "true",
+        "True",
+        "TRUE",
+        "1"
+      ],
+      "falseValues": [
+        "false",
+        "False",
+        "FALSE",
+        "0"
+      ],
+      "decimalChar": ".",
+      "groupChar": "",
+      "bareNumber": true,
+      "title": "State",
+      "description": "State location of person",
+      "constraints": {
+        "required": true,
+        "pattern": "qld|tas|wa|vic|nsw|nt|"
+      }
+    },
+    {
+      "name": "sex",
+      "type": "string",
+      "format": "default",
+      "trueValues": [
+        "true",
+        "True",
+        "TRUE",
+        "1"
+      ],
+      "falseValues": [
+        "false",
+        "False",
+        "FALSE",
+        "0"
+      ],
+      "decimalChar": ".",
+      "groupChar": "",
+      "bareNumber": true,
+      "title": "Sex",
+      "description": "Individual Sex",
+      "constraints": {
+        "pattern": "m|f|"
+      }
+    },
+    {
+      "name": "age",
+      "type": "integer",
+      "format": "default",
+      "trueValues": [
+        "true",
+        "True",
+        "TRUE",
+        "1"
+      ],
+      "falseValues": [
+        "false",
+        "False",
+        "FALSE",
+        "0"
+      ],
+      "decimalChar": ".",
+      "groupChar": "",
+      "bareNumber": false,
+      "title": "Age",
+      "description": "Person age",
+      "constraints": {
+        "minimum": "1",
+        "maximum": "200"
+      }
+    },
+    {
+      "name": "smoker",
+      "type": "string",
+      "format": "default",
+      "trueValues": [
+        "true",
+        "True",
+        "TRUE",
+        "1"
+      ],
+      "falseValues": [
+        "false",
+        "False",
+        "FALSE",
+        "0"
+      ],
+      "decimalChar": ".",
+      "groupChar": "",
+      "bareNumber": true,
+      "title": "Smoking status",
+      "description": "Does the person smoke?",
+      "constraints": {
+        "pattern": "y|n|u",
+        "required": true
+      }
+    },
+    {
+      "name": "weight",
+      "type": "integer",
+      "format": "default",
+      "trueValues": [
+        "true",
+        "True",
+        "TRUE",
+        "1"
+      ],
+      "falseValues": [
+        "false",
+        "False",
+        "FALSE",
+        "0"
+      ],
+      "decimalChar": ".",
+      "groupChar": "",
+      "bareNumber": true,
+      "constraints": {
+        "required": true,
+        "minimum": "1",
+        "maximum": "200"
+      },
+      "title": "Body Weight",
+      "description": "Current weight"
+    }
+  ],
+  "missingValues": [
+    ""
+  ],
+  "primaryKey": [
+    "pid"
+  ]
+}
