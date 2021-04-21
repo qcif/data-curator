@@ -28,15 +28,16 @@ global.tab = {
 }
 global.windows = {}
 
-const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
-  // Someone tried to run a second instance, we should focus our window.
-  console.error('Attempted to open a second instance. Disallowing...')
-  focusMainWindow()
-})
-
-if (isSecondInstance) {
+const hasLock = app.requestSingleInstanceLock()
+if (!hasLock) {
   console.error('Data curator is already open. Quitting this application.')
   app.quit()
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    console.error('Attempted to open a second instance. Disallowing...')
+    focusMainWindow()
+  })
 }
 
 app.on('open-file', (event, path) => {
@@ -69,7 +70,7 @@ function createInitialWindow () {
 }
 
 function unlockSingleton () {
-  app.releaseSingleInstance()
+  app.releaseSingleInstanceLock()
 }
 
 function forceQuit () {
