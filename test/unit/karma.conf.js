@@ -1,7 +1,7 @@
 'use strict'
 
 const path = require('path')
-const merge = require('webpack-merge')
+const {merge} = require('webpack-merge')
 const webpack = require('webpack')
 
 process.env.KARMA = true
@@ -14,12 +14,13 @@ const staticDir = path.resolve(__dirname, '../../static')
 process.env.BABEL_ENV = 'unit'
 
 // can ignore warning for 'Tapable.plugin is deprecated' as problem lies with karma-webpack who are currently working through 4.xx rcs - wait until they're finished
-// process.traceDeprecation = true
+process.traceDeprecation = true
+process.traceProcessWarnings = true
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true
 
 let webpackConfig = merge(baseConfig, {
-  devtool: '#inline-source-map',
+  devtool: 'inline-source-map',
   optimization: {},
   plugins: [
     new webpack.DefinePlugin({
@@ -51,23 +52,17 @@ module.exports = config => {
     coverageReporter: {
       dir: './coverage',
       reporters: [
-        { type: 'lcov', subdir: '.' },
-        { type: 'text-summary' }
+        {type: 'lcov', subdir: '.'},
+        {type: 'text-summary'}
       ]
     },
-    // customLaunchers: {
-    //   'visibleElectron': {
-    //     base: 'Electron'
-    // flags: ['--show']
-    //   }
-    // },
-    frameworks: ['mocha', 'sinon-chai'],
+    frameworks: ['mocha', 'sinon-chai', 'webpack'],
     proxies: {
       '/static': staticDir
     },
     files: [
       './index.js',
-      { pattern: `${staticDir}/img/*.svg`, watched: false, included: false, served: true }
+      {pattern: `${staticDir}/img/*.svg`, watched: false, included: false, served: true}
     ],
     preprocessors: {
       './index.js': ['webpack', 'sourcemap']
