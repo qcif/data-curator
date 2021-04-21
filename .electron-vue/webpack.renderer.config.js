@@ -1,7 +1,6 @@
 'use strict'
 
 process.env.BABEL_ENV = 'renderer'
-// process.traceDeprecation = true
 const path = require('path')
 const {dependencies} = require('../package.json')
 const webpack = require('webpack')
@@ -32,7 +31,7 @@ const defaultNodeModules = process.env.NODE_ENV !== 'production'
   : false
 
 let rendererConfig = {
-  devtool: '#cheap-module-eval-source-map',
+  devtool: 'eval-cheap-module-source-map',
   entry: {
     renderer: path.join(__dirname, '../src/renderer/main.js')
   },
@@ -88,7 +87,8 @@ let rendererConfig = {
       },
       {
         test: /\.html$/,
-        use: 'vue-html-loader'
+        use: 'vue-html-loader',
+        enforce: 'post'
       },
       {
         test: /\.js$/,
@@ -198,7 +198,7 @@ if (process.env.NODE_ENV !== 'production' || process.env.KARMA) {
  * Adjust rendererConfig for production settings
  */
 if (process.env.NODE_ENV === 'production' && !process.env.KARMA) {
-  rendererConfig.devtool = ''
+  rendererConfig.devtool = false
 
   rendererConfig.plugins.push(
     new CopyWebpackPlugin([
