@@ -11,10 +11,10 @@ before_install:
 #- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall --force java && brew cask install adoptopenjdk && brew update; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh; fi
 install:
-- nvm install 8 --lts
+- nvm install 10 --lts
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
-- nvm use 8
+- nvm use 10
 - yarn --version
 - nvm --version
 - node --version
