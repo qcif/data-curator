@@ -3,6 +3,8 @@ dist/
 build/*
 !build/icons
 #!build/data-curator*.*
+!build/entitlements.mas.*
+!build/resignAndPackage.sh
 node_modules/
 npm-debug.log
 npm-debug.log.*
