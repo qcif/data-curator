@@ -21,13 +21,19 @@
 
 
 
+
+
+
+
+
 [![Unit Test Coverage Status](https://coveralls.io/repos/github/qcif/data-curator/badge.svg?branch=ci)](https://coveralls.io/github/qcif/data-curator?branch=ci)
 [![Github All Releases](https://img.shields.io/github/downloads/qcif/data-curator/total.svg)](https://github.com/qcif/data-curator/releases)
 [![Github Releases](https://img.shields.io/github/downloads/qcif/data-curator/latest/total.svg?label=Latest%20version%20downloads)](https://github.com/qcif/data-curator/releases/latest)
 
 
- :sparkles: [Download Data Curator](https://github.com/qcif/data-curator/releases/latest) for Windows or macOS. :sparkles:
+:sparkles: [Download Data Curator](https://github.com/qcif/data-curator/releases/latest) for Windows or macOS. :sparkles:
 [Request a new feature](https://github.com/qcif/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=Stephen-Gates) :bulb: [Report a bug](https://github.com/qcif/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=Stephen-Gates) :beetle: [View our plans](https://github.com/qcif/data-curator/milestones?direction=asc&sort=due_date&state=open) :rocket:
+Now [available](https://www.microsoft.com/p/datacurator/9n644tz9vzp6) through the Microsoft Windows Store. :department_store:
 
 # Data Curator
 
@@ -54,7 +60,7 @@ Using Data Curator open data producers can:
 
 - create and edit tabular data from scratch or from a template
 - open data from a comma, semi-colon, or tab separated file, or Microsoft Excel file
-- open multiple related data tables from a [Data Package](http://frictionlessdata.io/data-packages/)
+- open multiple related data tables from a [Data Package](http://frictionlessdata.io/data-package/)
 - automatically correct common problems found in CSV and Excel files
 
 Using data from any of these sources, you can:
@@ -65,7 +71,7 @@ Using data from any of these sources, you can:
 - describe the provenance of your data
 - save data as a valid separated value file in various [CSV dialects](http://frictionlessdata.io/specs/csv-dialect/) (e.g. comma, semi-colon, or tab separated files)
 
-Once the data is described and validated, you can share the data and its description by exporting a [Data Package](http://frictionlessdata.io/data-packages/) to:
+Once the data is described and validated, you can share the data and its description by exporting a [Data Package](http://frictionlessdata.io/data-package/) to:
 
 - publish the data on a CKAN open data portal
 - use it as a template for others to make similar data
@@ -115,8 +121,9 @@ Data Curator proudly [uses open source software](https://github.com/qcif/data-cu
 
 ## Download and Install Data Curator
 
-- Choose a platform from the [Releases page](https://github.com/qcif/data-curator/releases/latest).
-- Drag the application to your applications folder.
+- Data Curator is now available through the Microsoft Windows store. Go to the [Windows store website](https://www.microsoft.com/en-au/store/apps/windows) and search for "Data Curator".
+- Alternatively, choose a platform from the [Releases page](https://github.com/qcif/data-curator/releases/latest) and download an unsigned release.
+- Drag the application to your 'Start Menu' or 'Applications folder.
 
 --------------------------------------------------------------------------------
 
