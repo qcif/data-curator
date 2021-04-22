@@ -1,4 +1,5 @@
 import { BrowserWindow } from 'electron'
+import _ from 'lodash'
 
 export function createWindowTab () {
   let mainWindow = focusMainWindow()
@@ -75,8 +76,11 @@ export function focusWindow (id) {
 }
 
 export function newWindow (id, config, url) {
+  _.set(config, 'webPreferences.nodeIntegration', true)
+  _.set(config, 'webPreferences.contextIsolation', false)
   if (process.env.NODE_ENV === 'production' && process.env.BABEL_ENV !== 'test') {
-    config.nodeIntegration = false
+    _.set(config, 'webPreferences.nodeIntegration', false)
+    _.set(config, 'webPreferences.contextIsolation', true)
   }
   let browserWindow = new BrowserWindow(config)
   if (!url) {
