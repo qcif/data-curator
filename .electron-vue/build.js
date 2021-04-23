@@ -1,16 +1,16 @@
 'use strict'
 
 process.env.NODE_ENV = 'production'
-    // Turn off for CI - just uncomment for local tracing of deprecation warnings such as Tapable
-    // process.traceDeprecation = true
+// Turn off for CI - just uncomment for local tracing of deprecation warnings such as Tapable
+process.traceProcessWarnings = true
 
 const {
-    say
+  say
 } = require('cfonts')
 const chalk = require('chalk')
 const del = require('del')
 const {
-    spawn
+  spawn
 } = require('child_process')
 const webpack = require('webpack')
 const Multispinner = require('multispinner')
@@ -25,42 +25,42 @@ const okayLog = chalk.bgBlue.white(' OKAY ') + ' '
 const isCI = process.env.CI || false
 
 if (process.env.BUILD_TARGET === 'clean') {
-    clean()
+  clean()
 } else if (process.env.BUILD_TARGET === 'cleanAll') {
-    cleanAll()
+  cleanAll()
 } else {
-    build()
+  build()
 }
 
 function clean() {
-    del.sync(['build/*', '!build/icons', '!build/icons/icon.*', '!build/entitlements.mas.*', '!build/*.provisionprofile', '!build/resignAndPackage.sh', '!build/appx', '!build/appx/*.png'])
-    console.log(`\n${doneLog}\n`)
-    process.exit()
+  del.sync(['build/*', '!build/icons', '!build/icons/icon.*', '!build/entitlements.mas.*', '!build/*.provisionprofile', '!build/resignAndPackage.sh', '!build/appx', '!build/appx/*.png'])
+  console.log(`\n${doneLog}\n`)
+  process.exit()
 }
 
 function cleanAll() {
-    del.sync(['dist/electron/*', 'build/*', '!build/icons', '!build/icons/icon.*', '!build/entitlements.mas.*', '!build/*.provisionprofile', '!build/resignAndPackage.sh', '!build/appx', '!build/appx/*.png'])
-    console.log(`\n${doneLog}\n`)
-    process.exit()
+  del.sync(['dist/electron/*', 'build/*', '!build/icons', '!build/icons/icon.*', '!build/entitlements.mas.*', '!build/*.provisionprofile', '!build/resignAndPackage.sh', '!build/appx', '!build/appx/*.png'])
+  console.log(`\n${doneLog}\n`)
+  process.exit()
 }
 
 function build() {
-    greeting()
+  greeting()
 
-    del.sync(['dist/electron/*', '!.gitkeep'])
+  del.sync(['dist/electron/*', '!.gitkeep'])
 
-    const tasks = ['main', 'renderer']
-    const m = new Multispinner(tasks, {
-        preText: 'building',
-        postText: 'process'
-    })
+  const tasks = ['main', 'renderer']
+  const m = new Multispinner(tasks, {
+    preText: 'building',
+    postText: 'process'
+  })
 
-    let results = ''
+  let results = ''
 
-    m.on('success', () => {
-                process.stdout.write('\x1B[2J\x1B[0f')
-                console.log(`\n\n${results}`)
-                console.log(`${okayLog}take it away ${chalk.blue('`electron-builder`')}\n`)
+  m.on('success', () => {
+    process.stdout.write('\x1B[2J\x1B[0f')
+    console.log(`\n\n${results}`)
+    console.log(`${okayLog}take it away ${chalk.blue('`electron-builder`')}\n`)
     process.exit()
   })
 
