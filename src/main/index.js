@@ -110,7 +110,7 @@ ipc.on('promptToSaveBeforeTabClose', (event, args) => {
 export function promptBeforeCloseFunction (event, closeFn, config, args) {
   event.preventDefault()
   let browserWindow = focusMainWindow()
-  dialog.showMessageBox(browserWindow, {
+  const response = dialog.showMessageBoxSync(browserWindow, {
     type: 'warning',
     buttons: [
       'Cancel', config.quitText
@@ -118,12 +118,11 @@ export function promptBeforeCloseFunction (event, closeFn, config, args) {
     defaultId: 0,
     title: config.title,
     message: `There may be unsaved work. ${config.message}`
-  }, function (response) {
-    if (response === 0) {
-      return
-    }
-    closeFn(args)
   })
+  if (response === 0) {
+    return
+  }
+  closeFn(args)
 }
 
 export function closeTabDialog (args) {

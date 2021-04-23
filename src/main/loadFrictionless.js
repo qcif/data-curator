@@ -54,7 +54,7 @@ async function loadGenericFrictionlessFromJsonSource (jsonSource, callback, fric
   mainWindow.webContents.send('closeAndshowLoadingScreen', `Loading ${frictionlessType}..`)
   const frictionlessTypeJson = await callback(jsonSource, mainWindow)
   if (!frictionlessTypeJson) {
-    dialog.showMessageBox(mainWindow, {
+    dialog.showMessageBoxSync(mainWindow, {
       type: 'warning',
       title: `Unable to load ${frictionlessType}`,
       message:
@@ -73,7 +73,7 @@ async function loadGenericFrictionlessFromJsonSource (jsonSource, callback, fric
 }
 
 function showInvalidMessage (source, mainWindow, frictionlessType) {
-  dialog.showMessageBox(mainWindow, {
+  dialog.showMessageBoxSync(mainWindow, {
     type: 'warning',
     title: `Invalid ${frictionlessType}`,
     message:
