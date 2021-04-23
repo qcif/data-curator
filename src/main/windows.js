@@ -56,7 +56,7 @@ export function focusOrNewSecondaryWindow (id, config) {
   let browserWindow = focusWindow(id)
   if (!browserWindow) {
     browserWindow = newWindow(id, config)
-    browserWindow.setMenu(null)
+    browserWindow.removeMenu()
   }
   return browserWindow
 }
