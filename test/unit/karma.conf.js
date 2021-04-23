@@ -59,7 +59,7 @@ module.exports = config => {
       visibleElectron: {
         base: 'Electron',
         browserWindowOptions: {
-          show: true,
+          show: false,
           webPreferences: {
             preload: './index.js',
             contextIsolation: false,
