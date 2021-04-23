@@ -1,3 +1,7 @@
+//  moved to .dev state again:
+// TODO: upgrade to electron 12 (from electron 2) broken use of babel-rewire - consider how to upgrade and/or fix
+//  'rewire' property was removed from .babelrc "unit" plugins for now
+
 import Home from '@/components/Home'
 import flushPromises from 'flush-promises'
 import { stubSimpleTabStore } from '../helpers/storeHelper.js'

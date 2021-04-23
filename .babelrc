@@ -6,7 +6,9 @@
         [
           "@babel/preset-env",
           {
-          "targets": { "node": 8 },
+            "targets": {
+              "node": 14
+            },
             "modules": false,
             "useBuiltIns": "entry",
             "corejs": 3
@@ -15,7 +17,6 @@
       ],
       "plugins": [
         "istanbul",
-        "rewire",
         "@babel/plugin-syntax-dynamic-import",
         "@babel/plugin-syntax-import-meta",
         "@babel/plugin-proposal-class-properties",
@@ -25,7 +26,7 @@
           {
             "legacy": true
           }
-      ],
+        ],
         "@babel/plugin-proposal-function-sent",
         "@babel/plugin-proposal-export-namespace-from",
         "@babel/plugin-proposal-numeric-separator",
@@ -50,7 +51,7 @@
           "@babel/preset-env",
           {
             "targets": {
-              "node": 8
+              "node": 14
             },
             "useBuiltIns": "entry",
             "corejs": 3
@@ -68,7 +69,7 @@
           {
             "legacy": true
           }
-      ],
+        ],
         "@babel/plugin-proposal-function-sent",
         "@babel/plugin-proposal-export-namespace-from",
         "@babel/plugin-proposal-numeric-separator",
@@ -92,8 +93,8 @@
         [
           "@babel/preset-env",
           {
-          "targets": {
-            "node": 8
+            "targets": {
+              "node": 14
             },
             "modules": false,
             "useBuiltIns": "entry",
@@ -135,7 +136,7 @@
         [
           "@babel/preset-env",
           {
-          "modules": false
+            "modules": false
           }
         ]
       ],
