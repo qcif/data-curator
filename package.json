@@ -61,10 +61,7 @@
             ]
         },
         "mac": {
-            "icon": "build/icons/icon.icns",
-            "target": [
-                "mas"
-            ]
+            "icon": "build/icons/icon.icns"
         },
         "mas": {
             "hardenedRuntime": false,
@@ -174,7 +171,7 @@
         "chai": "^4.1.2",
         "chai-as-promised": "^7.1.1",
         "chalk": "^3.0.0",
-        "copy-webpack-plugin": "^4.5.1",
+        "copy-webpack-plugin": "^8.1.1",
         "core-js": "^3.6.0",
         "coveralls": "^3.1.0",
         "cross-env": "^5.1.6",
@@ -199,7 +196,7 @@
         "exports-loader": "^0.7.0",
         "file-loader": "^6.2.0",
         "flush-promises": "^1.0.0",
-        "html-webpack-include-assets-plugin": "^1.0.5",
+        "html-webpack-include-assets-plugin": "^2.0.0",
         "html-webpack-plugin": "^5.3.1",
         "json-loader": "^0.5.4",
         "jsonfile": "^4.0.0",
@@ -231,13 +228,13 @@
         "style-loader": "^0.23.1",
         "stylus": "^0.54.5",
         "stylus-loader": "^3.0.2",
-        "terser-webpack-plugin": "^2.3.1",
+        "terser-webpack-plugin": "^5.1.1",
         "url-loader": "^4.1.1",
         "vue-html-loader": "^1.2.4",
         "vue-loader": "^15.9.2",
         "vue-server-renderer": "^2.5.17",
         "vue-style-loader": "^4.1.2",
-        "webpack": "^5.35.0",
+        "webpack": "^5.35.1",
         "webpack-cli": "^4.6.0",
         "webpack-dev-server": "^3.11.2",
         "webpack-hot-middleware": "^2.24.2",

@@ -1,8 +1,7 @@
 'use strict'
 
 process.env.NODE_ENV = 'production'
-// Turn off for CI - just uncomment for local tracing of deprecation warnings such as Tapable
-// process.traceProcessWarnings = true
+process.traceProcessWarnings = true
 
 const {
   say

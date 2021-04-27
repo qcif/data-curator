@@ -10,6 +10,23 @@ import './preferences.js'
 import yargs_parser from 'yargs-parser'
 import { createWindowTabFromFilename } from './file'
 import _ from 'lodash'
+import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+
+require('electron-debug')({ showDevTools: true })
+
+// Install `vue-devtools`
+// require('electron').app.on('ready', () => {
+//   let installExtension = require('electron-devtools-installer')
+//   installExtension.default(installExtension.VUEJS_DEVTOOLS).then(() => {}).catch(err => {
+//     console.error('Unable to install `vue-devtools`: \n', err)
+//   })
+// })
+
+app.whenReady().then(() => {
+  installExtension(VUEJS_DEVTOOLS)
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log('Unable to install `vue-devtools: ', err))
+})
 
 let argv = yargs_parser(process.argv.slice(1))
 
@@ -29,15 +46,17 @@ global.tab = {
 global.windows = {}
 
 const hasLock = app.requestSingleInstanceLock()
-if (!hasLock) {
-  console.error('Data curator is already open. Quitting this application.')
-  app.quit()
-} else {
-  app.on('second-instance', (event, commandLine, workingDirectory) => {
+if (process.platform !== 'darwin') {
+  if (!hasLock) {
+    console.error('Data curator is already open. Quitting this application.')
+    app.quit()
+  } else {
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
-    console.error('Attempted to open a second instance. Disallowing...')
-    focusMainWindow()
-  })
+      console.error('Attempted to open a second instance. Disallowing...')
+      focusMainWindow()
+    })
+  }
 }
 
 app.on('open-file', (event, path) => {
