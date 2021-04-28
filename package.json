@@ -61,7 +61,10 @@
             ]
         },
         "mac": {
-            "icon": "build/icons/icon.icns"
+            "icon": "build/icons/icon.icns",
+            "target": [
+                "mas"
+            ]
         },
         "mas": {
             "hardenedRuntime": false,

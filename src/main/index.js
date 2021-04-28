@@ -45,8 +45,9 @@ global.tab = {
 }
 global.windows = {}
 
-const hasLock = app.requestSingleInstanceLock()
+// https://github.com/electron/electron/issues/15958: plist key: LSMultipleInstancesProhibited also fails so allow multiple for Darwin and wait until solved in electron/chromium
 if (process.platform !== 'darwin') {
+  const hasLock = app.requestSingleInstanceLock()
   if (!hasLock) {
     console.error('Data curator is already open. Quitting this application.')
     app.quit()
