@@ -45,7 +45,7 @@ global.tab = {
 }
 global.windows = {}
 
-// https://github.com/electron/electron/issues/15958: plist key: LSMultipleInstancesProhibited also fails so allow multiple for Darwin and wait until solved in electron/chromium
+// https://github.com/electron/electron/issues/15958: plist key: LSMultipleInstancesProhibited also stops app so allow multiple for Darwin and wait until solved in electron/chromium
 if (process.platform !== 'darwin') {
   const hasLock = app.requestSingleInstanceLock()
   if (!hasLock) {
