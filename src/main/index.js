@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
@@ -10,23 +10,6 @@ import './preferences.js'
 import yargs_parser from 'yargs-parser'
 import { createWindowTabFromFilename } from './file'
 import _ from 'lodash'
-import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
-
-require('electron-debug')({ showDevTools: true })
-
-// Install `vue-devtools`
-// require('electron').app.on('ready', () => {
-//   let installExtension = require('electron-devtools-installer')
-//   installExtension.default(installExtension.VUEJS_DEVTOOLS).then(() => {}).catch(err => {
-//     console.error('Unable to install `vue-devtools`: \n', err)
-//   })
-// })
-
-app.whenReady().then(() => {
-  installExtension(VUEJS_DEVTOOLS)
-    .then((name) => console.log(`Added Extension:  ${name}`))
-    .catch((err) => console.log('Unable to install `vue-devtools: ', err))
-})
 
 let argv = yargs_parser(process.argv.slice(1))
 
@@ -53,7 +36,7 @@ if (process.platform !== 'darwin') {
     app.quit()
   } else {
     app.on('second-instance', (event, commandLine, workingDirectory) => {
-    // Someone tried to run a second instance, we should focus our window.
+      // Someone tried to run a second instance, we should focus our window.
       console.error('Attempted to open a second instance. Disallowing...')
       focusMainWindow()
     })
@@ -156,23 +139,3 @@ function closeWindowNoPrompt () {
     browserWindow.destroy()
   }
 }
-
-/**
- * Auto Updater
- *
- * Uncomment the following code below and install `electron-updater` to
- * support auto updating. Code Signing with a valid certificate is required.
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
- */
-
-/*
-import { autoUpdater } from 'electron-updater'
-
-autoUpdater.on('update-downloaded', () => {
-  autoUpdater.quitAndInstall()
-})
-
-app.on('ready', () => {
-  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
-})
- */
