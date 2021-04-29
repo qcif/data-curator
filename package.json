@@ -12,7 +12,7 @@
     "build:sign:win:all": "cross-env yarn run build:sign:win:code && yarn run sign:win:installer",
     "build:sign:mac:macappstore": "cross-env yarn run build -c.mac.target=mas && bash build/resignAndPackage.sh",
     "build:post": "cross-env node ./postbuild.js",
-    "build:dir": "node .electron-vue/build.js && electron-builder --dir",
+    "build:dir": "node .electron-vue/build.js && electron-builder --dir -c.mac.identity=null",
     "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
     "clean": "cross-env BUILD_TARGET=cleanAll node .electron-vue/build.js",
     "sign:win:installer": "cross-env node ./signWinInstaller.js",
