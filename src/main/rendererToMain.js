@@ -111,10 +111,3 @@ ipc.on('dataParsingError', (event, arg) => {
     message: message
   })
 })
-
-ipc.on('getProcessEnv', async function (event) {
-  const envName = process.env.NODE_ENV
-  console.log(`env name in toMain is ${envName}`)
-  // event.returnValue = envName
-  event.reply('sendProcessEnv', envName)
-})
