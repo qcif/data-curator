@@ -11,9 +11,6 @@ import yargs_parser from 'yargs-parser'
 import { createWindowTabFromFilename } from './file'
 import _ from 'lodash'
 
-// uncomment for debugging in prod build
-require('./devTools.js')
-
 let argv = yargs_parser(process.argv.slice(1))
 
 if (process.env.NODE_ENV !== 'development') {
