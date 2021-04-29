@@ -1,7 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
 const validChannels = ['getProcessEnv', 'sendProcessEnv']
-console.log(`env is ${process.env.NODE_ENV}`)
 contextBridge.exposeInMainWorld(
   'ipc', {
     send: (channel, data) => {
@@ -14,10 +13,11 @@ contextBridge.exposeInMainWorld(
         ipcRenderer.sendSync(channel, data)
       }
     },
-    on: (channel, func) => {
+    on: (channel, listener) => {
       if (validChannels.includes(channel)) {
         // Strip event as it includes `sender` and is a security risk
-        ipcRenderer.on(channel, (event, ...args) => func(...args))
+        ipcRenderer.on(channel, (event, ...args) => listener(...args))
+        // ipcRenderer.on(channel, listener)
       }
     }
   }

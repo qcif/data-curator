@@ -77,9 +77,9 @@ export function focusWindow (id) {
 }
 
 export function newWindow (id, config, url) {
-  _.set(config, 'webPreferences.enableRemoteModule', true)
-  _.set(config, 'webPreferences.nodeIntegration', true)
-  _.set(config, 'webPreferences.contextIsolation', false)
+  // _.set(config, 'webPreferences.enableRemoteModule', true)
+  // _.set(config, 'webPreferences.nodeIntegration', true)
+  // _.set(config, 'webPreferences.contextIsolation', false)
   if (process.env.NODE_ENV === 'production' && process.env.BABEL_ENV !== 'test') {
     _.set(config, 'webPreferences.enableRemoteModule', false)
     _.set(config, 'webPreferences.nodeIntegration', false)

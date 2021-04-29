@@ -479,18 +479,18 @@ class AppMenu {
   }
 
   updateMenuForProduction () {
-    if (process.env.NODE_ENV !== 'production') {
-      this.template.push({
-        label: 'Developer',
-        submenu: [
-          {
-            role: 'reload'
-          }, {
-            role: 'toggledevtools'
-          }
-        ]
-      })
-    }
+    // if (process.env.NODE_ENV !== 'production') {
+    this.template.push({
+      label: 'Developer',
+      submenu: [
+        {
+          role: 'reload'
+        }, {
+          role: 'toggledevtools'
+        }
+      ]
+    })
+    // }
   }
 
   getSubTemplateFromLabel (label) {
