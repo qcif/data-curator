@@ -1,22 +1,33 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Data Curator</title>
     <% if (htmlWebpackPlugin.options.nodeModules) { %>
-      <!-- Add `node_modules/` to global paths so `require` works properly in development -->
-      <script>
-        require('module').globalPaths.push('<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, '\\\\') %>')
-      </script>
+        <!-- Add `node_modules/` to global paths so `require` works properly in development -->
+        <script>
+          require('module').globalPaths.push('<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, '\\\\') %>')
+        </script>
     <% } %>
-  </head>
-  <body>
-    <div id="app" ></div>
-    <!-- Set `__static` path to static files in production -->
-    <script>
-      if (process.env.NODE_ENV !== 'development') window.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
-    </script>
+</head>
+<body>
+<div id="app"></div>
+<!-- Set `__static` path to static files in production -->
+<script>
+  console.log(`process.env is ${process.env}`)
+  function setStaticFilesInProd() {
+    // Set `__static` path to static files in production
+    if (process.env.NODE_ENV !== 'development') window.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+  }
+  window.ipc.on('sendProcessEnv', (envName) => {
+    console.log('received send in renderer')
+    console.log(envName)
+    setStaticFilesInProd()
+  });
+  window.ipc.send('getProcessEnv');
 
-    <!-- webpack builds are automatically injected -->
-  </body>
+</script>
+
+<!-- webpack builds are automatically injected -->
+</body>
 </html>

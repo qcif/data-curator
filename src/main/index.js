@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
@@ -10,6 +10,9 @@ import './preferences.js'
 import yargs_parser from 'yargs-parser'
 import { createWindowTabFromFilename } from './file'
 import _ from 'lodash'
+
+// uncomment for debugging in prod build
+require('./devTools.js')
 
 let argv = yargs_parser(process.argv.slice(1))
 

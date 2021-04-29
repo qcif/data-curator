@@ -1,5 +1,6 @@
 import { BrowserWindow } from 'electron'
 import _ from 'lodash'
+import path from 'path'
 
 export function createWindowTab () {
   let mainWindow = focusMainWindow()
@@ -80,12 +81,10 @@ export function newWindow (id, config, url) {
   _.set(config, 'webPreferences.nodeIntegration', true)
   _.set(config, 'webPreferences.contextIsolation', false)
   if (process.env.NODE_ENV === 'production' && process.env.BABEL_ENV !== 'test') {
-    // _.set(config, 'webPreferences.nodeIntegration', false)
-    // _.set(config, 'webPreferences.contextIsolation', true)
-    // _.set(config, 'webPreferences.enableRemoteModule', false)
-    _.set(config, 'webPreferences.enableRemoteModule', true)
-    _.set(config, 'webPreferences.nodeIntegration', true)
-    _.set(config, 'webPreferences.contextIsolation', false)
+    _.set(config, 'webPreferences.enableRemoteModule', false)
+    _.set(config, 'webPreferences.nodeIntegration', false)
+    _.set(config, 'webPreferences.contextIsolation', true)
+    _.set(config, 'webPreferences.preload', path.resolve(__static, 'preload.js'))
   }
   let browserWindow = new BrowserWindow(config)
   if (!url) {

@@ -1,10 +1,10 @@
-import { openFile, saveFileAs, saveFile, importDataPackageFromFile, importTableResourceSchemaFromFile } from './file.js'
-import { showUrlDialogForPackage, showUrlDialogForResourceSchema, showUrlDialogForPackageDescriptor } from './url.js'
+import { importDataPackageFromFile, importTableResourceSchemaFromFile, openFile, saveFile, saveFileAs } from './file.js'
+import { showUrlDialogForPackage, showUrlDialogForPackageDescriptor, showUrlDialogForResourceSchema } from './url.js'
 import { createWindowTab, focusMainWindow } from './windows.js'
 import { importExcel } from './excel.js'
 import { showKeyboardHelp } from './help.js'
-import { sharedMenus, fileFormats } from '../renderer/sharedWithMain.js'
-import { shell, Menu } from 'electron'
+import { fileFormats, sharedMenus } from '../renderer/sharedWithMain.js'
+import { Menu, shell } from 'electron'
 import _ from 'lodash'
 
 class AppMenu {
@@ -145,18 +145,42 @@ class AppMenu {
           {
             type: 'separator'
           },
-          _.assign({}, sharedMenus.insertRowAbove, { click () { webContents().send('insertRowAbove') } }),
-          _.assign({}, sharedMenus.insertRowBelow, { click () { webContents().send('insertRowBelow') } }),
+          _.assign({}, sharedMenus.insertRowAbove, {
+            click () {
+              webContents().send('insertRowAbove')
+            }
+          }),
+          _.assign({}, sharedMenus.insertRowBelow, {
+            click () {
+              webContents().send('insertRowBelow')
+            }
+          }),
           {
             type: 'separator'
           },
-          _.assign({}, sharedMenus.insertColumnBefore, { click () { webContents().send('insertColumnBefore') } }),
-          _.assign({}, sharedMenus.insertColumnAfter, { click () { webContents().send('insertColumnAfter') } }),
+          _.assign({}, sharedMenus.insertColumnBefore, {
+            click () {
+              webContents().send('insertColumnBefore')
+            }
+          }),
+          _.assign({}, sharedMenus.insertColumnAfter, {
+            click () {
+              webContents().send('insertColumnAfter')
+            }
+          }),
           {
             type: 'separator'
           },
-          _.assign({}, sharedMenus.removeRows, { click () { webContents().send('removeRows') } }),
-          _.assign({}, sharedMenus.removeColumns, { click () { webContents().send('removeColumns') } })
+          _.assign({}, sharedMenus.removeRows, {
+            click () {
+              webContents().send('removeRows')
+            }
+          }),
+          _.assign({}, sharedMenus.removeColumns, {
+            click () {
+              webContents().send('removeColumns')
+            }
+          })
         ]
       },
       {
