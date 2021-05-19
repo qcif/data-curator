@@ -17,6 +17,9 @@ export async function unzipFile (zipSource, storeCallback, isTransient) {
     storeCallback(processedProperties)
   } catch (err) {
     console.error(`Error processing zip source: ${zipSource}`, err)
+    if (process.platform === 'darwin') {
+      return `${err.message} (Try moving the zip file to your 'Downloads' folder first.)`
+    }
     return err.message
   }
 }
