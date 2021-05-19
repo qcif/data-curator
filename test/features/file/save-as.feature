@@ -21,7 +21,7 @@ Feature: Save as
 
   Scenario: Save the data 
     Given Data Curator is open
-    And a CSV Dialect Preference may have been set
+#    And a CSV Dialect Preference may have been set
     When "Save As..." is invoked
     Then a prompt using the defaults and requesting the file type, name and location should be displayed
     And the file should be saved with that file type, name and location
