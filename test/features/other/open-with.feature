@@ -39,7 +39,7 @@ Feature: Open with
     And the CSV Dialect `delimiter` should be set based on the file extension, data, and CSV Dialect defaults
     And "Fix Ragged Rows" should be invoked
     And "Freeze Header Row" should be invoked
-    And "Guess Column Properties" should be invoked
+#    And "Guess Column Properties" should be invoked
 
   Scenario: Open Excel sheet with Data Curator
     Given I have found a Excel file in the file explorer
@@ -52,4 +52,4 @@ Feature: Open with
     And the CSV Dialect `delimiter` should be set based on the file extension, data, and CSV Dialect defaults
     And "Fix Ragged Rows" should be invoked
     And "Freeze Header Row" should be invoked
-    And "Guess Column Properties" should be invoked
+#    And "Guess Column Properties" should be invoked
