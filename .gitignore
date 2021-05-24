@@ -1,10 +1,9 @@
 .DS_Store
 dist/
-build/*
+build/
 !build/icons
 #!build/data-curator*.*
 !build/entitlements.mas.*
-!build/resignAndPackage.sh
 node_modules/
 npm-debug.log
 npm-debug.log.*

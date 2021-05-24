@@ -6,11 +6,11 @@ process.env.NODE_ENV = 'test'
 const nodeExternals = require('webpack-node-externals')
 
 const path = require('path')
-const {dependencies} = require('../package.json')
+const { dependencies } = require('../package.json')
 const webpack = require('webpack')
 const WebpackShellPlugin = require('webpack-shell-plugin')
 
-const TerserPlugin = require('terser-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin')
 let mainTestConfig = {
   externals: [nodeExternals()],
   module: {
@@ -45,7 +45,7 @@ let mainTestConfig = {
     ]
   },
   plugins: [
-    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin()
   ],
   target: 'electron'
 }
@@ -54,8 +54,8 @@ let mainTestConfig = {
 * Adjust mainTestConfig for development settings
 */
 
-  mainTestConfig.plugins.push(new webpack.DefinePlugin({
-    '__static': `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`
-  }))
+mainTestConfig.plugins.push(new webpack.DefinePlugin({
+  '__static': `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`
+}))
 
- module.exports = mainTestConfig
+module.exports = mainTestConfig

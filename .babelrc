@@ -6,7 +6,9 @@
         [
           "@babel/preset-env",
           {
-          "targets": { "node": 8 },
+            "targets": {
+              "node": 14
+            },
             "modules": false,
             "useBuiltIns": "entry",
             "corejs": 3
@@ -50,7 +52,7 @@
           "@babel/preset-env",
           {
             "targets": {
-              "node": 8
+              "node": 14
             },
             "useBuiltIns": "entry",
             "corejs": 3
@@ -93,7 +95,7 @@
           "@babel/preset-env",
           {
           "targets": {
-            "node": 8
+              "node": 14
             },
             "modules": false,
             "useBuiltIns": "entry",

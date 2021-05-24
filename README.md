@@ -104,6 +104,8 @@ We acknowledge the great work of others. We are:
 - using the [Open Knowledge International](https://okfn.org) Frictionless Data [specification](http://frictionlessdata.io) and [code libraries](http://frictionlessdata.io/tools/#javascript)
 - adopting [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/#bp-summary)
 
+Our privacy policy : [Data Curator Privacy Policy](https://github.com/qcif/data-curator/blob/master/.github/PRIVACY_POLICY.md)
+
 Data Curator proudly [uses open source software](https://github.com/qcif/data-curator/network/dependencies), including:
 
   software                                                             | organisation                                                         | licence                                                                          | support                                                                        
@@ -121,9 +123,11 @@ Data Curator proudly [uses open source software](https://github.com/qcif/data-cu
 
 ## Download and Install Data Curator
 
-- Data Curator is now available through the Microsoft Windows store. Go to the [Windows store website](https://www.microsoft.com/en-au/store/apps/windows) and search for "Data Curator".
+- Data Curator is now available through:
+  - the Microsoft Windows store. Go to the [Windows store website](https://www.microsoft.com/en-au/store/apps/windows) and search for "Data Curator".
+  - the Mac App store. Open the "App Store" app on your desktop and search for "Data Curator". It can also be [found on the web](https://apps.apple.com/au/app/datacurator/id1563680958).
 - Alternatively, choose a platform from the [Releases page](https://github.com/qcif/data-curator/releases/latest) and download an unsigned release.
-- Drag the application to your 'Start Menu' or 'Applications folder.
+  - Drag the application to your 'Start Menu' or 'Applications folder.
 
 --------------------------------------------------------------------------------
 

@@ -19,7 +19,7 @@ Feature: Close tab
     Given Data Curator is open
     And all data changes in the active tab have been saved
     When "Close Tab" is invoked
-    Then the active tab should close
+    Then a warning to save unsaved work should be shown
 
   Scenario: Close the active tab and some data changes are not saved
     Given Data Curator is open
