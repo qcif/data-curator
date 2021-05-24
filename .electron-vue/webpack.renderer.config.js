@@ -1,17 +1,16 @@
 'use strict'
 
 process.env.BABEL_ENV = 'renderer'
-// process.traceDeprecation = true
 const path = require('path')
-const {dependencies} = require('../package.json')
+const { dependencies } = require('../package.json')
 const webpack = require('webpack')
 
 // despite `DeprecationWarning: Tapable.plugin is deprecated.` Do not upgrade: causes issues with handsontable creating blanks/repeats in rows
-const TerserPlugin = require('terser-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const {VueLoaderPlugin} = require('vue-loader')
+const { VueLoaderPlugin } = require('vue-loader')
 
 /**
  * List of node_modules to include in webpack bundle
@@ -49,8 +48,8 @@ let rendererConfig = {
         default: false,
         commons: {
           test: /node_modules/,
-          name: "vendor",
-          chunks: "initial",
+          name: 'vendor',
+          chunks: 'initial',
           minSize: 1
         }
       }
@@ -174,7 +173,7 @@ let rendererConfig = {
   target: 'electron-renderer'
 }
 
-function createHtmlPlugin(pageName) {
+function createHtmlPlugin (pageName) {
   return new HtmlWebpackPlugin({
     filename: `${pageName}.html`,
     template: path.resolve(__dirname, `../src/${pageName}.ejs`),

@@ -47,7 +47,8 @@ Feature: Open a Data Package
       - trueValues
       - falseValues
     - [pattern properties](https://frictionlessdata.io/specs/patterns) except `package` in the [Table Schema: Foreign Keys to Data Packages pattern](https://frictionlessdata.io/specs/patterns/#table-schema:-foreign-keys-to-data-packages)
-    
+
+  @backlog
   Scenario: Open a valid datapackage.json from a local file  
     Given Data Curator is open
     When "Open Data Package" is invoked
@@ -55,8 +56,9 @@ Feature: Open a Data Package
     Then the properties from datapackage.json should be loaded into the property panels
     And each data resource (at a URL or path) should be opened in a new data tab to the right of any other open data tabs
     And each Data tab should be named using the data resource `name`
-    And each data resource header row should be set using the `dialect`  
+    And each data resource header row should be set using the `dialect`
 
+  @backlog
   Scenario: Open a valid datapackage.json with properties unsupported by Data Curator from a local file
     Given Data Curator is open
     When "Open Data Package" is invoked
@@ -65,13 +67,15 @@ Feature: Open a Data Package
     And the data at the `path` of each data resource should open in a new data tab to the right of any other open data tabs
     And each Data tab should be named using the data resource `name`
     And each data resource header row should be set using the `dialect`
-    And a warning should be displayed stating that some unsupported properties were not imported  
-    
+    And a warning should be displayed stating that some unsupported properties were not imported
+
+  @backlog
   Scenario: Open a invalid datapackage.json from a local file  
     Given Data Curator is open
     When "Open Data Package" is invoked
     And an invalid datapackage.json file at a local file is selected
     Then an error message should be displayed
+
 
   Scenario: Open a valid datapackage.json from a URL
     Given Data Curator is open
@@ -81,7 +85,8 @@ Feature: Open a Data Package
     And the data at the `path` of each data resource should open in a new data tab to the right of any other open data tabs
     And each Data tab should be named using the data resource `name`
     And each data resource header row should be set using the `dialect`  
-  
+
+  @backlog
   Scenario: Open a datapackage.json with properties unsupported by Data Curator from a URL
     Given Data Curator is open
     When "Open Data Package" is invoked
@@ -108,6 +113,7 @@ Feature: Open a Data Package
     And each data resource header row should be set using the `dialect`  
     And the README.md should be displayed in the provenance information panel  
 
+  @backlog
   Scenario: Open a datapackage.zip with properties unsupported by Data Curator from a local file
     Given Data Curator is open
     When "Open Data Package" is invoked
@@ -135,6 +141,7 @@ Feature: Open a Data Package
     And each data resource header row should be set using the `dialect`
     And the README.md should be displayed in the provenance information panel  
 
+  @backlog
   Scenario: Open a datapackage.zip with properties unsupported by Data Curator from a URL
     Given Data Curator is open
     When "Open Data Package" is invoked

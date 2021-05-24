@@ -1,0 +1,237 @@
+{
+    "profile": "tabular-data-package",
+    "resources": [
+        {
+            "profile": "tabular-data-resource",
+            "encoding": "utf-8",
+            "schema": {
+                "fields": [
+                    {
+                        "trueValues": [
+                            "true",
+                            "True",
+                            "TRUE",
+                            "1"
+                        ],
+                        "falseValues": [
+                            "false",
+                            "False",
+                            "FALSE",
+                            "0"
+                        ],
+                        "decimalChar": ".",
+                        "groupChar": "",
+                        "bareNumber": true,
+                        "type": "any",
+                        "format": "default",
+                        "constraints": {
+                            "required": true,
+                            "enum": [
+                                "1",
+                                "2",
+                                "3",
+                                "4"
+                            ]
+                        },
+                        "name": "h1"
+                    },
+                    {
+                        "trueValues": [
+                            "true",
+                            "True",
+                            "TRUE",
+                            "1"
+                        ],
+                        "falseValues": [
+                            "false",
+                            "False",
+                            "FALSE",
+                            "0"
+                        ],
+                        "decimalChar": ".",
+                        "groupChar": "",
+                        "bareNumber": true,
+                        "constraints": {
+                            "required": true
+                        },
+                        "type": "any",
+                        "format": "default",
+                        "name": "h2"
+                    },
+                    {
+                        "trueValues": [
+                            "true",
+                            "True",
+                            "TRUE",
+                            "1"
+                        ],
+                        "falseValues": [
+                            "false",
+                            "False",
+                            "FALSE",
+                            "0"
+                        ],
+                        "decimalChar": ".",
+                        "groupChar": "",
+                        "bareNumber": true,
+                        "type": "any",
+                        "format": "default",
+                        "name": "h3"
+                    }
+                ],
+                "missingValues": [
+                    ""
+                ],
+                "foreignKeys": [
+                    {
+                        "fields": [
+                            "h2"
+                        ],
+                        "reference": {
+                            "resource": "",
+                            "fields": [
+                                "h4"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "format": "csv",
+            "mediatype": "text/csv",
+            "dialect": {
+                "delimiter": ",",
+                "doubleQuote": true,
+                "lineTerminator": "\r\n",
+                "quoteChar": "\"",
+                "skipInitialSpace": true,
+                "header": true,
+                "caseSensitiveHeader": false
+            },
+            "licenses": [
+                {
+                    "name": "CC0-1.0",
+                    "title": "CC0 1.0",
+                    "path": "https://creativecommons.org/publicdomain/zero/1.0/"
+                }
+            ],
+            "foreignKeys": [
+                {
+                    "fields": [
+                        "h2"
+                    ],
+                    "reference": {
+                        "resource": "",
+                        "fields": [
+                            "h4"
+                        ]
+                    }
+                }
+            ],
+            "name": "testing_export_table1",
+            "title": "Testing",
+            "description": "Testing exports.",
+            "path": "data/test_export_table1.csv"
+        },
+        {
+            "profile": "tabular-data-resource",
+            "encoding": "utf-8",
+            "schema": {
+                "fields": [
+                    {
+                        "trueValues": [
+                            "true",
+                            "True",
+                            "TRUE",
+                            "1"
+                        ],
+                        "falseValues": [
+                            "false",
+                            "False",
+                            "FALSE",
+                            "0"
+                        ],
+                        "decimalChar": ".",
+                        "groupChar": "",
+                        "bareNumber": true,
+                        "type": "any",
+                        "format": "default",
+                        "name": "h4"
+                    },
+                    {
+                        "trueValues": [
+                            "true",
+                            "True",
+                            "TRUE",
+                            "1"
+                        ],
+                        "falseValues": [
+                            "false",
+                            "False",
+                            "FALSE",
+                            "0"
+                        ],
+                        "decimalChar": ".",
+                        "groupChar": "",
+                        "bareNumber": true,
+                        "type": "any",
+                        "format": "default",
+                        "name": "h5"
+                    },
+                    {
+                        "trueValues": [
+                            "true",
+                            "True",
+                            "TRUE",
+                            "1"
+                        ],
+                        "falseValues": [
+                            "false",
+                            "False",
+                            "FALSE",
+                            "0"
+                        ],
+                        "decimalChar": ".",
+                        "groupChar": "",
+                        "bareNumber": true,
+                        "type": "any",
+                        "format": "default",
+                        "name": "h6"
+                    }
+                ],
+                "missingValues": [
+                    ""
+                ]
+            },
+            "format": "csv",
+            "mediatype": "text/csv",
+            "dialect": {
+                "delimiter": ",",
+                "doubleQuote": true,
+                "lineTerminator": "\r\n",
+                "quoteChar": "\"",
+                "skipInitialSpace": true,
+                "header": true,
+                "caseSensitiveHeader": false
+            },
+            "licenses": [
+                {
+                    "name": "CC-BY-SA-4.0",
+                    "title": "Creative Commons Attribution Share-Alike 4.0",
+                    "path": "https://creativecommons.org/licenses/by-sa/4.0/"
+                }
+            ],
+            "name": "testing_export_table2",
+            "path": "data/test_export_table2.csv"
+        }
+    ],
+    "contributors": [
+        {
+            "title": "Contributor 1",
+            "path": "",
+            "email": "",
+            "role": "contributor",
+            "organization": ""
+        }
+    ],
+    "name": "testing_export"
+}

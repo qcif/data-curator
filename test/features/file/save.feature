@@ -20,7 +20,7 @@ Feature: Save
     And the data has been saved at least once
     When "Save" is invoked
     Then the data in the active tab should be saved at its current location and filename
-    And the file size in bytes should be written to the `bytes` table property
+#    And the file size in bytes should be written to the `bytes` table property
 
   @dev
   @impl

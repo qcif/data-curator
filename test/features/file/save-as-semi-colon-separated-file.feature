@@ -22,4 +22,4 @@ Feature: Save As Semicolon separated value file
     Then a prompt, requesting the filename and location should be displayed
     And the data should be saved at the filename.csv and location using the correct CSV Dialect
     And the 'delimiter' should be set to ';' in the Table CSV Dialect
-    And the file size in bytes should be written to the `bytes` table property
+#    And the file size in bytes should be written to the `bytes` table property
