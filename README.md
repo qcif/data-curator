@@ -32,15 +32,27 @@
 [![Github Releases](https://img.shields.io/github/downloads/qcif/data-curator/v1.2.5/total.svg?label=Latest%20version%20downloads)](https://github.com/qcif/data-curator/releases/latest)
 
 
-:sparkles: [Download Data Curator](https://github.com/qcif/data-curator/releases/latest) for Windows or macOS. :sparkles:
+
+:sparkles: [Data Curator on Microsoft Store](https://www.microsoft.com/p/datacurator/9n644tz9vzp6). :department_store: :sparkles:
+
+:sparkles: [Data Curator on Apple Mac Store](https://apps.apple.com/au/app/datacurator/id1563680958). :department_store::sparkles:
+
 [Request a new feature](https://github.com/qcif/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=Stephen-Gates) :bulb: [Report a bug](https://github.com/qcif/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=Stephen-Gates) :beetle: [View our plans](https://github.com/qcif/data-curator/milestones?direction=asc&sort=due_date&state=open) :rocket:
-Now [available](https://www.microsoft.com/p/datacurator/9n644tz9vzp6) through the Microsoft Windows Store. :department_store:
+[Development downloads](https://github.com/qcif/data-curator/releases/latest)
+
 
 # Data Curator
 
 ![data curator icon](static/img/data-curator-banner.png)
 
 Data Curator is a simple desktop data editor to help describe, validate and share usable open data.
+
+## Downloads
+The latest release of Data Curator can be downloaded from:
+- [the Microsoft Store](https://www.microsoft.com/p/datacurator/9n644tz9vzp6) 
+- [the Apple Mac Store](https://apps.apple.com/au/app/datacurator/id1563680958)
+
+Alternatively all versions, including [_unsigned_ latest release](https://github.com/qcif/data-curator/releases/latest), can be found in our [github releases](https://github.com/qcif/data-curator/releases)
 
 ## Why do we need Data Curator?
 
