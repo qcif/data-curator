@@ -49,8 +49,8 @@ Data Curator is a simple desktop data editor to help describe, validate and shar
 
 ## Downloads
 The latest release of Data Curator can be downloaded from:
-- [the Microsoft Store](https://www.microsoft.com/p/datacurator/9n644tz9vzp6){:target="_blank"}
-- [the Apple Mac Store](https://apps.apple.com/au/app/datacurator/id1563680958){:target="_blank"}
+- [the Microsoft Store](https://www.microsoft.com/p/datacurator/9n644tz9vzp6)
+- [the Apple Mac Store](https://apps.apple.com/au/app/datacurator/id1563680958)
 
 Alternatively all versions, including [_unsigned_ latest release](https://github.com/qcif/data-curator/releases/latest), can be found in our [github releases](https://github.com/qcif/data-curator/releases)
 
