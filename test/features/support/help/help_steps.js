@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Then } from 'cucumber'
+import { Then } from '@cucumber/cucumber'
 import { sendOpenUrlCall } from '../page-objects/helpers.js'
 
 Then(/^a call to open an external url (?:should be|is) made/, async function () {

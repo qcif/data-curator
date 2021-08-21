@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Then } from 'cucumber'
+import { Then } from '@cucumber/cucumber'
 import { validationMessages } from '../page-objects/messages.js'
 import { errorColor } from '../page-objects/style.js'
 import { mapArrayToInteger } from '../page-objects/helpers.js'

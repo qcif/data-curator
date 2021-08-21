@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Then, When } from 'cucumber'
+import { Then, When } from '@cucumber/cucumber'
 import {
   applyFnToSelectorWithLabel,
   countNumberOfCurrentColumnCellsWithText,

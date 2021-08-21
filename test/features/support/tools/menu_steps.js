@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Given, When, Then } from 'cucumber'
+import { Given, When, Then } from '@cucumber/cucumber'
 import { fileFormats } from '../../../../src/renderer/file-formats.js'
 import { getFilePathFromFixtures } from '../page-objects/io.js'
 import { menu } from '../pageObjects.js'

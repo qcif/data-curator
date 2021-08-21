@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Given, When, Then } from 'cucumber'
+import { Given, When, Then } from '@cucumber/cucumber'
 import { defaultTabData, isDataEqualToDefaultData } from '../page-objects/io.js'
 import _ from 'lodash'
 import { activeTableSelector } from '../page-objects/selectors'

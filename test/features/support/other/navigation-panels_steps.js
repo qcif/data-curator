@@ -1,4 +1,4 @@
-import { Then } from 'cucumber'
+import { Then } from '@cucumber/cucumber'
 import { waitForVisibleIdFromLabel } from '../page-objects/selectors.js'
 
 Then(/^the "([\w ]+?)" panel should be displayed/, { timeout: -1 }, async function (panelName) {

@@ -1,4 +1,4 @@
-import { After, Before, Status } from 'cucumber'
+import { After, Before, Status } from '@cucumber/cucumber'
 import fakeDialog from 'spectron-fake-dialog'
 import { exec } from 'child_process'
 import { applyMock } from './page-objects/mockMainProcess'
