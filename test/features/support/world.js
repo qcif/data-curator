@@ -1,4 +1,4 @@
-import { setWorldConstructor } from '@cucumber/cucumber'
+import { setWorldConstructor } from 'cucumber'
 import { Application } from 'spectron'
 import electron from 'electron'
 import chai from 'chai'

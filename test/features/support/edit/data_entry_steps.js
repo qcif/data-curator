@@ -1,4 +1,4 @@
-import { When } from '@cucumber/cucumber'
+import { When } from 'cucumber'
 import { clickInputFieldName, enterInputInFieldName } from '../page-objects/io'
 import { expect } from 'chai'
 import { returnInputIdSelector, waitForVisibleInputSelector } from '../page-objects/selectors'

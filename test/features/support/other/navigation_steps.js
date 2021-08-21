@@ -1,4 +1,4 @@
-import { When, Then } from '@cucumber/cucumber'
+import { When, Then } from 'cucumber'
 import { applyFnToIdOrClassSelectorFromLabel } from '../page-objects/selectors.js'
 const highlightColor = 'rgba(181,209,255,0.3)'
 

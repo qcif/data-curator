@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { When, Then } from '@cucumber/cucumber'
+import { When, Then } from 'cucumber'
 import parse from 'csv-parse/lib/sync'
 import { tableRowAndColCount } from '../page-objects/dimensions.js'
 import { getFileData, getFilePathFromFixtures } from '../page-objects/io.js'
