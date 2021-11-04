@@ -5,7 +5,8 @@ import _ from 'lodash'
 import { activeTableSelector } from '../page-objects/selectors'
 
 When(/^Data Curator is open$/, async function () {
-  const title = await this.app.client.waitUntilWindowLoaded().getTitle()
+  const browserWindow = await this.app.client.waitUntilWindowLoaded()
+  const title = browserWindow.getTitle()
   expect(title).to.equal('Data Curator')
 })
 
