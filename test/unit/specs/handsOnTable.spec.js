@@ -27,7 +27,9 @@ describe('hands on table', function () {
     hotHelper.resetHot(sandbox)
     resetHotStore()
     data = null
-    hot = null
+    if (hot) {
+      hot = null
+    }
     expectedData = null
     store.mutations.resetHotState(store.state)
     sandbox.restore()
@@ -523,6 +525,8 @@ describe('hands on table', function () {
         expect(hot.getData()).to.deep.equal(hot2.getData())
       })
       hot.loadData(data)
+      // This hot not registered with others - need to destroy otherwise will have listeners leftover
+      hot2.destroy()
     })
   })
 
