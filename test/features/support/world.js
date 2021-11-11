@@ -32,6 +32,7 @@ function createApp () {
       ELECTRON_ENABLE_STACK_DUMPING: true
     },
     webdriverLogPath: 'webdriver.log'
+    // chromeDriverArgs: ['remote-debugging-port=9222']
   })
 }
 

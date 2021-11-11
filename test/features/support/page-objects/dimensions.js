@@ -50,12 +50,11 @@ async function collectClass (app, collection) {
   return collected
 }
 
+// webdriver io v5 onwards means that either you have to group like the below or separate out chains
+// https://github.com/webdriverio/webdriverio/blob/f759ba10fcd951e1622844de9b0943eb6cc6f14f/CHANGELOG.md#v500-2018-12-20
 async function getColumnElementsInCurrentRow (app) {
-  const response = await app.client
-    .element(activeTableSelector)
-    .element('.ht_master table tbody tr th.ht__highlight')
-    .element('..').elements('td')
-  return response.value
+  const el = await (await (await app.client.$(activeTableSelector)).$('.ht_master table tbody tr th.ht__highlight')).$('..')
+  return el.$$('td')
 }
 
 async function getCurrentRowHeader (app) {
@@ -66,8 +65,7 @@ async function getCurrentRowHeader (app) {
 }
 
 async function getAllRowHeaders (app) {
-  const response = await app.client
-    .element(activeTableSelector)
-    .elements('.ht_master table tbody tr th')
-  return response.value
+  const el = await app.client.$(activeTableSelector)
+  const response = await el.$$('.ht_master table tbody tr th')
+  return response
 }

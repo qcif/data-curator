@@ -1,5 +1,5 @@
 .DS_Store
-dist/
+dist/electron/*
 build/
 !build/icons
 #!build/data-curator*.*

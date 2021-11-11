@@ -12,6 +12,12 @@ Given(/^"Guess Column Properties" is invoked$/, async function () {
   await menu.invokeActions(this.app, { name: 'Guess Column Properties', type: 'toolbar menu button', sequence: 'Guess' })
 })
 
+// if (process.platform === 'darwin') {
+//   Given(/^"About" is invoked$/, async function () {
+//     await menu.invokeActions(this.app, { name: 'About', type: 'application menu selection', sequence: 'Electron->About Data Curator' })
+//   })
+// }
+
 Given(/^"Validate Table" is invoked$/, async function () {
   await menu.invokeActions(this.app, { name: 'Validate', type: 'toolbar menu button', sequence: 'Validate' })
 })

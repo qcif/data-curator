@@ -68,6 +68,8 @@ Before({ timeout: 20000 }, async function (testCase) {
     await this.app.client.browserWindow.isFocused()
     await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showMessageBox', value: 1 }])
     await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showOpenDialog', value: this.openFileDialogReturned }])
+    await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showMessageBoxSync', value: 1 }])
+    await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showOpenDialogSync', value: this.openFileDialogReturned }])
     // browser.expectRequest(method, url, statusCode)
     // await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_SHELL/SEND', [{ method: 'openExternal', value: createPromise() }])
   } catch (error) {
