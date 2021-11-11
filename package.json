@@ -6,6 +6,9 @@
   "license": "MIT",
   "main": "./dist/electron/main.js",
   "repository": "https://github.com/qcif/data-curator.git",
+  "engines": {
+    "node": "^v14.18.1"
+  },
   "scripts": {
     "build": "node --trace-warnings .electron-vue/build.js && electron-builder",
     "build:sign:win:code": "node .electron-vue/build.js && electron-builder --config.win.sign=signWinCode.js",
@@ -26,7 +29,7 @@
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --color --config .electron-vue/webpack.renderer.config.js",
     "postinstall": "electron-builder install-app-deps",
     "test": "(yarn run unit || yarn -v) && yarn run e2e:impl",
-    "unit": "yarn run clean && karma start test/unit/karma.conf.js",
+    "unit": "yarn run clean && mkdir -p dist && karma start test/unit/karma.conf.js",
     "e2e": "yarn run clean && yarn run pack && yarn run cucumber:postpack",
     "e2e:all": "yarn run e2e test/features -f json:test/cucumber_report.json",
     "e2e:impl": "yarn run e2e:all --tags @impl",
