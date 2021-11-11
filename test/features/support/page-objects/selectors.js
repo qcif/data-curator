@@ -108,8 +108,34 @@ export async function getPlaceholderValue (app, idName) {
   return attributeTarget.value
 }
 
+export async function displayActiveTable (app) {
+  await app.client.waitUntilWindowLoaded()
+  const el = await activeTableElement(app)
+  await el.waitForDisplayed({ timeout: 5000 })
+}
+
+export async function activeTabElement (app) {
+  return (await app.client.$('#csvEditor')).$('.tab-header.active')
+}
+
+export async function allTabElements (app) {
+  return (await app.client.$('#csvEditor')).$$('.tab-header')
+}
+
+export async function activeTableElement (app) {
+  return (await app.client.$('#csvEditor')).$(activeTableSelector)
+}
+
 const activeTableSelector = '.tab-pane.active .editor.handsontable'
+const headerSelector = '.ht_master table tr th'
+const cellSelector = '.ht_master table tr td'
+const selectedRowHeaderClass = 'ht__highlight'
+const selectedCellClass = 'current highlight'
 
 export {
-  activeTableSelector
+  activeTableSelector,
+  headerSelector,
+  cellSelector,
+  selectedRowHeaderClass,
+  selectedCellClass
 }

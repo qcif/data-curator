@@ -1,11 +1,12 @@
 import { expect } from 'chai'
-import { Given, When, Then } from 'cucumber'
+import { Given, Then, When } from 'cucumber'
 import {
   getIndexOfCurrentColumnInCurrentRow,
   getIndexOfCurrentRowInRows,
   getNumberOfColumns,
   getNumberOfRows
 } from '../page-objects/dimensions'
+import { collectText, collectWithFn } from '../page-objects/helpers'
 
 Given(/^the user clicks in row (\d+), column (\d+)$/, async function (rowNumber, colNumber) {
   this.rowNumber = rowNumber
@@ -20,20 +21,21 @@ When(/^the user types "(.*?)"?$/, async function (textEntered) {
   await this.app.client.pause(2000)
 })
 
-When(/^the user (?:performs a |)right-click[s]?$/, async function () {
-  await this.app.client.rightClick('.ht_master table')
-})
-
-Then(/^the user clicks (?:on|in) "Insert (Row|Column) (Below|Above|Before|After)"$/, function (rowOrColumn, place) {
-  console.log(`${rowOrColumn} ${place}`)
-  return this.app
-    .webContents.send('clickLabelOnContextMenu', `Insert ${rowOrColumn} ${place}`)
+// Spectron/WebdriverIO won't work with context-menu (and can't close it) once it appears - so just call the menu
+Then(/^the user clicks (?:on|in) "Insert (Row|Column) (Below|Above|Before|After)" in the context menu$/, async function (rowOrColumn, place) {
+  let actualRowCount = await getNumberOfRows(this.app)
+  let actualColumnCount = await getNumberOfColumns(this.app)
+  this.app.webContents.send('clickLabelOnContextMenu', `Insert ${rowOrColumn} ${place}`)
 })
 
 Then(/^the text: "(.+?)" should be in row (\d+) column (\d+)$/, async function (expectedText, expectedRow, expectedColumn) {
-  let textFound = await this.app.client.elements(`.ht_master table tr:nth-of-type(${expectedRow}) td:nth-of-type(${expectedColumn})`).getText()
-  let allText = await this.app.client.elements('.ht_master table').getText()
-  expect(textFound).to.equal(allText)
+  const els = await this.app.client.$$(`.ht_master table tr:nth-of-type(${expectedRow}) td:nth-of-type(${expectedColumn})`)
+  const textCollected = await collectText(els)
+  const textFound = textCollected.join()
+  let allEls = await this.app.client.$$('.ht_master table')
+  const allTextCollected = await collectText(allEls)
+  const allTextFound = allTextCollected.join()
+  expect(textFound).to.equal(allTextFound)
   expect(textFound).to.equal(expectedText)
   expect(textFound.length).to.be.greaterThan(0)
 })

@@ -66,6 +66,5 @@ async function getCurrentRowHeader (app) {
 
 async function getAllRowHeaders (app) {
   const el = await app.client.$(activeTableSelector)
-  const response = await el.$$('.ht_master table tbody tr th')
-  return response
+  return el.$$('.ht_master table tbody tr th')
 }

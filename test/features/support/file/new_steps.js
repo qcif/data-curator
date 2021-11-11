@@ -1,11 +1,19 @@
 import { expect } from 'chai'
-import { Given, When, Then } from 'cucumber'
+import { Given, Then, When } from 'cucumber'
 import { defaultTabData, isDataEqualToDefaultData } from '../page-objects/io.js'
 import _ from 'lodash'
-import { activeTableSelector } from '../page-objects/selectors'
+import {
+  activeTableElement,
+  activeTableSelector,
+  displayActiveTable,
+  cellSelector,
+  headerSelector,
+  selectedRowHeaderClass, activeTabElement, allTabElements
+} from '../page-objects/selectors'
+import { collectText, collectWithFn } from '../page-objects/helpers'
 
 When(/^Data Curator is open$/, async function () {
-  await this.app.client.waitUntilWindowLoaded()
+  await displayActiveTable(this.app)
   const title = await this.app.client.getTitle()
   expect(title).to.equal('Data Curator')
 })
@@ -45,79 +53,68 @@ Then(/^1 window should be displayed/, async function () {
 })
 
 Then(/^(the window (?:should have|has|have) (\d+) tab[s]?|(\d+) (?:data )tab[s]? is displayed)$/, async function (numberOfTabs) {
-  await this.app.client.waitUntilWindowLoaded()
-  const el = await this.app.client.$('#csvEditor')
-  await el.waitForDisplayed({ timeout: 5000 })
+  await displayActiveTable(this.app)
   const response = await this.app.client.$$('.tab-header')
   expect(response.length).to.equal(_.toInteger(numberOfTabs))
 })
 
-Then(/^the (?:new |)tab should be in the right-most position$/, function () {
-  return this.app.client
-    .waitForVisible('#csvEditor')
-    .getAttribute('.tab-header', 'class')
-    .then(function (response) {
-      let lastTab = response.length - 1
-      expect(response[lastTab]).to.contain('active')
-    })
+Then(/^the (?:new |)tab should be in the right-most position$/, async function () {
+  await displayActiveTable(this.app)
+  const els = await (await this.app.client.$('#csvEditor')).$$('.tab-header')
+  const el = els[els.length - 1]
+  const elAttribute = await el.getAttribute('class')
+  expect(elAttribute).to.contain('active')
 })
 
 Then(/^the (?:new |)tab should have a unique name$/, async function () {
-  const activeText = await this.app.client
-    .waitForVisible('#csvEditor')
-    .getText('.tab-header.active')
-  let allText = await this.app.client
-    .waitForVisible('#csvEditor')
-    .getText('.tab-header')
-  _.pull(allText, activeText)
-  expect(allText).to.not.contain(activeText)
+  await displayActiveTable(this.app)
+  const activeEl = await activeTabElement(this.app)
+  const activeElText = await activeEl.getText()
+  const els = await allTabElements(this.app)
+  let matchingNameCount = 0
+  for (const nextEl of els) {
+    const nextText = await nextEl.getText()
+    if (nextText === activeElText) {
+      matchingNameCount++
+    }
+  }
+  expect(matchingNameCount).to.equal(1)
 })
 
 Then(/^the (?:new |)tab should have 1 table$/, async function () {
-  await this.app.client.waitUntilWindowLoaded()
-  const el = await this.app.client.$('#csvEditor')
-  await el.waitForDisplayed({ timeout: 5000 })
+  await displayActiveTable(this.app)
   const response = await this.app.client.$$('.tab-content')
   expect(response.length).to.equal(1)
-  const response2 = await this.app.client.$$('.active .editor.handsontable')
+  const response2 = await this.app.client.$$(activeTableSelector)
   expect(response.length).to.equal(1)
 })
 
 Then(/^the (?:new |)table (?:should be|is) empty$/, async function () {
-  const els = await (await this.app.client.$('.active .editor.handsontable')).$$('.ht_master table tr td')
-  const collected = []
-  for (const el of els) {
-    const nextText = await el.getValue()
-    collected.push(nextText)
-  }
+  const els = await (await activeTableElement(this.app)).$$(cellSelector)
+  const collected = await collectText(els)
   expect(collected.join('')).to.equal('')
 })
 
 Then(/^the cursor (?:should be|is) in the (?:new )table$/, async function () {
-  const el = await (await this.app.client.$('.active .editor.handsontable')).$('.ht_master table tr th')
-  const elAttribute = el.getAttribute()
-  const selectedRowHeaderClass = 'ht__highlight'
-  expect(response).to.contain(selectedRowHeaderClass)
-})
-
-Then(/^the cursor (?:should be|is) in row (\d+), column (\d+)$/, async function (rowNumber, colNumber) {
-  const parentSelector = activeTableSelector
-  const parentElement = await this.app.client.$(parentSelector)
-  const els = await parentElement.$$('.ht_master table tr th')
+  const els = await (await activeTableElement(this.app)).$$(headerSelector)
   const collected = []
   for (const nextEl of els) {
     const attr = await nextEl.getAttribute('class')
     collected.push(attr)
   }
-  const selectedRowHeaderClass = 'ht__highlight'
-  expect(collected[rowNumber - 1]).to.contain(selectedRowHeaderClass)
+  expect(collected).to.contain(selectedRowHeaderClass)
+})
 
-  const els2 = await parentElement.$$(`.ht_master table tr:nth-child(${rowNumber}) td`)
-  const collected2 = []
-  for (const nextEl of els2) {
-    const attr = await nextEl.getAttribute('class')
-    collected2.push(attr)
-  }
-  const selectedCellClass = 'current highlight'
-  expect(collected2[colNumber - 1]).to.contain(selectedCellClass)
+Then(/^the cursor (?:should be|is) in row (\d+), column (\d+)$/, async function (rowNumber, colNumber) {
+  // const els = await (await activeTableElement(this.app)).$$(headerSelector)
+  // const collected = await collectWithFn(els, 'getAttribute', 'class')
+  // expect(collected[rowNumber - 1]).to.contain(selectedRowHeaderClass)
+  //
+  // const els2 = await (await activeTableElement(this.app)).$$(`.ht_master table tr:nth-child(${rowNumber}) td`)
+  // const collected2 = []
+  // for (const nextEl of els2) {
+  //   const attr = await nextEl.getAttribute('class')
+  //   collected2.push(attr)
+  // }
+  // expect(collected2[colNumber - 1]).to.contain(selectedCellClass)
 })

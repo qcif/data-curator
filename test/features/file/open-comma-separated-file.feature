@@ -22,6 +22,7 @@ Feature: Open a Comma separated value file
     When the "File"->"Open"->"Comma separated..." menu is selected
     Then the openfile dialog should be displayed
 
+  @dev
   @impl
   Scenario: Open an existing comma separated value file
     Given Data Curator is open
