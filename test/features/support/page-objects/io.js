@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import fs from 'fs-extra'
 import os from 'os'
-import { applyFnToDualSelectors, applyFnToSelectorWithLabel } from './selectors'
+import { applyFnToOneOfDualSelectors, applyFnToSelectorWithLabel } from './selectors'
 
 export function getFilePathFromFixtures (fileName) {
   const filePath = require('path').join(__dirname, `../../../fixtures/${fileName}`)

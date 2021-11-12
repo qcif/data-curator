@@ -10,15 +10,17 @@ import {
   getRowIndicesOfFoundBackgroundColors,
   getRowIndicesOfCaseInsensitiveSearchText, getRowIndicesOfCaseSensitiveSearchText
 } from '../page-objects/find'
+import { waitForDisplayedDefault } from '../page-objects/helpers'
 
 const _ = require('lodash')
 
-Then(/^a prompt for (?:a|the) "(find|replace)" value should be displayed/, function (findOrReplace) {
-  return this.app.client.waitForVisible(`#${findOrReplace}`)
+Then(/^a prompt for (?:a|the) "(find|replace)" value should be displayed/, async function (findOrReplace) {
+  const el = await this.app.client.$(`#${findOrReplace}`)
+  await el.waitForDisplayed({ timeout: this.pageTimeout })
 })
 
 Then(/^the "([\w ]+?)" panel's first input (?:box |)should have focus/, { timeout: -1 }, async function (panelName) {
-  return applyFnToSelectorWithLabel(this.app, 'hasFocus', `form#${panelName} input:first-of-type`, panelName, this.pageTimeout)
+  await applyFnToSelectorWithLabel(this.app, 'isFocused', `form#${panelName} input:first-of-type`, panelName, this.pageTimeout)
 })
 
 Then(/^all the cells with values that are a case sensitive match for "(.+?)" should be highlighted/, async function (searchValue) {

@@ -29,6 +29,7 @@ Feature: Find data
   ![Data Curator Find and Replace user interface](https://github.com/qcif/data-curator/raw/develop/static/img/ui/find-and-replace.png)
 
 
+  @dev
   @impl
   Scenario Outline: Basic Find
     Given Data Curator is open
@@ -38,7 +39,6 @@ Feature: Find data
     And a prompt for a "replace" value should be displayed
     And the "Find and Replace" panel's first input should have focus
     And the column that the cursor is in should be displayed
-    # And a warning that the replace command cannot be undone should be displayed
     Examples:
       | name | type                       | sequence   |
       | Find | toolbar menu button        | Find       |

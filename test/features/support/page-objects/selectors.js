@@ -1,74 +1,56 @@
 import _ from 'lodash'
+import { waitForDisplayedDefault } from './helpers'
 
 export async function waitForVisibleIdFromLabel (app, parentSelector, label, timeout) {
   const kebabCase = _.kebabCase(label)
   const camelCase = _.camelCase(label)
-  let result
   try {
-    result = await app.client.waitForVisible(`${parentSelector} #${kebabCase}`, timeout)
-    return result
+    const el = await app.client.$(`${parentSelector} #${kebabCase}`)
+    await el.waitforDisplayed(Z)
+    return el
   } catch (error) {
-    console.log(`Unable to find via ${kebabCase} Trying ${camelCase}`)
-    result = await app.client.waitForVisible(`${parentSelector} #${camelCase}`, timeout)
-    return result
-  }
-}
-
-export async function waitForVisibleInputSelector (app, selector, timeout) {
-  const kebabCase = _.kebabCase(selector)
-  const camelCase = _.camelCase(selector)
-  let result
-  try {
-    result = await app.client.waitForVisible(`input#${kebabCase}`, timeout)
-    return result
-  } catch (error) {
-    console.log(`Unable to find via ${kebabCase} Trying ${camelCase}`)
-    result = await app.client.waitForVisible(`input#${camelCase}`, timeout)
-    return result
+    console.log(`Unable to find via ${kebabCase} Trying ${camelCase}...`)
+    const el = await app.client.$(`${parentSelector} #${camelCase}`)
+    await waitForDisplayedDefault(el)
+    return el
   }
 }
 
 export async function returnInputIdSelector (app, selector) {
   const kebabCase = _.kebabCase(selector)
   const camelCase = _.camelCase(selector)
-  let result
   try {
-    result = await app.client.element(`input#${kebabCase}`)
-    return result
+    return app.client.$(`input#${kebabCase}`)
   } catch (error) {
     console.log(`Unable to find via ${kebabCase} Trying ${camelCase}`)
-    result = await app.client.element(`input#${camelCase}`)
-    return result
+    return app.client.$(`input#${camelCase}`)
   }
 }
 
 export async function applyFnToIdOrClassSelectorFromLabel (app, fn, label, timeout) {
   try {
-    const result = await applyFnToSelectorWithLabel(app, fn, '.' + label, label, timeout)
-    return result
+    return applyFnToSelectorWithLabel(app, fn, '.' + label, label, timeout)
   } catch (error) {
     console.log(`Unable to find via class. Trying id`)
-    const result = await applyFnToSelectorWithLabel(app, fn, '#' + label, label, timeout)
-    return result
+    return applyFnToSelectorWithLabel(app, fn, '#' + label, label, timeout)
   }
 }
 
 export async function applyFnToSelectorWithLabel (app, fn, selector, label, timeout) {
   const selectors = replaceLabelWithKebabAndCamelCase(selector, label)
-  const result = await applyFnToDualSelectors(app, fn, selectors[0], selectors[1], timeout)
-  return result
+  return applyFnToOneOfDualSelectors(app, fn, selectors[0], selectors[1], timeout)
 }
 
-export async function applyFnToDualSelectors (app, fn, selector1, selector2, timeout) {
-  let result
+export async function applyFnToOneOfDualSelectors (app, fn, selector1, selector2, timeout) {
   try {
-    // console.log('fn is', fn)
-    result = await app.client[fn](selector1, timeout)
-    return result
+    const el = await app.client.$(selector1)
+    await el.waitForDisplayed({ timeout: timeout })
+    return el[fn]()
   } catch (error) {
     console.log(`Unable to find via ${selector1} Trying ${selector2}`)
-    result = await app.client[fn](selector2, timeout)
-    return result
+    const el = await app.client.$(selector2)
+    await el.waitForDisplayed({ timeout: timeout })
+    return el[fn]()
   }
 }
 
@@ -85,21 +67,18 @@ export function kebabAndCamelCase (selector) {
 }
 
 export async function countNumberOfCurrentColumnCellsWithText (app, hotParentSelector, currentColumnSelector) {
-  const colTexts = await app.client.element(hotParentSelector).getText(currentColumnSelector)
-  return colTexts
+  return app.client.element(hotParentSelector).getText(currentColumnSelector)
 }
 
 export async function getBackgroundColorOfCurrentColumn (app, hotParentSelector, currentColumnSelector) {
-  const backgroundColors = await app.client.element(hotParentSelector).getCssProperty(currentColumnSelector, 'backgroundColor')
-  return backgroundColors
+  return app.client.element(hotParentSelector).getCssProperty(currentColumnSelector, 'backgroundColor')
 }
 
 export async function getCurrentColumnSelector (app, hotParentSelector) {
   const activeCol = await app.client.element(hotParentSelector).getAttribute('.ht_master table thead tr:first-of-type th', 'class')
   // account for corner header
   const currentCol = _.indexOf(activeCol, 'ht__highlight')
-  const currentColumnSelector = `.ht_master table tr td:nth-of-type(${currentCol})`
-  return currentColumnSelector
+  return `.ht_master table tr td:nth-of-type(${currentCol})`
 }
 
 export async function getPlaceholderValue (app, idName) {
@@ -111,7 +90,7 @@ export async function getPlaceholderValue (app, idName) {
 export async function displayActiveTable (app) {
   await app.client.waitUntilWindowLoaded()
   const el = await activeTableElement(app)
-  await el.waitForDisplayed({ timeout: 5000 })
+  await waitForDisplayedDefault(el)
 }
 
 export async function activeTabElement (app) {
@@ -131,11 +110,13 @@ const headerSelector = '.ht_master table tr th'
 const cellSelector = '.ht_master table tr td'
 const selectedRowHeaderClass = 'ht__highlight'
 const selectedCellClass = 'current highlight'
+const toolbarMenuButtonSelector = '#toolbar .toolbar-text'
 
 export {
   activeTableSelector,
   headerSelector,
   cellSelector,
   selectedRowHeaderClass,
-  selectedCellClass
+  selectedCellClass,
+  toolbarMenuButtonSelector
 }
