@@ -15,7 +15,6 @@
   ],
   "lines": 30,
   "include" : [
-    "src/**/*.js",
     "test/features"
   ],
   "check-coverage": true,
