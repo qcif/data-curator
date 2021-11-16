@@ -21,7 +21,7 @@ Feature: Replace data
   =====
 
   - The replacement order is down columns and then across rows
-
+  
   @impl
   Scenario Outline: Replace case-sensitive Next in column
     Given Data Curator is open
@@ -33,19 +33,19 @@ Feature: Replace data
     And the "case sensitive" input checkbox field is selected
     When "Replace Next" is invoked using the "application menu selection": "Find->Replace Next"
     Then the remaining case-sensitive cells with values that match "<search value>" should be 1 less than highlighted
-    And the active table has data: "<replace data>"
+    And expect the active table to have data: "<replace data>"
     And a count of the remaining values that match the "replace" value should be displayed
     And the "replace" display count should read "<display count>"
     Examples:
       | search value | replace value | display count | data                                                                                                                                              | replace data                                                                                                                                         |
-      | test         | replace       | 2 remaining.  | [["h1","h2","h3"],["test","",""],["","",""],["test","test",""],["test","",""],["","","test"],["","",""],["","",""]]                               | [["h1","h2","h3"],["replace","",""],["","",""],["test","test",""],["test","",""],["","","test"],["","",""],["","",""]]                               |
-      | test         | replace       | 1 remaining.  | [["h1","h2","h3"],["TeSt","",""],["","",""],["test","test",""],["test","",""],["","","test"],["","",""],["","",""]]                               | [["h1","h2","h3"],["test","",""],["","",""],["replace","test",""],["test","",""],["","","test"],["","",""],["","",""]]                               |
+      | test         | replace       | 2 remaining.  | [["h1","h2","h3"],["test","",""],["","",""],["test","test",""],["test","",""],["","","test"],["","",""],["","",""]]                               | [["h1","h2","h3"],["test","",""],["","",""],["replace","test",""],["test","",""],["","","test"],["","",""],["","",""]]                               |
+      | test         | replace       | 1 remaining.  | [["h1","h2","h3"],["TeSt","",""],["","",""],["test","test",""],["test","",""],["","","test"],["","",""],["","",""]]                               | [["h1","h2","h3"],["TeSt","",""],["","",""],["replace","test",""],["test","",""],["","","test"],["","",""],["","",""]]                               |
       | \test\       | \replace\     | 0 remaining.  | [["h1","h2","h3"],["\\\Test\\\","",""],["","",""],["\\\tesT\\\","\\\test\\\",""],["\\\test\\\","",""],["","","\\\test\\\"],["","",""],["","",""]] | [["h1","h2","h3"],["\\\Test\\\","",""],["","",""],["\\\tesT\\\","\\\test\\\",""],["\\\replace\\\","",""],["","","\\\test\\\"],["","",""],["","",""]] |
-      | test123      | replace456    | 2 remaining.  | [["h1","h2","h3"],["test123","",""],["","",""],["test123","test123",""],["test123","",""],["","","test123"],["","",""],["","",""]]                | [["h1","h2","h3"],["replace456","",""],["","",""],["test123","test123",""],["test123","",""],["","","test123"],["","",""],["","",""]]                |
-      | 'test'       | 'replace'     | 2 remaining.  | [["h1","h2","h3"],["'test'","",""],["","",""],["'test'","'test'",""],["'test'","",""],["","","'test'"],["","",""],["","",""]]                     | [["h1","h2","h3"],["'replace'","",""],["","",""],["'test'","'test'",""],["'test'","",""],["","","'test'"],["","",""],["","",""]]                     |
-      | "test"       | "replace"     | 2 remaining.  | [["h1","h2","h3"],["\"test\"","",""],["","",""],["\"test\"","\"test\"",""],["\"test\"","",""],["","","\"test\""],["","",""],["","",""]]           | [["h1","h2","h3"],["\"replace\"","",""],["","",""],["\"test\"","\"test\"",""],["\"test\"","",""],["","","\"test\""],["","",""],["","",""]]           |
-      | two words    | replace text  | 2 remaining.  | [["h1","h2","h3"],["two words","",""],["","",""],["two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      | [["h1","h2","h3"],["replace text","",""],["","",""],["two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      |
-      | two          | replacement   | 2 remaining.  | [["h1","h2","h3"],["two words","",""],["","",""],["two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      | [["h1","h2","h3"],["replacement","",""],["","",""],["two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]       |
+      | test123      | replace456    | 2 remaining.  | [["h1","h2","h3"],["test123","",""],["","",""],["test123","test123",""],["test123","",""],["","","test123"],["","",""],["","",""]]                | [["h1","h2","h3"],["test123","",""],["","",""],["replace456","test123",""],["test123","",""],["","","test123"],["","",""],["","",""]]                |
+      | 'test'       | 'replace'     | 2 remaining.  | [["h1","h2","h3"],["'test'","",""],["","",""],["'test'","'test'",""],["'test'","",""],["","","'test'"],["","",""],["","",""]]                     | [["h1","h2","h3"],["'test'","",""],["","",""],["'replace'","'test'",""],["'test'","",""],["","","'test'"],["","",""],["","",""]]                     |
+      | "test"       | "replace"     | 2 remaining.  | [["h1","h2","h3"],["\"test\"","",""],["","",""],["\"test\"","\"test\"",""],["\"test\"","",""],["","","\"test\""],["","",""],["","",""]]           | [["h1","h2","h3"],["\"test\"","",""],["","",""],["\"replace\"","\"test\"",""],["\"test\"","",""],["","","\"test\""],["","",""],["","",""]]           |
+      | two words    | replace text  | 2 remaining.  | [["h1","h2","h3"],["two words","",""],["","",""],["two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      | [["h1","h2","h3"],["two words","",""],["","",""],["replace text","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      |
+      | two          | replacement   | 2 remaining.  | [["h1","h2","h3"],["two words","",""],["","",""],["two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      | [["h1","h2","h3"],["two words","",""],["","",""],["replacement words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]       |
 
   @impl
   Scenario Outline: Replace case-insensitive Next in column

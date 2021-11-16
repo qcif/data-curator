@@ -12,7 +12,7 @@ function CustomWorld ({ attach, parameters }) {
   this.parameters = parameters
   if (!this.app) {
     this.app = createApp()
-    this.hotParentSelector = '.tab-pane.active .editor.handsontable'
+    // TODO: decide on adding 'hotParentSelector' to world or using equivalent in selectors.js
     this.openFileDialogReturned = ['stubbedFilenameForMenuSteps.txt']
     chaiAsPromised.transferPromiseness = this.app.transferPromiseness
   } else {
@@ -25,7 +25,7 @@ function createApp () {
     path: electron,
     args: ['dist/electron/main.js'],
     startTimeout: 20000,
-    waitTimeout: 10000,
+    waitTimeout: 1000,
     quitTimeout: 5000,
     env: {
       ELECTRON_ENABLE_LOGGING: true,

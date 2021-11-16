@@ -1,12 +1,12 @@
 import _ from 'lodash'
-import { waitForDisplayedDefault } from './helpers'
+import { collectWithFn, waitForDisplayedDefault } from './helpers'
 
 export async function waitForVisibleIdFromLabel (app, parentSelector, label, timeout) {
   const kebabCase = _.kebabCase(label)
   const camelCase = _.camelCase(label)
   try {
     const el = await app.client.$(`${parentSelector} #${kebabCase}`)
-    await el.waitforDisplayed(Z)
+    await el.waitforDisplayed(timeout)
     return el
   } catch (error) {
     console.log(`Unable to find via ${kebabCase} Trying ${camelCase}...`)
@@ -66,25 +66,72 @@ export function kebabAndCamelCase (selector) {
   return { kebabCase, camelCase }
 }
 
-export async function countNumberOfCurrentColumnCellsWithText (app, hotParentSelector, currentColumnSelector) {
-  return app.client.element(hotParentSelector).getText(currentColumnSelector)
+export async function getCurrentColumnCellsTextResults (app, currentColumnSelector) {
+  console.log(`here...${currentColumnSelector}`)
+  const columnCells = await (await app.client.$(activeTableSelector)).$$(currentColumnSelector)
+  const columnCellsText = await collectWithFn(columnCells, 'getText')
+  // if (columnCellsText.length === 0) {
+  //   const columnCells2 = await (await app.client.$(activeTableSelector)).$$(currentColumnSelector)
+  //   const columnCellsText2 = await collectWithFn(columnCells2, 'getText')
+  //   console.log(`have text: ${columnCellsText2}`)
+  // }
+  console.log(`have text: ${columnCellsText}`)
+  return columnCellsText
 }
 
-export async function getBackgroundColorOfCurrentColumn (app, hotParentSelector, currentColumnSelector) {
-  return app.client.element(hotParentSelector).getCssProperty(currentColumnSelector, 'backgroundColor')
+export async function getBackgroundColorOfCellsInCurrentColumn (app, currentColumnSelector) {
+  const columnCells = await (await app.client.$(activeTableSelector)).$$(currentColumnSelector)
+  return collectWithFn(columnCells, 'getCSSProperty', 'backgroundColor')
 }
 
-export async function getCurrentColumnSelector (app, hotParentSelector) {
-  const activeCol = await app.client.element(hotParentSelector).getAttribute('.ht_master table thead tr:first-of-type th', 'class')
-  // account for corner header
-  const currentCol = _.indexOf(activeCol, 'ht__highlight')
-  return `.ht_master table tr td:nth-of-type(${currentCol})`
+export async function getCurrentColumnSelector (app) {
+  const collectedRows = await (await app.client.$(activeTableSelector)).$$(rowSelector)
+  console.log(`collected rows length: ${collectedRows.length}`)
+  for (const [index, row] of collectedRows.entries()) {
+    console.log(`next index is ${index}`)
+    const selector = `.ht_master table tr:nth-of-type(${index + 1}) td`
+    const collectedCells = await (await app.client.$(activeTableSelector)).$$(selector)
+    console.log(`collected cells: ${collectedCells}`)
+    console.log(`collected cells length: ${collectedCells.length}`)
+    if (!_.isEmpty(collectedCells)) {
+      const collectedCellClasses = await collectWithFn(collectedCells, 'getAttribute', 'class')
+      console.log(`as a collection: ${collectedCellClasses}`)
+      // if (_.includes(collectedCellClasses, /.*htSearchResult.*/)) {
+      //   console.log(`got a hit...no more iterations....`)
+      const currentColIndex = collectedCellClasses.findIndex(value => /.*htSearchResult.*/.test(value))
+      if (currentColIndex !== -1) {
+      // const currentColIndex = _.indexOf(collectedCellClasses, 'htSearchResult')
+        return `.ht_master table tr td:nth-of-type(${currentColIndex + 1})`
+      }
+    }
+  }
+  // let currentColIndex
+  // for (const nextRow of collectedRows) {
+  //   const aRow = await (nextRow)
+  //   console.log(`row is ${JSON.stringify(aRow)}`)
+  //   const collectedCells = await (await aRow).$$('td')
+  //   console.log(`collected cells: ${JSON.stringify(collectedCells)}`)
+  //   if (!_.isEmpty(collectedCells)) {
+  //     const collectedCellClasses = await collectWithFn(collectedCells, 'getAttribute', 'class')
+  //     console.log(`classes: ${collectedCellClasses}`)
+  //     const currentColIndex = _.indexOf(collectedCellClasses, 'htSearchResult')
+  //     if (currentColIndex !== -1) {
+  //       // nth of type begins at 1
+  //       console.log(`a match maybe?`)
+  //       return `.ht_master table tr td:nth-of-type(${currentColIndex + 1})`
+  //     }
+  //   }
+  // }
+  // console.log(`current col index is ${currentColIndex}`)
+  // // nth of type begins at 1
+  // return false
 }
 
 export async function getPlaceholderValue (app, idName) {
-  const findInputParent = await app.client.element(`#${idName}`).element('..')
-  const attributeTarget = await app.client.elementIdAttribute(findInputParent.value.ELEMENT, 'data-placeholder')
-  return attributeTarget.value
+  const findInputParent = await (await app.client.$(`#${idName}`)).$('..')
+  const attributeTarget = await findInputParent.getAttribute('data-placeholder')
+  console.log(`attribute is ${attributeTarget}`)
+  return attributeTarget
 }
 
 export async function displayActiveTable (app) {
@@ -106,17 +153,23 @@ export async function activeTableElement (app) {
 }
 
 const activeTableSelector = '.tab-pane.active .editor.handsontable'
-const headerSelector = '.ht_master table tr th'
+const headerCellSelector = '.ht_master table thead tr:first-of-type th span:not(.cornerHeader)'
+const rowSelector = '.ht_master table tr'
 const cellSelector = '.ht_master table tr td'
+const firstRowCellSelector = '.ht_master table tr:first-of-type td'
+const firstCellSelector = '.ht_master table tr:first-of-type td:first-of-type'
 const selectedRowHeaderClass = 'ht__highlight'
 const selectedCellClass = 'current highlight'
 const toolbarMenuButtonSelector = '#toolbar .toolbar-text'
 
 export {
   activeTableSelector,
-  headerSelector,
+  headerCellSelector,
   cellSelector,
   selectedRowHeaderClass,
   selectedCellClass,
-  toolbarMenuButtonSelector
+  toolbarMenuButtonSelector,
+  firstCellSelector,
+  firstRowCellSelector,
+  rowSelector
 }

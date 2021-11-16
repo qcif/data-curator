@@ -29,7 +29,6 @@ Feature: Find data
   ![Data Curator Find and Replace user interface](https://github.com/qcif/data-curator/raw/develop/static/img/ui/find-and-replace.png)
 
 
-  @dev
   @impl
   Scenario Outline: Basic Find
     Given Data Curator is open

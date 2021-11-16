@@ -1,16 +1,19 @@
 import { expect } from 'chai'
 import { Given, Then, When } from 'cucumber'
-import { defaultTabData, isDataEqualToDefaultData } from '../page-objects/io.js'
 import _ from 'lodash'
 import {
+  activeTabElement,
   activeTableElement,
   activeTableSelector,
-  displayActiveTable,
+  allTabElements,
   cellSelector,
-  headerSelector,
-  selectedRowHeaderClass, activeTabElement, allTabElements
+  displayActiveTable,
+  headerCellSelector,
+  rowSelector, selectedCellClass,
+  selectedRowHeaderClass
 } from '../page-objects/selectors'
 import { collectText, collectWithFn } from '../page-objects/helpers'
+import { expectActiveTableToHoldExpectedData } from '../page-objects/data'
 
 When(/^Data Curator is open$/, async function () {
   await displayActiveTable(this.app)
@@ -21,29 +24,14 @@ When(/^Data Curator is open$/, async function () {
 Given(/^the active table has data: "(.+)"$/, async function (data) {
   // include headers in data sent
   await this.app.webContents.send('loadDataIntoCurrentHot', data)
-  // wait until hot data changes before continuing
-  const parentSelector = '.tab-pane.active .editor.handsontable'
-  const elementsSelector = '.ht_master table tr:first-of-type td'
-  let self = this
-  let actualFirstDataRow
-  await this.app.client.waitUntil(async function () {
-    actualFirstDataRow = await self.app.client.element(parentSelector)
-      .elements(elementsSelector)
-      .getText()
-    return _.difference(data[0], actualFirstDataRow).length === 0
-  }, 5000)
-  const difference = _.difference(actualFirstDataRow, defaultTabData[0])
+  const activeTable = await activeTableElement(this.app)
+  await expectActiveTableToHoldExpectedData(activeTable, data)
+})
 
-  if (isDataEqualToDefaultData(data)) {
-    expect(difference.length).to.equal(0)
-  } else {
-    // the first row (as headers will be toggled) matches default data first row
-    if (difference.length === 0) {
-      expect(data.length).to.not.equal(defaultTabData.length)
-    } else {
-      expect(difference.length).to.not.equal(0)
-    }
-  }
+Then(/^expect the active table to have data: "(.+)"$/, async function (data) {
+  // include headers in data sent
+  const activeTable = await activeTableElement(this.app)
+  await expectActiveTableToHoldExpectedData(activeTable, data)
 })
 
 Then(/^1 window should be displayed/, async function () {
@@ -95,14 +83,11 @@ Then(/^the (?:new |)table (?:should be|is) empty$/, async function () {
   expect(collected.join('')).to.equal('')
 })
 
-Then(/^the cursor (?:should be|is) in the (?:new )table$/, async function () {
-  const els = await (await activeTableElement(this.app)).$$(headerSelector)
-  const collected = []
-  for (const nextEl of els) {
-    const attr = await nextEl.getAttribute('class')
-    collected.push(attr)
-  }
-  expect(collected).to.contain(selectedRowHeaderClass)
+Then(/^the cursor (?:should be|is) in the (?:new |)table$/, async function () {
+  const els = await (await activeTableElement(this.app)).$$(cellSelector)
+  const collected = await collectWithFn(els, 'getAttribute', 'class')
+  console.log(`collected is ${JSON.stringify(collected)}`)
+  expect(collected).to.contain(selectedCellClass)
 })
 
 Then(/^the cursor (?:should be|is) in row (\d+), column (\d+)$/, async function (rowNumber, colNumber) {

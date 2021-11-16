@@ -27,5 +27,5 @@ export async function collectWithFn (collection, func, args) {
 }
 
 export async function waitForDisplayedDefault (el) {
-  return el.waitForDisplayed({ timeout: 1000 })
+  return el.waitForDisplayed({ timeout: 500 })
 }

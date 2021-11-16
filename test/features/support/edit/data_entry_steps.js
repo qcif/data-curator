@@ -4,26 +4,24 @@ import { expect } from 'chai'
 import { returnInputIdSelector } from '../page-objects/selectors'
 
 When(/^"(.+?)" (?:has been|is) entered in the input field(?: for|)[:]? "(.+?)"/, { timeout: -1 }, async function (value, field) {
-  const result = await enterInputInFieldName(this.app, value, field, this.pageShortTimeout)
-  return result
+  await enterInputInFieldName(this.app, value, field, this.pageShortTimeout)
 })
 
 When(/^(?:the )"(.+?)" input field is clicked/, { timeout: -1 }, async function (field) {
-  const result = await clickInputFieldName(this.app, field, this.pageShortTimeout)
-  return result
+  await clickInputFieldName(this.app, field, this.pageShortTimeout)
 })
 
 When(/^(?:the )"(.+?)" input checkbox field is not selected/, async function (fieldId) {
   const result = await returnInputIdSelector(this.app, fieldId)
-  if (this.app.client.$(result.selector).isSelected()) {
-    await this.app.client.$(result.selector).click()
+  if ((await result.isSelected())) {
+    await result.click()
   }
 })
 
 When(/^(?:the )"(.+?)" input checkbox field is selected/, async function (fieldId) {
   const result = await returnInputIdSelector(this.app, fieldId)
-  if (!this.app.client.$(result.selector).isSelected()) {
-    await this.app.client.$(result.selector).click()
+  if (!(await result.isSelected())) {
+    await result.click()
   }
 })
 
