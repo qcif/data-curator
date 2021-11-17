@@ -31,7 +31,6 @@ Given(/^the active table has data: "(.+)"$/, async function (data) {
     await expectActiveTableToHoldExpectedDataWithNoHeaderIncluded(activeTable, data)
   } else {
     await this.app.webContents.send('loadDataIntoCurrentHot', data)
-    // include headers in data sent
     await expectActiveTableToHoldExpectedDataWithHeaderIncluded(activeTable, data)
   }
 })

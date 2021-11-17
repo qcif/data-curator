@@ -38,7 +38,6 @@ After({ timeout: 40000 }, async function (testCase) {
       if (this.app && this.app.browserWindow) {
         const imageBuffer = await this.app.browserWindow.capturePage()
         await this.attach(imageBuffer, 'image/png')
-        // console.log('got attachment in', attachResult)
       }
     }
     tallyTestAppveyor(testCase)
@@ -51,7 +50,6 @@ After({ timeout: 40000 }, async function (testCase) {
 
 Before({ timeout: 20000 }, async function (testCase) {
   try {
-    // console.log('Starting before hook....')
     console.log(`Starting test scenario: ${testCase.pickle.name} in: ${testCase.sourceLocation.uri}`)
     // console.log(testCase.pickle.steps)
     this.rowNumber = null
@@ -71,8 +69,6 @@ Before({ timeout: 20000 }, async function (testCase) {
     await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showOpenDialog', value: this.openFileDialogReturned }])
     await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showMessageBoxSync', value: 1 }])
     await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showOpenDialogSync', value: this.openFileDialogReturned }])
-    // browser.expectRequest(method, url, statusCode)
-    // await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_SHELL/SEND', [{ method: 'openExternal', value: createPromise() }])
   } catch (error) {
     console.log('error in before hook', error)
     await stopAppRunning(this.app)

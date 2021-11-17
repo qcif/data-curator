@@ -37,12 +37,7 @@ Then(/^all the cells with values that are a case sensitive match for "(.+?)" sho
   })
   const currentColumnsCellsBackgroundColors = await getBackgroundColorOfCellsInCurrentColumn(this.app, currentColumnSelector)
   console.log(`colors are: ${JSON.stringify(currentColumnsCellsBackgroundColors)}`)
-  // const currentColumnsCellIndexesWithHighlight = _.filter(currentColumnsCellsBackgroundColors, function (cell) {
-  //   console.log(`value is ${cell.value}`)
-  //   return cell.value !== defaultColor
-  // })
-  // expect(currentColumnsCellsWithHighlight.length).to.equal(currentColumnsCellsWithText.length)
-  // the test makes a case-insensitive match
+
   const matchedTextIndices = getRowIndicesOfCaseSensitiveSearchText(currentColumnCellsTextResults, searchValue)
   const backgroundColorIndices = getRowIndicesOfFoundBackgroundColors(currentColumnsCellsBackgroundColors)
   expect(backgroundColorIndices.length).to.equal(matchedTextIndices.length)

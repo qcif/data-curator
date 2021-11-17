@@ -12,7 +12,6 @@ function CustomWorld ({ attach, parameters }) {
   this.parameters = parameters
   if (!this.app) {
     this.app = createApp()
-    // TODO: decide on adding 'hotParentSelector' to world or using equivalent in selectors.js
     this.openFileDialogReturned = ['stubbedFilenameForMenuSteps.txt']
     chaiAsPromised.transferPromiseness = this.app.transferPromiseness
   } else {

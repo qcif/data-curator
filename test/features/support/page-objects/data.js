@@ -17,7 +17,6 @@ export async function expectActiveTableToHoldExpectedDataWithHeaderIncluded (act
   const headerCells = await (activeTable).$$(headerCellSelector)
   console.log(`got header cells: ${headerCells}`)
   console.log(`got header cells length: ${headerCells.length}`)
-  // hot data made need time to change before continuing
   for (const [index, expectedHeaderCell] of expectedHeader.entries()) {
     let actualText
     await headerCells[index].waitUntil(async function () {
