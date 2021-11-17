@@ -1,7 +1,7 @@
 #!bin/bash
 # Name of your app.
 APP="DataCurator"
-VERSION="1.2.6"
+VERSION="1.2.9"
 # The path of your app to sign.
 APP_PATH="build/mas/${APP}.app"
 # The path to the location you want to put the signed package.
@@ -25,4 +25,3 @@ codesign -s "$APP_KEY" -f --entitlements "$LOGINHELPER_PLIST" "$APP_PATH/Content
 codesign -s "$APP_KEY" -f --entitlements "$CHILD_PLIST" "$APP_PATH/Contents/MacOS/$APP"
 codesign -s "$APP_KEY" -f --entitlements "$PARENT_PLIST" "$APP_PATH"
 productbuild --component "$APP_PATH" /Applications --sign "$INSTALLER_KEY" "$RESULT_PATH"
-                
