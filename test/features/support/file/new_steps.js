@@ -15,7 +15,7 @@ import {
 import { collectText, collectWithFn } from '../page-objects/helpers'
 import {
   expectActiveTableToHoldExpectedDataWithHeaderIncluded,
-  expectActiveTableToHoldExpectedDataWithNoHeaderIncluded
+  expectActiveTableToHoldExpectedDataWithNoHeaderIncluded, isDataEqualToDefaultData
 } from '../page-objects/data'
 
 When(/^Data Curator is open$/, async function () {
@@ -25,10 +25,15 @@ When(/^Data Curator is open$/, async function () {
 })
 
 Given(/^the active table has data: "(.+)"$/, async function (data) {
-  // include headers in data sent
-  await this.app.webContents.send('loadDataIntoCurrentHot', data)
   const activeTable = await activeTableElement(this.app)
-  await expectActiveTableToHoldExpectedDataWithNoHeaderIncluded(activeTable, data)
+  if (isDataEqualToDefaultData(data)) {
+    console.log(`empty set`)
+    await expectActiveTableToHoldExpectedDataWithNoHeaderIncluded(activeTable, data)
+  } else {
+    await this.app.webContents.send('loadDataIntoCurrentHot', data)
+    // include headers in data sent
+    await expectActiveTableToHoldExpectedDataWithHeaderIncluded(activeTable, data)
+  }
 })
 
 Then(/^expect the active table to have data: "(.+)"$/, async function (data) {

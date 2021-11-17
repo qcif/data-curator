@@ -70,11 +70,6 @@ export async function getCurrentColumnCellsTextResults (app, currentColumnSelect
   console.log(`here...${currentColumnSelector}`)
   const columnCells = await (await app.client.$(activeTableSelector)).$$(currentColumnSelector)
   const columnCellsText = await collectWithFn(columnCells, 'getText')
-  // if (columnCellsText.length === 0) {
-  //   const columnCells2 = await (await app.client.$(activeTableSelector)).$$(currentColumnSelector)
-  //   const columnCellsText2 = await collectWithFn(columnCells2, 'getText')
-  //   console.log(`have text: ${columnCellsText2}`)
-  // }
   console.log(`have text: ${columnCellsText}`)
   return columnCellsText
 }
@@ -96,35 +91,12 @@ export async function getCurrentColumnSelector (app) {
     if (!_.isEmpty(collectedCells)) {
       const collectedCellClasses = await collectWithFn(collectedCells, 'getAttribute', 'class')
       console.log(`as a collection: ${collectedCellClasses}`)
-      // if (_.includes(collectedCellClasses, /.*htSearchResult.*/)) {
-      //   console.log(`got a hit...no more iterations....`)
       const currentColIndex = collectedCellClasses.findIndex(value => /.*htSearchResult.*/.test(value))
       if (currentColIndex !== -1) {
-      // const currentColIndex = _.indexOf(collectedCellClasses, 'htSearchResult')
         return `.ht_master table tr td:nth-of-type(${currentColIndex + 1})`
       }
     }
   }
-  // let currentColIndex
-  // for (const nextRow of collectedRows) {
-  //   const aRow = await (nextRow)
-  //   console.log(`row is ${JSON.stringify(aRow)}`)
-  //   const collectedCells = await (await aRow).$$('td')
-  //   console.log(`collected cells: ${JSON.stringify(collectedCells)}`)
-  //   if (!_.isEmpty(collectedCells)) {
-  //     const collectedCellClasses = await collectWithFn(collectedCells, 'getAttribute', 'class')
-  //     console.log(`classes: ${collectedCellClasses}`)
-  //     const currentColIndex = _.indexOf(collectedCellClasses, 'htSearchResult')
-  //     if (currentColIndex !== -1) {
-  //       // nth of type begins at 1
-  //       console.log(`a match maybe?`)
-  //       return `.ht_master table tr td:nth-of-type(${currentColIndex + 1})`
-  //     }
-  //   }
-  // }
-  // console.log(`current col index is ${currentColIndex}`)
-  // // nth of type begins at 1
-  // return false
 }
 
 export async function getPlaceholderValue (app, idName) {
@@ -156,8 +128,6 @@ const activeTableSelector = '.tab-pane.active .editor.handsontable'
 const headerCellSelector = '.ht_master table thead tr:first-of-type th span:not(.cornerHeader)'
 const rowSelector = '.ht_master table tr'
 const cellSelector = '.ht_master table tr td'
-const firstRowCellSelector = '.ht_master table tr:first-of-type td'
-const firstCellSelector = '.ht_master table tr:first-of-type td:first-of-type'
 const selectedRowHeaderClass = 'ht__highlight'
 const selectedCellClass = 'current highlight'
 const toolbarMenuButtonSelector = '#toolbar .toolbar-text'
@@ -169,7 +139,5 @@ export {
   selectedRowHeaderClass,
   selectedCellClass,
   toolbarMenuButtonSelector,
-  firstCellSelector,
-  firstRowCellSelector,
   rowSelector
 }

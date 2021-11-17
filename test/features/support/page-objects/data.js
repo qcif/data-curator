@@ -3,6 +3,14 @@ import { collectWithFn, waitForDisplayedDefault } from './helpers'
 import { activeTableElement, cellSelector, headerCellSelector } from './selectors'
 import { expect } from 'chai'
 
+export function isDataEqualToDefaultData (data) {
+  // NB: arrays might contain mix of quotes
+  const sanitisedDefault = _.compact(_.flatten(defaultTabData))
+  const sanitisedData = _.compact(_.flatten(JSON.parse(data)))
+  // TODO: brittle as check only works while default is no data
+  return sanitisedDefault.length === 0 && sanitisedDefault.length === sanitisedData.length
+}
+
 export async function expectActiveTableToHoldExpectedDataWithHeaderIncluded (activeTable, data) {
   const expectedData = JSON.parse(data)
   const expectedHeader = expectedData.shift()
@@ -40,4 +48,10 @@ export async function expectActiveTableToHoldExpectedDataWithNoHeaderIncluded (a
       expect(actualText).to.equal(expectedText)
     }
   }
+}
+
+const defaultTabData = [['', '', '']]
+
+export {
+  defaultTabData
 }

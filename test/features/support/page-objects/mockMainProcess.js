@@ -10,6 +10,5 @@ export function applyMock (app) {
 
 export function mockShell (options) {
   console.log('sending call to mock...')
-  const value = _app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_SHELL/SEND', options)
-  return value
+  return _app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_SHELL/SEND', options)
 }
