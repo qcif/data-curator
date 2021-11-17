@@ -5,7 +5,7 @@ version: 2.1
 executors:
   linux:
     docker:
-      - image: cimg/base:2020.01
+      - image: cimg/base:stable-18.04
   macos:
     macos:
       xcode: 12.15.1
@@ -37,14 +37,14 @@ workflows:
   first-test:
     jobs:
       - lint:
-          context: Datacurator
-          filters:
-            tags:
-              ignore: /.*/
-#              only: /^\d+\.\d+(\.\d+)?(-\S*)?$/
-            branches:
-              only: post-max-e2e-fix
+#          context: Datacurator
+#          filters:
+#            tags:
 #              ignore: /.*/
+##              only: /^\d+\.\d+(\.\d+)?(-\S*)?$/
+#            branches:
+#              only: post-max-e2e-fix
+##              ignore: /.*/
           matrix:
             parameters:
               os: [linux, macos]
