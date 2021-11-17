@@ -13,7 +13,10 @@ import {
   selectedRowHeaderClass
 } from '../page-objects/selectors'
 import { collectText, collectWithFn } from '../page-objects/helpers'
-import { expectActiveTableToHoldExpectedData } from '../page-objects/data'
+import {
+  expectActiveTableToHoldExpectedDataWithHeaderIncluded,
+  expectActiveTableToHoldExpectedDataWithNoHeaderIncluded
+} from '../page-objects/data'
 
 When(/^Data Curator is open$/, async function () {
   await displayActiveTable(this.app)
@@ -25,13 +28,13 @@ Given(/^the active table has data: "(.+)"$/, async function (data) {
   // include headers in data sent
   await this.app.webContents.send('loadDataIntoCurrentHot', data)
   const activeTable = await activeTableElement(this.app)
-  await expectActiveTableToHoldExpectedData(activeTable, data)
+  await expectActiveTableToHoldExpectedDataWithNoHeaderIncluded(activeTable, data)
 })
 
 Then(/^expect the active table to have data: "(.+)"$/, async function (data) {
   // include headers in data sent
   const activeTable = await activeTableElement(this.app)
-  await expectActiveTableToHoldExpectedData(activeTable, data)
+  await expectActiveTableToHoldExpectedDataWithHeaderIncluded(activeTable, data)
 })
 
 Then(/^1 window should be displayed/, async function () {

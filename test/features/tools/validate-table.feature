@@ -42,6 +42,7 @@ Feature: Validate Table
   - decimalChar
   - groupChar
 
+  @dev
   @impl
   Scenario Outline: Validate Table
     Given Data Curator is open
@@ -56,9 +57,9 @@ Feature: Validate Table
     And the table cell errors should be highlighted for rows: "<rows>" and columns: "<cols>"
     Examples:
     | data                                                  | error keys                | count   | rows  | cols  |
-    | [["","",""]]                                          | ["No Columns Properties"] | 1       | []    | []    |
-    | [["h1","h2","h3"],["","",""]]                         | ["Blank Row"]             | 1       | [1]   | []    |
-    | [["h1","h2","h3"],["","",""],["a","",""],["","",""]]  | ["Blank Row"]             | 2       | [1,3] | [0,0] |
+    | [["","",""]]                                          | ["No Column Properties"] | 1       | []    | []    |
+#    | [["h1","h2","h3"],["","",""]]                         | ["Blank Row"]             | 1       | [1]   | []    |
+#    | [["h1","h2","h3"],["","",""],["a","",""],["","",""]]  | ["Blank Row"]             | 2       | [1,3] | [0,0] |
 
   Scenario: Pop out validation error messages
     Given Data Curator is open

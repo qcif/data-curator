@@ -72,7 +72,6 @@ Feature: Replace data
       | two words    | replace text  | 1 remaining.  | [["h1","h2","h3"],["two words","",""],["","",""],["twO1 Words","TWO WORDS",""],["two words","",""],["","","two words"],["","",""],["","",""]]     | [["h1","h2","h3"],["two words","",""],["","",""],["twO1 Words","TWO WORDS",""],["replace text","",""],["","","two words"],["","",""],["","",""]]     |
       | two          | replacement   | 2 remaining.  | [["h1","h2","h3"],["Two words","",""],["","",""],["Two words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]      | [["h1","h2","h3"],["Two words","",""],["","",""],["replacement words","two words",""],["two words","",""],["","","two words"],["","",""],["","",""]]       |
 
-  @dev
   @impl
   Scenario Outline: Replace case-insensitive Previous in column
     Given Data Curator is open
