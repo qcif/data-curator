@@ -8,19 +8,19 @@ Feature: Validate Table
 
   - The "Validate Table" command can be invoked using a menu item, toolbar button or shortcut
   - [Structural data checks](https://github.com/frictionlessdata/goodtables-py#validation-against-structure-checks) include:
-    - blank header
-    - duplicate header
-    - blank row
-    - duplicate row
-    - ragged rows (extra/missing value compared to header row)
+  - blank header
+  - duplicate header
+  - blank row
+  - duplicate row
+  - ragged rows (extra/missing value compared to header row)
   - Schema validation checks include the:
-    - data is the same "type" and "format" as defined in the schema, ignoring "missing values"
-    - data conforms with the "constraints"
-    - "primary keys" are unique
-    - "foreign key" relationships to one or more columns in:
-      - the same table
-      - another table in the same data package
-      - another table in a data package at a url (not in specification [yet](https://gitter.im/frictionlessdata/chat?at=59eaed08f7299e8f53142845))
+  - data is the same "type" and "format" as defined in the schema, ignoring "missing values"
+  - data conforms with the "constraints"
+  - "primary keys" are unique
+  - "foreign key" relationships to one or more columns in:
+  - the same table
+  - another table in the same data package
+  - another table in a data package at a url (not in specification [yet](https://gitter.im/frictionlessdata/chat?at=59eaed08f7299e8f53142845))
 
   QUESTION
   ========
@@ -42,7 +42,6 @@ Feature: Validate Table
   - decimalChar
   - groupChar
 
-  @dev
   @impl
   Scenario Outline: Validate Table
     Given Data Curator is open
@@ -56,10 +55,10 @@ Feature: Validate Table
     And the validation errors count should be "<count>"
     And the table cell errors should be highlighted for rows: "<rows>" and columns: "<cols>"
     Examples:
-    | data                                                  | error keys                | count   | rows  | cols  |
-    | [["","",""]]                                          | ["No Column Properties"] | 1       | []    | []    |
-#    | [["h1","h2","h3"],["","",""]]                         | ["Blank Row"]             | 1       | [1]   | []    |
-#    | [["h1","h2","h3"],["","",""],["a","",""],["","",""]]  | ["Blank Row"]             | 2       | [1,3] | [0,0] |
+      | data                                                 | error keys                 | count | rows  | cols  |
+      | [["","",""]]                                         | ["No Column Properties"]   | 1     | []    | []    |
+      | [["h1","h2","h3"],["","",""]]                        | ["Blank Row"]              | 1     | [1]   | []    |
+      | [["h1","h2","h3"],["","",""],["a","",""],["","",""]] | ["Blank Row", "Blank Row"] | 2     | [1,3] | [0,0] |
 
   Scenario: Pop out validation error messages
     Given Data Curator is open
@@ -151,14 +150,14 @@ Feature: Validate Table
     Given Data Curator is open
     And this data has been entered:
 
-      | H1    | H2       | H3       | H4    |
-      | 1.10  | $1.10    | 1.10%    | $1.10 |
-      | 2     | US $2.00 | 2        | 2.0%  |
-      | 3.12  | 3.12     | 3.12 KG  | 3.12  |
+      | H1   | H2       | H3      | H4    |
+      | 1.10 | $1.10    | 1.10%   | $1.10 |
+      | 2    | US $2.00 | 2       | 2.0%  |
+      | 3.12 | 3.12     | 3.12 KG | 3.12  |
 
     And the following properties have been set for each column:
 
-      | column | type    | bareNumber |
+      | column | type   | bareNumber |
       | H1     | number | true       |
       | H2     | number | true       |
       | H3     | number | true       |
@@ -200,74 +199,74 @@ Feature: Validate Table
       | H1     | none                      |
       | H2     | error in row 3,4, 7 and 8 |
 
-Scenario: validate number with groupChar
-  Given Data Curator is open
-  And this data has been entered:
+  Scenario: validate number with groupChar
+    Given Data Curator is open
+    And this data has been entered:
 
-    | H1        | H2         |
-    |       1.0 |        1.0 |
-    |       100 |        100 |
-    |      1000 |       1000 |
-    |     1,000 |      1,000 |
-    |   1000000 |    1000000 |
-    | 1,000,000 |  1,000,000 |
+      | H1        | H2        |
+      | 1.0       | 1.0       |
+      | 100       | 100       |
+      | 1000      | 1000      |
+      | 1,000     | 1,000     |
+      | 1000000   | 1000000   |
+      | 1,000,000 | 1,000,000 |
 
-  And the following properties have been set or defaulted for each column:
+    And the following properties have been set or defaulted for each column:
 
-    | column | type   | groupChar |
-    | H1     | number |           |
-    | H2     | number | ","       |
+      | column | type   | groupChar |
+      | H1     | number |           |
+      | H2     | number | ","       |
 
-  When "Validate Table" is invoked
-  Then the following errors should be reported for each column:
+    When "Validate Table" is invoked
+    Then the following errors should be reported for each column:
 
-    | column | errors reported      |
-    | H1     | error in row 4 and 6 |
-    | H2     | none                 |
+      | column | errors reported      |
+      | H1     | error in row 4 and 6 |
+      | H2     | none                 |
 
-Scenario: validate number with decimalChar
-  Given Data Curator is open
-  And this data has been entered:
+  Scenario: validate number with decimalChar
+    Given Data Curator is open
+    And this data has been entered:
 
-    | H1    | H2         |
-    |   1.0 |        1.0 |
-    |  12.3 |       12.3 |
-    | 123,4 |      123,4 |
+      | H1    | H2    |
+      | 1.0   | 1.0   |
+      | 12.3  | 12.3  |
+      | 123,4 | 123,4 |
 
-  And the following properties have been set or defaulted for each column:
+    And the following properties have been set or defaulted for each column:
 
-    | column | type   | decimalChar |
-    | H1     | number | "."         |
-    | H2     | number | ","         |
+      | column | type   | decimalChar |
+      | H1     | number | "."         |
+      | H2     | number | ","         |
 
-  When "Validate Table" is invoked
-  Then the following errors should be reported for each column:
+    When "Validate Table" is invoked
+    Then the following errors should be reported for each column:
 
-    | column | errors reported      |
-    | H1     | error in row 3       |
-    | H2     | error in row 1 and 2 |
+      | column | errors reported      |
+      | H1     | error in row 3       |
+      | H2     | error in row 1 and 2 |
 
 
-    Scenario: validate foreign keys across data packages
+  Scenario: validate foreign keys across data packages
     Given Data Curator is open
     And  this data in Table "One" in Data Package "Alpha" has been entered:
 
       | Id | Code |
-      | 1  |    A |
-      | 2  |    B |
-      | 3  |    C |
-      | 4  |    D |
+      | 1  | A    |
+      | 2  | B    |
+      | 3  | C    |
+      | 4  | D    |
 
     And this data in Table "Two" in Data Package "Beta" has been entered:
 
       | Code | Description |
-      |    A | Apple       |
-      |    B | Banana      |
-      |    C | Carrot      |
+      | A    | Apple       |
+      | B    | Banana      |
+      | C    | Carrot      |
 
     And a foreignKeys relationship across the data packages has been established using the Code fields
     When "Validate Table" is invoked
     Then the following errors should be reported for Table "Alpha":
 
-      | column | errors reported      |
-      | Code   | error in row 4       |
+      | column | errors reported |
+      | Code   | error in row 4  |

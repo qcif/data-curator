@@ -1,27 +1,18 @@
 import { expect } from 'chai'
 import { Then } from 'cucumber'
-import { validationMessages } from '../page-objects/messages.js'
+import { expectFailureMessageWithText, expectSuccessMessageWithText, validationMessages } from '../page-objects/messages.js'
 import { errorColor } from '../page-objects/style.js'
 import { mapArrayToInteger } from '../page-objects/helpers.js'
 import _ from 'lodash'
 import { activeTableElement, rowSelector } from '../page-objects/selectors'
 
-Then(/^the success message should be displayed with message "([\w ]+?)"$/, function (message) {
-  let regexp = new RegExp('^.*Success: ' + message + '.*$', 'm')
-  return this.app.client.waitForVisible('#message-panel', 1000)
-    .getText('#other-message')
-    .then(function (text) {
-      expect(text).to.equal(regexp)
-    })
+Then(/^the success message should be displayed with message "([\w ]+?)"$/, async function (message) {
+  await expectSuccessMessageWithText(this.app, message)
 })
 
-Then(/^the failure message should be displayed with message "([\w ]+?)"$/, function (message) {
-  let regexp = new RegExp('^.*Failed: ' + '.*$', 'm')
-  return this.app.client.waitForText('#message-panel', this.pageTimeout)
-    .getText('#message-panel')
-    .then(function (text) {
-      expect(text).to.match(regexp)
-    })
+Then(/^the failure message should be displayed with message "([\w ]+?)"$/, async function (message) {
+  console.log(`expected message is ${message}`)
+  await expectFailureMessageWithText(this.app, message)
 })
 
 Then(/^the validation failure message should be displayed with the message(?:s|) "(.+?)"$/, function (stringified) {
@@ -48,6 +39,7 @@ Then(/^the validation failure message should be displayed with the message(?:s|)
   const cols = JSON.parse(c)
   expect(_.isArray(cols)).to.equal(true)
   console.log(`cols are ${cols}`)
+  await this.app.client.pause(this.pageShortTimeout)
   const messagePanel = await this.app.client.$('#message-panel')
   await messagePanel.waitForDisplayed({ timout: this.pageTimeout })
   const messageText = await messagePanel.getHTML(false)
@@ -59,33 +51,49 @@ Then(/^the validation failure message should be displayed with the message(?:s|)
   expect(messageTitleText).to.match(/Validation Errors/)
 
   const messageContent = await messagePanel.$('.errors-content')
-  const subMessageContent = await messageContent.$$('span')
-  const actualText = []
-  for (const spanTag of subMessageContent) {
-    const nextText = await (await messageContent.$(spanTag)).getText()
-    console.log(`sub text is ${nextText}`)
-    if (nextText) {
-      actualText.push(nextText)
+  const subMessageContent = await messageContent.$$('[id^="error-messages"]')
+  console.log(`sub message content length: ${subMessageContent.length}`)
+  const actualTextErrorMessages = []
+  // collect in 3s: (row, column, message)
+  for (const errorMessage of subMessageContent) {
+    const errorMessageParts = await (await messageContent.$(errorMessage)).$$('span')
+    const errorMessageText = []
+    for (const errorMessagePart of errorMessageParts) {
+      const nextText = await (await messageContent.$(errorMessagePart)).getText()
+      console.log(`sub text is ${nextText}`)
+      errorMessageText.push(nextText)
     }
+    actualTextErrorMessages.push(errorMessageText)
   }
+  expect(actualTextErrorMessages.length).to.equal(keys.length)
   for (const [index, key] of keys.entries()) {
     console.log(`next index is ${index}`)
     console.log(`next key is .${key}.`)
-    const actualErrorMessage = actualText[index]
+    const actualRow = actualTextErrorMessages[index].shift()
+    console.log(`actual row is ${actualRow}`)
     const expectedRow = rows[index]
+    console.log(`expected row is ${expectedRow}`)
+    if (expectedRow) {
+      let expectedRowRegex = new RegExp('^\\(row:' + expectedRow + '\\)')
+      expect(actualRow).to.match(expectedRowRegex)
+    } else {
+      expect(_.isEmpty(actualRow)).to.equal(true)
+    }
+    const actualColumn = actualTextErrorMessages[index].shift()
+    console.log(`actual column is ${actualColumn}`)
     const expectedCol = cols[index]
+    console.log(`expected column is ${expectedCol}`)
+    if (expectedCol) {
+      let expectedColRegex = new RegExp('^\\(row:.*\\)\\(col:' + expectedCol + '\\)')
+      expect(actualColumn).to.match(expectedColRegex)
+    } else {
+      expect(_.isEmpty(actualColumn)).to.equal(true)
+    }
+    const actualErrorMessage = actualTextErrorMessages[index].shift()
     let expectedMessageRegex = validationMessages[key]
     console.log(`expected message: ${expectedMessageRegex}`)
     console.log(`actualErrorMessage: ${actualErrorMessage}`)
     expect(actualErrorMessage).to.match(expectedMessageRegex)
-    if (expectedRow) {
-      let expectedRowRegex = new RegExp('^\\(row:' + expectedRow + '\\)')
-      expect(actualErrorMessage).to.match(expectedRowRegex)
-    }
-    if (expectedCol) {
-      let expectedColRegex = new RegExp('^\\(row:.*\\)\\(col:' + expectedCol + '\\)')
-      expect(actualErrorMessage).to.match(expectedColRegex)
-    }
   }
 })
 
