@@ -7,9 +7,9 @@ When(/^"(.+?)" (?:has been|is) entered in the input field(?: for|)[:]? "(.+?)"/,
   await enterInputInFieldName(this.app, value, field, this.pageShortTimeout)
 })
 
-When(/^(?:the )"(.+?)" input field is clicked/, { timeout: -1 }, async function (field) {
-  await clickInputFieldName(this.app, field, this.pageShortTimeout)
-})
+// When(/^(?:the )"(.+?)" input field is clicked/, { timeout: -1 }, async function (field) {
+//   await clickInputFieldName(this.app, field, this.pageShortTimeout)
+// })
 
 When(/^(?:the )"(.+?)" input checkbox field is not selected/, async function (fieldId) {
   const result = await returnInputIdSelector(this.app, fieldId)
@@ -30,10 +30,10 @@ When(/^(?:the )"(.+?)" input checkbox field is not selected/, async function (fi
 When(/^(?:the )"(.+?)" input checkbox field is selected/, async function (fieldId) {
   const result = await returnInputIdSelector(this.app, fieldId)
   const isSelected = await result.isSelected()
-  console.log(`is selected is ${isSelected}`)
-  if (!isSelected) {
-    await result.click()
-  }
+  // console.log(`is selected is ${isSelected}`)
+  // if (!isSelected) {
+  //   await result.click()
+  // }
 })
 
 When(/^the "Column" [Pp]roperties are entered as$/, function (properties) {

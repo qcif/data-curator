@@ -46,11 +46,6 @@ When('{string} is invoked using the {string}: {string}', async function (name, t
   await menu.invokeActions(this.app, { name: name, type: type, sequence: sequence })
 })
 
-When(/^the "([\w]+?)" toolbar menu is (?:selected|clicked|invoked)/, async function (toolbarMenuName) {
-  let result = await menu.clickOnToolbarMenuButton(toolbarMenuName)
-  return result
-})
-
 When(/^(?:the )"([\w]+?)"->"([\w]+?)" menu is (?:selected|clicked|invoked)/, async function (menuLabel, subMenuLabel) {
   const returned = await this.app.electron.ipcRenderer.sendSync('clickLabelsOnMenu', [menuLabel, subMenuLabel])
   expect(returned).to.equal(subMenuLabel)

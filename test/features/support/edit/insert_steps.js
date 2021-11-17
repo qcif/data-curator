@@ -23,8 +23,8 @@ When(/^the user types "(.*?)"?$/, async function (textEntered) {
 
 // Spectron/WebdriverIO won't work with context-menu (and can't close it) once it appears - so just call the menu
 Then(/^the user clicks (?:on|in) "Insert (Row|Column) (Below|Above|Before|After)" in the context menu$/, async function (rowOrColumn, place) {
-  let actualRowCount = await getNumberOfRows(this.app)
-  let actualColumnCount = await getNumberOfColumns(this.app)
+  // let actualRowCount = await getNumberOfRows(this.app)
+  // let actualColumnCount = await getNumberOfColumns(this.app)
   this.app.webContents.send('clickLabelOnContextMenu', `Insert ${rowOrColumn} ${place}`)
 })
 

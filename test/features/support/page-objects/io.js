@@ -4,21 +4,18 @@ import os from 'os'
 import { applyFnToSelectorWithLabel } from './selectors'
 
 export function getFilePathFromFixtures (fileName) {
-  const filePath = require('path').join(__dirname, `../../../fixtures/${fileName}`)
-  return filePath
+  return require('path').join(__dirname, `../../../fixtures/${fileName}`)
 }
 
 export function getFileData (filePath) {
-  const data = fs.readFileSync(filePath, 'utf-8')
-  return data
+  return fs.readFileSync(filePath, 'utf-8')
 }
 
 export async function saveAndReturnData (app) {
   let tempFile = `${os.tmpdir()}/test.csv`
   await app.webContents.send('saveData', null, tempFile)
   await app.client.pause(4000)
-  let returnedData = fs.readFileSync(tempFile, 'utf-8')
-  return returnedData
+  return fs.readFileSync(tempFile, 'utf-8')
 }
 
 export function arrayOfLinesToString (arrayOfLines) {
@@ -35,17 +32,14 @@ export async function enterInputInFieldName (app, value, field, timeout) {
 }
 
 export async function clickInputFieldName (app, field, timeout) {
-  const result = await applyFnToIdOrClassSelector(app, 'click', field, 'input', timeout)
-  return result
+  return applyFnToIdOrClassSelector(app, 'click', field, 'input', timeout)
 }
 
 export async function applyFnToIdOrClassSelector (app, fn, fieldIdOrClass, selector, timeout) {
   try {
-    const result = await applyFnToSelectorWithLabel(app, fn, `${selector}.${fieldIdOrClass}`, fieldIdOrClass, timeout)
-    return result
+    return applyFnToSelectorWithLabel(app, fn, `${selector}.${fieldIdOrClass}`, fieldIdOrClass, timeout)
   } catch (error) {
     console.log(`Unable to find via class. Trying id`)
-    const result = await applyFnToSelectorWithLabel(app, fn, `${selector}#${fieldIdOrClass}`, fieldIdOrClass, timeout)
-    return result
+    return applyFnToSelectorWithLabel(app, fn, `${selector}#${fieldIdOrClass}`, fieldIdOrClass, timeout)
   }
 }

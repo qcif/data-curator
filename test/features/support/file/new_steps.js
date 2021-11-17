@@ -99,15 +99,15 @@ Then(/^the cursor (?:should be|is) in the (?:new |)table$/, async function () {
 })
 
 Then(/^the cursor (?:should be|is) in row (\d+), column (\d+)$/, async function (rowNumber, colNumber) {
-  // const els = await (await activeTableElement(this.app)).$$(headerSelector)
-  // const collected = await collectWithFn(els, 'getAttribute', 'class')
-  // expect(collected[rowNumber - 1]).to.contain(selectedRowHeaderClass)
-  //
-  // const els2 = await (await activeTableElement(this.app)).$$(`.ht_master table tr:nth-child(${rowNumber}) td`)
-  // const collected2 = []
-  // for (const nextEl of els2) {
-  //   const attr = await nextEl.getAttribute('class')
-  //   collected2.push(attr)
-  // }
-  // expect(collected2[colNumber - 1]).to.contain(selectedCellClass)
+  const els = await (await activeTableElement(this.app)).$$(headerSelector)
+  const collected = await collectWithFn(els, 'getAttribute', 'class')
+  expect(collected[rowNumber - 1]).to.contain(selectedRowHeaderClass)
+
+  const els2 = await (await activeTableElement(this.app)).$$(`.ht_master table tr:nth-child(${rowNumber}) td`)
+  const collected2 = []
+  for (const nextEl of els2) {
+    const attr = await nextEl.getAttribute('class')
+    collected2.push(attr)
+  }
+  expect(collected2[colNumber - 1]).to.contain(selectedCellClass)
 })
