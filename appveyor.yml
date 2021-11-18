@@ -51,19 +51,17 @@ for:
       - job_name: Windows build
   init:
     - git config --global core.autocrlf input
-  install:
+  before_build:
     - ps: Install-Product node $env:nodejs_version $env:plat
     - choco upgrade yarn
     - git reset --hard HEAD
     - yarn
     - node --version
     - yarn autoclean --force
-  before_build:
     - yarn run clean
     - if defined APPVEYOR_PULL_REQUEST_NUMBER ECHO PR %APPVEYOR_PULL_REQUEST_NUMBER%
     - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run unit
     - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run e2e:impl
-  build: off
   test: off
   deploy: off
   configuration: Install
@@ -71,12 +69,11 @@ for:
   matrix:
     only:
       - job_name: Linux build
-  install:
+  before_build:
     - yarn
     - node --version
     - yarn autoclean --force
     - yarn run clean
-  build: off
   test: off
   deploy: off
   configuration: Install
@@ -84,13 +81,12 @@ for:
   matrix:
     only:
       - job_name: Macosx build
-  install:
+  before_build:
     - brew update && brew install yarn
     - yarn
     - node --version
     - yarn autoclean --force
     - yarn run clean
-  build: off
   test: off
   deploy: off
   configuration: Install
