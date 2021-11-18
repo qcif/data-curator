@@ -90,6 +90,7 @@ for:
     - node --version
     - yarn autoclean --force
     - yarn run clean
+  build: off
   test: off
   deploy: off
   configuration: Install
@@ -147,12 +148,11 @@ for:
 -
   matrix:
     only:
-      - job_name: Build
+      - job_name: Lint
   branches:
     only:
       - post-max-e2e-fix
-  test_script:
+  build_script:
     - yarn run lint
-  build: off
   deploy: off
   configuration: Lint
