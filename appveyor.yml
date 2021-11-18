@@ -151,9 +151,8 @@ for:
   branches:
     only:
       - post-max-e2e-fix
-  build_script:
+  test_script:
     - yarn run lint
-  build: Script
-  test: off
+  build: off
   deploy: off
   configuration: Lint
