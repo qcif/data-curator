@@ -1,8 +1,11 @@
-version: 1.4.{build}
+version: 1.29.{build}
 
 # skip_non_tags: true
 
-image: Visual Studio 2017
+#image:
+#  - Visual Studio 2017
+#  - macOS-BigSur
+#  - Ubuntu1804
 
 platform:
   - x64
@@ -14,10 +17,18 @@ platform:
 #  - '%USERPROFILE%\AppData\Local\Yarn\cache'
 
 environment:
+  nodejs_version: "14"
   GH_TOKEN:
     secure: Q1ftys9k/3coh0FW7NOVO0ybP/tcOq4t/FSAvitc9pUmpPDIGENyd0ezI5WlXkGZ
   COVERALLS_REPO_TOKEN:
     secure: faAiDKB0AuOoVTQrRYs/91SSOM0fgPTc13Sz/Oiu6CniFpShg/8a2+hZ2inzMFde
+  matrix:
+  - job_name: Windows build
+    appveyor_build_worker_image: Visual Studio 2017
+  - job_name: Linux build
+    appveyor_build_worker_image: Ubuntu1804
+  - job_name: Macosx build
+    appveyor_build_worker_image: macOS-BigSur
 
 skip_commits:
   message: /^appveyor Updating branch from appveyor build.$/
@@ -25,27 +36,39 @@ skip_commits:
 init:
   - git config --global core.autocrlf input
 
-install:
-  - ps: Install-Product node 14 x64
-  - choco upgrade yarn
-  - git reset --hard HEAD
-  - yarn
-  - node --version
-  - yarn autoclean --force
-  - yarn run clean
-  - yarn run lint
-  - if defined APPVEYOR_PULL_REQUEST_NUMBER ECHO PR %APPVEYOR_PULL_REQUEST_NUMBER%
-  - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run unit
-  - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run e2e:impl
-configuration: Debug
-
 for:
 -
+  matrix:
+    only:
+      - job_name: Windows build
+  install:
+    - ps: Install-Product node $env:nodejs_version $env:plat
+    - choco upgrade yarn
+    - git reset --hard HEAD
+    - yarn
+    - node --version
+    - yarn autoclean --force
+    - yarn run clean
+    - yarn run lint
+    - if defined APPVEYOR_PULL_REQUEST_NUMBER ECHO PR %APPVEYOR_PULL_REQUEST_NUMBER%
+    - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run unit
+    - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run e2e:impl
+  test: off
+  build: off
+  deploy: off
+  configuration: Install
+-
+  matrix:
+    only:
+      - job_name: Windows build
   test: off
   build_script:
     - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
   configuration: Release
 -
+  matrix:
+    only:
+      - job_name: Windows build
   branches:
     only:
       - ci
@@ -73,6 +96,9 @@ for:
   deploy: off
   configuration: Mergeandtest
 -
+  matrix:
+    only:
+      - job_name: Windows build
   branches:
     only:
       - master
@@ -82,3 +108,16 @@ for:
   build: off
   deploy: off
   configuration: Test
+-
+  matrix:
+    only:
+      - job_name: Windows build
+      - job_name: Macosx build
+  branches:
+    only:
+      - post-max-e2e-fix
+  test_script:
+    - yarn run lint
+  build: off
+  deploy: off
+  configuration: Poc
