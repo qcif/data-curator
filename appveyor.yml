@@ -77,7 +77,7 @@ for:
     only:
       - job_name: Macosx build
   install:
-    - brew update && install yarn
+    - brew update && brew install yarn
     - yarn
     - node --version
     - yarn autoclean --force
