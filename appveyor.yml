@@ -45,6 +45,10 @@ for:
   branches:
     except:
       - ci
+      - windows
+      - macosx
+      - linux
+      - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
   init:
     - git config --global core.autocrlf input
   install:
@@ -59,7 +63,6 @@ for:
     - yarn run lint
   test_script:
     - yarn run unit
-    - yarn run e2e:impl
   build: off
   deploy: off
   configuration: Test
@@ -67,6 +70,13 @@ for:
   matrix:
     only:
       - job_name: Linux build
+  branches:
+    except:
+      - ci
+      - windows
+      - macosx
+      - linux
+      - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
   install:
     - yarn
     - node --version
@@ -76,7 +86,6 @@ for:
     - yarn run lint
   test_script:
     - yarn run unit
-    - yarn run e2e:impl
   build: off
   deploy: off
   configuration: Test
@@ -84,6 +93,13 @@ for:
   matrix:
     only:
       - job_name: Macosx build
+  branches:
+    except:
+      - ci
+      - windows
+      - macosx
+      - linux
+      - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
   install:
     - brew update && brew install yarn
     - yarn
@@ -94,7 +110,6 @@ for:
     - yarn run lint
   test_script:
     - yarn run unit
-    - yarn run e2e:impl
   build: off
   deploy: off
   configuration: Test
