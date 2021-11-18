@@ -153,6 +153,7 @@ for:
       - post-max-e2e-fix
   build_script:
     - yarn run lint
+  build: Script
   test: off
   deploy: off
   configuration: Lint
