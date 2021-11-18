@@ -36,6 +36,9 @@ for:
   matrix:
     only:
       - job_name: Linux build
+  branches:
+    only:
+      - linux
   install:
     - yarn
     - node --version
@@ -49,6 +52,5 @@ for:
   test_script:
     - yarn run unit
     - yarn run e2e:impl
-  build: off
   deploy: off
   configuration: Test
