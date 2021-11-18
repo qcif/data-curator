@@ -30,7 +30,7 @@ environment:
   - job_name: Macosx build
     appveyor_build_worker_image: macOS-BigSur
 
-stack: node $env:nodejs_version
+stack: node $nodejs_version
 
 skip_commits:
   message: /^appveyor Updating branch from appveyor build.$/
