@@ -49,7 +49,7 @@ for:
       - job_name: Windows build
   init:
     - git config --global core.autocrlf input
-  before_build:
+  install:
     - ps: Install-Product node $env:nodejs_version $env:plat
     - choco upgrade yarn
     - git reset --hard HEAD
@@ -68,7 +68,7 @@ for:
   matrix:
     only:
       - job_name: Linux build
-  before_build:
+  install:
     - yarn
     - node --version
     - yarn autoclean --force
@@ -81,7 +81,7 @@ for:
   matrix:
     only:
       - job_name: Macosx build
-  before_build:
+  install:
     - brew update && brew install yarn
     - yarn
     - node --version
