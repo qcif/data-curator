@@ -2,11 +2,6 @@ version: 1.29.{build}
 
 # skip_non_tags: true
 
-#image:
-#  - Visual Studio 2017
-#  - macOS-BigSur
-#  - Ubuntu1804
-
 platform:
   - x64
 
@@ -47,6 +42,9 @@ for:
   matrix:
     only:
       - job_name: Windows build
+  branches:
+    except:
+      - ci
   init:
     - git config --global core.autocrlf input
   install:
@@ -62,7 +60,6 @@ for:
   test_script:
     - yarn run unit
     - yarn run e2e:impl
-  after_test:
   build: off
   deploy: off
   configuration: Test
@@ -75,13 +72,14 @@ for:
     - node --version
     - yarn autoclean --force
     - yarn run clean
+  before_test:
+    - yarn run lint
   test_script:
     - yarn run unit
     - yarn run e2e:impl
-    after_test:
-    build: off
-    deploy: off
-    configuration: Test
+  build: off
+  deploy: off
+  configuration: Test
 -
   matrix:
     only:
@@ -92,18 +90,32 @@ for:
     - node --version
     - yarn autoclean --force
     - yarn run clean
+  before_test:
+    - yarn run lint
   test_script:
     - yarn run unit
     - yarn run e2e:impl
-    after_test:
-    build: off
-    deploy: off
-    configuration: Test
+  build: off
+  deploy: off
+  configuration: Test
+
 -
   matrix:
     only:
       - job_name: Windows build
-      - job_name: Macosx build
+  branches:
+    only:
+      - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+  init:
+    - git config --global core.autocrlf input
+  install:
+    - ps: Install-Product node $env:nodejs_version $env:plat
+    - choco upgrade yarn
+    - git reset --hard HEAD
+    - yarn
+    - node --version
+    - yarn autoclean --force
+    - yarn run clean
   test: off
   build_script:
     - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
@@ -111,10 +123,38 @@ for:
 -
   matrix:
     only:
+      - job_name: Macosx build
+  branches:
+    only:
+      - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+  install:
+    - brew update && brew install yarn
+    - yarn
+    - node --version
+    - yarn autoclean --force
+    - yarn run clean
+  test: off
+  build_script:
+    - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
+  configuration: Release
+
+-
+  matrix:
+    only:
       - job_name: Windows build
   branches:
     only:
       - ci
+  init:
+    - git config --global core.autocrlf input
+  install:
+    - ps: Install-Product node $env:nodejs_version $env:plat
+    - choco upgrade yarn
+    - git reset --hard HEAD
+    - yarn
+    - node --version
+    - yarn autoclean --force
+    - yarn run clean
   test_script:
     - git config --global credential.helper store
     - ps: Add-Content "$HOME\.git-credentials" "https://$($env:GH_TOKEN):x-oauth-basic@github.com`n"
@@ -135,6 +175,6 @@ for:
     - git add test/cucumber_report.html test/cucumber_report.json README.md
     - git commit -m "appveyor Updating branch from appveyor build."
     - git push origin ci
-
+  build: off
   deploy: off
   configuration: Mergeandtest
