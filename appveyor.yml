@@ -57,14 +57,15 @@ for:
     - node --version
     - yarn autoclean --force
     - yarn run clean
-    - if defined APPVEYOR_PULL_REQUEST_NUMBER ECHO PR %APPVEYOR_PULL_REQUEST_NUMBER%
-    - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run unit
-    - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run e2e:impl
-  build_script:
+  before_test:
     - yarn run lint
-  test: off
+  test_script:
+    - yarn run unit
+    - yarn run e2e:impl
+  after_test:
+  build: off
   deploy: off
-  configuration: Install
+  configuration: Test
 -
   matrix:
     only:
@@ -74,10 +75,13 @@ for:
     - node --version
     - yarn autoclean --force
     - yarn run clean
-  build_script:
-    - yarn run lint
-  deploy: off
-  configuration: Install
+  test_script:
+    - yarn run unit
+    - yarn run e2e:impl
+    after_test:
+    build: off
+    deploy: off
+    configuration: Test
 -
   matrix:
     only:
@@ -88,15 +92,18 @@ for:
     - node --version
     - yarn autoclean --force
     - yarn run clean
-  build_script:
-    - yarn run lint
-  test: off
-  deploy: off
-  configuration: Install
+  test_script:
+    - yarn run unit
+    - yarn run e2e:impl
+    after_test:
+    build: off
+    deploy: off
+    configuration: Test
 -
   matrix:
     only:
       - job_name: Windows build
+      - job_name: Macosx build
   test: off
   build_script:
     - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
@@ -131,16 +138,3 @@ for:
 
   deploy: off
   configuration: Mergeandtest
--
-  matrix:
-    only:
-      - job_name: Windows build
-  branches:
-    only:
-      - master
-  test_script:
-    - yarn run unit
-    - yarn run e2e:impl
-  build: off
-  deploy: off
-  configuration: Test
