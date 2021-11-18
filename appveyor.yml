@@ -53,6 +53,7 @@ for:
     - if defined APPVEYOR_PULL_REQUEST_NUMBER ECHO PR %APPVEYOR_PULL_REQUEST_NUMBER%
     - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run unit
     - if defined APPVEYOR_PULL_REQUEST_NUMBER yarn run e2e:impl
+  build: off
   test: off
   deploy: off
   configuration: Install
@@ -61,6 +62,7 @@ for:
     only:
       - job_name: Macosx build
       - job_name: Linux build
+  stack: node $env:nodejs_version
   install:
     - yarn
     - node --version
