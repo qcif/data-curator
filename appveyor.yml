@@ -62,9 +62,22 @@ for:
 -
   matrix:
     only:
-      - job_name: Macosx build
       - job_name: Linux build
   install:
+    - yarn
+    - node --version
+    - yarn autoclean --force
+    - yarn run clean
+  build: off
+  test: off
+  deploy: off
+  configuration: Install
+-
+  matrix:
+    only:
+      - job_name: Macosx build
+  install:
+    - brew update && install yarn
     - yarn
     - node --version
     - yarn autoclean --force
