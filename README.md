@@ -209,7 +209,7 @@ For unit testing, we use:
 
 For continuous integration, we use:
 - [Appveyor](https://www.appveyor.com)
-- [Travis](https://travis-ci.org)
+- Github Actions (This allows us to checkout CI against os-specific branches to run tests against each OS in appveyor, observing its concurrency,time limits)
 
 We plan to integrate the acceptance and unit tests with code commits
 
@@ -227,8 +227,7 @@ To build Data Curator locally:
 
 To automate deployment, we are using:
 
-- [Appveyor](https://www.appveyor.com) for Windows deployment
-- [Travis](https://travis-ci.org) for macOS and Linux
+- [Appveyor](https://www.appveyor.com) for Windows deployment, macOS and Linux
 
 To trigger the automated build and draft release, create and push a git tag, following the versioning pattern used in current releases.
 Ensure that any changes in this tag are also released back to develop and master branches.
