@@ -24,7 +24,7 @@ function createApp () {
     path: electron,
     args: ['dist/electron/main.js'],
     startTimeout: 20000,
-    waitTimeout: 1000,
+    waitTimeout: 10000,
     quitTimeout: 5000,
     env: {
       ELECTRON_ENABLE_LOGGING: true,

@@ -36,6 +36,9 @@ for:
   matrix:
     only:
       - job_name: Macosx build
+  branches:
+    only:
+      - macosx
   install:
     - brew update && brew install yarn
     - yarn
