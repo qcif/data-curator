@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import { returnInputIdSelector } from '../page-objects/selectors'
 
 When(/^"(.+?)" (?:has been|is) entered in the input field(?: for|)[:]? "(.+?)"/, { timeout: -1 }, async function (value, field) {
-  await enterInputInFieldName(this.app, value, field, this.pageShortTimeout)
+  await enterInputInFieldName(this.app, value, field, this.pageTimeout)
 })
 
 When(/^(?:the )"(.+?)" input checkbox field is not selected/, async function (fieldId) {
