@@ -19,6 +19,7 @@ environment:
     secure: faAiDKB0AuOoVTQrRYs/91SSOM0fgPTc13Sz/Oiu6CniFpShg/8a2+hZ2inzMFde
   matrix:
   - job_name: Windows build
+    appveyor_build_worker_image: Visual Studio 2017
     job_group: OS_job
 
 ## for linux and osx
@@ -38,6 +39,9 @@ for:
   branches:
     except:
       - ci
+      - macosx
+      - linux
+      - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
   init:
     - git config --global core.autocrlf input
   install:
