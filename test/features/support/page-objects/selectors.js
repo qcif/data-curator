@@ -29,34 +29,38 @@ export async function returnInputIdSelector (app, selector) {
 
 export async function applyFnToIdOrClassSelectorFromLabel (app, fn, label, timeout) {
   try {
-    return applyFnToSelectorWithLabel(app, fn, '.' + label, label, timeout)
+    await applyFnToSelectorWithLabel(app, fn, '.' + label, label, timeout)
   } catch (error) {
     console.log(`Unable to find via class. Trying id`)
-    return applyFnToSelectorWithLabel(app, fn, '#' + label, label, timeout)
+    await applyFnToSelectorWithLabel(app, fn, '#' + label, label, timeout)
   }
 }
 
 export async function applyFnToSelectorWithLabel (app, fn, selector, label, timeout) {
   const selectors = replaceLabelWithKebabAndCamelCase(selector, label)
-  return applyFnToOneOfDualSelectors(app, fn, selectors[0], selectors[1], timeout)
+  await applyFnToOneOfDualSelectors(app, fn, selectors[0], selectors[1], timeout)
 }
 
+// apply function that has no return value
 export async function applyFnToOneOfDualSelectors (app, fn, selector1, selector2, timeout) {
   try {
     const el = await app.client.$(selector1)
     await el.waitForDisplayed({ timeout: timeout })
-    return el[fn]()
+    await el[fn]()
   } catch (error) {
     console.log(`Unable to find via ${selector1} Trying ${selector2}`)
     const el = await app.client.$(selector2)
+    console.log(`fn will be ${fn}`)
+    console.log(`got selector.. ${el}`)
     await el.waitForDisplayed({ timeout: timeout })
-    return el[fn]()
+    await el[fn]()
   }
 }
 
 export function replaceLabelWithKebabAndCamelCase (selector, toReplace) {
   const kebabCaseSelector = _.replace(selector, toReplace, _.kebabCase(toReplace))
   const camelCaseSelector = _.replace(selector, toReplace, _.camelCase(toReplace))
+  console.log(`kebab and camel are: ${kebabCaseSelector} and ${camelCaseSelector}`)
   return [kebabCaseSelector, camelCaseSelector]
 }
 
@@ -107,7 +111,6 @@ export async function getPlaceholderValue (app, idName) {
 }
 
 export async function displayActiveTable (app) {
-  await app.client.waitUntilWindowLoaded()
   const el = await activeTableElement(app)
   await waitForDisplayedDefault(el)
 }
@@ -126,6 +129,8 @@ export async function activeTableElement (app) {
 
 const activeTableSelector = '.tab-pane.active .editor.handsontable'
 const headerCellSelector = '.ht_master table thead tr:first-of-type th span:not(.cornerHeader)'
+// hot has column headers and row headers
+const rowHeaderCellSelector = '.ht_master table tr th'
 const rowSelector = '.ht_master table tr'
 const cellSelector = '.ht_master table tr td'
 const selectedRowHeaderClass = 'ht__highlight'
@@ -139,5 +144,6 @@ export {
   selectedRowHeaderClass,
   selectedCellClass,
   toolbarMenuButtonSelector,
-  rowSelector
+  rowSelector,
+  rowHeaderCellSelector
 }

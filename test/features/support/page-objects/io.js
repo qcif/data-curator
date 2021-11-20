@@ -25,21 +25,20 @@ export function arrayOfLinesToString (arrayOfLines) {
 }
 
 export async function enterInputInFieldName (app, value, field, timeout) {
-  const result = await applyFnToIdOrClassSelector(app, 'click', field, 'input', timeout)
+  await applyFnToIdOrClassSelector(app, 'click', field, 'input', timeout)
   await app.client.keys(value)
-  await app.client.pause(timeout)
-  return result
+  // await app.client.pause(timeout)
 }
 
 export async function clickInputFieldName (app, field, timeout) {
-  return applyFnToIdOrClassSelector(app, 'click', field, 'input', timeout)
+  await applyFnToIdOrClassSelector(app, 'click', field, 'input', timeout)
 }
 
 export async function applyFnToIdOrClassSelector (app, fn, fieldIdOrClass, selector, timeout) {
   try {
-    return applyFnToSelectorWithLabel(app, fn, `${selector}.${fieldIdOrClass}`, fieldIdOrClass, timeout)
+    await applyFnToSelectorWithLabel(app, fn, `${selector}.${fieldIdOrClass}`, fieldIdOrClass, timeout)
   } catch (error) {
     console.log(`Unable to find via class. Trying id`)
-    return applyFnToSelectorWithLabel(app, fn, `${selector}#${fieldIdOrClass}`, fieldIdOrClass, timeout)
+    await applyFnToSelectorWithLabel(app, fn, `${selector}#${fieldIdOrClass}`, fieldIdOrClass, timeout)
   }
 }
