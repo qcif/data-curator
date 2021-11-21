@@ -1,9 +1,7 @@
 name: github-actions-to-ci-branches
-on: [push, pull_request]
+on: push
   push:
-    branches:
-      - develop
-      - master
+    branches: ['develop', 'master']
 jobs:
   check-bats-version:
     runs-on: ubuntu-latest
