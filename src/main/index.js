@@ -28,15 +28,19 @@ global.tab = {
 }
 global.windows = {}
 
-const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
-  // Someone tried to run a second instance, we should focus our window.
-  console.error('Attempted to open a second instance. Disallowing...')
-  focusMainWindow()
-})
-
-if (isSecondInstance) {
-  console.error('Data curator is already open. Quitting this application.')
-  app.quit()
+// https://github.com/electron/electron/issues/15958: plist key: LSMultipleInstancesProhibited also stops app so allow multiple for Darwin and wait until solved in electron/chromium
+if (process.platform !== 'darwin') {
+  const hasLock = app.requestSingleInstanceLock()
+  if (!hasLock) {
+    console.error('Data curator is already open. Quitting this application.')
+    app.quit()
+  } else {
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+      // Someone tried to run a second instance, we should focus our window.
+      console.error('Attempted to open a second instance. Disallowing...')
+      focusMainWindow()
+    })
+  }
 }
 
 app.on('open-file', (event, path) => {
@@ -69,7 +73,7 @@ function createInitialWindow () {
 }
 
 function unlockSingleton () {
-  app.releaseSingleInstance()
+  app.releaseSingleInstanceLock()
 }
 
 function forceQuit () {
@@ -109,7 +113,7 @@ ipc.on('promptToSaveBeforeTabClose', (event, args) => {
 export function promptBeforeCloseFunction (event, closeFn, config, args) {
   event.preventDefault()
   let browserWindow = focusMainWindow()
-  dialog.showMessageBox(browserWindow, {
+  const response = dialog.showMessageBoxSync(browserWindow, {
     type: 'warning',
     buttons: [
       'Cancel', config.quitText
@@ -117,12 +121,11 @@ export function promptBeforeCloseFunction (event, closeFn, config, args) {
     defaultId: 0,
     title: config.title,
     message: `There may be unsaved work. ${config.message}`
-  }, function (response) {
-    if (response === 0) {
-      return
-    }
-    closeFn(args)
   })
+  if (response === 0) {
+    return
+  }
+  closeFn(args)
 }
 
 export function closeTabDialog (args) {
@@ -136,23 +139,3 @@ function closeWindowNoPrompt () {
     browserWindow.destroy()
   }
 }
-
-/**
- * Auto Updater
- *
- * Uncomment the following code below and install `electron-updater` to
- * support auto updating. Code Signing with a valid certificate is required.
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
- */
-
-/*
-import { autoUpdater } from 'electron-updater'
-
-autoUpdater.on('update-downloaded', () => {
-  autoUpdater.quitAndInstall()
-})
-
-app.on('ready', () => {
-  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
-})
- */

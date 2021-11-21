@@ -2,12 +2,17 @@
 
 process.env.NODE_ENV = 'production'
 
-const { say } = require('cfonts')
+const {
+  say
+} = require('cfonts')
 const chalk = require('chalk')
 const del = require('del')
-const { spawn } = require('child_process')
+const {
+  spawn
+} = require('child_process')
 const webpack = require('webpack')
 const Multispinner = require('multispinner')
+
 
 const mainConfig = require('./webpack.main.config')
 const rendererConfig = require('./webpack.renderer.config')
@@ -25,19 +30,19 @@ if (process.env.BUILD_TARGET === 'clean') {
   build()
 }
 
-function clean () {
+function clean() {
   del.sync(['build/*', '!build/icons', '!build/icons/icon.*', '!build/entitlements.mas.*', '!build/*.provisionprofile', '!build/resignAndPackage.sh', '!build/appx', '!build/appx/*.png'])
   console.log(`\n${doneLog}\n`)
   process.exit()
 }
 
-function cleanAll () {
+function cleanAll() {
   del.sync(['dist/electron/*', 'build/*', '!build/icons', '!build/icons/icon.*', '!build/entitlements.mas.*', '!build/*.provisionprofile', '!build/resignAndPackage.sh', '!build/appx', '!build/appx/*.png'])
   console.log(`\n${doneLog}\n`)
   process.exit()
 }
 
-function build () {
+function build() {
   greeting()
 
   del.sync(['dist/electron/*', '!.gitkeep'])
@@ -78,7 +83,7 @@ function build () {
   })
 }
 
-function pack (config) {
+function pack(config) {
   return new Promise((resolve, reject) => {
     config.mode = 'production'
     webpack(config, (err, stats) => {
@@ -87,9 +92,9 @@ function pack (config) {
         let err = ''
 
         stats.toString({
-          chunks: false,
-          colors: true
-        })
+            chunks: false,
+            colors: true
+          })
           .split(/\r?\n/)
           .forEach(line => {
             err += `    ${line}\n`
@@ -106,7 +111,7 @@ function pack (config) {
   })
 }
 
-function greeting () {
+function greeting() {
   const cols = process.stdout.columns
   let text = ''
 

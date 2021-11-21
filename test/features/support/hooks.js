@@ -14,7 +14,7 @@ async function stopAppRunning (app) {
       await this.app.electron.ipcRenderer.sendSync('forceQuit')
     }
   } catch (error) {
-    // console.log('error caught when stopping run. ignoring')
+    console.log('error caught when stopping run. ignoring')
   }
 }
 
@@ -38,7 +38,6 @@ After({ timeout: 40000 }, async function (testCase) {
       if (this.app && this.app.browserWindow) {
         const imageBuffer = await this.app.browserWindow.capturePage()
         await this.attach(imageBuffer, 'image/png')
-        // console.log('got attachment in', attachResult)
       }
     }
     tallyTestAppveyor(testCase)
@@ -51,14 +50,12 @@ After({ timeout: 40000 }, async function (testCase) {
 
 Before({ timeout: 20000 }, async function (testCase) {
   try {
-    // console.log('Starting before hook....')
     console.log(`Starting test scenario: ${testCase.pickle.name} in: ${testCase.sourceLocation.uri}`)
     // console.log(testCase.pickle.steps)
     this.rowNumber = null
     this.colNumber = null
     this.latestFilePath = null
-    this.pageTimeout = 8000
-    this.pageShortTimeout = 1000
+    this.pageTimeout = 1000
     await fakeDialog.apply(this.app)
     await applyMock(this.app)
     await this.app.start()
@@ -68,8 +65,8 @@ Before({ timeout: 20000 }, async function (testCase) {
     await this.app.client.browserWindow.isFocused()
     await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showMessageBox', value: 1 }])
     await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showOpenDialog', value: this.openFileDialogReturned }])
-    // browser.expectRequest(method, url, statusCode)
-    // await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_SHELL/SEND', [{ method: 'openExternal', value: createPromise() }])
+    await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showMessageBoxSync', value: 1 }])
+    await this.app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_DIALOG/SEND', [{ method: 'showOpenDialogSync', value: this.openFileDialogReturned }])
   } catch (error) {
     console.log('error in before hook', error)
     await stopAppRunning(this.app)

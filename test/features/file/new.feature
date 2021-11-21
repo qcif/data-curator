@@ -10,6 +10,7 @@ Feature: New
   - Name a new tab, "untitled" with a sequential number appended to the end to enable uniqueness
   - The "New" command can be invoked using a menu item or the add tab button
 
+
   @impl
   Scenario: Default
     When Data Curator is open

@@ -27,7 +27,7 @@
           {
             "legacy": true
           }
-      ],
+        ],
         "@babel/plugin-proposal-function-sent",
         "@babel/plugin-proposal-export-namespace-from",
         "@babel/plugin-proposal-numeric-separator",
@@ -70,7 +70,7 @@
           {
             "legacy": true
           }
-      ],
+        ],
         "@babel/plugin-proposal-function-sent",
         "@babel/plugin-proposal-export-namespace-from",
         "@babel/plugin-proposal-numeric-separator",
@@ -94,7 +94,7 @@
         [
           "@babel/preset-env",
           {
-          "targets": {
+            "targets": {
               "node": 14
             },
             "modules": false,

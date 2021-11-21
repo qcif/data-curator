@@ -4,6 +4,7 @@ import parse from 'csv-parse/lib/sync'
 import { tableRowAndColCount } from '../page-objects/dimensions.js'
 import { getFileData, getFilePathFromFixtures } from '../page-objects/io.js'
 import { fileFormats } from '../../../../src/renderer/file-formats'
+import { activeTabElement, displayActiveTable } from '../page-objects/selectors'
 
 Then(/^the table rows and columns should match the "([\w]+)" file$/, async function (csvType) {
   const data = getFileData(this.latestFilePath)
@@ -30,8 +31,8 @@ When(/the "(csv|tsv)" file "(.+?)" is selected in the openfile dialog/, async fu
 })
 
 Then(/a new tab with the title "(.+?)" should be displayed/, async function (tabname) {
-  let text = await this.app.client
-    .timeouts('implicit', 5000)
-    .getText('#tab1')
+  await displayActiveTable(this.app)
+  const el = await (await this.app.client.$('#csvEditor')).$('#tab1')
+  const text = await el.getText()
   expect(text).to.equal(tabname)
 })

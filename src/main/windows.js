@@ -1,4 +1,5 @@
 import { BrowserWindow } from 'electron'
+import _ from 'lodash'
 
 export function createWindowTab () {
   let mainWindow = focusMainWindow()
@@ -55,7 +56,7 @@ export function focusOrNewSecondaryWindow (id, config) {
   let browserWindow = focusWindow(id)
   if (!browserWindow) {
     browserWindow = newWindow(id, config)
-    browserWindow.setMenu(null)
+    browserWindow.removeMenu()
   }
   return browserWindow
 }
@@ -75,9 +76,9 @@ export function focusWindow (id) {
 }
 
 export function newWindow (id, config, url) {
-  if (process.env.NODE_ENV === 'production' && process.env.BABEL_ENV !== 'test') {
-    config.nodeIntegration = false
-  }
+  _.set(config, 'webPreferences.enableRemoteModule', true)
+  _.set(config, 'webPreferences.nodeIntegration', true)
+  _.set(config, 'webPreferences.contextIsolation', false)
   let browserWindow = new BrowserWindow(config)
   if (!url) {
     url = process.env.NODE_ENV === 'development'

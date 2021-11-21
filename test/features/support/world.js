@@ -12,7 +12,6 @@ function CustomWorld ({ attach, parameters }) {
   this.parameters = parameters
   if (!this.app) {
     this.app = createApp()
-    this.hotParentSelector = '.tab-pane.active .editor.handsontable'
     this.openFileDialogReturned = ['stubbedFilenameForMenuSteps.txt']
     chaiAsPromised.transferPromiseness = this.app.transferPromiseness
   } else {
@@ -24,14 +23,15 @@ function createApp () {
   return new Application({
     path: electron,
     args: ['dist/electron/main.js'],
-    startTimeout: 20000,
-    waitTimeout: 10000,
-    quitTimeout: 5000,
+    startTimeout: 2000,
+    waitTimeout: 1000,
+    quitTimeout: 1000,
     env: {
       ELECTRON_ENABLE_LOGGING: true,
       ELECTRON_ENABLE_STACK_DUMPING: true
     },
-    webdriverLogPath: 'webdriver.log'
+    webdriverLogPath: 'webdriver.log',
+    chromeDriverArgs: ['remote-debugging-port=9222']
   })
 }
 

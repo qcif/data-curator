@@ -2,41 +2,52 @@ import { expect } from 'chai'
 import { Then, When } from 'cucumber'
 import {
   applyFnToSelectorWithLabel,
-  countNumberOfCurrentColumnCellsWithText,
-  getBackgroundColorOfCurrentColumn,
+  getCurrentColumnCellsTextResults,
+  getBackgroundColorOfCellsInCurrentColumn,
   getCurrentColumnSelector, getPlaceholderValue
 } from '../page-objects/selectors'
 import {
   getRowIndicesOfFoundBackgroundColors,
   getRowIndicesOfCaseInsensitiveSearchText, getRowIndicesOfCaseSensitiveSearchText
 } from '../page-objects/find'
+import { waitForDisplayedDefault } from '../page-objects/helpers'
+import { defaultColor } from '../page-objects/style'
 
 const _ = require('lodash')
 
-Then(/^a prompt for (?:a|the) "(find|replace)" value should be displayed/, function (findOrReplace) {
-  return this.app.client.waitForVisible(`#${findOrReplace}`)
+Then(/^a prompt for (?:a|the) "(find|replace)" value should be displayed/, async function (findOrReplace) {
+  const el = await this.app.client.$(`#${findOrReplace}`)
+  await el.waitForDisplayed({ timeout: this.pageTimeout })
 })
 
 Then(/^the "([\w ]+?)" panel's first input (?:box |)should have focus/, { timeout: -1 }, async function (panelName) {
-  return applyFnToSelectorWithLabel(this.app, 'hasFocus', `form#${panelName} input:first-of-type`, panelName, this.pageTimeout)
+  await applyFnToSelectorWithLabel(this.app, 'isFocused', `form#${panelName} input:first-of-type`, panelName, this.pageTimeout)
 })
 
 Then(/^all the cells with values that are a case sensitive match for "(.+?)" should be highlighted/, async function (searchValue) {
-  const currentColumnSelector = await getCurrentColumnSelector(this.app, this.hotParentSelector)
-  const currentColumnCellsWithText = await countNumberOfCurrentColumnCellsWithText(this.app, this.hotParentSelector, currentColumnSelector)
-  const backgroundColors = await getBackgroundColorOfCurrentColumn(this.app, this.hotParentSelector, currentColumnSelector)
-  expect(backgroundColors.length).to.equal(currentColumnCellsWithText.length)
-  // the test makes a case-insensitive match
-  const matchedTextIndices = getRowIndicesOfCaseSensitiveSearchText(currentColumnCellsWithText, searchValue)
-  const backgroundColorIndices = getRowIndicesOfFoundBackgroundColors(backgroundColors)
+  const currentColumnSelector = await getCurrentColumnSelector(this.app)
+  if (_.isEmpty(currentColumnSelector)) {
+    expect.fail()
+  }
+  const currentColumnCellsTextResults = await getCurrentColumnCellsTextResults(this.app, currentColumnSelector)
+  console.log(`currentColumnCellsWithText is ${currentColumnCellsTextResults}`)
+  const currentColumnsCellsWithText = _.filter(currentColumnCellsTextResults, function (cell) {
+    console.log(`value is ${cell}`)
+    return !_.isEmpty(cell)
+  })
+  const currentColumnsCellsBackgroundColors = await getBackgroundColorOfCellsInCurrentColumn(this.app, currentColumnSelector)
+  console.log(`colors are: ${JSON.stringify(currentColumnsCellsBackgroundColors)}`)
+
+  const matchedTextIndices = getRowIndicesOfCaseSensitiveSearchText(currentColumnCellsTextResults, searchValue)
+  const backgroundColorIndices = getRowIndicesOfFoundBackgroundColors(currentColumnsCellsBackgroundColors)
   expect(backgroundColorIndices.length).to.equal(matchedTextIndices.length)
   expect(_.difference(backgroundColorIndices, matchedTextIndices).length).to.equal(0)
 })
 
 Then(/^all the cells with values that are a case insensitive match for "(.+?)" should be highlighted/, async function (searchValue) {
-  const currentColumnSelector = await getCurrentColumnSelector(this.app, this.hotParentSelector)
-  const currentColumnCellsWithText = await countNumberOfCurrentColumnCellsWithText(this.app, this.hotParentSelector, currentColumnSelector)
-  const backgroundColors = await getBackgroundColorOfCurrentColumn(this.app, this.hotParentSelector, currentColumnSelector)
+  const currentColumnSelector = await getCurrentColumnSelector(this.app)
+  const currentColumnCellsWithText = await getCurrentColumnCellsTextResults(this.app, currentColumnSelector)
+  const backgroundColors = await getBackgroundColorOfCellsInCurrentColumn(this.app, currentColumnSelector)
   expect(backgroundColors.length).to.equal(currentColumnCellsWithText.length)
   // the test makes a case-insensitive match
   const matchedTextIndices = getRowIndicesOfCaseInsensitiveSearchText(currentColumnCellsWithText, searchValue)
@@ -46,9 +57,9 @@ Then(/^all the cells with values that are a case insensitive match for "(.+?)" s
 })
 
 Then(/^the remaining case-sensitive cells with values that match (?:the |)"(.+?)" should be 1 less than highlighted/, async function (searchValue) {
-  const currentColumnSelector = await getCurrentColumnSelector(this.app, this.hotParentSelector)
-  const currentColumnCellsWithText = await countNumberOfCurrentColumnCellsWithText(this.app, this.hotParentSelector, currentColumnSelector)
-  const backgroundColors = await getBackgroundColorOfCurrentColumn(this.app, this.hotParentSelector, currentColumnSelector)
+  const currentColumnSelector = await getCurrentColumnSelector(this.app)
+  const currentColumnCellsWithText = await getCurrentColumnCellsTextResults(this.app, currentColumnSelector)
+  const backgroundColors = await getBackgroundColorOfCellsInCurrentColumn(this.app, currentColumnSelector)
   expect(backgroundColors.length).to.equal(currentColumnCellsWithText.length)
   const matchedTextIndices = getRowIndicesOfCaseSensitiveSearchText(currentColumnCellsWithText, searchValue)
   const backgroundColorIndices = getRowIndicesOfFoundBackgroundColors(backgroundColors)
@@ -57,9 +68,9 @@ Then(/^the remaining case-sensitive cells with values that match (?:the |)"(.+?)
 })
 
 Then(/^the remaining case-insensitive cells with values that match (?:the |)"(.+?)" should be 1 less than highlighted/, async function (searchValue) {
-  const currentColumnSelector = await getCurrentColumnSelector(this.app, this.hotParentSelector)
-  const currentColumnCellsWithText = await countNumberOfCurrentColumnCellsWithText(this.app, this.hotParentSelector, currentColumnSelector)
-  const backgroundColors = await getBackgroundColorOfCurrentColumn(this.app, this.hotParentSelector, currentColumnSelector)
+  const currentColumnSelector = await getCurrentColumnSelector(this.app)
+  const currentColumnCellsWithText = await getCurrentColumnCellsTextResults(this.app, currentColumnSelector)
+  const backgroundColors = await getBackgroundColorOfCellsInCurrentColumn(this.app, currentColumnSelector)
   expect(backgroundColors.length).to.equal(currentColumnCellsWithText.length)
   const matchedTextIndices = getRowIndicesOfCaseInsensitiveSearchText(currentColumnCellsWithText, searchValue)
   const backgroundColorIndices = getRowIndicesOfFoundBackgroundColors(backgroundColors)

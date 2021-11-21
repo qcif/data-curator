@@ -32,20 +32,17 @@ Given(/^"Data Package Properties" is invoked$/, async function () {
   await menu.invokeActions(this.app, { name: 'Data Package Properties', type: 'toolbar menu button', sequence: 'Package' })
 })
 
+// if (process.platform === 'darwin') {
+//   Given(/^"About" is invoked$/, async function () {
+//     await menu.invokeActions(this.app, { name: 'About', type: 'application menu selection', sequence: 'Electron->About Data Curator' })
+//   })
+// }
 // When(/^"About" is invoked$/, async function () {
 //   await menu.invokeActions(this.app, {name: 'About', type: 'application menu selection', sequence: 'Electron->About'})
 // })
 
 When('{string} is invoked using the {string}: {string}', async function (name, type, sequence) {
-  console.log(`sequence`, sequence)
-  console.log(`type`, type)
-  console.log(`name`, name)
   await menu.invokeActions(this.app, { name: name, type: type, sequence: sequence })
-})
-
-When(/^the "([\w]+?)" toolbar menu is (?:selected|clicked|invoked)/, async function (toolbarMenuName) {
-  let result = await menu.clickOnToolbarMenuButton(toolbarMenuName)
-  return result
 })
 
 When(/^(?:the )"([\w]+?)"->"([\w]+?)" menu is (?:selected|clicked|invoked)/, async function (menuLabel, subMenuLabel) {

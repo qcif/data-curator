@@ -14,8 +14,7 @@ Feature: Insert Row Below
     And the table should have 1 row by 3 columns
     When the user clicks in row 1, column 1
     And the user types "<user input>"
-    And the user right-clicks
-    And the user clicks on "Insert Row Below"
+    And the user clicks on "Insert Row Below" in the context menu
     Then the table should have 2 rows by 3 columns
     And the text: "<user input>" should be in row 1 column 1
     Examples:

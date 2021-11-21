@@ -135,7 +135,7 @@ function handleDownloadedZip (zipPath, mainWindow) {
 }
 
 function showUrlPathNotSupportedMessage (urlText, supportedFileExtensions) {
-  dialog.showMessageBox(focusMainWindow(), {
+  dialog.showMessageBoxSync(focusMainWindow(), {
     type: 'warning',
     title: `Unsupported URL Path extension`,
     message:

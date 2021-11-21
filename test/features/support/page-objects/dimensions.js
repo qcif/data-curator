@@ -51,23 +51,11 @@ async function collectClass (app, collection) {
 }
 
 async function getColumnElementsInCurrentRow (app) {
-  const response = await app.client
-    .element(activeTableSelector)
-    .element('.ht_master table tbody tr th.ht__highlight')
-    .element('..').elements('td')
-  return response.value
-}
-
-async function getCurrentRowHeader (app) {
-  const response = await app.client
-    .element(activeTableSelector)
-    .element('.ht_master table tbody tr th.ht__highlight')
-  return response.value
+  const el = await (await (await app.client.$(activeTableSelector)).$('.ht_master table tbody tr th.ht__highlight')).$('..')
+  return el.$$('td')
 }
 
 async function getAllRowHeaders (app) {
-  const response = await app.client
-    .element(activeTableSelector)
-    .elements('.ht_master table tbody tr th')
-  return response.value
+  const el = await app.client.$(activeTableSelector)
+  return el.$$('.ht_master table tbody tr th')
 }

@@ -38,12 +38,12 @@ Feature: Find data
     And a prompt for a "replace" value should be displayed
     And the "Find and Replace" panel's first input should have focus
     And the column that the cursor is in should be displayed
-    # And a warning that the replace command cannot be undone should be displayed
     Examples:
       | name | type                       | sequence   |
       | Find | toolbar menu button        | Find       |
       | Find | application menu selection | Find->Find |
 
+  @dev
   @impl
   Scenario Outline: Find submenu item is available from invoking Find
     Given Data Curator is open
@@ -62,6 +62,7 @@ Feature: Find data
       | Find  | toolbar menu button        | Find       | Replace All      | Find->Replace All      |
       | Find  | application menu selection | Find->Find | Replace All      | Find->Replace All      |
 
+  @dev
   @impl
   Scenario Outline: Find case-sensitive next
     Given Data Curator is open

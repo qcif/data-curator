@@ -1,8 +1,7 @@
 import Home from '@/components/Home'
 import flushPromises from 'flush-promises'
 import { stubSimpleTabStore } from '../helpers/storeHelper.js'
-import { rightSideNavStyle, leftSideNavStyle, footerMsgStyle, navPanelType } from '../helpers/domHelper.js'
-import { createLocalVue, shallowMount, mount, TransitionStub } from '@vue/test-utils'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { registerHotWithContainer, resetHot, stubHotRegisterActiveInstance } from '../helpers/hotHelper.js'
 import { toolbarMenus } from '@/toolbarMenus.js'
 import Vuex from 'vuex'
@@ -11,12 +10,16 @@ import { errorFeedback$ } from '@/rxSubject.js'
 import { ipcRenderer as ipc } from 'electron'
 import Vue from 'vue'
 
+// Unfortunately Home.vue has become something of a God-object, which makes testing it painful
+// (witnessed below by the boilerplate needed to silence imports/functions not included in tests.
+// TODO: consider refactoring some methods into importable classes/vue-components
+
 describe('Home.vue', function () {
   let sandbox
-  // dummmy test to begin with to incorporate vue/html with existing framework
   describe('Toolbar menus', function () {
-    let wrapper
-    let hot
+    let wrapper = null
+    let hot = null
+    let container = null
     beforeEach(function () {
       sandbox = sinon.createSandbox()
       Home.__Rewire__('getWindow', function (name) {
@@ -69,7 +72,7 @@ describe('Home.vue', function () {
       sandbox.restore()
     })
 
-    toolbarMenus.forEach(menu => {
+    for (const menu of toolbarMenus) {
       it(`should show the relevant active button and navigation panel when ${menu.name} button is clicked.`, async () => {
         clickToolbarId(wrapper, menu.id)
         await Vue.nextTick()
@@ -78,24 +81,8 @@ describe('Home.vue', function () {
           ? clickedMenuName.trim()
           : ''
         expect(clickedMenuName).to.equal(menu.name)
-        const rightNavPanel = wrapper.find(rightSideNavStyle)
-        const leftNavPanel = wrapper.find(leftSideNavStyle)
-        const footerMsgPanel = wrapper.find(footerMsgStyle)
-
-        if (rightNavPanel.exists()) {
-          // check panel title is correct
-          expect(rightNavPanel.text().trim()).to.include(menu.name)
-          // check panel acutally belongs to the correct type (right, left, bottom)
-          expect(navPanelType[rightSideNavStyle]).to.include(menu.name)
-        } else if (leftNavPanel.exists()) {
-          expect(leftNavPanel.text().trim()).to.include(menu.name)
-          expect(navPanelType[leftSideNavStyle]).to.include(menu.name)
-        } else {
-          expect(footerMsgPanel.text().trim()).to.include(menu.name)
-          expect(navPanelType[footerMsgStyle]).to.include(menu.name)
-        }
       })
-    })
+    }
     it(`should have ${toolbarMenus.length} menus`, function () {
       const toolbarNumber = wrapper.vm.$el.querySelectorAll('#toolbar li').length
       expect(toolbarNumber).to.equal(toolbarMenus.length)

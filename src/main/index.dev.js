@@ -1,24 +1,19 @@
-/**
- * This file is used specifically and only for development. It installs
- * `electron-debug` & `vue-devtools`. There shouldn't be any need to
- *  modify this file, but it can be used to extend your development
- *  environment.
- */
+import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import { app } from 'electron'
 
-/* eslint-disable */
+// load browser dev tools
+require('./devTools.js')
 
-// Set environment for development
-// process.env.NODE_ENV = 'development'
+const forceDownload = !!process.env.UPGRADE_EXTENSIONS
+const extensions = [VUEJS_DEVTOOLS]
 
-// Install `electron-debug` with `devtron`
-require('electron-debug')({showDevTools: true})
-
-// Install `vue-devtools`
-require('electron').app.on('ready', () => {
-  let installExtension = require('electron-devtools-installer')
-  installExtension.default(installExtension.VUEJS_DEVTOOLS).then(() => {}).catch(err => {
-    console.error('Unable to install `vue-devtools`: \n', err)
-  })
+// load vuejs tools in browser dev tools
+app.whenReady().then(() => {
+  installExtension(extensions, { loadExtensionOptions: { allowFileAccess: true }, forceDownload: forceDownload })
+    .then((name) => {
+      console.log(`Added Extension:  ${name}`)
+    })
+    .catch((err) => console.log(`Unable to install ${extensions}: \n`, err))
 })
 
 // Require `main` process to boot app

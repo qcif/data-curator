@@ -3,15 +3,15 @@ set -ev
 echo "executing $0"
 
 echo "Checking Ubuntu release compatibility..."
-if [ "$(lsb_release -cs)" != "xenial" ] && [ "$(lsb_release -cs)" != "bionic" ]; then
-  echo "Installation tested for Ubuntu 16 (xenial) and Ubuntu 18(bionic) only."
+if [ "$(lsb_release -cs)" != "bionic" ]; then
+  echo "Installation tested for Ubuntu 18(bionic) only."
   exit 1
 fi
 
 echo "Updating Ubuntu release configuration...";
 export extra_pkgs=$(echo 'libnss3-1d')
 if [ "$(lsb_release -cs)" == "bionic" ]; then
-export extra_pkgs=$(echo 'libnss3-dev')
+export extra_pkgs=$(echo 'libnss3-dev' 'libgbm-dev')
 fi
 
 sudo apt-get update -y
