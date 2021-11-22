@@ -2,8 +2,7 @@
 [![GitHub package version](https://img.shields.io/github/package-json/v/qcif/data-curator.svg)](https://github.com/qcif/data-curator/releases)
 [![JavaScript Style Guide](https://img.shields.io/badge/js_code_style-standard-brightgreen.svg)](https://standardjs.com)
  [![vue-recommended-style](https://img.shields.io/badge/vue_code_style-recommended-brightgreen.svg?style=flat)](https://vuejs.org/v2/style-guide/#Priority-C-Recommended)
-[![Travis Build Status](https://travis-ci.org/qcif/data-curator.svg?branch=ci)](https://travis-ci.org/qcif/data-curator)
-[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/branch/ci?svg=true)](https://ci.appveyor.com/project/qcif/data-curator)
+[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/branch/windows?svg=true)](https://ci.appveyor.com/project/qcif/data-curator)
 [![Appveyor Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2084%20%20❌failed:%200%20%20❗undefined:%200-orange.svg)](https://ci.appveyor.com/project/qcif/data-curator)
 
 
@@ -27,7 +26,7 @@
 
 
 
-[![Unit Test Coverage Status](https://coveralls.io/repos/github/qcif/data-curator/badge.svg?branch=ci)](https://coveralls.io/github/qcif/data-curator?branch=ci)
+[![Unit Test Coverage Status](https://coveralls.io/repos/github/qcif/data-curator/badge.svg?branch=windows)](https://coveralls.io/github/qcif/data-curator?branch=windows)
 [![Github All Releases](https://img.shields.io/github/downloads/qcif/data-curator/total.svg)](https://github.com/qcif/data-curator/releases)
 [![Github Releases](https://img.shields.io/github/downloads/qcif/data-curator/v1.2.5/total.svg?label=Latest%20version%20downloads)](https://github.com/qcif/data-curator/releases/latest)
 
