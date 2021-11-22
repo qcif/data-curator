@@ -16,6 +16,6 @@ jobs:
           ref: windows
       - run: |
           git fetch origin develop
-          git merge develop
+          git merge origin/develop
           git commit --amend -m "Merged for Windows CI test."
           git push
