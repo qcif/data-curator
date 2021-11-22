@@ -1,0 +1,23 @@
+name: github-actions-to-ci-branches
+on:
+  push:
+    branches:
+      - develop
+      - master
+  pull_request:
+    branches:
+      - '**'
+jobs:
+  merge-and-run-ci-windows:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: windows
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git fetch origin develop
+          git checkout origin/develop -- .
+          git commit -m "Merged for Windows CI test."
+          git push
