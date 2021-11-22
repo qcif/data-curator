@@ -34,9 +34,7 @@ stack: node $nodejs_version
 skip_commits:
   message: /^appveyor Updating branch from appveyor build.$/
 
-#init:
-#  - git config --global core.autocrlf input
-
+## forget DRY for appveyor for now to make config easier to copy/move for other devs.
 for:
 -
   matrix:
@@ -82,6 +80,9 @@ for:
     - node --version
     - yarn autoclean --force
     - yarn run clean
+  build_script:
+    - chmod +x ./scripts/*.sh
+    - ./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh
   before_test:
     - yarn run lint
   test_script:
