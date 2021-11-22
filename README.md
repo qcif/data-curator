@@ -26,20 +26,33 @@
 
 
 
+
 [![Unit Test Coverage Status](https://coveralls.io/repos/github/qcif/data-curator/badge.svg?branch=ci)](https://coveralls.io/github/qcif/data-curator?branch=ci)
 [![Github All Releases](https://img.shields.io/github/downloads/qcif/data-curator/total.svg)](https://github.com/qcif/data-curator/releases)
-[![Github Releases](https://img.shields.io/github/downloads/qcif/data-curator/latest/total.svg?label=Latest%20version%20downloads)](https://github.com/qcif/data-curator/releases/latest)
+[![Github Releases](https://img.shields.io/github/downloads/qcif/data-curator/v1.2.5/total.svg?label=Latest%20version%20downloads)](https://github.com/qcif/data-curator/releases/latest)
 
 
-:sparkles: [Download Data Curator](https://github.com/qcif/data-curator/releases/latest) for Windows or macOS. :sparkles:
+
+:sparkles: [Data Curator on Microsoft Store](https://www.microsoft.com/p/datacurator/9n644tz9vzp6). :department_store: :sparkles:
+
+:sparkles: [Data Curator on Apple Mac Store](https://apps.apple.com/au/app/datacurator/id1563680958). :department_store::sparkles:
+
 [Request a new feature](https://github.com/qcif/data-curator/issues/new?template=feature-request.md&labels=f:Feature-request&milestone=6&assignee=Stephen-Gates) :bulb: [Report a bug](https://github.com/qcif/data-curator/issues/new?template=bug.md&labels=problem:Bug&assignee=Stephen-Gates) :beetle: [View our plans](https://github.com/qcif/data-curator/milestones?direction=asc&sort=due_date&state=open) :rocket:
-Now [available](https://www.microsoft.com/p/datacurator/9n644tz9vzp6) through the Microsoft Windows Store. :department_store:
+[Development downloads](https://github.com/qcif/data-curator/releases/latest)
+
 
 # Data Curator
 
 ![data curator icon](static/img/data-curator-banner.png)
 
 Data Curator is a simple desktop data editor to help describe, validate and share usable open data.
+
+## Downloads
+The latest release of Data Curator can be downloaded from:
+- [the Microsoft Store](https://www.microsoft.com/p/datacurator/9n644tz9vzp6)
+- [the Apple Mac Store](https://apps.apple.com/au/app/datacurator/id1563680958)
+
+Alternatively all versions, including [_unsigned_ latest release](https://github.com/qcif/data-curator/releases/latest), can be found in our [github releases](https://github.com/qcif/data-curator/releases)
 
 ## Why do we need Data Curator?
 
@@ -123,9 +136,11 @@ Data Curator proudly [uses open source software](https://github.com/qcif/data-cu
 
 ## Download and Install Data Curator
 
-- Data Curator is now available through the Microsoft Windows store. Go to the [Windows store website](https://www.microsoft.com/en-au/store/apps/windows) and search for "Data Curator".
+- Data Curator is now available through:
+  - the Microsoft Windows store. Go to the [Windows store website](https://www.microsoft.com/en-au/store/apps/windows) and search for "Data Curator".
+  - the Mac App store. Open the "App Store" app on your desktop and search for "Data Curator". It can also be [found on the web](https://apps.apple.com/au/app/datacurator/id1563680958).
 - Alternatively, choose a platform from the [Releases page](https://github.com/qcif/data-curator/releases/latest) and download an unsigned release.
-- Drag the application to your 'Start Menu' or 'Applications folder.
+  - Drag the application to your 'Start Menu' or 'Applications folder.
 
 --------------------------------------------------------------------------------
 
@@ -209,7 +224,7 @@ For unit testing, we use:
 
 For continuous integration, we use:
 - [Appveyor](https://www.appveyor.com)
-- [Travis](https://travis-ci.org)
+- Github Actions (This allows us to checkout CI against os-specific branches to run tests against each OS in appveyor, observing its concurrency,time limits)
 
 We plan to integrate the acceptance and unit tests with code commits
 
@@ -227,8 +242,7 @@ To build Data Curator locally:
 
 To automate deployment, we are using:
 
-- [Appveyor](https://www.appveyor.com) for Windows deployment
-- [Travis](https://travis-ci.org) for macOS and Linux
+- [Appveyor](https://www.appveyor.com) for Windows deployment, macOS and Linux
 
 To trigger the automated build and draft release, create and push a git tag, following the versioning pattern used in current releases.
 Ensure that any changes in this tag are also released back to develop and master branches.
