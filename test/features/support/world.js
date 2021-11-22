@@ -23,9 +23,9 @@ function createApp () {
   return new Application({
     path: electron,
     args: ['dist/electron/main.js'],
-    startTimeout: 2000,
-    waitTimeout: 1000,
-    quitTimeout: 1000,
+    startTimeout: 20000,
+    waitTimeout: 10000,
+    quitTimeout: 5000,
     env: {
       ELECTRON_ENABLE_LOGGING: true,
       ELECTRON_ENABLE_STACK_DUMPING: true
