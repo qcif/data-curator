@@ -15,7 +15,9 @@ jobs:
         with:
           ref: windows
       - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git fetch origin develop
-          git checkout origin/develop -- .
+          git checkout origin/zdevelop -- .
           git commit -m "Merged for Windows CI test."
           git push
