@@ -15,7 +15,7 @@ jobs:
         with:
           ref: windows
       - run: |
-        git stash
-        git merge develop
-        git commit --amend -m "Merged for Windows CI test."
-        git push
+          git stash
+          git merge develop
+          git commit --amend -m "Merged for Windows CI test."
+          git push
