@@ -18,8 +18,14 @@ environment:
   COVERALLS_REPO_TOKEN:
     secure: faAiDKB0AuOoVTQrRYs/91SSOM0fgPTc13Sz/Oiu6CniFpShg/8a2+hZ2inzMFde
   matrix:
+  - job_name: Windows build
+    job_group: OS_job
+    appveyor_build_worker_image: Visual Studio 2017
   - job_name: Linux build
     appveyor_build_worker_image: Ubuntu1804
+    job_group: OS_job
+  - job_name: Macosx build
+    appveyor_build_worker_image: macOS-BigSur
     job_group: OS_job
 
 ## for linux and osx
@@ -28,10 +34,133 @@ stack: node $nodejs_version
 skip_commits:
   message: /^appveyor Updating branch from appveyor build.$/
 
-#init:
-#  - git config --global core.autocrlf input
-
+## forget DRY for appveyor for now to make config easier to copy/move for other devs.
 for:
+-
+  matrix:
+    only:
+      - job_name: Windows build
+  branches:
+    except:
+      - ci
+      - windows
+      - macosx
+      - linux
+      - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+  init:
+    - git config --global core.autocrlf input
+  install:
+    - ps: Install-Product node $env:nodejs_version $env:plat
+    - choco upgrade yarn
+    - git reset --hard HEAD
+    - yarn
+    - node --version
+    - yarn autoclean --force
+    - yarn run clean
+  before_test:
+    - yarn run lint
+  test_script:
+    - yarn run unit
+  build: off
+  deploy: off
+  configuration: Default
+-
+  matrix:
+    only:
+      - job_name: Linux build
+  branches:
+    except:
+      - ci
+      - windows
+      - macosx
+      - linux
+      - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+  install:
+    - yarn
+    - node --version
+    - yarn autoclean --force
+    - yarn run clean
+  build_script:
+    - chmod +x ./scripts/*.sh
+    - ./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh
+  before_test:
+    - yarn run lint
+  test_script:
+    - yarn run unit
+  build: off
+  deploy: off
+  configuration: Default
+-
+  matrix:
+    only:
+      - job_name: Macosx build
+  branches:
+    except:
+      - ci
+      - windows
+      - macosx
+      - linux
+      - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+  install:
+    - brew update && brew install yarn
+    - yarn
+    - node --version
+    - yarn autoclean --force
+    - yarn run clean
+  before_test:
+    - yarn run lint
+  test_script:
+    - yarn run unit
+  build: off
+  deploy: off
+  configuration: Default
+
+-
+  matrix:
+    only:
+      - job_name: Windows build
+  branches:
+    only:
+      - windows
+  init:
+    - git config --global core.autocrlf input
+  install:
+    - ps: Install-Product node $env:nodejs_version $env:plat
+    - choco upgrade yarn
+    - git reset --hard HEAD
+    - yarn
+    - node --version
+    - yarn autoclean --force
+    - yarn run clean
+  before_test:
+    - yarn run lint
+  test_script:
+    - yarn run unit
+    - yarn run e2e:impl
+  build: off
+  deploy: off
+  configuration: Test
+-
+  matrix:
+    only:
+      - job_name: Macosx build
+  branches:
+    only:
+      - macosx
+  install:
+    - brew update && brew install yarn
+    - yarn
+    - node --version
+    - yarn autoclean --force
+    - yarn run clean
+  before_test:
+    - yarn run lint
+  test_script:
+    - yarn run unit
+    - yarn run e2e:impl
+  build: off
+  deploy: off
+  configuration: Test
 -
   matrix:
     only:
@@ -53,3 +182,83 @@ for:
     - ./scripts/linux_headless_all_tests.sh
   deploy: off
   configuration: Test
+
+-
+  matrix:
+    only:
+      - job_name: Windows build
+  branches:
+    only:
+      - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+  init:
+    - git config --global core.autocrlf input
+  install:
+    - ps: Install-Product node $env:nodejs_version $env:plat
+    - choco upgrade yarn
+    - git reset --hard HEAD
+    - yarn
+    - node --version
+    - yarn autoclean --force
+    - yarn run clean
+  test: off
+  build_script:
+    - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
+  configuration: Release
+-
+  matrix:
+    only:
+      - job_name: Macosx build
+  branches:
+    only:
+      - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+  install:
+    - brew update && brew install yarn
+    - yarn
+    - node --version
+    - yarn autoclean --force
+    - yarn run clean
+  test: off
+  build_script:
+    - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
+  configuration: Release
+
+-
+  matrix:
+    only:
+      - job_name: Windows build
+  branches:
+    only:
+      - ci
+  init:
+    - git config --global core.autocrlf input
+  install:
+    - ps: Install-Product node $env:nodejs_version $env:plat
+    - choco upgrade yarn
+    - git reset --hard HEAD
+    - yarn
+    - node --version
+    - yarn autoclean --force
+    - yarn run clean
+  test_script:
+    - git config --global credential.helper store
+    - ps: Add-Content "$HOME\.git-credentials" "https://$($env:GH_TOKEN):x-oauth-basic@github.com`n"
+    - git config --global user.email %APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL%
+    - git config --global user.name %APPVEYOR_REPO_COMMIT_AUTHOR%
+    - ps: $(git stash | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
+    - ps: $(git remote set-branches --add origin develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
+    - git fetch origin develop
+    - git checkout --track origin/develop
+    - git checkout ci
+    - git checkout develop -- src
+    - yarn
+    - yarn run unit
+    - yarn run e2e:impl
+  after_test:
+    - yarn run cucumber:report:badge
+  on_success:
+    - git add test/cucumber_report.html test/cucumber_report.json README.md
+    - git commit -m "appveyor Updating branch from appveyor build."
+    - git push origin ci
+  build: off
+  deploy: off
+  configuration: TestAndReport

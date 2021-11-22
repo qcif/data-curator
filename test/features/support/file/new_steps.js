@@ -8,7 +8,7 @@ import {
   allTabElements,
   cellSelector,
   displayActiveTable,
-  headerCellSelector,
+  headerCellSelector, rowHeaderCellSelector,
   rowSelector, selectedCellClass,
   selectedRowHeaderClass
 } from '../page-objects/selectors'
@@ -42,7 +42,6 @@ Then(/^expect the active table to have data: "(.+)"$/, async function (data) {
 })
 
 Then(/^1 window should be displayed/, async function () {
-  await this.app.client.waitUntilWindowLoaded()
   const windowCount = await this.app.client.getWindowCount()
   expect(windowCount).to.equal(1)
 })
@@ -98,7 +97,7 @@ Then(/^the cursor (?:should be|is) in the (?:new |)table$/, async function () {
 })
 
 Then(/^the cursor (?:should be|is) in row (\d+), column (\d+)$/, async function (rowNumber, colNumber) {
-  const els = await (await activeTableElement(this.app)).$$(headerSelector)
+  const els = await (await activeTableElement(this.app)).$$(rowHeaderCellSelector)
   const collected = await collectWithFn(els, 'getAttribute', 'class')
   expect(collected[rowNumber - 1]).to.contain(selectedRowHeaderClass)
 
