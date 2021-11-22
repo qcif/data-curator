@@ -87,7 +87,6 @@ for:
     - yarn run lint
   test_script:
     - yarn run unit
-  build: off
   deploy: off
   configuration: Default
 -
