@@ -39,7 +39,11 @@ jobs:
       - name: Lint
         run: yarn run lint
       - name: Test on Linux
-        run: yarn run unit
+        run: |
+          chmod +x ./scripts/*.sh
+          . ./scripts/linux_headless_xvfb_init.sh
+          yarn run unit
+          yarn run e2e:impl
   merge-and-run-ci-macosx:
     runs-on: ubuntu-latest
     steps:
