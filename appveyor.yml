@@ -137,6 +137,12 @@ for:
   test_script:
     - yarn run unit
     - yarn run e2e:impl
+  after_test:
+    - yarn run cucumber:report:badge
+  on_success:
+    - git add test/cucumber_report.html test/cucumber_report.json README.md
+    - git commit -m "appveyor Updating branch from appveyor build."
+    - git push origin windows
   build: off
   deploy: off
   configuration: Test
@@ -221,44 +227,3 @@ for:
   build_script:
     - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { yarn run release:predraft }
   configuration: Release
-
--
-  matrix:
-    only:
-      - job_name: Windows build
-  branches:
-    only:
-      - ci
-  init:
-    - git config --global core.autocrlf input
-  install:
-    - ps: Install-Product node $env:nodejs_version $env:plat
-    - choco upgrade yarn
-    - git reset --hard HEAD
-    - yarn
-    - node --version
-    - yarn autoclean --force
-    - yarn run clean
-  test_script:
-    - git config --global credential.helper store
-    - ps: Add-Content "$HOME\.git-credentials" "https://$($env:GH_TOKEN):x-oauth-basic@github.com`n"
-    - git config --global user.email %APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL%
-    - git config --global user.name %APPVEYOR_REPO_COMMIT_AUTHOR%
-    - ps: $(git stash | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
-    - ps: $(git remote set-branches --add origin develop | Out-Host; $?) -or $(exit 1 | Out-Host; $?)
-    - git fetch origin develop
-    - git checkout --track origin/develop
-    - git checkout ci
-    - git checkout develop -- src
-    - yarn
-    - yarn run unit
-    - yarn run e2e:impl
-  after_test:
-    - yarn run cucumber:report:badge
-  on_success:
-    - git add test/cucumber_report.html test/cucumber_report.json README.md
-    - git commit -m "appveyor Updating branch from appveyor build."
-    - git push origin ci
-  build: off
-  deploy: off
-  configuration: TestAndReport
