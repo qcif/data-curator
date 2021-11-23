@@ -19,6 +19,7 @@ function CustomWorld ({ attach, parameters }) {
   }
 }
 
+// To turn on verbose logging for webdriverio: webdriverLogPath: 'webdriver.log',
 function createApp () {
   return new Application({
     path: electron,
@@ -30,7 +31,6 @@ function createApp () {
       ELECTRON_ENABLE_LOGGING: true,
       ELECTRON_ENABLE_STACK_DUMPING: true
     },
-    // webdriverLogPath: 'webdriver.log',
     chromeDriverArgs: ['remote-debugging-port=9222']
   })
 }

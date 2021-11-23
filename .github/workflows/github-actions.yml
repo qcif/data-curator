@@ -8,16 +8,27 @@ on:
     branches:
       - '**'
 jobs:
-  ci-windows:
-    runs-on: windows-2019
+  ci:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - windows-2019
+          - ubuntu-18.04
+          - macos-11
+        node_version:
+          - '14.x'
+        architecture:
+          - x64
+    name: OS  ${{ matrix.os }} - arch ${{ matrix.architecture }} with node ${{ matrix.node_version }}
     steps:
       - uses: actions/checkout@v2
-      - name: Window
+      - name: Install
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: ${{ matrix.node_version }}
+          architecture: ${{ matrix.architecture }}
           cache: 'yarn'
-      - name: Install dependencies
         run: |
           yarn
           node --version
@@ -25,59 +36,21 @@ jobs:
           yarn run clean
       - name: Lint
         run: yarn run lint
+      - name: Pre-test setup
+        if: ${{ startsWith(runner.os, 'ubuntu') }}
+        run: |
+          chmod +x ./scripts/*.sh
+          . ./scripts/linux_headless_xvfb_init.sh
       - name: Test
         run: |
           yarn run unit
           yarn run e2e:impl
       - name: Post-test
+        if: ${{ startsWith(runner.os, 'windows') }}
         run: yarn run cucumber:report:badge
       - name: Post-test commit
+        if: ${{ startsWith(runner.os, 'windows') }}
         run: |
           git add test/cucumber_report.html test/cucumber_report.json README.md
           git commit -m "github-actions Updating branch from github-actions build."
           git push origin $GITHUB_REF_NAME
-
-  ci-linux:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Linux
-        uses: actions/setup-node@v1
-        with:
-          node-version: '14.x'
-          cache: 'yarn'
-      - name: Install dependencies
-        run: |
-          yarn
-          node --version
-          yarn autoclean --force
-          yarn run clean
-      - name: Lint
-        run: yarn run lint
-      - name: Test on Linux
-        run: |
-          chmod +x ./scripts/*.sh
-          . ./scripts/linux_headless_xvfb_init.sh
-          yarn run unit
-          yarn run e2e:impl
-  ci-macosx:
-    runs-on: macos-11
-    steps:
-      - uses: actions/checkout@v2
-      - name: Macosx
-        uses: actions/setup-node@v1
-        with:
-          node-version: '14.x'
-          cache: 'yarn'
-      - name: Install dependencies
-        run: |
-          yarn
-          node --version
-          yarn autoclean --force
-          yarn run clean
-      - name: Lint
-        run: yarn run lint
-      - name: Test
-        run: |
-          yarn run unit
-          yarn run e2e:impl
