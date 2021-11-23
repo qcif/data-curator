@@ -42,6 +42,7 @@ Feature: Validate Table
   - decimalChar
   - groupChar
 
+  @dev
   @impl
   Scenario Outline: Validate Table
     Given Data Curator is open
