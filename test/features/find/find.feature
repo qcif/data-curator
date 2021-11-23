@@ -43,7 +43,6 @@ Feature: Find data
       | Find | toolbar menu button        | Find       |
       | Find | application menu selection | Find->Find |
 
-  @dev
   @impl
   Scenario Outline: Find submenu item is available from invoking Find
     Given Data Curator is open
@@ -62,7 +61,6 @@ Feature: Find data
       | Find  | toolbar menu button        | Find       | Replace All      | Find->Replace All      |
       | Find  | application menu selection | Find->Find | Replace All      | Find->Replace All      |
 
-  @dev
   @impl
   Scenario Outline: Find case-sensitive next
     Given Data Curator is open
