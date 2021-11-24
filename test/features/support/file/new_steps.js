@@ -27,7 +27,6 @@ When(/^Data Curator is open$/, async function () {
 Given(/^the active table has data: "(.+)"$/, async function (data) {
   const activeTable = await activeTableElement(this.app)
   if (isDataEqualToDefaultData(data)) {
-    console.log(`empty set`)
     await expectActiveTableToHoldExpectedDataWithNoHeaderIncluded(activeTable, data)
   } else {
     await this.app.webContents.send('loadDataIntoCurrentHot', data)
@@ -92,7 +91,6 @@ Then(/^the (?:new |)table (?:should be|is) empty$/, async function () {
 Then(/^the cursor (?:should be|is) in the (?:new |)table$/, async function () {
   const els = await (await activeTableElement(this.app)).$$(cellSelector)
   const collected = await collectWithFn(els, 'getAttribute', 'class')
-  console.log(`collected is ${JSON.stringify(collected)}`)
   expect(collected).to.contain(selectedCellClass)
 })
 

@@ -2,7 +2,6 @@ import { expect } from 'chai'
 
 export async function expectFailureMessageWithText (app, message) {
   const messageText = await getMessageDetailsPanelText(app)
-  console.log(`actual message is ${messageText}`)
   const regexp = messageAsRegExp(`Failed: ${message}`)
   expect(messageText).to.match(regexp)
 }

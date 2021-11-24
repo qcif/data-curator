@@ -30,13 +30,10 @@ Then(/^all the cells with values that are a case sensitive match for "(.+?)" sho
     expect.fail()
   }
   const currentColumnCellsTextResults = await getCurrentColumnCellsTextResults(this.app, currentColumnSelector)
-  console.log(`currentColumnCellsWithText is ${currentColumnCellsTextResults}`)
   const currentColumnsCellsWithText = _.filter(currentColumnCellsTextResults, function (cell) {
-    console.log(`value is ${cell}`)
     return !_.isEmpty(cell)
   })
   const currentColumnsCellsBackgroundColors = await getBackgroundColorOfCellsInCurrentColumn(this.app, currentColumnSelector)
-  console.log(`colors are: ${JSON.stringify(currentColumnsCellsBackgroundColors)}`)
 
   const matchedTextIndices = getRowIndicesOfCaseSensitiveSearchText(currentColumnCellsTextResults, searchValue)
   const backgroundColorIndices = getRowIndicesOfFoundBackgroundColors(currentColumnsCellsBackgroundColors)

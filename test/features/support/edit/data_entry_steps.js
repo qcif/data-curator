@@ -10,14 +10,11 @@ When(/^"(.+?)" (?:has been|is) entered in the input field(?: for|)[:]? "(.+?)"/,
 When(/^(?:the )"(.+?)" input checkbox field is not selected/, async function (fieldId) {
   const result = await returnInputIdSelector(this.app, fieldId)
   const isSelected = await result.isSelected()
-  console.log(`is selected is ${isSelected}`)
   if (isSelected) {
-    console.log('attempting to click...')
     await result.click()
     await result.waitUntil(async function () {
       // not 'interactable' so getText may not work
       const isSelected = await this.isSelected()
-      console.log(`is selected now: ${isSelected}`)
       return !isSelected
     })
   }

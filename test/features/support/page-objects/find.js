@@ -10,8 +10,6 @@ export function getRowIndicesOfCaseInsensitiveSearchText (activeColRows, searchV
       matchedTextIndices.push(index)
     }
   }
-  console.log(`matched is:...`)
-  console.dir(matchedTextIndices)
   return matchedTextIndices
 }
 
@@ -22,7 +20,6 @@ export function getRowIndicesOfCaseSensitiveSearchText (activeColRows, searchVal
       matchedTextIndices.push(index)
     }
   }
-  console.log(`matched Text indexes: ${matchedTextIndices}`)
   return matchedTextIndices
 }
 
@@ -33,6 +30,5 @@ export function getRowIndicesOfFoundBackgroundColors (backgroundColors) {
       foundBackgroundColors.push(index)
     }
   }
-  console.log(`found background search color: ${foundBackgroundColors}`)
   return foundBackgroundColors
 }

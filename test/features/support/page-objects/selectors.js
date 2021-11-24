@@ -50,8 +50,6 @@ export async function applyFnToOneOfDualSelectors (app, fn, selector1, selector2
   } catch (error) {
     console.log(`Unable to find via ${selector1} Trying ${selector2}`)
     const el = await app.client.$(selector2)
-    console.log(`fn will be ${fn}`)
-    console.log(`got selector.. ${el}`)
     await el.waitForDisplayed({ timeout: timeout })
     await el[fn]()
   }
@@ -60,7 +58,6 @@ export async function applyFnToOneOfDualSelectors (app, fn, selector1, selector2
 export function replaceLabelWithKebabAndCamelCase (selector, toReplace) {
   const kebabCaseSelector = _.replace(selector, toReplace, _.kebabCase(toReplace))
   const camelCaseSelector = _.replace(selector, toReplace, _.camelCase(toReplace))
-  console.log(`kebab and camel are: ${kebabCaseSelector} and ${camelCaseSelector}`)
   return [kebabCaseSelector, camelCaseSelector]
 }
 
@@ -71,10 +68,8 @@ export function kebabAndCamelCase (selector) {
 }
 
 export async function getCurrentColumnCellsTextResults (app, currentColumnSelector) {
-  console.log(`here...${currentColumnSelector}`)
   const columnCells = await (await app.client.$(activeTableSelector)).$$(currentColumnSelector)
   const columnCellsText = await collectWithFn(columnCells, 'getText')
-  console.log(`have text: ${columnCellsText}`)
   return columnCellsText
 }
 
@@ -85,16 +80,11 @@ export async function getBackgroundColorOfCellsInCurrentColumn (app, currentColu
 
 export async function getCurrentColumnSelector (app) {
   const collectedRows = await (await app.client.$(activeTableSelector)).$$(rowSelector)
-  console.log(`collected rows length: ${collectedRows.length}`)
   for (const [index, row] of collectedRows.entries()) {
-    console.log(`next index is ${index}`)
     const selector = `.ht_master table tr:nth-of-type(${index + 1}) td`
     const collectedCells = await (await app.client.$(activeTableSelector)).$$(selector)
-    console.log(`collected cells: ${collectedCells}`)
-    console.log(`collected cells length: ${collectedCells.length}`)
     if (!_.isEmpty(collectedCells)) {
       const collectedCellClasses = await collectWithFn(collectedCells, 'getAttribute', 'class')
-      console.log(`as a collection: ${collectedCellClasses}`)
       const currentColIndex = collectedCellClasses.findIndex(value => /.*htSearchResult.*/.test(value))
       if (currentColIndex !== -1) {
         return `.ht_master table tr td:nth-of-type(${currentColIndex + 1})`
@@ -106,7 +96,6 @@ export async function getCurrentColumnSelector (app) {
 export async function getPlaceholderValue (app, idName) {
   const findInputParent = await (await app.client.$(`#${idName}`)).$('..')
   const attributeTarget = await findInputParent.getAttribute('data-placeholder')
-  console.log(`attribute is ${attributeTarget}`)
   return attributeTarget
 }
 
