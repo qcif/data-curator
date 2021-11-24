@@ -21,13 +21,10 @@ jobs:
           - '14.x'
     name: OS  ${{ matrix.os }} with node ${{ matrix.node_version }}
     steps:
-      - name: Checkout Windows
+      - name: Setup git
         if: ${{ runner.os == 'Windows' }}
-        uses: actions/checkout@v2
-      - run: git config --global core.autocrlf input
-      - name: Checkout Default
-        if: ${{ runner.os != 'Windows' }}
-        uses: actions/checkout@v2
+        run: git config --global core.autocrlf input
+      - uses: actions/checkout@v2
       - name: Install
         uses: actions/setup-node@v1
         with:
@@ -55,7 +52,7 @@ jobs:
         if: ${{ runner.os == 'Windows' }}
         run: |
           yarn run cucumber:report:badge
-          git config user.name github-actions
+          git config user.name $GITHUB_ACTOR
           git config user.email github-actions@github.com
           git add test/cucumber_report.html test/cucumber_report.json README.md
           git commit -m "[skip actions] Updating branch from github-actions 'Post-test' actions."
