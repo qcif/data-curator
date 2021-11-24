@@ -1,9 +1,10 @@
 
 [![GitHub package version](https://img.shields.io/github/package-json/v/qcif/data-curator.svg)](https://github.com/qcif/data-curator/releases)
 [![JavaScript Style Guide](https://img.shields.io/badge/js_code_style-standard-brightgreen.svg)](https://standardjs.com)
- [![vue-recommended-style](https://img.shields.io/badge/vue_code_style-recommended-brightgreen.svg?style=flat)](https://vuejs.org/v2/style-guide/#Priority-C-Recommended)
-[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/branch/windows?svg=true)](https://ci.appveyor.com/project/qcif/data-curator)
-[![Appveyor Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2084%20%20❌failed:%200%20%20❗undefined:%200-orange.svg)](https://ci.appveyor.com/project/qcif/data-curator)
+[![vue-recommended-style](https://img.shields.io/badge/vue_code_style-recommended-brightgreen.svg?style=flat)](https://vuejs.org/v2/style-guide/#Priority-C-Recommended)
+[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/branch/develop?svg=true)](https://ci.appveyor.com/projects)
+[![Github workflow status](https://github.com/qcif/data-curator/actions/workflows/github-actions.yml/badge.svg?branch=develop)](https://github.com/qcif/data-curator/actions)
+[![Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2084%20%20❌failed:%200%20%20❗undefined:%200-orange.svg)](https://github.com/qcif/data-curator/actions)
 
 
 
@@ -222,8 +223,8 @@ For unit testing, we use:
 ### Continuous integration
 
 For continuous integration, we use:
-- [Appveyor](https://www.appveyor.com)
-- Github Actions (This allows us to checkout CI against os-specific branches to run tests against each OS in appveyor, observing its concurrency,time limits)
+- [Appveyor](https://www.appveyor.com) (Unit tests only)
+- [Github Actions](https://docs.github.com/en/actions) (This allows us to checkout CI against os-specific branches to run tests against each OS)
 
 We plan to integrate the acceptance and unit tests with code commits
 
@@ -241,7 +242,7 @@ To build Data Curator locally:
 
 To automate deployment, we are using:
 
-- [Appveyor](https://www.appveyor.com) for Windows deployment, macOS and Linux
+- [Github Actions](https://docs.github.com/en/actions) for Windows deployment, macOS and Linux
 
 To trigger the automated build and draft release, create and push a git tag, following the versioning pattern used in current releases.
 Ensure that any changes in this tag are also released back to develop and master branches.

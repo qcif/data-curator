@@ -21,7 +21,13 @@ jobs:
           - '14.x'
     name: OS  ${{ matrix.os }} with node ${{ matrix.node_version }}
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Windows
+        if: ${{ runner.os == 'Windows' }}
+        uses: actions/checkout@v2
+        run: git config --global core.autocrlf input
+      - name: Checkout Default
+        if: ${{ runner.os != 'Windows' }}
+        uses: actions/checkout@v2
       - name: Install
         uses: actions/setup-node@v1
         with:
@@ -49,6 +55,8 @@ jobs:
         if: ${{ runner.os == 'Windows' }}
         run: |
           yarn run cucumber:report:badge
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git add test/cucumber_report.html test/cucumber_report.json README.md
           git commit -m "github-actions Updating branch from github-actions build."
           git push origin $GITHUB_REF_NAME

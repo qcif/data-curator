@@ -42,8 +42,6 @@ for:
       - job_name: Windows build
   branches:
     except:
-      - macosx
-      - linux
       - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
   init:
     - git config --global core.autocrlf input
@@ -59,7 +57,6 @@ for:
     - yarn run lint
   test_script:
     - yarn run unit
-    - yarn run e2e:impl
   after_test:
     - yarn run cucumber:report:badge
   on_success:
@@ -75,9 +72,6 @@ for:
       - job_name: Linux build
   branches:
     except:
-      - windows
-      - macosx
-      - linux
       - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
   install:
     - yarn
@@ -100,9 +94,6 @@ for:
       - job_name: Macosx build
   branches:
     except:
-      - windows
-      - macosx
-      - linux
       - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
   install:
     - brew update && brew install yarn
@@ -117,49 +108,6 @@ for:
   build: off
   deploy: off
   configuration: Test
--
-  matrix:
-    only:
-      - job_name: Macosx build
-  branches:
-    only:
-      - macosx
-  install:
-    - brew update && brew install yarn
-    - yarn
-    - node --version
-    - yarn autoclean --force
-    - yarn run clean
-  before_test:
-    - yarn run lint
-  test_script:
-    - yarn run unit
-    - yarn run e2e:impl
-  build: off
-  deploy: off
-  configuration: Test
--
-  matrix:
-    only:
-      - job_name: Linux build
-  branches:
-    only:
-      - linux
-  install:
-    - yarn
-    - node --version
-    - yarn autoclean --force
-    - yarn run clean
-  build_script:
-    - chmod +x ./scripts/*.sh
-    - ./scripts/linux_install_os_dependencies_for_testing_on_ubuntu.sh
-  before_test:
-    - yarn run lint
-  test_script:
-    - ./scripts/linux_headless_all_tests.sh
-  deploy: off
-  configuration: Test
-
 -
   matrix:
     only:
