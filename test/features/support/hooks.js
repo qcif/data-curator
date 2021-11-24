@@ -14,7 +14,7 @@ async function stopAppRunning (app) {
       await this.app.electron.ipcRenderer.sendSync('forceQuit')
     }
   } catch (error) {
-    console.log('error caught when stopping run. ignoring')
+    // console.log('error caught when stopping run. ignoring')
   }
 }
 
