@@ -52,10 +52,8 @@ jobs:
         if: ${{ runner.os == 'Windows' }}
         run: |
           yarn run cucumber:report:badge
-          echo "github actor is ${GITHUB_ACTOR}"
-          echo "github actor is ${{ github.actor }}"
-          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          git config user.name "$GITHUB_ACTOR"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git config user.name "${{ github.actor }}"
           git add test/cucumber_report.html test/cucumber_report.json README.md
           git commit -m "[skip actions] Updating branch from github-actions 'Post-test' actions."
           git push origin $GITHUB_REF_NAME
