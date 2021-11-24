@@ -42,7 +42,7 @@ jobs:
           chmod +x ./scripts/*.sh
           . ./scripts/linux_headless_xvfb_init.sh
           yarn run unit
-          yarn run e2e:impl
+#          yarn run e2e:impl
       - name: Test Default
         if: ${{ runner.os != 'Linux' }}
         run: |
@@ -53,7 +53,9 @@ jobs:
         run: |
           yarn run cucumber:report:badge
           git config user.name $GITHUB_ACTOR
-          git config user.email github-actions@github.com
+          git config user.email ${GITHUB_ACTOR}@users.noreply.github.com
+          git config user.name
+          git config user.email
           git add test/cucumber_report.html test/cucumber_report.json README.md
           git commit -m "[skip actions] Updating branch from github-actions 'Post-test' actions."
           git push origin $GITHUB_REF_NAME
