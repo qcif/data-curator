@@ -4,7 +4,8 @@
 [![vue-recommended-style](https://img.shields.io/badge/vue_code_style-recommended-brightgreen.svg?style=flat)](https://vuejs.org/v2/style-guide/#Priority-C-Recommended)
 [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/branch/develop?svg=true)](https://ci.appveyor.com/projects)
 [![Github workflow status](https://github.com/qcif/data-curator/actions/workflows/main.yml/badge.svg?branch=develop)](https://github.com/qcif/data-curator/actions)
-[![Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2084%20%20❌failed:%200%20%20❗undefined:%200-orange.svg)](https://github.com/qcif/data-curator/actions)
+[![Appveyor Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2072%20%20❌failed:%201%20%20❗undefined:%200-orange.svg)](https://ci.appveyor.com/project/qcif/data-curator)
+actions)
 
 
 
