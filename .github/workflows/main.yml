@@ -42,12 +42,12 @@ jobs:
           chmod +x ./scripts/*.sh
           . ./scripts/linux_headless_xvfb_init.sh
           yarn run unit
-#          yarn run e2e:impl
+          yarn run e2e:impl
       - name: Test Default
         if: ${{ runner.os != 'Linux' }}
         run: |
           yarn run unit
-          yarn run e2e:impl
+#          yarn run e2e:impl
       - name: Post-test
         if: ${{ runner.os == 'Windows' }}
         run: |
