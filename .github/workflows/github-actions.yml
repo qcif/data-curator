@@ -33,12 +33,15 @@ jobs:
           yarn run clean
       - name: Lint
         run: yarn run lint
-      - name: Pre-test setup
+      - name: Test Linux
         if: ${{ runner.os == 'Linux' }}
         run: |
           chmod +x ./scripts/*.sh
           . ./scripts/linux_headless_xvfb_init.sh
-      - name: Test
+          yarn run unit
+          yarn run e2e:impl
+      - name: Test Default
+        if: ${{ runner.os != 'Linux' }}
         run: |
           yarn run unit
           yarn run e2e:impl
