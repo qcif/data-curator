@@ -31,7 +31,6 @@ jobs:
           node --version
           yarn autoclean --force
           yarn run clean
-          echo ${{ runner.os }}
       - name: Lint
         run: yarn run lint
       - name: Pre-test setup
