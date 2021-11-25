@@ -57,12 +57,6 @@ for:
     - yarn run lint
   test_script:
     - yarn run unit
-  after_test:
-    - yarn run cucumber:report:badge
-  on_success:
-    - git add test/cucumber_report.html test/cucumber_report.json README.md
-    - git commit -m "appveyor Updating branch from appveyor build."
-    - git push origin $env:APPVEYOR_REPO_BRANCH
   build: off
   deploy: off
   configuration: Test

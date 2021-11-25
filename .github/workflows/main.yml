@@ -47,10 +47,17 @@ jobs:
         if: ${{ runner.os != 'Linux' }}
         run: |
           yarn run unit
-#          yarn run e2e:impl
-      - name: Post-test
+          yarn run e2e:impl
+      - name: Post-unit
+        if: ${{ runner.os == 'Windows' }}
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        run: |
+          yarn run unit:coverage
+      - name: Post-e2e
         if: ${{ runner.os == 'Windows' }}
         run: |
+          yarn run cucumber:report
           yarn run cucumber:report:badge
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git config user.name "${{ github.actor }}"

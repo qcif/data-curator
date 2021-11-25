@@ -12,3 +12,9 @@ export function mockShell (options) {
   console.log('sending call to mock...')
   return _app.electron.ipcRenderer.sendSync('SPECTRON_FAKE_SHELL/SEND', options)
 }
+
+const expectedMockShellMessage = 'received shell fake'
+
+export {
+  expectedMockShellMessage
+}
