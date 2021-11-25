@@ -2,10 +2,8 @@
 [![GitHub package version](https://img.shields.io/github/package-json/v/qcif/data-curator.svg)](https://github.com/qcif/data-curator/releases)
 [![JavaScript Style Guide](https://img.shields.io/badge/js_code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![vue-recommended-style](https://img.shields.io/badge/vue_code_style-recommended-brightgreen.svg?style=flat)](https://vuejs.org/v2/style-guide/#Priority-C-Recommended)
-[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/fahwo5shvb6jl9ux/branch/develop?svg=true)](https://ci.appveyor.com/projects)
 [![Github workflow status](https://github.com/qcif/data-curator/actions/workflows/main.yml/badge.svg?branch=develop)](https://github.com/qcif/data-curator/actions)
-[![Appveyor Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2084%20%20❌failed:%200%20%20❗undefined:%200-orange.svg)](https://ci.appveyor.com/project/qcif/data-curator)
-actions)
+[![Acceptance Test status](https://img.shields.io/badge/acceptance%20tests-✔passed:%2084%20%20❌failed:%200%20%20❗undefined:%200-orange.svg)](https://github.com/qcif/data-curator)
 
 
 
@@ -28,7 +26,7 @@ actions)
 
 
 
-[![Unit Test Coverage Status](https://coveralls.io/repos/github/qcif/data-curator/badge.svg?branch=windows)](https://coveralls.io/github/qcif/data-curator?branch=windows)
+[![Unit test Coverage Status](https://coveralls.io/repos/github/qcif/data-curator/badge.svg?branch=develop)](https://coveralls.io/github/qcif/data-curator?branch=develop)
 [![Github All Releases](https://img.shields.io/github/downloads/qcif/data-curator/total.svg)](https://github.com/qcif/data-curator/releases)
 [![Github Releases](https://img.shields.io/github/downloads/qcif/data-curator/v1.2.5/total.svg?label=Latest%20version%20downloads)](https://github.com/qcif/data-curator/releases/latest)
 
@@ -224,8 +222,7 @@ For unit testing, we use:
 ### Continuous integration
 
 For continuous integration, we use:
-- [Appveyor](https://www.appveyor.com) (Unit tests only)
-- [Github Actions](https://docs.github.com/en/actions) (This allows us to checkout CI against os-specific branches to run tests against each OS)
+- [Github Actions](https://docs.github.com/en/actions)
 
 We plan to integrate the acceptance and unit tests with code commits
 

@@ -66,8 +66,8 @@ function createAcceptanceTestBadge (scenarioTallies) {
   '%20%20❌failed:%20' + scenarioTallies.failures +
   '%20%20❗undefined:%20' + scenarioTallies.warnings +
   '-orange.svg'
-  var linkUrl = 'https://ci.appveyor.com/project/qcif/data-curator'
-  var altText = 'Appveyor Acceptance Test status'
+  var linkUrl = 'https://github.com/qcif/data-curator'
+  var altText = 'Acceptance Test status'
 
   var badge = badger.addBadge(readme, 'md', imageUrl, linkUrl, altText)
 
