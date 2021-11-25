@@ -18,7 +18,7 @@ async function stopAppRunning (app) {
   }
 }
 
-// function tallyTestE2E (testCase) {
+// function tallyTestAppveyor (testCase) {
 //   if (process.env.APPVEYOR) {
 //     console.log('e2e tally...')
 //     exec(`appveyor AddTest -Name ${testCase.pickle.name} -Framework Spectron -Filename ${testCase.sourceLocation.uri} -Outcome ${testCase.result.status} -Duration ${testCase.result.duration}`, (error, stdout, stderr) => {
@@ -40,7 +40,7 @@ After({ timeout: 40000 }, async function (testCase) {
         await this.attach(imageBuffer, 'image/png')
       }
     }
-    // tallyTestE2E(testCase)
+    // tallyTestAppveyor(testCase)
   } catch (error) {
     console.log('error in after hook', error)
   } finally {

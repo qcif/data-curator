@@ -1,0 +1,35 @@
+name: release
+on:
+  push:
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-2019
+          - macos-11
+        node_version:
+          - '14.x'
+    name: OS  ${{ matrix.os }} with node ${{ matrix.node_version }}
+    steps:
+      - name: Setup git
+        if: ${{ runner.os == 'Windows' }}
+        run: git config --global core.autocrlf input
+      - uses: actions/checkout@v2
+      - name: Install
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node_version }}
+      - run: |
+          yarn
+          node --version
+          yarn autoclean --force
+          yarn run clean
+      - name: Lint
+        run: yarn run lint
+      - name: Release predraft
+        run: yarn run release:predraft

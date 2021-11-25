@@ -9,7 +9,7 @@ export async function waitForVisibleIdFromLabel (app, parentSelector, label, tim
     await el.waitforDisplayed(timeout)
     return el
   } catch (error) {
-    console.log(`Unable to find via ${kebabCase} Trying ${camelCase}...`)
+    console.log(`Unable to find via ID kebabCase Trying ID camelCase...`)
     const el = await app.client.$(`${parentSelector} #${camelCase}`)
     await waitForDisplayedDefault(el)
     return el
@@ -22,7 +22,7 @@ export async function returnInputIdSelector (app, selector) {
   try {
     return app.client.$(`input#${kebabCase}`)
   } catch (error) {
-    console.log(`Unable to find via ${kebabCase} Trying ${camelCase}`)
+    console.log(`Unable to find via ID kebabCase Trying ID camelCase...`)
     return app.client.$(`input#${camelCase}`)
   }
 }

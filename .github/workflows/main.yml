@@ -1,4 +1,4 @@
-name: github-actions-to-ci-branches
+name: ci
 on:
   push:
     branches:
