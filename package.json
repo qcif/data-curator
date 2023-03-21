@@ -103,7 +103,7 @@
   "dependencies": {
     "archiver": "^2.1.1",
     "autosize": "^4.0.2",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "bootstrap": "3.4.1",
     "components-font-awesome": "^5.0.6",
     "csv": "^2.0.0",
